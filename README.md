@@ -8,14 +8,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ### Setup Bazelisk
 ```
-$ wget https://github.com/bazelbuild/bazelisk/releases/download/v1.6.1/bazelisk-linux-amd64
-$ mv bazelisk-linux-amd64 ~/bin/bazel
-$ chmod +x ~/bin/bazel
+wget https://github.com/bazelbuild/bazelisk/releases/download/v1.6.1/bazelisk-linux-amd64
+mv bazelisk-linux-amd64 ~/bin/bazel
+chmod +x ~/bin/bazel
 ```
 
 ### Verify that ~/bin/ is in your PATH:
 ```
-$ echo $PATH
+echo $PATH
 ```
 
 ### Do a test build for your local system:
