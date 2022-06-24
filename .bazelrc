@@ -1,3 +1,50 @@
+# Defaults for all builds
+build --define=allow_oversize_protos=true
+build --enable_platform_specific_config
+
+build:linux --config=c++17
+build:macos --config=c++17
+build:windows --config=c++17_windows
+
+# Settings for different C++ dialects
+build:c++17 --cxxopt=-std=c++17
+build:c++17_windows --cxxopt=/std:c++17
+build:c++20 --cxxopt=-std=c++20
+build:c++20_windows --cxxopt=/std:c++20
+
 build:platform_build --incompatible_enable_cc_toolchain_resolution
+# Note: Raspberry Pi builds pick up the build:linux configurations as well.
 build:rpi3 --config=platform_build --platforms=//platforms:rpi3
+# Note: Beaglebone Black builds pick up the build:linux configurations as well.
 build:bbb --config=platform_build --platforms=//platforms:bbb
+
+# Address sanitizer
+# CC=clang bazel build --config asan
+build:asan --strip=never
+build:asan --copt -fsanitize=address
+build:asan --copt -DADDRESS_SANITIZER
+build:asan --copt -g
+build:asan --copt -O3
+build:asan --copt -fno-omit-frame-pointer
+build:asan --linkopt -fsanitize=address
+
+# Memory sanitizer
+# CC=clang bazel build --config msan
+build:msan --strip=never
+build:msan --copt -fsanitize=memory
+build:msan --copt -DMEMORY_SANITIZER
+build:msan --copt -g
+build:msan --copt -O3
+build:msan --copt -fno-omit-frame-pointer
+build:msan --linkopt -fsanitize=memory
+
+# Undefined Behavior Sanitizer
+# CC=clang bazel build --config ubsan
+build:ubsan --strip=never
+build:ubsan --copt -fsanitize=undefined
+build:ubsan --copt -DUNDEFINED_BEHAVIOR_SANITIZER
+build:ubsan --copt -g
+build:ubsan --copt -O3
+build:ubsan --copt -fno-omit-frame-pointer
+build:ubsan --linkopt -fsanitize=undefined
+build:ubsan --linkopt -lubsan
