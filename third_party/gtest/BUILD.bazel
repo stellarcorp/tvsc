@@ -1,0 +1,36 @@
+licenses(["notice"])
+
+cc_library(
+    name = "gtest",
+    testonly = True,
+    srcs = [
+        "testing_main.cc",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":gtest_without_main",
+        "//testing",
+        "@com_github_gflags_gflags//:gflags",
+        "@com_github_google_glog//:glog",
+    ],
+)
+
+cc_library(
+    name = "gtest_without_main",
+    testonly = True,
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_google_googletest//:gtest",
+    ],
+)
+
+cc_test(
+    name = "gtest_test",
+    srcs = [
+        "gtest_test.cc",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":gtest",
+    ],
+)

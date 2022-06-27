@@ -1,0 +1,35 @@
+cc_library(
+    name = "base",
+    hdrs = [
+        "except.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/glog",
+    ],
+)
+
+cc_test(
+    name = "except_test",
+    srcs = [
+        "except_test.cc",
+    ],
+    deps = [
+        ":base",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "except_without_exceptions_test",
+    srcs = [
+        "except_test.cc",
+    ],
+    local_defines = [
+        "NO_EXCEPTIONS",
+    ],
+    deps = [
+        ":base",
+        "//third_party/gtest",
+    ],
+)

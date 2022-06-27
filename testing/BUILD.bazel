@@ -1,0 +1,18 @@
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "testing",
+    testonly = True,
+    srcs = [
+        "test_temp_directory.cc",
+    ],
+    hdrs = [
+        "test_temp_directory.h",
+        "utils.h",
+    ],
+    deps = [
+        "//base",
+        "//filesystem",
+        "//third_party/gtest:gtest_without_main",
+    ],
+)

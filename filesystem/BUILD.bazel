@@ -1,0 +1,22 @@
+cc_library(
+    name = "filesystem",
+    srcs = [
+        "utils.cc",
+    ],
+    hdrs = [
+        "utils.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/glog",
+    ],
+)
+
+cc_test(
+    name = "utils_test",
+    srcs = ["utils_test.cc"],
+    deps = [
+        ":filesystem",
+        "//third_party/gtest",
+    ],
+)
