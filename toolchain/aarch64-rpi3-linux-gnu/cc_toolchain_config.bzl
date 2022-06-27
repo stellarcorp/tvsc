@@ -95,6 +95,7 @@ def _impl(ctx):
                         flags = [
                             "--sysroot=external/aarch64-rpi3-linux-gnu-sysroot",
                             "-lstdc++",
+                            "-lm",
                         ],
                     ),
                 ]),
