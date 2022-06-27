@@ -1,0 +1,8 @@
+cc_library(
+    name = "avahi",
+    linkopts = [
+        "-lavahi-client",
+        "-lavahi-common",
+    ],
+    visibility = ["//visibility:public"],
+)
