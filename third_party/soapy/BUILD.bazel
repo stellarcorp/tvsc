@@ -10,7 +10,6 @@ cc_library(
 cc_library(
     name = "soapy_remote_common",
     deps = [
-        "//third_party/avahi",
         "@com_github_pothosware_soapyremote//:common",
     ],
 )

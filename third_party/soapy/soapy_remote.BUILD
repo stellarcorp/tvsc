@@ -30,10 +30,10 @@ cc_library(
         ["common/**/*.cpp"],
         exclude = [
             "common/SoapyMDNSEndpointApple.cpp",
-            # Note: to disable discovery via Avahi, keep SoapyMDNSEndpointNone.cpp in the build, and exclude
-            # SoapyMDNSEndpointAvahi.cpp instead. Also, the //third_party/soapy:soapy_remote_common target depends on
-            # Avahi. That dependency would need to be removed.
-            "common/SoapyMDNSEndpointNone.cpp",
+            # Note: to enable discovery via Avahi, keep SoapyMDNSEndpointAvahi.cpp in the build, and exclude
+            # SoapyMDNSEndpointNone.cpp instead. Also, the //third_party/soapy:soapy_remote_common target may need to
+            # depend on Avahi.
+            "common/SoapyMDNSEndpointAvahi.cpp",
             "common/SoapyIfAddrsWindows.cpp",
         ],
     ),
