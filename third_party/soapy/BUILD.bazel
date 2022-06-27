@@ -1,0 +1,54 @@
+licenses(["notice"])
+
+cc_library(
+    name = "soapy_sdr",
+    deps = [
+        "@com_github_pothosware_soapysdr//:soapy_sdr",
+    ],
+)
+
+cc_library(
+    name = "soapy_remote_common",
+    deps = [
+        "//third_party/avahi",
+        "@com_github_pothosware_soapyremote//:common",
+    ],
+)
+
+cc_library(
+    name = "soapy_remote_server",
+    deps = [
+        "@com_github_pothosware_soapyremote//:server",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_test(
+    name = "soapy_sdr_test",
+    srcs = [
+        "soapy_sdr_test.cc",
+    ],
+    deps = [
+        ":soapy_sdr",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "soapy_remote_test",
+    srcs = [
+        "soapy_remote_test.cc",
+    ],
+    deps = [
+        ":soapy_remote_common",
+        "//third_party/gtest",
+    ],
+)
+
+filegroup(
+    name = "soapy_remote_patches",
+    srcs = [
+        "add_socket_defs.patch",
+    ],
+    visibility = ["//visibility:public"],
+)

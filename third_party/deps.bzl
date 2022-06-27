@@ -45,6 +45,32 @@ def _load_bazel_dependencies():
             ],
         )
 
+    if not native.existing_rule("com_github_pothosware_soapysdr"):
+        http_archive(
+            name = "com_github_pothosware_soapysdr",
+            sha256 = "a508083875ed75d1090c24f88abef9895ad65f0f1b54e96d74094478f0c400e6",
+            build_file = "//third_party/soapy:soapy_sdr.BUILD",
+            strip_prefix = "SoapySDR-soapy-sdr-0.8.1",
+            urls = [
+                "https://github.com/pothosware/SoapySDR/archive/refs/tags/soapy-sdr-0.8.1.tar.gz",
+            ],
+        )
+
+    if not native.existing_rule("com_github_pothosware_soapyremote"):
+        http_archive(
+            name = "com_github_pothosware_soapyremote",
+            sha256 = "66a372d85c984e7279b4fdc0a7f5b0d7ba340e390bc4b8bd626a6523cd3c3c76",
+            build_file = "//third_party/soapy:soapy_remote.BUILD",
+            strip_prefix = "SoapyRemote-soapy-remote-0.5.2",
+            patch_args = ["-p1"],
+            patches = [
+                "@//third_party/soapy:add_socket_defs.patch",
+            ],
+            urls = [
+                "https://github.com/pothosware/SoapyRemote/archive/refs/tags/soapy-remote-0.5.2.tar.gz",
+            ],
+        )
+
 def load_dependencies():
     toolchains()
     _load_bazel_dependencies()
