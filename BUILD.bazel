@@ -1,4 +1,64 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
+
 cc_binary(
     name = "hello_world",
+    testonly = True,
     srcs = ["hello_world.cc"],
+)
+
+pkg_files(
+    name = "hello_world_binary",
+    testonly = True,
+    srcs = [
+        ":hello_world",
+    ],
+    attributes = pkg_attributes(
+        mode = "0555",
+    ),
+    prefix = "bin",
+)
+
+pkg_filegroup(
+    name = "tvsc_bundle_with_tests",
+    testonly = True,
+    srcs = [
+        ":hello_world_binary",
+        "//third_party/soapy:test_binaries",
+    ],
+    prefix = "/usr",
+)
+
+VERSION_MAJOR = "0"
+
+VERSION_MINOR = "0"
+
+VERSION_PATCH = "1"
+
+VERSION_STRING = VERSION_MAJOR + "." + VERSION_MINOR + "." + VERSION_PATCH
+
+TEST_PACKAGE_NAME = "tvsc-with-tests"
+
+TEST_PACKAGE_FILE_BASENAME = TEST_PACKAGE_NAME + "-" + VERSION_STRING
+
+pkg_tar(
+    name = "tvsc_with_tests_tarball",
+    testonly = True,
+    srcs = [
+        ":tvsc_bundle_with_tests",
+    ],
+    extension = "tgz",
+    package_file_name = TEST_PACKAGE_FILE_BASENAME + ".tgz",
+)
+
+pkg_deb(
+    name = TEST_PACKAGE_NAME,
+    testonly = True,
+    data = ":tvsc_with_tests_tarball",
+    description = "Tower-in-a-box system from TVSC",
+    maintainer = "info@stellarcorp.tv",
+    package = TEST_PACKAGE_NAME,
+    package_file_name = TEST_PACKAGE_FILE_BASENAME + ".deb",
+    version = VERSION_STRING,
 )

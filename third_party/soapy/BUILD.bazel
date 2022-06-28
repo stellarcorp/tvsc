@@ -1,5 +1,7 @@
 licenses(["notice"])
 
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
+
 cc_library(
     name = "soapy_sdr",
     deps = [
@@ -16,10 +18,10 @@ cc_library(
 
 cc_library(
     name = "soapy_remote_server",
+    visibility = ["//visibility:public"],
     deps = [
         "@com_github_pothosware_soapyremote//:server",
     ],
-    visibility = ["//visibility:public"],
 )
 
 cc_test(
@@ -49,5 +51,21 @@ filegroup(
     srcs = [
         "add_socket_defs.patch",
     ],
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "test_binaries",
+    testonly = True,
+    srcs = [
+        ":soapy_remote_test",
+        ":soapy_sdr_test",
+    ],
+    attributes = pkg_attributes(
+        group = "tvsc",
+        mode = "0555",
+        owner = "tvsc",
+    ),
+    prefix = "bin",
     visibility = ["//visibility:public"],
 )
