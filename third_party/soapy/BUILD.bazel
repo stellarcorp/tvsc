@@ -20,7 +20,7 @@ cc_library(
     name = "soapy_remote_server",
     visibility = ["//visibility:public"],
     deps = [
-        "@com_github_pothosware_soapyremote//:server",
+        "@com_github_pothosware_soapyremote//:libserver",
     ],
 )
 
@@ -60,6 +60,21 @@ pkg_files(
     srcs = [
         ":soapy_remote_test",
         ":soapy_sdr_test",
+    ],
+    attributes = pkg_attributes(
+        group = "tvsc",
+        mode = "0555",
+        owner = "tvsc",
+    ),
+    prefix = "bin",
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "server_binaries",
+    testonly = True,
+    srcs = [
+        "@com_github_pothosware_soapyremote//:SoapyRemoteServer",
     ],
     attributes = pkg_attributes(
         group = "tvsc",

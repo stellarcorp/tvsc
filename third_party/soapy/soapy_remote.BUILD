@@ -46,16 +46,35 @@ cc_library(
 )
 
 cc_library(
-    name = "server",
+    name = "libserver",
     srcs = glob(
         ["server/**/*.cpp"],
-        exclude = ["server/ThreadPrioWindows.cpp"],
+        exclude = [
+            "server/ThreadPrioWindows.cpp",
+            # Note: This file contains the main() for the default SoapyServer binary. We want to use it as a library,
+            # so we remove this file.
+            "server/SoapyServer.cpp",
+        ],
     ),
     hdrs = glob(["server/**/*.hpp"]),
     strip_include_prefix = "server",
     visibility = ["//visibility:public"],
     deps = [
         ":common",
+        "@com_github_pothosware_soapysdr//:soapy_sdr",
+    ],
+)
+
+cc_binary(
+    name = "SoapyRemoteServer",
+    srcs = [
+        "server/SoapyServer.cpp",
+    ],
+    linkopts = ["-lpthread"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":common",
+        ":libserver",
         "@com_github_pothosware_soapysdr//:soapy_sdr",
     ],
 )
