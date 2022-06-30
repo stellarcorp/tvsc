@@ -1,0 +1,14 @@
+cc_binary(
+    name = "RadioService",
+    srcs = [
+        "server/SoapyServer.cpp",
+        "common/SoapyMDNSEndpointAvahi.cpp",
+    ],
+    linkopts = ["-lpthread"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/soapy:soapy_remote_common",
+        "//third_party/soapy:soapy_remote_server",
+        "//third_party/avahi",
+    ],
+)

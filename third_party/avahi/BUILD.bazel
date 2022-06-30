@@ -1,8 +1,25 @@
 cc_library(
-    name = "avahi",
+    name = "host_avahi",
     linkopts = [
         "-lavahi-client",
         "-lavahi-common",
     ],
+)
+
+cc_library(
+    name = "avahi",
     visibility = ["//visibility:public"],
+    deps = select({
+        "//platforms:aarch64_linux_build": [
+            "@org_raspbian_archive_multiarch_libavahi_client3//:libavahi_client3",
+            "@org_raspbian_archive_multiarch_libavahi_client_dev//:dev",
+            "@org_raspbian_archive_multiarch_libavahi_common3//:libavahi_common3",
+            "@org_raspbian_archive_multiarch_libavahi_common_dev//:dev",
+        ],
+        "//platforms:x86_64_linux_build": [
+            ":host_avahi",
+        ],
+        # TODO(james): Add other platform selectors as appropriate.
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
 )

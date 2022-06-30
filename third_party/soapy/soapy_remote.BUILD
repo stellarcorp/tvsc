@@ -30,9 +30,7 @@ cc_library(
         ["common/**/*.cpp"],
         exclude = [
             "common/SoapyMDNSEndpointApple.cpp",
-            # Note: to enable discovery via Avahi, keep SoapyMDNSEndpointAvahi.cpp in the build, and exclude
-            # SoapyMDNSEndpointNone.cpp instead. Also, the //third_party/soapy:soapy_remote_common target may need to
-            # depend on Avahi.
+            "common/SoapyMDNSEndpointNone.cpp",
             "common/SoapyMDNSEndpointAvahi.cpp",
             "common/SoapyIfAddrsWindows.cpp",
         ],
@@ -46,7 +44,25 @@ cc_library(
 )
 
 cc_library(
-    name = "libserver",
+    name = "common_without_avahi",
+    srcs = glob(
+        ["common/**/*.cpp"],
+        exclude = [
+            "common/SoapyMDNSEndpointApple.cpp",
+            "common/SoapyMDNSEndpointAvahi.cpp",
+            "common/SoapyIfAddrsWindows.cpp",
+        ],
+    ),
+    hdrs = glob(["common/**/*.hpp"]) + [":SoapySocketDefs"],
+    strip_include_prefix = "common",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_pothosware_soapysdr//:soapy_sdr",
+    ],
+)
+
+cc_library(
+    name = "server",
     srcs = glob(
         ["server/**/*.cpp"],
         exclude = [
@@ -61,20 +77,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":common",
-        "@com_github_pothosware_soapysdr//:soapy_sdr",
-    ],
-)
-
-cc_binary(
-    name = "SoapyRemoteServer",
-    srcs = [
-        "server/SoapyServer.cpp",
-    ],
-    linkopts = ["-lpthread"],
-    visibility = ["//visibility:public"],
-    deps = [
-        ":common",
-        ":libserver",
         "@com_github_pothosware_soapysdr//:soapy_sdr",
     ],
 )
