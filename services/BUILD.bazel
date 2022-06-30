@@ -3,7 +3,7 @@ load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 pkg_files(
     name = "service_binaries",
     srcs = [
-        "//services/radio:RadioService",
+        "//services/radio:tvsc_radio_service",
     ],
     attributes = pkg_attributes(
         group = "tvsc",
