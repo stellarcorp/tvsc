@@ -197,6 +197,37 @@ def _load_bazel_dependencies():
             ],
         )
 
+    if not native.existing_rule("com_github_libusb_libusb"):
+        http_archive(
+            name = "com_github_libusb_libusb",
+            strip_prefix = "libusb-1.0.26",
+            urls = ["https://github.com/libusb/libusb/archive/refs/tags/v1.0.26.tar.gz"],
+            build_file = "//third_party/libusb:libusb.BUILD",
+            patch_args = ["-p1"],
+            patches = [
+                "@//third_party/libusb:add_config_h.patch",
+            ],
+        )
+
+    if not native.existing_rule("com_github_steve_m_librtlsdr"):
+        http_archive(
+            name = "com_github_steve_m_librtlsdr",
+            strip_prefix = "librtlsdr-0.6.0",
+            urls = ["https://github.com/steve-m/librtlsdr/archive/refs/tags/0.6.0.tar.gz"],
+            build_file = "//third_party/rtl_sdr:rtl_sdr.BUILD",
+        )
+
+    if not native.existing_rule("com_github_pothosware_soapy_rtl_sdr"):
+        http_archive(
+            name = "com_github_pothosware_soapy_rtl_sdr",
+            build_file = "//third_party/soapy:soapy_rtl_sdr.BUILD",
+            strip_prefix = "SoapyRTLSDR-soapy-rtl-sdr-0.3.3",
+            sha256 = "757c3c3bd17c5a12c7168db2f2f0fd274457e65f35e23c5ec9aec34e3ef54ece",
+            urls = [
+                "https://github.com/pothosware/SoapyRTLSDR/archive/refs/tags/soapy-rtl-sdr-0.3.3.tar.gz",
+            ],
+        )
+
     if not native.existing_rule("com_github_pothosware_soapyremote"):
         http_archive(
             name = "com_github_pothosware_soapyremote",

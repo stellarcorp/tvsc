@@ -10,6 +10,13 @@ cc_library(
 )
 
 cc_library(
+    name = "soapy_rtl_sdr",
+    deps = [
+        "@com_github_pothosware_soapy_rtl_sdr//:soapy_rtl_sdr",
+    ],
+)
+
+cc_library(
     name = "soapy_remote_common",
     visibility = ["//visibility:public"],
     deps = [
@@ -22,6 +29,7 @@ cc_library(
     name = "soapy_remote_server",
     visibility = ["//visibility:public"],
     deps = [
+        ":soapy_rtl_sdr",
         "//third_party/avahi",
         "@com_github_pothosware_soapyremote//:server",
     ],
