@@ -1,5 +1,6 @@
 load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
-load("@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl",
+load(
+    "@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl",
     "feature",
     "flag_group",
     "flag_set",
@@ -70,7 +71,6 @@ def _impl(ctx):
                 flag_groups = [
                     flag_group(
                         flags = [
-                            "--sysroot=external/aarch64-rpi3-linux-gnu-sysroot",
                             "-no-canonical-prefixes",
                             "-fno-canonical-system-headers",
                             "-Wno-builtin-macro-redefined",
@@ -93,7 +93,6 @@ def _impl(ctx):
                 flag_groups = ([
                     flag_group(
                         flags = [
-                            "--sysroot=external/aarch64-rpi3-linux-gnu-sysroot",
                             "-lstdc++",
                             "-lm",
                         ],
@@ -120,6 +119,7 @@ def _impl(ctx):
         abi_version = "unknown",
         abi_libc_version = "unknown",
         tool_paths = tool_paths,
+        builtin_sysroot = "external/aarch64-rpi3-linux-gnu-sysroot",
     )
 
 cc_toolchain_config = rule(

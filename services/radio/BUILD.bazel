@@ -1,5 +1,5 @@
 cc_binary(
-    name = "RadioService",
+    name = "tvsc_radio_service",
     srcs = [
         "server/SoapyServer.cpp",
         "common/SoapyMDNSEndpointAvahi.cpp",
