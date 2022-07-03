@@ -13,5 +13,4 @@ cc_library(
         "@platforms//cpu:aarch64",
     ],
     visibility = ["//visibility:public"],
-    linkopts = ["-lavahi-common"],
 )

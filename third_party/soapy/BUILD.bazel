@@ -9,11 +9,13 @@ cc_library(
     ],
 )
 
-cc_library(
+cc_binary(
     name = "soapy_rtl_sdr",
     deps = [
         "@com_github_pothosware_soapy_rtl_sdr//:soapy_rtl_sdr",
     ],
+    linkstatic = False,
+    linkshared = True,
 )
 
 cc_library(
@@ -62,6 +64,20 @@ filegroup(
     srcs = [
         "add_socket_defs.patch",
     ],
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "runtime_libraries",
+    srcs = [
+        ":soapy_rtl_sdr",
+    ],
+    attributes = pkg_attributes(
+        group = "tvsc",
+        mode = "0555",
+        owner = "tvsc",
+    ),
+    prefix = "lib",
     visibility = ["//visibility:public"],
 )
 

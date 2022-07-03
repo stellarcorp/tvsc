@@ -38,7 +38,13 @@ cc_library(
     ],
     deps = [
         ":headers",
-    ],
+    ] + select({
+        "@//platforms:aarch64_linux_build": [
+            "@org_debian_ftp_libudev_dev//:dev",
+        ],
+        # TODO(james): Add other platform selectors as appropriate.
+        "//conditions:default": [],
+    }),
 )
 
 cc_library(

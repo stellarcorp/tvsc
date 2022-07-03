@@ -4,15 +4,6 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-cc_import(
-    name = "library",
-    static_library = "usr/lib/aarch64-linux-gnu/libavahi-client.a",
-    target_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:aarch64",
-    ],
-)
-
 cc_library(
     name = "dev",
     hdrs = glob(["usr/include/**/*.h"]),
@@ -23,7 +14,7 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        ":library",
         "@org_raspbian_archive_multiarch_libavahi_common_dev//:dev",
     ],
+    linkopts = ["-lavahi-client"],
 )

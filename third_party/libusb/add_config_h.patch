@@ -1,9 +1,9 @@
 diff --git a/libusb/config.h b/libusb/config.h
 new file mode 100644
-index 00000000..6fca0c97
+index 00000000..2f0fd9b2
 --- /dev/null
 +++ b/libusb/config.h
-@@ -0,0 +1,158 @@
+@@ -0,0 +1,159 @@
 +/* config.h.  Generated from config.h.in by configure.  */
 +/* config.h.in.  Generated from configure.ac by autoheader.  */
 +
@@ -12,6 +12,7 @@ index 00000000..6fca0c97
 +
 +/* Define to 1 to start with debug message logging enabled. */
 +/* #undef ENABLE_DEBUG_LOGGING */
++#define ENABLE_DEBUG_LOGGING 1
 +
 +/* Define to 1 to enable message logging. */
 +#define ENABLE_LOGGING 1

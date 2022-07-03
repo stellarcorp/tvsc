@@ -5,6 +5,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_pothosware_soapysdr//:soapy_sdr",
-        "@com_github_steve_m_librtlsdr//:rtl_sdr",
     ],
+    linkopts = ["-lrtlsdr"],
 )

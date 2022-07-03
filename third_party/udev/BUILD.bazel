@@ -1,0 +1,17 @@
+cc_library(
+    name = "host_udev",
+)
+
+cc_library(
+    name = "avahi",
+    visibility = ["//visibility:public"],
+    deps = select({
+        "//platforms:aarch64_linux_build": [
+        ],
+        "//platforms:x86_64_linux_build": [
+            ":host_udev",
+        ],
+        # TODO(james): Add other platform selectors as appropriate.
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+)

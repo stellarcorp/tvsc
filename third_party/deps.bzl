@@ -106,6 +106,7 @@ def _load_bazel_dependencies():
                 "https://ftp.debian.org/debian/pool/main/libg/libgpg-error/libgpg-error0_1.38-2_arm64.deb",
             ],
             build_file = "//third_party/gpg:libgpg-error0.BUILD",
+            sha256 = "d1116f4281d6db35279799a21051e0d0e2600d110d7ee2b95b3cca6bec28067c",
             patch_cmds = ["tar xf data.tar.xz"],
         )
 
@@ -197,24 +198,49 @@ def _load_bazel_dependencies():
             ],
         )
 
+    if not native.existing_rule("org_debian_ftp_libudev_dev"):
+        http_archive(
+            name = "org_debian_ftp_libudev_dev",
+            urls = [
+                "https://ftp.debian.org/debian/pool/main/s/systemd/libudev-dev_247.3-7_arm64.deb",
+            ],
+            build_file = "//third_party/udev:libudev.BUILD",
+            sha256 = "599190f1efd76eda73dc0e049debc23dc0c89deee207dbebf4d0e521939d3b29",
+            patch_cmds = ["tar xf data.tar.xz"],
+        )
+
     if not native.existing_rule("com_github_libusb_libusb"):
         http_archive(
             name = "com_github_libusb_libusb",
             strip_prefix = "libusb-1.0.26",
             urls = ["https://github.com/libusb/libusb/archive/refs/tags/v1.0.26.tar.gz"],
             build_file = "//third_party/libusb:libusb.BUILD",
+            sha256 = "a09bff99c74e03e582aa30759cada218ea8fa03580517e52d463c59c0b25e240",
             patch_args = ["-p1"],
             patches = [
                 "@//third_party/libusb:add_config_h.patch",
             ],
         )
 
-    if not native.existing_rule("com_github_steve_m_librtlsdr"):
+    if not native.existing_rule("org_raspbian_archive_multiarch_libavahi_common_dev"):
         http_archive(
-            name = "com_github_steve_m_librtlsdr",
-            strip_prefix = "librtlsdr-0.6.0",
-            urls = ["https://github.com/steve-m/librtlsdr/archive/refs/tags/0.6.0.tar.gz"],
-            build_file = "//third_party/rtl_sdr:rtl_sdr.BUILD",
+            name = "org_raspbian_archive_multiarch_libavahi_common_dev",
+            urls = [
+                "https://archive.raspbian.org/multiarch/pool/main/a/avahi/libavahi-common-dev_0.8-3%2Bb2_arm64.deb",
+            ],
+            build_file = "//third_party/avahi:libavahi_common_dev.BUILD",
+            sha256 = "384b127c13d314bf4cf8f587df0a67375ea5b1aba4961838ba1be5f9fe2c949a",
+            patch_cmds = ["tar xf data.tar.xz"],
+        )
+
+    if not native.existing_rule("org_debian_ftp_libsoapysdr_dev"):
+        http_archive(
+            name = "org_debian_ftp_libsoapysdr_dev",
+            urls = [
+                "http://ftp.debian.org/debian/pool/main/s/soapysdr/libsoapysdr-dev_0.7.2-2_arm64.deb",
+            ],
+            build_file = "//third_party/soapy:libsoapysdr_dev.BUILD",
+            patch_cmds = ["tar xf data.tar.xz"],
         )
 
     if not native.existing_rule("com_github_pothosware_soapy_rtl_sdr"):
