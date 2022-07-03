@@ -3,7 +3,7 @@ cc_import(
     shared_library = "lib/aarch64-linux-gnu/libdbus-1.so.3",
     target_compatible_with = [
         "@platforms//os:linux",
-        "@platforms//cpu:aarch64",
+        "@platforms//cpu:arm64",
     ],
     visibility = ["//visibility:public"],
     deps = [

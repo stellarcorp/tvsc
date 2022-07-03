@@ -1,7 +1,7 @@
 platform(
     name = "rpi3",
     constraint_values = [
-        "@platforms//cpu:aarch64",
+        "@platforms//cpu:arm64",
         "@platforms//os:linux",
     ],
 )
@@ -14,10 +14,11 @@ platform(
     ],
 )
 
+# TODO(james): Expand these config_settings to include MacOS, both Intel and Apple cpus, and Windows.
 config_setting(
-    name = "aarch64_linux_build",
+    name = "arm64_linux_build",
     constraint_values = [
-        "@platforms//cpu:aarch64",
+        "@platforms//cpu:arm64",
         "@platforms//os:linux",
     ],
     visibility = ["//visibility:public"],
@@ -40,5 +41,3 @@ config_setting(
     ],
     visibility = ["//visibility:public"],
 )
-
-# TODO(james): Expand to include MacOS, both Intel and Apple cpus, and Windows.

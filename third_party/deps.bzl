@@ -165,7 +165,6 @@ def _load_bazel_dependencies():
             patch_cmds = ["tar xf data.tar.xz"],
         )
 
-
     if not native.existing_rule("org_raspbian_archive_multiarch_libavahi_client_dev"):
         http_archive(
             name = "org_raspbian_archive_multiarch_libavahi_client_dev",
@@ -194,6 +193,7 @@ def _load_bazel_dependencies():
             urls = [
                 "https://ftp.debian.org/debian/pool/main/s/soapysdr/libsoapysdr-dev_0.7.2-2_arm64.deb",
             ],
+            sha256 = "e91c3ef6b0d49869290d3fed00849fcf0ddaa47f863a0f274b89bca66aeb279c",
             build_file = "//third_party/soapy:libsoapysdr_dev.BUILD",
             patch_cmds = ["tar xf data.tar.xz"],
         )
@@ -204,6 +204,7 @@ def _load_bazel_dependencies():
             urls = [
                 "https://ftp.debian.org/debian/pool/main/s/soapysdr/libsoapysdr0.7_0.7.2-2_arm64.deb",
             ],
+            sha256 = "a89a1429c051b8861e96a967d54314a4b52278a96de6c6a5162afaf1e4cf2cfe",
             build_file = "//third_party/soapy:libsoapysdr.BUILD",
             patch_cmds = ["tar xf data.tar.xz"],
         )

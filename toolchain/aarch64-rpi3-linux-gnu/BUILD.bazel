@@ -41,7 +41,7 @@ cc_toolchain_suite(
     name = "gcc_toolchain",
     tags = ["manual"],
     toolchains = {
-        "aarch64": ":aarch64_toolchain",
+        "arm64": ":aarch64_toolchain",
     },
 )
 
@@ -53,7 +53,7 @@ toolchain(
     ],
     target_compatible_with = [
         "@platforms//os:linux",
-        "@platforms//cpu:aarch64",
+        "@platforms//cpu:arm64",
     ],
     toolchain = ":aarch64_toolchain",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",

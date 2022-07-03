@@ -3,7 +3,7 @@ cc_import(
     shared_library = "usr/lib/aarch64-linux-gnu/libavahi-client.so.3",
     target_compatible_with = [
         "@platforms//os:linux",
-        "@platforms//cpu:aarch64",
+        "@platforms//cpu:arm64",
     ],
     visibility = ["//visibility:public"],
     deps = [

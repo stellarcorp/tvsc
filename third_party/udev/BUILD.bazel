@@ -6,7 +6,7 @@ cc_library(
     name = "avahi",
     visibility = ["//visibility:public"],
     deps = select({
-        "//platforms:aarch64_linux_build": [
+        "//platforms:arm64_linux_build": [
         ],
         "//platforms:x86_64_linux_build": [
             ":host_udev",

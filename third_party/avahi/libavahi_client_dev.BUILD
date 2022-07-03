@@ -4,7 +4,7 @@ cc_library(
     strip_include_prefix = "usr/include",
     target_compatible_with = [
         "@platforms//os:linux",
-        "@platforms//cpu:aarch64",
+        "@platforms//cpu:arm64",
     ],
     visibility = ["//visibility:public"],
     deps = [

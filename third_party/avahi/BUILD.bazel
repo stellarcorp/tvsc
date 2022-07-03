@@ -10,7 +10,7 @@ cc_library(
     name = "avahi",
     visibility = ["//visibility:public"],
     deps = select({
-        "//platforms:aarch64_linux_build": [
+        "//platforms:arm64_linux_build": [
             "@org_raspbian_archive_multiarch_libavahi_client_dev//:dev",
             "@org_raspbian_archive_multiarch_libavahi_common_dev//:dev",
         ],
