@@ -72,9 +72,20 @@ pkg_deb(
     data = ":tarball",
     description = "Tower-in-a-box system from TVSC",
     maintainer = "info@stellarcorp.tv",
+    homepage = "https://www.stellarcorp.tv/",
     package = PACKAGE_NAME,
     postinst = "debian/tvsc_radio_service.postinst",
     prerm = "debian/tvsc_radio_service.prerm",
     version = version_string(),
     visibility = ["//visibility:public"],
+    depends = [
+        "libsoapysdr0.7 (>= 0.7)",
+        "libavahi-client3 (>= 0.7-4)",
+    ],
+    suggests = [
+        "soapysdr0.7-module-rtlsdr",
+    ],
+    replaces = [
+        PACKAGE_NAME + "(<= " + version_string() +")",
+    ],
 )
