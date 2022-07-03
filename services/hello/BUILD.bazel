@@ -1,0 +1,46 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
+load("//platforms:platform.bzl", "arch_name")
+load("//services:version.bzl", "tarball_name", "version_string")
+
+cc_binary(
+    name = "hello_world",
+    testonly = True,
+    srcs = ["hello_world.cc"],
+)
+
+pkg_files(
+    name = "binaries",
+    testonly = True,
+    srcs = [
+        ":hello_world",
+    ],
+    attributes = pkg_attributes(
+        mode = "0755",
+    ),
+    prefix = "usr/bin",
+)
+
+PACKAGE_NAME = "tvsc-hello"
+
+pkg_tar(
+    name = "tarball",
+    srcs = [
+        ":binaries",
+    ],
+    package_file_name = tarball_name(PACKAGE_NAME),
+    testonly = True,
+)
+
+pkg_deb(
+    name = "deb",
+    architecture = arch_name(),
+    data = ":tarball",
+    description = "Hello package from Tower-in-a-box system from TVSC",
+    maintainer = "info@stellarcorp.tv",
+    package = PACKAGE_NAME,
+    version = version_string(),
+    visibility = ["//visibility:public"],
+    testonly = True,
+)

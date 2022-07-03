@@ -1,15 +1,1 @@
-load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 
-pkg_files(
-    name = "service_binaries",
-    srcs = [
-        "//services/radio:tvsc_radio_service",
-    ],
-    attributes = pkg_attributes(
-        group = "tvsc",
-        mode = "0555",
-        owner = "tvsc",
-    ),
-    prefix = "bin",
-    visibility = ["//visibility:public"],
-)

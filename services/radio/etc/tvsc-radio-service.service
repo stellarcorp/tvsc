@@ -1,0 +1,13 @@
+[Unit]
+Description=TVSC Radio Service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/tvsc_radio_service
+KillMode=process
+Restart=on-failure
+LimitRTPRIO=99
+
+[Install]
+WantedBy=multi-user.target

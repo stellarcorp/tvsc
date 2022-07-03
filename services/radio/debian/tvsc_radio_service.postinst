@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "configure" ]; then
+    # Load the new sysctl limits so they are immediately usable.
+    # Otherwise, the limits will be always loaded at boot time.
+    if [ -x "`which sysctl 2>/dev/null`" ]; then
+	sysctl --load /etc/sysctl.d/10-tvsc-radio-service.conf || true
+    fi
+
+    # Start the service and enable it to start on boot.
+    if [ -x "`which systemctl 2>/dev/null`" ]; then
+	systemctl start tvsc-radio-service.service
+	systemctl enable tvsc-radio-service.service
+    fi
+	    
+fi
