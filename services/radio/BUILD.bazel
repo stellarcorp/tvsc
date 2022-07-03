@@ -74,6 +74,7 @@ pkg_deb(
     maintainer = "info@stellarcorp.tv",
     homepage = "https://www.stellarcorp.tv/",
     package = PACKAGE_NAME,
+    preinst = "debian/tvsc_radio_service.preinst",
     postinst = "debian/tvsc_radio_service.postinst",
     prerm = "debian/tvsc_radio_service.prerm",
     version = version_string(),
