@@ -208,20 +208,6 @@ def _load_bazel_dependencies():
             patch_cmds = ["tar xf data.tar.xz"],
         )
 
-    if not native.existing_rule("com_github_pothosware_soapyremote"):
-        http_archive(
-            name = "com_github_pothosware_soapyremote",
-            build_file = "//third_party/soapy:soapy_remote.BUILD",
-            strip_prefix = "SoapyRemote-soapy-remote-0.5.1",
-            patch_args = ["-p1"],
-            patches = [
-                "@//third_party/soapy:add_socket_defs.patch",
-            ],
-            urls = [
-                "https://github.com/pothosware/SoapyRemote/archive/refs/tags/soapy-remote-0.5.1.tar.gz",
-            ],
-        )
-
 def load_dependencies():
     toolchains()
     _load_bazel_dependencies()

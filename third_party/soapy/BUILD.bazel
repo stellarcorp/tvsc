@@ -10,7 +10,7 @@ cc_library(
 )
 
 cc_library(
-    name = "soapy_sdr",
+    name = "soapy",
     visibility = ["//visibility:public"],
     deps = select({
         "//platforms:aarch64_linux_build": [
@@ -22,58 +22,4 @@ cc_library(
         # TODO(james): Add other platform selectors as appropriate.
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-)
-
-cc_library(
-    name = "soapy_remote_common",
-    visibility = ["//visibility:public"],
-    deps = [
-        ":soapy_sdr",
-        "//third_party/avahi",
-        "@com_github_pothosware_soapyremote//:common",
-    ],
-)
-
-cc_library(
-    name = "soapy_remote_server",
-    visibility = ["//visibility:public"],
-    deps = [
-        ":soapy_sdr",
-        "//third_party/avahi",
-        "@com_github_pothosware_soapyremote//:server",
-    ],
-)
-
-cc_test(
-    name = "soapy_remote_test",
-    srcs = [
-        "soapy_remote_test.cc",
-    ],
-    deps = [
-        ":soapy_remote_common",
-        "//third_party/gtest",
-    ],
-)
-
-filegroup(
-    name = "soapy_remote_patches",
-    srcs = [
-        "add_socket_defs.patch",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-pkg_files(
-    name = "test_binaries",
-    testonly = True,
-    srcs = [
-        ":soapy_remote_test",
-    ],
-    attributes = pkg_attributes(
-        group = "tvsc",
-        mode = "0555",
-        owner = "tvsc",
-    ),
-    prefix = "bin",
-    visibility = ["//visibility:public"],
 )

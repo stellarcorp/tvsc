@@ -26,7 +26,7 @@ pkg_filegroup(
     srcs = [
         ":hello_world_binary",
         "//services:service_binaries",
-        "//third_party/soapy:test_binaries",
+        "//third_party/soapy_remote:test_binaries",
     ],
     prefix = "/usr",
 )

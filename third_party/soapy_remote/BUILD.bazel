@@ -1,3 +1,21 @@
+licenses(["notice"])
+
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
+
+filegroup(
+    name = "avahi_implementation",
+    srcs = select(
+        {
+            "@platforms//os:macos": [
+                "common/SoapyMDNSEndpointApple.cpp",
+            ],
+            "//conditions:default": [
+                "common/SoapyMDNSEndpointAvahi.cpp",
+            ],
+        },
+    ),
+)
+
 filegroup(
     name = "socket_defs_configuration",
     srcs = select(
@@ -25,27 +43,6 @@ genrule(
 )
 
 cc_library(
-    name = "host_soapy_sdr",
-    linkopts = [
-        "-lSoapySDR",
-    ],
-)
-
-cc_library(
-    name = "soapy_sdr",
-    deps = select({
-        "@//platforms:aarch64_linux_build": [
-            "@org_debian_ftp_libsoapysdr_dev//:dev",
-        ],
-        "@//platforms:x86_64_linux_build": [
-            ":host_soapy_sdr",
-        ],
-        # TODO(james): Add other platform selectors as appropriate.
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
-)
-
-cc_library(
     name = "common",
     srcs = glob(
         ["common/**/*.cpp"],
@@ -55,12 +52,13 @@ cc_library(
             "common/SoapyMDNSEndpointAvahi.cpp",
             "common/SoapyIfAddrsWindows.cpp",
         ],
-    ),
+    ) + [":avahi_implementation"],
     hdrs = glob(["common/**/*.hpp"]) + [":SoapySocketDefs"],
     strip_include_prefix = "common",
     visibility = ["//visibility:public"],
     deps = [
-        ":soapy_sdr",
+        "//third_party/avahi",
+        "//third_party/soapy",
     ],
 )
 
@@ -70,16 +68,45 @@ cc_library(
         ["server/**/*.cpp"],
         exclude = [
             "server/ThreadPrioWindows.cpp",
-            # Note: This file contains the main() for the default SoapyServer binary. We want to use it as a library,
-            # so we remove this file.
-            "server/SoapyServer.cpp",
         ],
     ),
-    hdrs = glob(["server/**/*.hpp"]),
+    hdrs = glob([
+        "server/**/*.hpp",
+        "server/**/*.h",
+    ]),
     strip_include_prefix = "server",
     visibility = ["//visibility:public"],
     deps = [
         ":common",
-        ":soapy_sdr",
+        "//third_party/avahi",
+        "//third_party/soapy",
+        "//third_party/gflags",
+        "//third_party/glog",
     ],
+)
+
+cc_test(
+    name = "soapy_remote_test",
+    srcs = [
+        "soapy_remote_test.cc",
+    ],
+    deps = [
+        ":common",
+        "//third_party/gtest",
+    ],
+)
+
+pkg_files(
+    name = "test_binaries",
+    testonly = True,
+    srcs = [
+        ":soapy_remote_test",
+    ],
+    attributes = pkg_attributes(
+        group = "tvsc",
+        mode = "0555",
+        owner = "tvsc",
+    ),
+    prefix = "bin",
+    visibility = ["//visibility:public"],
 )
