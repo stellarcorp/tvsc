@@ -1,0 +1,83 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
+load("//platforms:platform.bzl", "arch_name")
+load("//services:version.bzl", "tarball_name", "version_string")
+
+filegroup(
+    name = "app",
+    srcs = [
+        "index.html",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "app_files",
+    srcs = [
+        ":app",
+    ],
+    attributes = pkg_attributes(
+        mode = "0644",
+        user = "tvsc_service",
+        group = "nogroup"
+    ),
+    prefix = "usr/share/tvsc_http/web",
+)
+
+pkg_files(
+    name = "systemd_files",
+    srcs = [
+        ":etc/tvsc-http-service.service",
+    ],
+    attributes = pkg_attributes(
+        mode = "0644",
+    ),
+    prefix = "lib/systemd/system",
+)
+
+pkg_files(
+    name = "conf_file",
+    srcs = [
+        ":etc/http.conf",
+    ],
+    attributes = pkg_attributes(
+        mode = "0644",
+        user = "tvsc_service",
+        group = "nogroup",
+    ),
+    prefix = "usr/share/tvsc_http",
+)
+
+PACKAGE_NAME = "tvsc-http"
+
+pkg_tar(
+    name = "tarball",
+    srcs = [
+        ":app_files",
+        ":conf_file",
+        ":systemd_files",
+    ],
+    package_file_name = tarball_name(PACKAGE_NAME)
+)
+
+pkg_deb(
+    name = "deb",
+    architecture = arch_name(),
+    data = ":tarball",
+    description = "Web app for Virtual Tower system from TVSC",
+    maintainer = "info@stellarcorp.tv",
+    homepage = "https://www.stellarcorp.tv/",
+    package = PACKAGE_NAME,
+    preinst = "debian/tvsc_http_service.preinst",
+    postinst = "debian/tvsc_http_service.postinst",
+    prerm = "debian/tvsc_http_service.prerm",
+    version = version_string(),
+    visibility = ["//visibility:public"],
+    depends = [
+        "mini-httpd (>= 1.30-2)",
+    ],
+    replaces = [
+        PACKAGE_NAME + "(<= " + version_string() +")",
+    ],
+)

@@ -1,0 +1,14 @@
+[Unit]
+Description=TVSC Http Service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/sbin/mini_httpd -C /usr/share/tvsc_http/http.conf
+Type=forking
+KillMode=mixed
+Restart=on-failure
+LimitRTPRIO=99
+
+[Install]
+WantedBy=multi-user.target

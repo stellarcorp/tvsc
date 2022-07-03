@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "remove" ]; then
+    if [ -x "`which systemctl 2>/dev/null`" ]; then
+	systemctl stop tvsc-http-service.service
+	systemctl disable tvsc-http-service.service
+    fi
+fi
