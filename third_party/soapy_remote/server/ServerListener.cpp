@@ -6,7 +6,8 @@
 #include "ClientHandler.hpp"
 #include "SoapyRPCSocket.hpp"
 #include <thread>
-#include <iostream>
+
+#include "glog/logging.h"
 
 /***********************************************************************
  * Server thread implementation
@@ -29,7 +30,7 @@ SoapyServerThreadData::~SoapyServerThreadData(void)
     delete thread;
     if (client != nullptr)
     {
-        std::cout << "SoapyServerListener::close()" << std::endl;
+        LOG(INFO) << "SoapyServerListener::close()";
     }
     delete client;
 }
@@ -47,7 +48,7 @@ void SoapyServerThreadData::handlerLoop(void)
     }
     catch (const std::exception &ex)
     {
-        std::cerr << "SoapyServerListener::handlerLoop() FAIL: " << ex.what() << std::endl;
+        LOG(ERROR) << "SoapyServerListener::handlerLoop() FAIL: " << ex.what();
     }
 
     done = true;
@@ -93,10 +94,10 @@ void SoapyServerListener::handleOnce(void)
     SoapyRPCSocket *client = _sock.accept();
     if (client == NULL)
     {
-        std::cerr << "SoapyServerListener::accept() FAIL:" << _sock.lastErrorMsg() << std::endl;
+        LOG(ERROR) << "SoapyServerListener::accept() FAIL:" << _sock.lastErrorMsg();
         return;
     }
-    std::cout << "SoapyServerListener::accept(" << client->getpeername() << ")" << std::endl;
+    LOG(INFO) << "SoapyServerListener::accept(" << client->getpeername() << ")";
 
     //setup the thread data
     auto &data = _handlers[_handlerId++];
