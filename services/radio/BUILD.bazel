@@ -8,6 +8,8 @@ cc_binary(
     visibility = ["//visibility:public"],
     deps = [
         "//third_party/avahi",
+        "//third_party/gflags",
+        "//third_party/glog",
         "//third_party/soapy:soapy_remote_common",
         "//third_party/soapy:soapy_remote_server",
         "//third_party/soapy:soapy_sdr",
