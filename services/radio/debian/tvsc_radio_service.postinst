@@ -13,5 +13,4 @@ if [ "$1" = "configure" ]; then
 	systemctl start tvsc-radio-service.service
 	systemctl enable tvsc-radio-service.service
     fi
-	    
 fi
