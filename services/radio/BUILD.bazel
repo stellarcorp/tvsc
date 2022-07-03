@@ -1,14 +1,15 @@
 cc_binary(
     name = "tvsc_radio_service",
     srcs = [
-        "server/SoapyServer.cpp",
         "common/SoapyMDNSEndpointAvahi.cpp",
+        "server/SoapyServer.cpp",
     ],
     linkopts = ["-lpthread"],
     visibility = ["//visibility:public"],
     deps = [
+        "//third_party/avahi",
         "//third_party/soapy:soapy_remote_common",
         "//third_party/soapy:soapy_remote_server",
-        "//third_party/avahi",
+        "//third_party/soapy:soapy_sdr",
     ],
 )

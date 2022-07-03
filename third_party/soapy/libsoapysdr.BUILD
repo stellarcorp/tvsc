@@ -1,7 +1,6 @@
-cc_library(
-    name = "dev",
-    hdrs = glob(["usr/include/**/*.h"]),
-    strip_include_prefix = "usr/include",
+cc_import(
+    name = "lib",
+    shared_library = "usr/lib/aarch64-linux-gnu/libSoapySDR.so.0.7",
     target_compatible_with = [
         "@platforms//os:linux",
         "@platforms//cpu:aarch64",

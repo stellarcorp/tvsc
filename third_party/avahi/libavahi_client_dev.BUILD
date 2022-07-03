@@ -1,9 +1,3 @@
-filegroup(
-    name = "headers",
-    srcs = glob(["usr/include/**/*.h"]),
-    visibility = ["//visibility:public"],
-)
-
 cc_library(
     name = "dev",
     hdrs = glob(["usr/include/**/*.h"]),
@@ -14,7 +8,8 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
+        "@org_raspbian_archive_multiarch_libavahi_client3//:lib",
+        "@org_raspbian_archive_multiarch_libavahi_common3//:lib",
         "@org_raspbian_archive_multiarch_libavahi_common_dev//:dev",
     ],
-    linkopts = ["-lavahi-client"],
 )

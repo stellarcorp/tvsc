@@ -143,28 +143,6 @@ def _load_bazel_dependencies():
             patch_cmds = ["tar xf data.tar.xz"],
         )
 
-    if not native.existing_rule("org_raspbian_archive_multiarch_libavahi_client_dev"):
-        http_archive(
-            name = "org_raspbian_archive_multiarch_libavahi_client_dev",
-            urls = [
-                "https://archive.raspbian.org/multiarch/pool/main/a/avahi/libavahi-client-dev_0.8-3%2Bb2_arm64.deb",
-            ],
-            build_file = "//third_party/avahi:libavahi_client_dev.BUILD",
-            sha256 = "79884c061ed37ce69c8a34178d6779cc946a127ffbc6151e2d868ce45c8d225f",
-            patch_cmds = ["tar xf data.tar.xz"],
-        )
-
-    if not native.existing_rule("org_raspbian_archive_multiarch_libavahi_common_dev"):
-        http_archive(
-            name = "org_raspbian_archive_multiarch_libavahi_common_dev",
-            urls = [
-                "https://archive.raspbian.org/multiarch/pool/main/a/avahi/libavahi-common-dev_0.8-3%2Bb2_arm64.deb",
-            ],
-            build_file = "//third_party/avahi:libavahi_common_dev.BUILD",
-            sha256 = "384b127c13d314bf4cf8f587df0a67375ea5b1aba4961838ba1be5f9fe2c949a",
-            patch_cmds = ["tar xf data.tar.xz"],
-        )
-
     if not native.existing_rule("org_raspbian_archive_multiarch_libavahi_client3"):
         http_archive(
             name = "org_raspbian_archive_multiarch_libavahi_client3",
@@ -187,39 +165,16 @@ def _load_bazel_dependencies():
             patch_cmds = ["tar xf data.tar.xz"],
         )
 
-    if not native.existing_rule("com_github_pothosware_soapysdr"):
-        http_archive(
-            name = "com_github_pothosware_soapysdr",
-            sha256 = "a508083875ed75d1090c24f88abef9895ad65f0f1b54e96d74094478f0c400e6",
-            build_file = "//third_party/soapy:soapy_sdr.BUILD",
-            strip_prefix = "SoapySDR-soapy-sdr-0.8.1",
-            urls = [
-                "https://github.com/pothosware/SoapySDR/archive/refs/tags/soapy-sdr-0.8.1.tar.gz",
-            ],
-        )
 
-    if not native.existing_rule("org_debian_ftp_libudev_dev"):
+    if not native.existing_rule("org_raspbian_archive_multiarch_libavahi_client_dev"):
         http_archive(
-            name = "org_debian_ftp_libudev_dev",
+            name = "org_raspbian_archive_multiarch_libavahi_client_dev",
             urls = [
-                "https://ftp.debian.org/debian/pool/main/s/systemd/libudev-dev_247.3-7_arm64.deb",
+                "https://archive.raspbian.org/multiarch/pool/main/a/avahi/libavahi-client-dev_0.8-3%2Bb2_arm64.deb",
             ],
-            build_file = "//third_party/udev:libudev.BUILD",
-            sha256 = "599190f1efd76eda73dc0e049debc23dc0c89deee207dbebf4d0e521939d3b29",
+            build_file = "//third_party/avahi:libavahi_client_dev.BUILD",
+            sha256 = "79884c061ed37ce69c8a34178d6779cc946a127ffbc6151e2d868ce45c8d225f",
             patch_cmds = ["tar xf data.tar.xz"],
-        )
-
-    if not native.existing_rule("com_github_libusb_libusb"):
-        http_archive(
-            name = "com_github_libusb_libusb",
-            strip_prefix = "libusb-1.0.26",
-            urls = ["https://github.com/libusb/libusb/archive/refs/tags/v1.0.26.tar.gz"],
-            build_file = "//third_party/libusb:libusb.BUILD",
-            sha256 = "a09bff99c74e03e582aa30759cada218ea8fa03580517e52d463c59c0b25e240",
-            patch_args = ["-p1"],
-            patches = [
-                "@//third_party/libusb:add_config_h.patch",
-            ],
         )
 
     if not native.existing_rule("org_raspbian_archive_multiarch_libavahi_common_dev"):
@@ -237,35 +192,33 @@ def _load_bazel_dependencies():
         http_archive(
             name = "org_debian_ftp_libsoapysdr_dev",
             urls = [
-                "http://ftp.debian.org/debian/pool/main/s/soapysdr/libsoapysdr-dev_0.7.2-2_arm64.deb",
+                "https://ftp.debian.org/debian/pool/main/s/soapysdr/libsoapysdr-dev_0.7.2-2_arm64.deb",
             ],
             build_file = "//third_party/soapy:libsoapysdr_dev.BUILD",
             patch_cmds = ["tar xf data.tar.xz"],
         )
 
-    if not native.existing_rule("com_github_pothosware_soapy_rtl_sdr"):
+    if not native.existing_rule("org_debian_ftp_libsoapysdr"):
         http_archive(
-            name = "com_github_pothosware_soapy_rtl_sdr",
-            build_file = "//third_party/soapy:soapy_rtl_sdr.BUILD",
-            strip_prefix = "SoapyRTLSDR-soapy-rtl-sdr-0.3.3",
-            sha256 = "757c3c3bd17c5a12c7168db2f2f0fd274457e65f35e23c5ec9aec34e3ef54ece",
+            name = "org_debian_ftp_libsoapysdr",
             urls = [
-                "https://github.com/pothosware/SoapyRTLSDR/archive/refs/tags/soapy-rtl-sdr-0.3.3.tar.gz",
+                "https://ftp.debian.org/debian/pool/main/s/soapysdr/libsoapysdr0.7_0.7.2-2_arm64.deb",
             ],
+            build_file = "//third_party/soapy:libsoapysdr.BUILD",
+            patch_cmds = ["tar xf data.tar.xz"],
         )
 
     if not native.existing_rule("com_github_pothosware_soapyremote"):
         http_archive(
             name = "com_github_pothosware_soapyremote",
-            sha256 = "66a372d85c984e7279b4fdc0a7f5b0d7ba340e390bc4b8bd626a6523cd3c3c76",
             build_file = "//third_party/soapy:soapy_remote.BUILD",
-            strip_prefix = "SoapyRemote-soapy-remote-0.5.2",
+            strip_prefix = "SoapyRemote-soapy-remote-0.5.1",
             patch_args = ["-p1"],
             patches = [
                 "@//third_party/soapy:add_socket_defs.patch",
             ],
             urls = [
-                "https://github.com/pothosware/SoapyRemote/archive/refs/tags/soapy-remote-0.5.2.tar.gz",
+                "https://github.com/pothosware/SoapyRemote/archive/refs/tags/soapy-remote-0.5.1.tar.gz",
             ],
         )
 

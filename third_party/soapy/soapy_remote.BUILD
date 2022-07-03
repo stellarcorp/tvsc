@@ -25,6 +25,27 @@ genrule(
 )
 
 cc_library(
+    name = "host_soapy_sdr",
+    linkopts = [
+        "-lSoapySDR",
+    ],
+)
+
+cc_library(
+    name = "soapy_sdr",
+    deps = select({
+        "@//platforms:aarch64_linux_build": [
+            "@org_debian_ftp_libsoapysdr_dev//:dev",
+        ],
+        "@//platforms:x86_64_linux_build": [
+            ":host_soapy_sdr",
+        ],
+        # TODO(james): Add other platform selectors as appropriate.
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+)
+
+cc_library(
     name = "common",
     srcs = glob(
         ["common/**/*.cpp"],
@@ -39,25 +60,7 @@ cc_library(
     strip_include_prefix = "common",
     visibility = ["//visibility:public"],
     deps = [
-        "@com_github_pothosware_soapysdr//:soapy_sdr",
-    ],
-)
-
-cc_library(
-    name = "common_without_avahi",
-    srcs = glob(
-        ["common/**/*.cpp"],
-        exclude = [
-            "common/SoapyMDNSEndpointApple.cpp",
-            "common/SoapyMDNSEndpointAvahi.cpp",
-            "common/SoapyIfAddrsWindows.cpp",
-        ],
-    ),
-    hdrs = glob(["common/**/*.hpp"]) + [":SoapySocketDefs"],
-    strip_include_prefix = "common",
-    visibility = ["//visibility:public"],
-    deps = [
-        "@com_github_pothosware_soapysdr//:soapy_sdr",
+        ":soapy_sdr",
     ],
 )
 
@@ -77,6 +80,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":common",
-        "@com_github_pothosware_soapysdr//:soapy_sdr",
+        ":soapy_sdr",
     ],
 )

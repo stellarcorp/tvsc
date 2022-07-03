@@ -3,25 +3,32 @@ licenses(["notice"])
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 
 cc_library(
-    name = "soapy_sdr",
-    deps = [
-        "@com_github_pothosware_soapysdr//:soapy_sdr",
+    name = "host_soapy_sdr",
+    linkopts = [
+        "-lSoapySDR",
     ],
 )
 
-cc_binary(
-    name = "soapy_rtl_sdr",
-    deps = [
-        "@com_github_pothosware_soapy_rtl_sdr//:soapy_rtl_sdr",
-    ],
-    linkstatic = False,
-    linkshared = True,
+cc_library(
+    name = "soapy_sdr",
+    visibility = ["//visibility:public"],
+    deps = select({
+        "//platforms:aarch64_linux_build": [
+            "@org_debian_ftp_libsoapysdr_dev//:dev",
+        ],
+        "//platforms:x86_64_linux_build": [
+            ":host_soapy_sdr",
+        ],
+        # TODO(james): Add other platform selectors as appropriate.
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
 )
 
 cc_library(
     name = "soapy_remote_common",
     visibility = ["//visibility:public"],
     deps = [
+        ":soapy_sdr",
         "//third_party/avahi",
         "@com_github_pothosware_soapyremote//:common",
     ],
@@ -31,20 +38,9 @@ cc_library(
     name = "soapy_remote_server",
     visibility = ["//visibility:public"],
     deps = [
-        ":soapy_rtl_sdr",
+        ":soapy_sdr",
         "//third_party/avahi",
         "@com_github_pothosware_soapyremote//:server",
-    ],
-)
-
-cc_test(
-    name = "soapy_sdr_test",
-    srcs = [
-        "soapy_sdr_test.cc",
-    ],
-    deps = [
-        ":soapy_sdr",
-        "//third_party/gtest",
     ],
 )
 
@@ -68,25 +64,10 @@ filegroup(
 )
 
 pkg_files(
-    name = "runtime_libraries",
-    srcs = [
-        ":soapy_rtl_sdr",
-    ],
-    attributes = pkg_attributes(
-        group = "tvsc",
-        mode = "0555",
-        owner = "tvsc",
-    ),
-    prefix = "lib",
-    visibility = ["//visibility:public"],
-)
-
-pkg_files(
     name = "test_binaries",
     testonly = True,
     srcs = [
         ":soapy_remote_test",
-        ":soapy_sdr_test",
     ],
     attributes = pkg_attributes(
         group = "tvsc",
