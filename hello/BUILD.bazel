@@ -1,0 +1,19 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
+
+cc_binary(
+    name = "hello_world",
+    testonly = True,
+    srcs = ["hello_world.cc"],
+)
+
+pkg_files(
+    name = "hello_world_binaries",
+    testonly = True,
+    srcs = [
+        ":hello_world",
+    ],
+    attributes = pkg_attributes(
+        mode = "0555",
+    ),
+    prefix = "bin",
+)
