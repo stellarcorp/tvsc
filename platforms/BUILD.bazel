@@ -37,7 +37,7 @@ config_setting(
     #     "@latforms//os:linux",
     # ],
     values = {
-        "cpu": "arm64",
+        "cpu": "armv7",
     },
     visibility = ["//visibility:public"],
 )
