@@ -37,7 +37,7 @@ pkg_deb(
     name = "deb",
     architecture = arch_name(),
     data = ":tarball",
-    description = "Hello package from Tower-in-a-box system from TVSC",
+    description = "Hello package from the Virtual Tower system from TVSC",
     maintainer = "info@stellarcorp.tv",
     package = PACKAGE_NAME,
     version = version_string(),
