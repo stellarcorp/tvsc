@@ -1,6 +1,5 @@
 load("//third_party/toolchains:toolchains.bzl", "toolchains")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository", "new_git_repository")
 
 def _load_bazel_dependencies():
     if not native.existing_rule("io_bazel_rules_docker"):
@@ -44,15 +43,34 @@ def _load_bazel_dependencies():
             urls = ["https://github.com/google/glog/archive/v0.5.0.zip"],
         )
 
+    if not native.existing_rule("rules_cc"):
+        http_archive(
+            name = "rules_cc",
+            strip_prefix = "rules_cc-2f8c04c04462ab83c545ab14c0da68c3b4c96191",
+            sha256 = "4aeb102efbcfad509857d7cb9c5456731e8ce566bfbf2960286a2ec236796cc3",
+            urls = [
+                "https://github.com/bazelbuild/rules_cc/archive/2f8c04c04462ab83c545ab14c0da68c3b4c96191.tar.gz",
+            ],
+        )
+
     if not native.existing_rule("rules_proto"):
         http_archive(
             name = "rules_proto",
-            sha256 = "66bfdf8782796239d3875d37e7de19b1d94301e8972b3cbd2446b332429b4df1",
-            strip_prefix = "rules_proto-4.0.0",
+            sha256 = "e017528fd1c91c5a33f15493e3a398181a9e821a804eb7ff5acdd1d2d6c2b18d",
+            strip_prefix = "rules_proto-4.0.0-3.20.0",
             urls = [
-                "https://mirror.bazel.build/github.com/bazelbuild/rules_proto/archive/refs/tags/4.0.0.tar.gz",
-                "https://github.com/bazelbuild/rules_proto/archive/refs/tags/4.0.0.tar.gz",
+                "https://github.com/bazelbuild/rules_proto/archive/refs/tags/4.0.0-3.20.0.tar.gz",
             ],
+        )
+
+    if not native.existing_rule("bazel_skylib"):
+        http_archive(
+            name = "bazel_skylib",
+            urls = [
+                "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
+                "https://github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
+            ],
+            sha256 = "f7be3474d42aae265405a592bb7da8e171919d74c16f082a5457840f06054728",
         )
 
     if not native.existing_rule("org_raspbian_archive_multiarch_libzstd"):
@@ -86,6 +104,39 @@ def _load_bazel_dependencies():
             build_file = "//third_party/liblz4:liblz4.BUILD",
             sha256 = "b702839ef3513ca3b5e373863a017449f8765501859c0a2a065ae954986523e9",
             patch_cmds = ["tar xf data.tar.xz"],
+        )
+
+    if not native.existing_rule("org_debian_ftp_libssl_dev"):
+        http_archive(
+            name = "org_debian_ftp_libssl_dev",
+            urls = [
+                "https://ftp.debian.org/debian/pool/main/o/openssl/libssl-dev_1.1.1n-0+deb11u1_arm64.deb",
+            ],
+            sha256 = "14877e2e16c0e2a430c44708c90976622c5c42099c4d1b8ccdf64e417296cbb8",
+            build_file = "//third_party/openssl:libssl_dev.BUILD",
+            patch_cmds = ["tar xf data.tar.xz"],
+        )
+
+    if not native.existing_rule("org_debian_ftp_libssl"):
+        http_archive(
+            name = "org_debian_ftp_libssl",
+            urls = [
+                "https://ftp.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1n-0+deb11u1_arm64.deb",
+            ],
+            sha256 = "f708c39b20e0bf5f6e6460c196420ffcd91d03048587f90ef4bfad120b773b33",
+            build_file = "//third_party/openssl:libssl.BUILD",
+            patch_cmds = ["tar xf data.tar.xz"],
+        )
+
+    # Hack to work around gRPC's insistence on building boringssl from scratch when we have OpenSSL installed from the
+    # OS. Also, we had difficulties getting boringssl and Abseil, one of its dependencies, to compile on arm64.
+    if not native.existing_rule("boringssl"):
+        native.local_repository(
+            name = "boringssl",
+            path = "third_party/boringssl",
+            repo_mapping = {
+                "@openssl": "@org_debian_ftp_libssl_dev",
+            },
         )
 
     if not native.existing_rule("org_debian_ftp_libcap2"):
@@ -207,6 +258,16 @@ def _load_bazel_dependencies():
             sha256 = "a89a1429c051b8861e96a967d54314a4b52278a96de6c6a5162afaf1e4cf2cfe",
             build_file = "//third_party/soapy:libsoapysdr.BUILD",
             patch_cmds = ["tar xf data.tar.xz"],
+        )
+
+    if not native.existing_rule("com_github_grpc_grpc"):
+        http_archive(
+            name = "com_github_grpc_grpc",
+            urls = [
+                "https://github.com/grpc/grpc/archive/refs/tags/v1.47.0.tar.gz",
+            ],
+            sha256 = "271bdc890bf329a8de5b65819f0f9590a5381402429bca37625b63546ed19e54",
+            strip_prefix = "grpc-1.47.0",
         )
 
 def load_dependencies():
