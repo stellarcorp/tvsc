@@ -53,7 +53,7 @@ cc_library(
             ":host_openssl",
         ],
         # TODO(james): Add other platform selectors as appropriate.
-        "//conditions:default": ["@platforms//:incompatible"],
+        "//conditions:default": [],
     }),
 )
 
@@ -68,6 +68,6 @@ cc_library(
             ":host_openssl",
         ],
         # TODO(james): Add other platform selectors as appropriate.
-        "//conditions:default": ["@platforms//:incompatible"],
+        "//conditions:default": [],
     }),
 )
