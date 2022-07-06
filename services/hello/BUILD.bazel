@@ -15,6 +15,8 @@ pkg_files(
     testonly = True,
     srcs = [
         ":hello_world",
+        "//services/hello/server:greeter_server",
+        "//services/hello/client:greeter_client",
     ],
     attributes = pkg_attributes(
         mode = "0755",
@@ -26,15 +28,16 @@ PACKAGE_NAME = "tvsc-hello"
 
 pkg_tar(
     name = "tarball",
+    testonly = True,
     srcs = [
         ":binaries",
     ],
     package_file_name = tarball_name(PACKAGE_NAME),
-    testonly = True,
 )
 
 pkg_deb(
     name = "deb",
+    testonly = True,
     architecture = arch_name(),
     data = ":tarball",
     description = "Hello package from the Virtual Tower system from TVSC",
@@ -42,5 +45,4 @@ pkg_deb(
     package = PACKAGE_NAME,
     version = version_string(),
     visibility = ["//visibility:public"],
-    testonly = True,
 )

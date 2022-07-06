@@ -1,11 +1,11 @@
 config_setting(
-    name = "aarch64_linux_build",
+    name = "arm64_linux_build",
     # constraint_values = [
     #     "@platforms//cpu:aarch64",
     #     "@platforms//os:linux",
     # ],
     values = {
-        "cpu": "aarch64",
+        "cpu": "arm64",
     },
     visibility = ["//visibility:public"],
 )
@@ -46,7 +46,7 @@ cc_library(
     name = "ssl",
     visibility = ["//visibility:public"],
     deps = select({
-        ":aarch64_linux_build": [
+        ":arm64_linux_build": [
             "@openssl//:ssl",
         ],
         ":x86_64_linux_build": [
@@ -61,7 +61,7 @@ cc_library(
     name = "crypto",
     visibility = ["//visibility:public"],
     deps = select({
-        ":aarch64_linux_build": [
+        ":arm64_linux_build": [
             "@openssl//:ssl",
         ],
         ":x86_64_linux_build": [
