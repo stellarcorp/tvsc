@@ -71,6 +71,9 @@ def _impl(ctx):
                 flag_groups = [
                     flag_group(
                         flags = [
+                            "-march=armv8-a+crc+simd",
+                            "-D__aarch64__",
+                            "-D__arm64__",
                             "-no-canonical-prefixes",
                             "-fno-canonical-system-headers",
                             "-Wno-builtin-macro-redefined",
