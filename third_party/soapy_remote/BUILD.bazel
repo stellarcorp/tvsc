@@ -1,12 +1,13 @@
 licenses(["notice"])
 
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
+load("@bazel_skylib//lib:selects.bzl", "selects")
 
 filegroup(
     name = "avahi_implementation",
     srcs = select(
         {
-            "@platforms//os:macos": [
+            "//platforms:macos_build": [
                 "common/SoapyMDNSEndpointApple.cpp",
             ],
             "//conditions:default": [
@@ -18,18 +19,13 @@ filegroup(
 
 filegroup(
     name = "socket_defs_configuration",
-    srcs = select(
+    srcs = selects.with_or(
         {
             # Note: add other platforms as needed to this list. To add files for other platforms, use the patches
             # and similar sections of the http_archive() rule that brings in this package.
-            "@platforms//os:linux": [
+            ("//platforms:arm64_linux_build", "//platforms:arm7_linux_build", "//platforms:x86_64_linux_build"): [
                 "common/SoapySocketDefs.linux.hpp",
             ],
-            "@platforms//os:macos": [
-            ],
-            "@platforms//os:windows": [
-            ],
-            "//conditions:default": [],
         },
     ),
 )
@@ -79,9 +75,9 @@ cc_library(
     deps = [
         ":common",
         "//third_party/avahi",
-        "//third_party/soapy",
         "//third_party/gflags",
         "//third_party/glog",
+        "//third_party/soapy",
     ],
 )
 

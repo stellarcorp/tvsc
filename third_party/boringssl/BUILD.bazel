@@ -52,8 +52,6 @@ cc_library(
         ":x86_64_linux_build": [
             ":host_openssl",
         ],
-        # TODO(james): Add other platform selectors as appropriate.
-        "//conditions:default": [],
     }),
 )
 
@@ -67,7 +65,5 @@ cc_library(
         ":x86_64_linux_build": [
             ":host_openssl",
         ],
-        # TODO(james): Add other platform selectors as appropriate.
-        "//conditions:default": [],
     }),
 )

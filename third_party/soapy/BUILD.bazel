@@ -19,7 +19,5 @@ cc_library(
         "//platforms:x86_64_linux_build": [
             ":host_soapy_sdr",
         ],
-        # TODO(james): Add other platform selectors as appropriate.
-        "//conditions:default": ["@platforms//:incompatible"],
     }),
 )

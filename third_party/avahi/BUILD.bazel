@@ -17,7 +17,5 @@ cc_library(
         "//platforms:x86_64_linux_build": [
             ":host_avahi",
         ],
-        # TODO(james): Add other platform selectors as appropriate.
-        "//conditions:default": ["@platforms//:incompatible"],
     }),
 )
