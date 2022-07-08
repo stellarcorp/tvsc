@@ -15,8 +15,7 @@ filegroup(
     name = "all_files",
     srcs = [
         ":wrappers",
-        "@aarch64-rpi3-linux-gnu-sysroot//:sysroot",
-        "@aarch64-rpi3-linux-gnu//:toolchain",
+        "@com_gitlab_tvsc_toolchains//aarch64-rpi3-linux-gnu:toolchain",
     ],
 )
 

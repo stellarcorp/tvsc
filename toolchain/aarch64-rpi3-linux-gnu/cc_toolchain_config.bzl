@@ -71,9 +71,6 @@ def _impl(ctx):
                 flag_groups = [
                     flag_group(
                         flags = [
-                            "-march=armv8-a+crc+simd",
-                            "-D__aarch64__",
-                            "-D__arm64__",
                             "-no-canonical-prefixes",
                             "-fno-canonical-system-headers",
                             "-Wno-builtin-macro-redefined",
@@ -122,7 +119,7 @@ def _impl(ctx):
         abi_version = "unknown",
         abi_libc_version = "unknown",
         tool_paths = tool_paths,
-        builtin_sysroot = "external/aarch64-rpi3-linux-gnu-sysroot",
+        builtin_sysroot = "external/com_gitlab_tvsc_toolchains/aarch64-rpi3-linux-gnu/aarch64-rpi3-linux-gnu/sysroot",
     )
 
 cc_toolchain_config = rule(

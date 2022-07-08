@@ -4,22 +4,15 @@ URL_TOOLCHAIN = "https://github.com/ltekieli/devboards-toolchains/releases/downl
 URL_SYSROOT = "https://github.com/ltekieli/buildroot/releases/download/v2021.12.01/"
 
 def toolchains():
-    if "aarch64-rpi3-linux-gnu" not in native.existing_rules():
+    if "com_gitlab_tvsc_toolchains" not in native.existing_rules():
         http_archive(
-            name = "aarch64-rpi3-linux-gnu",
-            build_file = Label("//third_party/toolchains:aarch64-rpi3-linux-gnu.BUILD"),
-            url = URL_TOOLCHAIN + "aarch64-rpi3-linux-gnu.tar.gz",
-            sha256 = "02d1186d61dd253a6138d858f63c34f4036a80d0b0eeeb8f2d6666c987cadfad",
+            name = "com_gitlab_tvsc_toolchains",
+            # TODO(james): Lock this to a release tag.
+            urls = ["https://gitlab.com/tvsc/toolchains/-/archive/7dced1ee6085c3cccc275c5f92a98bb5fab6e404.zip"],
+            strip_prefix = "toolchains-7dced1ee6085c3cccc275c5f92a98bb5fab6e404",
         )
 
-    if "aarch64-rpi3-linux-gnu-sysroot" not in native.existing_rules():
-        http_archive(
-            name = "aarch64-rpi3-linux-gnu-sysroot",
-            build_file = Label("//third_party/toolchains:aarch64-rpi3-linux-gnu-sysroot.BUILD"),
-            url = URL_SYSROOT + "raspberrypi3_64.tar.gz",
-            sha256 = "bde52d18418dfa294f7c3442deaaebe644cb1c6e5bb24435255d311f994c06e1",
-        )
-
+    # TODO(james): Rebuild these. See https://gitlab.com/tvsc/tvsc/-/issues/1
     if "arm-cortex_a8-linux-gnueabihf" not in native.existing_rules():
         http_archive(
             name = "arm-cortex_a8-linux-gnueabihf",
