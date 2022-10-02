@@ -4,12 +4,13 @@ URL_TOOLCHAIN = "https://github.com/ltekieli/devboards-toolchains/releases/downl
 URL_SYSROOT = "https://github.com/ltekieli/buildroot/releases/download/v2021.12.01/"
 
 def toolchains():
+    # TODO(james): Lock this to a release tag.
+    TOOLCHAINS_COMMIT = "6dbdffc5c9a9c8b570cfdbe0e34decf677aca0ce"
     if "com_gitlab_tvsc_toolchains" not in native.existing_rules():
         http_archive(
             name = "com_gitlab_tvsc_toolchains",
-            # TODO(james): Lock this to a release tag.
-            urls = ["https://gitlab.com/tvsc/toolchains/-/archive/7dced1ee6085c3cccc275c5f92a98bb5fab6e404.zip"],
-            strip_prefix = "toolchains-7dced1ee6085c3cccc275c5f92a98bb5fab6e404",
+            urls = ["https://gitlab.com/tvsc/toolchains/-/archive/{}.zip".format(TOOLCHAINS_COMMIT)],
+            strip_prefix = "toolchains-{}".format(TOOLCHAINS_COMMIT),
         )
 
     # TODO(james): Rebuild these. See https://gitlab.com/tvsc/tvsc/-/issues/1
