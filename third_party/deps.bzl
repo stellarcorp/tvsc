@@ -270,6 +270,17 @@ def _load_bazel_dependencies():
             strip_prefix = "grpc-1.47.0",
         )
 
+    if not native.existing_rule("net_zlib_zlib"):
+        http_archive(
+            name = "net_zlib_zlib",
+            sha256 = "91844808532e5ce316b3c010929493c0244f3d37593afd6de04f71821d5136d9",
+            strip_prefix = "zlib-1.2.12",
+            urls = [
+                "https://zlib.net/zlib-1.2.12.tar.gz",
+            ],
+            build_file = "//third_party/zlib:zlib.BUILD",
+        )
+
     if not native.existing_rule("com_github_unetworking_usockets"):
         http_archive(
             name = "com_github_unetworking_usockets",
