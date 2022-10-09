@@ -1,0 +1,41 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
+load("//platforms:platform.bzl", "arch_name")
+load("//services:version.bzl", "tarball_name", "version_string")
+
+pkg_files(
+    name = "binaries",
+    testonly = True,
+    srcs = [
+        "//services/echo/server:echo_server",
+        "//services/echo/client:echo_client",
+    ],
+    attributes = pkg_attributes(
+        mode = "0755",
+    ),
+    prefix = "usr/bin",
+)
+
+PACKAGE_NAME = "tvsc-echo"
+
+pkg_tar(
+    name = "tarball",
+    testonly = True,
+    srcs = [
+        ":binaries",
+    ],
+    package_file_name = tarball_name(PACKAGE_NAME),
+)
+
+pkg_deb(
+    name = "deb",
+    testonly = True,
+    architecture = arch_name(),
+    data = ":tarball",
+    description = "Echo package from the Virtual Tower system from TVSC",
+    maintainer = "info@stellarcorp.tv",
+    package = PACKAGE_NAME,
+    version = version_string(),
+    visibility = ["//visibility:public"],
+)
