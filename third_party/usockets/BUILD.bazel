@@ -1,0 +1,18 @@
+cc_library(
+    name = "usockets",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_unetworking_usockets//:usockets",
+    ],
+)
+
+cc_test(
+    name = "compile_test",
+    srcs = [
+        "compile_test.cc",
+    ],
+    deps = [
+        ":usockets",
+        "//third_party/gtest",
+    ],
+)

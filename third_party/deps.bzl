@@ -270,6 +270,26 @@ def _load_bazel_dependencies():
             strip_prefix = "grpc-1.47.0",
         )
 
+    if not native.existing_rule("com_github_unetworking_usockets"):
+        http_archive(
+            name = "com_github_unetworking_usockets",
+            urls = [
+                "https://github.com/uNetworking/uSockets/archive/d8967af421983d40422094e31c54d9f1febeea49.tar.gz",
+            ],
+            build_file = "//third_party/usockets:usockets.BUILD",
+            strip_prefix = "uSockets-d8967af421983d40422094e31c54d9f1febeea49",
+        )
+
+    if not native.existing_rule("com_github_unetworking_uwebsockets"):
+        http_archive(
+            name = "com_github_unetworking_uwebsockets",
+            urls = [
+                "https://github.com/uNetworking/uWebSockets/archive/refs/tags/v20.23.0.tar.gz",
+            ],
+            build_file = "//third_party/uwebsockets:uwebsockets.BUILD",
+            strip_prefix = "uWebSockets-20.23.0",
+        )
+
 def load_dependencies():
     toolchains()
     _load_bazel_dependencies()

@@ -1,0 +1,19 @@
+cc_library(
+    name = "uwebsockets",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/usockets",
+        "@com_github_unetworking_uwebsockets//:uwebsockets",
+    ],
+)
+
+cc_test(
+    name = "compile_test",
+    srcs = [
+        "compile_test.cc",
+    ],
+    deps = [
+        ":uwebsockets",
+        "//third_party/gtest",
+    ],
+)
