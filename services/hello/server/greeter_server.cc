@@ -4,7 +4,6 @@
 
 #include "gflags/gflags.h"
 #include "glog/logging.h"
-#include "grpcpp/ext/proto_server_reflection_plugin.h"
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
 #include "services/hello/common/hello.grpc.pb.h"
@@ -30,7 +29,6 @@ void run_server() {
   HelloServiceImpl service;
 
   grpc::EnableDefaultHealthCheckService(true);
-  grpc::reflection::InitProtoReflectionServerBuilderPlugin();
   ServerBuilder builder;
 
   const std::string bind_addr{get_hello_service_bind_addr()};
