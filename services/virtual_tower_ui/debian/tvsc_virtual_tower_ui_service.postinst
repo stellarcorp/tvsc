@@ -4,8 +4,8 @@ set -e
 if [ "$1" = "configure" ]; then
     # Start the service and enable it to start on boot.
     if [ -x "`which systemctl 2>/dev/null`" ]; then
-	systemctl start tvsc-web-ui.service
-	systemctl enable tvsc-web-ui.service
+	systemctl start tvsc-virtual-tower-ui.service
+	systemctl enable tvsc-virtual-tower-ui.service
     fi
 	    
 fi

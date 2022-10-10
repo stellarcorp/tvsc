@@ -22,13 +22,13 @@ pkg_files(
         mode = "0644",
         user = "tvsc_service",
     ),
-    prefix = "usr/share/tvsc/web_ui/static",
+    prefix = "usr/share/tvsc/virtual_tower_ui/static",
 )
 
 pkg_files(
     name = "systemd_files",
     srcs = [
-        ":etc/tvsc-web-ui.service",
+        ":etc/tvsc-virtual-tower-ui.service",
     ],
     attributes = pkg_attributes(
         mode = "0644",
@@ -46,10 +46,10 @@ pkg_files(
         mode = "0644",
         user = "tvsc_service",
     ),
-    prefix = "usr/share/tvsc/web_ui/conf",
+    prefix = "usr/share/tvsc/virtual_tower_ui/conf",
 )
 
-PACKAGE_NAME = "tvsc-web-ui"
+PACKAGE_NAME = "tvsc-virtual-tower-ui"
 
 pkg_tar(
     name = "tarball",
@@ -72,9 +72,9 @@ pkg_deb(
     homepage = "https://www.stellarcorp.tv/",
     maintainer = "info@stellarcorp.tv",
     package = PACKAGE_NAME,
-    postinst = "debian/tvsc_web_ui_service.postinst",
-    preinst = "debian/tvsc_web_ui_service.preinst",
-    prerm = "debian/tvsc_web_ui_service.prerm",
+    postinst = "debian/tvsc_virtual_tower_ui_service.postinst",
+    preinst = "debian/tvsc_virtual_tower_ui_service.preinst",
+    prerm = "debian/tvsc_virtual_tower_ui_service.prerm",
     replaces = [
         PACKAGE_NAME + "(<= " + version_string() + ")",
     ],

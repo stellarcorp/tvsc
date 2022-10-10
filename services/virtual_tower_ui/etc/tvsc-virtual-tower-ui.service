@@ -4,7 +4,7 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-ExecStart=/usr/sbin/mini_httpd -C /usr/share/tvsc/web_ui/conf/http.conf
+ExecStart=/usr/sbin/mini_httpd -C /usr/share/tvsc/virtual_tower_ui/conf/http.conf
 Type=forking
 KillMode=mixed
 Restart=on-failure
