@@ -11,10 +11,20 @@ cc_library(
         "service_configuration.h",
         "service_location.h",
     ],
+    data = [
+        ":virtual_tower_configuration",
+    ],
     visibility = ["//visibility:public"],
     deps = [
         ":service_descriptor_cc_proto",
         "//third_party/gflags",
+    ],
+)
+
+filegroup(
+    name = "virtual_tower_configuration",
+    srcs = [
+        "virtual_tower_services.conf",
     ],
 )
 
@@ -31,6 +41,15 @@ cc_proto_library(
 cc_test(
     name = "service_location_test",
     srcs = ["service_location_test.cc"],
+    deps = [
+        ":configuration",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "service_configuration_test",
+    srcs = ["service_configuration_test.cc"],
     deps = [
         ":configuration",
         "//third_party/gtest",

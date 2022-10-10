@@ -14,7 +14,9 @@ ServiceConfiguration ServiceConfiguration::load(const std::filesystem::path& loc
   {
     std::ifstream file{location};
     google::protobuf::io::IstreamInputStream proto_file{&file};
-    google::protobuf::TextFormat::Parse(&proto_file, &services);
+    if (!google::protobuf::TextFormat::Parse(&proto_file, &services)) {
+      throw std::runtime_error(std::string{"Could not read service configuration file '"} + std::string{location} + "'");
+    }
   }
 
   ServiceConfiguration result{};

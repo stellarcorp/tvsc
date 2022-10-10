@@ -3,7 +3,7 @@ set -e
 
 if [ "$1" = "remove" ]; then
     if [ -x "`which systemctl 2>/dev/null`" ]; then
-	systemctl stop tvsc-http-service.service
-	systemctl disable tvsc-http-service.service
+	systemctl stop tvsc-web-ui.service
+	systemctl disable tvsc-web-ui.service
     fi
 fi

@@ -4,8 +4,8 @@ set -e
 if [ "$1" = "configure" ]; then
     # Start the service and enable it to start on boot.
     if [ -x "`which systemctl 2>/dev/null`" ]; then
-	systemctl start tvsc-http-service.service
-	systemctl enable tvsc-http-service.service
+	systemctl start tvsc-echo.service
+	systemctl enable tvsc-echo.service
     fi
 	    
 fi

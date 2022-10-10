@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "remove" ]; then
+    if [ -x "`which systemctl 2>/dev/null`" ]; then
+	systemctl stop tvsc-echo.service
+	systemctl disable tvsc-echo.service
+    fi
+fi
