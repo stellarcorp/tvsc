@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package tvsc.service.configuration;
+
+message ServiceDescriptor {
+  string name = 1;
+  string bind_addr = 2;
+}
+
+message ServiceDescriptors {
+  repeated ServiceDescriptor services = 1;
+}

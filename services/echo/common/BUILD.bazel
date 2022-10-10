@@ -1,11 +1,22 @@
-load("@rules_cc//cc:defs.bzl", "cc_proto_library", "cc_library")
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
+
+cc_library(
+    name = "common",
+    srcs = ["echo_service_location.cc"],
+    hdrs = ["echo_service_location.h"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":echo_cc_grpc",
+        ":echo_cc_proto",
+        "//services/configuration",
+    ],
+)
 
 proto_library(
     name = "echo_proto",
     srcs = ["echo.proto"],
-    visibility = ["//visibility:public"],
 )
 
 cc_proto_library(
@@ -18,5 +29,4 @@ cc_grpc_library(
     srcs = [":echo_proto"],
     grpc_only = True,
     deps = [":echo_cc_proto"],
-    visibility = ["//visibility:public"],
 )

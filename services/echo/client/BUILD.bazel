@@ -3,7 +3,7 @@ cc_binary(
     srcs = ["echo_client.cc"],
     visibility = ["//visibility:public"],
     deps = [
-        "//services/echo/common:echo_cc_grpc",
+        "//services/echo/common",
         "//third_party/gflags",
         "//third_party/glog",
         "@com_github_grpc_grpc//:grpc++",

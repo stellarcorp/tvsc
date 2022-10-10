@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package echo;
+package tvsc.service.echo;
 
 service Echo {
-  rpc Echo (EchoRequest) returns (EchoReply);
+  rpc echo(EchoRequest) returns (EchoReply);
 }
 
 message EchoRequest {

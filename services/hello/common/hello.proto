@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package hello;
+package tvsc.service.hello;
 
-service Greeter {
-  rpc SayHello (HelloRequest) returns (HelloReply);
+service Hello {
+  rpc say_hello(HelloRequest) returns (HelloReply);
 }
 
 message HelloRequest {
@@ -11,5 +11,5 @@ message HelloRequest {
 }
 
 message HelloReply {
-  string message = 1;
+  string msg = 1;
 }

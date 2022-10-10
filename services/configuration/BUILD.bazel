@@ -1,0 +1,38 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+cc_library(
+    name = "configuration",
+    srcs = [
+        "service_configuration.cc",
+        "service_location.cc",
+    ],
+    hdrs = [
+        "service_configuration.h",
+        "service_location.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":service_descriptor_cc_proto",
+        "//third_party/gflags",
+    ],
+)
+
+proto_library(
+    name = "service_descriptor_proto",
+    srcs = ["service_descriptor.proto"],
+)
+
+cc_proto_library(
+    name = "service_descriptor_cc_proto",
+    deps = [":service_descriptor_proto"],
+)
+
+cc_test(
+    name = "service_location_test",
+    srcs = ["service_location_test.cc"],
+    deps = [
+        ":configuration",
+        "//third_party/gtest",
+    ],
+)

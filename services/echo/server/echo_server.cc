@@ -8,50 +8,49 @@
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
 #include "services/echo/common/echo.grpc.pb.h"
+#include "services/echo/common/echo_service_location.h"
 
-using echo::Echo;
-using echo::EchoReply;
-using echo::EchoRequest;
 using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
 
-// Logic and data behind the server's behavior.
+namespace tvsc::service::echo {
+
 class EchoServiceImpl final : public Echo::Service {
-  Status Echo(ServerContext* context, const EchoRequest* request, EchoReply* reply) override {
-    reply->set_msg(request->msg());
+  Status echo(ServerContext* context, const EchoRequest* request, EchoReply* reply) override {
+    const std::string& msg{request->msg()};
+    reply->set_msg(msg);
+    LOG(INFO) << "Received msg: '" << msg << "'";
     return Status::OK;
   }
 };
 
-DEFINE_string(server, "0.0.0.0:50051", "address:port to listen on. Defaults to '0.0.0.0:50051'.");
-
-void RunServer() {
+void run_server() {
   EchoServiceImpl service;
 
   grpc::EnableDefaultHealthCheckService(true);
   grpc::reflection::InitProtoReflectionServerBuilderPlugin();
   ServerBuilder builder;
-  // Listen on the given address without any authentication mechanism.
-  builder.AddListeningPort(FLAGS_server, grpc::InsecureServerCredentials());
-  // Register "service" as the instance through which we'll communicate with
-  // clients. In this case it corresponds to an *synchronous* service.
-  builder.RegisterService(&service);
-  // Finally assemble the server.
-  std::unique_ptr<Server> server(builder.BuildAndStart());
-  LOG(INFO) << "Server listening on " << FLAGS_server;
 
-  // Wait for the server to shutdown. Note that some other thread must be
-  // responsible for shutting down the server for this call to ever return.
+  const std::string bind_addr{get_echo_service_bind_addr()};
+  builder.AddListeningPort(bind_addr, grpc::InsecureServerCredentials());
+
+  builder.RegisterService(&service);
+
+  std::unique_ptr<Server> server(builder.BuildAndStart());
+  LOG(INFO) << "Server listening on " << bind_addr;
+
   server->Wait();
 }
+
+}  // namespace tvsc::service::echo
 
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
 
-  RunServer();
+  tvsc::service::echo::run_server();
 
   return 0;
 }

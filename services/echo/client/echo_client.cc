@@ -6,26 +6,27 @@
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "services/echo/common/echo.grpc.pb.h"
+#include "services/echo/common/echo_service_location.h"
 
-using echo::Echo;
-using echo::EchoReply;
-using echo::EchoRequest;
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 
+namespace tvsc::service::echo {
+
 class EchoClient {
  public:
-  EchoClient(std::shared_ptr<Channel> channel) : stub_(Echo::NewStub(channel)) {}
+  EchoClient(const std::string& bind_addr)
+      : stub_(Echo::NewStub(grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials()))) {}
 
-  std::string Echo(const std::string& msg) {
+  std::string echo(const std::string& msg) {
     EchoRequest request;
     request.set_msg(msg);
 
     ClientContext context;
     EchoReply reply;
 
-    Status status = stub_->Echo(&context, request, &reply);
+    Status status = stub_->echo(&context, request, &reply);
 
     // Act upon its status.
     if (status.ok()) {
@@ -40,15 +41,20 @@ class EchoClient {
   std::unique_ptr<Echo::Stub> stub_;
 };
 
-DEFINE_string(server, "localhost:50051", "Server address:port. Defaults to 'localhost:50051'.");
+std::string echo_message(const std::string& msg) {
+  EchoClient client(get_echo_service_bind_addr());
+  return client.echo(msg);
+}
+
+}  // namespace tvsc::service::echo
+
 DEFINE_string(msg, "I am an echo!", "Message to echo. Defaults to 'I am an echo!'.");
 
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
-  EchoClient client(grpc::CreateChannel(FLAGS_server, grpc::InsecureChannelCredentials()));
-  std::string reply = client.Echo(FLAGS_msg);
-  std::cout << reply << "\n";
+
+  std::cout << tvsc::service::echo::echo_message(FLAGS_msg) << "\n";
 
   return 0;
 }
