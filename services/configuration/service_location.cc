@@ -19,23 +19,23 @@ DEFINE_string(
     "for this service, then the server will listen on 127.0.0.1 on its default port (service dependent).");
 
 namespace tvsc::service::configuration {
-std::string determine_service_addr(std::string_view service_name, std::string_view end_point,
+std::string determine_socket_address(std::string_view service_name, std::string_view end_point,
                                    const ServiceConfiguration& service_configuration, std::string_view default_value) {
   if (!end_point.empty()) {
     return std::string{end_point};
   } else {
     if (service_configuration.contains(service_name)) {
       const ServiceDescriptor& descriptor{service_configuration.get(service_name)};
-      return descriptor.end_point();
+      return descriptor.socket_address();
     }
   }
 
   return std::string{default_value};
 }
 
-std::string determine_service_addr(std::string_view service_name, std::string_view end_point,
+std::string determine_socket_address(std::string_view service_name, std::string_view end_point,
                                    const std::filesystem::path& service_map_location, std::string_view default_value) {
-  return determine_service_addr(service_name, end_point, ServiceConfiguration::load(service_map_location),
+  return determine_socket_address(service_name, end_point, ServiceConfiguration::load(service_map_location),
                                 default_value);
 }
 
