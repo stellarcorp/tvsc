@@ -17,3 +17,14 @@ cc_test(
         "//third_party/gtest",
     ],
 )
+
+cc_test(
+    name = "move_only_function_test",
+    srcs = [
+        "move_only_function_test.cc",
+    ],
+    deps = [
+        ":uwebsockets",
+        "//third_party/gtest",
+    ],
+)
