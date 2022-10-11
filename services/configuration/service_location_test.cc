@@ -9,10 +9,10 @@
 
 namespace tvsc::service::configuration {
 
-ServiceDescriptor as_descriptor(std::string_view name, std::string_view bind_addr) {
+ServiceDescriptor as_descriptor(std::string_view name, std::string_view end_point) {
   ServiceDescriptor result{};
   result.set_name(std::string{name});
-  result.set_bind_addr(std::string{bind_addr});
+  result.set_end_point(std::string{end_point});
   return result;
 }
 
@@ -27,9 +27,9 @@ TEST(ServiceLocationTest, CanGetAddrFromConfiguration) {
   configuration.add(as_descriptor(SERVICE_NAME, CONFIGURED_BIND_ADDR));
   configuration.add(as_descriptor("service3", "hostname:3456"));
 
-  const std::string bind_addr{
+  const std::string end_point{
       determine_service_addr(SERVICE_NAME, OVERRIDE_BIND_ADDR, configuration, DEFAULT_BIND_ADDR)};
-  EXPECT_EQ(CONFIGURED_BIND_ADDR, bind_addr);
+  EXPECT_EQ(CONFIGURED_BIND_ADDR, end_point);
 }
 
 TEST(ServiceLocationTest, CanOverrideConfiguration) {
@@ -43,9 +43,9 @@ TEST(ServiceLocationTest, CanOverrideConfiguration) {
   configuration.add(as_descriptor(SERVICE_NAME, CONFIGURED_BIND_ADDR));
   configuration.add(as_descriptor("service3", "hostname:3456"));
 
-  const std::string bind_addr{
+  const std::string end_point{
       determine_service_addr(SERVICE_NAME, OVERRIDE_BIND_ADDR, configuration, DEFAULT_BIND_ADDR)};
-  EXPECT_EQ(OVERRIDE_BIND_ADDR, bind_addr);
+  EXPECT_EQ(OVERRIDE_BIND_ADDR, end_point);
 }
 
 TEST(ServiceLocationTest, CanOverrideDefault) {
@@ -57,9 +57,9 @@ TEST(ServiceLocationTest, CanOverrideDefault) {
   configuration.add(as_descriptor("service1", "hostname:1234"));
   configuration.add(as_descriptor("service3", "hostname:3456"));
 
-  const std::string bind_addr{
+  const std::string end_point{
       determine_service_addr(SERVICE_NAME, OVERRIDE_BIND_ADDR, configuration, DEFAULT_BIND_ADDR)};
-  EXPECT_EQ(OVERRIDE_BIND_ADDR, bind_addr);
+  EXPECT_EQ(OVERRIDE_BIND_ADDR, end_point);
 }
 
 TEST(ServiceLocationTest, UsesDefaultIfNotConfigured) {
@@ -71,9 +71,9 @@ TEST(ServiceLocationTest, UsesDefaultIfNotConfigured) {
   configuration.add(as_descriptor("service1", "hostname:1234"));
   configuration.add(as_descriptor("service3", "hostname:3456"));
 
-  const std::string bind_addr{
+  const std::string end_point{
       determine_service_addr(SERVICE_NAME, OVERRIDE_BIND_ADDR, configuration, DEFAULT_BIND_ADDR)};
-  EXPECT_EQ(DEFAULT_BIND_ADDR, bind_addr);
+  EXPECT_EQ(DEFAULT_BIND_ADDR, end_point);
 }
 
 }  // namespace tvsc::service::configuration

@@ -7,7 +7,7 @@
 #include "services/configuration/service_configuration.h"
 #include "services/configuration/service_descriptor.pb.h"
 
-DEFINE_string(bind_addr, "",
+DEFINE_string(end_point, "",
               "address:port to listen on. This flag overrides the value in service configuration, as specified by the "
               "--service_configuration flag. If no service configuration is specified, and this flag is not specified, "
               "the server will listen on 127.0.0.1 on its default port (service dependent).");
@@ -19,23 +19,23 @@ DEFINE_string(
     "for this service, then the server will listen on 127.0.0.1 on its default port (service dependent).");
 
 namespace tvsc::service::configuration {
-std::string determine_service_addr(std::string_view service_name, std::string_view bind_addr,
+std::string determine_service_addr(std::string_view service_name, std::string_view end_point,
                                    const ServiceConfiguration& service_configuration, std::string_view default_value) {
-  if (!bind_addr.empty()) {
-    return std::string{bind_addr};
+  if (!end_point.empty()) {
+    return std::string{end_point};
   } else {
     if (service_configuration.contains(service_name)) {
       const ServiceDescriptor& descriptor{service_configuration.get(service_name)};
-      return descriptor.bind_addr();
+      return descriptor.end_point();
     }
   }
 
   return std::string{default_value};
 }
 
-std::string determine_service_addr(std::string_view service_name, std::string_view bind_addr,
+std::string determine_service_addr(std::string_view service_name, std::string_view end_point,
                                    const std::filesystem::path& service_map_location, std::string_view default_value) {
-  return determine_service_addr(service_name, bind_addr, ServiceConfiguration::load(service_map_location),
+  return determine_service_addr(service_name, end_point, ServiceConfiguration::load(service_map_location),
                                 default_value);
 }
 

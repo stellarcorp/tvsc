@@ -56,7 +56,7 @@ message ServiceDescriptor {
    * The hostname and port (e.g. "localhost:80") where the service is listening. Note that multiple services may use the
    * same bind address, as a given server might provide multiple services and use a single port to do it.
    */
-  string bind_addr = 2;
+  string end_point = 2;
   ServiceType type = 3;
   /**
    * Fully-qualified name of the service as defined in gRPC reflection (e.g. <package>.<service>[.<method>] or
