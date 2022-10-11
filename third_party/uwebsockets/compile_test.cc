@@ -1,3 +1,5 @@
+#include <string_view>
+
 #include "App.h"
 #include "gtest/gtest.h"
 
@@ -17,10 +19,10 @@ TEST(uWebSockets, CanCompile) {
           "/*",
           {/* Settings */
            .compression = uWS::CompressOptions(uWS::DEDICATED_COMPRESSOR_4KB | uWS::DEDICATED_DECOMPRESSOR),
-           .maxPayloadLength = 100 * 1024 * 1024,
+           .maxPayloadLength = 4 * 1024,
            .idleTimeout = 16,
-           .maxBackpressure = 100 * 1024 * 1024,
-           .closeOnBackpressureLimit = false,
+           .maxBackpressure = 4 * 1024,
+           .closeOnBackpressureLimit = true,
            .resetIdleTimeoutOnSend = false,
            .sendPingsAutomatically = true,
            /* Handlers */

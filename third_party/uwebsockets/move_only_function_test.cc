@@ -1,3 +1,5 @@
+#include <string>
+
 #include "App.h"
 #include "gtest/gtest.h"
 
