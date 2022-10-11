@@ -18,6 +18,7 @@ cc_library(
     deps = [
         ":service_descriptor_cc_proto",
         "//third_party/gflags",
+        "//third_party/glog",
     ],
 )
 

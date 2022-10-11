@@ -2,9 +2,68 @@ syntax = "proto3";
 
 package tvsc.service.configuration;
 
+/**
+ * ServiceType tells a proxy how to call this service and how to serve that service to clients, such as the web
+ * browser. The exact approach a proxy takes is dependent on the type of proxy, but for HTTP reverse proxies, RPC uses
+ * HTTP PUT/POST, RPC_READ_ONLY and STATIC_CONTENT use HTTP GET, and STREAM uses web sockets.
+ */
+enum ServiceType {
+  /**
+   *  Default type. RPC service will not change state based on a request. Example: service that provides status
+   * information.
+   */
+  RPC_READ_ONLY = 0;
+
+  /*
+   * RPC service may change state due to a request. Example: service that moves a gimbal for a camera or antenna.
+   */
+  RPC = 1;
+
+  /**
+   * Service where the service streams data to the client. Example: a service that streams telemetry data from a rocket.
+   */
+  STREAM_SERVER = 2;
+
+  /**
+   * Service where the client streams data to the server. Example: a client that uploads large files to the server.
+   */
+  STREAM_CLIENT = 3;
+
+  /**
+   * Bi-directional stream. Both client and service stream data to each other. Example: a video transcoding service --
+   * frames are sent from the client to the server; the server changes the encoding of the frames; and the server
+   * streams the transcoded frames back to the client.
+   */
+  STREAM_BIDI = 4;
+
+  /**
+   * HTML, Javascript, CSS, etc.
+   */
+  STATIC_CONTENT = 5;
+
+  /**
+   * Service that can proxy requests to multiple other services.
+   */
+  PROXY = 6;
+}
+
 message ServiceDescriptor {
+  /**
+   * Short, human-readable name of the service.
+   */
   string name = 1;
+  /**
+   * The hostname and port (e.g. "localhost:80") where the service is listening. Note that multiple services may use the
+   * same bind address, as a given server might provide multiple services and use a single port to do it.
+   */
   string bind_addr = 2;
+  ServiceType type = 3;
+  /**
+   * Fully-qualified name of the service as defined in gRPC reflection (e.g. <package>.<service>[.<method>] or
+   * <package>.<type>). See the gRPC reflection documentation for more information:
+   * https://github.com/grpc/grpc/blob/master/src/proto/grpc/reflection/v1alpha/reflection.proto
+   */
+  string fq_service_name = 4;
 }
 
 message ServiceDescriptors {

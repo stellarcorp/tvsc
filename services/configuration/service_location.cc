@@ -5,6 +5,7 @@
 #include <string_view>
 
 #include "services/configuration/service_configuration.h"
+#include "services/configuration/service_descriptor.pb.h"
 
 DEFINE_string(bind_addr, "",
               "address:port to listen on. This flag overrides the value in service configuration, as specified by the "
@@ -23,9 +24,9 @@ std::string determine_service_addr(std::string_view service_name, std::string_vi
   if (!bind_addr.empty()) {
     return std::string{bind_addr};
   } else {
-    std::string result{service_configuration.lookup_bind_addr(service_name)};
-    if (!result.empty()) {
-      return result;
+    if (service_configuration.contains(service_name)) {
+      const ServiceDescriptor& descriptor{service_configuration.get(service_name)};
+      return descriptor.bind_addr();
     }
   }
 
