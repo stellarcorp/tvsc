@@ -12,7 +12,7 @@ namespace tvsc::service::hello {
 
 std::string get_hello_message(const std::string& name) {
   using std::to_string;
-  HelloClient client(get_hello_service_socket_address());
+  HelloClient client{};
   HelloReply reply{};
   grpc::Status status = client.call(name, &reply);
   if (status.ok()) {
