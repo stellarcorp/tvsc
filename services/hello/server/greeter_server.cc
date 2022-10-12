@@ -31,7 +31,7 @@ void run_server() {
   grpc::EnableDefaultHealthCheckService(true);
   ServerBuilder builder;
 
-  const std::string bind_addr{get_hello_service_bind_addr()};
+  const std::string bind_addr{get_hello_service_socket_address()};
   builder.AddListeningPort(bind_addr, grpc::InsecureServerCredentials());
 
   builder.RegisterService(&service);

@@ -7,7 +7,7 @@
 #include "gflags/gflags.h"
 #include "services/configuration/service_configuration.h"
 
-DECLARE_string(end_point);
+DECLARE_string(socket_address);
 DECLARE_string(service_configuration);
 
 namespace tvsc::service::configuration {
@@ -34,7 +34,7 @@ std::string determine_socket_address(std::string_view service_name, std::string_
 inline std::string determine_socket_address(std::string_view service_name, int default_port) {
   using std::to_string;
   const std::string default_bind{"127.0.0.1:" + to_string(default_port)};
-  return determine_socket_address(service_name, FLAGS_end_point, FLAGS_service_configuration, default_bind);
+  return determine_socket_address(service_name, FLAGS_socket_address, FLAGS_service_configuration, default_bind);
 }
 
 }  // namespace tvsc::service::configuration

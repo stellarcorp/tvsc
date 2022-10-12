@@ -7,7 +7,7 @@
 #include "services/configuration/service_configuration.h"
 #include "services/configuration/service_descriptor.pb.h"
 
-DEFINE_string(end_point, "",
+DEFINE_string(socket_address, "",
               "address:port to listen on. This flag overrides the value in service configuration, as specified by the "
               "--service_configuration flag. If no service configuration is specified, and this flag is not specified, "
               "the server will listen on 127.0.0.1 on its default port (service dependent).");

@@ -1,8 +1,21 @@
+cc_library(
+    name = "client",
+    hdrs = ["client.h"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//services/echo/common",
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/grpc",
+    ],
+)
+
 cc_binary(
     name = "echo_client",
     srcs = ["echo_client.cc"],
     visibility = ["//visibility:public"],
     deps = [
+        "client",
         "//services/echo/common",
         "//third_party/gflags",
         "//third_party/glog",
