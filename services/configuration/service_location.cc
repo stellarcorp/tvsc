@@ -4,6 +4,7 @@
 #include <string>
 #include <string_view>
 
+#include "gflags/gflags.h"
 #include "services/configuration/service_configuration.h"
 #include "services/configuration/service_descriptor.pb.h"
 
@@ -19,8 +20,10 @@ DEFINE_string(
     "for this service, then the server will listen on 127.0.0.1 on its default port (service dependent).");
 
 namespace tvsc::service::configuration {
+
 std::string determine_socket_address(std::string_view service_name, std::string_view end_point,
-                                   const ServiceConfiguration& service_configuration, std::string_view default_value) {
+                                     const ServiceConfiguration& service_configuration,
+                                     std::string_view default_value) {
   if (!end_point.empty()) {
     return std::string{end_point};
   } else {
@@ -34,9 +37,10 @@ std::string determine_socket_address(std::string_view service_name, std::string_
 }
 
 std::string determine_socket_address(std::string_view service_name, std::string_view end_point,
-                                   const std::filesystem::path& service_map_location, std::string_view default_value) {
+                                     const std::filesystem::path& service_map_location,
+                                     std::string_view default_value) {
   return determine_socket_address(service_name, end_point, ServiceConfiguration::load(service_map_location),
-                                default_value);
+                                  default_value);
 }
 
 }  // namespace tvsc::service::configuration
