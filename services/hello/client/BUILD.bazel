@@ -2,7 +2,6 @@ cc_library(
     name = "client",
     hdrs = [
         "client.h",
-        "http_client.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
