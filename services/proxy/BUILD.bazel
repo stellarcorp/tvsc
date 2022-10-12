@@ -1,0 +1,54 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
+load("//platforms:platform.bzl", "arch_name")
+load("//services:version.bzl", "tarball_name", "version_string")
+
+cc_binary(
+    name = "tvsc_proxy",
+    srcs = [
+        "tvsc_proxy.cc",
+    ],
+    deps = [
+        "//services/hello/client:web_socket_rpc_client",
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/grpc",
+        "//third_party/uwebsockets",
+    ],
+)
+
+pkg_files(
+    name = "binaries",
+    testonly = True,
+    srcs = [
+        ":tvsc_proxy",
+    ],
+    attributes = pkg_attributes(
+        mode = "0755",
+    ),
+    prefix = "usr/bin",
+)
+
+PACKAGE_NAME = "tvsc-proxy"
+
+pkg_tar(
+    name = "tarball",
+    testonly = True,
+    srcs = [
+        ":binaries",
+    ],
+    package_file_name = tarball_name(PACKAGE_NAME),
+)
+
+pkg_deb(
+    name = "deb",
+    testonly = True,
+    architecture = arch_name(),
+    data = ":tarball",
+    description = "Reverse network proxy package from the Virtual Tower system from TVSC",
+    maintainer = "info@stellarcorp.tv",
+    package = PACKAGE_NAME,
+    version = version_string(),
+    visibility = ["//visibility:public"],
+)
