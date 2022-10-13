@@ -3,19 +3,29 @@ load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
 load("//platforms:platform.bzl", "arch_name")
 load("//services:version.bzl", "tarball_name", "version_string")
+load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_js_library")
 
 filegroup(
-    name = "app",
+    name = "static",
     srcs = [
         "index.html",
     ],
     visibility = ["//visibility:public"],
 )
 
+closure_js_binary(
+    name = "virtual_tower_js",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//services/hello/common:hello_pb_js",
+    ],
+)
+
 pkg_files(
     name = "app_files",
     srcs = [
-        ":app",
+        ":static",
+        ":virtual_tower_js",
     ],
     attributes = pkg_attributes(
         group = "nogroup",
