@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package tvsc.service.datetime;
+
+service Datetime {
+  rpc get_datetime(DatetimeRequest) returns (DatetimeReply);
+}
+
+message DatetimeRequest {
+  enum Precision {
+    MILLISECOND = 0;
+    MICROSECOND = 1;
+    NANOSECOND = 2;
+    SECOND = 3;
+    MINUTE = 4;
+    HOUR = 5;
+    DAY = 6;
+    WEEK = 7;
+    MONTH = 8;
+    YEAR = 9;
+  }
+
+  Precision precision = 1;
+}
+
+message DatetimeReply {
+  int64 datetime = 1;
+}

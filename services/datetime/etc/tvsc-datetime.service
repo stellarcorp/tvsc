@@ -1,0 +1,14 @@
+[Unit]
+Description=TVSC Datetime
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/datetime_server
+Type=simple
+KillMode=mixed
+Restart=on-failure
+LimitRTPRIO=99
+
+[Install]
+WantedBy=multi-user.target
