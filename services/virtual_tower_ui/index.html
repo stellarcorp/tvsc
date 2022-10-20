@@ -2,39 +2,143 @@
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.slim.min.js"></script>
 
+    <style>
+      .panel {
+	    border-radius: 25px;
+	    border: 2px solid #303030;
+	    padding: 20px;
+	    width: 400px;
+	    height: 300px;
+	    margin: 20px;
+	    display: inline-block;
+      }
+    </style>
+
     <script type = "text/javascript">
-         function CallHello(msg) {
-            if ("WebSocket" in window) {
-               var ws = new WebSocket("ws://localhost:50000/service/hello");
+      web_sockets = {};
+      datetime_interval_id = -1;
 
-               ws.onopen = function() {
-                  ws.send(msg);
-               };
+      function CreateHelloSocket() {
+	  var ws = new WebSocket("ws://localhost:50050/service/hello");
 
-               ws.onmessage = function (evt) {
-                   var received_msg = evt.data;
-		   $("#reply").text(received_msg);
-               };
+          ws.onmessage = function (evt) {
+              var received_msg = evt.data;
+	      $("#hello_reply").text(received_msg);
+          };
 
-               ws.onclose = function() {
-		   // Ignore.
-               };
-            } else {
-               // The browser doesn't support WebSocket
-               alert("WebSocket NOT supported by your Browser!");
-	    }
-         }
-      </script>
-    </head>
-  <body>
+	  return ws;
+      }
 
-    <h1>Hello, world!</h1>
-    <form action="javascript:CallHello($('#name').val())">
-      <input type="text" id="name" name="name" value="world"/>
-      <input type="submit" value="Send"/>
-    </form>
+      function CreateEchoSocket() {
+	  var ws = new WebSocket("ws://localhost:50050/service/echo");
 
-    <div id="reply">
+          ws.onmessage = function (evt) {
+              var received_msg = evt.data;
+	      $("#echo_reply").text(received_msg);
+          };
+
+	  return ws;
+      }
+
+      function ChangeDatetimeButtonToStop() {
+	  $('#datetime_button').html("Pause")
+	  $('#datetime_button').on('click.stop', function() {
+	      StopDatetimeRequests();
+	      $('#datetime_button').off('click.stop');
+	  });
+      }
+
+      function ChangeDatetimeButtonToStart() {
+	  $('#datetime_button').html("Resume")
+	  $('#datetime_button').on('click.start', function() {
+	      StartDatetimeRequests();
+	      $('#datetime_button').off('click.start');
+	  });
+      }
+      
+      function StartDatetimeRequests() {
+	  datetime_interval_id = window.setInterval(function(){
+	      web_sockets["datetime"].send("");
+	  }, 1);
+	  ChangeDatetimeButtonToStop();
+      }
+
+      function StopDatetimeRequests() {
+	  window.clearInterval(datetime_interval_id);
+	  datetime_interval_id = -1;
+	  ChangeDatetimeButtonToStart();
+      }
+
+      function CreateDatetimeSocket() {
+	  var ws = new WebSocket("ws://localhost:50050/service/datetime");
+
+	  ws.onopen = function() {
+	      StartDatetimeRequests();
+	  };
+
+          ws.onmessage = function (evt) {
+              var received_msg = evt.data;
+	      $("#datetime_reply").text(received_msg);
+          };
+
+	  ws.onclose = function() {
+	      StopDatetimeRequests();
+	  }
+
+	  return ws;
+      }
+      
+      function CreateWebSockets() {
+          if (!("WebSocket" in window)) {
+	      // The browser doesn't support WebSocket
+	      alert("WebSocket NOT supported by your Browser!");
+	  } else {
+              web_sockets["hello"] = CreateHelloSocket();
+              web_sockets["echo"] = CreateEchoSocket();
+              web_sockets["datetime"] = CreateDatetimeSocket();
+	  }
+      }
+
+      
+      function CallHello(name) {
+	  web_sockets["hello"].send(name);
+      }
+
+      function CallEcho(msg) {
+	  web_sockets["echo"].send(msg);
+      }
+    </script>
+  </head>
+  <body onpageshow="CreateWebSockets()">
+
+    <div class="panel">
+      <h1>Hello, world!</h1>
+      <form action="javascript:CallHello($('#hello_name').val())">
+	<input type="text" id="hello_name" value="world"/>
+	<input type="submit" value="Send"/>
+      </form>
+
+      <div id="hello_reply">
+      </div>
     </div>
+
+    <div class="panel">
+      <h1>Echo</h1>
+      <form action="javascript:CallEcho($('#echo_message').val())">
+	<input type="text" id="echo_message" value=""/>
+	<input type="submit" value="Send"/>
+      </form>
+
+      <div id="echo_reply">
+      </div>
+    </div>
+
+    <div class="panel">
+      <h1>Time</h1>
+      <span id="datetime_reply">
+      </span>
+      <button id="datetime_button"></button>
+    </div>
+
   </body>
 </html>

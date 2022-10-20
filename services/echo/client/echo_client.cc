@@ -11,7 +11,7 @@
 namespace tvsc::service::echo {
 
 std::string echo_message(const std::string& msg) {
-  EchoClient client(get_echo_service_bind_addr());
+  EchoClient client(get_echo_service_socket_address());
   EchoReply reply{};
   grpc::Status status = client.call(msg, &reply);
   if (status.ok()) {

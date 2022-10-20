@@ -13,6 +13,14 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = "conf",
+    srcs = [
+        ":etc/http.conf",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 closure_js_binary(
     name = "virtual_tower_js",
     visibility = ["//visibility:public"],
@@ -47,9 +55,9 @@ pkg_files(
 )
 
 pkg_files(
-    name = "conf_file",
+    name = "conf_files",
     srcs = [
-        ":etc/http.conf",
+        ":conf",
     ],
     attributes = pkg_attributes(
         group = "nogroup",
@@ -65,7 +73,7 @@ pkg_tar(
     name = "tarball",
     srcs = [
         ":app_files",
-        ":conf_file",
+        ":conf_files",
         ":systemd_files",
     ],
     package_file_name = tarball_name(PACKAGE_NAME),

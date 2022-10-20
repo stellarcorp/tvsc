@@ -3,19 +3,22 @@
 
 #include "App.h"
 #include "glog/logging.h"
+#include "grpcpp/grpcpp.h"
 #include "services/datetime/client/client.h"
 
 namespace tvsc::service::datetime {
 
 template <bool SSL>
 void ws_message(uWS::WebSocket<SSL, true, DatetimeClient> *ws, std::string_view message, uWS::OpCode op) {
-  LOG(INFO) << "datetime::ws_message() -- message: '" << message << "', op: " << op;
+  using std::to_string;
+  DLOG_EVERY_N(INFO, 100) << "datetime::ws_message() -- message: '" << message << "', op: " << op;
   DatetimeClient *client = static_cast<DatetimeClient *>(ws->getUserData());
   DatetimeReply reply{};
-  grpc::Status status = client->call(std::string{message}, &reply);
+  grpc::Status status = client->call(&reply);
   if (status.ok()) {
-    ws->send(reply.msg(), op);
+    ws->send(to_string(reply.datetime()), uWS::OpCode::TEXT);
   } else {
+    LOG(WARNING) << "RPC failed -- " << status.error_code() << ": " << status.error_message();
     ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " + status.error_message(),
              uWS::OpCode::TEXT);
   }

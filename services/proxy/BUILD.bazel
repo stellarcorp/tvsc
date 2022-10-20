@@ -10,6 +10,8 @@ cc_binary(
         "tvsc_proxy.cc",
     ],
     deps = [
+        "//services/datetime/client:web_socket_rpc_client",
+        "//services/echo/client:web_socket_rpc_client",
         "//services/hello/client:web_socket_rpc_client",
         "//third_party/gflags",
         "//third_party/glog",
@@ -51,4 +53,17 @@ pkg_deb(
     package = PACKAGE_NAME,
     version = version_string(),
     visibility = ["//visibility:public"],
+)
+
+sh_binary(
+    name = "run_proxy",
+    srcs = ["run_proxy.sh"],
+    data = [
+        ":tvsc_proxy",
+        "//services/datetime/server:datetime_server",
+        "//services/echo/server:echo_server",
+        "//services/hello/server:greeter_server",
+        "//services/virtual_tower_ui:static",
+        "//services/virtual_tower_ui:conf",
+    ],
 )

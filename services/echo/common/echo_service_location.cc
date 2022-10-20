@@ -6,7 +6,7 @@
 
 namespace tvsc::service::echo {
 
-std::string get_echo_service_bind_addr() {
+std::string get_echo_service_socket_address() {
   return configuration::determine_socket_address(ECHO_SERVICE_NAME, ECHO_SERVICE_DEFAULT_PORT);
 }
 

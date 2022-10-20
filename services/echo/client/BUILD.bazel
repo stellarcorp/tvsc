@@ -10,6 +10,22 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "web_socket_rpc_client",
+    hdrs = [
+        "web_socket_rpc_client.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":client",
+        "//services/echo/common",
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/grpc",
+        "//third_party/uwebsockets",
+    ],
+)
+
 cc_binary(
     name = "echo_client",
     srcs = ["echo_client.cc"],

@@ -49,14 +49,15 @@ void ws_open(uWS::WebSocket<SSL, true, HelloClient> *ws) {
 }
 
 template <bool SSL>
-void ws_message(uWS::WebSocket<SSL, true, HelloClient> *ws, std::string_view message, uWS::OpCode op) {
-  LOG(INFO) << "hello::ws_message() -- message: '" << message << "', op: " << op;
+void ws_message(uWS::WebSocket<SSL, true, HelloClient> *ws, std::string_view name, uWS::OpCode op) {
+  LOG(INFO) << "hello::ws_message() -- name: '" << name << "', op: " << op;
   HelloClient *client = static_cast<HelloClient *>(ws->getUserData());
   HelloReply reply{};
-  grpc::Status status = client->call(std::string{message}, &reply);
+  grpc::Status status = client->call(std::string{name}, &reply);
   if (status.ok()) {
     ws->send(reply.msg(), op);
   } else {
+    LOG(WARNING) << "RPC failed -- " << status.error_code() << ": " << status.error_message();
     ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " + status.error_message(),
              uWS::OpCode::TEXT);
   }
