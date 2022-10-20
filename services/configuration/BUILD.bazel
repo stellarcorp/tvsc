@@ -8,6 +8,7 @@ cc_library(
         "service_location.cc",
     ],
     hdrs = [
+        "ports.h",
         "service_configuration.h",
         "service_location.h",
     ],

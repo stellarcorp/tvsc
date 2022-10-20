@@ -2,10 +2,12 @@
 
 #include <string>
 
+#include "services/configuration/ports.h"
+
 namespace tvsc::service::echo {
 
 const char* const ECHO_SERVICE_NAME{"echo"};
-const int ECHO_SERVICE_DEFAULT_PORT{50051};
+constexpr int ECHO_SERVICE_DEFAULT_PORT{static_cast<int>(configuration::DefaultPort::ECHO_SERVICE)};
 
 std::string get_echo_service_bind_addr();
 
