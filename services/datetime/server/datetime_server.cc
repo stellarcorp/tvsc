@@ -20,7 +20,7 @@ namespace tvsc::service::datetime {
 
 class DatetimeServiceImpl final : public Datetime::Service {
   Status get_datetime(ServerContext* context, const DatetimeRequest* request, DatetimeReply* reply) override {
-    using Clock = std::chrono::steady_clock;
+    using Clock = std::chrono::system_clock;
 
     constexpr int32_t SECONDS_IN_DAY{24 * 60 * 60};
     constexpr int32_t SECONDS_IN_WEEK{7 * SECONDS_IN_DAY};
@@ -81,6 +81,7 @@ class DatetimeServiceImpl final : public Datetime::Service {
         LOG(WARNING) << "Unrecognized precision value in request";
         return Status{StatusCode::INVALID_ARGUMENT, "Unrecognized precision value in request"};
     }
+    LOG(INFO) << "Returning count: " << count;
     reply->set_datetime(count);
     return Status::OK;
   }
