@@ -13,6 +13,7 @@ cc_binary(
         "//services/datetime/client:web_socket_rpc_client",
         "//services/echo/client:web_socket_rpc_client",
         "//services/hello/client:web_socket_rpc_client",
+        "//services/radio/client:web_socket_rpc_client",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/grpc",
@@ -63,7 +64,7 @@ sh_binary(
         "//services/datetime/server:datetime_server",
         "//services/echo/server:echo_server",
         "//services/hello/server:greeter_server",
-        "//services/virtual_tower_ui:static",
         "//services/virtual_tower_ui:conf",
+        "//services/virtual_tower_ui:static",
     ],
 )

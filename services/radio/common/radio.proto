@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package tvsc.service.radio;
+
+service Radio {
+  rpc radio(RadioRequest) returns (RadioReply);
+}
+
+message RadioRequest {
+  string msg = 1;
+}
+
+message RadioReply {
+  string msg = 1;
+}

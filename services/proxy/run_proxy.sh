@@ -10,6 +10,7 @@ popd
 services/hello/server/greeter_server --alsologtostderr &
 services/echo/server/echo_server --alsologtostderr &
 services/datetime/server/datetime_server --alsologtostderr &
+services/radio/server/radio_server --alsologtostderr &
 services/proxy/tvsc_proxy --alsologtostderr
 
 echo "Exiting."

@@ -1,30 +1,15 @@
-load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
 load("//platforms:platform.bzl", "arch_name")
 load("//services:version.bzl", "tarball_name", "version_string")
 
-cc_binary(
-    name = "tvsc_radio_service",
-    srcs = [
-        "main.cc",
-    ],
-    linkopts = ["-lpthread"],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//third_party/avahi",
-        "//third_party/gflags",
-        "//third_party/glog",
-        "//third_party/soapy",
-        "//third_party/soapy_remote:common",
-        "//third_party/soapy_remote:server",
-    ],
-)
-
 pkg_files(
     name = "binaries",
+    testonly = True,
     srcs = [
-        ":tvsc_radio_service",
+        "//services/radio/client:radio_client",
+        "//services/radio/server:radio_server",
     ],
     attributes = pkg_attributes(
         mode = "0755",
@@ -35,7 +20,7 @@ pkg_files(
 pkg_files(
     name = "systemd_files",
     srcs = [
-        ":etc/tvsc-radio-service.service",
+        ":etc/tvsc-radio.service",
     ],
     attributes = pkg_attributes(
         mode = "0644",
@@ -43,50 +28,29 @@ pkg_files(
     prefix = "lib/systemd/system",
 )
 
-pkg_files(
-    name = "sysctl_files",
-    srcs = [
-        ":etc/10-tvsc-radio-service.conf",
-    ],
-    attributes = pkg_attributes(
-        mode = "0644",
-    ),
-    prefix = "etc/sysctl.d",
-)
-
 PACKAGE_NAME = "tvsc-radio"
 
 pkg_tar(
     name = "tarball",
+    testonly = True,
     srcs = [
         ":binaries",
-        ":sysctl_files",
         ":systemd_files",
     ],
-    package_file_name = tarball_name(PACKAGE_NAME)
+    package_file_name = tarball_name(PACKAGE_NAME),
 )
 
 pkg_deb(
     name = "deb",
+    testonly = True,
     architecture = arch_name(),
     data = ":tarball",
-    description = "Tower-in-a-box system from TVSC",
+    description = "Radio package from the Virtual Tower system from TVSC",
     maintainer = "info@stellarcorp.tv",
-    homepage = "https://www.stellarcorp.tv/",
     package = PACKAGE_NAME,
-    preinst = "debian/tvsc_radio_service.preinst",
     postinst = "debian/tvsc_radio_service.postinst",
+    preinst = "debian/tvsc_radio_service.preinst",
     prerm = "debian/tvsc_radio_service.prerm",
     version = version_string(),
     visibility = ["//visibility:public"],
-    depends = [
-        "libsoapysdr0.7 (>= 0.7)",
-        "libavahi-client3 (>= 0.7-4)",
-    ],
-    suggests = [
-        "soapysdr0.7-module-rtlsdr",
-    ],
-    replaces = [
-        PACKAGE_NAME + "(<= " + version_string() +")",
-    ],
 )

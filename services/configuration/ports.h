@@ -10,6 +10,7 @@ enum class DefaultPort : int {
   ECHO_SERVICE = 50052,
   VIRTUAL_TOWER_UI = 50053,
   DATETIME_SERVICE = 50054,
+  RADIO_SERVICE = 50055,
 };
 
 }  // namespace tvsc::service::configuration

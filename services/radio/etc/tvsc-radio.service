@@ -1,11 +1,12 @@
 [Unit]
-Description=TVSC Radio Service
+Description=TVSC Radio
 Wants=network-online.target
 After=network-online.target
 
 [Service]
-ExecStart=/usr/bin/tvsc_radio_service
-KillMode=process
+ExecStart=/usr/bin/radio_server
+Type=simple
+KillMode=mixed
 Restart=on-failure
 LimitRTPRIO=99
 
