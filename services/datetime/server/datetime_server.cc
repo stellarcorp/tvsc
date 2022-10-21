@@ -81,7 +81,6 @@ class DatetimeServiceImpl final : public Datetime::Service {
         LOG(WARNING) << "Unrecognized precision value in request";
         return Status{StatusCode::INVALID_ARGUMENT, "Unrecognized precision value in request"};
     }
-    LOG(INFO) << "Returning count: " << count;
     reply->set_datetime(count);
     return Status::OK;
   }
