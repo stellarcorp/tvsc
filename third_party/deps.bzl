@@ -238,28 +238,6 @@ def _load_bazel_dependencies():
             patch_cmds = ["tar xf data.tar.xz"],
         )
 
-    if not native.existing_rule("org_debian_ftp_libsoapysdr_dev"):
-        http_archive(
-            name = "org_debian_ftp_libsoapysdr_dev",
-            urls = [
-                "https://ftp.debian.org/debian/pool/main/s/soapysdr/libsoapysdr-dev_0.7.2-2_arm64.deb",
-            ],
-            sha256 = "e91c3ef6b0d49869290d3fed00849fcf0ddaa47f863a0f274b89bca66aeb279c",
-            build_file = "//third_party/soapy:libsoapysdr_dev.BUILD",
-            patch_cmds = ["tar xf data.tar.xz"],
-        )
-
-    if not native.existing_rule("org_debian_ftp_libsoapysdr"):
-        http_archive(
-            name = "org_debian_ftp_libsoapysdr",
-            urls = [
-                "https://ftp.debian.org/debian/pool/main/s/soapysdr/libsoapysdr0.7_0.7.2-2_arm64.deb",
-            ],
-            sha256 = "a89a1429c051b8861e96a967d54314a4b52278a96de6c6a5162afaf1e4cf2cfe",
-            build_file = "//third_party/soapy:libsoapysdr.BUILD",
-            patch_cmds = ["tar xf data.tar.xz"],
-        )
-
     if not native.existing_rule("com_github_grpc_grpc"):
         http_archive(
             name = "com_github_grpc_grpc",
@@ -299,6 +277,34 @@ def _load_bazel_dependencies():
             ],
             build_file = "//third_party/uwebsockets:uwebsockets.BUILD",
             strip_prefix = "uWebSockets-20.23.0",
+        )
+
+    if not native.existing_rule("com_github_osmocom_rtl_sdr"):
+        http_archive(
+            name = "com_github_osmocom_rtl_sdr",
+            urls = [
+                "https://github.com/osmocom/rtl-sdr/archive/refs/tags/0.6.0.tar.gz",
+            ],
+            build_file = "//third_party/rtl_sdr:rtl_sdr.BUILD",
+            strip_prefix = "rtl-sdr-0.6.0",
+        )
+
+    if not native.existing_rule("com_github_pothosware_soapyrtlsdr"):
+        http_archive(
+            name = "com_github_pothosware_soapyrtlsdr",
+            urls = [
+                "https://github.com/pothosware/SoapyRTLSDR/archive/refs/tags/soapy-rtl-sdr-0.3.3.tar.gz",
+            ],
+            build_file = "//third_party/soapy_rtlsdr:soapy_rtlsdr.BUILD",
+            strip_prefix = "SoapyRTLSDR-soapy-rtl-sdr-0.3.3",
+        )
+
+    if not native.existing_rule("com_gitlab_tvsc_soapysdr"):
+        http_archive(
+            name = "com_gitlab_tvsc_soapysdr",
+            urls = ["https://gitlab.com/tvsc/SoapySDR/-/archive/tvsc/SoapySDR-tvsc.zip"],
+            strip_prefix = "SoapySDR-tvsc",
+            sha256 = "c16ed2dd19bd6efd1dc62591eaa334696c7c3e92ea1c8f794592746d0f94f50c",
         )
 
 def load_dependencies():
