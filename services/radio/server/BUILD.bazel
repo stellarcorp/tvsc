@@ -1,8 +1,11 @@
 cc_binary(
     name = "tvsc-radio-service",
-    srcs = ["radio_server.cc"],
+    srcs = [
+        "radio_server.cc",
+    ],
     data = [
-        "//services/radio/server/modules",
+        "//services/radio/server/modules:dummy_radio",
+        "//services/radio/server/modules:soapy_rtlsdr",
     ],
     visibility = ["//visibility:public"],
     deps = [
@@ -21,7 +24,8 @@ cc_test(
         "module_load_test.cc",
     ],
     data = [
-        "//services/radio/server/modules",
+        "//services/radio/server/modules:dummy_radio",
+        "//services/radio/server/modules:soapy_rtlsdr",
     ],
     visibility = ["//visibility:public"],
     deps = [
