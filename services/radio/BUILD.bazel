@@ -9,7 +9,7 @@ pkg_files(
     testonly = True,
     srcs = [
         "//services/radio/client:radio_client",
-        "//services/radio/server:radio_server",
+        "//services/radio/server:tvsc-radio-service",
     ],
     attributes = pkg_attributes(
         mode = "0755",

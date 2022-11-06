@@ -1,6 +1,9 @@
 cc_binary(
-    name = "radio_server",
+    name = "tvsc-radio-service",
     srcs = ["radio_server.cc"],
+    data = [
+        "//services/radio/server/modules",
+    ],
     visibility = ["//visibility:public"],
     deps = [
         "//services/configuration",
@@ -9,5 +12,22 @@ cc_binary(
         "//third_party/glog",
         "//third_party/grpc",
         "//third_party/soapy_remote:server",
+    ],
+)
+
+cc_test(
+    name = "module_load_test",
+    srcs = [
+        "module_load_test.cc",
+    ],
+    data = [
+        "//services/radio/server/modules",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/gtest",
+        "//third_party/soapysdr",
     ],
 )

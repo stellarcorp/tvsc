@@ -54,7 +54,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//third_party/avahi",
-        "//third_party/soapy",
+        "//third_party/soapysdr",
     ],
 )
 
@@ -77,7 +77,7 @@ cc_library(
         "//third_party/avahi",
         "//third_party/gflags",
         "//third_party/glog",
-        "//third_party/soapy",
+        "//third_party/soapysdr",
     ],
 )
 

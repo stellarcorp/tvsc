@@ -1,0 +1,43 @@
+load("@bazel_skylib//lib:paths.bzl", "paths")
+load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+
+# copy_file(
+#     name = "soapy_rtlsdr",
+#     src = "//third_party/soapy_rtlsdr",
+#     out = "libsoapy_rtlsdr.so",
+#     allow_symlink = True,
+#     is_executable = True,
+# )
+
+filegroup(
+    name = "modules",
+    srcs = [
+        ":dummy_radio",
+        ":soapy_rtlsdr",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_binary(
+    name = "dummy_radio",
+    srcs = [
+        "dummy_radio.cc",
+        "dummy_radio_version.cc",
+    ],
+    linkshared = True,
+    linkstatic = False,
+    deps = [
+        "//third_party/glog",
+        "//third_party/soapysdr",
+    ],
+)
+
+cc_binary(
+    name = "soapy_rtlsdr",
+    linkshared = True,
+    linkstatic = False,
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_pothosware_soapyrtlsdr//:soapy_rtlsdr",
+    ],
+)

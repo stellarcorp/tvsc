@@ -1,4 +1,4 @@
-#include <iostream>
+#include <cstdlib>
 #include <memory>
 #include <string>
 #include <thread>
@@ -27,7 +27,7 @@ class RadioServiceImpl final : public Radio::Service {
   }
 };
 
-void run_server() {
+void run_grpc_server() {
   RadioServiceImpl service;
 
   grpc::EnableDefaultHealthCheckService(true);
@@ -46,15 +46,19 @@ void run_server() {
 
 }  // namespace tvsc::service::radio
 
+char SOAPY_SDR_PLUGIN_PATH_EXPR[]{"SOAPY_SDR_PLUGIN_PATH=services/radio/server/modules"};
+
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
 
+  putenv(SOAPY_SDR_PLUGIN_PATH_EXPR);
   std::thread soapy_protocol_handler{run_soapy_server};
-
-  tvsc::service::radio::run_server();
+  std::thread grpc_protocol_handler{tvsc::service::radio::run_grpc_server};
 
   soapy_protocol_handler.join();
+
+  //grpc_protocol_handler.join();
 
   return 0;
 }

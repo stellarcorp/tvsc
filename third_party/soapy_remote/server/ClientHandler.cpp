@@ -18,6 +18,7 @@
 #include <SoapySDR/Version.hpp>
 #include <iostream>
 #include <mutex>
+#include "glog/logging.h"
 
 //! The device factory make and unmake requires a process-wide mutex
 static std::mutex factoryMutex;
@@ -92,6 +93,8 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     SoapyRemoteCalls call;
     unpacker & call;
 
+    LOG(INFO) << "call: " << static_cast<int>(call);
+
     switch (call)
     {
 
@@ -99,15 +102,23 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_FIND:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_FIND";
         SoapySDR::Kwargs args;
         unpacker & args;
-        packer & SoapySDR::Device::enumerate(args);
+	LOG(INFO) << "SOAPY_REMOTE_FIND -- args: " << SoapySDR::KwargsToString(args);
+	SoapySDR::KwargsList results{SoapySDR::Device::enumerate(args)};
+	LOG(INFO) << "SOAPY_REMOTE_FIND -- results: ";
+	for (const auto& result : results) {
+	  LOG(INFO) << SoapySDR::KwargsToString(result);
+	}
+        packer & results;
     } break;
 
     ////////////////////////////////////////////////////////////////////
     case SOAPY_REMOTE_MAKE:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_MAKE";
         SoapySDR::Kwargs args;
         unpacker & args;
         std::lock_guard<std::mutex> lock(factoryMutex);
@@ -119,6 +130,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_UNMAKE:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_UNMAKE";
         //stop all stream threads and close streams
         if (not _streamData.empty())
         {
@@ -141,6 +153,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_HANGUP:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_HANGUP";
         packer & SOAPY_REMOTE_VOID;
     } break;
 
@@ -148,6 +161,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_GET_SERVER_ID:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_GET_SERVER_ID";
         packer & _uuid;
     } break;
 
@@ -155,6 +169,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_START_LOG_FORWARDING:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_START_LOG_FORWARDING";
         if (_logForwarder == nullptr) _logForwarder = new SoapyLogForwarder(_sock);
         packer & SOAPY_REMOTE_VOID;
     } break;
@@ -163,6 +178,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_STOP_LOG_FORWARDING:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_STOP_LOG_FORWARDING";
         if (_logForwarder != nullptr) delete _logForwarder;
         _logForwarder = nullptr;
         packer & SOAPY_REMOTE_VOID;
@@ -172,6 +188,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_GET_DRIVER_KEY:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_GET_DRIVER_KEY";
         packer & _dev->getDriverKey();
     } break;
 
@@ -179,6 +196,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_GET_HARDWARE_KEY:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_GET_HARDWARE_KEY";
         packer & _dev->getHardwareKey();
     } break;
 
@@ -186,6 +204,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_GET_HARDWARE_INFO:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_GET_HARDWARE_INFO";
         auto info = _dev->getHardwareInfo();
         //insert the server version using the remote: key prefix
         info["remote:version"] = SoapyInfo::getServerVersion();
@@ -196,6 +215,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_SET_FRONTEND_MAPPING:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_SET_FRONTEND_MAPPING";
         char direction = 0;
         std::string mapping;
         unpacker & direction;
@@ -208,6 +228,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_GET_FRONTEND_MAPPING:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_GET_FRONTEND_MAPPING";
         char direction = 0;
         unpacker & direction;
         packer & _dev->getFrontendMapping(direction);
@@ -217,6 +238,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_GET_NUM_CHANNELS:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_GET_NUM_CHANNELS";
         char direction = 0;
         unpacker & direction;
         packer & int(_dev->getNumChannels(direction));
@@ -226,6 +248,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_GET_FULL_DUPLEX:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_GET_FULL_DUPLEX";
         char direction = 0;
         int channel = 0;
         unpacker & direction;
@@ -237,6 +260,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_GET_CHANNEL_INFO:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_GET_CHANNEL_INFO";
         char direction = 0;
         int channel = 0;
         unpacker & direction;
@@ -253,6 +277,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_GET_STREAM_FORMATS:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_GET_STREAM_FORMATS";
         char direction = 0;
         int channel = 0;
         unpacker & direction;
@@ -264,6 +289,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_GET_NATIVE_STREAM_FORMAT:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_NATIVE_STREAM_FORMAT";
         char direction = 0;
         int channel = 0;
         unpacker & direction;
@@ -278,6 +304,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_GET_STREAM_ARGS_INFO:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_GET_STREAM_ARGS_INFO";
         char direction = 0;
         int channel = 0;
         unpacker & direction;
@@ -289,6 +316,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_SETUP_STREAM:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_SETUP_STREAM";
         char direction = 0;
         std::string format;
         std::vector<size_t> channels;
@@ -428,6 +456,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_CLOSE_STREAM:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_CLOSE_STREAM";
         int streamId = 0;
         unpacker & streamId;
 
@@ -444,6 +473,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_ACTIVATE_STREAM:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_ACTIVATE_STREAM";
         int streamId = 0;
         int flags = 0;
         long long timeNs = 0;
@@ -461,6 +491,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_DEACTIVATE_STREAM:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_DEACTIVATE_STREAM";
         int streamId = 0;
         int flags = 0;
         long long timeNs = 0;
@@ -476,6 +507,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_SETUP_STREAM_BYPASS:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_SETUP_STREAM_BYPASS";
         char direction = 0;
         std::string format;
         std::vector<size_t> channels;
@@ -502,6 +534,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_LIST_ANTENNAS:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_LIST_ANTENNAS";
         char direction = 0;
         int channel = 0;
         unpacker & direction;
@@ -513,6 +546,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_SET_ANTENNA:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_SET_ANTENNA";
         char direction = 0;
         int channel = 0;
         std::string name;
@@ -527,6 +561,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
     case SOAPY_REMOTE_GET_ANTENNA:
     ////////////////////////////////////////////////////////////////////
     {
+      LOG(INFO) << "SOAPY_REMOTE_GET_ANTENNA";
         char direction = 0;
         int channel = 0;
         unpacker & direction;

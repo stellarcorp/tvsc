@@ -292,11 +292,13 @@ def _load_bazel_dependencies():
     if not native.existing_rule("com_github_pothosware_soapyrtlsdr"):
         http_archive(
             name = "com_github_pothosware_soapyrtlsdr",
+            sha256 = "757c3c3bd17c5a12c7168db2f2f0fd274457e65f35e23c5ec9aec34e3ef54ece",
             urls = [
                 "https://github.com/pothosware/SoapyRTLSDR/archive/refs/tags/soapy-rtl-sdr-0.3.3.tar.gz",
             ],
             build_file = "//third_party/soapy_rtlsdr:soapy_rtlsdr.BUILD",
             strip_prefix = "SoapyRTLSDR-soapy-rtl-sdr-0.3.3",
+            patches = ["//third_party/soapy_rtlsdr:module_version.cpp.patch"],
         )
 
     if not native.existing_rule("com_gitlab_tvsc_soapysdr"):

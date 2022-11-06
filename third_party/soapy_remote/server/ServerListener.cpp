@@ -45,6 +45,7 @@ void SoapyServerThreadData::handlerLoop(void)
         {
             if (done) break;
         }
+	LOG(INFO) << "Exiting handler.";
     }
     catch (const std::exception &ex)
     {

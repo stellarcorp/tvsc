@@ -1,3 +1,5 @@
+workspace(name = "com_gitlab_tvsc_tvsc")
+
 load("//third_party:deps.bzl", "load_dependencies")
 load_dependencies()
 
