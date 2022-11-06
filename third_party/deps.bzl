@@ -282,6 +282,7 @@ def _load_bazel_dependencies():
     if not native.existing_rule("com_github_osmocom_rtl_sdr"):
         http_archive(
             name = "com_github_osmocom_rtl_sdr",
+            sha256 = "ee10a76fe0c6601102367d4cdf5c26271e9442d0491aa8df27e5a9bf639cff7c",
             urls = [
                 "https://github.com/osmocom/rtl-sdr/archive/refs/tags/0.6.0.tar.gz",
             ],

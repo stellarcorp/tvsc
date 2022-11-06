@@ -10,4 +10,5 @@ cc_library(
         "@com_github_osmocom_rtl_sdr//:rtl_sdr",
         "@com_gitlab_tvsc_soapysdr//:soapy",
     ],
+    alwayslink = True,
 )
