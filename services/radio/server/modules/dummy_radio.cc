@@ -170,7 +170,15 @@ SoapySDR::KwargsList find_dummy_radio(const SoapySDR::Kwargs &args) {
   for (const auto &arg : args) {
     SoapySDR::logf(SOAPY_SDR_DEBUG, "\targ.first: %s, arg.second: %s", arg.first, arg.second);
   }
-  return SoapySDR::KwargsList{args};
+  SoapySDR::Kwargs device_info;
+  device_info["label"] = "TVSC Dummy Radio";
+  device_info["product"] = "";
+  device_info["serial"] = "";
+  device_info["manufacturer"] = "TVSC";
+  device_info["tuner"] = "RF";
+  SoapySDR::KwargsList results{};
+  results.push_back(device_info);
+  return results;
 }
 
 /***********************************************************************
