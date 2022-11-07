@@ -7,14 +7,32 @@ cc_binary(
         "//services/radio/server/modules:dummy_radio",
         "//services/radio/server/modules:soapy_rtlsdr",
     ],
+    linkopts = ["-rdynamic"],
     visibility = ["//visibility:public"],
     deps = [
+        ":soapy",
         "//services/configuration",
         "//services/radio/common",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/grpc",
         "//third_party/soapy_remote:server",
+    ],
+)
+
+cc_library(
+    name = "soapy",
+    srcs = [
+        "soapy.cc",
+    ],
+    hdrs = [
+        "soapy.h",
+    ],
+    deps = [
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/soapy_remote:server",
+        "//third_party/soapysdr",
     ],
 )
 
@@ -27,11 +45,29 @@ cc_test(
         "//services/radio/server/modules:dummy_radio",
         "//services/radio/server/modules:soapy_rtlsdr",
     ],
-    visibility = ["//visibility:public"],
     deps = [
+        ":soapy",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/gtest",
+        "//third_party/soapysdr",
+    ],
+)
+
+cc_binary(
+    name = "list_devices",
+    srcs = [
+        "list_devices.cc",
+    ],
+    data = [
+        "//services/radio/server/modules:dummy_radio",
+        "//services/radio/server/modules:soapy_rtlsdr",
+    ],
+    linkopts = ["-rdynamic"],
+    deps = [
+        ":soapy",
+        "//third_party/gflags",
+        "//third_party/glog",
         "//third_party/soapysdr",
     ],
 )

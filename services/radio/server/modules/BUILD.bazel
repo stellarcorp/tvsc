@@ -2,13 +2,11 @@ cc_binary(
     name = "dummy_radio",
     srcs = [
         "dummy_radio.cc",
-        "dummy_radio_version.cc",
     ],
     linkshared = True,
     linkstatic = False,
     visibility = ["//visibility:public"],
     deps = [
-        "//third_party/glog",
         "//third_party/soapysdr",
     ],
 )

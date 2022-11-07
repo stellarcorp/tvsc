@@ -1,3 +1,4 @@
+#include <csignal>
 #include <cstdlib>
 #include <memory>
 #include <string>
@@ -9,6 +10,7 @@
 #include "grpcpp/health_check_service_interface.h"
 #include "services/radio/common/radio.grpc.pb.h"
 #include "services/radio/common/radio_service_location.h"
+#include "services/radio/server/soapy.h"
 #include "soapy_server.h"
 
 using grpc::Server;
@@ -44,21 +46,40 @@ void run_grpc_server() {
   server->Wait();
 }
 
-}  // namespace tvsc::service::radio
+// Use a global variable for the Soapy management instance. Signal handlers must be function pointers, and this seems to
+// be the easiest way to bind a value (the soapy instance) such that it is accessible from a function pointer. Note that
+// the Soapy instance still has automatic storage duration tied to the main() function.
+static tvsc::services::radio::server::Soapy* soapy_global{nullptr};
+void shutdown_server(int signum) { soapy_global->shutdown_server(); }
 
-char SOAPY_SDR_PLUGIN_PATH_EXPR[]{"SOAPY_SDR_PLUGIN_PATH=services/radio/server/modules"};
+}  // namespace tvsc::service::radio
 
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
 
-  putenv(SOAPY_SDR_PLUGIN_PATH_EXPR);
-  std::thread soapy_protocol_handler{run_soapy_server};
+  tvsc::services::radio::server::Soapy soapy{};
+
+  LOG(INFO) << "Soapy modules:";
+  for (const auto& module : soapy.modules()) {
+    LOG(INFO) << module;
+  }
+
+  LOG(INFO) << "Soapy devices:";
+  for (const auto& device : soapy.devices()) {
+    LOG(INFO) << device;
+  }
+
+  LOG_IF(WARNING, !soapy.contains_module("libdummy_radio.so")) << "'dummy_radio' module not found";
+  LOG_IF(WARNING, !soapy.has_device("dummy_radio")) << "'dummy_radio' device not found";
+
+  tvsc::service::radio::soapy_global = &soapy;
+  signal(SIGINT, tvsc::service::radio::shutdown_server);
+
+  soapy.start_server();
   std::thread grpc_protocol_handler{tvsc::service::radio::run_grpc_server};
 
-  soapy_protocol_handler.join();
-
-  //grpc_protocol_handler.join();
+  soapy.wait_on_server();
 
   return 0;
 }

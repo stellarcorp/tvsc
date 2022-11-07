@@ -29,7 +29,6 @@ cc_library(
     ),
     copts = ["-I/usr/include/libusb-1.0"],
     linkopts = ["-lusb-1.0"],
-    linkstatic = True,
     visibility = ["//visibility:public"],
     deps = [":rtl_sdr_hdrs"],
 )
