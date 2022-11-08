@@ -325,7 +325,7 @@ void create_registration() __attribute__((constructor));
 void create_registration() {
   static SoapySDR::Registry module_registration{"dummy_radio", &find_dummy_radio, &make_dummy_radio,
                                                 SOAPY_SDR_ABI_VERSION};
-  static SoapySDR::ModuleVersion module_version("0.8-2");
+  static SoapySDR::ModuleVersion module_version{SOAPY_SDR_ABI_VERSION};
   const std::string &current_module{getModuleLoading()};
   if (current_module.empty()) {
     SoapySDR::log(SOAPY_SDR_FATAL, "create_registration() -- current_module is empty during module registration");
