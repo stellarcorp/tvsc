@@ -6,6 +6,7 @@
 #include "SoapySDR/Logger.hpp"
 #include "SoapySDR/Modules.hpp"
 #include "SoapySDR/Registry.hpp"
+#include "SoapySDR/Time.hpp"
 
 constexpr double GAIN_MIN{0.};
 constexpr double GAIN_MAX{1.};
@@ -156,10 +157,128 @@ class DummyRadioDevice final : public SoapySDR::Device {
     return freqArgs;
   }
 
+  /*******************************************************************
+   * Sample Rate API
+   ******************************************************************/
+  void setSampleRate(const int direction, const size_t channel, const double rate) override { sample_rate_ = rate; }
+
+  double getSampleRate(const int direction, const size_t channel) const override { return sample_rate_; }
+
+  std::vector<double> listSampleRates(const int direction, const size_t channel) const override {
+    std::vector<double> results;
+
+    results.push_back(250000);
+    results.push_back(1024000);
+    results.push_back(1536000);
+    results.push_back(1792000);
+    results.push_back(1920000);
+    results.push_back(2048000);
+    results.push_back(2160000);
+    results.push_back(2560000);
+    results.push_back(2880000);
+    results.push_back(3200000);
+
+    return results;
+  }
+
+  SoapySDR::RangeList getSampleRateRange(const int direction, const size_t channel) const override {
+    SoapySDR::RangeList results;
+
+    results.push_back(SoapySDR::Range(225001, 300000));
+    results.push_back(SoapySDR::Range(900001, 3200000));
+
+    return results;
+  }
+
+  void setBandwidth(const int direction, const size_t channel, const double bw) override { bandwidth_ = bw; }
+
+  double getBandwidth(const int direction, const size_t channel) const override {
+    if (bandwidth_ == 0) {
+      // auto / full bandwidth
+      return sample_rate_;
+    }
+    return bandwidth_;
+  }
+
+  std::vector<double> listBandwidths(const int direction, const size_t channel) const override {
+    return std::vector<double>{};
+  }
+
+  SoapySDR::RangeList getBandwidthRange(const int direction, const size_t channel) const override {
+    SoapySDR::RangeList results{};
+
+    // TODO(james): Determine real values here.
+    results.push_back(SoapySDR::Range(0, 8'000'000));
+
+    return results;
+  }
+
+  /*******************************************************************
+   * Time API
+   ******************************************************************/
+
+  std::vector<std::string> listTimeSources(void) const override {
+    std::vector<std::string> results{};
+    results.push_back("sw_ticks");
+    return results;
+  }
+
+  std::string getTimeSource(void) const override { return "sw_ticks"; }
+
+  bool hasHardwareTime(const std::string &what) const override { return what == "" || what == "sw_ticks"; }
+
+  long long getHardwareTime(const std::string &what) const override {
+    return SoapySDR::ticksToTimeNs(ticks_, sample_rate_);
+  }
+
+  void setHardwareTime(const long long timeNs, const std::string &what) override {
+    ticks_ = SoapySDR::timeNsToTicks(timeNs, sample_rate_);
+  }
+
+  /*******************************************************************
+   * Settings API
+   ******************************************************************/
+
+  SoapySDR::ArgInfoList getSettingInfo(void) const override {
+    SoapySDR::ArgInfoList setArgs{};
+
+    SoapySDR::ArgInfo testModeArg{};
+
+    testModeArg.key = "testmode";
+    testModeArg.value = "false";
+    testModeArg.name = "Test Mode";
+    testModeArg.description = "Test Mode";
+    testModeArg.type = SoapySDR::ArgInfo::BOOL;
+
+    setArgs.push_back(testModeArg);
+
+    return setArgs;
+  }
+
+  void writeSetting(const std::string &key, const std::string &value) override {
+    if (key == "testmode") {
+      test_mode_ = (value == "true") ? true : false;
+      SoapySDR_logf(SOAPY_SDR_DEBUG, "Dummy radio test mode: %s", test_mode_ ? "true" : "false");
+    }
+  }
+
+  std::string readSetting(const std::string &key) const override {
+    if (key == "testmode") {
+      return test_mode_ ? "true" : "false";
+    }
+
+    SoapySDR_logf(SOAPY_SDR_WARNING, "Unknown setting '%s'", key.c_str());
+    return "";
+  }
+
  private:
   double center_frequency_{};
   double tuner_gain_{GAIN_MIN};
+  double sample_rate_{0.};
+  double bandwidth_{0.};
+  long ticks_{0};
   bool gain_mode_{false};
+  bool test_mode_{false};
 };
 
 /***********************************************************************
