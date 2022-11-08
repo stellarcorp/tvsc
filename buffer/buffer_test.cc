@@ -17,6 +17,11 @@ TEST(BufferTest, CanCreateBuffer) {
   EXPECT_EQ(128, buffer[127]);
 }
 
+TEST(BufferTest, BufferSizeMatchesTemplateParameter) {
+  Buffer<int, 128> buffer{};
+  EXPECT_EQ(128, buffer.size());
+}
+
 TEST(BufferTest, CanCreateTinyBuffer) {
   Buffer<int, 1> buffer{};
   buffer[0] = 1;
@@ -24,7 +29,7 @@ TEST(BufferTest, CanCreateTinyBuffer) {
 }
 
 TEST(BufferTest, CanCreateLargeBuffer) {
-  constexpr size_t SIZE{1'000'000};
+  constexpr size_t SIZE{10'000};
   Buffer<int, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
     buffer[i] = i;
@@ -35,7 +40,7 @@ TEST(BufferTest, CanCreateLargeBuffer) {
 }
 
 TEST(BufferTest, CanBulkReadViaCArray) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   int other[SIZE];
   Buffer<int, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
@@ -48,7 +53,7 @@ TEST(BufferTest, CanBulkReadViaCArray) {
 }
 
 TEST(BufferTest, CanBulkReadViaCArrayWithOffset) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   constexpr size_t OFFSET{SIZE / 2};
   int other[SIZE - OFFSET];
   Buffer<int, SIZE> buffer{};
@@ -62,7 +67,7 @@ TEST(BufferTest, CanBulkReadViaCArrayWithOffset) {
 }
 
 TEST(BufferTest, CanBulkReadViaStdArray) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   std::array<int, SIZE> other{};
   Buffer<int, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
@@ -75,7 +80,7 @@ TEST(BufferTest, CanBulkReadViaStdArray) {
 }
 
 TEST(BufferTest, CanBulkReadViaStdArrayWithOffset) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   constexpr size_t OFFSET{SIZE / 2};
   std::array<int, SIZE - OFFSET> other{};
   Buffer<int, SIZE> buffer{};
@@ -89,7 +94,7 @@ TEST(BufferTest, CanBulkReadViaStdArrayWithOffset) {
 }
 
 TEST(BufferTest, CanBulkWriteViaCArray) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   int other[SIZE];
   Buffer<int, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
@@ -102,7 +107,7 @@ TEST(BufferTest, CanBulkWriteViaCArray) {
 }
 
 TEST(BufferTest, CanBulkWriteViaCArrayWithOffset) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   constexpr size_t OFFSET{SIZE / 2};
   int other[SIZE - OFFSET];
   Buffer<int, SIZE> buffer{};
@@ -120,7 +125,7 @@ TEST(BufferTest, CanBulkWriteViaCArrayWithOffset) {
 }
 
 TEST(BufferTest, CanBulkWriteViaStdArray) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   std::array<int, SIZE> other{};
   Buffer<int, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
@@ -133,7 +138,7 @@ TEST(BufferTest, CanBulkWriteViaStdArray) {
 }
 
 TEST(BufferTest, CanBulkWriteViaStdArrayWithOffset) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   constexpr size_t OFFSET{SIZE / 2};
   std::array<int, SIZE - OFFSET> other{};
   Buffer<int, SIZE> buffer{};
@@ -182,6 +187,11 @@ TEST(TriviallyCopyableBufferTest, CanCreateBuffer) {
   EXPECT_EQ(128, buffer[127]);
 }
 
+TEST(TriviallyCopyableBufferTest, BufferSizeMatchesTemplateParameter) {
+  Buffer<TriviallyCopyableType, 128> buffer{};
+  EXPECT_EQ(128, buffer.size());
+}
+
 TEST(TriviallyCopyableBufferTest, CanCreateTinyBuffer) {
   Buffer<TriviallyCopyableType, 1> buffer{};
   buffer[0] = 1;
@@ -189,7 +199,7 @@ TEST(TriviallyCopyableBufferTest, CanCreateTinyBuffer) {
 }
 
 TEST(TriviallyCopyableBufferTest, CanCreateLargeBuffer) {
-  constexpr size_t SIZE{1'000'000};
+  constexpr size_t SIZE{10'000};
   Buffer<TriviallyCopyableType, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
     buffer[i] = i;
@@ -200,7 +210,7 @@ TEST(TriviallyCopyableBufferTest, CanCreateLargeBuffer) {
 }
 
 TEST(TriviallyCopyableBufferTest, CanBulkReadViaCArray) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   TriviallyCopyableType other[SIZE];
   Buffer<TriviallyCopyableType, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
@@ -213,7 +223,7 @@ TEST(TriviallyCopyableBufferTest, CanBulkReadViaCArray) {
 }
 
 TEST(TriviallyCopyableBufferTest, CanBulkReadViaCArrayWithOffset) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   constexpr size_t OFFSET{SIZE / 2};
   TriviallyCopyableType other[SIZE - OFFSET];
   Buffer<TriviallyCopyableType, SIZE> buffer{};
@@ -227,7 +237,7 @@ TEST(TriviallyCopyableBufferTest, CanBulkReadViaCArrayWithOffset) {
 }
 
 TEST(TriviallyCopyableBufferTest, CanBulkReadViaStdArray) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   std::array<TriviallyCopyableType, SIZE> other{};
   Buffer<TriviallyCopyableType, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
@@ -240,7 +250,7 @@ TEST(TriviallyCopyableBufferTest, CanBulkReadViaStdArray) {
 }
 
 TEST(TriviallyCopyableBufferTest, CanBulkReadViaStdArrayWithOffset) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   constexpr size_t OFFSET{SIZE / 2};
   std::array<TriviallyCopyableType, SIZE - OFFSET> other{};
   Buffer<TriviallyCopyableType, SIZE> buffer{};
@@ -254,7 +264,7 @@ TEST(TriviallyCopyableBufferTest, CanBulkReadViaStdArrayWithOffset) {
 }
 
 TEST(TriviallyCopyableBufferTest, CanBulkWriteViaCArray) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   TriviallyCopyableType other[SIZE];
   Buffer<TriviallyCopyableType, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
@@ -267,7 +277,7 @@ TEST(TriviallyCopyableBufferTest, CanBulkWriteViaCArray) {
 }
 
 TEST(TriviallyCopyableBufferTest, CanBulkWriteViaCArrayWithOffset) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   constexpr size_t OFFSET{SIZE / 2};
   TriviallyCopyableType other[SIZE - OFFSET];
   Buffer<TriviallyCopyableType, SIZE> buffer{};
@@ -285,7 +295,7 @@ TEST(TriviallyCopyableBufferTest, CanBulkWriteViaCArrayWithOffset) {
 }
 
 TEST(TriviallyCopyableBufferTest, CanBulkWriteViaStdArray) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   std::array<TriviallyCopyableType, SIZE> other{};
   Buffer<TriviallyCopyableType, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
@@ -298,7 +308,7 @@ TEST(TriviallyCopyableBufferTest, CanBulkWriteViaStdArray) {
 }
 
 TEST(TriviallyCopyableBufferTest, CanBulkWriteViaStdArrayWithOffset) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   constexpr size_t OFFSET{SIZE / 2};
   std::array<TriviallyCopyableType, SIZE - OFFSET> other{};
   Buffer<TriviallyCopyableType, SIZE> buffer{};
@@ -353,6 +363,11 @@ TEST(NontrivialTypeBufferTest, CanCreateBuffer) {
   EXPECT_EQ(128, buffer[127]);
 }
 
+TEST(NontrivialTypeBufferTest, BufferSizeMatchesTemplateParameter) {
+  Buffer<NontrivialType, 128> buffer{};
+  EXPECT_EQ(128, buffer.size());
+}
+
 TEST(NontrivialTypeBufferTest, CanCreateTinyBuffer) {
   Buffer<NontrivialType, 1> buffer{};
   buffer[0] = 1;
@@ -360,7 +375,7 @@ TEST(NontrivialTypeBufferTest, CanCreateTinyBuffer) {
 }
 
 TEST(NontrivialTypeBufferTest, CanCreateLargeBuffer) {
-  constexpr size_t SIZE{1'000'000};
+  constexpr size_t SIZE{10'000};
   Buffer<NontrivialType, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
     buffer[i] = i;
@@ -371,7 +386,7 @@ TEST(NontrivialTypeBufferTest, CanCreateLargeBuffer) {
 }
 
 TEST(NontrivialTypeBufferTest, CanBulkReadViaCArray) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   NontrivialType other[SIZE];
   Buffer<NontrivialType, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
@@ -384,7 +399,7 @@ TEST(NontrivialTypeBufferTest, CanBulkReadViaCArray) {
 }
 
 TEST(NontrivialTypeBufferTest, CanBulkReadViaCArrayWithOffset) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   constexpr size_t OFFSET{SIZE / 2};
   NontrivialType other[SIZE - OFFSET];
   Buffer<NontrivialType, SIZE> buffer{};
@@ -398,7 +413,7 @@ TEST(NontrivialTypeBufferTest, CanBulkReadViaCArrayWithOffset) {
 }
 
 TEST(NontrivialTypeBufferTest, CanBulkReadViaStdArray) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   std::array<NontrivialType, SIZE> other{};
   Buffer<NontrivialType, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
@@ -411,7 +426,7 @@ TEST(NontrivialTypeBufferTest, CanBulkReadViaStdArray) {
 }
 
 TEST(NontrivialTypeBufferTest, CanBulkReadViaStdArrayWithOffset) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   constexpr size_t OFFSET{SIZE / 2};
   std::array<NontrivialType, SIZE - OFFSET> other{};
   Buffer<NontrivialType, SIZE> buffer{};
@@ -425,7 +440,7 @@ TEST(NontrivialTypeBufferTest, CanBulkReadViaStdArrayWithOffset) {
 }
 
 TEST(NontrivialTypeBufferTest, CanBulkWriteViaCArray) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   NontrivialType other[SIZE];
   Buffer<NontrivialType, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
@@ -438,7 +453,7 @@ TEST(NontrivialTypeBufferTest, CanBulkWriteViaCArray) {
 }
 
 TEST(NontrivialTypeBufferTest, CanBulkWriteViaCArrayWithOffset) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   constexpr size_t OFFSET{SIZE / 2};
   NontrivialType other[SIZE - OFFSET];
   Buffer<NontrivialType, SIZE> buffer{};
@@ -456,7 +471,7 @@ TEST(NontrivialTypeBufferTest, CanBulkWriteViaCArrayWithOffset) {
 }
 
 TEST(NontrivialTypeBufferTest, CanBulkWriteViaStdArray) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   std::array<NontrivialType, SIZE> other{};
   Buffer<NontrivialType, SIZE> buffer{};
   for (size_t i = 0; i < SIZE; ++i) {
@@ -469,7 +484,7 @@ TEST(NontrivialTypeBufferTest, CanBulkWriteViaStdArray) {
 }
 
 TEST(NontrivialTypeBufferTest, CanBulkWriteViaStdArrayWithOffset) {
-  constexpr size_t SIZE{1'024};
+  constexpr size_t SIZE{256};
   constexpr size_t OFFSET{SIZE / 2};
   std::array<NontrivialType, SIZE - OFFSET> other{};
   Buffer<NontrivialType, SIZE> buffer{};

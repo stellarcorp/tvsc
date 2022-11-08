@@ -35,6 +35,8 @@ class BufferT final {
   }
 
  public:
+  constexpr size_t size() const { return NUM_ELEMENTS; }
+
   const ElementT& read(size_t index) const { return operator[](index); }
 
   void read(size_t offset, size_t count, ElementT dest[]) const {
@@ -115,6 +117,8 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
   }
 
  public:
+  constexpr size_t size() const { return NUM_ELEMENTS; }
+
   const ElementT& read(size_t index) const { return operator[](index); }
 
   void read(size_t offset, size_t count, ElementT dest[]) const {
