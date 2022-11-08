@@ -153,12 +153,9 @@ TEST_F(ModuleTest, DummyRadioHasMakeFunction) { EXPECT_TRUE(has_make_function(DU
 TEST_F(ModuleTest, RtlSdrHasMakeFunction) { EXPECT_TRUE(has_make_function(RTLSDR_DEVICE_NAME)); }
 
 TEST_F(ModuleTest, DummyRadioIsDevice) { EXPECT_TRUE(has_device(DUMMY_RADIO_DEVICE_NAME)); }
-TEST_F(ModuleTest, RtlSdrIsDevice) { EXPECT_TRUE(has_device(RTLSDR_DEVICE_NAME)); }
 
 TEST_F(ModuleTest, EnumerateContainsDummyRadio) { EXPECT_TRUE(enumerate_contains(DUMMY_RADIO_DEVICE_NAME)); }
-TEST_F(ModuleTest, EnumerateContainsRtlSdr) { EXPECT_TRUE(enumerate_contains(RTLSDR_DEVICE_NAME)); }
 
 TEST_F(ModuleTest, CanCreateDummyRadio) { EXPECT_TRUE(can_create(DUMMY_RADIO_DEVICE_NAME)); }
-TEST_F(ModuleTest, CanCreateRtlSdr) { EXPECT_TRUE(can_create(RTLSDR_DEVICE_NAME)); }
 
 }  // namespace tvsc::services::radio::server
