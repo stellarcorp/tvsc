@@ -17,7 +17,7 @@ namespace tvsc::services::radio::server {
 
 const char DUMMY_RADIO_MODULE_NAME[]{"libdummy_radio.so"};
 const char RTLSDR_MODULE_NAME[]{"libsoapy_rtlsdr.so"};
-const char DUMMY_RADIO_DEVICE_NAME[]{"dummy_radio"};
+const char DUMMY_RADIO_DEVICE_NAME[]{"dummy_receiver"};
 const char RTLSDR_DEVICE_NAME[]{"rtlsdr"};
 
 class ModuleTest : public ::testing::Test {

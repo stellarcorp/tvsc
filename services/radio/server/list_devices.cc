@@ -21,7 +21,7 @@ void list_devices() {
 
   LOG_IF(ERROR, !soapy.contains_module("libdummy_radio.so")) << "'dummy_radio' module not found";
 
-  LOG_IF(ERROR, !soapy.has_device("dummy_radio")) << "'dummy_radio' device not found";
+  LOG_IF(ERROR, !soapy.has_device("dummy_receiver")) << "'dummy_receiver' device not found";
 }
 
 }  // namespace tvsc::services::radio::server

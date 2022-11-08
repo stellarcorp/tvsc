@@ -7,25 +7,25 @@
 #include "SoapySDR/Modules.hpp"
 #include "SoapySDR/Registry.hpp"
 #include "SoapySDR/Time.hpp"
+#include "SoapySDR/Types.hpp"
+
+namespace tvsc::services::radio::server::modules {
 
 constexpr double GAIN_MIN{0.};
 constexpr double GAIN_MAX{1.};
 
-/***********************************************************************
- * Device interface
- **********************************************************************/
-class DummyRadioDevice final : public SoapySDR::Device {
+class DummyReceiverDevice final : public SoapySDR::Device {
  public:
-  std::string getDriverKey() const override { return "dummy_radio"; }
+  std::string getDriverKey() const override { return "dummy_receiver"; }
 
-  std::string getHardwareKey() const override { return "TVSC Dummy Radio"; }
+  std::string getHardwareKey() const override { return "TVSC Dummy Receiver"; }
 
   SoapySDR::Kwargs getHardwareInfo() const override {
     SoapySDR::Kwargs args{};
 
     args["origin"] = "https://stellarcorp.tv/";
     args["index"] = "0";
-    args["label"] = "TVSC Dummy Radio";
+    args["label"] = "TVSC Dummy Receiver";
 
     return args;
   }
@@ -48,7 +48,6 @@ class DummyRadioDevice final : public SoapySDR::Device {
   /*******************************************************************
    * Antenna API
    ******************************************************************/
-
   std::vector<std::string> listAntennas(const int direction, const size_t channel) const override {
     std::vector<std::string> antennas;
     antennas.push_back("RX");
@@ -57,7 +56,7 @@ class DummyRadioDevice final : public SoapySDR::Device {
 
   void setAntenna(const int direction, const size_t channel, const std::string &name) override {
     if (direction != SOAPY_SDR_RX) {
-      throw std::runtime_error("setAntenna failed: Dummy Radio only supports RX");
+      throw std::runtime_error("setAntenna failed: Dummy Receiver only supports RX");
     }
   }
 
@@ -77,7 +76,6 @@ class DummyRadioDevice final : public SoapySDR::Device {
   /*******************************************************************
    * Gain API
    ******************************************************************/
-
   std::vector<std::string> listGains(const int direction, const size_t channel) const override {
     std::vector<std::string> results{};
     results.push_back("TUNER");
@@ -88,7 +86,7 @@ class DummyRadioDevice final : public SoapySDR::Device {
 
   void setGainMode(const int direction, const size_t channel, const bool automatic) override {
     gain_mode_ = automatic;
-    SoapySDR_logf(SOAPY_SDR_DEBUG, "Setting Dummy Radio gain mode: %s", automatic ? "Automatic" : "Manual");
+    SoapySDR_logf(SOAPY_SDR_DEBUG, "Setting Dummy Receiver gain mode: %s", automatic ? "Automatic" : "Manual");
   }
 
   bool getGainMode(const int direction, const size_t channel) const override { return gain_mode_; }
@@ -101,7 +99,7 @@ class DummyRadioDevice final : public SoapySDR::Device {
   void setGain(const int direction, const size_t channel, const std::string &name, const double value) override {
     if (name == "TUNER") {
       tuner_gain_ = value;
-      SoapySDR_logf(SOAPY_SDR_DEBUG, "Setting Dummy Radio Tuner Gain: %f", tuner_gain_);
+      SoapySDR_logf(SOAPY_SDR_DEBUG, "Setting Dummy Receiver Tuner Gain: %f", tuner_gain_);
     }
   }
 
@@ -120,7 +118,6 @@ class DummyRadioDevice final : public SoapySDR::Device {
   /*******************************************************************
    * Frequency API
    ******************************************************************/
-
   void setFrequency(const int direction, const size_t channel, const std::string &name, const double frequency,
                     const SoapySDR::Kwargs &args) override {
     if (name == "RF") {
@@ -216,7 +213,6 @@ class DummyRadioDevice final : public SoapySDR::Device {
   /*******************************************************************
    * Time API
    ******************************************************************/
-
   std::vector<std::string> listTimeSources(void) const override {
     std::vector<std::string> results{};
     results.push_back("sw_ticks");
@@ -238,7 +234,6 @@ class DummyRadioDevice final : public SoapySDR::Device {
   /*******************************************************************
    * Settings API
    ******************************************************************/
-
   SoapySDR::ArgInfoList getSettingInfo(void) const override {
     SoapySDR::ArgInfoList setArgs{};
 
@@ -257,8 +252,8 @@ class DummyRadioDevice final : public SoapySDR::Device {
 
   void writeSetting(const std::string &key, const std::string &value) override {
     if (key == "testmode") {
-      test_mode_ = (value == "true") ? true : false;
-      SoapySDR_logf(SOAPY_SDR_DEBUG, "Dummy radio test mode: %s", test_mode_ ? "true" : "false");
+      test_mode_ = (value == "true");
+      SoapySDR_logf(SOAPY_SDR_DEBUG, "Dummy receiver test mode: %s", test_mode_ ? "true" : "false");
     }
   }
 
@@ -281,16 +276,13 @@ class DummyRadioDevice final : public SoapySDR::Device {
   bool test_mode_{false};
 };
 
-/***********************************************************************
- * Find available devices
- **********************************************************************/
-SoapySDR::KwargsList find_dummy_radio(const SoapySDR::Kwargs &args) {
-  SoapySDR::log(SOAPY_SDR_DEBUG, "find_dummy_radio() -- args:");
+SoapySDR::KwargsList find_dummy_receiver(const SoapySDR::Kwargs &args) {
+  SoapySDR::log(SOAPY_SDR_DEBUG, "find_dummy_receiver() -- args:");
   for (const auto &arg : args) {
     SoapySDR::logf(SOAPY_SDR_DEBUG, "\targ.first: %s, arg.second: %s", arg.first, arg.second);
   }
   SoapySDR::Kwargs device_info;
-  device_info["label"] = "TVSC Dummy Radio";
+  device_info["label"] = "TVSC Dummy Receiver";
   device_info["product"] = "";
   device_info["serial"] = "";
   device_info["manufacturer"] = "TVSC";
@@ -300,37 +292,12 @@ SoapySDR::KwargsList find_dummy_radio(const SoapySDR::Kwargs &args) {
   return results;
 }
 
-/***********************************************************************
- * Make device instance
- **********************************************************************/
-SoapySDR::Device *make_dummy_radio(const SoapySDR::Kwargs &args) {
-  SoapySDR::log(SOAPY_SDR_DEBUG, "make_dummy_radio() -- args:");
+SoapySDR::Device *make_dummy_receiver(const SoapySDR::Kwargs &args) {
+  SoapySDR::log(SOAPY_SDR_DEBUG, "make_dummy_receiver() -- args:");
   for (const auto &arg : args) {
     SoapySDR::logf(SOAPY_SDR_DEBUG, "\targ.first: %s, arg.second: %s", arg.first, arg.second);
   }
-  return new DummyRadioDevice{};
+  return new DummyReceiverDevice{};
 }
 
-/***********************************************************************
- * Registration
- **********************************************************************/
-/***********************************************************************
- * Module loader shared data structures
- **********************************************************************/
-std::string &getModuleLoading(void);
-
-std::map<std::string, SoapySDR::Kwargs> &getLoaderResults(void);
-
-void create_registration() __attribute__((constructor));
-void create_registration() {
-  static SoapySDR::Registry module_registration{"dummy_radio", &find_dummy_radio, &make_dummy_radio,
-                                                SOAPY_SDR_ABI_VERSION};
-  static SoapySDR::ModuleVersion module_version{SOAPY_SDR_ABI_VERSION};
-  const std::string &current_module{getModuleLoading()};
-  if (current_module.empty()) {
-    SoapySDR::log(SOAPY_SDR_FATAL, "create_registration() -- current_module is empty during module registration");
-    abort();
-  } else {
-    SoapySDR::logf(SOAPY_SDR_TRACE, "create_registration() -- current_module: %s", current_module);
-  }
-}
+}  // namespace tvsc::services::radio::server::modules
