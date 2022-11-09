@@ -88,7 +88,7 @@ TEST(BufferTest, CanBulkReadViaStdArray) {
   for (size_t i = 0; i < SIZE; ++i) {
     buffer[i] = i;
   }
-  buffer.read(((size_t)0), SIZE, other);
+  buffer.read(0, SIZE, other);
   for (size_t i = 0; i < SIZE; ++i) {
     EXPECT_EQ(i, other[i]);
   }
