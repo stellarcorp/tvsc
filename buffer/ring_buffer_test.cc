@@ -8,7 +8,7 @@
 namespace tvsc::buffer {
 
 template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS>
-class SequentialDataSource final : public DataSource<ElementT, BUFFER_SIZE, NUM_BUFFERS> {
+class SequentialDataSource final : public RingBuffer<ElementT, BUFFER_SIZE, NUM_BUFFERS>::DataSource {
  private:
   ElementT prev_element_{};
   ElementT next_element_{};
@@ -52,7 +52,7 @@ class SequentialDataSource final : public DataSource<ElementT, BUFFER_SIZE, NUM_
 };
 
 template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS>
-class InspectableDataSink final : public DataSink<ElementT, BUFFER_SIZE, NUM_BUFFERS> {
+class InspectableDataSink final : public RingBuffer<ElementT, BUFFER_SIZE, NUM_BUFFERS>::DataSink {
  private:
   Buffer<ElementT, BUFFER_SIZE> buffer_{};
   bool data_available_{false};

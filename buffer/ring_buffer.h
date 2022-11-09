@@ -10,47 +10,33 @@
 namespace tvsc::buffer {
 
 template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS>
-class RingBuffer;
-
-template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS>
-class DataSource {
- public:
-  using RingBufferT = RingBuffer<ElementT, BUFFER_SIZE, NUM_BUFFERS>;
-
- private:
-  RingBufferT* ring_buffer_{nullptr};
-
- public:
-  virtual ~DataSource() = default;
-
-  RingBufferT* ring_buffer() { return ring_buffer_; }
-  void set_ring_buffer(RingBufferT& ring_buffer) { ring_buffer_ = &ring_buffer; }
-
-  virtual void signal_data_needed() = 0;
-};
-
-template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS>
-class DataSink {
- public:
-  using RingBufferT = RingBuffer<ElementT, BUFFER_SIZE, NUM_BUFFERS>;
-
- private:
-  RingBufferT* ring_buffer_{nullptr};
-
- public:
-  virtual ~DataSink() = default;
-
-  RingBufferT* ring_buffer() { return ring_buffer_; }
-  void set_ring_buffer(RingBufferT& ring_buffer) { ring_buffer_ = &ring_buffer; }
-
-  virtual void signal_data_available() = 0;
-};
-
-template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS>
 class RingBuffer final {
  public:
-  using DataSourceT = DataSource<ElementT, BUFFER_SIZE, NUM_BUFFERS>;
-  using DataSinkT = DataSink<ElementT, BUFFER_SIZE, NUM_BUFFERS>;
+  class DataSource {
+   private:
+    RingBuffer* ring_buffer_{nullptr};
+
+   public:
+    virtual ~DataSource() = default;
+
+    RingBuffer* ring_buffer() { return ring_buffer_; }
+    void set_ring_buffer(RingBuffer& ring_buffer) { ring_buffer_ = &ring_buffer; }
+
+    virtual void signal_data_needed() = 0;
+  };
+
+  class DataSink {
+   private:
+    RingBuffer* ring_buffer_{nullptr};
+
+   public:
+    virtual ~DataSink() = default;
+
+    RingBuffer* ring_buffer() { return ring_buffer_; }
+    void set_ring_buffer(RingBuffer& ring_buffer) { ring_buffer_ = &ring_buffer; }
+
+    virtual void signal_data_available() = 0;
+  };
 
  private:
   // These pointers are monotonically increasing. They count the total number of bytes written into the ring and the
@@ -64,8 +50,8 @@ class RingBuffer final {
   std::array<Buffer<ElementT, BUFFER_SIZE>, NUM_BUFFERS> buffers_{};
   std::array<std::mutex, NUM_BUFFERS> mutexes_{};
 
-  DataSourceT& source_;
-  DataSinkT& sink_;
+  DataSource& source_;
+  DataSink& sink_;
 
   void signal_data_available() {
     // If we have an mtu's worth of data, signal the sink that it can read more data.
@@ -98,7 +84,7 @@ class RingBuffer final {
   }
 
  public:
-  RingBuffer(DataSourceT& source, DataSinkT& sink) : source_(source), sink_(sink) {
+  RingBuffer(DataSource& source, DataSink& sink) : source_(source), sink_(sink) {
     source_.set_ring_buffer(*this);
     sink_.set_ring_buffer(*this);
     source_.signal_data_needed();
