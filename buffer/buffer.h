@@ -119,7 +119,7 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
   void validate_index(size_t index) const {
     if (index < 0 || index >= NUM_ELEMENTS) {
       using std::to_string;
-      throw std::out_of_range("Invalid index " + to_string(index) + " (NUM_ELEMENTS: " + to_string(NUM_ELEMENTS));
+      throw std::out_of_range("Invalid index " + to_string(index) + " (NUM_ELEMENTS: " + to_string(NUM_ELEMENTS) + ")");
     }
   }
 
