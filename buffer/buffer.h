@@ -25,7 +25,7 @@ class BufferT final {
  private:
   static_assert(NUM_ELEMENTS > 0, "Number of elements in the buffer must be positive");
 
-  ElementT elements_[NUM_ELEMENTS];
+  ElementT elements_[NUM_ELEMENTS]{};
 
   void validate_index(size_t index) const {
     if (index < 0 || index >= NUM_ELEMENTS) {
@@ -36,6 +36,13 @@ class BufferT final {
 
  public:
   constexpr size_t size() const { return NUM_ELEMENTS; }
+
+  void clear() {
+    ElementT default_element{};
+    for (size_t i = 0; i < NUM_ELEMENTS; ++i) {
+      operator[](i) = default_element;
+    }
+  }
 
   const ElementT& read(size_t index) const { return operator[](index); }
 
@@ -118,6 +125,16 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
 
  public:
   constexpr size_t size() const { return NUM_ELEMENTS; }
+
+  void clear() {
+    // ElementT is trivially copyable, but that does not mean that we can just memset the elements_ array to zero.
+    // We could however do increasingly sized memcpy's of a default initialized element for an O(ln n) process. For now,
+    // we assume that an O(n) clear() is sufficient.
+    ElementT default_element{};
+    for (size_t i = 0; i < NUM_ELEMENTS; ++i) {
+      operator[](i) = default_element;
+    }
+  }
 
   const ElementT& read(size_t index) const { return operator[](index); }
 

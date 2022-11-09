@@ -1,6 +1,7 @@
 #include "buffer/buffer.h"
 
 #include <array>
+#include <memory>
 
 #include "gtest/gtest.h"
 
@@ -39,6 +40,20 @@ TEST(BufferTest, CanCreateLargeBuffer) {
   }
 }
 
+TEST(BufferTest, IsZeroInitialized) {
+  Buffer<int, 128> buffer{};
+  for (size_t i = 0; i < buffer.size(); ++i) {
+    EXPECT_EQ(0, buffer[i]);
+  }
+}
+
+TEST(BufferTest, IsZeroInitializedWhenDynamicallyAllocated) {
+  std::unique_ptr<Buffer<int, 128>> buffer{new Buffer<int, 128>{}};
+  for (size_t i = 0; i < buffer->size(); ++i) {
+    EXPECT_EQ(0, (*buffer)[i]);
+  }
+}
+
 TEST(BufferTest, CanBulkReadViaCArray) {
   constexpr size_t SIZE{256};
   int other[SIZE];
@@ -73,7 +88,7 @@ TEST(BufferTest, CanBulkReadViaStdArray) {
   for (size_t i = 0; i < SIZE; ++i) {
     buffer[i] = i;
   }
-  buffer.read(0, SIZE, other);
+  buffer.read(((size_t)0), SIZE, other);
   for (size_t i = 0; i < SIZE; ++i) {
     EXPECT_EQ(i, other[i]);
   }
@@ -206,6 +221,20 @@ TEST(TriviallyCopyableBufferTest, CanCreateLargeBuffer) {
   }
   for (size_t i = 0; i < SIZE; ++i) {
     EXPECT_EQ(i, buffer[i]);
+  }
+}
+
+TEST(TriviallyCopyableBufferTest, IsZeroInitialized) {
+  Buffer<TriviallyCopyableType, 128> buffer{};
+  for (size_t i = 0; i < buffer.size(); ++i) {
+    EXPECT_EQ(0, buffer[i].value());
+  }
+}
+
+TEST(TriviallyCopyableBufferTest, IsZeroInitializedWhenDynamicallyAllocated) {
+  std::unique_ptr<Buffer<TriviallyCopyableType, 128>> buffer{new Buffer<TriviallyCopyableType, 128>{}};
+  for (size_t i = 0; i < buffer->size(); ++i) {
+    EXPECT_EQ(0, (*buffer)[i].value());
   }
 }
 
@@ -382,6 +411,20 @@ TEST(NontrivialTypeBufferTest, CanCreateLargeBuffer) {
   }
   for (size_t i = 0; i < SIZE; ++i) {
     EXPECT_EQ(i, buffer[i]);
+  }
+}
+
+TEST(NontrivialTypeBufferTest, IsZeroInitialized) {
+  Buffer<NontrivialType, 128> buffer{};
+  for (size_t i = 0; i < buffer.size(); ++i) {
+    EXPECT_EQ(0, buffer[i].value());
+  }
+}
+
+TEST(NontrivialTypeBufferTest, IsZeroInitializedWhenDynamicallyAllocated) {
+  std::unique_ptr<Buffer<NontrivialType, 128>> buffer{new Buffer<NontrivialType, 128>{}};
+  for (size_t i = 0; i < buffer->size(); ++i) {
+    EXPECT_EQ(0, (*buffer)[i].value());
   }
 }
 
