@@ -83,7 +83,7 @@ constexpr size_t TINY_BUFFER_SIZE{2};
 constexpr size_t TINY_NUM_BUFFERS{3};
 constexpr size_t TYPICAL_BUFFER_SIZE{1024};
 constexpr size_t TYPICAL_NUM_BUFFERS{16};
-constexpr size_t LARGE_BUFFER_SIZE{1 << 16};
+constexpr size_t LARGE_BUFFER_SIZE{1 << 14};
 constexpr size_t LARGE_NUM_BUFFERS{512};
 
 template <typename ElementT>
