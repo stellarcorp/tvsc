@@ -11,7 +11,7 @@
 #include "SoapySDR/Registry.hpp"
 #include "SoapySDR/Time.hpp"
 #include "SoapySDR/Types.hpp"
-#include "io/file_reader.h"
+#include "io/looping_file_reader.h"
 
 // getModuleLoading() is actually a private/hidden function in SoapySDR, but we use it during registration to catch a
 // common link error.
@@ -28,7 +28,7 @@ constexpr int NUM_BUFFERS{32};
 // Filename of a file containing signed 16-bit little-endian PCM data to act as a mock signal being received.
 constexpr char MOCK_RECEIVED_SIGNAL_FILENAME[]{"services/radio/server/modules/received_signal.pcm"};
 
-  //#define TLOG(...) SoapySDR::logf(SOAPY_SDR_TRACE __VA_OPT__(, ) __VA_ARGS__)
+//#define TLOG(...) SoapySDR::logf(SOAPY_SDR_TRACE __VA_OPT__(, ) __VA_ARGS__)
 #define TLOG(...) fprintf(stderr __VA_OPT__(, ) __VA_ARGS__)
 
 class DummyReceiverDevice final : public SoapySDR::Device {
@@ -407,7 +407,7 @@ class DummyReceiverDevice final : public SoapySDR::Device {
                                "' -- Only S16 is supported by the Dummy Receiver module.");
     }
 
-    stream_.reset(new tvsc::io::FileReader<short>{MOCK_RECEIVED_SIGNAL_FILENAME});
+    stream_.reset(new tvsc::io::LoopingFileReader<short>{MOCK_RECEIVED_SIGNAL_FILENAME});
     return reinterpret_cast<SoapySDR::Stream *>(stream_.get());
   }
 
@@ -440,12 +440,7 @@ class DummyReceiverDevice final : public SoapySDR::Device {
   int readStream(SoapySDR::Stream *stream, void *const *buffs, const size_t numElems, int &flags, long long &timeNs,
                  const long timeoutUs) override {
     TLOG("%s:%d DummyReceiverDevice::%s\n", __FILE__, __LINE__, __func__);
-    size_t elements_read = stream_->read(numElems, static_cast<short *>(buffs[0]));
-    if (elements_read == 0) {
-      stream_->rewind();
-      elements_read = stream_->read(numElems, static_cast<short *>(buffs[0]));
-    }
-    return static_cast<int>(elements_read);
+    return stream_->read(numElems, static_cast<short *>(buffs[0]));
   }
 
  private:
@@ -457,7 +452,7 @@ class DummyReceiverDevice final : public SoapySDR::Device {
   bool gain_mode_{false};
   bool test_mode_{false};
 
-  std::unique_ptr<tvsc::io::FileReader<short>> stream_{};
+  std::unique_ptr<tvsc::io::LoopingFileReader<short>> stream_{};
 };
 
 SoapySDR::KwargsList find_dummy_receiver(const SoapySDR::Kwargs &args) {

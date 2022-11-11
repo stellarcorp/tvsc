@@ -6,24 +6,23 @@
 #include <string_view>
 
 #include "buffer/buffer.h"
+#include "io/file_reader.h"
 
 namespace tvsc::io {
 
 template <typename ElementT>
-class FileReader final {
+class LoopingFileReader final {
  private:
-  std::filesystem::path filename_;
-  std::FILE* file_;
+  FileReader<ElementT> file_reader_;
 
  public:
-  FileReader(std::filesystem::path filename) : filename_(filename), file_(std::fopen(filename_.c_str(), "rb")) {}
-  ~FileReader() { std::fclose(file_); }
+  LoopingFileReader(std::filesystem::path filename) : file_reader_(filename) {}
 
-  size_t file_size() const { return std::filesystem::file_size(filename_) / sizeof(ElementT); }
-  size_t tell() const { return std::ftell(file_) / sizeof(ElementT); }
-  void seek(size_t position) { std::fseek(file_, position * sizeof(ElementT), SEEK_SET); }
-  void rewind() { std::rewind(file_); }
-  bool eof() const { return tell() == file_size(); }
+  size_t file_size() const { return file_reader_.file_size(); }
+
+  size_t tell() const { return file_reader_.tell(); }
+  void seek(size_t position) { file_reader_.seek(position); }
+  void rewind() { file_reader_.rewind(); }
 
   template <size_t NUM_ELEMENTS>
   size_t read(buffer::Buffer<ElementT, NUM_ELEMENTS>& buffer) {
@@ -42,7 +41,14 @@ class FileReader final {
     return read(count, buffer.data());
   }
 
-  size_t read(size_t count, ElementT* buffer) { return std::fread(buffer, sizeof(ElementT), count, file_); }
+  size_t read(size_t count, ElementT* buffer) {
+    size_t elements_read = file_reader_.read(count, buffer);
+    if (elements_read == 0 && file_reader_.eof()) {
+      rewind();
+      elements_read = file_reader_.read(count, buffer);
+    }
+    return elements_read;
+  }
 };
 
 }  // namespace tvsc::io

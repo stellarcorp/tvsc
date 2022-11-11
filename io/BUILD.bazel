@@ -3,6 +3,7 @@ cc_library(
     hdrs = [
         "file_reader.h",
         "file_data_source.h",
+        "looping_file_reader.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
@@ -13,6 +14,20 @@ cc_library(
 cc_test(
     name = "file_reader_test",
     srcs = ["file_reader_test.cc"],
+    data = [
+        "lorem_ipsum.txt",
+    ],
+    deps = [
+        ":io",
+        "//buffer",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "looping_file_reader_test",
+    srcs = ["looping_file_reader_test.cc"],
     data = [
         "lorem_ipsum.txt",
     ],
