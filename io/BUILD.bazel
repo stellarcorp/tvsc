@@ -1,0 +1,25 @@
+cc_library(
+    name = "io",
+    hdrs = [
+        "file_reader.h",
+        "file_data_source.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//buffer",
+    ],
+)
+
+cc_test(
+    name = "file_reader_test",
+    srcs = ["file_reader_test.cc"],
+    data = [
+        "lorem_ipsum.txt",
+    ],
+    deps = [
+        ":io",
+        "//buffer",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)

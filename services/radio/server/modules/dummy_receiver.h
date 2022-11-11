@@ -9,7 +9,6 @@ namespace tvsc::services::radio::server::modules {
 SoapySDR::KwargsList find_dummy_receiver(const SoapySDR::Kwargs &args);
 SoapySDR::Device *make_dummy_receiver(const SoapySDR::Kwargs &args);
 
-// Entry point for the shared library when loaded via dlopen(3).
-void create_registration() __attribute__((constructor));
+void register_dummy_receiver();
 
 }  // namespace tvsc::services::radio::server::modules

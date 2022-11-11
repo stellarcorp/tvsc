@@ -48,8 +48,12 @@ inline void log_to_glog(const SoapySDRLogLevel logLevel, const char* message) {
 
 Soapy::Soapy() {
   putenv(SOAPY_SDR_PLUGIN_PATH_EXPR);
-  //putenv(DLOPEN_BIND_NOW); // Force dlopen() to fully bind when the module is loaded. Useful for debugging link issues.
-  //SoapySDR::registerLogHandler(log_to_glog);
+  // putenv(DLOPEN_BIND_NOW); // Force dlopen() to fully bind when the module is loaded. Useful for debugging link
+  // issues.
+  SoapySDR::registerLogHandler(log_to_glog);
+
+  SoapySDR::logf(SOAPY_SDR_DEBUG, "%s:%d Soapy::Soapy() -- SoapySDR logging enabled.", __FILE__, __LINE__);
+
   SoapySDR::loadModules();
 
   for (const auto& module : modules()) {

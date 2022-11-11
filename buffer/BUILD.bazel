@@ -1,13 +1,11 @@
 cc_library(
     name = "buffer",
     hdrs = [
+        "blocking_data_sink.h",
         "buffer.h",
         "ring_buffer.h",
     ],
     visibility = ["//visibility:public"],
-    deps = [
-        "//third_party/glog",
-    ],
 )
 
 cc_test(
@@ -15,6 +13,7 @@ cc_test(
     srcs = ["buffer_test.cc"],
     deps = [
         ":buffer",
+        "//third_party/glog",
         "//third_party/gtest",
     ],
 )
@@ -24,6 +23,7 @@ cc_test(
     srcs = ["ring_buffer_test.cc"],
     deps = [
         ":buffer",
+        "//third_party/glog",
         "//third_party/gtest",
     ],
 )

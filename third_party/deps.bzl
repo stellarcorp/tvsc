@@ -262,6 +262,7 @@ def _load_bazel_dependencies():
     if not native.existing_rule("com_github_unetworking_usockets"):
         http_archive(
             name = "com_github_unetworking_usockets",
+            sha256 = "7cd756edaa70efa58137cae3ab96d8ea15febbf2c92bccbc65b2b9afc322bcff",
             urls = [
                 "https://github.com/uNetworking/uSockets/archive/d8967af421983d40422094e31c54d9f1febeea49.tar.gz",
             ],
@@ -272,6 +273,7 @@ def _load_bazel_dependencies():
     if not native.existing_rule("com_github_unetworking_uwebsockets"):
         http_archive(
             name = "com_github_unetworking_uwebsockets",
+            sha256 = "6b8ea09ab58c4c9aff0e9b7a8ada5ac142bc96ae5cc4e6a89aeaacdb94ef2fad",
             urls = [
                 "https://github.com/uNetworking/uWebSockets/archive/refs/tags/v20.23.0.tar.gz",
             ],

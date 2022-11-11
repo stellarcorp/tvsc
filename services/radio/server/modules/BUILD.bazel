@@ -1,14 +1,28 @@
+cc_library(
+    name = "dummy_radio_lib",
+    srcs = [
+        "dummy_receiver.cc",
+        "dummy_receiver.h",
+    ],
+    data = [
+        "received_signal.pcm",
+    ],
+    deps = [
+        "//io",
+        "//third_party/soapysdr",
+    ],
+)
+
 cc_binary(
     name = "dummy_radio",
     srcs = [
-        "dummy_radio.cc",
-        "dummy_radio.h",
-        "dummy_receiver.cc",
+        "dummy_radio_module.cc",
     ],
     linkshared = True,
     linkstatic = False,
     visibility = ["//visibility:public"],
     deps = [
+        ":dummy_radio_lib",
         "//third_party/soapysdr",
     ],
 )

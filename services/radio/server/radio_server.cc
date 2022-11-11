@@ -54,6 +54,8 @@ void shutdown_server(int signum) { soapy_global->shutdown_server(); }
 
 }  // namespace tvsc::service::radio
 
+std::string& getModuleLoading(void);
+
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -71,7 +73,7 @@ int main(int argc, char** argv) {
   }
 
   LOG_IF(WARNING, !soapy.contains_module("libdummy_radio.so")) << "'dummy_radio' module not found";
-  LOG_IF(WARNING, !soapy.has_device("dummy_radio")) << "'dummy_radio' device not found";
+  LOG_IF(WARNING, !soapy.has_device("dummy_receiver")) << "'dummy_receiver' device not found";
 
   tvsc::service::radio::soapy_global = &soapy;
   signal(SIGINT, tvsc::service::radio::shutdown_server);

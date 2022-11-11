@@ -24,6 +24,7 @@ class SequentialDataSource final : public RingBuffer<ElementT, BUFFER_SIZE, NUM_
   bool data_needed() const { return data_needed_; }
 
   size_t try_write(size_t num_elements) {
+    num_elements = std::min(num_elements, this->ring_buffer()->max_buffered_elements());
     size_t total_elements_written{0};
     if (data_needed_) {
       prev_element_ = next_element_;
@@ -384,7 +385,6 @@ TEST(TypicalRingBufferTest, CapsWriteAtAnMtuWorthOfData) {
 }
 
 TEST(LargeRingBufferTest, CallsDataNeededOnConstruction) {
-  LOG(INFO) << "Here";
   LargeSequentialDataSource<int> source{};
   LargeInspectableDataSink<int> sink{};
 

@@ -5,7 +5,6 @@
 #include <thread>
 
 #include "buffer/buffer.h"
-#include "glog/logging.h"
 
 namespace tvsc::buffer {
 
