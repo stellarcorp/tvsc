@@ -13,7 +13,7 @@ cache: &x86_64
       - "$BAZEL_CACHE"
       - "$BAZELISK_CACHE"
 
-x86_64-cache-hydration
+x86_64-cache-hydration:
   stage: force_cache_hydration
   cache:
     <<: *x86_64_cache
