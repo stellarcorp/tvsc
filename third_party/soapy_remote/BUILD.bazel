@@ -80,29 +80,3 @@ cc_library(
         "//third_party/soapysdr",
     ],
 )
-
-cc_test(
-    name = "soapy_remote_test",
-    srcs = [
-        "soapy_remote_test.cc",
-    ],
-    deps = [
-        ":common",
-        "//third_party/gtest",
-    ],
-)
-
-pkg_files(
-    name = "test_binaries",
-    testonly = True,
-    srcs = [
-        ":soapy_remote_test",
-    ],
-    attributes = pkg_attributes(
-        group = "tvsc",
-        mode = "0555",
-        owner = "tvsc",
-    ),
-    prefix = "bin",
-    visibility = ["//visibility:public"],
-)
