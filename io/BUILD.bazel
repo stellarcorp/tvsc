@@ -1,10 +1,11 @@
 cc_library(
     name = "io",
     hdrs = [
-        "file_reader.h",
         "file_data_source.h",
+        "file_reader.h",
         "looping_file_reader.h",
     ],
+    linkopts = ["-lstdc++fs"],
     visibility = ["//visibility:public"],
     deps = [
         "//buffer",
