@@ -19,6 +19,7 @@ x86_64-cache-hydration:
       - "$LOCAL_BAZELISK_CACHE"
   before_script:
     - mkdir -p "$CACHE_ROOT"
+    - touch "$LOCAL_CACHE_ROOT"
     - mv "$LOCAL_CACHE_ROOT" "$CACHE_ROOT"
     - rm -rf "$LOCAL_CACHE_ROOT"
   script:
@@ -33,6 +34,7 @@ x86_64-optimized-tests:
       - "$LOCAL_BAZELISK_CACHE"
   before_script:
     - mkdir -p "$CACHE_ROOT"
+    - touch "$LOCAL_CACHE_ROOT"
     - mv "$LOCAL_CACHE_ROOT" "$CACHE_ROOT"
     - rm -rf "$LOCAL_CACHE_ROOT"
   script:
@@ -40,4 +42,5 @@ x86_64-optimized-tests:
     - XDG_CACHE_HOME="$BAZELISK_CACHE" ./bazelisk-linux-amd64 --output_user_root="$BAZEL_CACHE" test -c opt //io/...
   after_script:
     - mkdir -p "$LOCAL_CACHE_ROOT"
+    - touch "$CACHE_ROOT"
     - mv "$CACHE_ROOT" "$LOCAL_CACHE_ROOT"
