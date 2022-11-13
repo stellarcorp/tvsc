@@ -11,7 +11,9 @@
 #include "SoapySDR/Registry.hpp"
 #include "SoapySDR/Time.hpp"
 #include "SoapySDR/Types.hpp"
+#include "buffer/buffer.h"
 #include "io/looping_file_reader.h"
+#include "transform/pcm_to_iq.h"
 
 // getModuleLoading() is actually a private/hidden function in SoapySDR, but we use it during registration to catch a
 // common link error.
@@ -24,6 +26,8 @@ constexpr double GAIN_MAX{1.};
 
 constexpr int BUFFER_SIZE{1024};
 constexpr int NUM_BUFFERS{32};
+
+constexpr size_t MTU{4096};
 
 // Filename of a file containing signed 16-bit little-endian PCM data to act as a mock signal being received.
 constexpr char MOCK_RECEIVED_SIGNAL_FILENAME[]{"services/radio/server/modules/received_signal.pcm"};
@@ -419,7 +423,7 @@ class DummyReceiverDevice final : public SoapySDR::Device {
   size_t getStreamMTU(SoapySDR::Stream *stream) const override {
     TLOG("%s:%d DummyReceiverDevice::%s\n", __FILE__, __LINE__, __func__);
     // Typical block size for a disk-based file. The exact number here is not too important.
-    return 4096;
+    return MTU;
   }
 
   int activateStream(SoapySDR::Stream *stream, const int flags, const long long timeNs,
@@ -440,7 +444,10 @@ class DummyReceiverDevice final : public SoapySDR::Device {
   int readStream(SoapySDR::Stream *stream, void *const *buffs, const size_t numElems, int &flags, long long &timeNs,
                  const long timeoutUs) override {
     TLOG("%s:%d DummyReceiverDevice::%s\n", __FILE__, __LINE__, __func__);
-    return stream_->read(numElems, static_cast<short *>(buffs[0]));
+    size_t elements_to_read = std::min(numElems, MTU);
+    size_t elements_read = stream_->read(elements_to_read, buffer_.data());
+    tvsc::transform::psm_s16le_to_iq(buffer_, elements_read, static_cast<std::complex<float> *>(buffs[0]));
+    return elements_read;
   }
 
  private:
@@ -452,6 +459,7 @@ class DummyReceiverDevice final : public SoapySDR::Device {
   bool gain_mode_{false};
   bool test_mode_{false};
 
+  tvsc::buffer::Buffer<short, MTU> buffer_{};
   std::unique_ptr<tvsc::io::LoopingFileReader<short>> stream_{};
 };
 

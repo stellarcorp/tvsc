@@ -8,8 +8,10 @@ cc_library(
         "received_signal.pcm",
     ],
     deps = [
+        "//buffer",
         "//io",
         "//third_party/soapysdr",
+        "//transform",
     ],
 )
 
