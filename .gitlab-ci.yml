@@ -21,6 +21,6 @@ debug-test-job:
 optimized-test-job:
   stage: test
   script:
-    - ./bazelisk-linux-amd64 --output_user_root="$BAZEL_USER_ROOT" test -c opt //third_party/gtest:gtest_test
+    - ./bazelisk-linux-amd64 --output_user_root="$BAZEL_USER_ROOT" test -c opt //...
   cache:
     <<: *x86_64_cache
