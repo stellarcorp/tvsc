@@ -251,10 +251,10 @@ def _load_bazel_dependencies():
     if not native.existing_rule("net_zlib_zlib"):
         http_archive(
             name = "net_zlib_zlib",
-            sha256 = "91844808532e5ce316b3c010929493c0244f3d37593afd6de04f71821d5136d9",
-            strip_prefix = "zlib-1.2.12",
+            sha256 = "1525952a0a567581792613a9723333d7f8cc20b87a81f920fb8bc7e3f2251428",
+            strip_prefix = "zlib-1.2.13",
             urls = [
-                "https://zlib.net/zlib-1.2.12.tar.gz",
+                "https://github.com/madler/zlib/archive/refs/tags/v1.2.13.tar.gz",
             ],
             build_file = "//third_party/zlib:zlib.BUILD",
         )
