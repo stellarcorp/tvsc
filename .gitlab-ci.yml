@@ -6,24 +6,36 @@ variables:
   CACHE_ROOT: "$CI_BUILDS_DIR/.cache"
   BAZEL_CACHE: "$CACHE_ROOT/bazel"
   BAZELISK_CACHE: "$CACHE_ROOT/bazelisk"
+  LOCAL_CACHE_ROOT: ".cache"
+  LOCAL_BAZEL_CACHE: "$LOCAL_CACHE_ROOT/bazel"
+  LOCAL_BAZELISK_CACHE: "$LOCAL_CACHE_ROOT/bazelisk"
 
 x86_64-cache-hydration:
   stage: force_cache_hydration
   cache:
     key: x86_64_cache
     paths:
-      - "$BAZEL_CACHE"
-      - "$BAZELISK_CACHE"
-  script:
-    - echo "$CACHE_ROOT"
+      - "$LOCAL_BAZEL_CACHE"
+      - "$LOCAL_BAZELISK_CACHE"
+  before_script:
+    - mkdir -p "$CACHE_ROOT"
+    - mv "$LOCAL_CACHE_ROOT" "$CACHE_ROOT"
+    - rm -rf "$LOCAL_CACHE_ROOT"
 
 x86_64-optimized-tests:
   stage: test_optimized
   cache:
     key: x86_64_cache
     paths:
-      - "$BAZEL_CACHE"
-      - "$BAZELISK_CACHE"
+      - "$LOCAL_BAZEL_CACHE"
+      - "$LOCAL_BAZELISK_CACHE"
+  before_script:
+    - mkdir -p "$CACHE_ROOT"
+    - mv "$LOCAL_CACHE_ROOT" "$CACHE_ROOT"
+    - rm -rf "$LOCAL_CACHE_ROOT"
   script:
     - find "$CACHE_ROOT" -type f
     - XDG_CACHE_HOME="$BAZELISK_CACHE" ./bazelisk-linux-amd64 --output_user_root="$BAZEL_CACHE" test -c opt //io/...
+  after_script:
+    - mkdir -p "$LOCAL_CACHE_ROOT"
+    - mv "$CACHE_ROOT" "$LOCAL_CACHE_ROOT"
