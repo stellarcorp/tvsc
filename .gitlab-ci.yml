@@ -2,7 +2,7 @@ stages:
   - test
 
 variables:
-  BAZEL_USER_ROOT: ".cache/bazel"
+  BAZEL_USER_ROOT: "../.cache/bazel"
 
 cache: &x86_64_cache
   key: x86_64
