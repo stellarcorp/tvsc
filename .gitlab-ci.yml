@@ -1,4 +1,5 @@
 stages:
+  - force_cache_hydration
   - test_optimized
 
 variables:
@@ -13,6 +14,14 @@ cache:
   - key: bazelisk_cache
     paths:
       - "$BAZELISK_CACHE"
+
+x86_64-cache-hydration
+  stage: force_cache_hydration
+  cache:
+    - key: x86_64_cache
+    - key: bazelisk_cache
+  script:
+    - echo "$CACHE_ROOT"
 
 x86_64-optimized-tests:
   stage: test_optimized
