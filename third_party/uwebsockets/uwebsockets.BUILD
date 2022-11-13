@@ -5,6 +5,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_unetworking_usockets//:usockets",
-        "@net_zlib_zlib//:zlib",
+        "@zlib//:zlib",
     ],
 )

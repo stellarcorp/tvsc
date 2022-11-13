@@ -2,7 +2,7 @@ cc_library(
     name = "zlib",
     visibility = ["//visibility:public"],
     deps = [
-        "@net_zlib_zlib//:zlib",
+        "@zlib//:zlib",
     ],
 )
 

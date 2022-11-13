@@ -248,9 +248,9 @@ def _load_bazel_dependencies():
             strip_prefix = "grpc-1.47.0",
         )
 
-    if not native.existing_rule("net_zlib_zlib"):
+    if not native.existing_rule("zlib"):
         http_archive(
-            name = "net_zlib_zlib",
+            name = "zlib",
             sha256 = "1525952a0a567581792613a9723333d7f8cc20b87a81f920fb8bc7e3f2251428",
             strip_prefix = "zlib-1.2.13",
             urls = [
