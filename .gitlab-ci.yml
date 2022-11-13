@@ -3,10 +3,10 @@ stages:
   - test_optimized
 
 variables:
-  CACHE_ROOT: "$CI_BUILDS_DIR/.cache"
-  BAZEL_CACHE: "$CACHE_ROOT/bazel"
-  BAZELISK_CACHE: "$CACHE_ROOT/bazelisk"
-  LOCAL_CACHE_ROOT: ".cache"
+  CACHE_ROOT_PARENT: "$CI_BUILDS_DIR"
+  CACHE_DIR_NAME: ".cache"
+  CACHE_ROOT: "$CACHE_ROOT_PARENT/$CACHE_DIR_NAME"
+  LOCAL_CACHE_ROOT: "$CACHE_DIR_NAME"
   LOCAL_BAZEL_CACHE: "$LOCAL_CACHE_ROOT/bazel"
   LOCAL_BAZELISK_CACHE: "$LOCAL_CACHE_ROOT/bazelisk"
 
@@ -19,8 +19,7 @@ x86_64-cache-hydration:
       - "$LOCAL_BAZELISK_CACHE"
   before_script:
     - mkdir -p "$CACHE_ROOT"
-    - touch "$LOCAL_CACHE_ROOT"
-    - mv "$LOCAL_CACHE_ROOT" "$CACHE_ROOT"
+    - if [ -f "$LOCAL_CACHE_ROOT" ]; then tar cf - "$LOCAL_CACHE_ROOT" | (cd "$CACHE_ROOT_PARENT"; tar xf -); fi
     - rm -rf "$LOCAL_CACHE_ROOT"
   script:
     - find "$CACHE_ROOT" -type f
@@ -34,13 +33,10 @@ x86_64-optimized-tests:
       - "$LOCAL_BAZELISK_CACHE"
   before_script:
     - mkdir -p "$CACHE_ROOT"
-    - touch "$LOCAL_CACHE_ROOT"
-    - mv "$LOCAL_CACHE_ROOT" "$CACHE_ROOT"
+    - if [ -f "$LOCAL_CACHE_ROOT" ]; then tar cf - "$LOCAL_CACHE_ROOT" | (cd "$CACHE_ROOT_PARENT"; tar xf -); fi
     - rm -rf "$LOCAL_CACHE_ROOT"
   script:
     - find "$CACHE_ROOT" -type f
     - XDG_CACHE_HOME="$BAZELISK_CACHE" ./bazelisk-linux-amd64 --output_user_root="$BAZEL_CACHE" test -c opt //io/...
   after_script:
-    - mkdir -p "$LOCAL_CACHE_ROOT"
-    - touch "$CACHE_ROOT"
-    - mv "$CACHE_ROOT" "$LOCAL_CACHE_ROOT"
+    - if [ -f "$CACHE_ROOT" ]; then (cd "$CACHE_ROOT_PARENT"; tar cf - "$CACHE_DIR_NAME") | tar xf -; fi
