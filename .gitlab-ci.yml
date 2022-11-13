@@ -13,7 +13,7 @@ cache: &x86_64_cache
 debug-test-job:
   stage: test
   script:
-    - ./bazelisk-linux-amd64 --output_user_root="$BAZEL_USER_ROOT" test -c dbg //gtest:gtest_test
+    - ./bazelisk-linux-amd64 --output_user_root="$BAZEL_USER_ROOT" test -c dbg //third_party/gtest:gtest_test
   cache:
     <<: *x86_64_cache
     policy: pull
@@ -21,6 +21,6 @@ debug-test-job:
 optimized-test-job:
   stage: test
   script:
-    - ./bazelisk-linux-amd64 --output_user_root="$BAZEL_USER_ROOT" test -c opt //gtest:gtest_test
+    - ./bazelisk-linux-amd64 --output_user_root="$BAZEL_USER_ROOT" test -c opt //third_party/gtest:gtest_test
   cache:
     <<: *x86_64_cache
