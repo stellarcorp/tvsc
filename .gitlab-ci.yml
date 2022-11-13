@@ -20,5 +20,5 @@ x86_64-optimized-tests:
     - key: x86_64_cache
     - key: bazelisk_cache
   script:
-    - file "$CACHE_ROOT" -type f
+    - find "$CACHE_ROOT" -type f
     - XDG_CACHE_HOME="$BAZELISK_CACHE" ./bazelisk-linux-amd64 --output_user_root="$BAZEL_CACHE" test -c opt //...
