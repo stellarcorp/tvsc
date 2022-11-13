@@ -1,8 +1,10 @@
 stages:
-  - test
+  - test_optimized
 
 variables:
-  BAZEL_USER_ROOT: "../.cache/bazel"
+  CACHE_ROOT: "../.cache"
+  BAZEL_CACHE: "$CACHE_ROOT/bazel"
+  BAZELISK_CACHE: "$CACHE_ROOT/bazelisk"
 
 cache: &x86_64_cache
   key: x86_64
@@ -11,9 +13,9 @@ cache: &x86_64_cache
   policy: pull-push
 
 x86_64-tests:
-  stage: test
+  stage: test_optimized
   script:
-    - ./bazelisk-linux-amd64 --output_user_root="$BAZEL_USER_ROOT" test -c opt //...
-    - ./bazelisk-linux-amd64 --output_user_root="$BAZEL_USER_ROOT" test -c dbg //third_party/gtest:gtest_test
+    - XDG_CACHE_HOME="$BAZELISK_CACHE" ./bazelisk-linux-amd64 --output_user_root="$BAZEL_CACHE" test -c opt //...
+    - XDG_CACHE_HOME="$BAZELISK_CACHE" ./bazelisk-linux-amd64 --output_user_root="$BAZEL_CACHE" test -c dbg //third_party/gtest:gtest_test
   cache:
     <<: *x86_64_cache
