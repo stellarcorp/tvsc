@@ -7,8 +7,8 @@ variables:
   BAZEL_CACHE: "$CACHE_ROOT/bazel"
   BAZELISK_CACHE: "$CACHE_ROOT/bazelisk"
 
-cache: &x86_64
-  - key: x86_64
+cache: &x86_64_cache
+  - key: x86_64_cache
     paths:
       - "$BAZEL_CACHE"
       - "$BAZELISK_CACHE"
