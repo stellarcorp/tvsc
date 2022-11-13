@@ -7,23 +7,23 @@ variables:
   BAZEL_CACHE: "$CACHE_ROOT/bazel"
   BAZELISK_CACHE: "$CACHE_ROOT/bazelisk"
 
-cache:
-  - key: x86_64_cache
-    paths:
-      - "$BAZEL_CACHE"
-      - "$BAZELISK_CACHE"
-
 x86_64-cache-hydration:
   stage: force_cache_hydration
   cache:
-    - key: x86_64_cache
+    key: x86_64_cache
+    paths:
+      - "$BAZEL_CACHE"
+      - "$BAZELISK_CACHE"
   script:
     - echo "$CACHE_ROOT"
 
 x86_64-optimized-tests:
   stage: test_optimized
   cache:
-    - key: x86_64_cache
+    key: x86_64_cache
+    paths:
+      - "$BAZEL_CACHE"
+      - "$BAZELISK_CACHE"
   script:
     - find "$CACHE_ROOT" -type f
-    - XDG_CACHE_HOME="$BAZELISK_CACHE" ./bazelisk-linux-amd64 --output_user_root="$BAZEL_CACHE" test -c opt //...
+    - XDG_CACHE_HOME="$BAZELISK_CACHE" ./bazelisk-linux-amd64 --output_user_root="$BAZEL_CACHE" test -c opt //io/...
