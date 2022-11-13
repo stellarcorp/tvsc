@@ -21,6 +21,8 @@ x86_64-cache-hydration:
     - mkdir -p "$CACHE_ROOT"
     - mv "$LOCAL_CACHE_ROOT" "$CACHE_ROOT"
     - rm -rf "$LOCAL_CACHE_ROOT"
+  script:
+    - find "$CACHE_ROOT" -type f
 
 x86_64-optimized-tests:
   stage: test_optimized
