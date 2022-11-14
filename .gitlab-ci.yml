@@ -3,23 +3,20 @@ default:
     name: gcr.io/bazel-public/bazel:5.3.2
     entrypoint: [""]
 
-.package_setup:
-  before_script:
-    # Add some development packages that we consider part of the OS.
-    # TODO(james): Move these to third_party deps, or consider doing custom Docker images for each
-    # toolchain, including these packages as appropriate.
-    - echo "Installing development packages"
-    - sudo apt install libssl-dev
-    - sudo apt install libavahi-client-dev
-    - echo "Development packages installed."
-
-stages:
-  - test
-
 variables:
   LOCAL_CACHE_ROOT: ".cache"
   LOCAL_BAZEL_CACHE: "$LOCAL_CACHE_ROOT/bazel"
-  LOCAL_BAZELISK_CACHE: "$LOCAL_CACHE_ROOT/bazelisk"
+
+.cache_setup:
+  before_script:
+    - mkdir -p "$LOCAL_CACHE_ROOT" "$LOCAL_BAZEL_CACHE" "$LOCAL_BAZELISK_CACHE"
+    - touch "$LOCAL_CACHE_ROOT/DO_NOT_BUILD_HERE"
+    - touch "$LOCAL_CACHE_ROOT/BUILD.bazel"
+    - touch "$LOCAL_BAZEL_CACHE/DO_NOT_BUILD_HERE"
+    - touch "$LOCAL_BAZELISK_CACHE/DO_NOT_BUILD_HERE"
+
+stages:
+  - test
 
 x86_64-optimized-tests:
   stage: test
@@ -28,11 +25,6 @@ x86_64-optimized-tests:
     paths:
       - "$LOCAL_BAZEL_CACHE"
   before_script:
-    - !reference [.package_setup, before_script]
-    - mkdir -p "$LOCAL_CACHE_ROOT" "$LOCAL_BAZEL_CACHE" "$LOCAL_BAZELISK_CACHE"
-    - touch "$LOCAL_CACHE_ROOT/DO_NOT_BUILD_HERE"
-    - touch "$LOCAL_CACHE_ROOT/BUILD.bazel"
-    - touch "$LOCAL_BAZEL_CACHE/DO_NOT_BUILD_HERE"
-    - touch "$LOCAL_BAZELISK_CACHE/DO_NOT_BUILD_HERE"
+    - !reference [.cache_setup, before_script]
   script:
-    - XDG_CACHE_HOME="$LOCAL_BAZELISK_CACHE" bazel test --disk_cache=$LOCAL_BAZEL_CACHE -c opt -- //... -//$LOCAL_CACHE_ROOT/...
+    - bazel test --disk_cache=$LOCAL_BAZEL_CACHE -c opt -- //... -//services/... -//$LOCAL_CACHE_ROOT/...
