@@ -20,6 +20,7 @@ x86_64-optimized-tests:
   before_script:
     - mkdir -p "$LOCAL_CACHE_ROOT" "$LOCAL_BAZEL_CACHE" "$LOCAL_BAZELISK_CACHE"
     - touch "$LOCAL_CACHE_ROOT/DO_NOT_BUILD_HERE"
+    - touch "$LOCAL_CACHE_ROOT/BUILD.bazel"
     - touch "$LOCAL_BAZEL_CACHE/DO_NOT_BUILD_HERE"
     - touch "$LOCAL_BAZELISK_CACHE/DO_NOT_BUILD_HERE"
   script:
