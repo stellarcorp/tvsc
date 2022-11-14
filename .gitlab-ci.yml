@@ -2,15 +2,14 @@ default:
   image:
     name: gcr.io/bazel-public/bazel:5.3.2
     entrypoint: [""]
-
-# Add some development packages that we consider part of the OS.
-# TODO(james): Move these to third_party deps, or consider doing custom Docker images for each
-# toolchain, including these packages as appropriate.
-before_script:
-  - echo "Installing development packages"
-  - apt install libssl-dev
-  - apt install libavahi-client-dev
-  - echo "Development packages installed."
+  # Add some development packages that we consider part of the OS.
+  # TODO(james): Move these to third_party deps, or consider doing custom Docker images for each
+  # toolchain, including these packages as appropriate.
+  before_script:
+    - echo "Installing development packages"
+    - apt install libssl-dev
+    - apt install libavahi-client-dev
+    - echo "Development packages installed."
 
 stages:
   - test
