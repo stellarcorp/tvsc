@@ -3,6 +3,13 @@ default:
     name: gcr.io/bazel-public/bazel:5.3.2
     entrypoint: [""]
 
+# Add some development packages that we consider part of the OS.
+# TODO(james): Move these to third_party deps, or consider doing custom Docker images for each
+# toolchain, including these packages as appropriate.
+before_script:
+  - apt install libssl-dev
+  - apt install libavahi-client-dev
+
 stages:
   - test
 
