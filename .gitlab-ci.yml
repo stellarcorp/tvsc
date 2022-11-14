@@ -3,23 +3,9 @@ stages:
   - test_optimized
 
 variables:
-  CACHE_DIR_NAME: ".cache"
-  LOCAL_CACHE_ROOT: "$CACHE_DIR_NAME"
+  LOCAL_CACHE_ROOT: ".cache"
   LOCAL_BAZEL_CACHE: "$LOCAL_CACHE_ROOT/bazel"
   LOCAL_BAZELISK_CACHE: "$LOCAL_CACHE_ROOT/bazelisk"
-
-x86_64-cache-hydration:
-  stage: force_cache_hydration
-  cache:
-    key: x86_64_cache
-    paths:
-      - "$LOCAL_BAZEL_CACHE"
-      - "$LOCAL_BAZELISK_CACHE"
-  before_script:
-    - mkdir -p "$LOCAL_CACHE_ROOT"
-    - touch "$LOCAL_CACHE_ROOT/DO_NOT_BUILD_HERE"
-  script:
-    - find "$LOCAL_CACHE_ROOT" -type f
 
 x86_64-optimized-tests:
   stage: test_optimized
@@ -33,4 +19,4 @@ x86_64-optimized-tests:
     - touch "$LOCAL_CACHE_ROOT/DO_NOT_BUILD_HERE"
   script:
     - find "$LOCAL_CACHE_ROOT" -type f
-    - XDG_CACHE_HOME="$LOCAL_BAZELISK_CACHE" ./bazelisk-linux-amd64 --output_user_root="$LOCAL_BAZEL_CACHE" test -c opt //io/...
+    - XDG_CACHE_HOME="$LOCAL_BAZELISK_CACHE" ./bazelisk-linux-amd64 --output_user_root="$LOCAL_BAZEL_CACHE" test -c opt //...
