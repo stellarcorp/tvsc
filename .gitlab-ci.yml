@@ -2,10 +2,12 @@ default:
   image:
     name: gcr.io/bazel-public/bazel:5.3.2
     entrypoint: [""]
-  # Add some development packages that we consider part of the OS.
-  # TODO(james): Move these to third_party deps, or consider doing custom Docker images for each
-  # toolchain, including these packages as appropriate.
+
+.package_setup:
   before_script:
+    # Add some development packages that we consider part of the OS.
+    # TODO(james): Move these to third_party deps, or consider doing custom Docker images for each
+    # toolchain, including these packages as appropriate.
     - echo "Installing development packages"
     - apt install libssl-dev
     - apt install libavahi-client-dev
@@ -25,7 +27,8 @@ x86_64-optimized-tests:
     key: optimized_bin_cache
     paths:
       - "$LOCAL_BAZEL_CACHE"
-  before_script:
+    before_script:
+    - !reference [.package_setup, before_script]
     - mkdir -p "$LOCAL_CACHE_ROOT" "$LOCAL_BAZEL_CACHE" "$LOCAL_BAZELISK_CACHE"
     - touch "$LOCAL_CACHE_ROOT/DO_NOT_BUILD_HERE"
     - touch "$LOCAL_CACHE_ROOT/BUILD.bazel"
