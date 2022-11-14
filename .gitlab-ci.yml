@@ -17,5 +17,6 @@ x86_64-optimized-tests:
   before_script:
     - mkdir -p "$LOCAL_CACHE_ROOT"
     - touch "$LOCAL_CACHE_ROOT/DO_NOT_BUILD_HERE"
+    - touch "$LOCAL_BAZEL_CACHE/DO_NOT_BUILD_HERE"
   script:
-    - XDG_CACHE_HOME="$LOCAL_BAZELISK_CACHE" ./bazelisk-linux-amd64 --output_base="$LOCAL_BAZEL_CACHE" test -c opt //...
+    - XDG_CACHE_HOME="$LOCAL_BAZELISK_CACHE" ./bazelisk-linux-amd64 --output_user_root="$LOCAL_BAZEL_CACHE" test -c opt //io/...
