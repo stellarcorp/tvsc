@@ -27,7 +27,7 @@ x86_64-optimized-tests:
     key: optimized_bin_cache
     paths:
       - "$LOCAL_BAZEL_CACHE"
-    before_script:
+  before_script:
     - !reference [.package_setup, before_script]
     - mkdir -p "$LOCAL_CACHE_ROOT" "$LOCAL_BAZEL_CACHE" "$LOCAL_BAZELISK_CACHE"
     - touch "$LOCAL_CACHE_ROOT/DO_NOT_BUILD_HERE"
