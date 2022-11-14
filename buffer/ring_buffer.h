@@ -8,6 +8,9 @@
 
 namespace tvsc::buffer {
 
+/**
+ * Lock-free RingBuffer with a single source and a single sink.
+ */
 template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS>
 class RingBuffer final {
  public:
