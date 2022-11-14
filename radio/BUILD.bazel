@@ -1,0 +1,17 @@
+cc_library(
+    name = "radio",
+    srcs = [
+        "dummy_receiver.cc",
+        "dummy_receiver.h",
+    ],
+    data = [
+        "received_signal.pcm",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//buffer",
+        "//io",
+        "//third_party/soapysdr",
+        "//transform",
+    ],
+)

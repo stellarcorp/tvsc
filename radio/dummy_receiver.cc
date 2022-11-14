@@ -19,7 +19,7 @@
 // common link error.
 std::string &getModuleLoading(void);
 
-namespace tvsc::services::radio::server::modules {
+namespace tvsc::radio {
 
 constexpr double GAIN_MIN{0.};
 constexpr double GAIN_MAX{1.};
@@ -505,4 +505,4 @@ void register_dummy_receiver() {
   }
 }
 
-}  // namespace tvsc::services::radio::server::modules
+}  // namespace tvsc::radio
