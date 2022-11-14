@@ -1,6 +1,5 @@
 licenses(["notice"])
 
-load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 load("@bazel_skylib//lib:selects.bzl", "selects")
 
 filegroup(

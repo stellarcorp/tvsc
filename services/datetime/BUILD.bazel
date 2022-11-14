@@ -15,6 +15,7 @@ pkg_files(
         mode = "0755",
     ),
     prefix = "usr/bin",
+    tags = ["no-cache"],
 )
 
 pkg_files(
@@ -26,6 +27,7 @@ pkg_files(
         mode = "0644",
     ),
     prefix = "lib/systemd/system",
+    tags = ["no-cache"],
 )
 
 PACKAGE_NAME = "tvsc-datetime"
@@ -38,6 +40,7 @@ pkg_tar(
         ":systemd_files",
     ],
     package_file_name = tarball_name(PACKAGE_NAME),
+    tags = ["no-cache"],
 )
 
 pkg_deb(
@@ -51,6 +54,7 @@ pkg_deb(
     postinst = "debian/tvsc_datetime_service.postinst",
     preinst = "debian/tvsc_datetime_service.preinst",
     prerm = "debian/tvsc_datetime_service.prerm",
+    tags = ["no-cache"],
     version = version_string(),
     visibility = ["//visibility:public"],
 )
