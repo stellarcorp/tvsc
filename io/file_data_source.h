@@ -8,6 +8,9 @@
 
 namespace tvsc::io {
 
+/**
+ * Ring buffer DataSource that reads data from a file.
+ */
 template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS>
 class FileDataSource final : public buffer::RingBuffer<ElementT, BUFFER_SIZE, NUM_BUFFERS>::DataSource {
  private:
