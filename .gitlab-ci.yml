@@ -9,8 +9,8 @@ default:
     # TODO(james): Move these to third_party deps, or consider doing custom Docker images for each
     # toolchain, including these packages as appropriate.
     - echo "Installing development packages"
-    - apt install libssl-dev
-    - apt install libavahi-client-dev
+    - sudo apt install libssl-dev
+    - sudo apt install libavahi-client-dev
     - echo "Development packages installed."
 
 stages:
