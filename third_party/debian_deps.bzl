@@ -9,6 +9,7 @@ def load_debian_dependencies():
         arm64_urls = [
             "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd-dev_1.4.4+dfsg-3~bpo10+1_arm64.deb",
         ],
+        arm64_sha256 = "fea90941e0ea8875737a55a5b3a538ca33b41343bb5309f17f8012f6f61f2cb4",
         x86_64_urls = [
             "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd-dev_1.4.4+dfsg-3~bpo10+1_amd64.deb",
         ],
@@ -22,6 +23,7 @@ def load_debian_dependencies():
             "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd1_1.4.4+dfsg-3~bpo10+1_arm64.deb",
         ],
         arm64_library_paths = {"libzstd": "usr/lib/aarch64-linux-gnu/libzstd.so.1.4.4"},
+        arm64_sha256 = "b1b2f11a92c2dbd60d6c63eb690dd877e9dbcfb4d3c8c33caa9595d2f7bb5945",
         x86_64_urls = [
             "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd1_1.4.4+dfsg-3~bpo10+1_amd64.deb",
         ],
@@ -36,6 +38,7 @@ def load_debian_dependencies():
         arm64_urls = [
             "https://ftp.debian.org/debian/pool/main/o/openssl/libssl-dev_1.1.1n-0+deb11u3_arm64.deb",
         ],
+        arm64_sha256 = "684bbc6061f44d58ed3133377cca902763c79a095f75d5e2458a45b9db3b1e1d",
         x86_64_urls = [
             "https://ftp.debian.org/debian/pool/main/o/openssl/libssl-dev_1.1.1n-0+deb11u3_amd64.deb",
         ],
@@ -47,7 +50,7 @@ def load_debian_dependencies():
         name = "org_debian_ftp_libssl",
         libname = "libssl1.1",
         arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1n-0+deb11u1_arm64.deb",
+            "https://ftp.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1n-0+deb11u3_arm64.deb",
         ],
         arm64_library_paths = {
             "libssl": "usr/lib/aarch64-linux-gnu/libssl.so.1.1",
@@ -55,6 +58,7 @@ def load_debian_dependencies():
             "afalg_engine": "usr/lib/aarch64-linux-gnu/engines-1.1/afalg.so",
             "padlock_engine": "usr/lib/aarch64-linux-gnu/engines-1.1/padlock.so",
         },
+        arm64_sha256 = "8d4ef5a06719fabd90a6a27729ade7b9dde1a1c923a89ba1406af6489fa7c82f",
         x86_64_urls = [
             "https://ftp.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1n-0+deb11u3_amd64.deb",
         ],
@@ -74,6 +78,7 @@ def load_debian_dependencies():
         arm64_urls = [
             "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-client-dev_0.8-5+deb11u1_arm64.deb",
         ],
+        arm64_sha256 = "be0d9c2b5ac02deac4c356f309071f3755361b53e743dd9f837e526c27b21504",
         x86_64_urls = [
             "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-client-dev_0.8-5+deb11u1_amd64.deb",
         ],
@@ -94,6 +99,7 @@ def load_debian_dependencies():
         arm64_library_paths = {
             "libavahi-client3": "usr/lib/aarch64-linux-gnu/libavahi-client.so.3",
         },
+        arm64_sha256 = "cba67afc387284176d4fdc1d44b07f51e8a182786ed3babda65f957110ce9745",
         x86_64_urls = [
             "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-client3_0.8-5+deb11u1_amd64.deb",
         ],
@@ -103,6 +109,7 @@ def load_debian_dependencies():
         },
         deps = [
             "@org_debian_ftp_libavahi_common3//:lib",
+            "@org_debian_ftp_libdbus//:lib",
         ],
     )
 
@@ -112,6 +119,7 @@ def load_debian_dependencies():
         arm64_urls = [
             "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-common-dev_0.8-5+deb11u1_arm64.deb",
         ],
+        arm64_sha256 = "8d63fd5df465a89d38d2fdf5bcc505972d84aa98a4554d52040122cdefa266c1",
         x86_64_urls = [
             "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-common-dev_0.8-5+deb11u1_amd64.deb",
         ],
@@ -130,6 +138,7 @@ def load_debian_dependencies():
         arm64_library_paths = {
             "libavahi-common3": "usr/lib/aarch64-linux-gnu/libavahi-common.so.3",
         },
+        arm64_sha256 = "8df6cf5dcda28652a29daf0872f5cfe98b2f20fcb9fe7a146e714432189c136d",
         x86_64_urls = [
             "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-common3_0.8-5+deb11u1_amd64.deb",
         ],
@@ -146,6 +155,7 @@ def load_debian_dependencies():
         arm64_urls = [
             "https://ftp.debian.org/debian/pool/main/libu/libusb-1.0/libusb-1.0-0-dev_1.0.26-1_arm64.deb",
         ],
+        arm64_sha256 = "74a2ebfb4796323ea710e47c1f25fe09d05d6e3bfb1dd71007776a80f18441ec",
         x86_64_urls = [
             "https://ftp.debian.org/debian/pool/main/libu/libusb-1.0/libusb-1.0-0-dev_1.0.26-1_amd64.deb",
         ],
@@ -164,6 +174,7 @@ def load_debian_dependencies():
         arm64_library_paths = {
             "libusb": "usr/lib/aarch64-linux-gnu/libusb-1.0.so.0",
         },
+        arm64_sha256 = "e0648086b231c9204514d31480d517cb1b51e301ac39e69335a67d01ec785608",
         x86_64_urls = [
             "https://ftp.debian.org/debian/pool/main/libu/libusb-1.0/libusb-1.0-0_1.0.26-1_amd64.deb",
         ],
@@ -171,4 +182,37 @@ def load_debian_dependencies():
             "libusb": "usr/lib/x86_64-linux-gnu/libusb-1.0.so.0",
         },
         x86_64_sha256 = "0a8a6c4a7d944538f2820cbde2a313f2fe6f94c21ffece9e6f372fc2ab8072e1",
+    )
+
+    # libusb
+    tvsc_archive(
+        name = "org_debian_ftp_libdbus_dev",
+        libname = "libdbus-dev",
+        arm64_urls = [
+            "https://ftp.debian.org/debian/pool/main/d/dbus/libdbus-1-dev_1.12.24-0+deb11u1_arm64.deb",
+        ],
+        x86_64_urls = [
+            "https://ftp.debian.org/debian/pool/main/d/dbus/libdbus-1-dev_1.12.24-0+deb11u1_amd64.deb",
+        ],
+        deps = [
+            "@org_debian_ftp_libdbus//:lib",
+        ],
+    )
+
+    tvsc_archive(
+        name = "org_debian_ftp_libdbus",
+        libname = "libdbus",
+        arm64_urls = [
+            "https://ftp.debian.org/debian/pool/main/d/dbus/libdbus-1-3_1.12.24-0+deb11u1_arm64.deb",
+        ],
+        arm64_library_paths = {
+            "libdbus": "lib/aarch64-linux-gnu/libdbus-1.so.3",
+        },
+        x86_64_urls = [
+            "https://ftp.debian.org/debian/pool/main/d/dbus/libdbus-1-3_1.12.24-0+deb11u1_amd64.deb",
+        ],
+        x86_64_library_paths = {
+            "libdbus": "lib/x86_64-linux-gnu/libdbus-1.so.3",
+        },
+        x86_64_sha256 = "dd594737f53de48c3cbe3431b12207c0c3382a48f257a81d5a7e59fcc6d3ace9",
     )

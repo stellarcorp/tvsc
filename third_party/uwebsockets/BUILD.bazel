@@ -2,7 +2,6 @@ cc_library(
     name = "uwebsockets",
     visibility = ["//visibility:public"],
     deps = [
-        "//third_party/usockets",
         "@com_github_unetworking_uwebsockets//:uwebsockets",
     ],
 )
