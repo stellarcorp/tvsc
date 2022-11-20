@@ -27,8 +27,10 @@ cc_library(
             "src/rtl_test.c",
         ],
     ),
-    copts = ["-I/usr/include/libusb-1.0"],
-    linkopts = ["-lusb-1.0"],
     visibility = ["//visibility:public"],
-    deps = [":rtl_sdr_hdrs"],
+    deps = [
+        ":rtl_sdr_hdrs",
+        "@org_debian_ftp_libusb//:lib",
+        "@org_debian_ftp_libusb_dev//:lib",
+    ],
 )

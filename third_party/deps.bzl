@@ -134,6 +134,7 @@ def _load_bazel_dependencies():
             ],
             build_file = "//third_party/rtl_sdr:rtl_sdr.BUILD",
             strip_prefix = "rtl-sdr-0.6.0",
+            patches = ["//third_party/rtl_sdr:include_path.patch"],
         )
 
     if not native.existing_rule("com_github_pothosware_soapyrtlsdr"):
