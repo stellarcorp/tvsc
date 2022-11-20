@@ -30,6 +30,9 @@ cc_library(
     hdrs = [
         "zlib.h",
     ],
+    includes = [
+        ".",
+    ],
     local_defines = [
         "_LARGEFILE64_SOURCE=1",
         "HAVE_HIDDEN",
