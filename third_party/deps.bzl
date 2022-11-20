@@ -1,5 +1,5 @@
 load("//third_party/toolchains:toolchains.bzl", "toolchains")
-load("//third_party:arm64_deps.bzl", "load_arm64_dependencies")
+load("//third_party:debian_deps.bzl", "load_debian_dependencies")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def _load_bazel_dependencies():
@@ -80,9 +80,6 @@ def _load_bazel_dependencies():
         native.local_repository(
             name = "boringssl",
             path = "third_party/boringssl",
-            repo_mapping = {
-                "@openssl": "@org_debian_ftp_libssl_dev",
-            },
         )
 
     if not native.existing_rule("com_github_grpc_grpc"):
@@ -161,5 +158,5 @@ def _load_bazel_dependencies():
 
 def load_dependencies():
     toolchains()
-    load_arm64_dependencies()
+    load_debian_dependencies()
     _load_bazel_dependencies()

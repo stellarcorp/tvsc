@@ -1,0 +1,8 @@
+cc_library(
+    name = "libzstd",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@org_debian_ftp_libzstd1//:lib",
+        "@org_debian_ftp_libzstd_dev//:lib",
+    ],
+)

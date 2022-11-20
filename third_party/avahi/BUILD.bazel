@@ -1,21 +1,10 @@
 cc_library(
-    name = "host_avahi",
-    linkopts = [
-        "-lavahi-client",
-        "-lavahi-common",
-    ],
-)
-
-cc_library(
     name = "avahi",
     visibility = ["//visibility:public"],
-    deps = select({
-        "//platforms:arm64_linux_build": [
-            "@org_raspbian_archive_multiarch_libavahi_client_dev//:dev",
-            "@org_raspbian_archive_multiarch_libavahi_common_dev//:dev",
-        ],
-        "//platforms:x86_64_linux_build": [
-            ":host_avahi",
-        ],
-    }),
+    deps = [
+        "@org_debian_ftp_libavahi_client3//:lib",
+        "@org_debian_ftp_libavahi_client_dev//:lib",
+        "@org_debian_ftp_libavahi_common3//:lib",
+        "@org_debian_ftp_libavahi_common_dev//:lib",
+    ],
 )

@@ -1,0 +1,8 @@
+cc_library(
+    name = "openssl",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@org_debian_ftp_libssl//:lib",
+        "@org_debian_ftp_libssl_dev//:lib",
+    ],
+)
