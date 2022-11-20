@@ -149,6 +149,7 @@ def load_debian_dependencies():
         x86_64_urls = [
             "https://ftp.debian.org/debian/pool/main/libu/libusb-1.0/libusb-1.0-0-dev_1.0.26-1_amd64.deb",
         ],
+        x86_64_sha256 = "22a952f48cdb59f1d0c476874facc62418eda5b4c30c5a23a17c28781b426c1b",
         deps = [
             "@org_debian_ftp_libusb//:lib",
         ],
@@ -169,4 +170,5 @@ def load_debian_dependencies():
         x86_64_library_paths = {
             "libusb": "usr/lib/x86_64-linux-gnu/libusb-1.0.so.0",
         },
+        x86_64_sha256 = "0a8a6c4a7d944538f2820cbde2a313f2fe6f94c21ffece9e6f372fc2ab8072e1",
     )
