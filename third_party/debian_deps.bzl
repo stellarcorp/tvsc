@@ -208,6 +208,7 @@ def load_debian_dependencies():
         arm64_library_paths = {
             "libdbus": "lib/aarch64-linux-gnu/libdbus-1.so.3",
         },
+        arm64_sha256 = "adfe6e1cb49a6716967d20117220a597d2b53ae58056f869bbacfc51ed6f0ba2",
         x86_64_urls = [
             "https://ftp.debian.org/debian/pool/main/d/dbus/libdbus-1-3_1.12.24-0+deb11u1_amd64.deb",
         ],

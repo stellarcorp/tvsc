@@ -18,7 +18,7 @@ build:c++20_windows --cxxopt=/std:c++20
 # Note: Raspberry Pi builds pick up the build:linux configurations as well.
 # TODO(james): Re-enable platform support when gRPC and Abseil enable them.
 #build:rpi3 --config=platform_build --platforms=//platforms:rpi3
-build:rpi3_cross --crosstool_top=//toolchain/aarch64-rpi3-linux-gnu:gcc_toolchain --cpu=arm64 --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:rpi3_cross --crosstool_top=//toolchain/arm64-rpi3-linux-gnu:gcc_toolchain --cpu=arm64 --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
 # Note: Beaglebone Black builds pick up the build:linux configurations as well.
 # TODO(james): Re-enable platform support when gRPC and Abseil enable them.

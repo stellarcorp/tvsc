@@ -19,10 +19,10 @@ filegroup(
     ],
 )
 
-cc_toolchain_config(name = "aarch64_toolchain_config")
+cc_toolchain_config(name = "arm64_toolchain_config")
 
 cc_toolchain(
-    name = "aarch64_toolchain",
+    name = "arm64_toolchain",
     all_files = ":all_files",
     ar_files = ":all_files",
     as_files = ":all_files",
@@ -32,20 +32,20 @@ cc_toolchain(
     objcopy_files = ":all_files",
     strip_files = ":all_files",
     supports_param_files = 1,
-    toolchain_config = ":aarch64_toolchain_config",
-    toolchain_identifier = "aarch64-toolchain",
+    toolchain_config = ":arm64_toolchain_config",
+    toolchain_identifier = "arm64-toolchain",
 )
 
 cc_toolchain_suite(
     name = "gcc_toolchain",
     tags = ["manual"],
     toolchains = {
-        "arm64": ":aarch64_toolchain",
+        "arm64": ":arm64_toolchain",
     },
 )
 
 toolchain(
-    name = "aarch64_linux_toolchain",
+    name = "arm64_linux_toolchain",
     exec_compatible_with = [
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
@@ -54,6 +54,6 @@ toolchain(
         "@platforms//os:linux",
         "@platforms//cpu:arm64",
     ],
-    toolchain = ":aarch64_toolchain",
+    toolchain = ":arm64_toolchain",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )

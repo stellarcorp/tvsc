@@ -1,6 +1,6 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-def toolchains():
+def load_toolchains():
     # TODO(james): Lock this to a release tag.
     TOOLCHAINS_COMMIT = "6dbdffc5c9a9c8b570cfdbe0e34decf677aca0ce"
     if "com_gitlab_tvsc_toolchains" not in native.existing_rules():
