@@ -216,4 +216,152 @@ def load_debian_dependencies():
             "libdbus": "lib/x86_64-linux-gnu/libdbus-1.so.3",
         },
         x86_64_sha256 = "dd594737f53de48c3cbe3431b12207c0c3382a48f257a81d5a7e59fcc6d3ace9",
+        deps = [
+            "@org_debian_ftp_libsystemd0//:lib",
+        ],
+    )
+
+    tvsc_archive(
+        name = "org_debian_ftp_libsystemd0",
+        libname = "libsystemd0",
+        arm64_urls = [
+            "https://ftp.debian.org/debian/pool/main/s/systemd/libsystemd0_252.2-2_arm64.deb",
+        ],
+        arm64_library_paths = {
+            "libsystemd0": "usr/lib/aarch64-linux-gnu/libsystemd.so.0",
+        },
+        arm64_sha256 = "dce41474863542afe7addc6265e38c1b3a74e378839a60a7ba499755344e6d96",
+        x86_64_urls = [
+            "https://ftp.debian.org/debian/pool/main/s/systemd/libsystemd0_252.2-2_amd64.deb",
+        ],
+        x86_64_library_paths = {
+            "libsystemd0": "usr/lib/x86_64-linux-gnu/libsystemd.so.0",
+        },
+        #x86_64_sha256 = "dd594737f53de48c3cbe3431b12207c0c3382a48f257a81d5a7e59fcc6d3ace9",
+        deps = [
+            "@org_debian_ftp_libcap2//:lib",
+            "@org_debian_ftp_libgcrypt//:lib",
+            "@org_debian_ftp_liblz4//:lib",
+            "@org_debian_ftp_liblzma//:lib",
+            "@org_debian_ftp_libzstd//:lib",
+        ],
+    )
+
+    tvsc_archive(
+        name = "org_debian_ftp_libcap2",
+        libname = "libcap2",
+        arm64_urls = [
+            "https://ftp.debian.org/debian/pool/main/libc/libcap2/libcap2_2.44-1_arm64.deb",
+        ],
+        arm64_library_paths = {
+            "libcap": "lib/aarch64-linux-gnu/libcap.so.2",
+        },
+        arm64_sha256 = "7c5729a1cfd14876685217c5f0545301e7ff1b839262fb487d6a778e8cd8c05a",
+        x86_64_urls = [
+            "https://ftp.debian.org/debian/pool/main/libc/libcap2/libcap2_2.44-1_amd64.deb",
+        ],
+        x86_64_library_paths = {
+            "libcap": "lib/x86_64-linux-gnu/libcap.so.2",
+        },
+        #x86_64_sha256 = "dd594737f53de48c3cbe3431b12207c0c3382a48f257a81d5a7e59fcc6d3ace9",
+        deps = [
+        ],
+    )
+
+    tvsc_archive(
+        name = "org_debian_ftp_liblz4",
+        libname = "liblz4",
+        arm64_urls = [
+            "https://ftp.debian.org/debian/pool/main/l/lz4/liblz4-1_1.9.4-1_arm64.deb",
+        ],
+        arm64_library_paths = {
+            "liblz4": "usr/lib/aarch64-linux-gnu/liblz4.so.1",
+        },
+        arm64_sha256 = "f061216ce11aabba8f032dfd6c75c181e782fef7493033b9621a8c3b2953b87e",
+        x86_64_urls = [
+            "https://ftp.debian.org/debian/pool/main/l/lz4/liblz4-1_1.9.4-1_amd64.deb",
+        ],
+        x86_64_library_paths = {
+            "liblz4": "usr/lib/x86_64-linux-gnu/liblz4.so.1",
+        },
+        #x86_64_sha256 = "dd594737f53de48c3cbe3431b12207c0c3382a48f257a81d5a7e59fcc6d3ace9",
+    )
+
+    tvsc_archive(
+        name = "org_debian_ftp_liblzma",
+        libname = "liblzma",
+        arm64_urls = [
+            "https://ftp.debian.org/debian/pool/main/x/xz-utils/liblzma5_5.2.9-0.0_arm64.deb",
+        ],
+        arm64_library_paths = {
+            "liblzma": "lib/aarch64-linux-gnu/liblzma.so.5",
+        },
+        arm64_sha256 = "6e5bc5556af6d2dcd5eef9098db17545ec8211bb350ab1c7e553429a8131aedc",
+        x86_64_urls = [
+            "https://ftp.debian.org/debian/pool/main/x/xz-utils/liblzma5_5.2.9-0.0_amd64.deb",
+        ],
+        x86_64_library_paths = {
+            "liblzma": "lib/x86_64-linux-gnu/liblzma.so.5",
+        },
+        #x86_64_sha256 = "",
+    )
+
+    tvsc_archive(
+        name = "org_debian_ftp_libgcrypt",
+        libname = "libgcrypt",
+        arm64_urls = [
+            "https://ftp.debian.org/debian/pool/main/libg/libgcrypt20/libgcrypt20_1.10.1-3_arm64.deb",
+        ],
+        arm64_library_paths = {
+            "libgcrypt": "usr/lib/aarch64-linux-gnu/libgcrypt.so.20",
+        },
+        arm64_sha256 = "79fc67c21684689728c8320d8a2b0a7204df21dc4c0da4fae3828ceb389e2ba2",
+        x86_64_urls = [
+            "https://ftp.debian.org/debian/pool/main/libg/libgcrypt20/libgcrypt20_1.10.1-3_amd64.deb",
+        ],
+        x86_64_library_paths = {
+            "libgcrypt": "usr/lib/x86_64-linux-gnu/libgcrypt.so.20",
+        },
+        #x86_64_sha256 = "",
+        deps = [
+            "@org_debian_ftp_libgpg-error//:lib",
+        ],
+    )
+
+    tvsc_archive(
+        name = "org_debian_ftp_libzstd",
+        libname = "libzstd",
+        arm64_urls = [
+            "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd1_1.5.2+dfsg-1_arm64.deb",
+        ],
+        arm64_library_paths = {
+            "libzstd": "usr/lib/aarch64-linux-gnu/libzstd.so.1",
+        },
+        arm64_sha256 = "b429bc806ec8cf11fafd35dd40e385b95cce9287efa7b89fa5d7d12f38883d3c",
+        x86_64_urls = [
+            "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd1_1.5.2+dfsg-1_amd64.deb",
+        ],
+        x86_64_library_paths = {
+            "libzstd": "usr/lib/x86_64-linux-gnu/libzstd.so.1",
+        },
+        #x86_64_sha256 = "",
+    )
+
+    tvsc_archive(
+        name = "org_debian_ftp_libgpg-error",
+        libname = "libgpg-error",
+        arm64_urls = [
+            "https://ftp.debian.org/debian/pool/main/libg/libgpg-error/libgpg-error0_1.46-1_arm64.deb",
+        ],
+        arm64_library_paths = {
+            "libgpg-error": "lib/aarch64-linux-gnu/libgpg-error.so.0",
+        },
+        arm64_sha256 = "aff6ce011ae9abf7090e906f0cf6bc2b447bbc4cc7e03ff117f9d73528857352",
+        x86_64_urls = [
+            "https://ftp.debian.org/debian/pool/main/libg/libgpg-error/libgpg-error0_1.46-1_amd64.deb",
+        ],
+        x86_64_library_paths = {
+            "libgpg-error": "lib/x86_64-linux-gnu/libgpg-error.so.0",
+        },
+        #x86_64_sha256 = "",
     )
