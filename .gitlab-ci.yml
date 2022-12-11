@@ -19,6 +19,9 @@ stages:
 
 x86_64-optimized-tests:
   stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "web"
   cache:
     key: optimized_bin_cache
     paths:
