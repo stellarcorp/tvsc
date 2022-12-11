@@ -138,7 +138,7 @@ def _impl(ctx):
         abi_version = "unknown",
         abi_libc_version = "unknown",
         tool_paths = tool_paths,
-        builtin_sysroot = "external/com_gitlab_tvsc_toolchains/gcc-arm-11.2-2022.02-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc",
+        builtin_sysroot = "external/com_gitlab_tvsc_toolchains/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc",
     )
 
 cc_toolchain_config = rule(

@@ -15,7 +15,7 @@ filegroup(
     name = "all_files",
     srcs = [
         ":wrappers",
-        "@com_gitlab_tvsc_toolchains//gcc-arm-11.2-2022.02-x86_64-aarch64-none-linux-gnu:toolchain",
+        "@com_gitlab_tvsc_toolchains//gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu:toolchain",
     ],
 )
 
