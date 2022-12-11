@@ -110,7 +110,7 @@ def _impl(ctx):
     return cc_common.create_cc_toolchain_config_info(
         ctx = ctx,
         features = features,
-        toolchain_identifier = "arm64-toolchain",
+        toolchain_identifier = "arm64-rpi3-toolchain",
         host_system_name = "local",
         target_system_name = "unknown",
         target_cpu = "unknown",
