@@ -11,13 +11,13 @@
 DEFINE_string(socket_address, "",
               "address:port to listen on. This flag overrides the value in service configuration, as specified by the "
               "--service_configuration flag. If no service configuration is specified, and this flag is not specified, "
-              "the server will listen on 127.0.0.1 on its default port (service dependent).");
+              "the server will listen on 0.0.0.0 on its default port (service dependent).");
 
 DEFINE_string(
     service_configuration, "",
     "Location (file path) of the service configuration. This configuration describes the port where each "
     "service should listen. If the location is not specified, or the service configuration does not contain a location "
-    "for this service, then the server will listen on 127.0.0.1 on its default port (service dependent).");
+    "for this service, then the server will listen on 0.0.0.0 on its default port (service dependent).");
 
 namespace tvsc::service::configuration {
 
