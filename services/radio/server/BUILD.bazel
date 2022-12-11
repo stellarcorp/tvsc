@@ -63,7 +63,9 @@ cc_binary(
         "//services/radio/server/modules:dummy_radio",
         "//services/radio/server/modules:soapy_rtlsdr",
     ],
-    linkopts = ["-rdynamic"],
+    linkopts = [
+        "-rdynamic",
+    ],
     deps = [
         ":soapy",
         "//third_party/gflags",
