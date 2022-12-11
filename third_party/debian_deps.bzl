@@ -184,7 +184,6 @@ def load_debian_dependencies():
         x86_64_sha256 = "0a8a6c4a7d944538f2820cbde2a313f2fe6f94c21ffece9e6f372fc2ab8072e1",
     )
 
-    # libusb
     tvsc_archive(
         name = "org_debian_ftp_libdbus_dev",
         libname = "libdbus-dev",
@@ -237,7 +236,7 @@ def load_debian_dependencies():
         x86_64_library_paths = {
             "libsystemd0": "usr/lib/x86_64-linux-gnu/libsystemd.so.0",
         },
-        #x86_64_sha256 = "dd594737f53de48c3cbe3431b12207c0c3382a48f257a81d5a7e59fcc6d3ace9",
+        x86_64_sha256 = "b212c3c7bb16ae7b1896676b7ddf26f8fc6159e88998a253ccecd82a7fe0c42a",
         deps = [
             "@org_debian_ftp_libcap2//:lib",
             "@org_debian_ftp_libgcrypt//:lib",
@@ -263,9 +262,7 @@ def load_debian_dependencies():
         x86_64_library_paths = {
             "libcap": "lib/x86_64-linux-gnu/libcap.so.2",
         },
-        #x86_64_sha256 = "dd594737f53de48c3cbe3431b12207c0c3382a48f257a81d5a7e59fcc6d3ace9",
-        deps = [
-        ],
+        x86_64_sha256 = "7a3ae3e97d0d403a4c54663c0bb48e9341d98822420a4ab808c6dc8e8474558f",
     )
 
     tvsc_archive(
@@ -284,7 +281,7 @@ def load_debian_dependencies():
         x86_64_library_paths = {
             "liblz4": "usr/lib/x86_64-linux-gnu/liblz4.so.1",
         },
-        #x86_64_sha256 = "dd594737f53de48c3cbe3431b12207c0c3382a48f257a81d5a7e59fcc6d3ace9",
+        x86_64_sha256 = "64cde86cef1deaf828bd60297839b59710b5cd8dc50efd4f12643caaee9389d3",
     )
 
     tvsc_archive(
@@ -303,7 +300,7 @@ def load_debian_dependencies():
         x86_64_library_paths = {
             "liblzma": "lib/x86_64-linux-gnu/liblzma.so.5",
         },
-        #x86_64_sha256 = "",
+        x86_64_sha256 = "9559ab9601706910cff06144246471560a0e62cd3111b883fc902573a353feea",
     )
 
     tvsc_archive(
@@ -322,7 +319,7 @@ def load_debian_dependencies():
         x86_64_library_paths = {
             "libgcrypt": "usr/lib/x86_64-linux-gnu/libgcrypt.so.20",
         },
-        #x86_64_sha256 = "",
+        x86_64_sha256 = "bffcac7e4f69e39d37d4a33e841d6371ac8b5aba6cd55546b385dc7ff6c702f5",
         deps = [
             "@org_debian_ftp_libgpg-error//:lib",
         ],
@@ -344,7 +341,7 @@ def load_debian_dependencies():
         x86_64_library_paths = {
             "libzstd": "usr/lib/x86_64-linux-gnu/libzstd.so.1",
         },
-        #x86_64_sha256 = "",
+        x86_64_sha256 = "4914489233dbccf83139ee8bff065915982481aa44f3ffcde07a633db5908935",
     )
 
     tvsc_archive(
@@ -363,5 +360,5 @@ def load_debian_dependencies():
         x86_64_library_paths = {
             "libgpg-error": "lib/x86_64-linux-gnu/libgpg-error.so.0",
         },
-        #x86_64_sha256 = "",
+        x86_64_sha256 = "89944ee11d7370ce6ef46fc52f094c4a6512eff8943ec4c6ebefeae6360ceada",
     )
