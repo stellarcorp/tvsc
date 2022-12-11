@@ -58,8 +58,6 @@ def load_debian_dependencies():
         arm64_library_paths = {
             "libssl": "usr/lib/aarch64-linux-gnu/libssl.so.1.1",
             "libcrypto": "usr/lib/aarch64-linux-gnu/libcrypto.so.1.1",
-            "afalg_engine": "usr/lib/aarch64-linux-gnu/engines-1.1/afalg.so",
-            "padlock_engine": "usr/lib/aarch64-linux-gnu/engines-1.1/padlock.so",
         },
         arm64_sha256 = "8d4ef5a06719fabd90a6a27729ade7b9dde1a1c923a89ba1406af6489fa7c82f",
         x86_64_urls = [
@@ -68,8 +66,6 @@ def load_debian_dependencies():
         x86_64_library_paths = {
             "libssl": "usr/lib/x86_64-linux-gnu/libssl.so.1.1",
             "libcrypto": "usr/lib/x86_64-linux-gnu/libcrypto.so.1.1",
-            "afalg_engine": "usr/lib/x86_64-linux-gnu/engines-1.1/afalg.so",
-            "padlock_engine": "usr/lib/x86_64-linux-gnu/engines-1.1/padlock.so",
         },
         x86_64_sha256 = "c3480bf90725c993187de02e5144e90ea81226e7e2538ba24687f5a0adc8ca5c",
     )
