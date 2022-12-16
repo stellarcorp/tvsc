@@ -31,7 +31,6 @@ pkg_files(
         mode = "0755",
     ),
     prefix = "usr/bin",
-    tags = ["no-cache"],
 )
 
 PACKAGE_NAME = "tvsc-proxy"
@@ -43,7 +42,6 @@ pkg_tar(
         ":binaries",
     ],
     package_file_name = tarball_name(PACKAGE_NAME),
-    tags = ["no-cache"],
 )
 
 pkg_deb(
@@ -54,7 +52,6 @@ pkg_deb(
     description = "Reverse network proxy package from the Virtual Tower system from TVSC",
     maintainer = "info@stellarcorp.tv",
     package = PACKAGE_NAME,
-    tags = ["no-cache"],
     version = version_string(),
     visibility = ["//visibility:public"],
 )

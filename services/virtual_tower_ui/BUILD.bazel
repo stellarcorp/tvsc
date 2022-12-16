@@ -41,7 +41,6 @@ pkg_files(
         user = "tvsc_service",
     ),
     prefix = "usr/share/tvsc/virtual_tower_ui/static",
-    tags = ["no-cache"],
 )
 
 pkg_files(
@@ -53,7 +52,6 @@ pkg_files(
         mode = "0644",
     ),
     prefix = "lib/systemd/system",
-    tags = ["no-cache"],
 )
 
 pkg_files(
@@ -67,7 +65,6 @@ pkg_files(
         user = "tvsc_service",
     ),
     prefix = "usr/share/tvsc/virtual_tower_ui/conf",
-    tags = ["no-cache"],
 )
 
 PACKAGE_NAME = "tvsc-virtual-tower-ui"
@@ -80,7 +77,6 @@ pkg_tar(
         ":systemd_files",
     ],
     package_file_name = tarball_name(PACKAGE_NAME),
-    tags = ["no-cache"],
 )
 
 pkg_deb(
@@ -100,7 +96,6 @@ pkg_deb(
     replaces = [
         PACKAGE_NAME + "(<= " + version_string() + ")",
     ],
-    tags = ["no-cache"],
     version = version_string(),
     visibility = ["//visibility:public"],
 )
