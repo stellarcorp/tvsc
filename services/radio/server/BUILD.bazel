@@ -55,7 +55,7 @@ cc_test(
 )
 
 cc_binary(
-    name = "list_devices",
+    name = "list-radio-devices",
     srcs = [
         "list_devices.cc",
     ],
@@ -66,6 +66,7 @@ cc_binary(
     linkopts = [
         "-rdynamic",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         ":soapy",
         "//third_party/gflags",

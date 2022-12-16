@@ -9,6 +9,7 @@ pkg_files(
     testonly = True,
     srcs = [
         "//services/radio/client:radio_client",
+        "//services/radio/server:list-radio-devices",
         "//services/radio/server:tvsc-radio-service",
     ],
     attributes = pkg_attributes(
@@ -30,6 +31,19 @@ pkg_files(
     tags = ["no-cache"],
 )
 
+pkg_files(
+    name = "soapy_modules",
+    srcs = [
+        "//services/radio/server/modules:dummy_radio",
+        "//services/radio/server/modules:soapy_rtlsdr",
+    ],
+    attributes = pkg_attributes(
+        mode = "0644",
+    ),
+    prefix = "usr/local/lib/SoapySDR/modules0.8-2",
+    tags = ["no-cache"],
+)
+
 PACKAGE_NAME = "tvsc-radio"
 
 pkg_tar(
@@ -37,6 +51,7 @@ pkg_tar(
     testonly = True,
     srcs = [
         ":binaries",
+        ":soapy_modules",
         ":systemd_files",
     ],
     package_file_name = tarball_name(PACKAGE_NAME),
@@ -48,6 +63,9 @@ pkg_deb(
     testonly = True,
     architecture = arch_name(),
     data = ":tarball",
+    depends = [
+        "libavahi-client3 (>= 0.8)",
+    ],
     description = "Radio package from the Virtual Tower system from TVSC",
     maintainer = "info@stellarcorp.tv",
     package = PACKAGE_NAME,
