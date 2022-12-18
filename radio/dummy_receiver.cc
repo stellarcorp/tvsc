@@ -491,18 +491,7 @@ void register_dummy_receiver() {
   static SoapySDR::Registry module_registration{"dummy_receiver", &find_dummy_receiver, &make_dummy_receiver,
                                                 SOAPY_SDR_ABI_VERSION};
   static SoapySDR::ModuleVersion module_version{SOAPY_SDR_ABI_VERSION};
-
-  // If the SoapySDR library does not have the correct linkage, we get a situation where the registration code has
-  // multiple copies of the static variables, such as the current module being loaded. This block of code identifies
-  // that scenario and forces an immediate failure with a log message so that the build issue can be more easily
-  // identified.
-  const std::string &current_module{getModuleLoading()};
-  if (current_module.empty()) {
-    SoapySDR::log(SOAPY_SDR_FATAL, "register_dummy_receiver() -- current_module is empty during module registration");
-    abort();
-  } else {
-    TLOG("register_dummy_receiver() -- current_module: %s", current_module.c_str());
-  }
+  SoapySDR::log(SOAPY_SDR_DEBUG, "register_dummy_receiver()");
 }
 
 }  // namespace tvsc::radio
