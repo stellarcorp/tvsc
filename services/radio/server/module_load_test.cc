@@ -16,9 +16,7 @@
 namespace tvsc::services::radio::server {
 
 const char DUMMY_RADIO_MODULE_NAME[]{"libdummy_radio.so"};
-const char RTLSDR_MODULE_NAME[]{"libsoapy_rtlsdr.so"};
 const char DUMMY_RADIO_DEVICE_NAME[]{"dummy_receiver"};
-const char RTLSDR_DEVICE_NAME[]{"rtlsdr"};
 
 class ModuleTest : public ::testing::Test {
  public:
@@ -44,11 +42,11 @@ class ModuleTest : public ::testing::Test {
   }
 
   ::testing::AssertionResult has_correct_abi_version(const std::string_view module_name) {
-    const std::string abi_version{soapy->abi_version(module_name)};
-    if (abi_version == SoapySDR::getABIVersion()) {
+    const std::string module_version{soapy->module_abi_version(module_name)};
+    if (module_version == SoapySDR::getABIVersion()) {
       return ::testing::AssertionSuccess();
     } else {
-      return ::testing::AssertionFailure() << "Incorrect module version: " << abi_version;
+      return ::testing::AssertionFailure() << "Incorrect module version: " << module_version;
     }
   }
 
@@ -138,19 +136,14 @@ TEST_F(ModuleTest, ModuleDirectoryConfiguration) {
 }
 
 TEST_F(ModuleTest, ContainsDummyRadio) { EXPECT_TRUE(contains_module(DUMMY_RADIO_MODULE_NAME)); }
-TEST_F(ModuleTest, ContainsRtlSdr) { EXPECT_TRUE(contains_module(RTLSDR_MODULE_NAME)); }
 
 TEST_F(ModuleTest, DummyRadioLoaderResultHasNoError) { EXPECT_TRUE(load_success(DUMMY_RADIO_MODULE_NAME)); }
-TEST_F(ModuleTest, RtlSdrLoaderResultHasNoError) { EXPECT_TRUE(load_success(RTLSDR_MODULE_NAME)); }
 
 TEST_F(ModuleTest, DummyRadioHasCorrectModuleVersion) { EXPECT_TRUE(has_correct_abi_version(DUMMY_RADIO_MODULE_NAME)); }
-TEST_F(ModuleTest, RtlSdrHasCorrectModuleVersion) { EXPECT_TRUE(has_correct_abi_version(RTLSDR_MODULE_NAME)); }
 
 TEST_F(ModuleTest, DummyRadioHasFindFunction) { EXPECT_TRUE(has_find_function(DUMMY_RADIO_DEVICE_NAME)); }
-TEST_F(ModuleTest, RtlSdrHasFindFunction) { EXPECT_TRUE(has_find_function(RTLSDR_DEVICE_NAME)); }
 
 TEST_F(ModuleTest, DummyRadioHasMakeFunction) { EXPECT_TRUE(has_make_function(DUMMY_RADIO_DEVICE_NAME)); }
-TEST_F(ModuleTest, RtlSdrHasMakeFunction) { EXPECT_TRUE(has_make_function(RTLSDR_DEVICE_NAME)); }
 
 TEST_F(ModuleTest, DummyRadioIsDevice) { EXPECT_TRUE(has_device(DUMMY_RADIO_DEVICE_NAME)); }
 
