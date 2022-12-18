@@ -1,9 +1,0 @@
-licenses(["notice"])
-
-cc_library(
-    name = "rtl_sdr",
-    visibility = ["//visibility:public"],
-    deps = [
-        "@com_github_osmocom_rtl_sdr//:rtl_sdr",
-    ],
-)

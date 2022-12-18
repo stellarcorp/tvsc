@@ -11,13 +11,3 @@ cc_binary(
         "//third_party/soapysdr",
     ],
 )
-
-cc_binary(
-    name = "soapy_rtlsdr",
-    linkshared = True,
-    linkstatic = False,
-    visibility = ["//visibility:public"],
-    deps = [
-        "@com_github_pothosware_soapyrtlsdr//:soapy_rtlsdr",
-    ],
-)

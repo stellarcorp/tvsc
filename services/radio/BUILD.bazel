@@ -33,12 +33,11 @@ pkg_files(
     name = "soapy_modules",
     srcs = [
         "//services/radio/server/modules:dummy_radio",
-        "//services/radio/server/modules:soapy_rtlsdr",
     ],
     attributes = pkg_attributes(
         mode = "0644",
     ),
-    prefix = "usr/local/lib/SoapySDR/modules0.8-2",
+    prefix = "usr/lib/aarch64-linux-gnu/SoapySDR/modules0.7",
 )
 
 PACKAGE_NAME = "tvsc-radio"
@@ -61,6 +60,10 @@ pkg_deb(
     data = ":tarball",
     depends = [
         "libavahi-client3 (>= 0.8)",
+        "avahi-daemon (>= 0.8)",
+        "librtlsdr0 (>= 0.6)",
+        "libsoapysdr0.7 (>= 0.7)",
+        "soapysdr0.7-module-rtlsdr (>= 0.3)",
     ],
     description = "Radio package from the Virtual Tower system from TVSC",
     maintainer = "info@stellarcorp.tv",

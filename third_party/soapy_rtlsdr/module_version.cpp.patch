@@ -1,7 +1,0 @@
---- /dev/null	2022-11-06 02:19:30.000000000 -0400
-+++ module_version.cpp	2022-11-06 02:19:30.000000000 -0400
-@@ -0,0 +0,4 @@
-+ #include "SoapySDR/Modules.hpp"
-+ #include "SoapySDR/Version.hpp"
-+ 
-+ static const SoapySDR::ModuleVersion module_version(SoapySDR::getABIVersion());

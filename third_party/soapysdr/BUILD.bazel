@@ -2,6 +2,6 @@ cc_library(
     name = "soapysdr",
     visibility = ["//visibility:public"],
     deps = [
-        "@com_gitlab_tvsc_soapysdr//:soapy",
+        "@org_debian_ftp_libsoapysdr_dev//:lib",
     ],
 )

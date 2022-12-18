@@ -122,35 +122,3 @@ def load_source_dependencies():
             build_file = "//third_party/uwebsockets:uwebsockets.BUILD",
             strip_prefix = "uWebSockets-20.23.0",
         )
-
-    if not native.existing_rule("com_github_osmocom_rtl_sdr"):
-        http_archive(
-            name = "com_github_osmocom_rtl_sdr",
-            sha256 = "ee10a76fe0c6601102367d4cdf5c26271e9442d0491aa8df27e5a9bf639cff7c",
-            urls = [
-                "https://github.com/osmocom/rtl-sdr/archive/refs/tags/0.6.0.tar.gz",
-            ],
-            build_file = "//third_party/rtl_sdr:rtl_sdr.BUILD",
-            strip_prefix = "rtl-sdr-0.6.0",
-            patches = ["//third_party/rtl_sdr:include_path.patch"],
-        )
-
-    if not native.existing_rule("com_github_pothosware_soapyrtlsdr"):
-        http_archive(
-            name = "com_github_pothosware_soapyrtlsdr",
-            sha256 = "757c3c3bd17c5a12c7168db2f2f0fd274457e65f35e23c5ec9aec34e3ef54ece",
-            urls = [
-                "https://github.com/pothosware/SoapyRTLSDR/archive/refs/tags/soapy-rtl-sdr-0.3.3.tar.gz",
-            ],
-            build_file = "//third_party/soapy_rtlsdr:soapy_rtlsdr.BUILD",
-            strip_prefix = "SoapyRTLSDR-soapy-rtl-sdr-0.3.3",
-            patches = ["//third_party/soapy_rtlsdr:module_version.cpp.patch"],
-        )
-
-    if not native.existing_rule("com_gitlab_tvsc_soapysdr"):
-        http_archive(
-            name = "com_gitlab_tvsc_soapysdr",
-            urls = ["https://gitlab.com/tvsc/SoapySDR/-/archive/tvsc/SoapySDR-tvsc.zip"],
-            strip_prefix = "SoapySDR-tvsc",
-            sha256 = "c16ed2dd19bd6efd1dc62591eaa334696c7c3e92ea1c8f794592746d0f94f50c",
-        )
