@@ -192,7 +192,7 @@ void SoapyMDNSEndpoint::registerService(const std::string &uuid, const std::stri
     group = avahi_entry_group_new(client, &groupCallback, this);
     if (group == nullptr)
     {
-        SoapySDR::logf(SOAPY_SDR_ERROR, "avahi_entry_group_new() failed");
+        SoapySDR::logf(SOAPY_SDR_ERROR, "avahi_entry_group_new() failed: %s", avahi_strerror(avahi_client_errno(client)));
         return;
     }
 
