@@ -4,7 +4,7 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-ExecStart=/usr/bin/radio_server
+ExecStart=/usr/bin/tvsc-radio-service
 Type=simple
 KillMode=mixed
 Restart=on-failure
