@@ -11,13 +11,13 @@ cc_import(
     build_file_content = """        
 cc_library(
     name = "conf",
-    hdrs = glob(["usr/include/{arch}-linux-gnu/**/*.h"]),
+    hdrs = glob(["usr/include/{arch}-linux-gnu/**/*.h", "usr/include/{arch}-linux-gnu/**/*.hpp"]),
     strip_include_prefix = "usr/include/{arch}-linux-gnu",
 )
 
 cc_library(
     name = "lib",
-    hdrs = glob(["usr/include/**/*.h"]),
+    hdrs = glob(["usr/include/**/*.h", "usr/include/**/*.hpp"]),
     strip_include_prefix = "usr/include",
     visibility = ["//visibility:public"],
     deps = [
