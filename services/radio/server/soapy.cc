@@ -5,6 +5,7 @@
 #include <exception>
 #include <filesystem>
 #include <functional>
+#include <future>
 #include <string>
 #include <string_view>
 
@@ -20,7 +21,7 @@
 namespace tvsc::services::radio::server {
 
 char SOAPY_SDR_PLUGIN_PATH_EXPR[]{"SOAPY_SDR_PLUGIN_PATH=services/radio/server/modules"};
-char DLOPEN_BIND_NOW[]{"LD_BIND_NOW=true"};
+// char DLOPEN_BIND_NOW[]{"LD_BIND_NOW=true"};
 
 inline void log_to_glog(const SoapySDRLogLevel logLevel, const char* message) {
   switch (logLevel) {
@@ -54,10 +55,16 @@ Soapy::Soapy() {
 
   SoapySDR::logf(SOAPY_SDR_DEBUG, "%s:%d Soapy::Soapy() -- SoapySDR logging enabled.", __FILE__, __LINE__);
 
-  SoapySDR::loadModules();
+  LOG(INFO) << "Soapy ABI version: " << abi_version();
 
-  for (const auto& module : modules()) {
-    LOG(INFO) << "Module: " << module << " -> " << abi_version(module);
+  SoapySDR::loadModules();
+  if (modules().empty()) {
+    LOG(ERROR) << "<No Soapy modules found>\n";
+  } else {
+    LOG(INFO) << "Loaded modules:\n";
+    for (const auto& module : modules()) {
+      LOG(INFO) << "\t" << module << "\n";
+    }
   }
 
   SoapySDR::Device::enumerate();
@@ -69,38 +76,28 @@ Soapy::~Soapy() {
   for (SoapySDR::Device* device : devices_) {
     SoapySDR::Device::unmake(device);
   }
-
-  SoapySDR::unloadModules();
 }
 
 void Soapy::start_server() {
-  if (server_thread_.joinable()) {
+  if (stop_server_ == false) {
     // We are already running the server.
     throw std::domain_error("Attempt to start soapy server when it is already running.");
   }
 
   stop_server_ = false;
-
-  server_thread_ = std::thread(run_soapy_server, std::ref(stop_server_));
+  server_result_ = std::async(std::launch::async, run_soapy_server, std::ref(stop_server_));
 }
 
 void Soapy::shutdown_server() {
-  if (server_thread_.joinable()) {
+  if (stop_server_ == false) {
     stop_server_ = true;
-    server_thread_.join();
-
-    // Reset to a default thread object to indicate that no OS thread is associated with this thread object.
-    // This also means that the server_thread_ is no longer joinable.
-    server_thread_ = std::thread{};
   }
 }
 
-void Soapy::wait_on_server() {
-  server_thread_.join();
-
-  // Reset to a default thread object to indicate that no OS thread is associated with this thread object.
-  // This also means that the server_thread_ is no longer joinable.
-  server_thread_ = std::thread{};
+int Soapy::wait_on_server() {
+  server_result_.wait();
+  server_result_cached_ = server_result_.get();
+  return server_result_cached_;
 }
 
 std::vector<std::string> Soapy::modules() const {
@@ -165,7 +162,9 @@ bool Soapy::loaded_successfully(const std::string_view module_name) const {
   return args.begin()->second.empty();
 }
 
-std::string Soapy::abi_version(const std::string_view module_name) const {
+std::string Soapy::abi_version() const { return SoapySDR::getABIVersion(); }
+
+std::string Soapy::module_abi_version(const std::string_view module_name) const {
   std::string module_path{find_module_path(module_name)};
   return SoapySDR::getModuleVersion(module_path);
 }
