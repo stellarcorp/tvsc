@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
   soapy.start_server();
   std::thread grpc_protocol_handler{tvsc::service::radio::run_grpc_server};
 
-  soapy.wait_on_server();
-
+  int soapy_server_result = soapy.wait_on_server();
+  LOG(INFO) << "Soapy server result: " << soapy_server_result;
   return 0;
 }
