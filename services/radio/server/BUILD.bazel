@@ -9,29 +9,13 @@ cc_binary(
     linkopts = ["-rdynamic"],
     visibility = ["//visibility:public"],
     deps = [
-        ":soapy",
+        "//radio",
         "//services/configuration",
         "//services/radio/common",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/grpc",
         "//third_party/soapy_remote:server",
-    ],
-)
-
-cc_library(
-    name = "soapy",
-    srcs = [
-        "soapy.cc",
-    ],
-    hdrs = [
-        "soapy.h",
-    ],
-    deps = [
-        "//third_party/gflags",
-        "//third_party/glog",
-        "//third_party/soapy_remote:server",
-        "//third_party/soapysdr",
     ],
 )
 
@@ -65,7 +49,7 @@ cc_binary(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        ":soapy",
+        "//radio",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/soapysdr",

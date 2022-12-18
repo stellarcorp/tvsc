@@ -1,4 +1,4 @@
-#include "services/radio/server/soapy.h"
+#include "radio/soapy.h"
 
 #include <atomic>
 #include <cstdlib>
@@ -18,7 +18,7 @@
 #include "glog/logging.h"
 #include "soapy_server.h"
 
-namespace tvsc::services::radio::server {
+namespace tvsc::radio {
 
 char SOAPY_SDR_PLUGIN_PATH_EXPR[]{"SOAPY_SDR_PLUGIN_PATH=services/radio/server/modules"};
 // char DLOPEN_BIND_NOW[]{"LD_BIND_NOW=true"};
@@ -201,4 +201,4 @@ SoapySDR::Device& Soapy::instantiate_device(const std::string_view device_name) 
   return *device;
 }
 
-}  // namespace tvsc::services::radio::server
+}  // namespace tvsc::radio

@@ -2,12 +2,12 @@
 
 #include "gflags/gflags.h"
 #include "glog/logging.h"
-#include "services/radio/server/soapy.h"
+#include "radio/soapy.h"
 
 namespace tvsc::services::radio::server {
 
 void list_devices() {
-  Soapy soapy{};
+  tvsc::radio::Soapy soapy{};
 
   std::cout << "Soapy modules:\n";
   for (const auto& module : soapy.modules()) {

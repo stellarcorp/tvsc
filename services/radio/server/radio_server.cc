@@ -8,9 +8,9 @@
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
+#include "radio/soapy.h"
 #include "services/radio/common/radio.grpc.pb.h"
 #include "services/radio/common/radio_service_location.h"
-#include "services/radio/server/soapy.h"
 #include "soapy_server.h"
 
 using grpc::Server;
@@ -49,7 +49,7 @@ void run_grpc_server() {
 // Use a global variable for the Soapy management instance. Signal handlers must be function pointers, and this seems to
 // be the easiest way to bind a value (the soapy instance) such that it is accessible from a function pointer. Note that
 // the Soapy instance still has automatic storage duration tied to the main() function.
-static tvsc::services::radio::server::Soapy* soapy_global{nullptr};
+static tvsc::radio::Soapy* soapy_global{nullptr};
 void shutdown_server(int signum) { soapy_global->shutdown_server(); }
 
 }  // namespace tvsc::service::radio
@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
 
-  tvsc::services::radio::server::Soapy soapy{};
+  tvsc::radio::Soapy soapy{};
 
   LOG(INFO) << "Soapy modules:";
   for (const auto& module : soapy.modules()) {

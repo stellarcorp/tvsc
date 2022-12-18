@@ -3,6 +3,10 @@ cc_library(
     srcs = [
         "dummy_receiver.cc",
         "dummy_receiver.h",
+        "soapy.cc",
+    ],
+    hdrs = [
+        "soapy.h",
     ],
     data = [
         "received_signal.pcm",
@@ -11,6 +15,9 @@ cc_library(
     deps = [
         "//buffer",
         "//io",
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/soapy_remote:server",
         "//third_party/soapysdr",
         "//transform",
     ],

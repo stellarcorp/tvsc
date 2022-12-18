@@ -9,7 +9,7 @@
 
 #include "SoapySDR/Device.hpp"
 
-namespace tvsc::services::radio::server {
+namespace tvsc::radio {
 
 class Soapy final {
  private:
@@ -42,4 +42,4 @@ class Soapy final {
   SoapySDR::Device& instantiate_device(const std::string_view device_name);
 };
 
-}  // namespace tvsc::services::radio::server
+}  // namespace tvsc::radio
