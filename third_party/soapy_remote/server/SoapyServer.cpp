@@ -60,7 +60,7 @@ int run_soapy_server(std::atomic<bool>& stop_server) {
 
   const auto modules{SoapySDR::listModules()};
   if (modules.empty()) {
-    LOG(INFO) << "<No Soapy modules found>\n";
+    LOG(ERROR) << "<No Soapy modules found>\n";
   } else {
     LOG(INFO) << "Loaded modules:\n";
     for (const auto& module : modules) {
