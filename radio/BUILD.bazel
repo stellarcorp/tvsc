@@ -1,12 +1,26 @@
 cc_library(
     name = "radio",
     srcs = [
-        "dummy_receiver.cc",
-        "dummy_receiver.h",
         "soapy.cc",
     ],
     hdrs = [
         "soapy.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/soapy_remote:server",
+        "//third_party/soapysdr",
+    ],
+)
+
+cc_library(
+    name = "dummy_radio_module_library",
+    srcs = [
+        "dummy_radio_module.cc",
+        "dummy_receiver.cc",
+        "dummy_receiver.h",
     ],
     data = [
         "received_signal.pcm",
@@ -20,5 +34,29 @@ cc_library(
         "//third_party/soapy_remote:server",
         "//third_party/soapysdr",
         "//transform",
+    ],
+)
+
+cc_binary(
+    name = "dummy_radio_module",
+    linkshared = True,
+    linkstatic = False,
+    visibility = ["//visibility:public"],
+    deps = [
+        ":dummy_radio_module_library",
+    ],
+)
+
+cc_test(
+    name = "soapy_test",
+    srcs = [
+        "soapy_test.cc",
+    ],
+    data = [
+        ":dummy_radio_module",
+    ],
+    deps = [
+        ":radio",
+        "//third_party/gtest",
     ],
 )

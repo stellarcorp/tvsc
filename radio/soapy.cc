@@ -1,6 +1,5 @@
 #include "radio/soapy.h"
 
-#include <atomic>
 #include <cstdlib>
 #include <exception>
 #include <filesystem>
@@ -47,26 +46,31 @@ inline void log_to_glog(const SoapySDRLogLevel logLevel, const char* message) {
   }
 }
 
+void log_modules(const Soapy& soapy) {
+  const auto modules{soapy.modules()};
+  if (modules.empty()) {
+    LOG(ERROR) << "<No Soapy modules found>\n";
+  } else {
+    LOG(INFO) << "Loaded modules:\n";
+    for (const auto& module : modules) {
+      LOG(INFO) << "\t" << module << "\n";
+    }
+  }
+}
+
 Soapy::Soapy() {
   putenv(SOAPY_SDR_PLUGIN_PATH_EXPR);
-  // putenv(DLOPEN_BIND_NOW); // Force dlopen() to fully bind when the module is loaded. Useful for debugging link
-  // issues.
+  // putenv(DLOPEN_BIND_NOW); // Force dlopen() to fully bind when the module is loaded. Useful for
+  // debugging link issues.
   SoapySDR::registerLogHandler(log_to_glog);
 
-  SoapySDR::logf(SOAPY_SDR_DEBUG, "%s:%d Soapy::Soapy() -- SoapySDR logging enabled.", __FILE__, __LINE__);
+  SoapySDR::logf(SOAPY_SDR_DEBUG, "%s:%d Soapy::Soapy() -- SoapySDR logging enabled.", __FILE__,
+                 __LINE__);
 
   LOG(INFO) << "Soapy ABI version: " << abi_version();
 
   SoapySDR::loadModules();
-  if (modules().empty()) {
-    LOG(ERROR) << "<No Soapy modules found>\n";
-  } else {
-    LOG(INFO) << "Loaded modules:\n";
-    for (const auto& module : modules()) {
-      LOG(INFO) << "\t" << module << "\n";
-    }
-  }
-
+  log_modules(*this);
   SoapySDR::Device::enumerate();
 }
 
@@ -108,6 +112,17 @@ std::vector<std::string> Soapy::modules() const {
   return result;
 }
 
+void Soapy::load_module(std::filesystem::path path) {
+  const auto result = SoapySDR::loadModule(path.string());
+  LOG(INFO) << "Loaded module at path '" << path.string() << "'. Result: " << result;
+  log_modules(*this);
+}
+
+void Soapy::unload_module(std::filesystem::path path) {
+  SoapySDR::unloadModule(path.string());
+  log_modules(*this);
+}
+
 std::filesystem::path Soapy::find_module_path(const std::string_view module_name) const {
   for (const std::filesystem::path path : SoapySDR::listModules()) {
     if (path.filename().string() == module_name) {
@@ -133,7 +148,8 @@ std::string Soapy::load_error_message(const std::string_view module_name) const 
   const SoapySDR::Kwargs args{SoapySDR::getLoaderResult(module_path)};
 
   if (args.size() > 1) {
-    throw std::logic_error("Loader result has too many entries (expected 1; has " + to_string(args.size()) +
+    throw std::logic_error("Loader result has too many entries (expected 1; has " +
+                           to_string(args.size()) +
                            "). Format not understood: " + SoapySDR::KwargsToString(args));
   }
 
@@ -151,7 +167,8 @@ bool Soapy::loaded_successfully(const std::string_view module_name) const {
   const SoapySDR::Kwargs args{SoapySDR::getLoaderResult(module_path)};
 
   if (args.size() > 1) {
-    throw std::logic_error("Loader result has too many entries (expected 1; has " + to_string(args.size()) +
+    throw std::logic_error("Loader result has too many entries (expected 1; has " +
+                           to_string(args.size()) +
                            "). Format not understood: " + SoapySDR::KwargsToString(args));
   }
 
@@ -173,6 +190,19 @@ std::vector<std::string> Soapy::devices() const {
   std::vector<std::string> result{};
   for (const auto& device_args : SoapySDR::Device::enumerate()) {
     LOG(INFO) << "device_args: " << SoapySDR::KwargsToString(device_args);
+    if (device_args.count("driver") == 1) {
+      result.emplace_back(device_args.at("driver"));
+    }
+  }
+  return result;
+}
+
+std::vector<std::string> Soapy::guarded_devices() const {
+  const SoapySDR::KwargsList raw_devices{SoapySDR::Device::enumerate()};
+  SoapySDR::KwargsList unguarded_devices{device_guard_(raw_devices)};
+
+  std::vector<std::string> result{};
+  for (const auto& device_args : unguarded_devices) {
     if (device_args.count("driver") == 1) {
       result.emplace_back(device_args.at("driver"));
     }
