@@ -1,12 +1,16 @@
 #include "radio/soapy.h"
 
+#include <algorithm>
 #include <filesystem>
 #include <string>
+#include <vector>
 
 #include "glog/logging.h"
-#include "gtest/gtest.h"
+#include "gmock/gmock.h"
 
 namespace tvsc::radio {
+
+using ::testing::ContainerEq;
 
 const char DUMMY_RECEIVER_MODULE_PATH[]{"radio/libdummy_radio_module.so"};
 const char DUMMY_RECEIVER_DEVICE_NAME[]{"dummy_receiver"};
@@ -16,7 +20,25 @@ std::string working_directory() {
   return path.string();
 }
 
-class SoapyDeviceGuardTest : public ::testing::Test {
+TEST(DeviceGuardTest, CanUseAsUnaryPredicate) {
+  const std::string REMOVE{"remove"};
+  DeviceGuard filter{};
+  filter.guard(REMOVE);
+
+  std::vector<std::string> kept_things{};
+  std::vector<std::string> things{};
+  things.emplace_back("keep1");
+  kept_things.emplace_back("keep1");
+  things.emplace_back(REMOVE);
+  things.emplace_back("keep2");
+  kept_things.emplace_back("keep2");
+
+  things.erase(std::remove_if(things.begin(), things.end(), filter));
+
+  EXPECT_THAT(things, ContainerEq(kept_things));
+}
+
+class SoapyTest : public ::testing::Test {
  public:
   Soapy soapy{};
 
@@ -25,12 +47,12 @@ class SoapyDeviceGuardTest : public ::testing::Test {
   void TearDown() override { soapy.unload_module(DUMMY_RECEIVER_MODULE_PATH); }
 };
 
-TEST_F(SoapyDeviceGuardTest, HasDummyReceiver) {
+TEST_F(SoapyTest, HasDummyReceiver) {
   EXPECT_TRUE(soapy.has_device(DUMMY_RECEIVER_DEVICE_NAME))
       << "Working directory: '" << working_directory() << "'";
 }
 
-TEST_F(SoapyDeviceGuardTest, CanUnloadModule) {
+TEST_F(SoapyTest, CanUnloadModule) {
   ASSERT_TRUE(soapy.has_device(DUMMY_RECEIVER_DEVICE_NAME))
       << "Working directory: '" << working_directory() << "'";
 
@@ -41,7 +63,7 @@ TEST_F(SoapyDeviceGuardTest, CanUnloadModule) {
   EXPECT_TRUE(soapy.has_device(DUMMY_RECEIVER_DEVICE_NAME));
 }
 
-TEST_F(SoapyDeviceGuardTest, CanGuardDevice) {
+TEST_F(SoapyTest, CanGuardDevice) {
   ASSERT_TRUE(soapy.has_device(DUMMY_RECEIVER_DEVICE_NAME))
       << "Working directory: '" << working_directory() << "'";
   ASSERT_FALSE(soapy.is_guarded(DUMMY_RECEIVER_DEVICE_NAME));

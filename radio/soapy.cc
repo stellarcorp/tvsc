@@ -198,11 +198,28 @@ std::vector<std::string> Soapy::devices() const {
 }
 
 std::vector<std::string> Soapy::guarded_devices() const {
-  const SoapySDR::KwargsList raw_devices{SoapySDR::Device::enumerate()};
-  SoapySDR::KwargsList unguarded_devices{device_guard_(raw_devices)};
+  SoapySDR::KwargsList raw_devices{SoapySDR::Device::enumerate()};
+  // Remove all devices that are *not* guarded.
+  raw_devices.erase(std::remove_if(
+      raw_devices.begin(), raw_devices.end(),
+      [this](const SoapySDR::Kwargs& device) { return !device_guard_.is_guarded(device); }));
 
   std::vector<std::string> result{};
-  for (const auto& device_args : unguarded_devices) {
+  for (const auto& device_args : raw_devices) {
+    if (device_args.count("driver") == 1) {
+      result.emplace_back(device_args.at("driver"));
+    }
+  }
+  return result;
+}
+
+std::vector<std::string> Soapy::unguarded_devices() const {
+  SoapySDR::KwargsList raw_devices{SoapySDR::Device::enumerate()};
+  // Remove any device that is guarded.
+  raw_devices.erase(std::remove_if(raw_devices.begin(), raw_devices.end(), device_guard_));
+
+  std::vector<std::string> result{};
+  for (const auto& device_args : raw_devices) {
     if (device_args.count("driver") == 1) {
       result.emplace_back(device_args.at("driver"));
     }

@@ -21,16 +21,24 @@ class DeviceGuard final {
     return guarded_devices_.count(std::string{device_name}) == 1;
   }
 
-  /**
-   * Operator acting as a filter to pass (return true) unguarded devices.
-   */
-  bool operator()(std::string_view device_name) const { return !is_guarded(device_name); }
+  bool is_guarded(const SoapySDR::Kwargs& device) const {
+    const auto location{device.find("driver")};
+    if (location != device.end()) {
+      return is_guarded(location->second);
+    }
+    // Note: devices without a "driver" name are unguarded by default.
+    return false;
+  }
 
   /**
-   * Operator acting as a filter to pass unguarded devices. Guarded devices are removed from the
-   * results.
+   * Operator acting as a filter to determine (return true) if a device is guarded.
    */
-  SoapySDR::KwargsList operator()(SoapySDR::KwargsList in) const { return in; }
+  bool operator()(std::string_view device_name) const { return is_guarded(device_name); }
+
+  /**
+   * Operator acting as a filter to determine (return true) if a device is guarded.
+   */
+  bool operator()(const SoapySDR::Kwargs& device) const { return is_guarded(device); }
 
   bool guard(std::string_view device_name) { return guarded_devices_.emplace(device_name).second; }
 
