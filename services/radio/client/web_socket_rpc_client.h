@@ -11,7 +11,7 @@ template <bool SSL>
 void ws_message(uWS::WebSocket<SSL, true, RadioClient> *ws, std::string_view msg, uWS::OpCode op) {
   DLOG(INFO) << "radio::ws_message() -- msg: '" << msg << "', op: " << op;
   RadioClient *client = static_cast<RadioClient *>(ws->getUserData());
-  RadioReply reply{};
+  EchoReply reply{};
   grpc::Status status = client->call(std::string{msg}, &reply);
   if (status.ok()) {
     ws->send(reply.msg(), op);

@@ -3,13 +3,13 @@ syntax = "proto3";
 package tvsc.service.radio;
 
 service Radio {
-  rpc radio(RadioRequest) returns (RadioReply);
+  rpc echo(EchoRequest) returns (EchoReply);
 }
 
-message RadioRequest {
+message EchoRequest {
   string msg = 1;
 }
 
-message RadioReply {
+message EchoReply {
   string msg = 1;
 }

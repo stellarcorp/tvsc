@@ -13,34 +13,34 @@
 #include "services/radio/common/radio.grpc.pb.h"
 #include "services/radio/common/radio_service_location.h"
 
-using grpc::Server;
-using grpc::ServerBuilder;
-using grpc::ServerContext;
-using grpc::Status;
-
 namespace tvsc::service::radio {
 
 class RadioServiceImpl final : public Radio::Service {
-  Status radio(ServerContext* context, const RadioRequest* request, RadioReply* reply) override {
+ private:
+  tvsc::radio::Soapy* soapy_;
+
+ public:
+  RadioServiceImpl(tvsc::radio::Soapy& soapy) : soapy_(&soapy) {}
+
+  grpc::Status echo(grpc::ServerContext* context, const EchoRequest* request,
+                    EchoReply* reply) override {
     const std::string& msg{request->msg()};
     reply->set_msg(msg);
     LOG(INFO) << "Received msg: '" << msg << "'";
-    return Status::OK;
+    return grpc::Status::OK;
   }
 };
 
-void run_grpc_server() {
-  RadioServiceImpl service;
-
+void run_grpc_server(Radio::Service* service) {
   grpc::EnableDefaultHealthCheckService(true);
-  ServerBuilder builder;
+  grpc::ServerBuilder builder;
 
   const std::string bind_addr{get_radio_service_socket_address()};
   builder.AddListeningPort(bind_addr, grpc::InsecureServerCredentials());
 
-  builder.RegisterService(&service);
+  builder.RegisterService(service);
 
-  std::unique_ptr<Server> server(builder.BuildAndStart());
+  std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
   LOG(INFO) << "Server listening on " << bind_addr;
 
   server->Wait();
@@ -61,25 +61,14 @@ int main(int argc, char** argv) {
 
   tvsc::radio::Soapy soapy{};
 
-  LOG(INFO) << "Soapy modules:";
-  for (const auto& module : soapy.modules()) {
-    LOG(INFO) << module;
-  }
-
-  LOG(INFO) << "Soapy devices:";
-  for (const auto& device : soapy.devices()) {
-    LOG(INFO) << device;
-  }
-
-  LOG_IF(WARNING, !soapy.contains_module("libdummy_radio.so")) << "'dummy_radio' module not found";
-  LOG_IF(WARNING, !soapy.has_device("dummy_receiver")) << "'dummy_receiver' device not found";
-
   tvsc::radio::SoapyServer soapy_server{soapy};
   tvsc::service::radio::soapy_global = &soapy_server;
   signal(SIGINT, tvsc::service::radio::shutdown_server);
 
   soapy_server.start();
-  std::thread grpc_protocol_handler{tvsc::service::radio::run_grpc_server};
+
+  tvsc::service::radio::RadioServiceImpl grpc_service{soapy};
+  std::thread grpc_protocol_handler{tvsc::service::radio::run_grpc_server, &grpc_service};
 
   int soapy_server_result = soapy_server.wait();
   LOG(INFO) << "Soapy server result: " << soapy_server_result;

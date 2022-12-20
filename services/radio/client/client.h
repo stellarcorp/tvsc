@@ -14,15 +14,15 @@ class RadioClient {
   RadioClient(const std::string& bind_addr)
       : stub_(Radio::NewStub(grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials()))) {}
 
-  grpc::Status call(const std::string& msg, RadioReply* reply) {
+  grpc::Status call(const std::string& msg, EchoReply* reply) {
     grpc::ClientContext context{};
-    RadioRequest request{};
+    EchoRequest request{};
     request.set_msg(msg);
     return call(&context, request, reply);
   }
 
-  grpc::Status call(grpc::ClientContext* context, const RadioRequest& request, RadioReply* reply) {
-    return stub_->radio(context, request, reply);
+  grpc::Status call(grpc::ClientContext* context, const EchoRequest& request, EchoReply* reply) {
+    return stub_->echo(context, request, reply);
   }
 
  private:

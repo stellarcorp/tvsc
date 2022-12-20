@@ -12,7 +12,7 @@ namespace tvsc::service::radio {
 
 std::string radio_message(const std::string& msg) {
   RadioClient client(get_radio_service_socket_address());
-  RadioReply reply{};
+  EchoReply reply{};
   grpc::Status status = client.call(msg, &reply);
   if (status.ok()) {
     return reply.msg();
@@ -24,7 +24,7 @@ std::string radio_message(const std::string& msg) {
 
 }  // namespace tvsc::service::radio
 
-DEFINE_string(msg, "I am an radio!", "Message to radio. Defaults to 'I am an radio!'.");
+DEFINE_string(msg, "I am a radio!", "Message to radio. Defaults to 'I am a radio!'.");
 
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
