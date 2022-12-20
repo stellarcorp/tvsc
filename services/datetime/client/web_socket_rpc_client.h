@@ -11,7 +11,6 @@ namespace tvsc::service::datetime {
 template <bool SSL>
 void ws_message(uWS::WebSocket<SSL, true, DatetimeClient> *ws, std::string_view message, uWS::OpCode op) {
   using std::to_string;
-  DLOG_EVERY_N(INFO, 100) << "datetime::ws_message() -- message: '" << message << "', op: " << op;
   DatetimeClient *client = static_cast<DatetimeClient *>(ws->getUserData());
   DatetimeReply reply{};
   grpc::Status status = client->call(&reply);
