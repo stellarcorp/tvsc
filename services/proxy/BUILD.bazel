@@ -33,6 +33,17 @@ pkg_files(
     prefix = "usr/bin",
 )
 
+pkg_files(
+    name = "systemd_files",
+    srcs = [
+        ":etc/tvsc-proxy.service",
+    ],
+    attributes = pkg_attributes(
+        mode = "0644",
+    ),
+    prefix = "lib/systemd/system",
+)
+
 PACKAGE_NAME = "tvsc-proxy"
 
 pkg_tar(
@@ -40,6 +51,7 @@ pkg_tar(
     testonly = True,
     srcs = [
         ":binaries",
+        ":systemd_files",
     ],
     package_file_name = tarball_name(PACKAGE_NAME),
 )
@@ -52,6 +64,9 @@ pkg_deb(
     description = "Reverse network proxy package from the Virtual Tower system from TVSC",
     maintainer = "info@stellarcorp.tv",
     package = PACKAGE_NAME,
+    postinst = "debian/tvsc_proxy_service.postinst",
+    preinst = "debian/tvsc_proxy_service.preinst",
+    prerm = "debian/tvsc_proxy_service.prerm",
     version = version_string(),
     visibility = ["//visibility:public"],
 )
