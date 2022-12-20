@@ -55,8 +55,6 @@ void shutdown_server(int signum) { soapy_global->shutdown(); }
 
 }  // namespace tvsc::service::radio
 
-std::string& getModuleLoading(void);
-
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
