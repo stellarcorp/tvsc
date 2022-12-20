@@ -35,9 +35,9 @@ SoapyServerThreadData::~SoapyServerThreadData(void)
     delete client;
 }
 
-void SoapyServerThreadData::handlerLoop(void)
+void SoapyServerThreadData::handlerLoop(std::function<bool(const SoapySDR::Kwargs& device)> deviceFilter)
 {
-    SoapyClientHandler handler(*client, uuid);
+    SoapyClientHandler handler(*client, uuid, std::move(deviceFilter));
 
     try
     {
@@ -58,9 +58,11 @@ void SoapyServerThreadData::handlerLoop(void)
 /***********************************************************************
  * Socket listener constructor
  **********************************************************************/
-SoapyServerListener::SoapyServerListener(SoapyRPCSocket &sock, const std::string &uuid):
+SoapyServerListener::SoapyServerListener(SoapyRPCSocket &sock, const std::string &uuid,
+					 std::function<bool(const SoapySDR::Kwargs& device)> deviceFilter):
     _sock(sock),
     _uuid(uuid),
+    _deviceFilter(std::move(deviceFilter)),
     _handlerId(0)
 {
     return;
@@ -106,5 +108,8 @@ void SoapyServerListener::handleOnce(void)
     data.uuid = _uuid;
 
     //spawn a new thread
-    data.thread = new std::thread(&SoapyServerThreadData::handlerLoop, &data);
+    // Note that we copy the deviceFilter into the this thread, rather than moving it. We do this so
+    // that the deviceFilter in the SoapyServerListener instance remains valid and can be reused to
+    // handle subsequent requests.
+    data.thread = new std::thread(&SoapyServerThreadData::handlerLoop, &data, _deviceFilter);
 }

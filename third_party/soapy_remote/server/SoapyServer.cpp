@@ -29,7 +29,8 @@ bool is_ipv6_supported() {
   return isIPv6Supported;
 }
 
-int run_soapy_server(std::atomic<bool>& stop_server) {
+int run_soapy_server(std::atomic<bool>& stop_server,
+		     std::function<bool(const SoapySDR::Kwargs& device)> deviceFilter) {
   auto url = SoapyURL(FLAGS_soapy_url);
 
   // this UUID identifies the server process
@@ -45,7 +46,7 @@ int run_soapy_server(std::atomic<bool>& stop_server) {
   }
   LOG(INFO) << "Server bound to " << s.getsockname();
   s.listen(SOAPY_REMOTE_LISTEN_BACKLOG);
-  auto serverListener = new SoapyServerListener(s, serverUUID);
+  auto serverListener = new SoapyServerListener(s, serverUUID, deviceFilter);
 
   const int ipVerServices = is_ipv6_supported() ? SOAPY_REMOTE_IPVER_UNSPEC : SOAPY_REMOTE_IPVER_INET;
 
@@ -58,13 +59,15 @@ int run_soapy_server(std::atomic<bool>& stop_server) {
   dnssdPublish->printInfo();
   dnssdPublish->registerService(serverUUID, url.getService(), ipVerServices);
 
-  const auto modules{SoapySDR::listModules()};
-  if (modules.empty()) {
-    LOG(ERROR) << "<No Soapy modules found>\n";
-  } else {
-    LOG(INFO) << "Loaded modules:\n";
-    for (const auto& module : modules) {
-      LOG(INFO) << "\t" << module << "\n";
+  {
+    const auto modules{SoapySDR::listModules()};
+    if (modules.empty()) {
+      LOG(ERROR) << "<No Soapy modules found>\n";
+    } else {
+      LOG(INFO) << "Loaded modules:\n";
+      for (const auto& module : modules) {
+	LOG(INFO) << "\t" << module << "\n";
+      }
     }
   }
 

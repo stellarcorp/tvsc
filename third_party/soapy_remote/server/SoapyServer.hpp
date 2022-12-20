@@ -6,6 +6,9 @@
 #include <string>
 #include <thread>
 #include <map>
+#include <functional>
+
+#include "SoapySDR/Device.hpp"
 
 class SoapyRPCSocket;
 
@@ -14,7 +17,7 @@ struct SoapyServerThreadData
 {
     SoapyServerThreadData(void);
     ~SoapyServerThreadData(void);
-    void handlerLoop(void);
+    void handlerLoop(std::function<bool(const SoapySDR::Kwargs& device)> deviceFilter);
     sig_atomic_t done;
     std::thread *thread;
     SoapyRPCSocket *client;
@@ -27,7 +30,8 @@ struct SoapyServerThreadData
 class SoapyServerListener
 {
 public:
-    SoapyServerListener(SoapyRPCSocket &sock, const std::string &uuid);
+    SoapyServerListener(SoapyRPCSocket &sock, const std::string &uuid,
+			std::function<bool(const SoapySDR::Kwargs& device)> deviceFilter);
 
     ~SoapyServerListener(void);
 
@@ -36,6 +40,7 @@ public:
 private:
     SoapyRPCSocket &_sock;
     const std::string _uuid;
+    std::function<bool(const SoapySDR::Kwargs& device)> _deviceFilter;
     size_t _handlerId;
     std::map<size_t, SoapyServerThreadData> _handlers;
 };

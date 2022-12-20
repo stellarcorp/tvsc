@@ -2,7 +2,11 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #pragma once
+
+#include "SoapySDR/Device.hpp"
+
 #include <cstddef>
+#include <functional>
 #include <string>
 #include <map>
 
@@ -23,7 +27,8 @@ namespace SoapySDR
 class SoapyClientHandler
 {
 public:
-    SoapyClientHandler(SoapyRPCSocket &sock, const std::string &uuid);
+    SoapyClientHandler(SoapyRPCSocket &sock, const std::string &uuid,
+		       std::function<bool(const SoapySDR::Kwargs&)> deviceFilter);
 
     ~SoapyClientHandler(void);
 
@@ -37,6 +42,8 @@ private:
     const std::string _uuid;
     SoapySDR::Device *_dev;
     SoapyLogForwarder *_logForwarder;
+
+    std::function<bool(const SoapySDR::Kwargs&)> _deviceFilter;
 
     //stream tracking
     int _nextStreamId;

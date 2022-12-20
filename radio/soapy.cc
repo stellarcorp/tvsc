@@ -89,7 +89,9 @@ void Soapy::start_server() {
   }
 
   stop_server_ = false;
-  server_result_ = std::async(std::launch::async, run_soapy_server, std::ref(stop_server_));
+  server_result_ = std::async(
+      std::launch::async, run_soapy_server, std::ref(stop_server_),
+      [this](const SoapySDR::Kwargs& device) { return device_guard_.is_guarded(device); });
 }
 
 void Soapy::shutdown_server() {

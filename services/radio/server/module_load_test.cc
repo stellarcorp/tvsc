@@ -11,7 +11,7 @@
 #include "SoapySDR/Version.hpp"
 #include "glog/logging.h"
 #include "gtest/gtest.h"
-#include "services/radio/server/soapy.h"
+#include "radio/soapy.h"
 
 namespace tvsc::services::radio::server {
 
@@ -20,9 +20,9 @@ const char DUMMY_RADIO_DEVICE_NAME[]{"dummy_receiver"};
 
 class ModuleTest : public ::testing::Test {
  public:
-  std::unique_ptr<Soapy> soapy{};
+  std::unique_ptr<tvsc::radio::Soapy> soapy{};
 
-  void SetUp() override { soapy.reset(new Soapy()); }
+  void SetUp() override { soapy.reset(new tvsc::radio::Soapy()); }
 
   void TearDown() override { soapy.reset(); }
 
@@ -30,13 +30,15 @@ class ModuleTest : public ::testing::Test {
     if (soapy->contains_module(module_name)) {
       return ::testing::AssertionSuccess();
     } else {
-      return ::testing::AssertionFailure() << "No module named '" << std::string{module_name} << "'";
+      return ::testing::AssertionFailure()
+             << "No module named '" << std::string{module_name} << "'";
     }
   }
 
   ::testing::AssertionResult load_success(const std::string_view module_name) {
     if (!soapy->loaded_successfully(module_name)) {
-      return ::testing::AssertionFailure() << "Loader result not empty: " << soapy->load_error_message(module_name);
+      return ::testing::AssertionFailure()
+             << "Loader result not empty: " << soapy->load_error_message(module_name);
     }
     return ::testing::AssertionSuccess();
   }
@@ -137,17 +139,27 @@ TEST_F(ModuleTest, ModuleDirectoryConfiguration) {
 
 TEST_F(ModuleTest, ContainsDummyRadio) { EXPECT_TRUE(contains_module(DUMMY_RADIO_MODULE_NAME)); }
 
-TEST_F(ModuleTest, DummyRadioLoaderResultHasNoError) { EXPECT_TRUE(load_success(DUMMY_RADIO_MODULE_NAME)); }
+TEST_F(ModuleTest, DummyRadioLoaderResultHasNoError) {
+  EXPECT_TRUE(load_success(DUMMY_RADIO_MODULE_NAME));
+}
 
-TEST_F(ModuleTest, DummyRadioHasCorrectModuleVersion) { EXPECT_TRUE(has_correct_abi_version(DUMMY_RADIO_MODULE_NAME)); }
+TEST_F(ModuleTest, DummyRadioHasCorrectModuleVersion) {
+  EXPECT_TRUE(has_correct_abi_version(DUMMY_RADIO_MODULE_NAME));
+}
 
-TEST_F(ModuleTest, DummyRadioHasFindFunction) { EXPECT_TRUE(has_find_function(DUMMY_RADIO_DEVICE_NAME)); }
+TEST_F(ModuleTest, DummyRadioHasFindFunction) {
+  EXPECT_TRUE(has_find_function(DUMMY_RADIO_DEVICE_NAME));
+}
 
-TEST_F(ModuleTest, DummyRadioHasMakeFunction) { EXPECT_TRUE(has_make_function(DUMMY_RADIO_DEVICE_NAME)); }
+TEST_F(ModuleTest, DummyRadioHasMakeFunction) {
+  EXPECT_TRUE(has_make_function(DUMMY_RADIO_DEVICE_NAME));
+}
 
 TEST_F(ModuleTest, DummyRadioIsDevice) { EXPECT_TRUE(has_device(DUMMY_RADIO_DEVICE_NAME)); }
 
-TEST_F(ModuleTest, EnumerateContainsDummyRadio) { EXPECT_TRUE(enumerate_contains(DUMMY_RADIO_DEVICE_NAME)); }
+TEST_F(ModuleTest, EnumerateContainsDummyRadio) {
+  EXPECT_TRUE(enumerate_contains(DUMMY_RADIO_DEVICE_NAME));
+}
 
 TEST_F(ModuleTest, CanCreateDummyRadio) { EXPECT_TRUE(can_create(DUMMY_RADIO_DEVICE_NAME)); }
 

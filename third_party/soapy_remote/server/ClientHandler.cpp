@@ -16,6 +16,7 @@
 #include <SoapySDR/Logger.hpp>
 #include <SoapySDR/Formats.hpp>
 #include <SoapySDR/Version.hpp>
+#include <algorithm>
 #include <iostream>
 #include <mutex>
 #include "glog/logging.h"
@@ -26,11 +27,13 @@ static std::mutex factoryMutex;
 /***********************************************************************
  * Client handler constructor
  **********************************************************************/
-SoapyClientHandler::SoapyClientHandler(SoapyRPCSocket &sock, const std::string &uuid):
+SoapyClientHandler::SoapyClientHandler(SoapyRPCSocket &sock, const std::string &uuid,
+				       std::function<bool(const SoapySDR::Kwargs& device)> deviceFilter):
     _sock(sock),
     _uuid(uuid),
     _dev(nullptr),
     _logForwarder(nullptr),
+    _deviceFilter(std::move(deviceFilter)),
     _nextStreamId(0)
 {
     return;
@@ -107,6 +110,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
         unpacker & args;
 	LOG(INFO) << "SOAPY_REMOTE_FIND -- args: " << SoapySDR::KwargsToString(args);
 	SoapySDR::KwargsList results{SoapySDR::Device::enumerate(args)};
+	results.erase(std::remove_if(results.begin(), results.end(), _deviceFilter));
 	LOG(INFO) << "SOAPY_REMOTE_FIND -- results: ";
 	for (const auto& result : results) {
 	  LOG(INFO) << SoapySDR::KwargsToString(result);
@@ -1150,7 +1154,7 @@ bool SoapyClientHandler::handleOnce(SoapyRPCUnpacker &unpacker, SoapyRPCPacker &
         #ifdef SOAPY_SDR_API_HAS_REF_CLOCK_RATE_API
         packer & _dev->getReferenceClockRate();
         #else
-        double result;
+        double result{0.};
         packer & result;
         #endif
     } break;
