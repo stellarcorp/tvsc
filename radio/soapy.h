@@ -52,17 +52,9 @@ class Soapy final {
   std::vector<SoapySDR::Device*> devices_{};
   DeviceGuard device_guard_{};
 
-  std::atomic<bool> stop_server_{true};
-  int server_result_cached_{};
-  std::future<int> server_result_{};
-
  public:
   Soapy();
   ~Soapy();
-
-  void start_server();
-  void shutdown_server();
-  int wait_on_server();
 
   std::vector<std::string> modules() const;
 
@@ -101,6 +93,9 @@ class Soapy final {
   std::vector<std::string> unguarded_devices() const;
   bool is_guarded(std::string_view device_name) const {
     return device_guard_.is_guarded(device_name);
+  }
+  std::function<bool(const SoapySDR::Kwargs& soapy_device)> create_guarded_device_filter() const {
+    return device_guard_;
   }
 
   std::vector<std::string> devices() const;

@@ -9,9 +9,9 @@
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
 #include "radio/soapy.h"
+#include "radio/soapy_server.h"
 #include "services/radio/common/radio.grpc.pb.h"
 #include "services/radio/common/radio_service_location.h"
-#include "soapy_server.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -46,11 +46,12 @@ void run_grpc_server() {
   server->Wait();
 }
 
-// Use a global variable for the Soapy management instance. Signal handlers must be function pointers, and this seems to
-// be the easiest way to bind a value (the soapy instance) such that it is accessible from a function pointer. Note that
-// the Soapy instance still has automatic storage duration tied to the main() function.
-static tvsc::radio::Soapy* soapy_global{nullptr};
-void shutdown_server(int signum) { soapy_global->shutdown_server(); }
+// Use a global variable for the SoapyServer management instance. Signal handlers must be function
+// pointers, and this seems to be the easiest way to bind a value (the soapy instance) such that it
+// is accessible from a function pointer. Note that the Soapy instance still has automatic storage
+// duration tied to the main() function.
+static tvsc::radio::SoapyServer* soapy_global{nullptr};
+void shutdown_server(int signum) { soapy_global->shutdown(); }
 
 }  // namespace tvsc::service::radio
 
@@ -75,13 +76,14 @@ int main(int argc, char** argv) {
   LOG_IF(WARNING, !soapy.contains_module("libdummy_radio.so")) << "'dummy_radio' module not found";
   LOG_IF(WARNING, !soapy.has_device("dummy_receiver")) << "'dummy_receiver' device not found";
 
-  tvsc::service::radio::soapy_global = &soapy;
+  tvsc::radio::SoapyServer soapy_server{soapy};
+  tvsc::service::radio::soapy_global = &soapy_server;
   signal(SIGINT, tvsc::service::radio::shutdown_server);
 
-  soapy.start_server();
+  soapy_server.start();
   std::thread grpc_protocol_handler{tvsc::service::radio::run_grpc_server};
 
-  int soapy_server_result = soapy.wait_on_server();
+  int soapy_server_result = soapy_server.wait();
   LOG(INFO) << "Soapy server result: " << soapy_server_result;
   return 0;
 }

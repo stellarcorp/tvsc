@@ -75,35 +75,9 @@ Soapy::Soapy() {
 }
 
 Soapy::~Soapy() {
-  shutdown_server();
-
   for (SoapySDR::Device* device : devices_) {
     SoapySDR::Device::unmake(device);
   }
-}
-
-void Soapy::start_server() {
-  if (stop_server_ == false) {
-    // We are already running the server.
-    throw std::domain_error("Attempt to start soapy server when it is already running.");
-  }
-
-  stop_server_ = false;
-  server_result_ = std::async(
-      std::launch::async, run_soapy_server, std::ref(stop_server_),
-      [this](const SoapySDR::Kwargs& device) { return device_guard_.is_guarded(device); });
-}
-
-void Soapy::shutdown_server() {
-  if (stop_server_ == false) {
-    stop_server_ = true;
-  }
-}
-
-int Soapy::wait_on_server() {
-  server_result_.wait();
-  server_result_cached_ = server_result_.get();
-  return server_result_cached_;
 }
 
 std::vector<std::string> Soapy::modules() const {

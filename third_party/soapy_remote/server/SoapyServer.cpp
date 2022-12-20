@@ -19,7 +19,7 @@
 #include "SoapyURLUtils.hpp"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
-#include "soapy_server.h"
+#include "soapy_server_runner.h"
 
 DEFINE_string(soapy_url, "0.0.0.0:55132",
               "URL to bind the SoapyRemote service to. Can be an IPv6 or IPv4 address, as supported by network.");

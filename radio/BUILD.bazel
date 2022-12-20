@@ -2,9 +2,11 @@ cc_library(
     name = "radio",
     srcs = [
         "soapy.cc",
+        "soapy_server.cc",
     ],
     hdrs = [
         "soapy.h",
+        "soapy_server.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
