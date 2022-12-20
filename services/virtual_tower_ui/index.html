@@ -138,19 +138,8 @@
       datetime_interval_id = -1;
       current_date = new Date();
 
-      function CreateHelloSocket() {
-	  var ws = new WebSocket("ws://localhost:50050/service/hello");
-
-          ws.onmessage = function (evt) {
-              var received_msg = evt.data;
-	      $("#hello_reply").text(received_msg);
-          };
-
-	  return ws;
-      }
-
       function CreateEchoSocket() {
-	  var ws = new WebSocket("ws://localhost:50050/service/echo");
+	  var ws = new WebSocket("ws://" + location.hostname + ":50050/service/echo");
 
           ws.onmessage = function (evt) {
               var received_msg = evt.data;
@@ -190,7 +179,7 @@
       }
 
       function CreateDatetimeSocket() {
-	  var ws = new WebSocket("ws://localhost:50050/service/datetime");
+	  var ws = new WebSocket("ws://" + location.hostname + ":50050/service/datetime");
 
 	  ws.onopen = function() {
 	      StartDatetimeRequests();
@@ -215,15 +204,9 @@
 	      // The browser doesn't support WebSocket
 	      alert("WebSocket NOT supported by your Browser!");
 	  } else {
-              web_sockets["hello"] = CreateHelloSocket();
               web_sockets["echo"] = CreateEchoSocket();
               web_sockets["datetime"] = CreateDatetimeSocket();
 	  }
-      }
-
-      
-      function CallHello(name) {
-	  web_sockets["hello"].send(name);
       }
 
       function CallEcho(msg) {
@@ -263,15 +246,6 @@
       </div>
 
       <div class="centercolumn">
-	<div class="panel_widget">
-	  <h2>Hello Service</h2>
-	  <form action="javascript:CallHello($('#hello_name').val())">
-	    <input type="text" id="hello_name" value="world"/>
-	    <input type="submit" value="Send"/>
-	  </form>
-	  <span id="hello_reply"></span>
-	</div>
-
 	<div class="panel_widget">
 	  <h2>Echo Service</h2>
 	  <form action="javascript:CallEcho($('#echo_message').val())">
