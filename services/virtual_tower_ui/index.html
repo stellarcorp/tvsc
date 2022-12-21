@@ -138,8 +138,16 @@
       datetime_interval_id = -1;
       current_date = new Date();
 
+      function GetProxyServerAddress() {
+	  return location.hostname + ":50050";
+      }
+
+      function BuildWebSocketUrl(service, method) {
+	  return "ws://" + GetProxyServerAddress() + "/service/" + service + "/" + method;
+      }
+
       function CreateEchoSocket() {
-	  var ws = new WebSocket("ws://" + location.hostname + ":50050/service/echo");
+	  var ws = new WebSocket(BuildWebSocketUrl("echo", "echo"));
 
           ws.onmessage = function (evt) {
               var received_msg = evt.data;
@@ -179,7 +187,7 @@
       }
 
       function CreateDatetimeSocket() {
-	  var ws = new WebSocket("ws://" + location.hostname + ":50050/service/datetime");
+	  var ws = new WebSocket(BuildWebSocketUrl("datetime", "get_datetime"));
 
 	  ws.onopen = function() {
 	      StartDatetimeRequests();
