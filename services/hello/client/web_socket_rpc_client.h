@@ -15,7 +15,8 @@ inline bool hasBrokenCompression(std::string_view userAgent) {
   if (posEnd == std::string_view::npos) return false;
 
   unsigned int minorVersion = 0;
-  auto result = std::from_chars(userAgent.data() + posStart, userAgent.data() + posEnd, minorVersion);
+  auto result =
+      std::from_chars(userAgent.data() + posStart, userAgent.data() + posEnd, minorVersion);
   if (result.ec != std::errc()) return false;
   if (result.ptr != userAgent.data() + posEnd) return false;  // do not accept trailing chars
   if (minorVersion > 3) return false;                         // we target just Safari 15.0 - 15.3
@@ -26,7 +27,8 @@ inline bool hasBrokenCompression(std::string_view userAgent) {
 }
 
 template <bool SSL>
-void ws_upgrade(uWS::HttpResponse<SSL> *res, uWS::HttpRequest *req, struct us_socket_context_t *webSocketContext) {
+void ws_upgrade(uWS::HttpResponse<SSL> *res, uWS::HttpRequest *req,
+                struct us_socket_context_t *webSocketContext) {
   LOG(INFO) << "hello::ws_upgrade()";
 
   /* Default handler upgrades to WebSocket */
@@ -39,8 +41,8 @@ void ws_upgrade(uWS::HttpResponse<SSL> *res, uWS::HttpRequest *req, struct us_so
     secWebSocketExtensions = "";
   }
 
-  res->template upgrade<HelloClient>({}, secWebSocketKey, secWebSocketProtocol, secWebSocketExtensions,
-                                     webSocketContext);
+  res->template upgrade<HelloClient>({}, secWebSocketKey, secWebSocketProtocol,
+                                     secWebSocketExtensions, webSocketContext);
 }
 
 template <bool SSL>
@@ -58,7 +60,8 @@ void ws_message(uWS::WebSocket<SSL, true, HelloClient> *ws, std::string_view nam
     ws->send(reply.msg(), op);
   } else {
     LOG(WARNING) << "RPC failed -- " << status.error_code() << ": " << status.error_message();
-    ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " + status.error_message(),
+    ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " +
+                 status.error_message(),
              uWS::OpCode::TEXT);
   }
 }
@@ -84,34 +87,53 @@ void ws_close(uWS::WebSocket<SSL, true, HelloClient> *ws, int, std::string_view 
   LOG(INFO) << "hello::ws_close() -- message: " << message;
 }
 
-uWS::App::WebSocketBehavior<HelloClient> create_web_socket_behavior() {
+void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> *app) {
   constexpr bool SSL{false};
-  uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient> behavior{
-      .upgrade = ws_upgrade<SSL>,
-      .open = ws_open<SSL>,
-      .message = ws_message<SSL>,
-      .drain = ws_drain<SSL>,
-      .ping = ws_ping<SSL>,
-      .pong = ws_pong<SSL>,
-      .close = ws_close<SSL>,
-  };
-
-  return behavior;
+  app->ws(base_path,  //
+          uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient>{
+              .upgrade = ws_upgrade<SSL>,
+              .open = ws_open<SSL>,
+              .message = ws_message<SSL>,
+              .drain = ws_drain<SSL>,
+              .ping = ws_ping<SSL>,
+              .pong = ws_pong<SSL>,
+              .close = ws_close<SSL>,
+          });
+  app->ws(base_path + "/say_hello",  //
+          uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient>{
+              .upgrade = ws_upgrade<SSL>,
+              .open = ws_open<SSL>,
+              .message = ws_message<SSL>,
+              .drain = ws_drain<SSL>,
+              .ping = ws_ping<SSL>,
+              .pong = ws_pong<SSL>,
+              .close = ws_close<SSL>,
+          });
 }
 
-uWS::SSLApp::WebSocketBehavior<HelloClient> create_web_socket_behavior_with_ssl() {
+void create_web_socket_behaviors_with_ssl(const std::string &base_path,
+                                          uWS::TemplatedApp<true> *app) {
   constexpr bool SSL{true};
-  uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient> behavior{
-      .upgrade = ws_upgrade<SSL>,
-      .open = ws_open<SSL>,
-      .message = ws_message<SSL>,
-      .drain = ws_drain<SSL>,
-      .ping = ws_ping<SSL>,
-      .pong = ws_pong<SSL>,
-      .close = ws_close<SSL>,
-  };
-
-  return behavior;
+  app->ws(base_path,  //
+          uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient>{
+              .upgrade = ws_upgrade<SSL>,
+              .open = ws_open<SSL>,
+              .message = ws_message<SSL>,
+              .drain = ws_drain<SSL>,
+              .ping = ws_ping<SSL>,
+              .pong = ws_pong<SSL>,
+              .close = ws_close<SSL>,
+          });
+  app->ws(base_path + "/say_hello",  //
+          uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient>{
+              .upgrade = ws_upgrade<SSL>,
+              .open = ws_open<SSL>,
+              .message = ws_message<SSL>,
+              .drain = ws_drain<SSL>,
+              .ping = ws_ping<SSL>,
+              .pong = ws_pong<SSL>,
+              .close = ws_close<SSL>,
+          });
 }
 
 }  // namespace tvsc::service::hello

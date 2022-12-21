@@ -7,19 +7,18 @@
 #include "services/hello/client/web_socket_rpc_client.h"
 #include "services/radio/client/web_socket_rpc_client.h"
 
-DEFINE_int32(port, static_cast<int>(tvsc::service::configuration::DefaultPort::PROXY_SERVICE), "Port to listen on.");
+DEFINE_int32(port, static_cast<int>(tvsc::service::configuration::DefaultPort::PROXY_SERVICE),
+             "Port to listen on.");
 
 int main(int argc, char* argv[]) {
   google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
 
   uWS::App app{};
-
-  app.ws<tvsc::service::hello::HelloClient>("/service/hello", tvsc::service::hello::create_web_socket_behavior());
-  app.ws<tvsc::service::echo::EchoClient>("/service/echo", tvsc::service::echo::create_web_socket_behavior());
-  app.ws<tvsc::service::datetime::DatetimeClient>("/service/datetime",
-                                                  tvsc::service::datetime::create_web_socket_behavior());
-  app.ws<tvsc::service::radio::RadioClient>("/service/radio", tvsc::service::radio::create_web_socket_behavior());
+  tvsc::service::hello::create_web_socket_behaviors("/service/hello", &app);
+  tvsc::service::echo::create_web_socket_behaviors("/service/echo", &app);
+  tvsc::service::datetime::create_web_socket_behaviors("/service/datetime", &app);
+  tvsc::service::radio::create_web_socket_behaviors("/service/radio", &app);
 
   app.listen(FLAGS_port,
              [](auto* listen_socket) {

@@ -17,27 +17,35 @@ void ws_message(uWS::WebSocket<SSL, true, EchoClient> *ws, std::string_view msg,
     ws->send(reply.msg(), op);
   } else {
     LOG(WARNING) << "RPC failed -- " << status.error_code() << ": " << status.error_message();
-    ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " + status.error_message(),
+    ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " +
+                 status.error_message(),
              uWS::OpCode::TEXT);
   }
 }
 
-uWS::App::WebSocketBehavior<EchoClient> create_web_socket_behavior() {
+void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> *app) {
   constexpr bool SSL{false};
-  uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient> behavior{
-      .message = ws_message<SSL>,
-  };
-
-  return behavior;
+  app->ws(base_path,  //
+          uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient>{
+              .message = ws_message<SSL>,
+          });
+  app->ws(base_path + "/echo",  //
+          uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient>{
+              .message = ws_message<SSL>,
+          });
 }
 
-uWS::SSLApp::WebSocketBehavior<EchoClient> create_web_socket_behavior_with_ssl() {
+void create_web_socket_behaviors_with_ssl(const std::string &base_path,
+                                          uWS::TemplatedApp<true> *app) {
   constexpr bool SSL{true};
-  uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient> behavior{
-      .message = ws_message<SSL>,
-  };
-
-  return behavior;
+  app->ws(base_path,  //
+          uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient>{
+              .message = ws_message<SSL>,
+          });
+  app->ws(base_path + "/echo",  //
+          uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient>{
+              .message = ws_message<SSL>,
+          });
 }
 
 }  // namespace tvsc::service::echo
