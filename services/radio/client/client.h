@@ -12,7 +12,8 @@ class RadioClient {
   RadioClient() : RadioClient(get_radio_service_socket_address()) {}
 
   RadioClient(const std::string& bind_addr)
-      : stub_(Radio::NewStub(grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials()))) {}
+      : stub_(RadioService::NewStub(
+            grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials()))) {}
 
   grpc::Status call(const std::string& msg, EchoReply* reply) {
     grpc::ClientContext context{};
@@ -26,7 +27,7 @@ class RadioClient {
   }
 
  private:
-  std::unique_ptr<Radio::Stub> stub_;
+  std::unique_ptr<RadioService::Stub> stub_;
 };
 
 }  // namespace tvsc::service::radio

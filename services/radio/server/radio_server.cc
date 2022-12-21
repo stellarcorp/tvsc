@@ -15,7 +15,7 @@
 
 namespace tvsc::service::radio {
 
-class RadioServiceImpl final : public Radio::Service {
+class RadioServiceImpl final : public RadioService::Service {
  private:
   tvsc::radio::Soapy* soapy_;
 
@@ -29,9 +29,15 @@ class RadioServiceImpl final : public Radio::Service {
     LOG(INFO) << "Received msg: '" << msg << "'";
     return grpc::Status::OK;
   }
+
+  grpc::Status list_radios(grpc::ServerContext* context, const EmptyRequest* request,
+                           Radios* reply) override {
+    LOG(INFO) << "list_radios() called.";
+    return grpc::Status::OK;
+  }
 };
 
-void run_grpc_server(Radio::Service* service) {
+void run_grpc_server(RadioService::Service* service) {
   grpc::EnableDefaultHealthCheckService(true);
   grpc::ServerBuilder builder;
 
