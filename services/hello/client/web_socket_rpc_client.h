@@ -57,7 +57,9 @@ void ws_message(uWS::WebSocket<SSL, true, HelloClient> *ws, std::string_view nam
   HelloReply reply{};
   grpc::Status status = client->call(std::string{name}, &reply);
   if (status.ok()) {
-    ws->send(reply.msg(), op);
+    std::string serialized_reply{};
+    reply.SerializeToString(&serialized_reply);
+    ws->send(serialized_reply, uWS::OpCode::BINARY);
   } else {
     LOG(WARNING) << "RPC failed -- " << status.error_code() << ": " << status.error_message();
     ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " +

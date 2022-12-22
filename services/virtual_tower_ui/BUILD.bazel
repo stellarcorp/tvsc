@@ -4,11 +4,36 @@ load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
 load("//platforms:platform.bzl", "arch_name")
 load("//services:version.bzl", "create_service_dependency_string", "tarball_name", "version_string")
 load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_js_library")
+load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+
+copy_file(
+    name = "radio_proto_file",
+    src = "//services/radio/common:radio_proto_file",
+    out = "radio.proto",
+    allow_symlink = True,
+)
+
+copy_file(
+    name = "echo_proto_file",
+    src = "//services/echo/common:echo_proto_file",
+    out = "echo.proto",
+    allow_symlink = True,
+)
+
+copy_file(
+    name = "datetime_proto_file",
+    src = "//services/datetime/common:datetime_proto_file",
+    out = "datetime.proto",
+    allow_symlink = True,
+)
 
 filegroup(
     name = "static",
     srcs = [
         "index.html",
+        ":datetime_proto_file",
+        ":echo_proto_file",
+        ":radio_proto_file",
     ],
     visibility = ["//visibility:public"],
 )
@@ -21,19 +46,10 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-closure_js_binary(
-    name = "virtual_tower_js",
-    visibility = ["//visibility:public"],
-    deps = [
-        "//services/hello/common:hello_pb_js",
-    ],
-)
-
 pkg_files(
     name = "app_files",
     srcs = [
         ":static",
-        ":virtual_tower_js",
     ],
     attributes = pkg_attributes(
         group = "nogroup",

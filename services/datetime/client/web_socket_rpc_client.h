@@ -16,7 +16,9 @@ void ws_message(uWS::WebSocket<SSL, true, DatetimeClient> *ws, std::string_view 
   DatetimeReply reply{};
   grpc::Status status = client->call(&reply);
   if (status.ok()) {
-    ws->send(to_string(reply.datetime()), uWS::OpCode::TEXT);
+    std::string serialized_reply{};
+    reply.SerializeToString(&serialized_reply);
+    ws->send(serialized_reply, uWS::OpCode::BINARY);
   } else {
     LOG(WARNING) << "RPC failed -- " << status.error_code() << ": " << status.error_message();
     ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " +

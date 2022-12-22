@@ -14,6 +14,12 @@ cc_library(
     ],
 )
 
+filegroup(
+    name = "echo_proto_file",
+    srcs = ["echo.proto"],
+    visibility = ["//visibility:public"],
+)
+
 proto_library(
     name = "echo_proto",
     srcs = ["echo.proto"],

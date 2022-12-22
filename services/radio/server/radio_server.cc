@@ -22,17 +22,11 @@ class RadioServiceImpl final : public RadioService::Service {
  public:
   RadioServiceImpl(tvsc::radio::Soapy& soapy) : soapy_(&soapy) {}
 
-  grpc::Status echo(grpc::ServerContext* context, const EchoRequest* request,
-                    EchoReply* reply) override {
-    const std::string& msg{request->msg()};
-    reply->set_msg(msg);
-    LOG(INFO) << "Received msg: '" << msg << "'";
-    return grpc::Status::OK;
-  }
-
-  grpc::Status list_radios(grpc::ServerContext* context, const EmptyRequest* request,
+  grpc::Status list_radios(grpc::ServerContext* context, const RadioListRequest* request,
                            Radios* reply) override {
     LOG(INFO) << "list_radios() called.";
+    Radio* radio = reply->add_radios();
+    radio->set_name("Some radio found on the server");
     return grpc::Status::OK;
   }
 };

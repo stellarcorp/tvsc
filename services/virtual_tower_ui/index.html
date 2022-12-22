@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- TODO(james): Make these available from the local web server to allow for offline/disconnected use. -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.slim.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/protobufjs@7.1.2/dist/protobuf.js"></script>
 
     <style>
       * {
@@ -134,10 +136,31 @@
     </style>
 
     <script type = "text/javascript">
-      web_sockets = {};
-      datetime_interval_id = -1;
-      current_date = new Date();
+      var protos = {};
+      protobuf.load("datetime.proto").then(function(root) {
+	  protos["tvsc.service.datetime.DatetimeRequest"] = root.lookupType("tvsc.service.datetime.DatetimeRequest");
+	  protos["tvsc.service.datetime.DatetimeReply"] = root.lookupType("tvsc.service.datetime.DatetimeReply");
+      });
+      protobuf.load("echo.proto").then(function(root) {
+	  protos["tvsc.service.echo.EchoRequest"] = root.lookupType("tvsc.service.echo.EchoRequest");
+	  protos["tvsc.service.echo.EchoReply"] = root.lookupType("tvsc.service.echo.EchoReply");
+      });
+      protobuf.load("radio.proto").then(function(root) {
+	  protos["tvsc.service.radio.RadioListRequest"] = root.lookupType("tvsc.service.radio.RadioListRequest");
+	  protos["tvsc.service.radio.Radio"] = root.lookupType("tvsc.service.radio.Radio");
+	  protos["tvsc.service.radio.Radios"] = root.lookupType("tvsc.service.radio.Radios");
+      });
 
+      var web_sockets = {};
+      var datetime_interval_id = -1;
+      var current_date = new Date();
+
+      function DecodeWsMessage(evt, proto_type) {
+          var as_array = new Uint8Array(evt.data);
+          var received_msg = protos[proto_type].decode(as_array);
+	  return received_msg;
+      }
+      
       function GetProxyServerAddress() {
 	  return location.hostname + ":50050";
       }
@@ -148,10 +171,11 @@
 
       function CreateEchoSocket() {
 	  var ws = new WebSocket(BuildWebSocketUrl("echo", "echo"));
+	  ws.binaryType = "arraybuffer";
 
           ws.onmessage = function (evt) {
-              var received_msg = evt.data;
-	      $("#echo_reply").text(received_msg);
+              var received_msg = DecodeWsMessage(evt, "tvsc.service.echo.EchoReply");
+	      $("#echo_reply").text(received_msg.msg);
           };
 
 	  return ws;
@@ -188,14 +212,16 @@
 
       function CreateDatetimeSocket() {
 	  var ws = new WebSocket(BuildWebSocketUrl("datetime", "get_datetime"));
+	  ws.binaryType = "arraybuffer";
 
 	  ws.onopen = function() {
 	      StartDatetimeRequests();
 	  };
 
           ws.onmessage = function (evt) {
-              var received_msg = evt.data;
-	      current_date.setTime(received_msg);
+              var as_array = new Uint8Array(evt.data);
+              var received_msg = DecodeWsMessage(evt, "tvsc.service.datetime.DatetimeReply");
+	      current_date.setTime(received_msg.datetime);
 	      var date_text = current_date.toISOString();
 	      $("#datetime_reply").text(date_text);
           };
@@ -203,6 +229,30 @@
 	  ws.onclose = function() {
 	      StopDatetimeRequests();
 	  }
+
+	  return ws;
+      }
+
+      function GetRadioList() {
+	  web_sockets["radio/list_radios"].send("");
+      }
+
+      function CreateRadioListSocket() {
+	  var ws = new WebSocket(BuildWebSocketUrl("radio", "list_radios"));
+	  ws.binaryType = "arraybuffer";
+
+          ws.onmessage = function (evt) {
+              var radios = DecodeWsMessage(evt, "tvsc.service.radio.Radios");
+	      $("#radio_list").empty();
+	      console.log(radios.radios)
+	      for (let radio of radios.radios) {
+		  $('#radio_list').append($('<li>').text(radio.name))
+	      }
+          };
+
+	  ws.onopen = function() {
+	      GetRadioList();
+	  };
 
 	  return ws;
       }
@@ -214,6 +264,7 @@
 	  } else {
               web_sockets["echo"] = CreateEchoSocket();
               web_sockets["datetime"] = CreateDatetimeSocket();
+              web_sockets["radio/list_radios"] = CreateRadioListSocket();
 	  }
       }
 
@@ -243,12 +294,7 @@
       <div class="leftcolumn">
 	<div class="menu_widget">
 	  <h2>Radios</h2>
-	  <ul>
-	    <li>Radio 1</li>
-	    <li>Radio 2</li>
-	    <li>Radio 3</li>
-	    <li>Radio 4</li>
-	    <li>Radio 5</li>
+	  <ul id="radio_list">
 	  </ul>
 	</div>
       </div>

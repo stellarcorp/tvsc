@@ -25,16 +25,3 @@ cc_library(
         "//third_party/uwebsockets",
     ],
 )
-
-cc_binary(
-    name = "radio_client",
-    srcs = ["radio_client.cc"],
-    visibility = ["//visibility:public"],
-    deps = [
-        "client",
-        "//services/radio/common",
-        "//third_party/gflags",
-        "//third_party/glog",
-        "//third_party/grpc",
-    ],
-)

@@ -6,8 +6,6 @@ cc_binary(
     data = [
         "//services/radio/server/modules:dummy_radio",
     ],
-    linkshared = True,
-    linkstatic = False,
     linkopts = ["-rdynamic"],
     visibility = ["//visibility:public"],
     deps = [

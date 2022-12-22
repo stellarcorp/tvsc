@@ -15,15 +15,9 @@ class RadioClient {
       : stub_(RadioService::NewStub(
             grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials()))) {}
 
-  grpc::Status call(const std::string& msg, EchoReply* reply) {
+  grpc::Status list_radios(Radios* reply) {
     grpc::ClientContext context{};
-    EchoRequest request{};
-    request.set_msg(msg);
-    return call(&context, request, reply);
-  }
-
-  grpc::Status call(grpc::ClientContext* context, const EchoRequest& request, EchoReply* reply) {
-    return stub_->echo(context, request, reply);
+    return stub_->list_radios(&context, RadioListRequest{}, reply);
   }
 
  private:

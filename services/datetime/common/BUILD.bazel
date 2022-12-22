@@ -15,6 +15,12 @@ cc_library(
     ],
 )
 
+filegroup(
+    name = "datetime_proto_file",
+    srcs = ["datetime.proto"],
+    visibility = ["//visibility:public"],
+)
+
 proto_library(
     name = "datetime_proto",
     srcs = ["datetime.proto"],
