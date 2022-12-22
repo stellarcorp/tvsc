@@ -13,19 +13,17 @@ void handle_list_radios(uWS::WebSocket<SSL, true, RadioClient> *ws, std::string_
   DLOG(INFO) << "radio::handle_list_radios() -- msg: '" << msg << "', op: " << op;
   RadioClient *client = static_cast<RadioClient *>(ws->getUserData());
   Radios reply{};
-  Radio *radio = reply.add_radios();
-  radio->set_name("Some radio made up in the web socket handler");
-  // grpc::Status status = client->list_radios(&reply);
-  // if (status.ok()) {
-  std::string serialized_reply{};
-  reply.SerializeToString(&serialized_reply);
-  ws->send(serialized_reply, uWS::OpCode::BINARY);
-  // } else {
-  //   LOG(WARNING) << "RPC failed -- " << status.error_code() << ": " << status.error_message();
-  //   ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " +
-  //                status.error_message(),
-  //            uWS::OpCode::TEXT);
-  // }
+  grpc::Status status = client->list_radios(&reply);
+  if (status.ok()) {
+    std::string serialized_reply{};
+    reply.SerializeToString(&serialized_reply);
+    ws->send(serialized_reply, uWS::OpCode::BINARY);
+  } else {
+    LOG(WARNING) << "RPC failed -- " << status.error_code() << ": " << status.error_message();
+    ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " +
+                 status.error_message(),
+             uWS::OpCode::TEXT);
+  }
 }
 
 void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> *app) {
