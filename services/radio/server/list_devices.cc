@@ -15,7 +15,7 @@ void list_devices() {
   }
 
   std::cout << "Soapy devices:\n";
-  for (const auto& device : soapy.devices()) {
+  for (const auto& device : soapy.device_names()) {
     std::cout << "\t" << device << "\n";
   }
 
