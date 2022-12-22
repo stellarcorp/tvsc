@@ -8,7 +8,6 @@ pkg_files(
     name = "binaries",
     testonly = True,
     srcs = [
-        "//services/radio/client:radio_client",
         "//services/radio/server:list-radio-devices",
         "//services/radio/server:tvsc-radio-service",
     ],
@@ -32,7 +31,7 @@ pkg_files(
 pkg_files(
     name = "soapy_modules",
     srcs = [
-        "//services/radio/server/modules:dummy_radio",
+        #"//services/radio/server/modules:dummy_radio",
     ],
     attributes = pkg_attributes(
         mode = "0644",
@@ -47,7 +46,7 @@ pkg_tar(
     testonly = True,
     srcs = [
         ":binaries",
-        ":soapy_modules",
+        #":soapy_modules",
         ":systemd_files",
     ],
     package_file_name = tarball_name(PACKAGE_NAME),

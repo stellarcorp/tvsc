@@ -15,7 +15,6 @@
 #include "SoapySDR/Types.hpp"
 #include "SoapySDR/Version.hpp"
 #include "glog/logging.h"
-#include "soapy_server.h"
 
 namespace tvsc::radio {
 

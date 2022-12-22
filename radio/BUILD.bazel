@@ -2,15 +2,28 @@ cc_library(
     name = "radio",
     srcs = [
         "soapy.cc",
-        "soapy_server.cc",
     ],
     hdrs = [
         "soapy.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/glog",
+        "//third_party/soapysdr",
+    ],
+)
+
+cc_library(
+    name = "radio_server",
+    srcs = [
+        "soapy_server.cc",
+    ],
+    hdrs = [
         "soapy_server.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//third_party/gflags",
+        ":radio",
         "//third_party/glog",
         "//third_party/soapy_remote:server",
         "//third_party/soapysdr",
@@ -31,9 +44,7 @@ cc_library(
     deps = [
         "//buffer",
         "//io",
-        "//third_party/gflags",
         "//third_party/glog",
-        "//third_party/soapy_remote:server",
         "//third_party/soapysdr",
         "//transform",
     ],

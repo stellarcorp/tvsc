@@ -3,13 +3,10 @@ cc_binary(
     srcs = [
         "radio_server.cc",
     ],
-    data = [
-        "//services/radio/server/modules:dummy_radio",
-    ],
-    linkopts = ["-rdynamic"],
     visibility = ["//visibility:public"],
     deps = [
         "//radio",
+        "//radio:radio_server",
         "//services/configuration",
         "//services/radio/common",
         "//third_party/gflags",
@@ -22,9 +19,6 @@ cc_test(
     name = "module_load_test",
     srcs = [
         "module_load_test.cc",
-    ],
-    data = [
-        "//services/radio/server/modules:dummy_radio",
     ],
     deps = [
         "//radio",
@@ -39,12 +33,6 @@ cc_binary(
     name = "list-radio-devices",
     srcs = [
         "list_devices.cc",
-    ],
-    data = [
-        "//services/radio/server/modules:dummy_radio",
-    ],
-    linkopts = [
-        "-rdynamic",
     ],
     visibility = ["//visibility:public"],
     deps = [
