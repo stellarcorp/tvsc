@@ -22,11 +22,11 @@ class DeviceGuard final {
   }
 
   bool is_guarded(const SoapySDR::Kwargs& device) const {
-    const auto location{device.find("driver")};
+    const auto location{device.find("label")};
     if (location != device.end()) {
       return is_guarded(location->second);
     }
-    // Note: devices without a "driver" name are unguarded by default.
+    // Note: devices without a "label" are unguarded by default.
     return false;
   }
 
@@ -98,9 +98,11 @@ class Soapy final {
     return device_guard_;
   }
 
-  std::vector<std::string> devices() const;
+  std::vector<SoapySDR::Kwargs> devices() const;
+  std::vector<std::string> device_names() const;
   bool has_device(std::string_view device_name) const;
-  SoapySDR::Device& instantiate_device(std::string_view device_name);
+
+  SoapySDR::Kwargs device_details(std::string_view device_name) const;
 };
 
 }  // namespace tvsc::radio

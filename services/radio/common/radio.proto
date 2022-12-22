@@ -8,8 +8,14 @@ service RadioService {
 
 message RadioListRequest {}
 
+message KeyValue {
+  string key = 1;
+  string value = 2;
+}
+
 message Radio {
   string name = 1;
+  repeated KeyValue keys_values = 2;
 }
 
 message Radios {

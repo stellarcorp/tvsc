@@ -161,12 +161,12 @@ std::string Soapy::module_abi_version(const std::string_view module_name) const 
   return SoapySDR::getModuleVersion(module_path);
 }
 
-std::vector<std::string> Soapy::devices() const {
+std::vector<std::string> Soapy::device_names() const {
   std::vector<std::string> result{};
   for (const auto& device_args : SoapySDR::Device::enumerate()) {
     LOG(INFO) << "device_args: " << SoapySDR::KwargsToString(device_args);
-    if (device_args.count("driver") == 1) {
-      result.emplace_back(device_args.at("driver"));
+    if (device_args.count("label") == 1) {
+      result.emplace_back(device_args.at("label"));
     }
   }
   return result;
@@ -181,8 +181,8 @@ std::vector<std::string> Soapy::guarded_devices() const {
 
   std::vector<std::string> result{};
   for (const auto& device_args : raw_devices) {
-    if (device_args.count("driver") == 1) {
-      result.emplace_back(device_args.at("driver"));
+    if (device_args.count("label") == 1) {
+      result.emplace_back(device_args.at("label"));
     }
   }
   return result;
@@ -195,8 +195,8 @@ std::vector<std::string> Soapy::unguarded_devices() const {
 
   std::vector<std::string> result{};
   for (const auto& device_args : raw_devices) {
-    if (device_args.count("driver") == 1) {
-      result.emplace_back(device_args.at("driver"));
+    if (device_args.count("label") == 1) {
+      result.emplace_back(device_args.at("label"));
     }
   }
   return result;
@@ -211,16 +211,23 @@ bool Soapy::has_device(const std::string_view device_name) const {
   return false;
 }
 
-SoapySDR::Device& Soapy::instantiate_device(const std::string_view device_name) {
-  SoapySDR::Kwargs args{};
-  args["driver"] = device_name;
-
-  SoapySDR::Device* device{SoapySDR::Device::make(args)};
-  if (device == nullptr) {
-    throw std::logic_error("Could not instantiate device with name " + std::string{device_name});
+std::vector<SoapySDR::Kwargs> Soapy::devices() const {
+  std::vector<SoapySDR::Kwargs> results{};
+  SoapySDR::KwargsList devices{SoapySDR::Device::enumerate()};
+  for (const auto& device : devices) {
+    results.emplace_back(device);
   }
-  devices_.push_back(device);
-  return *device;
+  return results;
+}
+
+SoapySDR::Kwargs Soapy::device_details(std::string_view device_name) const {
+  SoapySDR::KwargsList devices{SoapySDR::Device::enumerate()};
+  for (const auto& device : devices) {
+    if (device.count("label") == 1 and device.at("label") == device_name) {
+      return device;
+    }
+  }
+  throw std::domain_error("No such device named '" + std::string{device_name} + "'");
 }
 
 }  // namespace tvsc::radio

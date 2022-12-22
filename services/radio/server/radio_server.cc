@@ -25,8 +25,17 @@ class RadioServiceImpl final : public RadioService::Service {
   grpc::Status list_radios(grpc::ServerContext* context, const RadioListRequest* request,
                            Radios* reply) override {
     LOG(INFO) << "list_radios() called.";
-    Radio* radio = reply->add_radios();
-    radio->set_name("Some radio found on the server");
+    for (const auto& device : soapy_->devices()) {
+      Radio* radio = reply->add_radios();
+      for (const auto& entry : device) {
+        if (entry.first == "label") {
+          radio->set_name(entry.second);
+        }
+        KeyValue* key_value = radio->add_keys_values();
+        key_value->set_key(entry.first);
+        key_value->set_value(entry.second);
+      }
+    }
     return grpc::Status::OK;
   }
 };

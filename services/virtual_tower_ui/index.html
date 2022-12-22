@@ -246,7 +246,16 @@
 	      $("#radio_list").empty();
 	      console.log(radios.radios)
 	      for (let radio of radios.radios) {
-		  $('#radio_list').append($('<li>').text(radio.name))
+		  let item_element = $('<li>');
+		  item_element.append(document.createTextNode(radio.name));
+		  let keys_values_element = $("<ul class='keys_values_element'>");
+		  for (let key_value of radio.keysValues) {
+		      let key_value_element = $("<li class='key_value_element'>")
+		      key_value_element.append(document.createTextNode(key_value.key + ": " + key_value.value));
+		      keys_values_element.append(key_value_element);
+		  }
+		  item_element.append(keys_values_element);
+		  $('#radio_list').append(item_element);
 	      }
           };
 
