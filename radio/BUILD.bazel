@@ -40,7 +40,6 @@ cc_library(
     data = [
         "received_signal.pcm",
     ],
-    visibility = ["//visibility:public"],
     deps = [
         "//buffer",
         "//io",
@@ -54,7 +53,6 @@ cc_binary(
     name = "dummy_radio_module",
     linkshared = True,
     linkstatic = False,
-    visibility = ["//visibility:public"],
     deps = [
         ":dummy_radio_module_library",
     ],
