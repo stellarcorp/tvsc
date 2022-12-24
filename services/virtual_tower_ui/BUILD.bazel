@@ -31,6 +31,7 @@ filegroup(
     name = "static",
     srcs = [
         "index.html",
+        "favicon.ico",
         ":datetime_proto_file",
         ":echo_proto_file",
         ":radio_proto_file",
