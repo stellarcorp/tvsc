@@ -17,14 +17,17 @@ void SingleServiceAdvertiser::on_group_change(AvahiEntryGroup *group, AvahiEntry
 
   /* Called whenever the entry group state changes */
   switch (state) {
-    case AVAHI_ENTRY_GROUP_ESTABLISHED:
+    case AVAHI_ENTRY_GROUP_ESTABLISHED: {
       /* The entry group has been established successfully */
       LOG(INFO) << "on_group_change() -- AVAHI_ENTRY_GROUP_ESTABLISHED";
       // Signal service advertisement requests as succeeded.
+      advertiser->callback_(AdvertisementResult::SUCCESS);
       break;
+    }
     case AVAHI_ENTRY_GROUP_COLLISION: {
       LOG(INFO) << "on_group_change() -- AVAHI_ENTRY_GROUP_COLLISION";
       // Signal service advertisement requests as failed due to name collision.
+      advertiser->callback_(AdvertisementResult::COLLISION);
       break;
     }
     case AVAHI_ENTRY_GROUP_FAILURE: {
@@ -33,6 +36,7 @@ void SingleServiceAdvertiser::on_group_change(AvahiEntryGroup *group, AvahiEntry
                 << avahi_strerror(avahi_errno);
       /* Some kind of failure happened while we were registering our services */
       // Signal service advertisement requests as failed.
+      advertiser->callback_(AdvertisementResult::FAILURE);
       break;
     }
     case AVAHI_ENTRY_GROUP_UNCOMMITED:
@@ -108,33 +112,58 @@ void ServiceAdvertiser::on_client_change(AvahiClient *client, AvahiClientState s
                                          void *service_advertiser) {
   ServiceAdvertiser *advertiser{static_cast<ServiceAdvertiser *>(service_advertiser)};
   switch (state) {
-    case AVAHI_CLIENT_S_RUNNING:
+    case AVAHI_CLIENT_S_RUNNING: {
       LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_S_RUNNING.";
       // The server has startup successfully and registered its host
       // name on the network, so now we can register services.
-      advertiser->have_valid_client_.store(true);
+      if (!advertiser->have_valid_client_.load()) {
+        advertiser->have_valid_client_.store(true);
+        for (auto &entry : advertiser->services_) {
+          entry.second.reset();
+          entry.second.publish();
+        }
+      }
       break;
-    case AVAHI_CLIENT_FAILURE:
+    }
+    case AVAHI_CLIENT_FAILURE: {
       LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_FAILURE.";
-      advertiser->have_valid_client_.store(false);
+      if (advertiser->have_valid_client_.load()) {
+        advertiser->have_valid_client_.store(false);
+        for (auto &entry : advertiser->services_) {
+          entry.second.reset();
+        }
+      }
       break;
-    case AVAHI_CLIENT_S_COLLISION:
+    }
+    case AVAHI_CLIENT_S_COLLISION: {
       LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_S_COLLISION: unhandled. TODO: Handle this "
                    "case by re-registering all previous services.";
       /* Let's drop our registered services. When the server is back
        * in AVAHI_SERVER_RUNNING state we will register them
        * again with the new host name. */
-      advertiser->have_valid_client_.store(false);
+      if (advertiser->have_valid_client_.load()) {
+        advertiser->have_valid_client_.store(false);
+        for (auto &entry : advertiser->services_) {
+          entry.second.reset();
+        }
+      }
       break;
-    case AVAHI_CLIENT_S_REGISTERING:
+    }
+    case AVAHI_CLIENT_S_REGISTERING: {
       LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_S_REGISTERING: unhandled. TODO: Handle this "
                    "case by re-registering all previous services.";
       /* The server records are now being established. This
        * might be caused by a host name change. We need to wait
        * for our own records to register until the host name is
        * properly esatblished. */
-      advertiser->have_valid_client_.store(false);
+      if (advertiser->have_valid_client_.load()) {
+        advertiser->have_valid_client_.store(false);
+        for (auto &entry : advertiser->services_) {
+          entry.second.reset();
+        }
+      }
       break;
+    }
     case AVAHI_CLIENT_CONNECTING:
       LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_CONNECTING: Ignored.";
       break;

@@ -6,6 +6,10 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
+DEFINE_int32(duration_seconds, 10,
+             "How much time in seconds to maintain the test service advertisement. Use -1 to stay "
+             "active until stopped manually. Defaults to 10 seconds.");
+
 namespace tvsc::discovery {
 
 void callback(AdvertisementResult result) {
@@ -14,8 +18,6 @@ void callback(AdvertisementResult result) {
 }
 
 void advertise_test_service() {
-  using namespace std::chrono_literals;
-
   ServiceAdvertiser advertiser{};
 
   ServiceSet service{};
@@ -26,7 +28,14 @@ void advertise_test_service() {
 
   advertiser.advertise_service(service, callback);
 
-  std::this_thread::sleep_for(10s);
+  if (FLAGS_duration_seconds < 0) {
+    while (true) {
+      using namespace std::chrono_literals;
+      std::this_thread::sleep_for(1s);
+    }
+  } else {
+    std::this_thread::sleep_for(std::chrono::seconds(FLAGS_duration_seconds));
+  }
 }
 
 }  // namespace tvsc::discovery
