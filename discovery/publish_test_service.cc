@@ -7,6 +7,7 @@
 #include "glog/logging.h"
 
 namespace tvsc::discovery {
+
 void callback(AdvertisementResult result) {
   LOG(INFO) << "callback() -- result: "
             << static_cast<std::underlying_type_t<AdvertisementResult>>(result);
