@@ -1,0 +1,32 @@
+cc_library(
+    name = "advertise",
+    srcs = [
+        "service_advertiser.cc",
+    ],
+    hdrs = [
+        "service_advertiser.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":service_descriptor_cc_proto",
+        "//third_party/avahi",
+        "//third_party/glog",
+    ],
+)
+
+filegroup(
+    name = "service_descriptor_proto_file",
+    srcs = ["service_descriptor.proto"],
+    visibility = ["//visibility:public"],
+)
+
+proto_library(
+    name = "service_descriptor_proto",
+    srcs = ["service_descriptor.proto"],
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "service_descriptor_cc_proto",
+    deps = [":service_descriptor_proto"],
+)
