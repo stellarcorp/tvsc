@@ -14,6 +14,22 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "browse",
+    srcs = [
+        "service_browser.cc",
+    ],
+    hdrs = [
+        "service_browser.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":service_descriptor_cc_proto",
+        "//third_party/avahi",
+        "//third_party/glog",
+    ],
+)
+
 filegroup(
     name = "service_descriptor_proto_file",
     srcs = ["service_descriptor.proto"],
@@ -39,6 +55,18 @@ cc_binary(
     deps = [
         ":advertise",
         ":service_descriptor_cc_proto",
+        "//third_party/gflags",
+        "//third_party/glog",
+    ],
+)
+
+cc_binary(
+    name = "browse_services",
+    srcs = [
+        "browse_services.cc",
+    ],
+    deps = [
+        ":browse",
         "//third_party/gflags",
         "//third_party/glog",
     ],

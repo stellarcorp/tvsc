@@ -15,10 +15,8 @@ void SingleServiceAdvertiser::on_group_change(AvahiEntryGroup *group, AvahiEntry
   SingleServiceAdvertiser *advertiser{
       static_cast<SingleServiceAdvertiser *>(single_service_advertiser)};
 
-  /* Called whenever the entry group state changes */
   switch (state) {
     case AVAHI_ENTRY_GROUP_ESTABLISHED: {
-      /* The entry group has been established successfully */
       LOG(INFO) << "on_group_change() -- AVAHI_ENTRY_GROUP_ESTABLISHED";
       // Signal service advertisement requests as succeeded.
       advertiser->callback_(AdvertisementResult::SUCCESS);

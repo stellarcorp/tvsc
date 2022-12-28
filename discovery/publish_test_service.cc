@@ -13,8 +13,10 @@ DEFINE_int32(duration_seconds, 10,
 namespace tvsc::discovery {
 
 void callback(AdvertisementResult result) {
-  LOG(INFO) << "callback() -- result: "
-            << static_cast<std::underlying_type_t<AdvertisementResult>>(result);
+  if (result != AdvertisementResult::SUCCESS) {
+    LOG(INFO) << "callback() -- result: "
+              << static_cast<std::underlying_type_t<AdvertisementResult>>(result);
+  }
 }
 
 void advertise_test_service() {
@@ -24,6 +26,7 @@ void advertise_test_service() {
   service.set_canonical_name("TVSC Test Service");
   ServiceDescriptor* descriptor = service.add_services();
   descriptor->set_service_type("_echo._tcp");
+  descriptor->set_domain(".local");
   descriptor->set_port(50053);
 
   advertiser.advertise_service(service, callback);
