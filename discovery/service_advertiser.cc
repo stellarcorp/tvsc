@@ -10,6 +10,21 @@
 
 namespace tvsc::discovery {
 
+std::string to_string(AdvertisementResult result) {
+  using std::to_string;
+  switch (result) {
+    case AdvertisementResult::SUCCESS:
+      return "SUCCESS";
+    case AdvertisementResult::COLLISION:
+      return "COLLISION";
+    case AdvertisementResult::FAILURE:
+      return "FAILURE";
+    default:
+      throw std::domain_error("to_string(AdvertisementResult) has no implementation for value: " +
+                              to_string(std::underlying_type_t<AdvertisementResult>(result)));
+  }
+}
+
 void SingleServiceAdvertiser::on_group_change(AvahiEntryGroup *group, AvahiEntryGroupState state,
                                               void *single_service_advertiser) {
   SingleServiceAdvertiser *advertiser{

@@ -20,6 +20,7 @@ enum class AdvertisementResult {
   FAILURE,
 };
 using AdvertisementCallback = std::function<void(AdvertisementResult result)>;
+std::string to_string(AdvertisementResult result);
 
 class SingleServiceAdvertiser final {
  private:

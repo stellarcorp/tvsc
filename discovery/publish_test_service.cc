@@ -1,4 +1,5 @@
 #include <chrono>
+#include <string>
 #include <thread>
 
 #include "discovery/service_advertiser.h"
@@ -12,10 +13,15 @@ DEFINE_int32(duration_seconds, 10,
 
 namespace tvsc::discovery {
 
+constexpr char TEST_SERVICE_NAME[] = "TVSC Test Service";
+
 void callback(AdvertisementResult result) {
+  using std::to_string;
   if (result != AdvertisementResult::SUCCESS) {
-    LOG(INFO) << "callback() -- result: "
-              << static_cast<std::underlying_type_t<AdvertisementResult>>(result);
+    LOG(INFO) << "Issue advertising test service '" << TEST_SERVICE_NAME
+              << "' -- result: " << to_string(result);
+  } else {
+    LOG(INFO) << "Test service '" << TEST_SERVICE_NAME << "' successfully advertised.";
   }
 }
 
@@ -23,7 +29,7 @@ void advertise_test_service() {
   ServiceAdvertiser advertiser{};
 
   ServiceSet service{};
-  service.set_canonical_name("TVSC Test Service");
+  service.set_canonical_name(TEST_SERVICE_NAME);
   ServiceDescriptor* descriptor = service.add_services();
   descriptor->set_service_type("_echo._tcp");
   descriptor->set_domain(".local");

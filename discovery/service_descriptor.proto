@@ -2,6 +2,26 @@ syntax = "proto3";
 
 package tvsc.discovery;
 
+message IPv4Address {
+  // IPv4 address as an unsigned 32-bit integer in network byte order.
+  fixed32 address = 1;
+}
+
+message IPv6Address {
+  // IPv6 address as four unsigned 32-bit integers in network byte order.
+  fixed32 address_0 = 1;  // Highest order bytes.
+  fixed32 address_1 = 2;
+  fixed32 address_2 = 3;
+  fixed32 address_3 = 4;  // Lowest order bytes.
+}
+
+message NetworkAddress {
+  oneof address {
+    IPv4Address ipv4 = 1;
+    IPv6Address ipv6 = 2;
+  }
+}
+
 message ServiceDescriptor {
   // This service_type definition allows for any service type. Please use service type helper
   // methods/static definitions/etc. to constrain the names of the services to the set of types that
@@ -13,8 +33,10 @@ message ServiceDescriptor {
   // TODO(james): Is this field appropriate for browsing use cases, or just for advertising? Update
   // either the design or the documentation to better model browsing.
   repeated string allowed_interface_names = 2;
-  int32 port = 3;
+  string hostname = 3;
   string domain = 4;
+  NetworkAddress address = 5;
+  int32 port = 6;
 }
 
 message ServiceSet {

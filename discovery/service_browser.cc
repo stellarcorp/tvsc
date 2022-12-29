@@ -9,6 +9,7 @@
 #include "avahi-client/client.h"
 #include "avahi-client/lookup.h"
 #include "avahi-common/error.h"
+#include "avahi-common/malloc.h"
 #include "avahi-common/simple-watch.h"
 #include "discovery/service_descriptor.pb.h"
 #include "glog/logging.h"
@@ -76,6 +77,19 @@ void ServiceBrowser::on_browser_change(AvahiServiceBrowser *avahi_browser, Avahi
       LOG(INFO) << "on_browser_change() -- AVAHI_BROWSER_NEW: service '" << name << "' of type '"
                 << type << "' in domain '" << domain << "'";
       browser->add_unresolved_service(name, type, domain);
+      // Note: the resolver gets freed in on_resolver_change(). It seems like the resolvers are tied
+      // to a single resolution request, but still must be allocated on the heap. This idiom of
+      // freeing the resolver in the callback comes from Avahi example code
+      // (client-browse-services.c).
+      auto resolver = avahi_service_resolver_new(
+          avahi_service_browser_get_client(avahi_browser), interface, protocol, name, type, domain,
+          AVAHI_PROTO_UNSPEC, static_cast<AvahiLookupFlags>(0), on_resolver_change, browser);
+      if (!resolver) {
+        LOG(ERROR) << "on_browser_change() -- Failed to create resolver: "
+                   << avahi_strerror(
+                          avahi_client_errno(avahi_service_browser_get_client(avahi_browser)));
+      }
+
       break;
     }
     case AVAHI_BROWSER_REMOVE: {
@@ -95,6 +109,45 @@ void ServiceBrowser::on_browser_change(AvahiServiceBrowser *avahi_browser, Avahi
       break;
     }
   }
+}
+
+void ServiceBrowser::on_resolver_change(AvahiServiceResolver *resolver,
+                                        AVAHI_GCC_UNUSED AvahiIfIndex interface,
+                                        AvahiProtocol protocol, AvahiResolverEvent event,
+                                        const char *name, const char *type, const char *domain,
+                                        const char *host_name, const AvahiAddress *address,
+                                        uint16_t port, AvahiStringList *txt,
+                                        AvahiLookupResultFlags flags, void *service_browser) {
+  ServiceBrowser *browser{static_cast<ServiceBrowser *>(service_browser)};
+  switch (event) {
+    case AVAHI_RESOLVER_FAILURE:
+      LOG(INFO) << "on_resolver_change() -- AVAHI_RESOLVER_FAILURE: "
+                << avahi_strerror(avahi_client_errno(avahi_service_resolver_get_client(resolver)));
+      break;
+    case AVAHI_RESOLVER_FOUND: {
+      LOG(INFO) << "on_resolver_change() -- AVAHI_RESOLVER_FOUND";
+      char address_text[AVAHI_ADDRESS_STR_MAX];
+      LOG(INFO) << "on_resolver_change() -- AVAHI_BROWSER_NEW: service '" << name << "' of type '"
+                << type << "' in domain '" << domain << "'";
+      avahi_address_snprint(address_text, sizeof(address_text), address);
+      std::unique_ptr<char, void (*)(void *)> text_records{avahi_string_list_to_string(txt),
+                                                           avahi_free};
+      fprintf(stderr,
+              "\t%s:%u (%s)\n"
+              "\tTXT=%s\n"
+              "\tcookie is %u\n"
+              "\tis_local: %i\n"
+              "\tour_own: %i\n"
+              "\twide_area: %i\n"
+              "\tmulticast: %i\n"
+              "\tcached: %i\n",
+              host_name, port, address_text, text_records.get(),
+              avahi_string_list_get_service_cookie(txt), !!(flags & AVAHI_LOOKUP_RESULT_LOCAL),
+              !!(flags & AVAHI_LOOKUP_RESULT_OUR_OWN), !!(flags & AVAHI_LOOKUP_RESULT_WIDE_AREA),
+              !!(flags & AVAHI_LOOKUP_RESULT_MULTICAST), !!(flags & AVAHI_LOOKUP_RESULT_CACHED));
+    }
+  }
+  avahi_service_resolver_free(resolver);
 }
 
 ServiceBrowser::ServiceBrowser(const std::unordered_set<std::string> &service_types) {

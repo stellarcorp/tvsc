@@ -40,6 +40,12 @@ class ServiceBrowser final {
                                 const char* type, const char* domain, AvahiLookupResultFlags flags,
                                 void* service_browser);
 
+  static void on_resolver_change(AvahiServiceResolver* resolver, AvahiIfIndex interface,
+                                 AvahiProtocol protocol, AvahiResolverEvent event, const char* name,
+                                 const char* type, const char* domain, const char* host_name,
+                                 const AvahiAddress* address, uint16_t port, AvahiStringList* txt,
+                                 AvahiLookupResultFlags flags, void* service_browser);
+
   void add_unresolved_service(const std::string& name, const std::string& type,
                               const std::string& domain);
   void remove_unresolved_service(const std::string& name, const std::string& type,
