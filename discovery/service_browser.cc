@@ -123,7 +123,8 @@ void ServiceBrowser::on_resolver_change(AvahiServiceResolver *resolver,
   switch (event) {
     case AVAHI_RESOLVER_FAILURE:
       LOG(INFO) << "on_resolver_change() -- AVAHI_RESOLVER_FAILURE: "
-                << avahi_strerror(avahi_client_errno(avahi_service_resolver_get_client(resolver)));
+                << avahi_strerror(avahi_client_errno(avahi_service_resolver_get_client(resolver)))
+                << ", name: " << name << ", type: " << type << ", domain: " << domain;
       break;
     case AVAHI_RESOLVER_FOUND: {
       LOG(INFO) << "on_resolver_change() -- AVAHI_RESOLVER_FOUND";
