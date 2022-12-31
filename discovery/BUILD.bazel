@@ -8,6 +8,7 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
+        ":discovery",
         ":service_descriptor_cc_proto",
         "//third_party/avahi",
         "//third_party/glog",
@@ -24,6 +25,7 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
+        ":discovery",
         ":service_descriptor_cc_proto",
         "//third_party/avahi",
         "//third_party/glog",

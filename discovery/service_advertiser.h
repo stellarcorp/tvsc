@@ -84,7 +84,8 @@ class ServiceAdvertiser final {
    * Note that if another set of services was previously registered with the same canonical name,
    * this set will supercede the previous set.
    */
-  void advertise_service(const ServiceSet& service, AdvertisementCallback callback);
+  void advertise_local_service(const std::string& service_name, const std::string& service_type,
+                               const std::string& domain, int port, AdvertisementCallback callback);
 
   bool contains(const std::string& canonical_service_name) const {
     return services_.count(canonical_service_name) > 0;

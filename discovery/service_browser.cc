@@ -11,6 +11,7 @@
 #include "avahi-common/error.h"
 #include "avahi-common/malloc.h"
 #include "avahi-common/simple-watch.h"
+#include "discovery/network_address_utils.h"
 #include "discovery/service_descriptor.pb.h"
 #include "glog/logging.h"
 
@@ -115,7 +116,7 @@ void ServiceBrowser::on_resolver_change(AvahiServiceResolver *resolver,
                                         AVAHI_GCC_UNUSED AvahiIfIndex interface,
                                         AvahiProtocol protocol, AvahiResolverEvent event,
                                         const char *name, const char *type, const char *domain,
-                                        const char *host_name, const AvahiAddress *address,
+                                        const char *hostname, const AvahiAddress *address,
                                         uint16_t port, AvahiStringList *txt,
                                         AvahiLookupResultFlags flags, void *service_browser) {
   ServiceBrowser *browser{static_cast<ServiceBrowser *>(service_browser)};
@@ -126,25 +127,9 @@ void ServiceBrowser::on_resolver_change(AvahiServiceResolver *resolver,
       break;
     case AVAHI_RESOLVER_FOUND: {
       LOG(INFO) << "on_resolver_change() -- AVAHI_RESOLVER_FOUND";
-      char address_text[AVAHI_ADDRESS_STR_MAX];
-      LOG(INFO) << "on_resolver_change() -- AVAHI_BROWSER_NEW: service '" << name << "' of type '"
-                << type << "' in domain '" << domain << "'";
-      avahi_address_snprint(address_text, sizeof(address_text), address);
-      std::unique_ptr<char, void (*)(void *)> text_records{avahi_string_list_to_string(txt),
-                                                           avahi_free};
-      fprintf(stderr,
-              "\t%s:%u (%s)\n"
-              "\tTXT=%s\n"
-              "\tcookie is %u\n"
-              "\tis_local: %i\n"
-              "\tour_own: %i\n"
-              "\twide_area: %i\n"
-              "\tmulticast: %i\n"
-              "\tcached: %i\n",
-              host_name, port, address_text, text_records.get(),
-              avahi_string_list_get_service_cookie(txt), !!(flags & AVAHI_LOOKUP_RESULT_LOCAL),
-              !!(flags & AVAHI_LOOKUP_RESULT_OUR_OWN), !!(flags & AVAHI_LOOKUP_RESULT_WIDE_AREA),
-              !!(flags & AVAHI_LOOKUP_RESULT_MULTICAST), !!(flags & AVAHI_LOOKUP_RESULT_CACHED));
+      browser->add_resolved_service(name, type, domain, hostname,
+                                    avahi_address_to_network_address(protocol, *address), port);
+      break;
     }
   }
   avahi_service_resolver_free(resolver);
@@ -179,6 +164,37 @@ ServiceBrowser::~ServiceBrowser() {
   if (watcher_task_.valid()) {
     watcher_task_.wait();
   }
+}
+
+void ServiceBrowser::add_resolved_service(const std::string &name, const std::string &type,
+                                          const std::string &domain, const std::string &hostname,
+                                          const NetworkAddress &address, int port) {
+  if (discovered_services_.count(name) == 0) {
+    ServiceSet service_set{};
+    service_set.set_canonical_name(name);
+    service_set.set_published_name(name);
+    discovered_services_.emplace(name, service_set);
+  }
+  ServiceSet &service_set = discovered_services_.at(name);
+  for (auto service : *service_set.mutable_services()) {
+    if (service.service_type() == type and service.domain() == domain) {
+      for (const auto &server : service.servers()) {
+        if (server.hostname() == hostname and is_same_address(server.address(), address) and
+            server.port() == port) {
+          // Already known. Do not add again.
+          return;
+        }
+      }
+      ServerDetails *server{service.add_servers()};
+      server->set_hostname(hostname);
+      *server->mutable_address() = address;
+      server->set_port(port);
+      return;
+    }
+  }
+  ServiceDescriptor *descriptor = service_set.add_services();
+  descriptor->set_service_type(type);
+  descriptor->set_domain(domain);
 }
 
 void ServiceBrowser::add_unresolved_service(const std::string &name, const std::string &type,

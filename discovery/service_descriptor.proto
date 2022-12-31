@@ -20,6 +20,13 @@ message NetworkAddress {
     IPv4Address ipv4 = 1;
     IPv6Address ipv6 = 2;
   }
+  string interface_name = 3;
+}
+
+message ServerDetails {
+  string hostname = 4;
+  NetworkAddress address = 5;
+  int32 port = 6;
 }
 
 message ServiceDescriptor {
@@ -27,16 +34,17 @@ message ServiceDescriptor {
   // methods/static definitions/etc. to constrain the names of the services to the set of types that
   // are interesting to the application.
   string service_type = 1;
+  string domain = 2;
+
   // Which interfaces should this service listen on. These are currently interface names, but per
   // https://agnat.github.io/node_mdns/user_guide.html#network_interfaces, this approach may not
   // work on all platforms.
   // TODO(james): Is this field appropriate for browsing use cases, or just for advertising? Update
   // either the design or the documentation to better model browsing.
-  repeated string allowed_interface_names = 2;
-  string hostname = 3;
-  string domain = 4;
-  NetworkAddress address = 5;
-  int32 port = 6;
+  repeated string allowed_interface_names = 3;
+
+  // Servers which provide this service.
+  repeated ServerDetails servers = 4;
 }
 
 message ServiceSet {

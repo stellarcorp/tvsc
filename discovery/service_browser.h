@@ -50,6 +50,9 @@ class ServiceBrowser final {
                               const std::string& domain);
   void remove_unresolved_service(const std::string& name, const std::string& type,
                                  const std::string& domain);
+  void add_resolved_service(const std::string& name, const std::string& type,
+                            const std::string& domain, const std::string& hostname,
+                            const NetworkAddress& address, int port);
 
  public:
   // TODO(james): Pass in a ThreadPool and run the AvahiSimplePoll watcher on its threads.

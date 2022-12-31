@@ -6,6 +6,7 @@
 #include "avahi-client/publish.h"
 #include "avahi-common/error.h"
 #include "avahi-common/simple-watch.h"
+#include "discovery/network_address_utils.h"
 #include "glog/logging.h"
 
 namespace tvsc::discovery {
@@ -90,16 +91,18 @@ void SingleServiceAdvertiser::reset_group() {
 void SingleServiceAdvertiser::populate_group() {
   for (const auto &service : services_.services()) {
     // TODO(james): Implement the allowed_interface_names from the ServiceDescriptor proto.
-    int result = avahi_entry_group_add_service(
-        group_.get(), AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, static_cast<AvahiPublishFlags>(0),
-        services_.published_name().c_str(), service.service_type().c_str(), nullptr /* domain */,
-        nullptr /* host */, service.port(), NULL);
-    if (result < 0) {
-      LOG(INFO) << "populate_group() -- failure: " << avahi_strerror(result);
-      if (result == AVAHI_ERR_COLLISION) {
-        on_group_change(group_.get(), AVAHI_ENTRY_GROUP_COLLISION, this);
-      } else {
-        on_group_change(group_.get(), AVAHI_ENTRY_GROUP_FAILURE, this);
+    for (const auto &server : service.servers()) {
+      int result = avahi_entry_group_add_service(
+          group_.get(), AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, static_cast<AvahiPublishFlags>(0),
+          services_.published_name().c_str(), service.service_type().c_str(),
+          service.domain().c_str(), nullptr /* host */, server.port(), NULL);
+      if (result < 0) {
+        LOG(INFO) << "populate_group() -- failure: " << avahi_strerror(result);
+        if (result == AVAHI_ERR_COLLISION) {
+          on_group_change(group_.get(), AVAHI_ENTRY_GROUP_COLLISION, this);
+        } else {
+          on_group_change(group_.get(), AVAHI_ENTRY_GROUP_FAILURE, this);
+        }
       }
     }
   }
@@ -210,16 +213,37 @@ ServiceAdvertiser::~ServiceAdvertiser() {
   }
 }
 
-void ServiceAdvertiser::advertise_service(const ServiceSet &service,
-                                          AdvertisementCallback callback) {
-  if (service.canonical_name().empty()) {
-    throw std::invalid_argument("service.canonical_name must be set.");
+void ServiceAdvertiser::advertise_local_service(const std::string &service_name,
+                                                const std::string &service_type,
+                                                const std::string &domain, int port,
+                                                AdvertisementCallback callback) {
+  if (service_name.empty()) {
+    throw std::invalid_argument("service_name must not be empty.");
   }
-  if (services_.count(service.canonical_name()) == 0) {
-    services_.emplace(service.canonical_name(), SingleServiceAdvertiser(*avahi_client_, callback));
+  if (service_type.empty()) {
+    throw std::invalid_argument("service_type must not be empty.");
   }
-  auto &service_advertiser{services_.at(service.canonical_name())};
-  service_advertiser.set_services(service);
+  if (domain.empty()) {
+    throw std::invalid_argument("domain must not be empty.");
+  }
+  if ((port <= 0) or (port > 65535)) {
+    throw std::invalid_argument("port must be a positive integer less than 65536.");
+  }
+
+  ServiceSet service_set{};
+  service_set.set_canonical_name(service_name);
+  ServiceDescriptor *service{service_set.add_services()};
+  service->set_service_type(service_type);
+  service->set_domain(domain);
+  ServerDetails *server{service->add_servers()};
+  server->set_hostname(get_hostname());
+  server->set_port(port);
+
+  if (services_.count(service_name) == 0) {
+    services_.emplace(service_name, SingleServiceAdvertiser(*avahi_client_, callback));
+  }
+  auto &service_advertiser{services_.at(service_name)};
+  service_advertiser.set_services(service_set);
   if (have_valid_client_.load()) {
     service_advertiser.publish();
   }

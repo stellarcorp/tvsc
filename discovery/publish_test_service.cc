@@ -28,14 +28,10 @@ void callback(AdvertisementResult result) {
 void advertise_test_service() {
   ServiceAdvertiser advertiser{};
 
-  ServiceSet service{};
-  service.set_canonical_name(TEST_SERVICE_NAME);
-  ServiceDescriptor* descriptor = service.add_services();
-  descriptor->set_service_type("_echo._tcp");
-  descriptor->set_domain(".local");
-  descriptor->set_port(50053);
-
-  advertiser.advertise_service(service, callback);
+  constexpr char service_type[] = "_echo._tcp";
+  constexpr char domain[] = "local";
+  constexpr int port{50053};
+  advertiser.advertise_local_service(TEST_SERVICE_NAME, service_type, domain, port, callback);
 
   if (FLAGS_duration_seconds < 0) {
     while (true) {
