@@ -2,9 +2,7 @@ cc_library(
     name = "avahi",
     visibility = ["//visibility:public"],
     deps = [
-        "@org_debian_ftp_libavahi_client3//:lib",
         "@org_debian_ftp_libavahi_client_dev//:lib",
-        "@org_debian_ftp_libavahi_common3//:lib",
         "@org_debian_ftp_libavahi_common_dev//:lib",
     ],
 )
