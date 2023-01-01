@@ -1,7 +1,9 @@
 #include "discovery/network_address_utils.h"
 
+#include <arpa/inet.h>
 #include <ifaddrs.h>
 #include <netinet/in.h>
+#include <string.h>
 #include <unistd.h>
 
 #include <exception>
@@ -9,6 +11,7 @@
 #include <string>
 
 #include "discovery/service_descriptor.pb.h"
+#include "glog/logging.h"
 
 namespace tvsc::discovery {
 
@@ -30,12 +33,6 @@ bool is_same_address(const IPv6Address& lhs, const IPv6Address& rhs) {
          lhs.address_2() == rhs.address_2() and lhs.address_3() == rhs.address_3();
 }
 
-inline void to_hex_string(uint8_t value, char* dest) {
-  static constexpr char hex_values[] = "0123456789abcdef";
-  *dest = hex_values[value >> 4];
-  *(dest + 1) = hex_values[value & 0xf];
-}
-
 std::string network_address_to_string(const NetworkAddress& address) {
   if (address.has_ipv4()) {
     return ipv4_address_to_string(address.ipv4());
@@ -49,111 +46,44 @@ std::string network_address_to_string(const NetworkAddress& address) {
 std::string ipv4_address_to_string(const IPv4Address& address) {
   using std::to_string;
   std::string result{};
-  // Reserve 16 bytes for result. Maximum form is xxx.xxx.xxx.xxx plus the null terminator.
-  result.reserve(16);
-
-  char* dest = result.data();
-
-  to_hex_string(static_cast<uint8_t>((address.address() >> 24) & 0xff), dest);
-  dest += 2;
-  *dest = '.';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>((address.address() >> 16) & 0xff), dest);
-  dest += 2;
-  *dest = '.';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>((address.address() >> 8) & 0xff), dest);
-  dest += 2;
-  *dest = '.';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>(address.address() & 0xff), dest);
-  dest += 2;
-
-  *dest = '\0';
-
+  result.reserve(INET_ADDRSTRLEN + 1);
+  for (int i = 0; i < INET_ADDRSTRLEN; ++i) {
+    result += '\0';
+  }
+  struct in_addr inet_address {};
+  inet_address.s_addr = address.address();
+  const char* return_value = inet_ntop(AF_INET, &inet_address, result.data(), result.capacity());
+  if (return_value == nullptr) {
+    LOG(ERROR) << "inet_ntop() failed. errno: " << strerror(errno);
+  }
   return result;
 }
 
 std::string ipv6_address_to_string(const IPv6Address& address) {
+  using std::to_string;
   std::string result{};
-  // Reserve 48 bytes for result. Maximum form is xx: (3 characters) per byte, with a total of 16
-  // bytes, minus the final ':' but plus the null terminator.
-  result.reserve(48);
-
-  char* dest = result.data();
-
-  // TODO(james): Identify and collapse the longest run of zeros into "::".
-  to_hex_string(static_cast<uint8_t>((address.address_0() >> 24) & 0xff), dest);
-  dest += 2;
-  *dest = ':';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>((address.address_0() >> 16) & 0xff), dest);
-  dest += 2;
-  *dest = ':';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>((address.address_0() >> 8) & 0xff), dest);
-  dest += 2;
-  *dest = ':';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>(address.address_0() & 0xff), dest);
-  dest += 2;
-
-  *dest = ':';
-  ++dest;
-
-  to_hex_string(static_cast<uint8_t>((address.address_1() >> 24) & 0xff), dest);
-  dest += 2;
-  *dest = ':';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>((address.address_1() >> 16) & 0xff), dest);
-  dest += 2;
-  *dest = ':';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>((address.address_1() >> 8) & 0xff), dest);
-  dest += 2;
-  *dest = ':';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>(address.address_1() & 0xff), dest);
-  dest += 2;
-
-  *dest = ':';
-  ++dest;
-
-  to_hex_string(static_cast<uint8_t>((address.address_2() >> 24) & 0xff), dest);
-  dest += 2;
-  *dest = ':';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>((address.address_2() >> 16) & 0xff), dest);
-  dest += 2;
-  *dest = ':';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>((address.address_2() >> 8) & 0xff), dest);
-  dest += 2;
-  *dest = ':';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>(address.address_2() & 0xff), dest);
-  dest += 2;
-
-  *dest = ':';
-  ++dest;
-
-  to_hex_string(static_cast<uint8_t>((address.address_3() >> 24) & 0xff), dest);
-  dest += 2;
-  *dest = ':';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>((address.address_3() >> 16) & 0xff), dest);
-  dest += 2;
-  *dest = ':';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>((address.address_3() >> 8) & 0xff), dest);
-  dest += 2;
-  *dest = ':';
-  ++dest;
-  to_hex_string(static_cast<uint8_t>(address.address_3() & 0xff), dest);
-  dest += 2;
-
-  *dest = '\0';
-
+  result.reserve(INET6_ADDRSTRLEN + 1);
+  for (int i = 0; i < INET6_ADDRSTRLEN + 1; ++i) {
+    result += '\0';
+  }
+  struct in6_addr inet_address {};
+  for (int i = 0; i < 16; ++i) {
+    uint32_t value{0};
+    if ((i / 4) == 0) {
+      value = address.address_0();
+    } else if ((i / 4) == 1) {
+      value = address.address_1();
+    } else if ((i / 4) == 2) {
+      value = address.address_2();
+    } else if ((i / 4) == 3) {
+      value = address.address_3();
+    }
+    for (int j = 0; j < i % 4; ++j) {
+      value = value >> 8;
+    }
+    inet_address.s6_addr[i] = static_cast<unsigned char>(value & 0xf);
+  }
+  inet_ntop(AF_INET6, &inet_address, result.data(), result.capacity());
   return result;
 }
 
