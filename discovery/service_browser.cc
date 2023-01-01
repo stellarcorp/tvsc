@@ -170,6 +170,9 @@ ServiceBrowser::~ServiceBrowser() {
 void ServiceBrowser::add_resolved_service(const std::string &name, const std::string &type,
                                           const std::string &domain, const std::string &hostname,
                                           const NetworkAddress &address, int port) {
+  LOG(INFO) << "add_resolved_service() -- name: " << name << ", type: " << type
+            << ", domain: " << domain << ", hostname: " << hostname
+            << ", address: " << network_address_to_string(address) << ", port: " << port;
   if (discovered_services_.count(name) == 0) {
     ServiceSet service_set{};
     service_set.set_canonical_name(name);
