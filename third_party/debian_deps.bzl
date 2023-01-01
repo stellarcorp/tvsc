@@ -24,41 +24,39 @@ def load_debian_dependencies():
     )
 
     # OpenSSL
-    # TODO(james): Change these modules to use Debian 10 packages.
     tvsc_archive(
         name = "org_debian_ftp_libssl_dev",
         libname = "libssl-dev",
         arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/o/openssl/libssl-dev_1.1.1n-0+deb11u3_arm64.deb",
+            "https://ftp.debian.org/debian/pool/main/o/openssl/libssl-dev_1.1.1n-0+deb10u3_arm64.deb",
         ],
-        arm64_sha256 = "684bbc6061f44d58ed3133377cca902763c79a095f75d5e2458a45b9db3b1e1d",
+        arm64_sha256 = "6021a64426ce819de704a662b69b60c7a15889e93f63bcbf5cb3c9c26c5dde5d",
         x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/o/openssl/libssl-dev_1.1.1n-0+deb11u3_amd64.deb",
+            "https://ftp.debian.org/debian/pool/main/o/openssl/libssl-dev_1.1.1n-0+deb10u3_amd64.deb",
         ],
-        x86_64_sha256 = "31ea36803b8d249a9c8a3769f77ac51238e122089415432809de46c84350b5c1",
+        x86_64_sha256 = "9414e95c2bfbc5b3252b832da7ffdeefaf014ae7cd72902353077c35fdaa6e68",
         deps = ["@org_debian_ftp_libssl//:lib"],
     )
 
-    # TODO(james): Change these modules to use Debian 10 packages.
     tvsc_archive(
         name = "org_debian_ftp_libssl",
         libname = "libssl1.1",
         arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1n-0+deb11u3_arm64.deb",
+            "https://ftp.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1n-0+deb10u3_arm64.deb",
         ],
         arm64_library_paths = {
             "libssl": "usr/lib/aarch64-linux-gnu/libssl.so.1.1",
             "libcrypto": "usr/lib/aarch64-linux-gnu/libcrypto.so.1.1",
         },
-        arm64_sha256 = "8d4ef5a06719fabd90a6a27729ade7b9dde1a1c923a89ba1406af6489fa7c82f",
+        arm64_sha256 = "9d6db56bf17ec079675e0f6f7772af65b832dd3ad55c02c5409462cf6b052e23",
         x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1n-0+deb11u3_amd64.deb",
+            "https://ftp.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1n-0+deb10u3_amd64.deb",
         ],
         x86_64_library_paths = {
             "libssl": "usr/lib/x86_64-linux-gnu/libssl.so.1.1",
             "libcrypto": "usr/lib/x86_64-linux-gnu/libcrypto.so.1.1",
         },
-        x86_64_sha256 = "c3480bf90725c993187de02e5144e90ea81226e7e2538ba24687f5a0adc8ca5c",
+        x86_64_sha256 = "92247c2c011ec4c01f5832a38de0ec1a9c2cfac5c6c5dc229e5a1ac81148854c",
     )
 
     # Avahi
