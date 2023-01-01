@@ -5,23 +5,22 @@ load("//third_party:tvsc_archive.bzl", "tvsc_archive")
 # https://ftp.debian.org/debian/pool/main, and ideally, we use the exact same version for every
 # platform.
 # We base the package versions around those shipped/tagged for Debian 10 (Buster), picking the most
-# recent update within Debian 10. Usually, these packages are tagged as ~deb10u1 (or ~debu2 for the
+# recent update within Debian 10. Usually, these packages are tagged as deb10u1 (or deb10u2 for the
 # 2nd update, etc.).
 # TODO(james): Audit the versions chosen for each package to verify that it is a Debian 10 package.
 def load_debian_dependencies():
     # zstd
-    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_libzstd_dev",
         libname = "libzstd-dev",
         arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd-dev_1.4.4+dfsg-3~bpo10+1_arm64.deb",
+            "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd-dev_1.3.8+dfsg-3+deb10u2_arm64.deb",
         ],
-        arm64_sha256 = "fea90941e0ea8875737a55a5b3a538ca33b41343bb5309f17f8012f6f61f2cb4",
+        arm64_sha256 = "40f0db5735af5bb6b75bc76be4fde2f51d577d90f9e69ea13376d15a2d80ba01",
         x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd-dev_1.4.4+dfsg-3~bpo10+1_amd64.deb",
+            "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd-dev_1.3.8+dfsg-3+deb10u2_amd64.deb",
         ],
-        x86_64_sha256 = "5071db2db093534270f1d83ace0bf25066ba4a376e2d52446dda5ec7a7dee83d",
+        x86_64_sha256 = "4204e768783f2e16b8bad455a564e8bed28053f59c7f49786d341a4920948f70",
     )
 
     # TODO(james): Verify these packages are part of Debian 10.
