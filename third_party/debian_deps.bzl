@@ -4,8 +4,13 @@ load("//third_party:tvsc_archive.bzl", "tvsc_archive")
 # Load Debian packages as prebuilt dependencies. The exact packages should come from
 # https://ftp.debian.org/debian/pool/main, and ideally, we use the exact same version for every
 # platform.
+# We base the package versions around those shipped/tagged for Debian 10 (Buster), picking the most
+# recent update within Debian 10. Usually, these packages are tagged as ~deb10u1 (or ~debu2 for the
+# 2nd update, etc.).
+# TODO(james): Audit the versions chosen for each package to verify that it is a Debian 10 package.
 def load_debian_dependencies():
     # zstd
+    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_libzstd_dev",
         libname = "libzstd-dev",
@@ -19,6 +24,7 @@ def load_debian_dependencies():
         x86_64_sha256 = "5071db2db093534270f1d83ace0bf25066ba4a376e2d52446dda5ec7a7dee83d",
     )
 
+    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_libzstd1",
         libname = "libzstd1",
@@ -35,6 +41,7 @@ def load_debian_dependencies():
     )
 
     # OpenSSL
+    # TODO(james): Change these modules to use Debian 10 packages.
     tvsc_archive(
         name = "org_debian_ftp_libssl_dev",
         libname = "libssl-dev",
@@ -49,6 +56,7 @@ def load_debian_dependencies():
         deps = ["@org_debian_ftp_libssl//:lib"],
     )
 
+    # TODO(james): Change these modules to use Debian 10 packages.
     tvsc_archive(
         name = "org_debian_ftp_libssl",
         libname = "libssl1.1",
@@ -75,13 +83,13 @@ def load_debian_dependencies():
         name = "org_debian_ftp_libavahi_client_dev",
         libname = "libavahi-client-dev",
         arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-client-dev_0.8-5+deb11u1_arm64.deb",
+            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-client-dev_0.7-4+deb10u1_arm64.deb",
         ],
-        arm64_sha256 = "be0d9c2b5ac02deac4c356f309071f3755361b53e743dd9f837e526c27b21504",
+        arm64_sha256 = "828a794c9fcdf795413b2ac419e6b21b7717e406fd44a9caf2b09eb4fd38f06b",
         x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-client-dev_0.8-5+deb11u1_amd64.deb",
+            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-client-dev_0.7-4+deb10u1_amd64.deb",
         ],
-        x86_64_sha256 = "2d08090e7f17a1b2ae3e6d5cc79f46707ecbabf3a3952b6b128829249b3ad475",
+        x86_64_sha256 = "f3934c93e758d00794cfa55f2f03a28649bdc9441bacc103c4257cebafd389e6",
         deps = [
             "@org_debian_ftp_libavahi_client3//:lib",
             "@org_debian_ftp_libavahi_common3//:lib",
@@ -93,16 +101,16 @@ def load_debian_dependencies():
         name = "org_debian_ftp_libavahi_client3",
         libname = "libavahi-client3",
         arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-client3_0.8-5+deb11u1_arm64.deb",
+            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-client3_0.7-4+deb10u1_arm64.deb",
         ],
         arm64_library_paths = {
             "libavahi-client3": "usr/lib/aarch64-linux-gnu/libavahi-client.so.3",
         },
-        arm64_sha256 = "cba67afc387284176d4fdc1d44b07f51e8a182786ed3babda65f957110ce9745",
+        arm64_sha256 = "e98034de7b584b49ec7a9524c533fbb6a67289ed48329258e463d05b0a1d2187",
         x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-client3_0.8-5+deb11u1_amd64.deb",
+            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-client3_0.7-4+deb10u1_amd64.deb",
         ],
-        x86_64_sha256 = "44104ae278d853f9d20b90a6192257497d430f3ff4af093af1c504effb9caf4f",
+        x86_64_sha256 = "fe553e88db5448b19fe3900b4923c7a77cbbb3cfe3f80f94111df65128fa35b9",
         x86_64_library_paths = {
             "libavahi-client3": "usr/lib/x86_64-linux-gnu/libavahi-client.so.3",
         },
@@ -116,13 +124,13 @@ def load_debian_dependencies():
         name = "org_debian_ftp_libavahi_common_dev",
         libname = "libavahi-common-dev",
         arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-common-dev_0.8-5+deb11u1_arm64.deb",
+            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-common-dev_0.7-4+deb10u1_arm64.deb",
         ],
-        arm64_sha256 = "8d63fd5df465a89d38d2fdf5bcc505972d84aa98a4554d52040122cdefa266c1",
+        arm64_sha256 = "4f005ffac436ff589a093fa114f61517cae79d2e36086570c1f8a873aec81cb8",
         x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-common-dev_0.8-5+deb11u1_amd64.deb",
+            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-common-dev_0.7-4+deb10u1_amd64.deb",
         ],
-        x86_64_sha256 = "1bb6db35a25b49e69c3208e2e05e10b2ee47383154de7f99e595032cf6a378f5",
+        x86_64_sha256 = "9f0a82543e838de2fd2321c1b3c0638152093ae0926f362b7188462d7a2ebb45",
         deps = [
             "@org_debian_ftp_libavahi_common3//:lib",
         ],
@@ -132,22 +140,23 @@ def load_debian_dependencies():
         name = "org_debian_ftp_libavahi_common3",
         libname = "libavahi-common3",
         arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-common3_0.8-5+deb11u1_arm64.deb",
+            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-common3_0.7-4+deb10u1_arm64.deb",
         ],
         arm64_library_paths = {
             "libavahi-common3": "usr/lib/aarch64-linux-gnu/libavahi-common.so.3",
         },
-        arm64_sha256 = "8df6cf5dcda28652a29daf0872f5cfe98b2f20fcb9fe7a146e714432189c136d",
+        arm64_sha256 = "9fb59243a90535ec02480cd139e1dca30507c05db246cf32ddd8ac254c68f963",
         x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-common3_0.8-5+deb11u1_amd64.deb",
+            "https://ftp.debian.org/debian/pool/main/a/avahi/libavahi-common3_0.7-4+deb10u1_amd64.deb",
         ],
-        x86_64_sha256 = "d5d97f84a894e6ef0e535a17d1dcc1ed64933d6e04a350306e989d05b37de00c",
+        x86_64_sha256 = "5a3f333cc0f56054d9003c8e28a116a77be9227110bd648dc05db1b1fb9e48a1",
         x86_64_library_paths = {
             "libavahi-common3": "usr/lib/x86_64-linux-gnu/libavahi-common.so.3",
         },
     )
 
     # libusb
+    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_libusb_dev",
         libname = "libusb-dev",
@@ -161,6 +170,8 @@ def load_debian_dependencies():
         x86_64_sha256 = "22a952f48cdb59f1d0c476874facc62418eda5b4c30c5a23a17c28781b426c1b",
     )
 
+    # RTL-SDR
+    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_librtlsdr_dev",
         libname = "librtlsdr_dev",
@@ -177,6 +188,8 @@ def load_debian_dependencies():
         ],
     )
 
+    # SoapySDR
+    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_libsoapysdr_dev",
         libname = "libsoapysdr_dev",
@@ -193,6 +206,7 @@ def load_debian_dependencies():
         ],
     )
 
+    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_libsoapysdr",
         libname = "libsoapysdr",
@@ -216,19 +230,19 @@ def load_debian_dependencies():
         name = "org_debian_ftp_libdbus",
         libname = "libdbus",
         arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/d/dbus/libdbus-1-3_1.12.24-0+deb11u1_arm64.deb",
+            "https://ftp.debian.org/debian/pool/main/d/dbus/libdbus-1-3_1.12.20-0+deb10u1_arm64.deb",
         ],
         arm64_library_paths = {
             "libdbus": "lib/aarch64-linux-gnu/libdbus-1.so.3",
         },
-        arm64_sha256 = "adfe6e1cb49a6716967d20117220a597d2b53ae58056f869bbacfc51ed6f0ba2",
+        arm64_sha256 = "8d1c11bd21a668894ac9b9a392c10521b77b3ab57b51ec14ca2db7f4f5a45de8",
         x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/d/dbus/libdbus-1-3_1.12.24-0+deb11u1_amd64.deb",
+            "https://ftp.debian.org/debian/pool/main/d/dbus/libdbus-1-3_1.12.20-0+deb10u1_amd64.deb",
         ],
         x86_64_library_paths = {
             "libdbus": "lib/x86_64-linux-gnu/libdbus-1.so.3",
         },
-        x86_64_sha256 = "dd594737f53de48c3cbe3431b12207c0c3382a48f257a81d5a7e59fcc6d3ace9",
+        x86_64_sha256 = "e394bd35626e3ccf437e1e7776e6573636e6413b0ebe2483bd54ac243eed1007",
         deps = [
             "@org_debian_ftp_libsystemd0//:lib",
         ],
@@ -260,6 +274,7 @@ def load_debian_dependencies():
         ],
     )
 
+    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_libcap2",
         libname = "libcap2",
@@ -279,6 +294,7 @@ def load_debian_dependencies():
         x86_64_sha256 = "7a3ae3e97d0d403a4c54663c0bb48e9341d98822420a4ab808c6dc8e8474558f",
     )
 
+    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_liblz4",
         libname = "liblz4",
@@ -298,6 +314,7 @@ def load_debian_dependencies():
         x86_64_sha256 = "64cde86cef1deaf828bd60297839b59710b5cd8dc50efd4f12643caaee9389d3",
     )
 
+    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_liblzma",
         libname = "liblzma",
@@ -317,6 +334,7 @@ def load_debian_dependencies():
         x86_64_sha256 = "c054750abd5b2c5b2b023329d04e4a8b432df11cd4a64bf842478a4b60a8e140",
     )
 
+    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_libgcrypt",
         libname = "libgcrypt",
@@ -339,6 +357,7 @@ def load_debian_dependencies():
         ],
     )
 
+    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_libzstd",
         libname = "libzstd",
@@ -358,6 +377,7 @@ def load_debian_dependencies():
         x86_64_sha256 = "4914489233dbccf83139ee8bff065915982481aa44f3ffcde07a633db5908935",
     )
 
+    # TODO(james): Verify these packages are part of Debian 10.
     tvsc_archive(
         name = "org_debian_ftp_libgpg-error",
         libname = "libgpg-error",
