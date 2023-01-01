@@ -23,22 +23,6 @@ def load_debian_dependencies():
         x86_64_sha256 = "4204e768783f2e16b8bad455a564e8bed28053f59c7f49786d341a4920948f70",
     )
 
-    # TODO(james): Verify these packages are part of Debian 10.
-    tvsc_archive(
-        name = "org_debian_ftp_libzstd1",
-        libname = "libzstd1",
-        arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd1_1.4.4+dfsg-3~bpo10+1_arm64.deb",
-        ],
-        arm64_library_paths = {"libzstd": "usr/lib/aarch64-linux-gnu/libzstd.so.1.4.4"},
-        arm64_sha256 = "b1b2f11a92c2dbd60d6c63eb690dd877e9dbcfb4d3c8c33caa9595d2f7bb5945",
-        x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd1_1.4.4+dfsg-3~bpo10+1_amd64.deb",
-        ],
-        x86_64_library_paths = {"libzstd": "usr/lib/x86_64-linux-gnu/libzstd.so.1.4.4"},
-        x86_64_sha256 = "94f2b4f413cb83aed3fbb2acce385d94c3ff04aa30db8416c12387e5a2fdfd73",
-    )
-
     # OpenSSL
     # TODO(james): Change these modules to use Debian 10 packages.
     tvsc_archive(
@@ -269,7 +253,6 @@ def load_debian_dependencies():
             "@org_debian_ftp_libgcrypt//:lib",
             "@org_debian_ftp_liblz4//:lib",
             "@org_debian_ftp_liblzma//:lib",
-            "@org_debian_ftp_libzstd//:lib",
         ],
     )
 
@@ -354,26 +337,6 @@ def load_debian_dependencies():
         deps = [
             "@org_debian_ftp_libgpg-error//:lib",
         ],
-    )
-
-    # TODO(james): Verify these packages are part of Debian 10.
-    tvsc_archive(
-        name = "org_debian_ftp_libzstd",
-        libname = "libzstd",
-        arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd1_1.5.2+dfsg-1_arm64.deb",
-        ],
-        arm64_library_paths = {
-            "libzstd": "usr/lib/aarch64-linux-gnu/libzstd.so.1",
-        },
-        arm64_sha256 = "b429bc806ec8cf11fafd35dd40e385b95cce9287efa7b89fa5d7d12f38883d3c",
-        x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/libz/libzstd/libzstd1_1.5.2+dfsg-1_amd64.deb",
-        ],
-        x86_64_library_paths = {
-            "libzstd": "usr/lib/x86_64-linux-gnu/libzstd.so.1",
-        },
-        x86_64_sha256 = "4914489233dbccf83139ee8bff065915982481aa44f3ffcde07a633db5908935",
     )
 
     # TODO(james): Verify these packages are part of Debian 10.
