@@ -1,6 +1,5 @@
 #pragma once
 
-#include <atomic>
 #include <functional>
 #include <future>
 #include <map>
@@ -17,6 +16,9 @@
 
 namespace tvsc::discovery {
 
+/**
+ * Mechanism to discover services and watch for changes in those services.
+ */
 class ServiceBrowser final {
  public:
   using ServiceTypeWatcher = std::function<void(const std::string& service_type)>;
@@ -34,9 +36,14 @@ class ServiceBrowser final {
   std::map<std::string, std::unique_ptr<AvahiServiceBrowser, int (*)(AvahiServiceBrowser*)>>
       avahi_browsers_{};
 
+  /**
+   * Since we run Avahi via its AvahiSimplePoll class, it does not provide any locking against
+   * access from multiple threads. That's appropriate for the library, but because of our usage, we
+   * need to lock our accesses to its objects. The polling loop locks this mutex before calling the
+   * AvahiSimplePoll's method to gather events and run our callbacks. We must also lock it any time
+   * we are adding event sources, like creating new AvahiServiceBrowsers.
+   */
   std::mutex avahi_call_mutex_{};
-
-  std::atomic<bool> have_valid_client_{false};
 
   std::map<std::string, ServiceSet> discovered_services_{};
 
@@ -97,6 +104,7 @@ class ServiceBrowser final {
    * List the set of service types being listened for.
    */
   std::unordered_set<std::string> service_types() const;
+
   /**
    * Add a service type to listen for.
    */

@@ -41,7 +41,6 @@ void browse() {
   for (const auto& service_type : service_types) {
     browser.add_service_type(
         service_type, [&m, &condition, &service_types](const std::string& service_type) {
-          LOG(INFO) << "Notified of change in service type '" << service_type << "'";
           std::unique_lock lock{m};
           auto iter = service_types.find(service_type);
           if (iter != service_types.end()) {

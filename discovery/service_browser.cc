@@ -22,46 +22,23 @@ namespace tvsc::discovery {
 
 void ServiceBrowser::on_client_change(AvahiClient *client, AvahiClientState state,
                                       void *service_browser) {
-  ServiceBrowser *browser{static_cast<ServiceBrowser *>(service_browser)};
-  std::lock_guard lock{browser->avahi_call_mutex_};
+  // TODO(james): Implement these states to give better error handling.
+  // ServiceBrowser *browser{static_cast<ServiceBrowser *>(service_browser)};
   switch (state) {
     case AVAHI_CLIENT_S_RUNNING: {
       LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_S_RUNNING.";
-      // The server has startup successfully and registered its host
-      // name on the network, so now we can register services.
-      if (!browser->have_valid_client_.load()) {
-        browser->have_valid_client_.store(true);
-      }
       break;
     }
     case AVAHI_CLIENT_FAILURE: {
       LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_FAILURE.";
-      if (browser->have_valid_client_.load()) {
-        browser->have_valid_client_.store(false);
-      }
       break;
     }
     case AVAHI_CLIENT_S_COLLISION: {
-      LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_S_COLLISION: unhandled. TODO: Handle this "
-                   "case by re-registering all previous services.";
-      /* Let's drop our registered services. When the server is back
-       * in AVAHI_SERVER_RUNNING state we will register them
-       * again with the new host name. */
-      if (browser->have_valid_client_.load()) {
-        browser->have_valid_client_.store(false);
-      }
+      LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_S_COLLISION.";
       break;
     }
     case AVAHI_CLIENT_S_REGISTERING: {
-      LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_S_REGISTERING: unhandled. TODO: Handle this "
-                   "case by re-registering all previous services.";
-      /* The server records are now being established. This
-       * might be caused by a host name change. We need to wait
-       * for our own records to register until the host name is
-       * properly esatblished. */
-      if (browser->have_valid_client_.load()) {
-        browser->have_valid_client_.store(false);
-      }
+      LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_S_REGISTERING.";
       break;
     }
     case AVAHI_CLIENT_CONNECTING:
@@ -124,6 +101,13 @@ void ServiceBrowser::on_browser_change(AvahiServiceBrowser *avahi_browser, Avahi
     case AVAHI_BROWSER_CACHE_EXHAUSTED: {
       LOG(INFO) << "on_browser_change() -- AVAHI_BROWSER_CACHE_EXHAUSTED. service_type: "
                 << service_type;
+      // Ensure that an entry for the resolvers in flight exists for this service type. We use its
+      // existence to determine that all necessary resolvers were created. If we never find any
+      // entries for a particular service type, we can fail to notify the relevant watcher that
+      // there are no entries. On the other hand, we can also have a race condition where a single
+      // resolver finishes just before another resolver gets created.
+      // TODO(james): Rethink the design of this part. It's ambiguous and may not adequately
+      // represent how these events work.
       browser->service_type_resolvers_in_flight_[service_type];
       break;
     }
@@ -143,10 +127,11 @@ void ServiceBrowser::on_resolver_change(
   ServiceBrowser *browser{static_cast<ServiceBrowser *>(service_browser)};
   switch (event) {
     case AVAHI_RESOLVER_FAILURE:
-      LOG(INFO) << "on_resolver_change() -- AVAHI_RESOLVER_FAILURE: "
-                << avahi_strerror(avahi_client_errno(avahi_service_resolver_get_client(resolver)))
-                << ", name: " << name << ", service_type: " << service_type
-                << ", domain: " << domain;
+      LOG(WARNING) << "on_resolver_change() -- AVAHI_RESOLVER_FAILURE: "
+                   << avahi_strerror(
+                          avahi_client_errno(avahi_service_resolver_get_client(resolver)))
+                   << ", name: " << name << ", service_type: " << service_type
+                   << ", domain: " << domain;
       break;
     case AVAHI_RESOLVER_FOUND: {
       LOG(INFO) << "on_resolver_change() -- AVAHI_RESOLVER_FOUND";
@@ -162,7 +147,7 @@ void ServiceBrowser::on_resolver_change(
 
 void ServiceBrowser::update_watchers(const std::string &service_type) const {
   // TODO(james): Implement observer mechanism to subscribe to service changes.
-  LOG(INFO) << "update_watchers() -- service_type: " << service_type;
+  DLOG(INFO) << "update_watchers() -- service_type: " << service_type;
   if (service_type_resolvers_in_flight_.count(service_type) > 0 and
       service_type_resolvers_in_flight_.at(service_type) == 0) {
     for (auto iter = service_type_watchers_.find(service_type);
@@ -222,9 +207,6 @@ int ServiceBrowser::polling_loop() {
 void ServiceBrowser::add_server(const std::string &name, const std::string &type,
                                 const std::string &domain, const std::string &hostname,
                                 const NetworkAddress &address, int port) {
-  LOG(INFO) << "add_server() -- name: " << name << ", type: " << type << ", domain: " << domain
-            << ", hostname: " << hostname << ", address: " << network_address_to_string(address)
-            << ", port: " << port;
   add_service(name, type, domain);
   ServiceDescriptor &service = lookup_service(name, type, domain);
   add_server(service, hostname, address, port);
@@ -327,9 +309,9 @@ std::unordered_set<std::string> ServiceBrowser::service_types() const {
 }
 
 void ServiceBrowser::add_service_type(const std::string &service_type, ServiceTypeWatcher watcher) {
-  std::lock_guard lock{avahi_call_mutex_};
   if (avahi_browsers_.count(service_type) == 0) {
     LOG(INFO) << "Watching for services announcing for service type '" << service_type << "'";
+    std::lock_guard lock{avahi_call_mutex_};
     auto avahi_browser{avahi_service_browser_new(
         avahi_client_.get(), AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, service_type.c_str(), nullptr,
         static_cast<AvahiLookupFlags>(0), on_browser_change, this)};
