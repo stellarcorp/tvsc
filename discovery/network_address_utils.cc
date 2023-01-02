@@ -88,7 +88,7 @@ std::string ipv6_address_to_string(const IPv6Address& address) {
 }
 
 NetworkAddress avahi_address_to_network_address(AvahiProtocol protocol,
-                                                const AvahiAddress& avahi_address) {
+                                                const AvahiAddress& avahi_address, int interface) {
   using std::to_string;
   NetworkAddress address{};
   switch (protocol) {
@@ -119,7 +119,7 @@ NetworkAddress avahi_address_to_network_address(AvahiProtocol protocol,
     default:
       throw std::domain_error("Unimplemented AvahiProtocol value " + to_string(protocol));
   }
-
+  address.set_interface_index(interface);
   return address;
 }
 
@@ -136,6 +136,8 @@ std::vector<NetworkAddress> get_network_addresses() {
   std::unique_ptr<struct ifaddrs, void (*)(struct ifaddrs*)> interfaces_list{nullptr, freeifaddrs};
   {
     struct ifaddrs* raw_interfaces_list{nullptr};
+    // TODO(james): We can get the index of each interface using if_nameindex(), but that function
+    // doesn't seem to have the address for the interface.
     getifaddrs(&raw_interfaces_list);
     interfaces_list.reset(raw_interfaces_list);
   }

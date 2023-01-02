@@ -119,11 +119,13 @@ void ServiceBrowser::on_browser_change(AvahiServiceBrowser *avahi_browser, Avahi
   }
 }
 
-void ServiceBrowser::on_resolver_change(
-    AvahiServiceResolver *resolver, AVAHI_GCC_UNUSED AvahiIfIndex interface, AvahiProtocol protocol,
-    AvahiResolverEvent event, const char *name, const char *service_type, const char *domain,
-    const char *hostname, const AvahiAddress *address, uint16_t port, AvahiStringList *txt,
-    AvahiLookupResultFlags flags, void *service_browser) {
+void ServiceBrowser::on_resolver_change(AvahiServiceResolver *resolver, AvahiIfIndex interface,
+                                        AvahiProtocol protocol, AvahiResolverEvent event,
+                                        const char *name, const char *service_type,
+                                        const char *domain, const char *hostname,
+                                        const AvahiAddress *address, uint16_t port,
+                                        AvahiStringList *txt, AvahiLookupResultFlags flags,
+                                        void *service_browser) {
   ServiceBrowser *browser{static_cast<ServiceBrowser *>(service_browser)};
   switch (event) {
     case AVAHI_RESOLVER_FAILURE:
@@ -136,7 +138,7 @@ void ServiceBrowser::on_resolver_change(
     case AVAHI_RESOLVER_FOUND: {
       LOG(INFO) << "on_resolver_change() -- AVAHI_RESOLVER_FOUND";
       browser->add_server(name, service_type, domain, hostname,
-                          avahi_address_to_network_address(protocol, *address), port);
+                          avahi_address_to_network_address(protocol, *address, interface), port);
       break;
     }
   }

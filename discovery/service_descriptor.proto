@@ -20,7 +20,8 @@ message NetworkAddress {
     IPv4Address ipv4 = 1;
     IPv6Address ipv6 = 2;
   }
-  string interface_name = 3;
+  int32 interface_index = 3;
+  string interface_name = 4;
 }
 
 message ServerDetails {
