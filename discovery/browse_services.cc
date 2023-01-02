@@ -1,4 +1,7 @@
 #include <chrono>
+#include <condition_variable>
+#include <iostream>
+#include <mutex>
 #include <string>
 #include <thread>
 #include <unordered_set>
@@ -7,13 +10,10 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
-DEFINE_int32(duration_seconds, 10,
-             "How much time in seconds to give the browser time to discover services. Defaults to "
-             "10 seconds.");
-
 DEFINE_string(service_types, "_http._tcp",
               "Comma-separated list of service types to listen for. Defaults to '_http._tcp'. "
-              "Example values include '_http._tcp,'");
+              "Example values include '_http._tcp,_echo._tcp', '_device-info._tcp', "
+              "'_echo._tcp,_device-info._tcp,_soapy._tcp', etc.");
 
 namespace tvsc::discovery {
 
@@ -24,7 +24,6 @@ std::unordered_set<std::string> parse_service_types_flag() {
     begin = end;
     end = FLAGS_service_types.find(",", begin);
     const auto service_type{FLAGS_service_types.substr(begin, end - begin)};
-    LOG(INFO) << "Found service type '" << service_type << "'";
     result.emplace(service_type);
     if (end == std::string::npos) {
       break;
@@ -35,12 +34,32 @@ std::unordered_set<std::string> parse_service_types_flag() {
 }
 
 void browse() {
-  ServiceBrowser browser{parse_service_types_flag()};
-  LOG(INFO) << "Listening for services.";
-  std::this_thread::sleep_for(std::chrono::seconds(FLAGS_duration_seconds));
-  LOG(INFO) << "Discovered services:";
-  for (const auto& name : browser.service_names()) {
-    LOG(INFO) << name;
+  auto service_types{parse_service_types_flag()};
+  std::mutex m{};
+  std::condition_variable condition{};
+  ServiceBrowser browser{};
+  for (const auto& service_type : service_types) {
+    browser.add_service_type(
+        service_type, [&m, &condition, &service_types](const std::string& service_type) {
+          LOG(INFO) << "Notified of change in service type '" << service_type << "'";
+          std::unique_lock lock{m};
+          auto iter = service_types.find(service_type);
+          if (iter != service_types.end()) {
+            service_types.erase(iter);
+            if (service_types.empty()) {
+              lock.unlock();
+              condition.notify_one();
+            }
+          }
+        });
+  }
+
+  std::unique_lock lock{m};
+  condition.wait(lock);
+
+  std::cout << "Discovered services:\n";
+  for (const auto& entry : browser.all_discovered_services()) {
+    std::cout << entry.second.DebugString() << "\n";
   }
 }
 

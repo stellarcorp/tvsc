@@ -1,9 +1,11 @@
 #pragma once
 
 #include <atomic>
+#include <functional>
 #include <future>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <unordered_set>
 #include <vector>
@@ -16,10 +18,13 @@
 namespace tvsc::discovery {
 
 class ServiceBrowser final {
+ public:
+  using ServiceTypeWatcher = std::function<void(const std::string& service_type)>;
+
  private:
-  std::unique_ptr<AvahiSimplePoll, void (*)(AvahiSimplePoll*)> watcher_{nullptr,
-                                                                        avahi_simple_poll_free};
-  std::future<int> watcher_task_{};
+  std::unique_ptr<AvahiSimplePoll, void (*)(AvahiSimplePoll*)> loop_{nullptr,
+                                                                     avahi_simple_poll_free};
+  std::future<int> loop_task_{};
 
   std::unique_ptr<AvahiClient, void (*)(AvahiClient*)> avahi_client_{nullptr, avahi_client_free};
 
@@ -29,16 +34,25 @@ class ServiceBrowser final {
   std::map<std::string, std::unique_ptr<AvahiServiceBrowser, int (*)(AvahiServiceBrowser*)>>
       avahi_browsers_{};
 
+  std::mutex avahi_call_mutex_{};
+
   std::atomic<bool> have_valid_client_{false};
 
   std::map<std::string, ServiceSet> discovered_services_{};
+
+  /**
+   * Map of watchers by service type. When a new server providing a service of that service type is
+   * discovered, those watchers will get notified.
+   */
+  std::multimap<std::string, ServiceTypeWatcher> service_type_watchers_{};
+  std::map<std::string, int> service_type_resolvers_in_flight_{};
 
   static void on_client_change(AvahiClient* client, AvahiClientState state, void* service_browser);
 
   static void on_browser_change(AvahiServiceBrowser* avahi_browser, AvahiIfIndex interface,
                                 AvahiProtocol protocol, AvahiBrowserEvent event, const char* name,
-                                const char* type, const char* domain, AvahiLookupResultFlags flags,
-                                void* service_browser);
+                                const char* service_type, const char* domain,
+                                AvahiLookupResultFlags flags, void* service_browser);
 
   static void on_resolver_change(AvahiServiceResolver* resolver, AvahiIfIndex interface,
                                  AvahiProtocol protocol, AvahiResolverEvent event, const char* name,
@@ -46,17 +60,37 @@ class ServiceBrowser final {
                                  const AvahiAddress* address, uint16_t port, AvahiStringList* txt,
                                  AvahiLookupResultFlags flags, void* service_browser);
 
-  void add_unresolved_service(const std::string& name, const std::string& type,
-                              const std::string& domain);
-  void remove_unresolved_service(const std::string& name, const std::string& type,
-                                 const std::string& domain);
-  void add_resolved_service(const std::string& name, const std::string& type,
-                            const std::string& domain, const std::string& hostname,
-                            const NetworkAddress& address, int port);
+  void add_service(const std::string& name, const std::string& type, const std::string& domain);
+  void clear_service_records(const std::string& name, const std::string& type,
+                             const std::string& domain);
+
+  bool has_server(const ServiceDescriptor& service, const std::string& hostname,
+                  const NetworkAddress& address, int port) const;
+
+  void add_server(ServiceDescriptor& service, const std::string& hostname,
+                  const NetworkAddress& address, int port);
+
+  void add_server(const std::string& name, const std::string& type, const std::string& domain,
+                  const std::string& hostname, const NetworkAddress& address, int port);
+
+  const ServiceDescriptor& lookup_service(const std::string& name, const std::string& type,
+                                          const std::string& domain) const;
+  ServiceDescriptor& lookup_service(const std::string& name, const std::string& type,
+                                    const std::string& domain);
+
+  /**
+   * Notify the watchers for the given service type.
+   */
+  void update_watchers(const std::string& service_type) const;
+
+  /**
+   * Main loop to process events. Should be run asynchronously.
+   */
+  int polling_loop();
 
  public:
   // TODO(james): Pass in a ThreadPool and run the AvahiSimplePoll watcher on its threads.
-  ServiceBrowser(const std::unordered_set<std::string>& service_types);
+  ServiceBrowser();
   ~ServiceBrowser();
 
   /**
@@ -66,16 +100,14 @@ class ServiceBrowser final {
   /**
    * Add a service type to listen for.
    */
-  void add_service_type(const std::string& service_type);
-  /**
-   * Remove a service type to listen for.
-   */
-  void remove_service_type(const std::string& service_type);
+  void add_service_type(const std::string& service_type, ServiceTypeWatcher watcher);
 
   /**
-   * Get the set of discovered service names.
+   * Get all discovered services and the servers implementing those services.
    */
-  std::unordered_set<std::string> service_names() const;
+  const std::map<std::string, ServiceSet>& all_discovered_services() const {
+    return discovered_services_;
+  }
 };
 
 }  // namespace tvsc::discovery
