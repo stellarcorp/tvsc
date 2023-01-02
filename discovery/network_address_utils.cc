@@ -2,6 +2,7 @@
 
 #include <arpa/inet.h>
 #include <ifaddrs.h>
+#include <net/if.h>
 #include <netinet/in.h>
 #include <string.h>
 #include <unistd.h>
@@ -44,15 +45,10 @@ std::string network_address_to_string(const NetworkAddress& address) {
 }
 
 std::string ipv4_address_to_string(const IPv4Address& address) {
-  using std::to_string;
-  std::string result{};
-  result.reserve(INET_ADDRSTRLEN + 1);
-  for (int i = 0; i < INET_ADDRSTRLEN; ++i) {
-    result += '\0';
-  }
+  char result[INET_ADDRSTRLEN + 1];
   struct in_addr inet_address {};
   inet_address.s_addr = address.address();
-  const char* return_value = inet_ntop(AF_INET, &inet_address, result.data(), result.capacity());
+  const char* return_value = inet_ntop(AF_INET, &inet_address, result, INET_ADDRSTRLEN);
   if (return_value == nullptr) {
     LOG(ERROR) << "inet_ntop() failed. errno: " << strerror(errno);
   }
@@ -60,12 +56,7 @@ std::string ipv4_address_to_string(const IPv4Address& address) {
 }
 
 std::string ipv6_address_to_string(const IPv6Address& address) {
-  using std::to_string;
-  std::string result{};
-  result.reserve(INET6_ADDRSTRLEN + 1);
-  for (int i = 0; i < INET6_ADDRSTRLEN + 1; ++i) {
-    result += '\0';
-  }
+  char result[INET6_ADDRSTRLEN + 1];
   struct in6_addr inet_address {};
   for (int i = 0; i < 16; ++i) {
     uint32_t value{0};
@@ -83,7 +74,7 @@ std::string ipv6_address_to_string(const IPv6Address& address) {
     }
     inet_address.s6_addr[i] = static_cast<unsigned char>(value & 0xf);
   }
-  inet_ntop(AF_INET6, &inet_address, result.data(), result.capacity());
+  inet_ntop(AF_INET6, &inet_address, result, INET6_ADDRSTRLEN);
   return result;
 }
 
@@ -120,6 +111,8 @@ NetworkAddress avahi_address_to_network_address(AvahiProtocol protocol,
       throw std::domain_error("Unimplemented AvahiProtocol value " + to_string(protocol));
   }
   address.set_interface_index(interface);
+  address.set_interface_name(interface_name(interface));
+
   return address;
 }
 
@@ -195,6 +188,16 @@ std::vector<NetworkAddress> get_network_addresses() {
     result.emplace_back(std::move(network_address));
   }
 
+  return result;
+}
+
+unsigned int interface_index(const std::string& interface_name) {
+  return if_nametoindex(interface_name.c_str());
+}
+
+std::string interface_name(unsigned int interface_index) {
+  char result[IF_NAMESIZE + 1];
+  if_indextoname(interface_index, result);
   return result;
 }
 
