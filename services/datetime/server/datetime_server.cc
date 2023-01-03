@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 
+#include "discovery/service_advertiser.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
@@ -19,7 +20,8 @@ using grpc::StatusCode;
 namespace tvsc::service::datetime {
 
 class DatetimeServiceImpl final : public Datetime::Service {
-  Status get_datetime(ServerContext* context, const DatetimeRequest* request, DatetimeReply* reply) override {
+  Status get_datetime(ServerContext* context, const DatetimeRequest* request,
+                      DatetimeReply* reply) override {
     using Clock = std::chrono::system_clock;
 
     constexpr int32_t SECONDS_IN_DAY{24 * 60 * 60};
@@ -92,14 +94,26 @@ void run_server() {
   grpc::EnableDefaultHealthCheckService(true);
   ServerBuilder builder;
 
-  const std::string bind_addr{get_datetime_service_socket_address()};
-  builder.AddListeningPort(bind_addr, grpc::InsecureServerCredentials());
+  int port{0};
+  builder.AddListeningPort("dns:///[::]:0", grpc::InsecureServerCredentials(), &port);
 
   builder.RegisterService(&service);
 
   std::unique_ptr<Server> server(builder.BuildAndStart());
-  LOG(INFO) << "Server listening on " << bind_addr;
 
+  tvsc::discovery::ServiceAdvertiser advertiser{};
+  advertiser.advertise_service("TVSC Datetime Service", "_tvsc_datetime._tcp", "local", port,
+                               [&server](tvsc::discovery::AdvertisementResult result) {
+                                 if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
+                                   // If we can't advertise correctly, shutdown and log the issue.
+                                   server->Shutdown();
+                                   LOG(FATAL)
+                                       << "Service advertisement failed with advertisement result: "
+                                       << to_string(result);
+                                 }
+                               });
+
+  LOG(INFO) << "Server listening on port " << port;
   server->Wait();
 }
 

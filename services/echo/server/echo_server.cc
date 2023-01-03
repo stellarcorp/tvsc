@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 
+#include "discovery/service_advertiser.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
@@ -31,14 +32,26 @@ void run_server() {
   grpc::EnableDefaultHealthCheckService(true);
   ServerBuilder builder;
 
-  const std::string bind_addr{get_echo_service_socket_address()};
-  builder.AddListeningPort(bind_addr, grpc::InsecureServerCredentials());
+  int port{0};
+  builder.AddListeningPort("dns:///[::]:0", grpc::InsecureServerCredentials(), &port);
 
   builder.RegisterService(&service);
 
   std::unique_ptr<Server> server(builder.BuildAndStart());
-  LOG(INFO) << "Server listening on " << bind_addr;
 
+  tvsc::discovery::ServiceAdvertiser advertiser{};
+  advertiser.advertise_service("TVSC Echo Service", "_tvsc_echo._tcp", "local", port,
+                               [&server](tvsc::discovery::AdvertisementResult result) {
+                                 if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
+                                   // If we can't advertise correctly, shutdown and log the issue.
+                                   server->Shutdown();
+                                   LOG(FATAL)
+                                       << "Service advertisement failed with advertisement result: "
+                                       << to_string(result);
+                                 }
+                               });
+
+  LOG(INFO) << "Server listening on port " << port;
   server->Wait();
 }
 

@@ -37,15 +37,8 @@ message ServiceDescriptor {
   string service_type = 1;
   string domain = 2;
 
-  // Which interfaces should this service listen on. These are currently interface names, but per
-  // https://agnat.github.io/node_mdns/user_guide.html#network_interfaces, this approach may not
-  // work on all platforms.
-  // TODO(james): Is this field appropriate for browsing use cases, or just for advertising? Update
-  // either the design or the documentation to better model browsing.
-  repeated string allowed_interface_names = 3;
-
   // Servers which provide this service.
-  repeated ServerDetails servers = 4;
+  repeated ServerDetails servers = 3;
 }
 
 message ServiceSet {

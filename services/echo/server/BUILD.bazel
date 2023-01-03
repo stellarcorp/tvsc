@@ -3,6 +3,7 @@ cc_binary(
     srcs = ["echo_server.cc"],
     visibility = ["//visibility:public"],
     deps = [
+        "//discovery:advertise",
         "//services/configuration",
         "//services/echo/common",
         "//third_party/gflags",

@@ -213,10 +213,10 @@ ServiceAdvertiser::~ServiceAdvertiser() {
   }
 }
 
-void ServiceAdvertiser::advertise_local_service(const std::string &service_name,
-                                                const std::string &service_type,
-                                                const std::string &domain, int port,
-                                                AdvertisementCallback callback) {
+void ServiceAdvertiser::advertise_service(const std::string &service_name,
+                                          const std::string &service_type,
+                                          const std::string &domain, int port,
+                                          AdvertisementCallback callback) {
   if (service_name.empty()) {
     throw std::invalid_argument("service_name must not be empty.");
   }

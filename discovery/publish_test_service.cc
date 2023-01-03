@@ -10,6 +10,7 @@
 DEFINE_int32(duration_seconds, 10,
              "How much time in seconds to maintain the test service advertisement. Use -1 to stay "
              "active until stopped manually. Defaults to 10 seconds.");
+DEFINE_string(service_type, "_echo._tcp", "Service type to advertise. Defaults to '_echo._tcp'.");
 
 namespace tvsc::discovery {
 
@@ -28,10 +29,9 @@ void callback(AdvertisementResult result) {
 void advertise_test_service() {
   ServiceAdvertiser advertiser{};
 
-  constexpr char service_type[] = "_echo._tcp";
   constexpr char domain[] = "local";
   constexpr int port{50053};
-  advertiser.advertise_local_service(TEST_SERVICE_NAME, service_type, domain, port, callback);
+  advertiser.advertise_service(TEST_SERVICE_NAME, FLAGS_service_type, domain, port, callback);
 
   if (FLAGS_duration_seconds < 0) {
     while (true) {
