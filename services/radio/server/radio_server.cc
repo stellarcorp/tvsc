@@ -11,8 +11,8 @@
 #include "grpcpp/health_check_service_interface.h"
 #include "radio/soapy.h"
 #include "radio/soapy_server.h"
+#include "services/configuration/service_types.h"
 #include "services/radio/common/radio.grpc.pb.h"
-#include "services/radio/common/radio_service_location.h"
 
 namespace tvsc::service::radio {
 
@@ -53,16 +53,16 @@ void run_grpc_server(RadioService::Service* service) {
   std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
 
   tvsc::discovery::ServiceAdvertiser advertiser{};
-  advertiser.advertise_service("TVSC Radio Service", "_tvsc_radio._tcp", "local", port,
-                               [&server](tvsc::discovery::AdvertisementResult result) {
-                                 if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
-                                   // If we can't advertise correctly, shutdown and log the issue.
-                                   server->Shutdown();
-                                   LOG(FATAL)
-                                       << "Service advertisement failed with advertisement result: "
-                                       << to_string(result);
-                                 }
-                               });
+  advertiser.advertise_service(
+      "TVSC Radio Service", tvsc::service::configuration::generate_service_type<RadioService>(),
+      "local", port, [&server](tvsc::discovery::AdvertisementResult result) {
+        if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
+          // If we can't advertise correctly, shutdown and log the issue.
+          server->Shutdown();
+          LOG(FATAL) << "Service advertisement failed with advertisement result: "
+                     << to_string(result);
+        }
+      });
 
   LOG(INFO) << "Server listening on port " << port;
   server->Wait();

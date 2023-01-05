@@ -4,13 +4,10 @@ load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
 cc_library(
     name = "common",
-    srcs = ["radio_service_location.cc"],
-    hdrs = ["radio_service_location.h"],
     visibility = ["//visibility:public"],
     deps = [
         ":radio_cc_grpc",
         ":radio_cc_proto",
-        "//services/configuration",
     ],
 )
 

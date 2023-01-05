@@ -8,8 +8,8 @@
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
+#include "services/configuration/service_types.h"
 #include "services/datetime/common/datetime.grpc.pb.h"
-#include "services/datetime/common/datetime_service_location.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -102,16 +102,16 @@ void run_server() {
   std::unique_ptr<Server> server(builder.BuildAndStart());
 
   tvsc::discovery::ServiceAdvertiser advertiser{};
-  advertiser.advertise_service("TVSC Datetime Service", "_tvsc_datetime._tcp", "local", port,
-                               [&server](tvsc::discovery::AdvertisementResult result) {
-                                 if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
-                                   // If we can't advertise correctly, shutdown and log the issue.
-                                   server->Shutdown();
-                                   LOG(FATAL)
-                                       << "Service advertisement failed with advertisement result: "
-                                       << to_string(result);
-                                 }
-                               });
+  advertiser.advertise_service(
+      "TVSC Datetime Service",
+      tvsc::service::configuration::generate_service_type<Datetime>(), "local",
+      port, [&server](tvsc::discovery::AdvertisementResult result) {
+    if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
+      // If we can't advertise correctly, shutdown and log the issue.
+      server->Shutdown();
+      LOG(FATAL) << "Service advertisement failed with advertisement result: " << to_string(result);
+    }
+      });
 
   LOG(INFO) << "Server listening on port " << port;
   server->Wait();

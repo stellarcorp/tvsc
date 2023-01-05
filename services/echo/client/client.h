@@ -2,14 +2,14 @@
 #include <string>
 
 #include "grpcpp/grpcpp.h"
+#include "services/configuration/service_types.h"
 #include "services/echo/common/echo.grpc.pb.h"
-#include "services/echo/common/echo_service_location.h"
 
 namespace tvsc::service::echo {
 
 class EchoClient {
  public:
-  EchoClient() : EchoClient(get_echo_service_socket_address()) {}
+  EchoClient() : EchoClient(tvsc::service::configuration::default_bind_address<Echo>()) {}
 
   EchoClient(const std::string& bind_addr)
       : stub_(Echo::NewStub(grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials()))) {}

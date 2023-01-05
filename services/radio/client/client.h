@@ -2,14 +2,14 @@
 #include <string>
 
 #include "grpcpp/grpcpp.h"
+#include "services/configuration/service_types.h"
 #include "services/radio/common/radio.grpc.pb.h"
-#include "services/radio/common/radio_service_location.h"
 
 namespace tvsc::service::radio {
 
 class RadioClient {
  public:
-  RadioClient() : RadioClient(get_radio_service_socket_address()) {}
+  RadioClient() : RadioClient(tvsc::service::configuration::default_bind_address<RadioService>()) {}
 
   RadioClient(const std::string& bind_addr)
       : stub_(RadioService::NewStub(

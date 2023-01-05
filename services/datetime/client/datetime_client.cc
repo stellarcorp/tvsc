@@ -5,7 +5,6 @@
 #include "grpcpp/grpcpp.h"
 #include "services/datetime/client/client.h"
 #include "services/datetime/common/datetime.grpc.pb.h"
-#include "services/datetime/common/datetime_service_location.h"
 
 namespace tvsc::service::datetime {
 

@@ -6,19 +6,19 @@
 #include "grpcpp/grpcpp.h"
 #include "services/echo/client/client.h"
 #include "services/echo/common/echo.grpc.pb.h"
-#include "services/echo/common/echo_service_location.h"
 
 namespace tvsc::service::echo {
 
 std::string echo_message(const std::string& msg) {
-  EchoClient client(get_echo_service_socket_address());
+  EchoClient client{};
   EchoReply reply{};
   grpc::Status status = client.call(msg, &reply);
   if (status.ok()) {
     return reply.msg();
   } else {
     LOG(ERROR) << status.error_code() << ": " << status.error_message();
-    return std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " + status.error_message();
+    return std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " +
+           status.error_message();
   }
 }
 

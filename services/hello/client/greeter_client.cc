@@ -6,7 +6,6 @@
 #include "grpcpp/grpcpp.h"
 #include "services/hello/client/client.h"
 #include "services/hello/common/hello.grpc.pb.h"
-#include "services/hello/common/hello_service_location.h"
 
 namespace tvsc::service::hello {
 

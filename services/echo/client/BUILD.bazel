@@ -3,6 +3,7 @@ cc_library(
     hdrs = ["client.h"],
     visibility = ["//visibility:public"],
     deps = [
+        "//services/configuration",
         "//services/echo/common",
         "//third_party/gflags",
         "//third_party/glog",

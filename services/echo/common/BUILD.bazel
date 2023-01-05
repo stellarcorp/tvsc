@@ -4,13 +4,10 @@ load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
 cc_library(
     name = "common",
-    srcs = ["echo_service_location.cc"],
-    hdrs = ["echo_service_location.h"],
     visibility = ["//visibility:public"],
     deps = [
         ":echo_cc_grpc",
         ":echo_cc_proto",
-        "//services/configuration",
     ],
 )
 

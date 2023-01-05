@@ -7,8 +7,8 @@
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
+#include "services/configuration/service_types.h"
 #include "services/hello/common/hello.grpc.pb.h"
-#include "services/hello/common/hello_service_location.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -41,16 +41,16 @@ void run_server() {
   std::unique_ptr<Server> server(builder.BuildAndStart());
 
   tvsc::discovery::ServiceAdvertiser advertiser{};
-  advertiser.advertise_service("TVSC Greeting Service", "_tvsc_greeting._tcp", "local", port,
-                               [&server](tvsc::discovery::AdvertisementResult result) {
-                                 if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
-                                   // If we can't advertise correctly, shutdown and log the issue.
-                                   server->Shutdown();
-                                   LOG(FATAL)
-                                       << "Service advertisement failed with advertisement result: "
-                                       << to_string(result);
-                                 }
-                               });
+  advertiser.advertise_service(
+      "TVSC Greeting Service", tvsc::service::configuration::generate_service_type<Hello>(),
+      "local", port, [&server](tvsc::discovery::AdvertisementResult result) {
+        if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
+          // If we can't advertise correctly, shutdown and log the issue.
+          server->Shutdown();
+          LOG(FATAL) << "Service advertisement failed with advertisement result: "
+                     << to_string(result);
+        }
+      });
 
   LOG(INFO) << "Server listening on port " << port;
   server->Wait();
