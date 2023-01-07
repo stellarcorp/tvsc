@@ -39,18 +39,21 @@ void browse() {
   std::condition_variable condition{};
   ServiceBrowser browser{};
   for (const auto& service_type : service_types) {
-    browser.add_service_type(
-        service_type, [&m, &condition, &service_types](const std::string& service_type) {
-          std::unique_lock lock{m};
-          auto iter = service_types.find(service_type);
-          if (iter != service_types.end()) {
-            service_types.erase(iter);
-            if (service_types.empty()) {
-              lock.unlock();
-              condition.notify_one();
-            }
-          }
-        });
+    browser.watch_service_type(service_type,
+                               [&m, &condition, &service_types](const std::string& service_type) {
+                                 std::unique_lock lock{m};
+                                 auto iter = service_types.find(service_type);
+                                 if (iter != service_types.end()) {
+                                   // Remove each service type from the service_types set as we get
+                                   // updated about that service type. This remaining service types
+                                   // have not been discovered yet.
+                                   service_types.erase(iter);
+                                   if (service_types.empty()) {
+                                     lock.unlock();
+                                     condition.notify_one();
+                                   }
+                                 }
+                               });
   }
 
   std::unique_lock lock{m};

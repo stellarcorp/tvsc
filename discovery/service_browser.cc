@@ -310,7 +310,8 @@ std::unordered_set<std::string> ServiceBrowser::service_types() const {
   return types;
 }
 
-void ServiceBrowser::add_service_type(const std::string &service_type, ServiceTypeWatcher watcher) {
+void ServiceBrowser::watch_service_type(const std::string &service_type,
+                                        ServiceTypeWatcher watcher) {
   if (avahi_browsers_.count(service_type) == 0) {
     LOG(INFO) << "Watching for services announcing for service type '" << service_type << "'";
     std::lock_guard lock{avahi_call_mutex_};
@@ -329,6 +330,22 @@ void ServiceBrowser::add_service_type(const std::string &service_type, ServiceTy
   }
 
   service_type_watchers_.emplace(service_type, std::move(watcher));
+}
+
+std::vector<ServerDetails> ServiceBrowser::resolve_service_type(
+    const std::string &service_type) const {
+  std::vector<ServerDetails> result{};
+  for (const auto &[name, service_set] : discovered_services_) {
+    for (const auto &service : service_set.services()) {
+      if (service_type == service.service_type()) {
+        for (const auto &server : service.servers()) {
+          result.emplace_back(server);
+        }
+      }
+    }
+  }
+
+  return result;
 }
 
 }  // namespace tvsc::discovery

@@ -45,6 +45,9 @@ class ServiceBrowser final {
    */
   std::mutex avahi_call_mutex_{};
 
+  /**
+   * Map of published name to all of its serving details.
+   */
   std::map<std::string, ServiceSet> discovered_services_{};
 
   /**
@@ -106,9 +109,19 @@ class ServiceBrowser final {
   std::unordered_set<std::string> service_types() const;
 
   /**
-   * Add a service type to listen for.
+   * Watch changes on a service type.
+   *
+   * This method calls the callback when it has new information about the requested service type.
    */
-  void add_service_type(const std::string& service_type, ServiceTypeWatcher watcher);
+  void watch_service_type(const std::string& service_type, ServiceTypeWatcher watcher);
+
+  /**
+   * Resolve the service type into a set of servers providing that service.
+   *
+   * This method returns a snapshot of the currently known discovered services. To keep this
+   * information up-to-date, you should also set up a watcher on this service type.
+   */
+  std::vector<ServerDetails> resolve_service_type(const std::string& service_type) const;
 
   /**
    * Get all discovered services and the servers implementing those services.
