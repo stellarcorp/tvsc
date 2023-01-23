@@ -33,7 +33,7 @@ void run_server() {
   ServerBuilder builder;
 
   int port{0};
-  builder.AddListeningPort("dns:///[::]:0", grpc::InsecureServerCredentials(), &port);
+  builder.AddListeningPort("dns:///[::]:50035", grpc::InsecureServerCredentials(), &port);
 
   builder.RegisterService(&service);
 

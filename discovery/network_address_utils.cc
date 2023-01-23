@@ -116,6 +116,50 @@ NetworkAddress avahi_address_to_network_address(AvahiProtocol protocol,
   return address;
 }
 
+void resolved_server_to_grpc(const ServerDetails& server, grpc_resolved_address* grpc) {
+  const NetworkAddress& address{server.address()};
+
+  memset(grpc, 0, sizeof(grpc_resolved_address));
+  if (address.has_ipv4()) {
+    struct sockaddr_in* addr = reinterpret_cast<struct sockaddr_in*>(grpc->addr);
+    addr->sin_family = AF_INET;
+    addr->sin_port = htons(server.port());
+    grpc->len = static_cast<socklen_t>(sizeof(struct sockaddr_in));
+
+    const IPv4Address& ip_address{address.ipv4()};
+    addr->sin_addr.s_addr = ip_address.address();
+  } else if (address.has_ipv6()) {
+    struct sockaddr_in6* addr = reinterpret_cast<struct sockaddr_in6*>(grpc->addr);
+    addr->sin6_family = AF_INET6;
+    addr->sin6_port = htons(server.port());
+    grpc->len = static_cast<socklen_t>(sizeof(struct sockaddr_in6));
+
+    const IPv6Address& ip_address{address.ipv6()};
+
+    uint32_t addr_bytes{0};
+    for (int i = 0; i < 16; ++i) {
+      if (i % 4 == 0) {
+        switch (i / 4) {
+          case 0:
+            addr_bytes = ip_address.address_0();
+            break;
+          case 1:
+            addr_bytes = ip_address.address_1();
+            break;
+          case 2:
+            addr_bytes = ip_address.address_2();
+            break;
+          case 3:
+            addr_bytes = ip_address.address_3();
+            break;
+        }
+      }
+      addr->sin6_addr.s6_addr[i] = addr_bytes & 0xff;
+      addr_bytes >>= 8 * (i % 4);
+    }
+  }
+}
+
 std::string get_hostname() {
   std::string result{};
   result.reserve(HOST_NAME_MAX + 1);

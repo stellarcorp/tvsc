@@ -19,9 +19,11 @@ cc_library(
     name = "browse",
     srcs = [
         "service_browser.cc",
+        "service_resolver.cc",
     ],
     hdrs = [
         "service_browser.h",
+        "service_resolver.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
@@ -29,6 +31,7 @@ cc_library(
         ":service_descriptor_cc_proto",
         "//third_party/avahi",
         "//third_party/glog",
+        "//third_party/grpc",
     ],
 )
 
@@ -45,6 +48,7 @@ cc_library(
         ":service_descriptor_cc_proto",
         "//third_party/avahi",
         "//third_party/glog",
+        "//third_party/grpc",
     ],
 )
 

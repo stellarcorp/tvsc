@@ -8,6 +8,7 @@ message IPv4Address {
 }
 
 message IPv6Address {
+  // TODO(james): Change this structure to use a byte array to line up with struct sockaddr_in6.sin6_addr.
   // IPv6 address as four unsigned 32-bit integers in network byte order.
   fixed32 address_0 = 1;  // Highest order bytes.
   fixed32 address_1 = 2;

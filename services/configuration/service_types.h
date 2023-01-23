@@ -2,6 +2,8 @@
 
 #include <string>
 
+// TODO(james): Move this functionality into the tvsc::discovery package.
+
 namespace tvsc::service::configuration {
 
 /**
@@ -18,7 +20,8 @@ std::string generate_service_type() {
 
 template <class GrpcServiceT>
 std::string default_bind_address() {
-  return "mnds:///" + generate_service_type<GrpcServiceT>();
+  // return "dns:///localhost:50035";
+  return "mdns:///" + generate_service_type<GrpcServiceT>();
 }
 
 }  // namespace tvsc::service::configuration

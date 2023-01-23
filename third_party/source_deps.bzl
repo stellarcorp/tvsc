@@ -99,6 +99,7 @@ def load_source_dependencies():
             ],
             sha256 = "271bdc890bf329a8de5b65819f0f9590a5381402429bca37625b63546ed19e54",
             strip_prefix = "grpc-1.47.0",
+            patches = ["//third_party/grpc:grpc_build.patch"],
         )
 
     if not native.existing_rule("com_github_unetworking_usockets"):

@@ -5,6 +5,7 @@
 
 #include "avahi-common/address.h"
 #include "discovery/service_descriptor.pb.h"
+#include "src/core/lib/resolver/server_address.h"
 
 namespace tvsc::discovery {
 
@@ -24,6 +25,8 @@ std::string ipv6_address_to_string(const IPv6Address& address);
 
 NetworkAddress avahi_address_to_network_address(AvahiProtocol protocol, const AvahiAddress& address,
                                                 int interface);
+
+void resolved_server_to_grpc(const ServerDetails& server, grpc_resolved_address* grpc);
 
 std::string get_hostname();
 
