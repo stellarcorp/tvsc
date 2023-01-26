@@ -1,16 +1,16 @@
 #include <memory>
 #include <string>
 
+#include "discovery/service_types.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
-#include "services/configuration/service_types.h"
 #include "services/echo/common/echo.grpc.pb.h"
 
 namespace tvsc::service::echo {
 
 class EchoClient {
  public:
-  EchoClient() : EchoClient(tvsc::service::configuration::default_bind_address<Echo>()) {}
+  EchoClient() : EchoClient(tvsc::discovery::default_bind_address<Echo>()) {}
 
   EchoClient(const std::string& bind_addr)
       : channel_(grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials())),

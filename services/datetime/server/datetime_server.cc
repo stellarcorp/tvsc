@@ -4,11 +4,11 @@
 #include <string>
 
 #include "discovery/service_advertiser.h"
+#include "discovery/service_types.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
-#include "services/configuration/service_types.h"
 #include "services/datetime/common/datetime.grpc.pb.h"
 
 using grpc::Server;
@@ -103,14 +103,14 @@ void run_server() {
 
   tvsc::discovery::ServiceAdvertiser advertiser{};
   advertiser.advertise_service(
-      "TVSC Datetime Service",
-      tvsc::service::configuration::generate_service_type<Datetime>(), "local",
-      port, [&server](tvsc::discovery::AdvertisementResult result) {
-    if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
-      // If we can't advertise correctly, shutdown and log the issue.
-      server->Shutdown();
-      LOG(FATAL) << "Service advertisement failed with advertisement result: " << to_string(result);
-    }
+      "TVSC Datetime Service", tvsc::discovery::generate_service_type<Datetime>(), "local", port,
+      [&server](tvsc::discovery::AdvertisementResult result) {
+        if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
+          // If we can't advertise correctly, shutdown and log the issue.
+          server->Shutdown();
+          LOG(FATAL) << "Service advertisement failed with advertisement result: "
+                     << to_string(result);
+        }
       });
 
   LOG(INFO) << "Server listening on port " << port;

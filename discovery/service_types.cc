@@ -1,8 +1,8 @@
-#include "services/configuration/service_types.h"
+#include "discovery/service_types.h"
 
 #include <string>
 
-namespace tvsc::service::configuration {
+namespace tvsc::discovery {
 
 std::string generate_service_type_from_name(const std::string& grpc_service_full_name) {
   // Service types must begin with an underscore.
@@ -25,4 +25,4 @@ std::string generate_service_type_from_name(const std::string& grpc_service_full
   return result;
 }
 
-}  // namespace tvsc::service::configuration
+}  // namespace tvsc::discovery

@@ -2,9 +2,7 @@
 
 #include <string>
 
-// TODO(james): Move this functionality into the tvsc::discovery package.
-
-namespace tvsc::service::configuration {
+namespace tvsc::discovery {
 
 /**
  * Generated gRPC classes contain a static method called service_full_name(). See the
@@ -20,8 +18,7 @@ std::string generate_service_type() {
 
 template <class GrpcServiceT>
 std::string default_bind_address() {
-  // return "dns:///localhost:50035";
   return "mdns:///" + generate_service_type<GrpcServiceT>();
 }
 
-}  // namespace tvsc::service::configuration
+}  // namespace tvsc::discovery

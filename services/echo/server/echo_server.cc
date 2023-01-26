@@ -3,11 +3,11 @@
 #include <string>
 
 #include "discovery/service_advertiser.h"
+#include "discovery/service_types.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
-#include "services/configuration/service_types.h"
 #include "services/echo/common/echo.grpc.pb.h"
 
 using grpc::Server;
@@ -33,7 +33,7 @@ void run_server() {
   ServerBuilder builder;
 
   int port{0};
-  builder.AddListeningPort("dns:///[::]:50035", grpc::InsecureServerCredentials(), &port);
+  builder.AddListeningPort("dns:///[::]:0", grpc::InsecureServerCredentials(), &port);
 
   builder.RegisterService(&service);
 
@@ -41,8 +41,7 @@ void run_server() {
 
   tvsc::discovery::ServiceAdvertiser advertiser{};
   advertiser.advertise_service(
-      "TVSC Echo Service",
-      tvsc::service::configuration::generate_service_type<Echo>(), "local", port,
+      "TVSC Echo Service", tvsc::discovery::generate_service_type<Echo>(), "local", port,
       [&server](tvsc::discovery::AdvertisementResult result) {
         if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
           // If we can't advertise correctly, shutdown and log the issue.

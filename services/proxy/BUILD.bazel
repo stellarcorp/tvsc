@@ -10,6 +10,7 @@ cc_binary(
         "tvsc_proxy.cc",
     ],
     deps = [
+        "//discovery:browse",
         "//services/datetime/client:web_socket_rpc_client",
         "//services/echo/client:web_socket_rpc_client",
         "//services/hello/client:web_socket_rpc_client",

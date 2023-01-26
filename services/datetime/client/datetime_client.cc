@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "discovery/service_resolver.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
@@ -25,6 +26,8 @@ int64_t get_datetime() {
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
+
+  tvsc::discovery::register_mdns_grpc_resolver();
 
   std::cout << tvsc::service::datetime::get_datetime() << " ms\n";
 

@@ -1,12 +1,15 @@
 #include "discovery/service_resolver.h"
 
+#include <condition_variable>
 #include <filesystem>
+#include <mutex>
 #include <string>
 
 #include "discovery/network_address_utils.h"
 #include "discovery/service_browser.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
+#include "src/core/lib/config/core_configuration.h"
 #include "src/core/lib/iomgr/exec_ctx.h"
 #include "src/core/lib/resolver/resolver.h"
 #include "src/core/lib/resolver/resolver_factory.h"
@@ -15,6 +18,24 @@
 #include "src/core/lib/uri/uri_parser.h"
 
 namespace tvsc::discovery {
+
+class ServiceResolverFactory final : public grpc_core::ResolverFactory {
+ private:
+  std::unique_ptr<ServiceBrowser> browser_;
+
+ public:
+  ServiceResolverFactory(std::unique_ptr<ServiceBrowser> browser) : browser_(std::move(browser)) {}
+
+  absl::string_view scheme() const override;
+
+  /// Returns a bool indicating whether the input uri is valid to create a
+  /// resolver.
+  bool IsValidUri(const grpc_core::URI& uri) const override;
+
+  /// Returns a new resolver instance.
+  grpc_core::OrphanablePtr<grpc_core::Resolver> CreateResolver(
+      grpc_core::ResolverArgs args) const override;
+};
 
 absl::string_view ServiceResolverFactory::scheme() const { return "mdns"; }
 
@@ -93,6 +114,31 @@ grpc_core::OrphanablePtr<grpc_core::Resolver> ServiceResolverFactory::CreateReso
     grpc_core::ResolverArgs args) const {
   return grpc_core::OrphanablePtr<grpc_core::Resolver>{
       new MDnsResolver{*browser_, std::move(args)}};
+}
+
+void register_mdns_grpc_resolver() {
+  std::mutex m{};
+  std::condition_variable condition{};
+
+  grpc_core::CoreConfiguration::RegisterBuilder(
+      [&m, &condition](grpc_core::CoreConfiguration::Builder* configuration_builder) {
+        std::unique_lock lock{m};
+
+        std::unique_ptr<ServiceBrowser> browser = std::make_unique<ServiceBrowser>();
+        std::unique_ptr<ServiceResolverFactory> resolver{
+            std::make_unique<ServiceResolverFactory>(std::move(browser))};
+
+        grpc_core::ResolverRegistry::Builder* resolver_registry{
+            configuration_builder->resolver_registry()};
+        resolver_registry->RegisterResolverFactory(std::move(resolver));
+
+        lock.unlock();
+        condition.notify_one();
+      });
+
+  // Block the caller until the resolver is registered.
+  std::unique_lock lock{m};
+  condition.wait(lock);
 }
 
 }  // namespace tvsc::discovery

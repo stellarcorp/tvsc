@@ -5,13 +5,13 @@
 #include <thread>
 
 #include "discovery/service_advertiser.h"
+#include "discovery/service_types.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
 #include "radio/soapy.h"
 #include "radio/soapy_server.h"
-#include "services/configuration/service_types.h"
 #include "services/radio/common/radio.grpc.pb.h"
 
 namespace tvsc::service::radio {
@@ -54,8 +54,8 @@ void run_grpc_server(RadioService::Service* service) {
 
   tvsc::discovery::ServiceAdvertiser advertiser{};
   advertiser.advertise_service(
-      "TVSC Radio Service", tvsc::service::configuration::generate_service_type<RadioService>(),
-      "local", port, [&server](tvsc::discovery::AdvertisementResult result) {
+      "TVSC Radio Service", tvsc::discovery::generate_service_type<RadioService>(), "local", port,
+      [&server](tvsc::discovery::AdvertisementResult result) {
         if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
           // If we can't advertise correctly, shutdown and log the issue.
           server->Shutdown();

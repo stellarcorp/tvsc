@@ -1,15 +1,15 @@
 #include <memory>
 #include <string>
 
+#include "discovery/service_types.h"
 #include "grpcpp/grpcpp.h"
-#include "services/configuration/service_types.h"
 #include "services/datetime/common/datetime.grpc.pb.h"
 
 namespace tvsc::service::datetime {
 
 class DatetimeClient {
  public:
-  DatetimeClient() : DatetimeClient(tvsc::service::configuration::default_bind_address<Datetime>()) {}
+  DatetimeClient() : DatetimeClient(tvsc::discovery::default_bind_address<Datetime>()) {}
 
   DatetimeClient(const std::string& bind_addr)
       : stub_(
