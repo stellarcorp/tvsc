@@ -1,0 +1,44 @@
+cc_library(
+    name = "client",
+    hdrs = [
+        "client.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//discovery",
+        "//service/hello/common",
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/grpc",
+    ],
+)
+
+cc_library(
+    name = "web_socket_rpc_client",
+    hdrs = [
+        "web_socket_rpc_client.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":client",
+        "//service/hello/common",
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/grpc",
+        "//third_party/uwebsockets",
+    ],
+)
+
+cc_binary(
+    name = "greeter_client",
+    srcs = ["greeter_client.cc"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":client",
+        "//discovery:browse",
+        "//service/hello/common",
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/grpc",
+    ],
+)

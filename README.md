@@ -18,14 +18,14 @@ On the first run of bazelisk on a given computer, it will download the correct v
 
 From the top-level of the repo,
 ```
-./bazelisk-linux-amd64 run //services/hello:hello_world
+./bazelisk-linux-amd64 run //service/hello:hello_world
 ```
 
 You can guess what this should print.
 
 For windows, the equivalent should be something along the lines of:
 ```
-bazelisk-windows-amd64.exe run //services/hello:hello_world
+bazelisk-windows-amd64.exe run //service/hello:hello_world
 ```
 
 Any issues are likely due to missing or out-of-date compilers.
@@ -34,7 +34,7 @@ Note: future examples will use `bazel` instead of one of the bazelisk executable
 
 ### Do a test build using one of the cross-compilers:
 ```
-bazel build --config=rpi3_cross //services/hello:hello_world
+bazel build --config=rpi3_cross //service/hello:hello_world
 ```
 
 This step should succeed, though it make take a while since it will download the toolchain for the Raspberry Pi 3.
@@ -42,5 +42,5 @@ This step should succeed, though it make take a while since it will download the
 This next step should fail, unless you are running on a Raspberry Pi 3:
 
 ```
-./bazel-bin/services/hello/hello_world
+./bazel-bin/service/hello/hello_world
 ```

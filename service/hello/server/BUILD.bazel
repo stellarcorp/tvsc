@@ -1,0 +1,13 @@
+cc_binary(
+    name = "greeter_server",
+    srcs = ["greeter_server.cc"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//discovery",
+        "//discovery:advertise",
+        "//service/hello/common",
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/grpc",
+    ],
+)
