@@ -19,7 +19,7 @@ namespace tvsc::discovery {
 /**
  * Mechanism to discover services and watch for changes in those services.
  */
-class ServiceBrowser final {
+class ServiceDiscovery final {
  public:
   using ServiceTypeWatcher = std::function<void(const std::string& service_type)>;
 
@@ -100,8 +100,8 @@ class ServiceBrowser final {
 
  public:
   // TODO(james): Pass in a ThreadPool and run the AvahiSimplePoll watcher on its threads.
-  ServiceBrowser();
-  ~ServiceBrowser();
+  ServiceDiscovery();
+  ~ServiceDiscovery();
 
   /**
    * List the set of service types being listened for.

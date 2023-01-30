@@ -6,7 +6,7 @@
 #include <string>
 
 #include "discovery/network_address_utils.h"
-#include "discovery/service_browser.h"
+#include "discovery/service_discovery.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "src/core/lib/config/core_configuration.h"
@@ -21,10 +21,11 @@ namespace tvsc::discovery {
 
 class ServiceResolverFactory final : public grpc_core::ResolverFactory {
  private:
-  std::unique_ptr<ServiceBrowser> browser_;
+  std::unique_ptr<ServiceDiscovery> discovery_;
 
  public:
-  ServiceResolverFactory(std::unique_ptr<ServiceBrowser> browser) : browser_(std::move(browser)) {}
+  ServiceResolverFactory(std::unique_ptr<ServiceDiscovery> discovery)
+      : discovery_(std::move(discovery)) {}
 
   absl::string_view scheme() const override;
 
@@ -55,7 +56,7 @@ std::string to_string(const grpc_resolved_address& addr) {
 
 class MDnsResolver final : public grpc_core::Resolver {
  private:
-  ServiceBrowser* browser_;
+  ServiceDiscovery* discovery_;
   grpc_core::ResolverArgs args_;
   grpc_channel_args* channel_args_;
 
@@ -68,11 +69,11 @@ class MDnsResolver final : public grpc_core::Resolver {
     const std::filesystem::path path{args_.uri.path()};
     const std::string service_type{path.filename()};
 
-    browser_->watch_service_type(service_type, [this](const std::string& service_type) {
+    discovery_->watch_service_type(service_type, [this](const std::string& service_type) {
       LOG(INFO) << "Assembling servers result for service_type '" << service_type << "'";
 
       grpc_core::ServerAddressList discovered_servers{};
-      for (const auto& server : this->browser_->resolve_service_type(service_type)) {
+      for (const auto& server : this->discovery_->resolve_service_type(service_type)) {
         // TODO(james): Hack.
         if (server.address().interface_name() == "lo") {
           grpc_resolved_address address{};
@@ -94,8 +95,8 @@ class MDnsResolver final : public grpc_core::Resolver {
   }
 
  public:
-  MDnsResolver(ServiceBrowser& browser, grpc_core::ResolverArgs&& args)
-      : browser_(&browser),
+  MDnsResolver(ServiceDiscovery& discovery, grpc_core::ResolverArgs&& args)
+      : discovery_(&discovery),
         args_(std::move(args)),
         channel_args_(grpc_channel_args_copy(args_.args)) {
     args_.args = nullptr;
@@ -113,7 +114,7 @@ class MDnsResolver final : public grpc_core::Resolver {
 grpc_core::OrphanablePtr<grpc_core::Resolver> ServiceResolverFactory::CreateResolver(
     grpc_core::ResolverArgs args) const {
   return grpc_core::OrphanablePtr<grpc_core::Resolver>{
-      new MDnsResolver{*browser_, std::move(args)}};
+      new MDnsResolver{*discovery_, std::move(args)}};
 }
 
 void register_mdns_grpc_resolver() {
@@ -124,9 +125,9 @@ void register_mdns_grpc_resolver() {
       [&m, &condition](grpc_core::CoreConfiguration::Builder* configuration_builder) {
         std::unique_lock lock{m};
 
-        std::unique_ptr<ServiceBrowser> browser = std::make_unique<ServiceBrowser>();
+        std::unique_ptr<ServiceDiscovery> discovery = std::make_unique<ServiceDiscovery>();
         std::unique_ptr<ServiceResolverFactory> resolver{
-            std::make_unique<ServiceResolverFactory>(std::move(browser))};
+            std::make_unique<ServiceResolverFactory>(std::move(discovery))};
 
         grpc_core::ResolverRegistry::Builder* resolver_registry{
             configuration_builder->resolver_registry()};

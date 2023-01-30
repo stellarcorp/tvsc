@@ -1,4 +1,4 @@
-#include "discovery/service_browser.h"
+#include "discovery/service_discovery.h"
 
 #include <chrono>
 #include <exception>
@@ -20,10 +20,10 @@
 
 namespace tvsc::discovery {
 
-void ServiceBrowser::on_client_change(AvahiClient *client, AvahiClientState state,
-                                      void *service_browser) {
+void ServiceDiscovery::on_client_change(AvahiClient *client, AvahiClientState state,
+                                        void *service_browser) {
   // TODO(james): Implement these states to give better error handling.
-  // ServiceBrowser *browser{static_cast<ServiceBrowser *>(service_browser)};
+  // ServiceDiscovery *browser{static_cast<ServiceDiscovery *>(service_browser)};
   switch (state) {
     case AVAHI_CLIENT_S_RUNNING: {
       LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_S_RUNNING.";
@@ -47,13 +47,13 @@ void ServiceBrowser::on_client_change(AvahiClient *client, AvahiClientState stat
   }
 }
 
-void ServiceBrowser::on_browser_change(AvahiServiceBrowser *avahi_browser, AvahiIfIndex interface,
-                                       AvahiProtocol protocol, AvahiBrowserEvent event,
-                                       const char *name, const char *service_type,
-                                       const char *domain,
-                                       AVAHI_GCC_UNUSED AvahiLookupResultFlags flags,
-                                       void *service_browser) {
-  ServiceBrowser *browser{static_cast<ServiceBrowser *>(service_browser)};
+void ServiceDiscovery::on_browser_change(AvahiServiceBrowser *avahi_browser, AvahiIfIndex interface,
+                                         AvahiProtocol protocol, AvahiBrowserEvent event,
+                                         const char *name, const char *service_type,
+                                         const char *domain,
+                                         AVAHI_GCC_UNUSED AvahiLookupResultFlags flags,
+                                         void *service_browser) {
+  ServiceDiscovery *browser{static_cast<ServiceDiscovery *>(service_browser)};
   /* Called whenever a new services becomes available on the LAN or is removed from the LAN */
   switch (event) {
     case AVAHI_BROWSER_NEW: {
@@ -119,14 +119,14 @@ void ServiceBrowser::on_browser_change(AvahiServiceBrowser *avahi_browser, Avahi
   }
 }
 
-void ServiceBrowser::on_resolver_change(AvahiServiceResolver *resolver, AvahiIfIndex interface,
-                                        AvahiProtocol protocol, AvahiResolverEvent event,
-                                        const char *name, const char *service_type,
-                                        const char *domain, const char *hostname,
-                                        const AvahiAddress *address, uint16_t port,
-                                        AvahiStringList *txt, AvahiLookupResultFlags flags,
-                                        void *service_browser) {
-  ServiceBrowser *browser{static_cast<ServiceBrowser *>(service_browser)};
+void ServiceDiscovery::on_resolver_change(AvahiServiceResolver *resolver, AvahiIfIndex interface,
+                                          AvahiProtocol protocol, AvahiResolverEvent event,
+                                          const char *name, const char *service_type,
+                                          const char *domain, const char *hostname,
+                                          const AvahiAddress *address, uint16_t port,
+                                          AvahiStringList *txt, AvahiLookupResultFlags flags,
+                                          void *service_browser) {
+  ServiceDiscovery *browser{static_cast<ServiceDiscovery *>(service_browser)};
   switch (event) {
     case AVAHI_RESOLVER_FAILURE:
       LOG(WARNING) << "on_resolver_change() -- AVAHI_RESOLVER_FAILURE: "
@@ -147,7 +147,7 @@ void ServiceBrowser::on_resolver_change(AvahiServiceResolver *resolver, AvahiIfI
   avahi_service_resolver_free(resolver);
 }
 
-void ServiceBrowser::update_watchers(const std::string &service_type) const {
+void ServiceDiscovery::update_watchers(const std::string &service_type) const {
   // TODO(james): Implement observer mechanism to subscribe to service changes.
   DLOG(INFO) << "update_watchers() -- service_type: " << service_type;
   if (service_type_resolvers_in_flight_.count(service_type) > 0 and
@@ -164,7 +164,7 @@ void ServiceBrowser::update_watchers(const std::string &service_type) const {
   }
 }
 
-ServiceBrowser::ServiceBrowser() {
+ServiceDiscovery::ServiceDiscovery() {
   loop_.reset(avahi_simple_poll_new());
   if (!loop_) {
     throw std::runtime_error("Could not start AvahiSimplePoll watcher");
@@ -178,20 +178,20 @@ ServiceBrowser::ServiceBrowser() {
                              avahi_strerror(avahi_error));
   }
 
-  loop_task_ = std::async(std::launch::async, &ServiceBrowser::polling_loop, this);
+  loop_task_ = std::async(std::launch::async, &ServiceDiscovery::polling_loop, this);
   if (!loop_task_.valid()) {
     throw std::runtime_error("Could not start the avahi_simple_poll_loop()");
   }
 }
 
-ServiceBrowser::~ServiceBrowser() {
+ServiceDiscovery::~ServiceDiscovery() {
   if (loop_) avahi_simple_poll_quit(loop_.get());
   if (loop_task_.valid()) {
     loop_task_.wait();
   }
 }
 
-int ServiceBrowser::polling_loop() {
+int ServiceDiscovery::polling_loop() {
   using namespace std::chrono_literals;
   while (true) {
     DLOG(INFO) << "Poll loop -- sleeping.";
@@ -206,16 +206,16 @@ int ServiceBrowser::polling_loop() {
   }
 }
 
-void ServiceBrowser::add_server(const std::string &name, const std::string &type,
-                                const std::string &domain, const std::string &hostname,
-                                const NetworkAddress &address, int port) {
+void ServiceDiscovery::add_server(const std::string &name, const std::string &type,
+                                  const std::string &domain, const std::string &hostname,
+                                  const NetworkAddress &address, int port) {
   add_service(name, type, domain);
   ServiceDescriptor &service = lookup_service(name, type, domain);
   add_server(service, hostname, address, port);
 }
 
-bool ServiceBrowser::has_server(const ServiceDescriptor &service, const std::string &hostname,
-                                const NetworkAddress &address, int port) const {
+bool ServiceDiscovery::has_server(const ServiceDescriptor &service, const std::string &hostname,
+                                  const NetworkAddress &address, int port) const {
   for (const auto &server : service.servers()) {
     if (server.hostname() == hostname and is_same_address(server.address(), address) and
         server.port() == port) {
@@ -226,8 +226,8 @@ bool ServiceBrowser::has_server(const ServiceDescriptor &service, const std::str
   return false;
 }
 
-void ServiceBrowser::add_server(ServiceDescriptor &service, const std::string &hostname,
-                                const NetworkAddress &address, int port) {
+void ServiceDiscovery::add_server(ServiceDescriptor &service, const std::string &hostname,
+                                  const NetworkAddress &address, int port) {
   if (!has_server(service, hostname, address, port)) {
     ServerDetails *server{service.add_servers()};
     server->set_hostname(hostname);
@@ -236,8 +236,8 @@ void ServiceBrowser::add_server(ServiceDescriptor &service, const std::string &h
   }
 }
 
-void ServiceBrowser::add_service(const std::string &name, const std::string &type,
-                                 const std::string &domain) {
+void ServiceDiscovery::add_service(const std::string &name, const std::string &type,
+                                   const std::string &domain) {
   if (discovered_services_.count(name) == 0) {
     ServiceSet service_set{};
     service_set.set_canonical_name(name);
@@ -256,8 +256,8 @@ void ServiceBrowser::add_service(const std::string &name, const std::string &typ
   descriptor->set_domain(domain);
 }
 
-void ServiceBrowser::clear_service_records(const std::string &name, const std::string &type,
-                                           const std::string &domain) {
+void ServiceDiscovery::clear_service_records(const std::string &name, const std::string &type,
+                                             const std::string &domain) {
   if (discovered_services_.count(name) == 0) {
     // Nothing to clear.
     return;
@@ -273,8 +273,9 @@ void ServiceBrowser::clear_service_records(const std::string &name, const std::s
   }
 }
 
-ServiceDescriptor &ServiceBrowser::lookup_service(const std::string &name, const std::string &type,
-                                                  const std::string &domain) {
+ServiceDescriptor &ServiceDiscovery::lookup_service(const std::string &name,
+                                                    const std::string &type,
+                                                    const std::string &domain) {
   ServiceSet &service_set = discovered_services_.at(name);
   auto services = service_set.mutable_services();
   for (int i = 0; i < services->size(); ++i) {
@@ -287,9 +288,9 @@ ServiceDescriptor &ServiceBrowser::lookup_service(const std::string &name, const
                           domain + "' not found.");
 }
 
-const ServiceDescriptor &ServiceBrowser::lookup_service(const std::string &name,
-                                                        const std::string &type,
-                                                        const std::string &domain) const {
+const ServiceDescriptor &ServiceDiscovery::lookup_service(const std::string &name,
+                                                          const std::string &type,
+                                                          const std::string &domain) const {
   const ServiceSet &service_set = discovered_services_.at(name);
   const auto &services = service_set.services();
   for (int i = 0; i < services.size(); ++i) {
@@ -302,7 +303,7 @@ const ServiceDescriptor &ServiceBrowser::lookup_service(const std::string &name,
                           domain + "' not found.");
 }
 
-std::unordered_set<std::string> ServiceBrowser::service_types() const {
+std::unordered_set<std::string> ServiceDiscovery::service_types() const {
   std::unordered_set<std::string> types{};
   for (const auto &entry : avahi_browsers_) {
     types.emplace(entry.first);
@@ -310,8 +311,8 @@ std::unordered_set<std::string> ServiceBrowser::service_types() const {
   return types;
 }
 
-void ServiceBrowser::watch_service_type(const std::string &service_type,
-                                        ServiceTypeWatcher watcher) {
+void ServiceDiscovery::watch_service_type(const std::string &service_type,
+                                          ServiceTypeWatcher watcher) {
   if (avahi_browsers_.count(service_type) == 0) {
     LOG(INFO) << "Watching for services announcing for service type '" << service_type << "'";
     std::lock_guard lock{avahi_call_mutex_};
@@ -332,7 +333,7 @@ void ServiceBrowser::watch_service_type(const std::string &service_type,
   service_type_watchers_.emplace(service_type, std::move(watcher));
 }
 
-std::vector<ServerDetails> ServiceBrowser::resolve_service_type(
+std::vector<ServerDetails> ServiceDiscovery::resolve_service_type(
     const std::string &service_type) const {
   std::vector<ServerDetails> result{};
   for (const auto &[name, service_set] : discovered_services_) {

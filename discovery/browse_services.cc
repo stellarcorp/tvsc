@@ -6,7 +6,7 @@
 #include <thread>
 #include <unordered_set>
 
-#include "discovery/service_browser.h"
+#include "discovery/service_discovery.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
@@ -37,30 +37,30 @@ void browse() {
   auto service_types{parse_service_types_flag()};
   std::mutex m{};
   std::condition_variable condition{};
-  ServiceBrowser browser{};
+  ServiceDiscovery discovery{};
   for (const auto& service_type : service_types) {
-    browser.watch_service_type(service_type,
-                               [&m, &condition, &service_types](const std::string& service_type) {
-                                 std::unique_lock lock{m};
-                                 auto iter = service_types.find(service_type);
-                                 if (iter != service_types.end()) {
-                                   // Remove each service type from the service_types set as we get
-                                   // updated about that service type. This remaining service types
-                                   // have not been discovered yet.
-                                   service_types.erase(iter);
-                                   if (service_types.empty()) {
-                                     lock.unlock();
-                                     condition.notify_one();
+    discovery.watch_service_type(service_type,
+                                 [&m, &condition, &service_types](const std::string& service_type) {
+                                   std::unique_lock lock{m};
+                                   auto iter = service_types.find(service_type);
+                                   if (iter != service_types.end()) {
+                                     // Remove each service type from the service_types set as we
+                                     // get updated about that service type. This remaining service
+                                     // types have not been discovered yet.
+                                     service_types.erase(iter);
+                                     if (service_types.empty()) {
+                                       lock.unlock();
+                                       condition.notify_one();
+                                     }
                                    }
-                                 }
-                               });
+                                 });
   }
 
   std::unique_lock lock{m};
   condition.wait(lock);
 
   std::cout << "Discovered services:\n";
-  for (const auto& entry : browser.all_discovered_services()) {
+  for (const auto& entry : discovery.all_discovered_services()) {
     std::cout << entry.second.DebugString() << "\n";
   }
 }
