@@ -3,7 +3,7 @@
   <head>
     <!-- TODO(james): Make these available from the local web server to allow for offline/disconnected use. -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.slim.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/protobufjs@7.1.2/dist/protobuf.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.1.2/dist/protobuf.js"></script>
 
     <style>
       * {
@@ -162,7 +162,11 @@
       }
       
       function GetProxyServerAddress() {
-	  return location.hostname + ":50050";
+	  var host = location.hostname;
+	  if (!host) {
+	      host = "localhost";
+	  }
+	  return host + ":50050";
       }
 
       function BuildWebSocketUrl(service, method) {
@@ -219,7 +223,6 @@
 	  };
 
           ws.onmessage = function (evt) {
-              var as_array = new Uint8Array(evt.data);
               var received_msg = DecodeWsMessage(evt, "tvsc.service.datetime.DatetimeReply");
 	      current_date.setTime(received_msg.datetime);
 	      var date_text = current_date.toISOString();
