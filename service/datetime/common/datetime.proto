@@ -4,6 +4,7 @@ package tvsc.service.datetime;
 
 service Datetime {
   rpc get_datetime(DatetimeRequest) returns (DatetimeReply);
+  rpc stream_datetime(DatetimeRequest) returns (stream DatetimeReply);
 }
 
 message DatetimeRequest {

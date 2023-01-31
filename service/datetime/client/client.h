@@ -30,6 +30,22 @@ class DatetimeClient {
     return stub_->get_datetime(context, request, reply);
   }
 
+  std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream(grpc::ClientContext* context) {
+    return stream(context, DatetimeRequest::MILLISECOND);
+  }
+
+  std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream(
+      grpc::ClientContext* context, DatetimeRequest::Precision precision) {
+    DatetimeRequest request{};
+    request.set_precision(precision);
+    return stream(context, request);
+  }
+
+  std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream(
+      grpc::ClientContext* context, const DatetimeRequest& request) {
+    return stub_->stream_datetime(context, request);
+  }
+
  private:
   std::unique_ptr<Datetime::Stub> stub_;
 };

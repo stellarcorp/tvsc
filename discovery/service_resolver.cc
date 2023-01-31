@@ -1,8 +1,6 @@
 #include "discovery/service_resolver.h"
 
-#include <condition_variable>
 #include <filesystem>
-#include <mutex>
 #include <string>
 
 #include "discovery/network_address_utils.h"
@@ -74,7 +72,8 @@ class MDnsResolver final : public grpc_core::Resolver {
 
       grpc_core::ServerAddressList discovered_servers{};
       for (const auto& server : this->discovery_->resolve_service_type(service_type)) {
-        // TODO(james): Hack.
+        // TODO(james): Hack. Remove and possibly add an option to discover services only found on a
+        // particular interface.
         if (server.address().interface_name() == "lo") {
           grpc_resolved_address address{};
           LOG(INFO) << "server:\n" << server.DebugString();
@@ -83,14 +82,19 @@ class MDnsResolver final : public grpc_core::Resolver {
           discovered_servers.emplace_back(address, nullptr);
         }
       }
-      // We must report the result within an executor context. Not sure what this is doing, but we
-      // get a segfault if we don't.
-      grpc_core::ExecCtx exec_ctx{};
-      grpc_core::Resolver::Result result{};
-      result.args = this->channel_args_;
-      this->channel_args_ = nullptr;
-      result.addresses = std::move(discovered_servers);
-      this->args_.result_handler->ReportResult(std::move(result));
+      // Hack.
+      // TODO(james): Figure out where this result_handler is getting cleaned up and adjust the
+      // logic appropriately.
+      if (this->args_.result_handler) {
+        // We must report the result within an executor context. Not sure what this is doing, but we
+        // get a segfault if we don't.
+        grpc_core::ExecCtx exec_ctx{};
+        grpc_core::Resolver::Result result{};
+        result.args = this->channel_args_;
+        this->channel_args_ = nullptr;
+        result.addresses = std::move(discovered_servers);
+        this->args_.result_handler->ReportResult(std::move(result));
+      }
     });
   }
 
@@ -118,13 +122,8 @@ grpc_core::OrphanablePtr<grpc_core::Resolver> ServiceResolverFactory::CreateReso
 }
 
 void register_mdns_grpc_resolver() {
-  std::mutex m{};
-  std::condition_variable condition{};
-
   grpc_core::CoreConfiguration::RegisterBuilder(
-      [&m, &condition](grpc_core::CoreConfiguration::Builder* configuration_builder) {
-        std::unique_lock lock{m};
-
+      [](grpc_core::CoreConfiguration::Builder* configuration_builder) {
         std::unique_ptr<ServiceDiscovery> discovery = std::make_unique<ServiceDiscovery>();
         std::unique_ptr<ServiceResolverFactory> resolver{
             std::make_unique<ServiceResolverFactory>(std::move(discovery))};
@@ -133,13 +132,8 @@ void register_mdns_grpc_resolver() {
             configuration_builder->resolver_registry()};
         resolver_registry->RegisterResolverFactory(std::move(resolver));
 
-        lock.unlock();
-        condition.notify_one();
+        LOG(INFO) << "mdns resolver factory registered.";
       });
-
-  // Block the caller until the resolver is registered.
-  std::unique_lock lock{m};
-  condition.wait(lock);
 }
 
 }  // namespace tvsc::discovery

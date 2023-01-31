@@ -1,7 +1,9 @@
+#include <algorithm>
 #include <chrono>
 #include <iostream>
 #include <memory>
 #include <string>
+#include <thread>
 
 #include "discovery/service_advertiser.h"
 #include "discovery/service_types.h"
@@ -10,6 +12,7 @@
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
 #include "service/datetime/common/datetime.grpc.pb.h"
+#include "service/datetime/common/datetime_utils.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -26,9 +29,8 @@ class DatetimeServiceImpl final : public Datetime::Service {
 
     constexpr int32_t SECONDS_IN_DAY{24 * 60 * 60};
     constexpr int32_t SECONDS_IN_WEEK{7 * SECONDS_IN_DAY};
-    // Days in a year is the average length of the Gregorian year, per
-    // https://en.cppreference.com/w/cpp/chrono/duration
-    constexpr int32_t SECONDS_IN_YEAR{static_cast<int32_t>(365.2425 * SECONDS_IN_DAY)};
+    constexpr int32_t SECONDS_IN_YEAR{static_cast<int32_t>(DAYS_IN_YEAR * SECONDS_IN_DAY)};
+
     // Per https://en.cppreference.com/w/cpp/chrono/duration
     constexpr int32_t SECONDS_IN_MONTH{static_cast<int32_t>(SECONDS_IN_YEAR / 12)};
 
@@ -84,6 +86,61 @@ class DatetimeServiceImpl final : public Datetime::Service {
         return Status{StatusCode::INVALID_ARGUMENT, "Unrecognized precision value in request"};
     }
     reply->set_datetime(count);
+    return Status::OK;
+  }
+
+  Status stream_datetime(ServerContext* context, const DatetimeRequest* request,
+                         grpc::ServerWriter<DatetimeReply>* writer) override {
+    using Clock = std::chrono::system_clock;
+    using namespace std::literals::chrono_literals;
+
+    std::chrono::nanoseconds requested_precision{as_duration(request->precision())};
+
+    // Determine an appropriate rate to send responses. If the requested precision is very fast (us
+    // or ns), then we won't even call the sleep function.
+    // Note: on fast machines, we see timings of approximately 5us per stream reply.
+    auto max_sleep_time_for_precision{requested_precision};
+    switch (request->precision()) {
+      case DatetimeRequest::NANOSECOND:
+      case DatetimeRequest::MICROSECOND:
+        // Too fast to meet precision anyway, so don't even sleep.
+        max_sleep_time_for_precision = 0 * requested_precision;
+        break;
+
+      case DatetimeRequest::MILLISECOND:
+      case DatetimeRequest::SECOND:
+      case DatetimeRequest::MINUTE:
+        max_sleep_time_for_precision = requested_precision / 10;
+        break;
+
+      case DatetimeRequest::HOUR:
+      case DatetimeRequest::DAY:
+      case DatetimeRequest::WEEK:
+      case DatetimeRequest::YEAR:
+      case DatetimeRequest::MONTH:
+        // Keep a heartbeat that can be detected at reasonable debugging scales. This is slow
+        // enough that it shouldn't be a meaningful load anyway.
+        max_sleep_time_for_precision = 10s;
+        break;
+
+      default:
+        LOG(WARNING) << "Unrecognized precision value in request";
+        return Status{StatusCode::INVALID_ARGUMENT, "Unrecognized precision value in request"};
+    }
+
+    DatetimeReply reply{};
+    while (!context->IsCancelled()) {
+      get_datetime(context, request, &reply);
+      writer->Write(reply);
+
+      if (max_sleep_time_for_precision != std::chrono::nanoseconds::zero()) {
+        auto timeout_duration = context->deadline() - Clock::now();
+        auto sleep_duration = std::min(max_sleep_time_for_precision, timeout_duration / 2);
+        std::this_thread::sleep_for(sleep_duration);
+      }
+    }
+
+    // Client-side cancelling of the stream is expected, so we return OK instead of CANCELLED.
     return Status::OK;
   }
 };
