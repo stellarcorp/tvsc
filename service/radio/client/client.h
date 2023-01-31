@@ -9,7 +9,7 @@ namespace tvsc::service::radio {
 
 class RadioClient {
  public:
-  RadioClient() : RadioClient(tvsc::discovery::default_bind_address<RadioService>()) {}
+  RadioClient() : RadioClient(tvsc::discovery::service_url<RadioService>()) {}
 
   RadioClient(const std::string& bind_addr)
       : stub_(RadioService::NewStub(

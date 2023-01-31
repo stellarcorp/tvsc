@@ -9,7 +9,7 @@ namespace tvsc::service::datetime {
 
 class DatetimeClient {
  public:
-  DatetimeClient() : DatetimeClient(tvsc::discovery::default_bind_address<Datetime>()) {}
+  DatetimeClient() : DatetimeClient(tvsc::discovery::service_url<Datetime>()) {}
 
   DatetimeClient(const std::string& bind_addr)
       : stub_(

@@ -9,7 +9,7 @@ namespace tvsc::service::hello {
 
 class HelloClient {
  public:
-  HelloClient() : HelloClient(tvsc::discovery::default_bind_address<Hello>()) {}
+  HelloClient() : HelloClient(tvsc::discovery::service_url<Hello>()) {}
 
   HelloClient(const std::string& bind_addr)
       : stub_(Hello::NewStub(grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials()))) {}

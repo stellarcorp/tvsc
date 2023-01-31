@@ -10,7 +10,7 @@ namespace tvsc::service::echo {
 
 class EchoClient {
  public:
-  EchoClient() : EchoClient(tvsc::discovery::default_bind_address<Echo>()) {}
+  EchoClient() : EchoClient(tvsc::discovery::service_url<Echo>()) {}
 
   EchoClient(const std::string& bind_addr)
       : channel_(grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials())),

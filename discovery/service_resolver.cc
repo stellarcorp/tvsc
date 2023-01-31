@@ -5,6 +5,7 @@
 
 #include "discovery/network_address_utils.h"
 #include "discovery/service_discovery.h"
+#include "discovery/service_types.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "src/core/lib/config/core_configuration.h"
@@ -36,7 +37,7 @@ class ServiceResolverFactory final : public grpc_core::ResolverFactory {
       grpc_core::ResolverArgs args) const override;
 };
 
-absl::string_view ServiceResolverFactory::scheme() const { return "mdns"; }
+absl::string_view ServiceResolverFactory::scheme() const { return MDNS_SCHEME; }
 
 bool ServiceResolverFactory::IsValidUri(const grpc_core::URI& uri) const { return true; }
 
