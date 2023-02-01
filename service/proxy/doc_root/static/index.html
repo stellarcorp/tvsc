@@ -137,15 +137,15 @@
 
     <script type = "text/javascript">
       var protos = {};
-      protobuf.load("datetime.proto").then(function(root) {
+      protobuf.load("/static/datetime.proto").then(function(root) {
 	  protos["tvsc.service.datetime.DatetimeRequest"] = root.lookupType("tvsc.service.datetime.DatetimeRequest");
 	  protos["tvsc.service.datetime.DatetimeReply"] = root.lookupType("tvsc.service.datetime.DatetimeReply");
       });
-      protobuf.load("echo.proto").then(function(root) {
+      protobuf.load("/static/echo.proto").then(function(root) {
 	  protos["tvsc.service.echo.EchoRequest"] = root.lookupType("tvsc.service.echo.EchoRequest");
 	  protos["tvsc.service.echo.EchoReply"] = root.lookupType("tvsc.service.echo.EchoReply");
       });
-      protobuf.load("radio.proto").then(function(root) {
+      protobuf.load("/static/radio.proto").then(function(root) {
 	  protos["tvsc.service.radio.RadioListRequest"] = root.lookupType("tvsc.service.radio.RadioListRequest");
 	  protos["tvsc.service.radio.Radio"] = root.lookupType("tvsc.service.radio.Radio");
 	  protos["tvsc.service.radio.Radios"] = root.lookupType("tvsc.service.radio.Radios");

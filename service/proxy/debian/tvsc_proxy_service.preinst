@@ -4,4 +4,7 @@ set -e
 # Create the tvsc_service user, if it doesn't exist.
 if [ -x "`which adduser 2>/dev/null`" ]; then
     adduser --system --no-create-home --quiet tvsc_service
+    /sbin/iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 50050
+    /sbin/iptables-save -f /etc/iptables/rules.v4
+    /sbin/ip6tables-save -f /etc/iptables/rules.v6
 fi

@@ -1,0 +1,34 @@
+load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+
+copy_file(
+    name = "radio_proto_file",
+    src = "//service/radio/common:radio_proto_file",
+    out = "static/radio.proto",
+    allow_symlink = True,
+)
+
+copy_file(
+    name = "echo_proto_file",
+    src = "//service/echo/common:echo_proto_file",
+    out = "static/echo.proto",
+    allow_symlink = True,
+)
+
+copy_file(
+    name = "datetime_proto_file",
+    src = "//service/datetime/common:datetime_proto_file",
+    out = "static/datetime.proto",
+    allow_symlink = True,
+)
+
+filegroup(
+    name = "doc_root",
+    srcs = [
+        "static/favicon.ico",
+        "static/index.html",
+        ":datetime_proto_file",
+        ":echo_proto_file",
+        ":radio_proto_file",
+    ],
+    visibility = ["//visibility:public"],
+)

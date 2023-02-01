@@ -10,15 +10,15 @@ namespace tvsc::buffer {
 /**
  * std::array-like buffer type with bulk operations based on memcpy(3) for trivially copyable types.
  *
- * Buffer is a simple buffer type, similar to std::array, but with bulk read/write operations and optimizations for
- * trivially copyable types.
+ * Buffer is a simple buffer type, similar to std::array, but with bulk read/write operations and
+ * optimizations for trivially copyable types.
  *
- * BufferT has two template overloads, one for trivially copyable element types, and one where the element type is not
- * trivially copyable. The non-trivial element implementation uses loops to move data. The implement for elements that
- * are trivially copyable is based on memcpy.
+ * BufferT has two template overloads, one for trivially copyable element types, and one where the
+ * element type is not trivially copyable. The non-trivial element implementation uses loops to move
+ * data. The implement for elements that are trivially copyable is based on memcpy.
  *
- * The Buffer type makes the syntax of choosing the correct BufferT template overload easier. It is defined after the
- * two template overloads.
+ * The Buffer type makes the syntax of choosing the correct BufferT template overload easier. It is
+ * defined after the two template overloads.
  */
 template <typename ElementT, size_t NUM_ELEMENTS, bool is_trivially_copyable>
 class BufferT final {
@@ -30,7 +30,8 @@ class BufferT final {
   void validate_index(size_t index) const {
     if (index < 0 || index >= NUM_ELEMENTS) {
       using std::to_string;
-      throw std::out_of_range("Invalid index " + to_string(index) + " (NUM_ELEMENTS: " + to_string(NUM_ELEMENTS));
+      throw std::out_of_range("Invalid index " + to_string(index) +
+                              " (NUM_ELEMENTS: " + to_string(NUM_ELEMENTS));
     }
   }
 
@@ -60,8 +61,8 @@ class BufferT final {
     validate_index(offset + count - 1);
     if (ARRAY_SIZE < count) {
       using std::to_string;
-      throw std::overflow_error("dest has insufficient space (" + to_string(count) + " vs " + to_string(ARRAY_SIZE) +
-                                ")");
+      throw std::overflow_error("dest has insufficient space (" + to_string(count) + " vs " +
+                                to_string(ARRAY_SIZE) + ")");
     }
     for (size_t i = 0; i < count; ++i) {
       dest[i] = operator[](i + offset);
@@ -86,8 +87,8 @@ class BufferT final {
     validate_index(offset + count - 1);
     if (ARRAY_SIZE < count) {
       using std::to_string;
-      throw std::overflow_error("src has insufficient space (" + to_string(count) + " vs " + to_string(ARRAY_SIZE) +
-                                ")");
+      throw std::overflow_error("src has insufficient space (" + to_string(count) + " vs " +
+                                to_string(ARRAY_SIZE) + ")");
     }
     for (size_t i = 0; i < count; ++i) {
       operator[](i + offset) = src[i];
@@ -106,6 +107,10 @@ class BufferT final {
 
   constexpr ElementT* data() noexcept { return elements_; }
   constexpr const ElementT* data() const noexcept { return elements_; }
+
+  constexpr std::string_view as_string_view() const {
+    return std::string_view(elements_, NUM_ELEMENTS * sizeof(ElementT));
+  }
 };
 
 // BufferT implementation for trivially copyable ElementT types.
@@ -119,7 +124,8 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
   void validate_index(size_t index) const {
     if (index < 0 || index >= NUM_ELEMENTS) {
       using std::to_string;
-      throw std::out_of_range("Invalid index " + to_string(index) + " (NUM_ELEMENTS: " + to_string(NUM_ELEMENTS) + ")");
+      throw std::out_of_range("Invalid index " + to_string(index) +
+                              " (NUM_ELEMENTS: " + to_string(NUM_ELEMENTS) + ")");
     }
   }
 
@@ -127,9 +133,9 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
   constexpr size_t size() const { return NUM_ELEMENTS; }
 
   void clear() {
-    // ElementT is trivially copyable, but that does not mean that we can just memset the elements_ array to zero.
-    // We could however do increasingly sized memcpy's of a default initialized element for an O(ln n) process. For now,
-    // we assume that an O(n) clear() is sufficient.
+    // ElementT is trivially copyable, but that does not mean that we can just memset the elements_
+    // array to zero. We could however do increasingly sized memcpy's of a default initialized
+    // element for an O(ln n) process. For now, we assume that an O(n) clear() is sufficient.
     ElementT default_element{};
     for (size_t i = 0; i < NUM_ELEMENTS; ++i) {
       operator[](i) = default_element;
@@ -150,8 +156,8 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
     validate_index(offset + count - 1);
     if (ARRAY_SIZE < count) {
       using std::to_string;
-      throw std::overflow_error("dest has insufficient space (" + to_string(count) + " vs " + to_string(ARRAY_SIZE) +
-                                ")");
+      throw std::overflow_error("dest has insufficient space (" + to_string(count) + " vs " +
+                                to_string(ARRAY_SIZE) + ")");
     }
     std::memcpy(dest.data(), elements_ + offset, count * sizeof(ElementT));
   }
@@ -172,8 +178,8 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
     validate_index(offset + count - 1);
     if (ARRAY_SIZE < count) {
       using std::to_string;
-      throw std::overflow_error("src has insufficient space (" + to_string(count) + " vs " + to_string(ARRAY_SIZE) +
-                                ")");
+      throw std::overflow_error("src has insufficient space (" + to_string(count) + " vs " +
+                                to_string(ARRAY_SIZE) + ")");
     }
     std::memcpy(elements_ + offset, src.data(), count * sizeof(ElementT));
   }
@@ -190,6 +196,10 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
 
   constexpr ElementT* data() noexcept { return elements_; }
   constexpr const ElementT* data() const noexcept { return elements_; }
+
+  constexpr std::string_view as_string_view() const {
+    return std::string_view(elements_, NUM_ELEMENTS * sizeof(ElementT));
+  }
 };
 
 template <typename ElementT, size_t NUM_ELEMENTS>
