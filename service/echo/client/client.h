@@ -17,9 +17,13 @@ class EchoClient {
         stub_(Echo::NewStub(channel_)) {}
 
   grpc::Status call(const std::string& msg, EchoReply* reply) {
-    grpc::ClientContext context{};
     EchoRequest request{};
     request.set_msg(msg);
+    return call(request, reply);
+  }
+
+  grpc::Status call(const EchoRequest& request, EchoReply* reply) {
+    grpc::ClientContext context{};
     return call(&context, request, reply);
   }
 
@@ -27,6 +31,8 @@ class EchoClient {
     grpc::Status status = stub_->echo(context, request, reply);
     LOG(INFO) << "context->peer(): " << context->peer();
     LOG(INFO) << "service config: " << channel_->GetServiceConfigJSON();
+    LOG(INFO) << "EchoClient::call() -- request: " << request.DebugString()
+              << ", reply: " << reply->DebugString();
     return status;
   }
 

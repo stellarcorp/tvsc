@@ -23,9 +23,7 @@ copy_file(
 
 filegroup(
     name = "doc_root",
-    srcs = [
-        "static/favicon.ico",
-        "static/index.html",
+    srcs = glob(["static/**/*"]) + [
         ":datetime_proto_file",
         ":echo_proto_file",
         ":radio_proto_file",

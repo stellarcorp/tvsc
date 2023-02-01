@@ -8,11 +8,21 @@
 namespace tvsc::service::echo {
 
 template <bool SSL>
-void ws_message(uWS::WebSocket<SSL, true, EchoClient> *ws, std::string_view msg, uWS::OpCode op) {
-  DLOG(INFO) << "echo::ws_message() -- msg: '" << msg << "', op: " << op;
+void ws_message(uWS::WebSocket<SSL, true, EchoClient> *ws, std::string_view request_text,
+                uWS::OpCode op) {
   EchoClient *client = static_cast<EchoClient *>(ws->getUserData());
+
+  EchoRequest request{};
+  if (op == uWS::OpCode::TEXT) {
+    // TODO(james): Hack. Remove this and force the browser to send binary messages for all RPC and
+    // stream requests.
+    request.set_msg(std::string{request_text});
+  } else if (op == uWS::OpCode::BINARY) {
+    request.ParseFromString(std::string{request_text});
+  }
+
   EchoReply reply{};
-  grpc::Status status = client->call(std::string{msg}, &reply);
+  grpc::Status status = client->call(request, &reply);
   if (status.ok()) {
     std::string serialized_reply{};
     reply.SerializeToString(&serialized_reply);
