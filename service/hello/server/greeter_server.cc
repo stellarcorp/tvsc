@@ -41,16 +41,8 @@ void run_server() {
   std::unique_ptr<Server> server(builder.BuildAndStart());
 
   tvsc::discovery::ServiceAdvertiser advertiser{};
-  advertiser.advertise_service(
-      "TVSC Greeting Service", tvsc::discovery::generate_service_type<Hello>(), "local", port,
-      [&server](tvsc::discovery::AdvertisementResult result) {
-        if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
-          // If we can't advertise correctly, shutdown and log the issue.
-          server->Shutdown();
-          LOG(FATAL) << "Service advertisement failed with advertisement result: "
-                     << to_string(result);
-        }
-      });
+  advertiser.advertise_service("TVSC Greeting Service",
+                               tvsc::discovery::generate_service_type<Hello>(), "local", port);
 
   LOG(INFO) << "Server listening on port " << port;
   server->Wait();

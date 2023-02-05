@@ -14,19 +14,10 @@
 
 namespace tvsc::discovery {
 
-enum class AdvertisementResult {
-  SUCCESS,
-  COLLISION,
-  FAILURE,
-};
-using AdvertisementCallback = std::function<void(AdvertisementResult result)>;
-std::string to_string(AdvertisementResult result);
-
 class SingleServiceAdvertiser final {
  private:
   AvahiClient* client_;
-  AdvertisementCallback callback_;
-  ServiceSet services_{};
+
   std::unique_ptr<AvahiEntryGroup, int (*)(AvahiEntryGroup*)> group_{nullptr,
                                                                      avahi_entry_group_free};
 
@@ -34,23 +25,13 @@ class SingleServiceAdvertiser final {
                               void* service_set);
 
   void create_group();
-
-  void normalize_names();
-
   void reset_group();
-  void populate_group();
+  int populate_group(const ServiceSet& services);
 
-  SingleServiceAdvertiser(AvahiClient& client, AdvertisementCallback callback);
+  SingleServiceAdvertiser(AvahiClient& client);
+  void advertise(const ServiceSet& services);
 
   friend class ServiceAdvertiser;
-
- public:
-  const std::string& published_name() const { return services_.published_name(); }
-
-  void set_services(const ServiceSet& services);
-  void reset() { reset_group(); }
-
-  void publish();
 };
 
 class ServiceAdvertiser final {
@@ -64,8 +45,6 @@ class ServiceAdvertiser final {
   // Map of the service canonical name to the SingleServiceAdvertiser that handles it.
   std::map<std::string, SingleServiceAdvertiser> services_{};
 
-  std::atomic<bool> have_valid_client_{false};
-
   static void on_client_change(AvahiClient* client, AvahiClientState state,
                                void* service_advertiser);
 
@@ -75,25 +54,18 @@ class ServiceAdvertiser final {
   ~ServiceAdvertiser();
 
   /**
-   * Advertise the set of services given by the ServiceSet.
+   * Advertise a service running on this server.
    *
-   * This set of services will be identified within this advertiser by its
-   * ServiceSet.canonical_name. It will be published on the network by its ServiceSet.published_name
-   * if that is set, or by the canonical name if the published name is not set.
+   * This method will overwrite all advertisements for this service name. It allows for only a
+   * single service per service name.
    *
-   * Note that if another set of services was previously registered with the same canonical name,
-   * this set will supercede the previous set.
+   * We restrict the API for this class to a single service type per service name. That is not as
+   * general as possible; it is quite reasonable for a single service to provide multiple service
+   * types. But, we have not encountered that requirement in our code yet. When necessary, we can
+   * add methods to advertise multiple service types for a single service name.
    */
   void advertise_service(const std::string& service_name, const std::string& service_type,
-                         const std::string& domain, int port, AdvertisementCallback callback);
-
-  bool contains(const std::string& canonical_service_name) const {
-    return services_.count(canonical_service_name) > 0;
-  }
-
-  const std::string& lookup_published_name(const std::string& canonical_service_name) const {
-    return services_.at(canonical_service_name).published_name();
-  }
+                         const std::string& domain, int port);
 };
 
 }  // namespace tvsc::discovery

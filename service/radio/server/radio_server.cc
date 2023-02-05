@@ -54,15 +54,7 @@ void run_grpc_server(RadioService::Service* service) {
 
   tvsc::discovery::ServiceAdvertiser advertiser{};
   advertiser.advertise_service(
-      "TVSC Radio Service", tvsc::discovery::generate_service_type<RadioService>(), "local", port,
-      [&server](tvsc::discovery::AdvertisementResult result) {
-        if (result != tvsc::discovery::AdvertisementResult::SUCCESS) {
-          // If we can't advertise correctly, shutdown and log the issue.
-          server->Shutdown();
-          LOG(FATAL) << "Service advertisement failed with advertisement result: "
-                     << to_string(result);
-        }
-      });
+      "TVSC Radio Service", tvsc::discovery::generate_service_type<RadioService>(), "local", port);
 
   LOG(INFO) << "Server listening on port " << port;
   server->Wait();

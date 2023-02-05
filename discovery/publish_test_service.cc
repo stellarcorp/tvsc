@@ -16,22 +16,12 @@ namespace tvsc::discovery {
 
 constexpr char TEST_SERVICE_NAME[] = "TVSC Test Service";
 
-void callback(AdvertisementResult result) {
-  using std::to_string;
-  if (result != AdvertisementResult::SUCCESS) {
-    LOG(INFO) << "Issue advertising test service '" << TEST_SERVICE_NAME
-              << "' -- result: " << to_string(result);
-  } else {
-    LOG(INFO) << "Test service '" << TEST_SERVICE_NAME << "' successfully advertised.";
-  }
-}
-
 void advertise_test_service() {
   ServiceAdvertiser advertiser{};
 
   constexpr char domain[] = "local";
   constexpr int port{50053};
-  advertiser.advertise_service(TEST_SERVICE_NAME, FLAGS_service_type, domain, port, callback);
+  advertiser.advertise_service(TEST_SERVICE_NAME, FLAGS_service_type, domain, port);
 
   if (FLAGS_duration_seconds < 0) {
     while (true) {

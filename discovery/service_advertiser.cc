@@ -11,37 +11,22 @@
 
 namespace tvsc::discovery {
 
-std::string to_string(AdvertisementResult result) {
-  using std::to_string;
-  switch (result) {
-    case AdvertisementResult::SUCCESS:
-      return "SUCCESS";
-    case AdvertisementResult::COLLISION:
-      return "COLLISION";
-    case AdvertisementResult::FAILURE:
-      return "FAILURE";
-    default:
-      throw std::domain_error("to_string(AdvertisementResult) has no implementation for value: " +
-                              to_string(std::underlying_type_t<AdvertisementResult>(result)));
-  }
-}
-
 void SingleServiceAdvertiser::on_group_change(AvahiEntryGroup *group, AvahiEntryGroupState state,
                                               void *single_service_advertiser) {
-  SingleServiceAdvertiser *advertiser{
-      static_cast<SingleServiceAdvertiser *>(single_service_advertiser)};
+  // SingleServiceAdvertiser *advertiser{
+  //     static_cast<SingleServiceAdvertiser *>(single_service_advertiser)};
 
   switch (state) {
     case AVAHI_ENTRY_GROUP_ESTABLISHED: {
       LOG(INFO) << "on_group_change() -- AVAHI_ENTRY_GROUP_ESTABLISHED";
       // Signal service advertisement requests as succeeded.
-      advertiser->callback_(AdvertisementResult::SUCCESS);
+      // advertiser->callback_(AdvertisementResult::SUCCESS);
       break;
     }
     case AVAHI_ENTRY_GROUP_COLLISION: {
       LOG(INFO) << "on_group_change() -- AVAHI_ENTRY_GROUP_COLLISION";
       // Signal service advertisement requests as failed due to name collision.
-      advertiser->callback_(AdvertisementResult::COLLISION);
+      // advertiser->callback_(AdvertisementResult::COLLISION);
       break;
     }
     case AVAHI_ENTRY_GROUP_FAILURE: {
@@ -50,7 +35,7 @@ void SingleServiceAdvertiser::on_group_change(AvahiEntryGroup *group, AvahiEntry
                 << avahi_strerror(avahi_errno);
       /* Some kind of failure happened while we were registering our services */
       // Signal service advertisement requests as failed.
-      advertiser->callback_(AdvertisementResult::FAILURE);
+      // advertiser->callback_(AdvertisementResult::FAILURE);
       break;
     }
     case AVAHI_ENTRY_GROUP_UNCOMMITED:
@@ -62,21 +47,7 @@ void SingleServiceAdvertiser::on_group_change(AvahiEntryGroup *group, AvahiEntry
   }
 }
 
-void SingleServiceAdvertiser::normalize_names() {
-  if (services_.published_name().empty()) {
-    services_.set_published_name(services_.canonical_name());
-  }
-}
-
-SingleServiceAdvertiser::SingleServiceAdvertiser(AvahiClient &client,
-                                                 AdvertisementCallback callback)
-    : client_(&client), callback_(std::move(callback)) {}
-
-void SingleServiceAdvertiser::set_services(const ServiceSet &services) {
-  reset_group();
-  services_ = services;
-  normalize_names();
-}
+SingleServiceAdvertiser::SingleServiceAdvertiser(AvahiClient &client) : client_(&client) {}
 
 void SingleServiceAdvertiser::create_group() {
   group_.reset(avahi_entry_group_new(client_, SingleServiceAdvertiser::on_group_change, this));
@@ -88,67 +59,68 @@ void SingleServiceAdvertiser::reset_group() {
   }
 }
 
-void SingleServiceAdvertiser::populate_group() {
-  for (const auto &service : services_.services()) {
-    // TODO(james): Implement the allowed_interface_names from the ServiceDescriptor proto.
+int SingleServiceAdvertiser::populate_group(const ServiceSet &services) {
+  int result{AVAHI_OK};
+  std::string publish_name{services.published_name()};
+  if (publish_name.empty()) {
+    publish_name = services.canonical_name();
+  }
+  for (const auto &service : services.services()) {
     for (const auto &server : service.servers()) {
-      int result = avahi_entry_group_add_service(
+      result = avahi_entry_group_add_service(
           group_.get(), AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, static_cast<AvahiPublishFlags>(0),
-          services_.published_name().c_str(), service.service_type().c_str(),
-          service.domain().c_str(), nullptr /* host */, server.port(), NULL);
-      if (result < 0) {
+          publish_name.c_str(), service.service_type().c_str(), service.domain().c_str(),
+          nullptr /* host */, server.port(), nullptr);
+      if (result != AVAHI_OK) {
         LOG(INFO) << "populate_group() -- failure: " << avahi_strerror(result);
-        if (result == AVAHI_ERR_COLLISION) {
-          on_group_change(group_.get(), AVAHI_ENTRY_GROUP_COLLISION, this);
-        } else {
-          on_group_change(group_.get(), AVAHI_ENTRY_GROUP_FAILURE, this);
-        }
+        return result;
       }
     }
   }
+  return result;
 }
 
-void SingleServiceAdvertiser::publish() {
+void SingleServiceAdvertiser::advertise(const ServiceSet &services) {
   if (!group_) {
     create_group();
+  } else {
+    reset_group();
   }
-  populate_group();
-  int result = avahi_entry_group_commit(group_.get());
-  if (result < 0) {
-    LOG(INFO) << "publish() -- failure: " << avahi_strerror(result);
+
+  int result = populate_group(services);
+  if (result != AVAHI_OK) {
+    goto failure;
+  }
+
+  result = avahi_entry_group_commit(group_.get());
+
+  if (result != AVAHI_OK) {
+  failure:
+    LOG(INFO) << "advertise() -- failure: " << avahi_strerror(result);
     if (result == AVAHI_ERR_COLLISION) {
       on_group_change(group_.get(), AVAHI_ENTRY_GROUP_COLLISION, this);
     } else {
       on_group_change(group_.get(), AVAHI_ENTRY_GROUP_FAILURE, this);
     }
+  } else {
+    LOG(INFO) << "advertise() -- success. services:\n" << services.DebugString();
   }
 }
 
 void ServiceAdvertiser::on_client_change(AvahiClient *client, AvahiClientState state,
                                          void *service_advertiser) {
-  ServiceAdvertiser *advertiser{static_cast<ServiceAdvertiser *>(service_advertiser)};
+  // TODO(james): Investigate which states get triggered when waking up from a sleep, DHCP address
+  // change, etc. and implement accordingly.
+  // ServiceAdvertiser *advertiser{static_cast<ServiceAdvertiser *>(service_advertiser)};
   switch (state) {
     case AVAHI_CLIENT_S_RUNNING: {
       LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_S_RUNNING.";
       // The server has startup successfully and registered its host
       // name on the network, so now we can register services.
-      if (!advertiser->have_valid_client_.load()) {
-        advertiser->have_valid_client_.store(true);
-        for (auto &entry : advertiser->services_) {
-          entry.second.reset();
-          entry.second.publish();
-        }
-      }
       break;
     }
     case AVAHI_CLIENT_FAILURE: {
       LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_FAILURE.";
-      if (advertiser->have_valid_client_.load()) {
-        advertiser->have_valid_client_.store(false);
-        for (auto &entry : advertiser->services_) {
-          entry.second.reset();
-        }
-      }
       break;
     }
     case AVAHI_CLIENT_S_COLLISION: {
@@ -157,12 +129,6 @@ void ServiceAdvertiser::on_client_change(AvahiClient *client, AvahiClientState s
       /* Let's drop our registered services. When the server is back
        * in AVAHI_SERVER_RUNNING state we will register them
        * again with the new host name. */
-      if (advertiser->have_valid_client_.load()) {
-        advertiser->have_valid_client_.store(false);
-        for (auto &entry : advertiser->services_) {
-          entry.second.reset();
-        }
-      }
       break;
     }
     case AVAHI_CLIENT_S_REGISTERING: {
@@ -172,12 +138,6 @@ void ServiceAdvertiser::on_client_change(AvahiClient *client, AvahiClientState s
        * might be caused by a host name change. We need to wait
        * for our own records to register until the host name is
        * properly esatblished. */
-      if (advertiser->have_valid_client_.load()) {
-        advertiser->have_valid_client_.store(false);
-        for (auto &entry : advertiser->services_) {
-          entry.second.reset();
-        }
-      }
       break;
     }
     case AVAHI_CLIENT_CONNECTING:
@@ -215,8 +175,7 @@ ServiceAdvertiser::~ServiceAdvertiser() {
 
 void ServiceAdvertiser::advertise_service(const std::string &service_name,
                                           const std::string &service_type,
-                                          const std::string &domain, int port,
-                                          AdvertisementCallback callback) {
+                                          const std::string &domain, int port) {
   if (service_name.empty()) {
     throw std::invalid_argument("service_name must not be empty.");
   }
@@ -240,13 +199,11 @@ void ServiceAdvertiser::advertise_service(const std::string &service_name,
   server->set_port(port);
 
   if (services_.count(service_name) == 0) {
-    services_.emplace(service_name, SingleServiceAdvertiser(*avahi_client_, callback));
+    services_.emplace(service_name, SingleServiceAdvertiser(*avahi_client_));
   }
+
   auto &service_advertiser{services_.at(service_name)};
-  service_advertiser.set_services(service_set);
-  if (have_valid_client_.load()) {
-    service_advertiser.publish();
-  }
+  service_advertiser.advertise(service_set);
 }
 
 }  // namespace tvsc::discovery
