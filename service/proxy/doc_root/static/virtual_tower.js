@@ -68,25 +68,25 @@ function ChangeDatetimeButtonToStart() {
 
 function StartDatetimeRequests() {
   datetime_interval_id = window.setInterval(function() {
+    // TODO(james): Change to streaming.
     web_sockets['datetime'].send('');
   }, 1);
   ChangeDatetimeButtonToStop();
 }
 
 function StopDatetimeRequests() {
-  window.clearInterval(datetime_interval_id);
-  datetime_interval_id = -1;
-  ClearDatetimeSocket();
+  if (datetime_interval_id != -1) {
+    window.clearInterval(datetime_interval_id);
+    datetime_interval_id = -1;
+  }
   ChangeDatetimeButtonToStart();
 }
 
-function BuildDatetimeSocket() {
+function CreateDatetimeSocket(starter, stopper) {
   var ws = new WebSocket(BuildWebSocketUrl('datetime', 'get_datetime'));
   ws.binaryType = 'arraybuffer';
 
-  ws.onopen = function() {
-    StartDatetimeRequests();
-  };
+  ws.onopen = starter;
 
   ws.onmessage = function(evt) {
     var received_msg = DecodeWsMessage(evt, 'tvsc.service.datetime.DatetimeReply');
@@ -95,19 +95,14 @@ function BuildDatetimeSocket() {
     $('#datetime_reply').text(date_text);
   };
 
-  ws.onclose = function() {
-    StopDatetimeRequests();
+  ws.onerror = function(evt) {
+    console.log('Error on Datetime socket: ' + evt);
+    CreateDatetimeSocket(starter, stopper);
   };
 
-  return ws;
-}
+  ws.onclose = stopper;
 
-function ResetDatetimeSocket() {
-  web_sockets['datetime'] = BuildDatetimeSocket();
-}
-
-function ClearDatetimeSocket() {
-  delete web_sockets['datetime'];
+  web_sockets['datetime'] = ws;
 }
 
 function GetRadioList() {
@@ -148,11 +143,17 @@ function CreateWebSockets() {
     // The browser doesn't support WebSocket
     alert('WebSocket NOT supported by your Browser!');
   } else {
-    ResetDatetimeSocket();
+    var datetime_starter = function(evt) {
+      StartDatetimeRequests();
+    };
+    var datetime_stopper = function(evt) {
+      StopDatetimeRequests();
+    };
+    CreateDatetimeSocket(datetime_starter, datetime_stopper);
 
     web_sockets['echo'] = CreateEchoSocket();
 
-    //web_sockets['radio/list_radios'] = CreateRadioListSocket();
+    // web_sockets['radio/list_radios'] = CreateRadioListSocket();
   }
 }
 
