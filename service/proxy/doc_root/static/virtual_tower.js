@@ -69,7 +69,10 @@ function ChangeDatetimeButtonToStart() {
 function StartDatetimeRequests() {
   datetime_interval_id = window.setInterval(function() {
     // TODO(james): Change to streaming.
-    web_sockets['datetime'].send('');
+    if (web_sockets['datetime'].readyState == 1 /* OPEN */ &&
+        web_sockets['datetime'].bufferedAmount == 0) {
+      web_sockets['datetime'].send('');
+    }
   }, 1);
   ChangeDatetimeButtonToStop();
 }
@@ -97,10 +100,14 @@ function CreateDatetimeSocket(starter, stopper) {
 
   ws.onerror = function(evt) {
     console.log('Error on Datetime socket: ' + evt);
-    CreateDatetimeSocket(starter, stopper);
   };
 
-  ws.onclose = stopper;
+  ws.onclose = function(evt) {
+    console.log('Closing Datetime socket: ' + evt);
+    stopper(evt);
+    delete web_sockets['datetime'];
+    CreateDatetimeSocket(starter, stopper);
+  };
 
   web_sockets['datetime'] = ws;
 }
@@ -143,13 +150,7 @@ function CreateWebSockets() {
     // The browser doesn't support WebSocket
     alert('WebSocket NOT supported by your Browser!');
   } else {
-    var datetime_starter = function(evt) {
-      StartDatetimeRequests();
-    };
-    var datetime_stopper = function(evt) {
-      StopDatetimeRequests();
-    };
-    CreateDatetimeSocket(datetime_starter, datetime_stopper);
+    CreateDatetimeSocket(StartDatetimeRequests, StopDatetimeRequests);
 
     web_sockets['echo'] = CreateEchoSocket();
 
