@@ -68,35 +68,29 @@ class MDnsResolver final : public grpc_core::Resolver {
     const std::filesystem::path path{args_.uri.path()};
     const std::string service_type{path.filename()};
 
-    discovery_->watch_service_type(service_type, [this](const std::string& service_type) {
-      LOG(INFO) << "Assembling servers result for service_type '" << service_type << "'";
+    discovery_->add_service_type_and_block_until_ready(service_type);
 
-      grpc_core::ServerAddressList discovered_servers{};
-      for (const auto& server : this->discovery_->resolve_service_type(service_type)) {
-        // TODO(james): Hack. Remove and possibly add an option to discover services only found on a
-        // particular interface.
-        if (server.address().interface_name() == "lo") {
-          grpc_resolved_address address{};
-          LOG(INFO) << "server:\n" << server.DebugString();
-          resolved_server_to_grpc(server, &address);
-          LOG(INFO) << "grpc_resolved_address: " << to_string(address);
-          discovered_servers.emplace_back(address, nullptr);
-        }
-      }
-      // Hack.
-      // TODO(james): Figure out where this result_handler is getting cleaned up and adjust the
-      // logic appropriately.
-      if (this->args_.result_handler) {
-        // We must report the result within an executor context. Not sure what this is doing, but we
-        // get a segfault if we don't.
-        grpc_core::ExecCtx exec_ctx{};
-        grpc_core::Resolver::Result result{};
-        result.args = this->channel_args_;
-        this->channel_args_ = nullptr;
-        result.addresses = std::move(discovered_servers);
-        this->args_.result_handler->ReportResult(std::move(result));
-      }
-    });
+    LOG(INFO) << "Assembling servers result for service_type '" << service_type << "'";
+
+    grpc_core::ServerAddressList discovered_servers{};
+    for (const auto& server : this->discovery_->resolve(service_type)) {
+      grpc_resolved_address address{};
+      LOG(INFO) << "server:\n" << server.DebugString();
+      resolved_server_to_grpc(server, &address);
+      LOG(INFO) << "grpc_resolved_address: " << to_string(address);
+      discovered_servers.emplace_back(address, nullptr);
+    }
+
+    // Hack.
+    // TODO(james): Figure out where this result_handler is getting cleaned up / set to nullptr and
+    // adjust the logic appropriately.
+    if (this->args_.result_handler) {
+      grpc_core::Resolver::Result result{};
+      result.args = this->channel_args_;
+      this->channel_args_ = nullptr;
+      result.addresses = std::move(discovered_servers);
+      this->args_.result_handler->ReportResult(std::move(result));
+    }
   }
 
  public:

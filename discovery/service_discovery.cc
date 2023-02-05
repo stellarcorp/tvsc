@@ -21,9 +21,9 @@
 namespace tvsc::discovery {
 
 void ServiceDiscovery::on_client_change(AvahiClient *client, AvahiClientState state,
-                                        void *service_browser) {
+                                        void *service_discovery) {
   // TODO(james): Implement these states to give better error handling.
-  // ServiceDiscovery *browser{static_cast<ServiceDiscovery *>(service_browser)};
+  // ServiceDiscovery *discovery{static_cast<ServiceDiscovery *>(service_discovery)};
   switch (state) {
     case AVAHI_CLIENT_S_RUNNING: {
       LOG(INFO) << "on_client_change() -- AVAHI_CLIENT_S_RUNNING.";
@@ -52,63 +52,52 @@ void ServiceDiscovery::on_browser_change(AvahiServiceBrowser *avahi_browser, Ava
                                          const char *name, const char *service_type,
                                          const char *domain,
                                          AVAHI_GCC_UNUSED AvahiLookupResultFlags flags,
-                                         void *service_browser) {
-  ServiceDiscovery *browser{static_cast<ServiceDiscovery *>(service_browser)};
-  /* Called whenever a new services becomes available on the LAN or is removed from the LAN */
+                                         void *service_discovery) {
+  ServiceDiscovery *discovery{static_cast<ServiceDiscovery *>(service_discovery)};
+  /* Called whenever a new service becomes available on the LAN or is removed from the LAN */
   switch (event) {
     case AVAHI_BROWSER_NEW: {
       LOG(INFO) << "on_browser_change() -- AVAHI_BROWSER_NEW: service '" << name << "' of type '"
                 << service_type << "' in domain '" << domain << "'";
-      browser->clear_service_records(name, service_type, domain);
-      ++browser->service_type_resolvers_in_flight_[service_type];
+      discovery->register_resolver(service_type);
       // Note: the resolver gets freed in on_resolver_change().
-      auto resolver =
-          avahi_service_resolver_new(avahi_service_browser_get_client(avahi_browser), interface,
-                                     protocol, name, service_type, domain, AVAHI_PROTO_UNSPEC,
-                                     static_cast<AvahiLookupFlags>(0), on_resolver_change, browser);
+      auto resolver = avahi_service_resolver_new(
+          avahi_service_browser_get_client(avahi_browser), interface, protocol, name, service_type,
+          domain, AVAHI_PROTO_UNSPEC, static_cast<AvahiLookupFlags>(0), on_resolver_change,
+          discovery);
       if (!resolver) {
         LOG(ERROR) << "on_browser_change() -- Failed to create resolver: "
                    << avahi_strerror(
                           avahi_client_errno(avahi_service_browser_get_client(avahi_browser)));
       }
-
       break;
     }
     case AVAHI_BROWSER_REMOVE: {
       LOG(INFO) << "on_browser_change() -- AVAHI_BROWSER_REMOVE: service '" << name << "' of type '"
                 << service_type << "' in domain '" << domain << "'";
-      browser->clear_service_records(name, service_type, domain);
-      ++browser->service_type_resolvers_in_flight_[service_type];
+      discovery->register_resolver(service_type);
       // Note: the resolver gets freed in on_resolver_change().
-      auto resolver =
-          avahi_service_resolver_new(avahi_service_browser_get_client(avahi_browser), interface,
-                                     protocol, name, service_type, domain, AVAHI_PROTO_UNSPEC,
-                                     static_cast<AvahiLookupFlags>(0), on_resolver_change, browser);
+      auto resolver = avahi_service_resolver_new(
+          avahi_service_browser_get_client(avahi_browser), interface, protocol, name, service_type,
+          domain, AVAHI_PROTO_UNSPEC, static_cast<AvahiLookupFlags>(0), on_resolver_change,
+          discovery);
       if (!resolver) {
         LOG(ERROR) << "on_browser_change() -- Failed to create resolver: "
                    << avahi_strerror(
                           avahi_client_errno(avahi_service_browser_get_client(avahi_browser)));
       }
-
       break;
     }
     case AVAHI_BROWSER_ALL_FOR_NOW: {
       LOG(INFO) << "on_browser_change() -- AVAHI_BROWSER_ALL_FOR_NOW. service_type: "
                 << service_type;
-      browser->update_watchers(service_type);
+      discovery->publish_changes(service_type);
       break;
     }
     case AVAHI_BROWSER_CACHE_EXHAUSTED: {
       LOG(INFO) << "on_browser_change() -- AVAHI_BROWSER_CACHE_EXHAUSTED. service_type: "
                 << service_type;
-      // Ensure that an entry for the resolvers in flight exists for this service type. We use its
-      // existence to determine that all necessary resolvers were created. If we never find any
-      // entries for a particular service type, we can fail to notify the relevant watcher that
-      // there are no entries. On the other hand, we can also have a race condition where a single
-      // resolver finishes just before another resolver gets created.
-      // TODO(james): Rethink the design of this part. It's ambiguous and may not adequately
-      // represent how these events work.
-      browser->service_type_resolvers_in_flight_[service_type];
+      // TODO(james): Determine how this differs from the AVAHI_BROWSER_ALL_FOR_NOW signal.
       break;
     }
     case AVAHI_BROWSER_FAILURE: {
@@ -125,8 +114,8 @@ void ServiceDiscovery::on_resolver_change(AvahiServiceResolver *resolver, AvahiI
                                           const char *domain, const char *hostname,
                                           const AvahiAddress *address, uint16_t port,
                                           AvahiStringList *txt, AvahiLookupResultFlags flags,
-                                          void *service_browser) {
-  ServiceDiscovery *browser{static_cast<ServiceDiscovery *>(service_browser)};
+                                          void *service_discovery) {
+  ServiceDiscovery *discovery{static_cast<ServiceDiscovery *>(service_discovery)};
   switch (event) {
     case AVAHI_RESOLVER_FAILURE:
       LOG(WARNING) << "on_resolver_change() -- AVAHI_RESOLVER_FAILURE: "
@@ -137,31 +126,55 @@ void ServiceDiscovery::on_resolver_change(AvahiServiceResolver *resolver, AvahiI
       break;
     case AVAHI_RESOLVER_FOUND: {
       LOG(INFO) << "on_resolver_change() -- AVAHI_RESOLVER_FOUND";
-      browser->add_server(name, service_type, domain, hostname,
-                          avahi_address_to_network_address(protocol, *address, interface), port);
+      discovery->add_resolution(service_type, hostname, protocol, *address, interface, port);
       break;
     }
   }
-  --browser->service_type_resolvers_in_flight_[service_type];
-  browser->update_watchers(service_type);
+  discovery->unregister_resolver(service_type);
   avahi_service_resolver_free(resolver);
 }
 
-void ServiceDiscovery::update_watchers(const std::string &service_type) const {
-  // TODO(james): Implement observer mechanism to subscribe to service changes.
-  DLOG(INFO) << "update_watchers() -- service_type: " << service_type;
-  if (service_type_resolvers_in_flight_.count(service_type) > 0 and
-      service_type_resolvers_in_flight_.at(service_type) == 0) {
-    for (auto iter = service_type_watchers_.find(service_type);
-         iter != service_type_watchers_.end(); ++iter) {
-      if (iter->first == service_type) {
-        auto &watcher = iter->second;
-        watcher(service_type);
-      } else {
-        break;
-      }
+void ServiceDiscovery::publish_changes(const std::string &service_type) {
+  DLOG(INFO) << "publish_changes() -- service_type: " << service_type
+             << ", changes_in_progress_.size(): " << changes_in_progress_.size();
+
+  std::lock_guard lock{discovery_mutex_};
+  if (have_done_a_service_resolution(service_type) and have_resolvers_in_flight(service_type)) {
+    // For the first condition, we want to publish the empty results if we haven't had any
+    // services on the network of this service type to resolve. This would happen because we
+    // launched an avahi_browser, it signalled ALL_FOR_NOW, but did not signal any NEW entries that
+    // we would need to resolve.
+    //
+    // For the second condition, we don't want to publish changes for this service_type unless all
+    // of the resolvers for it have completed their work.
+    return;
+  }
+
+  discovered_services_.erase(service_type);
+  for (auto [iter, end] = changes_in_progress_.equal_range(service_type); iter != end;
+       /* Increment in body */) {
+    LOG(INFO) << "Moving node from changes_in_progress_ to discovered_services_: iter->first: "
+              << iter->first << ", iter->second: " << iter->second.DebugString();
+    discovered_services_.insert(changes_in_progress_.extract(iter++));
+  }
+  DLOG(INFO) << "publish_changes() -- after moving nodes: service_type: " << service_type
+             << ", changes_in_progress_.size(): " << changes_in_progress_.size();
+
+  for (auto iter = service_type_watchers_.find(service_type); iter != service_type_watchers_.end();
+       ++iter) {
+    if (service_type == iter->first) {
+      auto &ready_callback = iter->second;
+      LOG(INFO) << "ServiceDiscovery::publish_changes() -- calling callback for service_type '"
+                << service_type << "'";
+      ready_callback(service_type);
+    } else {
+      LOG(INFO) << "ServiceDiscovery::publish_changes() -- break on service_type '" << service_type
+                << "'";
+      break;
     }
   }
+
+  service_type_watchers_.erase(service_type);
 }
 
 ServiceDiscovery::ServiceDiscovery() {
@@ -194,125 +207,48 @@ ServiceDiscovery::~ServiceDiscovery() {
 int ServiceDiscovery::polling_loop() {
   using namespace std::chrono_literals;
   while (true) {
-    DLOG(INFO) << "Poll loop -- sleeping.";
     std::this_thread::sleep_for(10ms);
     std::lock_guard lock{this->avahi_call_mutex_};
-    DLOG(INFO) << "Poll loop -- calling avahi_simple_poll_iterate()";
-    int result = avahi_simple_poll_iterate(this->loop_.get(), -1);
+    int result = avahi_simple_poll_iterate(this->loop_.get(), 0);
     if (result != 0) {
       LOG(INFO) << "Poll loop -- exiting with result: " << result;
       return result;
     }
   }
+  LOG(INFO) << "Poll loop -- exited.";
 }
 
-void ServiceDiscovery::add_server(const std::string &name, const std::string &type,
-                                  const std::string &domain, const std::string &hostname,
-                                  const NetworkAddress &address, int port) {
-  add_service(name, type, domain);
-  ServiceDescriptor &service = lookup_service(name, type, domain);
-  add_server(service, hostname, address, port);
+void ServiceDiscovery::add_resolution(const std::string &service_type, const std::string &hostname,
+                                      AvahiProtocol protocol, const AvahiAddress &address,
+                                      AvahiIfIndex interface, int port) {
+  ServerDetails server{};
+  server.set_hostname(hostname);
+  *server.mutable_address() = avahi_address_to_network_address(protocol, address, interface);
+  server.set_port(port);
+
+  LOG(INFO) << "ServiceDiscovery::add_resolution() -- service_type: " << service_type
+            << ", server: " << server.DebugString();
+  {
+    std::lock_guard lock{discovery_mutex_};
+    changes_in_progress_.emplace(service_type, std::move(server));
+  }
+
+  LOG(INFO) << "ServiceDiscovery::add_resolution() -- changes_in_progress_.size(): "
+            << changes_in_progress_.size();
 }
 
-bool ServiceDiscovery::has_server(const ServiceDescriptor &service, const std::string &hostname,
-                                  const NetworkAddress &address, int port) const {
-  for (const auto &server : service.servers()) {
-    if (server.hostname() == hostname and is_same_address(server.address(), address) and
-        server.port() == port) {
-      return true;
-    }
-  }
+std::vector<std::string> ServiceDiscovery::service_types() const {
+  std::vector<std::string> types{};
 
-  return false;
-}
-
-void ServiceDiscovery::add_server(ServiceDescriptor &service, const std::string &hostname,
-                                  const NetworkAddress &address, int port) {
-  if (!has_server(service, hostname, address, port)) {
-    ServerDetails *server{service.add_servers()};
-    server->set_hostname(hostname);
-    *server->mutable_address() = address;
-    server->set_port(port);
-  }
-}
-
-void ServiceDiscovery::add_service(const std::string &name, const std::string &type,
-                                   const std::string &domain) {
-  if (discovered_services_.count(name) == 0) {
-    ServiceSet service_set{};
-    service_set.set_canonical_name(name);
-    service_set.set_published_name(name);
-    discovered_services_.emplace(name, service_set);
-  }
-  ServiceSet &service_set = discovered_services_.at(name);
-  for (const auto &service : service_set.services()) {
-    if (service.service_type() == type and service.domain() == domain) {
-      // Already known. Do not add again.
-      return;
-    }
-  }
-  ServiceDescriptor *descriptor = service_set.add_services();
-  descriptor->set_service_type(type);
-  descriptor->set_domain(domain);
-}
-
-void ServiceDiscovery::clear_service_records(const std::string &name, const std::string &type,
-                                             const std::string &domain) {
-  if (discovered_services_.count(name) == 0) {
-    // Nothing to clear.
-    return;
-  }
-  ServiceSet &service_set = discovered_services_.at(name);
-  auto services = service_set.mutable_services();
-  for (int i = 0; i < services->size(); ++i) {
-    ServiceDescriptor &service{services->at(i)};
-    if (service.service_type() == type and service.domain() == domain) {
-      services->DeleteSubrange(i, 1);
-      return;
-    }
-  }
-}
-
-ServiceDescriptor &ServiceDiscovery::lookup_service(const std::string &name,
-                                                    const std::string &type,
-                                                    const std::string &domain) {
-  ServiceSet &service_set = discovered_services_.at(name);
-  auto services = service_set.mutable_services();
-  for (int i = 0; i < services->size(); ++i) {
-    ServiceDescriptor &service{services->at(i)};
-    if (service.service_type() == type and service.domain() == domain) {
-      return service;
-    }
-  }
-  throw std::domain_error("Service with name = '" + name + "', type = '" + type + "', domain = '" +
-                          domain + "' not found.");
-}
-
-const ServiceDescriptor &ServiceDiscovery::lookup_service(const std::string &name,
-                                                          const std::string &type,
-                                                          const std::string &domain) const {
-  const ServiceSet &service_set = discovered_services_.at(name);
-  const auto &services = service_set.services();
-  for (int i = 0; i < services.size(); ++i) {
-    const ServiceDescriptor &service{services.at(i)};
-    if (service.service_type() == type and service.domain() == domain) {
-      return service;
-    }
-  }
-  throw std::domain_error("Service with name = '" + name + "', type = '" + type + "', domain = '" +
-                          domain + "' not found.");
-}
-
-std::unordered_set<std::string> ServiceDiscovery::service_types() const {
-  std::unordered_set<std::string> types{};
-  for (const auto &entry : avahi_browsers_) {
-    types.emplace(entry.first);
+  std::lock_guard lock{discovery_mutex_};
+  for (const auto &entry : discovered_services_) {
+    types.emplace_back(entry.first);
   }
   return types;
 }
 
-void ServiceDiscovery::watch_service_type(const std::string &service_type,
-                                          ServiceTypeWatcher watcher) {
+void ServiceDiscovery::add_service_type(const std::string &service_type,
+                                        ReadyWatcher ready_callback) {
   if (avahi_browsers_.count(service_type) == 0) {
     LOG(INFO) << "Watching for services announcing for service type '" << service_type << "'";
     std::lock_guard lock{avahi_call_mutex_};
@@ -328,25 +264,22 @@ void ServiceDiscovery::watch_service_type(const std::string &service_type,
     avahi_browsers_.emplace(service_type,
                             std::unique_ptr<AvahiServiceBrowser, int (*)(AvahiServiceBrowser *)>{
                                 avahi_browser, avahi_service_browser_free});
+    service_type_watchers_.emplace(service_type, std::move(ready_callback));
+  } else {
+    ready_callback(service_type);
   }
-
-  service_type_watchers_.emplace(service_type, std::move(watcher));
 }
 
-std::vector<ServerDetails> ServiceDiscovery::resolve_service_type(
-    const std::string &service_type) const {
-  std::vector<ServerDetails> result{};
-  for (const auto &[name, service_set] : discovered_services_) {
-    for (const auto &service : service_set.services()) {
-      if (service_type == service.service_type()) {
-        for (const auto &server : service.servers()) {
-          result.emplace_back(server);
-        }
-      }
-    }
-  }
-
-  return result;
+void ServiceDiscovery::add_service_type_and_block_until_ready(const std::string &service_type) {
+  std::mutex m{};
+  std::condition_variable condition{};
+  add_service_type(service_type, [&m, &condition](const std::string & /*unused*/) {
+    std::unique_lock lock{m};
+    condition.notify_one();
+  });
+  std::unique_lock lock{m};
+  // Block here until the ready callback (lambda) above gets called.
+  condition.wait(lock);
 }
 
 }  // namespace tvsc::discovery

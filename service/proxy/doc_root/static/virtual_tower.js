@@ -152,7 +152,7 @@ function CreateWebSockets() {
 
     web_sockets['echo'] = CreateEchoSocket();
 
-    web_sockets['radio/list_radios'] = CreateRadioListSocket();
+    //web_sockets['radio/list_radios'] = CreateRadioListSocket();
   }
 }
 

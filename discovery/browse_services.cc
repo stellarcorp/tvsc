@@ -39,29 +39,33 @@ void browse() {
   std::condition_variable condition{};
   ServiceDiscovery discovery{};
   for (const auto& service_type : service_types) {
-    discovery.watch_service_type(service_type,
-                                 [&m, &condition, &service_types](const std::string& service_type) {
-                                   std::unique_lock lock{m};
-                                   auto iter = service_types.find(service_type);
-                                   if (iter != service_types.end()) {
-                                     // Remove each service type from the service_types set as we
-                                     // get updated about that service type. This remaining service
-                                     // types have not been discovered yet.
-                                     service_types.erase(iter);
-                                     if (service_types.empty()) {
-                                       lock.unlock();
-                                       condition.notify_one();
-                                     }
+    discovery.add_service_type(service_type,
+                               [&m, &condition, &service_types](const std::string& service_type) {
+                                 std::unique_lock lock{m};
+                                 auto iter = service_types.find(service_type);
+                                 if (iter != service_types.end()) {
+                                   // Remove each service type from the service_types set as we
+                                   // get updated about that service type. This remaining service
+                                   // types have not been discovered yet.
+                                   service_types.erase(iter);
+                                   if (service_types.empty()) {
+                                     lock.unlock();
+                                     condition.notify_one();
                                    }
-                                 });
+                                 }
+                               });
   }
 
   std::unique_lock lock{m};
   condition.wait(lock);
 
-  std::cout << "Discovered services:\n";
-  for (const auto& entry : discovery.all_discovered_services()) {
-    std::cout << entry.second.DebugString() << "\n";
+  std::cout << "Discovered services.\n\n";
+  for (const auto& service_type : discovery.service_types()) {
+    std::cout << service_type << " --\n";
+    for (const auto& server : discovery.resolve(service_type)) {
+      std::cout << server.DebugString() << "\n";
+    }
+    std::cout << "\n";
   }
 }
 

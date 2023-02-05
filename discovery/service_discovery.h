@@ -21,7 +21,7 @@ namespace tvsc::discovery {
  */
 class ServiceDiscovery final {
  public:
-  using ServiceTypeWatcher = std::function<void(const std::string& service_type)>;
+  using ReadyWatcher = std::function<void(const std::string& service_type)>;
 
  private:
   std::unique_ptr<AvahiSimplePoll, void (*)(AvahiSimplePoll*)> loop_{nullptr,
@@ -48,14 +48,34 @@ class ServiceDiscovery final {
   /**
    * Map of published name to all of its serving details.
    */
-  std::map<std::string, ServiceSet> discovered_services_{};
+  std::multimap<std::string, ServerDetails> discovered_services_{};
+
+  /**
+   * Map of incoming resolution information by service type. This map contains partial information
+   * as it is being accumulated via the Avahi browsers and resolvers. It gets published one service
+   * type at a time, not as a full set of changes. The publishing is triggered by the avahi_browser
+   * state AVAHI_BROWSER_ALL_FOR_NOW for each service_type.
+   */
+  std::multimap<std::string, ServerDetails> changes_in_progress_{};
+
+  /**
+   * Mutex guarding access to data members of this class.
+   */
+  mutable std::mutex discovery_mutex_{};
+
+  /**
+   * Count of resolver requests in flight for each service type.
+   *
+   * We wait until all of the resolvers for a given service type have given their results before we
+   * publish those results in the publish_changes() method.
+   */
+  std::map<std::string, int> resolvers_in_flight_{};
 
   /**
    * Map of watchers by service type. When a new server providing a service of that service type is
    * discovered, those watchers will get notified.
    */
-  std::multimap<std::string, ServiceTypeWatcher> service_type_watchers_{};
-  std::map<std::string, int> service_type_resolvers_in_flight_{};
+  std::multimap<std::string, ReadyWatcher> service_type_watchers_{};
 
   static void on_client_change(AvahiClient* client, AvahiClientState state, void* service_browser);
 
@@ -70,28 +90,34 @@ class ServiceDiscovery final {
                                  const AvahiAddress* address, uint16_t port, AvahiStringList* txt,
                                  AvahiLookupResultFlags flags, void* service_browser);
 
-  void add_service(const std::string& name, const std::string& type, const std::string& domain);
-  void clear_service_records(const std::string& name, const std::string& type,
-                             const std::string& domain);
+  void add_resolution(const std::string& type, const std::string& hostname, AvahiProtocol protocol,
+                      const AvahiAddress& address, AvahiIfIndex interface, int port);
 
-  bool has_server(const ServiceDescriptor& service, const std::string& hostname,
-                  const NetworkAddress& address, int port) const;
+  void register_resolver(const std::string& service_type) {
+    std::lock_guard lock{discovery_mutex_};
+    ++resolvers_in_flight_[service_type];
+  }
 
-  void add_server(ServiceDescriptor& service, const std::string& hostname,
-                  const NetworkAddress& address, int port);
+  void unregister_resolver(const std::string& service_type) {
+    {
+      std::lock_guard lock{discovery_mutex_};
+      --resolvers_in_flight_[service_type];
+    }
+    publish_changes(service_type);
+  }
 
-  void add_server(const std::string& name, const std::string& type, const std::string& domain,
-                  const std::string& hostname, const NetworkAddress& address, int port);
+  bool have_done_a_service_resolution(const std::string& service_type) const {
+    return resolvers_in_flight_.count(service_type) > 0;
+  }
 
-  const ServiceDescriptor& lookup_service(const std::string& name, const std::string& type,
-                                          const std::string& domain) const;
-  ServiceDescriptor& lookup_service(const std::string& name, const std::string& type,
-                                    const std::string& domain);
+  bool have_resolvers_in_flight(const std::string& service_type) const {
+    return resolvers_in_flight_.at(service_type) > 0;
+  }
 
   /**
    * Notify the watchers for the given service type.
    */
-  void update_watchers(const std::string& service_type) const;
+  void publish_changes(const std::string& service_type);
 
   /**
    * Main loop to process events. Should be run asynchronously.
@@ -105,29 +131,42 @@ class ServiceDiscovery final {
 
   /**
    * List the set of service types being listened for.
-   */
-  std::unordered_set<std::string> service_types() const;
-
-  /**
-   * Watch changes on a service type.
    *
-   * This method calls the callback when it has new information about the requested service type.
+   * Note that a service type will not appear in this list until we have done an initial lookup of
+   * that service type. That is, the service_type will not appear here until the ReadyWatcher has
+   * been notified that this class is ready to resolve that service_type.
    */
-  void watch_service_type(const std::string& service_type, ServiceTypeWatcher watcher);
+  std::vector<std::string> service_types() const;
 
   /**
-   * Resolve the service type into a set of servers providing that service.
+   * Add a service type to be resolved.
    *
-   * This method returns a snapshot of the currently known discovered services. To keep this
-   * information up-to-date, you should also set up a watcher on this service type.
+   * This method calls the callback when it first has information about the requested service type.
+   * Note that the callback is only called once when the service_type is first resolved, not on
+   * every change to the resolution.
    */
-  std::vector<ServerDetails> resolve_service_type(const std::string& service_type) const;
+  void add_service_type(const std::string& service_type, ReadyWatcher watcher);
 
   /**
-   * Get all discovered services and the servers implementing those services.
+   * Convenience method to add a service type to be resolved and block until that service type is
+   * ready.
    */
-  const std::map<std::string, ServiceSet>& all_discovered_services() const {
-    return discovered_services_;
+  void add_service_type_and_block_until_ready(const std::string& service_type);
+
+  /**
+   * Resolve the service type into a set of servers providing that service as currently known. Note
+   * that this list is a snapshot and is likely to change as servers go up and down, network
+   * addresses change, etc.
+   */
+  std::vector<ServerDetails> resolve(const std::string& service_type) const {
+    std::vector<ServerDetails> result{};
+
+    std::lock_guard lock{discovery_mutex_};
+    for (auto [iter, end] = discovered_services_.equal_range(service_type); iter != end; ++iter) {
+      result.emplace_back(iter->second);
+    }
+
+    return result;
   }
 };
 
