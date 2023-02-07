@@ -105,21 +105,21 @@ def load_source_dependencies():
     if not native.existing_rule("com_github_unetworking_usockets"):
         http_archive(
             name = "com_github_unetworking_usockets",
-            sha256 = "7cd756edaa70efa58137cae3ab96d8ea15febbf2c92bccbc65b2b9afc322bcff",
+            sha256 = "302f523448c9130bdd9802ca607578478172eb7f1713796c98284d4369924c23",
             urls = [
-                "https://github.com/uNetworking/uSockets/archive/d8967af421983d40422094e31c54d9f1febeea49.tar.gz",
+                "https://github.com/uNetworking/uSockets/archive/b950efd6b10f06dd3ecb5b692e5d415f48474647.tar.gz",
             ],
             build_file = "//third_party/usockets:usockets.BUILD",
-            strip_prefix = "uSockets-d8967af421983d40422094e31c54d9f1febeea49",
+            strip_prefix = "uSockets-b950efd6b10f06dd3ecb5b692e5d415f48474647",
         )
 
     if not native.existing_rule("com_github_unetworking_uwebsockets"):
         http_archive(
             name = "com_github_unetworking_uwebsockets",
-            sha256 = "6b8ea09ab58c4c9aff0e9b7a8ada5ac142bc96ae5cc4e6a89aeaacdb94ef2fad",
+            sha256 = "cda266f7ed6abe67ef3cae6e223a580fe5091db9156c1f4123ee328ae21511c9",
             urls = [
-                "https://github.com/uNetworking/uWebSockets/archive/refs/tags/v20.23.0.tar.gz",
+                "https://github.com/uNetworking/uWebSockets/archive/refs/tags/v20.36.0.tar.gz",
             ],
             build_file = "//third_party/uwebsockets:uwebsockets.BUILD",
-            strip_prefix = "uWebSockets-20.23.0",
+            strip_prefix = "uWebSockets-20.36.0",
         )
