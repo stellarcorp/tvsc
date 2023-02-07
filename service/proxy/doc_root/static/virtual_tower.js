@@ -68,12 +68,11 @@ function ChangeDatetimeButtonToStart() {
 
 function StartDatetimeRequests() {
   datetime_interval_id = window.setInterval(function() {
-    // TODO(james): Change to streaming.
     if (web_sockets['datetime'].readyState == 1 /* OPEN */ &&
         web_sockets['datetime'].bufferedAmount == 0) {
       web_sockets['datetime'].send('');
     }
-  }, 1);
+  }, 5);
   ChangeDatetimeButtonToStop();
 }
 
@@ -86,6 +85,7 @@ function StopDatetimeRequests() {
 }
 
 function CreateDatetimeSocket(starter, stopper) {
+  // Change to a subscription to a topic.
   var ws = new WebSocket(BuildWebSocketUrl('datetime', 'get_datetime'));
   ws.binaryType = 'arraybuffer';
 
