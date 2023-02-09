@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package tvsc.services;
+
+message TestRequest {}
+
+message TestResponse {
+  string message = 1;
+}
+
+service TestService {
+  rpc server_stream(TestRequest) returns (stream TestResponse);
+}

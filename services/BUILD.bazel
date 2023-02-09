@@ -1,0 +1,64 @@
+load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
+
+cc_library(
+    name = "services",
+    hdrs = [
+        "pub_sub_service.h",
+        "web_socket_topic.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/glog",
+        "//third_party/grpc",
+        "//third_party/uwebsockets",
+    ],
+)
+
+proto_library(
+    name = "test_proto",
+    testonly = True,
+    srcs = ["test.proto"],
+)
+
+cc_proto_library(
+    name = "test_cc_proto",
+    testonly = True,
+    deps = [":test_proto"],
+)
+
+cc_grpc_library(
+    name = "test_cc_grpc",
+    testonly = True,
+    srcs = [":test_proto"],
+    generate_mocks = True,
+    grpc_only = True,
+    deps = [":test_cc_proto"],
+)
+
+cc_library(
+    name = "test_utils",
+    testonly = True,
+    hdrs = [
+        "test_response_reader.h",
+    ],
+    deps = [
+        "//third_party/glog",
+        "//third_party/grpc",
+    ],
+)
+
+cc_test(
+    name = "pub_sub_service_test",
+    srcs = [
+        "pub_sub_service_test.cc",
+    ],
+    deps = [
+        ":services",
+        ":test_cc_grpc",
+        ":test_cc_proto",
+        ":test_utils",
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
