@@ -4,10 +4,23 @@ cc_library(
     name = "services",
     hdrs = [
         "pub_sub_service.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/glog",
+        "//third_party/grpc",
+        "//third_party/uwebsockets",
+    ],
+)
+
+cc_library(
+    name = "web_socket_topic",
+    hdrs = [
         "web_socket_topic.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
+        ":services",
         "//third_party/glog",
         "//third_party/grpc",
         "//third_party/uwebsockets",
@@ -35,18 +48,6 @@ cc_grpc_library(
     deps = [":test_cc_proto"],
 )
 
-cc_library(
-    name = "test_utils",
-    testonly = True,
-    hdrs = [
-        "test_response_reader.h",
-    ],
-    deps = [
-        "//third_party/glog",
-        "//third_party/grpc",
-    ],
-)
-
 cc_test(
     name = "pub_sub_service_test",
     srcs = [
@@ -56,7 +57,6 @@ cc_test(
         ":services",
         ":test_cc_grpc",
         ":test_cc_proto",
-        ":test_utils",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/gtest",
