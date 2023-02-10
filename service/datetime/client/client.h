@@ -16,9 +16,9 @@ class DatetimeClient {
             Datetime::NewStub(grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials()))) {
   }
 
-  grpc::Status call(DatetimeReply* reply) { return call(DatetimeRequest::MILLISECOND, reply); }
+  grpc::Status call(DatetimeReply* reply) { return call(TimeUnit::MILLISECOND, reply); }
 
-  grpc::Status call(DatetimeRequest::Precision precision, DatetimeReply* reply) {
+  grpc::Status call(TimeUnit precision, DatetimeReply* reply) {
     grpc::ClientContext context{};
     DatetimeRequest request{};
     request.set_precision(precision);
@@ -31,13 +31,15 @@ class DatetimeClient {
   }
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream(grpc::ClientContext* context) {
-    return stream(context, DatetimeRequest::MILLISECOND);
+    return stream(context, TimeUnit::MILLISECOND);
   }
 
-  std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream(
-      grpc::ClientContext* context, DatetimeRequest::Precision precision) {
+  std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream(grpc::ClientContext* context,
+                                                                     TimeUnit precision) {
     DatetimeRequest request{};
     request.set_precision(precision);
+    request.set_period_count(100);
+    request.set_period_unit(TimeUnit::MILLISECOND);
     return stream(context, request);
   }
 

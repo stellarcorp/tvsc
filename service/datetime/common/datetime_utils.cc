@@ -7,56 +7,57 @@
 
 namespace tvsc::service::datetime {
 
-std::chrono::nanoseconds as_duration(DatetimeRequest::Precision precision) {
+std::chrono::nanoseconds as_duration(int64_t count, TimeUnit precision) {
   using namespace std::literals::chrono_literals;
 
-  std::chrono::nanoseconds duration{};
+  std::chrono::nanoseconds nanos{};
   switch (precision) {
-    case DatetimeRequest::NANOSECOND:
-      duration = 1ns;
+    case TimeUnit::NANOSECOND:
+      nanos = count * 1ns;
       break;
 
-    case DatetimeRequest::MICROSECOND:
-      duration = 1us;
+    case TimeUnit::MICROSECOND:
+      nanos = count * 1us;
       break;
 
-    case DatetimeRequest::MILLISECOND:
-      duration = 1ms;
+    case TimeUnit::MILLISECOND:
+      nanos = count * 1ms;
       break;
 
-    case DatetimeRequest::SECOND:
-      duration = 1s;
+    case TimeUnit::SECOND:
+      nanos = count * 1s;
       break;
 
-    case DatetimeRequest::MINUTE:
-      duration = 1min;
+    case TimeUnit::MINUTE:
+      nanos = count * 1min;
       break;
 
-    case DatetimeRequest::HOUR:
-      duration = 1h;
+    case TimeUnit::HOUR:
+      nanos = count * 1h;
       break;
 
-    case DatetimeRequest::DAY:
-      duration = 24h;
+    case TimeUnit::DAY:
+      nanos = std::chrono::duration_cast<std::chrono::nanoseconds>(DayDuration{count});
       break;
 
-    case DatetimeRequest::WEEK:
-      duration = 7 * 24h;
+    case TimeUnit::WEEK:
+      nanos = std::chrono::duration_cast<std::chrono::nanoseconds>(WeekDuration{count});
       break;
 
-    case DatetimeRequest::YEAR:
-      duration = std::chrono::duration_cast<std::chrono::nanoseconds>(DAYS_IN_YEAR * 24h);
+    case TimeUnit::YEAR:
+      nanos = std::chrono::duration_cast<std::chrono::nanoseconds>(YearDuration{count});
       break;
 
-    case DatetimeRequest::MONTH:
-      duration = std::chrono::duration_cast<std::chrono::nanoseconds>(DAYS_IN_YEAR * 24h / 12);
+    case TimeUnit::MONTH:
+      nanos = std::chrono::duration_cast<std::chrono::nanoseconds>(MonthDuration{count});
       break;
 
     default:
       LOG(WARNING) << "Unrecognized precision value in request";
       throw std::domain_error("Unrecognized precision value in request");
   }
-  return duration;
+
+  return nanos;
 }
 
 }  // namespace tvsc::service::datetime

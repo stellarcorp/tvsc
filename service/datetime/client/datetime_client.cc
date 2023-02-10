@@ -19,8 +19,8 @@ DEFINE_bool(continuous_update, false,
 namespace tvsc::service::datetime {
 
 template <typename Clock>
-void print_time(const DatetimeReply& reply, DatetimeRequest::Precision precision) {
-  std::chrono::time_point<Clock> some_time{as_time_point<Clock>(reply, precision)};
+void print_time(const DatetimeReply& reply) {
+  std::chrono::time_point<Clock> some_time{as_time_point<Clock>(reply.datetime(), reply.unit())};
   std::time_t as_time_t{std::chrono::system_clock::to_time_t(some_time)};
   std::cout << std::put_time(std::localtime(&as_time_t), "%F %T") << "\n";
 }
@@ -28,7 +28,7 @@ void print_time(const DatetimeReply& reply, DatetimeRequest::Precision precision
 void get_and_print_time() {
   using Clock = std::chrono::system_clock;
 
-  constexpr DatetimeRequest::Precision precision{DatetimeRequest::MILLISECOND};
+  constexpr TimeUnit precision{TimeUnit::MILLISECOND};
   DatetimeClient client{};
   DatetimeReply reply{};
   grpc::Status status{};
@@ -41,14 +41,14 @@ void get_and_print_time() {
     while (success) {
       success = stream->Read(&reply);
       if (success) {
-        print_time<Clock>(reply, precision);
+        print_time<Clock>(reply);
       }
     }
     status = stream->Finish();
   } else {
     status = client.call(precision, &reply);
     if (status.ok()) {
-      print_time<Clock>(reply, precision);
+      print_time<Clock>(reply);
     }
   }
 
