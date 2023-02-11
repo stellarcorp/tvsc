@@ -1,7 +1,8 @@
 #pragma once
 
+#include <chrono>
 #include <memory>
-#include <string>
+#include <mutex>
 #include <string_view>
 
 #include "App.h"
@@ -9,32 +10,47 @@
 
 namespace tvsc::services {
 
-template <typename MessageT>
+template <typename MessageT, size_t MAX_QUEUE_SIZE = 128>
 class WebSocketTopic final : public Topic<MessageT> {
  private:
-  uWS::SSLApp* app_;
+  std::vector<std::string> message_queue_{};
+  std::mutex mu_{};
 
- protected:
-  void publish_compressed(std::string_view msg) override {
-    // Ignore the return value of this call. As far as I can tell, it will return true if it is
-    // successful and if there exists a subscriber to the message. So, we can't differentiate
-    // between a failure in the process where we would normally throw an exception and a lack of
-    // interest where we might perform an optimization.
-    app_->publish(this->topic_name_, msg, uWS::OpCode::BINARY, true);
-  }
-
-  void publish_uncompressed(std::string_view msg) override {
-    app_->publish(this->topic_name_, msg, uWS::OpCode::BINARY, false);
+  void publish(const MessageT& message) override {
+    std::string serialized{};
+    serialized.reserve(message.ByteSizeLong());
+    message.SerializeToString(&serialized);
+    std::lock_guard<std::mutex> l{mu_};
+    if (message_queue_.size() >= MAX_QUEUE_SIZE) {
+      message_queue_.erase(message_queue_.begin(),
+                           message_queue_.begin() + (message_queue_.size() - MAX_QUEUE_SIZE + 1));
+    }
+    message_queue_.emplace_back(std::move(serialized));
   }
 
  public:
-  WebSocketTopic(uWS::SSLApp& app, std::string_view topic_name)
-      : Topic<MessageT>(topic_name), app_(&app) {}
+  WebSocketTopic(std::string_view topic_name) : Topic<MessageT>(topic_name) {}
+
+  template <bool SSL>
+  void transfer_messages(uWS::TemplatedApp<SSL>& app) {
+    auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    LOG(INFO) << "WebSocketTopic::transfer_messages() -- now: " << ctime(&now);
+
+    std::lock_guard<std::mutex> l{mu_};
+    for (const auto& msg : message_queue_) {
+      // Ignore the return value of this call. As far as I can tell, it will return true if it is
+      // successful and if there exists a subscriber to the message. So, we can't differentiate
+      // between a failure in the process where we would normally throw an exception and a lack of
+      // interest where we might perform an optimization.
+      app.publish(this->topic_name_, msg, uWS::OpCode::BINARY, should_compress<MessageT>());
+    }
+    message_queue_.clear();
+  }
 };
 
 template <typename MessageT>
-std::unique_ptr<Topic<MessageT>> create_topic(uWS::SSLApp& app, std::string_view topic_name) {
-  return std::make_unique<WebSocketTopic<MessageT>>(app, topic_name);
+std::unique_ptr<Topic<MessageT>> create_web_socket_topic(std::string_view topic_name) {
+  return std::make_unique<WebSocketTopic<MessageT>>(topic_name);
 }
 
 }  // namespace tvsc::services

@@ -67,13 +67,19 @@ function ChangeDatetimeButtonToStart() {
 }
 
 function StartDatetimeRequests() {
-  datetime_interval_id = window.setInterval(function() {
-    if (web_sockets['datetime'].readyState == 1 /* OPEN */ &&
-        web_sockets['datetime'].bufferedAmount == 0) {
-      web_sockets['datetime'].send('');
-    }
-  }, 5);
-  ChangeDatetimeButtonToStop();
+  if (web_sockets['datetime'] == null) {
+    CreateDatetimeSocket(StartDatetimeRequests, StopDatetimeRequests);
+  } else if (
+      web_sockets['datetime'].readyState == 1 /* OPEN */ &&
+      web_sockets['datetime'].bufferedAmount == 0) {
+    web_sockets['datetime'].send('');
+    ChangeDatetimeButtonToStop();
+  } else {
+    // Try again in a bit.
+    window.setTimeout(function() {
+      StartDatetimeRequests();
+    }, 5000);
+  }
 }
 
 function StopDatetimeRequests() {
@@ -86,7 +92,7 @@ function StopDatetimeRequests() {
 
 function CreateDatetimeSocket(starter, stopper) {
   // Change to a subscription to a topic.
-  var ws = new WebSocket(BuildWebSocketUrl('datetime', 'get_datetime'));
+  var ws = new WebSocket(BuildWebSocketUrl('datetime', 'stream_datetime'));
   ws.binaryType = 'arraybuffer';
 
   ws.onopen = starter;
@@ -105,8 +111,7 @@ function CreateDatetimeSocket(starter, stopper) {
   ws.onclose = function(evt) {
     console.log('Closing Datetime socket: ' + evt);
     stopper(evt);
-    delete web_sockets['datetime'];
-    CreateDatetimeSocket(starter, stopper);
+    web_sockets['datetime'] = null;
   };
 
   web_sockets['datetime'] = ws;

@@ -1,7 +1,10 @@
+#pragma once
+
 #include <memory>
 #include <string>
 
 #include "discovery/service_types.h"
+#include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "service/datetime/common/datetime.grpc.pb.h"
 
@@ -14,6 +17,7 @@ class DatetimeClient {
   DatetimeClient(const std::string& bind_addr)
       : stub_(
             Datetime::NewStub(grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials()))) {
+    DLOG(INFO) << "DatetimeClient::DatetimeClient(std::string)";
   }
 
   grpc::Status call(DatetimeReply* reply) { return call(TimeUnit::MILLISECOND, reply); }
@@ -30,22 +34,14 @@ class DatetimeClient {
     return stub_->get_datetime(context, request, reply);
   }
 
-  std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream(grpc::ClientContext* context) {
-    return stream(context, TimeUnit::MILLISECOND);
-  }
-
-  std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream(grpc::ClientContext* context,
-                                                                     TimeUnit precision) {
-    DatetimeRequest request{};
-    request.set_precision(precision);
-    request.set_period_count(100);
-    request.set_period_unit(TimeUnit::MILLISECOND);
-    return stream(context, request);
-  }
-
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream(
       grpc::ClientContext* context, const DatetimeRequest& request) {
     return stub_->stream_datetime(context, request);
+  }
+
+  void stream(grpc::ClientContext* context, const DatetimeRequest* request,
+              grpc::ClientReadReactor<DatetimeReply>* reactor) {
+    return stub_->async()->stream_datetime(context, request, reactor);
   }
 
  private:

@@ -32,22 +32,11 @@ class Topic {
  protected:
   const std::string topic_name_;
 
-  virtual void publish_compressed(std::string_view msg) = 0;
-  virtual void publish_uncompressed(std::string_view msg) = 0;
-
  public:
   Topic(std::string_view topic_name) : topic_name_(topic_name) {}
   virtual ~Topic() = default;
 
-  void publish(const MessageT& msg) {
-    std::string serialized{};
-    msg.SerializeToString(&serialized);
-    if constexpr (should_compress<MessageT>()) {
-      publish_compressed(serialized);
-    } else {
-      publish_uncompressed(serialized);
-    }
-  }
+  virtual void publish(const MessageT& msg) = 0;
 };
 
 template <typename RequestT, typename ResponseT>
@@ -57,8 +46,7 @@ class PubSubService final : grpc::ClientReadReactor<ResponseT> {
                                               grpc::ClientReadReactor<ResponseT>* reactor)>;
 
  private:
-  Topic<ResponseT>* web_socket_topic_;
-  // std::unique_ptr<grpc::ClientAsyncReaderInterface<ResponseT>> grpc_reader_{};
+  Topic<ResponseT>* topic_;
 
   RpcMethodCallerT call_rpc_fn_;
 
@@ -73,20 +61,12 @@ class PubSubService final : grpc::ClientReadReactor<ResponseT> {
 
   bool is_running_{false};
 
-  void finalize(const grpc::Status& status) { status_ = status; }
-
-  /**
-   * Helper method to build a tag that can be used to tag entries in the gRPC completion queue.
-   * Note that only the address of the tag is significant, not its value.
-   */
-  // void* tag() { return reinterpret_cast<void*>(this); }
-
  public:
   PubSubService(Topic<ResponseT>& topic, RpcMethodCallerT call_rpc_fn)
-      : web_socket_topic_(&topic), call_rpc_fn_(std::move(call_rpc_fn)) {}
+      : topic_(&topic), call_rpc_fn_(std::move(call_rpc_fn)) {}
 
   PubSubService(Topic<ResponseT>& topic, RpcMethodCallerT call_rpc_fn, const RequestT& request)
-      : web_socket_topic_(&topic), call_rpc_fn_(std::move(call_rpc_fn)), request_(request) {}
+      : topic_(&topic), call_rpc_fn_(std::move(call_rpc_fn)), request_(request) {}
 
   template <typename Clock = std::chrono::system_clock>
 
@@ -106,11 +86,11 @@ class PubSubService final : grpc::ClientReadReactor<ResponseT> {
   }
 
   void OnReadDone(bool ok) override {
-    DLOG(INFO) << "PubSubService::OnReadDone()";
+    DLOG_EVERY_N(INFO, 1000) << "PubSubService::OnReadDone()";
     std::unique_lock<std::mutex> l(mu_);
     if (ok) {
-      // Publish the response.
-      web_socket_topic_->publish(response_);
+      // Publish the response to the PubSub topic.
+      topic_->publish(response_);
 
       // Initiate a new read.
       this->StartRead(&response_);

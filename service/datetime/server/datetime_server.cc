@@ -28,13 +28,12 @@ std::chrono::nanoseconds default_period(TimeUnit requested_precision) {
   switch (requested_precision) {
     case TimeUnit::NANOSECOND:
     case TimeUnit::MICROSECOND:
-      return 100us;
+      return 10ms;
 
     case TimeUnit::MILLISECOND:
-      return 1ms;
-
     case TimeUnit::SECOND:
-      return 100ms;
+      return 1s;
+
     case TimeUnit::MINUTE:
       return 5s;
 
@@ -138,6 +137,8 @@ class DatetimeServiceImpl final : public Datetime::Service {
 
       auto timeout_duration = context->deadline() - Clock::now();
       auto sleep_duration = std::min(response_period, timeout_duration / 2);
+      DLOG_EVERY_N(INFO, 1000) << "DatetimeServerImpl::stream_datetime() -- sleep_duration: "
+                               << sleep_duration.count() / 1000 / 1000 << "ms";
       std::this_thread::sleep_for(sleep_duration);
     }
 

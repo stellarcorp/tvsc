@@ -15,7 +15,7 @@ cc_binary(
     deps = [
         "//discovery:resolve",
         "//http",
-        "//service/datetime/client:web_socket_rpc_client",
+        "//service/datetime/client:web_socket_client",
         "//service/echo/client:web_socket_rpc_client",
         "//service/hello/client:web_socket_rpc_client",
         "//service/radio/client:web_socket_rpc_client",

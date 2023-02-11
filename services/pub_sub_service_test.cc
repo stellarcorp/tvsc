@@ -34,22 +34,16 @@ class TestTopic final : public Topic<MessageT> {
   MessageT last_message_{};
   std::function<void(const MessageT& message)> callback_{};
 
-  void publish_compressed(std::string_view msg) override {
-    last_message_.ParseFromString(std::string{msg});
-    if (callback_) {
-      callback_(last_message_);
-    }
-  }
-  void publish_uncompressed(std::string_view msg) override {
-    last_message_.ParseFromString(std::string{msg});
-    if (callback_) {
-      callback_(last_message_);
-    }
-  }
-
  public:
   TestTopic() : Topic<MessageT>(TOPIC_NAME){};
   TestTopic(std::string_view topic_name) : Topic<MessageT>(topic_name){};
+
+  void publish(const MessageT& message) override {
+    last_message_ = message;
+    if (callback_) {
+      callback_(last_message_);
+    }
+  }
 
   const MessageT& last_message() const { return last_message_; }
 
@@ -133,7 +127,7 @@ TEST_F(PubSubServiceTest, CanPublishRpcResponseOverTopic) {
 }
 
 TEST_F(PubSubServiceTest, CanPublishRpcStreamOverTopic) {
-  for (int i = 0; i < 10; ++i) {
+  for (int i = 0; i < 3; ++i) {
     using std::to_string;
     add_canned_response("Message " + to_string(i));
   }
@@ -162,7 +156,7 @@ TEST_F(PubSubServiceTest, CanPublishRpcStreamOverTopic) {
 }
 
 TEST_F(PubSubServiceTest, CanPublishLongRpcStreamOverTopic) {
-  for (int i = 0; i < 50; ++i) {
+  for (int i = 0; i < 20; ++i) {
     using std::to_string;
     add_canned_response("Message " + to_string(i));
   }

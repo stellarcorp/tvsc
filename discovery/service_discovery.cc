@@ -153,8 +153,6 @@ void ServiceDiscovery::publish_changes(const std::string &service_type) {
   discovered_services_.erase(service_type);
   for (auto [iter, end] = changes_in_progress_.equal_range(service_type); iter != end;
        /* Increment in body */) {
-    LOG(INFO) << "Moving node from changes_in_progress_ to discovered_services_: iter->first: "
-              << iter->first << ", iter->second: " << iter->second.DebugString();
     discovered_services_.insert(changes_in_progress_.extract(iter++));
   }
   DLOG(INFO) << "publish_changes() -- after moving nodes: service_type: " << service_type
@@ -164,8 +162,6 @@ void ServiceDiscovery::publish_changes(const std::string &service_type) {
        ++iter) {
     if (service_type == iter->first) {
       auto &ready_callback = iter->second;
-      LOG(INFO) << "ServiceDiscovery::publish_changes() -- calling callback for service_type '"
-                << service_type << "'";
       ready_callback(service_type);
     } else {
       LOG(INFO) << "ServiceDiscovery::publish_changes() -- break on service_type '" << service_type
@@ -226,15 +222,13 @@ void ServiceDiscovery::add_resolution(const std::string &service_type, const std
   *server.mutable_address() = avahi_address_to_network_address(protocol, address, interface);
   server.set_port(port);
 
-  LOG(INFO) << "ServiceDiscovery::add_resolution() -- service_type: " << service_type
-            << ", server: " << server.DebugString();
   {
     std::lock_guard lock{discovery_mutex_};
     changes_in_progress_.emplace(service_type, std::move(server));
   }
 
-  LOG(INFO) << "ServiceDiscovery::add_resolution() -- changes_in_progress_.size(): "
-            << changes_in_progress_.size();
+  DLOG(INFO) << "ServiceDiscovery::add_resolution() -- changes_in_progress_.size(): "
+             << changes_in_progress_.size();
 }
 
 std::vector<std::string> ServiceDiscovery::service_types() const {

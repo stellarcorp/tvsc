@@ -28,15 +28,19 @@ void print_time(const DatetimeReply& reply) {
 void get_and_print_time() {
   using Clock = std::chrono::system_clock;
 
-  constexpr TimeUnit precision{TimeUnit::MILLISECOND};
   DatetimeClient client{};
+  grpc::ClientContext context{};
+  DatetimeRequest request{};
   DatetimeReply reply{};
   grpc::Status status{};
 
+  request.set_precision(TimeUnit::MILLISECOND);
+
   if (FLAGS_continuous_update) {
-    grpc::ClientContext context{};
+    request.set_period_count(10);
+    request.set_period_unit(TimeUnit::SECOND);
     std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream{
-        client.stream(&context, precision)};
+        client.stream(&context, request)};
     bool success{true};
     while (success) {
       success = stream->Read(&reply);
@@ -46,7 +50,7 @@ void get_and_print_time() {
     }
     status = stream->Finish();
   } else {
-    status = client.call(precision, &reply);
+    status = client.call(&context, request, &reply);
     if (status.ok()) {
       print_time<Clock>(reply);
     }

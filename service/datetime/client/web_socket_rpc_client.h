@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <string_view>
 
@@ -5,12 +7,14 @@
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "service/datetime/client/client.h"
+#include "service/datetime/client/web_socket_streaming_client.h"
 
 namespace tvsc::service::datetime {
 
 template <bool SSL>
 void call(uWS::WebSocket<SSL, true, DatetimeClient> *ws, std::string_view message, uWS::OpCode op) {
   using std::to_string;
+  LOG_EVERY_N(INFO, 1000) << "Web socket calling RPC method DatetimeClient::get_time()";
   DatetimeClient *client = static_cast<DatetimeClient *>(ws->getUserData());
   DatetimeReply reply{};
   grpc::Status status = client->call(&reply);
@@ -19,7 +23,8 @@ void call(uWS::WebSocket<SSL, true, DatetimeClient> *ws, std::string_view messag
     reply.SerializeToString(&serialized_reply);
     ws->send(serialized_reply, uWS::OpCode::BINARY);
   } else {
-    LOG_EVERY_N(WARNING, 1000) << "RPC failed -- " << status.error_code() << ": " << status.error_message();
+    LOG_EVERY_N(WARNING, 1000) << "RPC failed -- " << status.error_code() << ": "
+                               << status.error_message();
     ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " +
                  status.error_message(),
              uWS::OpCode::TEXT);
@@ -27,57 +32,28 @@ void call(uWS::WebSocket<SSL, true, DatetimeClient> *ws, std::string_view messag
 }
 
 template <bool SSL>
-void stream(uWS::WebSocket<SSL, true, DatetimeClient> *ws, std::string_view message,
-            uWS::OpCode op) {
-  using std::to_string;
-  DatetimeClient *client = static_cast<DatetimeClient *>(ws->getUserData());
-  grpc::ClientContext context{};
-  auto reader = client->stream(&context);
-
-  DatetimeReply reply{};
-  std::string serialized_reply{};
-  bool success{true};
-  while (success) {
-    success = reader->Read(&reply);
-    if (success) {
-      reply.SerializeToString(&serialized_reply);
-      ws->send(serialized_reply, uWS::OpCode::BINARY);
-    }
-  }
-  reader->Finish();
+void subscribe(uWS::WebSocket<SSL, true, int> *ws) {
+  LOG(INFO) << "Web socket subscribing to " << StreamingDatetimeClient<SSL>::TOPIC_NAME;
+  ws->subscribe(StreamingDatetimeClient<SSL>::TOPIC_NAME);
 }
 
-void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> *app) {
+void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> &app) {
   constexpr bool SSL{false};
-  app->ws(base_path,  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<DatetimeClient>{
-              .message = call<SSL>,
-          });
-  app->ws(base_path + "/get_datetime",  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<DatetimeClient>{
-              .message = call<SSL>,
-          });
-  app->ws(base_path + "/stream_datetime",  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<DatetimeClient>{
-              .message = stream<SSL>,
-          });
-}
-
-void create_web_socket_behaviors_with_ssl(const std::string &base_path,
-                                          uWS::TemplatedApp<true> *app) {
-  constexpr bool SSL{true};
-  app->ws(base_path,  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<DatetimeClient>{
-              .message = call<SSL>,
-          });
-  app->ws(base_path + "/get_datetime",  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<DatetimeClient>{
-              .message = call<SSL>,
-          });
-  app->ws(base_path + "/stream_datetime",  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<DatetimeClient>{
-              .message = stream<SSL>,
-          });
+  app.ws<DatetimeClient>(base_path + "/get_datetime",  //
+                         uWS::TemplatedApp<SSL>::WebSocketBehavior<DatetimeClient>{
+                             .message = call<SSL>,
+                         });
+  app.ws<int>(base_path + "/stream_datetime",  //
+              uWS::TemplatedApp<SSL>::WebSocketBehavior<int>{
+                  .compression = uWS::DISABLED,
+                  .maxPayloadLength = 128,
+                  .idleTimeout = 8,
+                  .maxBackpressure = 0,
+                  .closeOnBackpressureLimit = false,
+                  .resetIdleTimeoutOnSend = true,
+                  .sendPingsAutomatically = false,
+                  .open = subscribe<SSL>,
+              });
 }
 
 }  // namespace tvsc::service::datetime
