@@ -1,7 +1,7 @@
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
 cc_library(
-    name = "services",
+    name = "pubsub",
     hdrs = [
         "pub_sub_service.h",
     ],
@@ -20,7 +20,7 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        ":services",
+        ":pubsub",
         "//third_party/glog",
         "//third_party/grpc",
         "//third_party/uwebsockets",
@@ -54,7 +54,7 @@ cc_test(
         "pub_sub_service_test.cc",
     ],
     deps = [
-        ":services",
+        ":pubsub",
         ":test_cc_grpc",
         ":test_cc_proto",
         "//third_party/gflags",

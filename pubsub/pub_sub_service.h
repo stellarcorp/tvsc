@@ -13,7 +13,7 @@
 #include "grpcpp/support/client_callback.h"
 #include "grpcpp/support/status.h"
 
-namespace tvsc::services {
+namespace tvsc::pubsub {
 
 /**
  * Should a particular MessageT type get compressed when sending over a socket?
@@ -142,4 +142,4 @@ class PubSubService final : public grpc::ClientReadReactor<ResponseT> {
   }
 };
 
-}  // namespace tvsc::services
+}  // namespace tvsc::pubsub

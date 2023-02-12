@@ -1,4 +1,4 @@
-#include "services/pub_sub_service.h"
+#include "pubsub/pub_sub_service.h"
 
 #include <chrono>
 #include <memory>
@@ -11,9 +11,9 @@
 #include "google/protobuf/util/message_differencer.h"
 #include "grpcpp/create_channel.h"
 #include "grpcpp/server_builder.h"
-#include "services/test.grpc.pb.h"
+#include "pubsub/test.grpc.pb.h"
 
-namespace tvsc::services {
+namespace tvsc::pubsub {
 
 using ::testing::_;
 using ::testing::ContainerEq;
@@ -184,4 +184,4 @@ TEST_F(PubSubServiceTest, CanPublishLongRpcStreamOverTopic) {
   }
 }
 
-}  // namespace tvsc::services
+}  // namespace tvsc::pubsub

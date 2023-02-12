@@ -5,13 +5,13 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 #include "http/static_file_server.h"
+#include "pubsub/web_socket_topic.h"
 #include "service/datetime/client/datetime_streamer.h"
 #include "service/datetime/client/web_socket_rpc_client.h"
 #include "service/datetime/common/datetime.pb.h"
 #include "service/echo/client/web_socket_rpc_client.h"
 #include "service/hello/client/web_socket_rpc_client.h"
 #include "service/radio/client/web_socket_rpc_client.h"
-#include "services/web_socket_topic.h"
 
 DEFINE_int32(port, 50050, "Port to listen on.");
 DEFINE_string(doc_root, "service/proxy/doc_root/", "Location of static files.");
@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
   tvsc::http::serve_homepage("/static/index.html", app);
   tvsc::http::serve_favicon("/static/favicon.ico", app);
 
-  tvsc::services::WebSocketTopic<tvsc::service::datetime::DatetimeReply, SSL, 1> topic{
+  tvsc::pubsub::WebSocketTopic<tvsc::service::datetime::DatetimeReply, SSL, 1> topic{
       tvsc::service::datetime::DatetimeStreamer<SSL>::TOPIC_NAME, app};
   topic.register_publishing_handler(*uWS::Loop::get());
 

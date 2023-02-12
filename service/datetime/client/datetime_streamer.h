@@ -5,9 +5,9 @@
 
 #include "discovery/service_types.h"
 #include "grpcpp/grpcpp.h"
+#include "pubsub/pub_sub_service.h"
 #include "service/datetime/client/client.h"
 #include "service/datetime/common/datetime.pb.h"
-#include "services/pub_sub_service.h"
 
 namespace tvsc::service::datetime {
 
@@ -15,10 +15,12 @@ namespace tvsc::service::datetime {
  * Integration of the Datetime::stream_datetime() RPC service method, the PubSubService, and the
  * Topic where the messages are pushed to clients.
  */
+// TODO(james): The functionality of this class should be rolled into the PubSubService class and/or
+// the DatetimeClient.
 template <bool SSL>
 class DatetimeStreamer {
  private:
-  using PubSubT = tvsc::services::PubSubService<DatetimeRequest, DatetimeReply>;
+  using PubSubT = tvsc::pubsub::PubSubService<DatetimeRequest, DatetimeReply>;
 
   static DatetimeRequest construct_request() {
     DatetimeRequest request{};
@@ -38,10 +40,10 @@ class DatetimeStreamer {
  public:
   static constexpr const char* const TOPIC_NAME = Datetime::service_full_name();
 
-  DatetimeStreamer(tvsc::services::Topic<DatetimeReply>& topic)
+  DatetimeStreamer(tvsc::pubsub::Topic<DatetimeReply>& topic)
       : DatetimeStreamer(topic, tvsc::discovery::service_url<Datetime>()) {}
 
-  DatetimeStreamer(tvsc::services::Topic<DatetimeReply>& topic, const std::string& bind_addr)
+  DatetimeStreamer(tvsc::pubsub::Topic<DatetimeReply>& topic, const std::string& bind_addr)
       : client_(std::make_unique<DatetimeClient>(bind_addr)),
         pub_sub_(
             std::make_unique<PubSubT>(topic, construct_rpc_method_caller(), construct_request())) {}

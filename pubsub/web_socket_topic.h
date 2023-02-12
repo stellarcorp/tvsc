@@ -6,9 +6,9 @@
 #include <string_view>
 
 #include "App.h"
-#include "services/pub_sub_service.h"
+#include "pubsub/pub_sub_service.h"
 
-namespace tvsc::services {
+namespace tvsc::pubsub {
 
 template <typename MessageT, bool SSL, size_t MAX_QUEUE_SIZE = 128>
 class WebSocketTopic final : public Topic<MessageT> {
@@ -58,4 +58,4 @@ class WebSocketTopic final : public Topic<MessageT> {
   }
 };
 
-}  // namespace tvsc::services
+}  // namespace tvsc::pubsub

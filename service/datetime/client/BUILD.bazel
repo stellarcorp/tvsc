@@ -7,8 +7,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//discovery",
+        "//pubsub",
         "//service/datetime/common",
-        "//services",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/grpc",
@@ -24,7 +24,6 @@ cc_library(
     deps = [
         ":client",
         "//service/datetime/common",
-        "//services:web_socket_pub_sub",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/grpc",
