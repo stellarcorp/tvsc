@@ -1,20 +1,4 @@
 var protos = {};
-protobuf.load('/static/datetime.proto').then(function(root) {
-  protos['tvsc.service.datetime.DatetimeRequest'] =
-      root.lookupType('tvsc.service.datetime.DatetimeRequest');
-  protos['tvsc.service.datetime.DatetimeReply'] =
-      root.lookupType('tvsc.service.datetime.DatetimeReply');
-});
-protobuf.load('/static/echo.proto').then(function(root) {
-  protos['tvsc.service.echo.EchoRequest'] = root.lookupType('tvsc.service.echo.EchoRequest');
-  protos['tvsc.service.echo.EchoReply'] = root.lookupType('tvsc.service.echo.EchoReply');
-});
-protobuf.load('/static/radio.proto').then(function(root) {
-  protos['tvsc.service.radio.RadioListRequest'] =
-      root.lookupType('tvsc.service.radio.RadioListRequest');
-  protos['tvsc.service.radio.Radio'] = root.lookupType('tvsc.service.radio.Radio');
-  protos['tvsc.service.radio.Radios'] = root.lookupType('tvsc.service.radio.Radios');
-});
 
 var web_sockets = {};
 var datetime_interval_id = -1;
@@ -26,16 +10,9 @@ function DecodeWsMessage(evt, proto_type) {
   return received_msg;
 }
 
-function GetProxyServerAddress() {
-  var host = location.hostname;
-  if (!host) {
-    host = 'localhost';
-  }
-  return host + ':50050';
-}
-
 function BuildWebSocketUrl(service, method) {
-  return 'ws://' + GetProxyServerAddress() + '/service/' + service + '/' + method;
+  // Note that location.host includes the hostname and the port as "hostname:port".
+  return 'ws://' + location.host + '/service/' + service + '/' + method;
 }
 
 function CreateEchoSocket() {
@@ -166,3 +143,46 @@ function CreateWebSockets() {
 function CallEcho(msg) {
   web_sockets['echo'].send(msg);
 }
+
+// This script gives a callback after a javascript file has been loaded. We use this to ensure
+// that dependencies are loaded before using them.
+function LoadScript(url, callback) {
+  // Add a script tag to the document and leverage that tag's events to trigger the callback at the
+  // appropriate time.
+  var head = document.head;
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = url;
+
+  // We bind multiple events to the callback function.
+  // There are several events for cross browser compatibility.
+  script.onreadystatechange = callback;
+  script.onload = callback;
+
+  head.appendChild(script);
+}
+
+function initialize_module() {
+  LoadScript('/static/protobuf-7.2.2.js', function() {
+    protobuf.load('/static/datetime.proto').then(function(root) {
+      protos['tvsc.service.datetime.DatetimeRequest'] =
+          root.lookupType('tvsc.service.datetime.DatetimeRequest');
+      protos['tvsc.service.datetime.DatetimeReply'] =
+          root.lookupType('tvsc.service.datetime.DatetimeReply');
+    });
+    protobuf.load('/static/echo.proto').then(function(root) {
+      protos['tvsc.service.echo.EchoRequest'] = root.lookupType('tvsc.service.echo.EchoRequest');
+      protos['tvsc.service.echo.EchoReply'] = root.lookupType('tvsc.service.echo.EchoReply');
+    });
+    protobuf.load('/static/radio.proto').then(function(root) {
+      protos['tvsc.service.radio.RadioListRequest'] =
+          root.lookupType('tvsc.service.radio.RadioListRequest');
+      protos['tvsc.service.radio.Radio'] = root.lookupType('tvsc.service.radio.Radio');
+      protos['tvsc.service.radio.Radios'] = root.lookupType('tvsc.service.radio.Radios');
+    });
+
+    CreateWebSockets();
+  });
+}
+
+window.onload = initialize_module;
