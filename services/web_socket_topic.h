@@ -34,7 +34,7 @@ class WebSocketTopic final : public Topic<MessageT> {
   template <bool SSL>
   void transfer_messages(uWS::TemplatedApp<SSL>& app) {
     auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-    LOG(INFO) << "WebSocketTopic::transfer_messages() -- now: " << ctime(&now);
+    DLOG_EVERY_N(INFO, 1000) << "WebSocketTopic::transfer_messages() -- now: " << ctime(&now);
 
     std::lock_guard<std::mutex> l{mu_};
     for (const auto& msg : message_queue_) {

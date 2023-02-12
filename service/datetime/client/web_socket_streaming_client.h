@@ -25,7 +25,7 @@ class StreamingDatetimeClient {
   static DatetimeRequest construct_request() {
     DatetimeRequest request{};
     request.set_precision(TimeUnit::MILLISECOND);
-    request.set_period_count(500);
+    request.set_period_count(100);
     request.set_period_unit(TimeUnit::MILLISECOND);
     return request;
   }

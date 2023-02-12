@@ -1,0 +1,11 @@
+--- src/Loop.h.orig	2023-02-11 19:08:43.275334180 -0500
++++ src/Loop.h	2023-02-11 19:08:53.851298943 -0500
+@@ -84,7 +84,7 @@
+             LoopData *loopData;
+             memcpy(&loopData, us_timer_ext(t), sizeof(LoopData *));
+             loopData->updateDate();
+-        }, 1000, 1000);
++        }, 10, 10);
+ 
+         return loop;
+     }

@@ -122,4 +122,5 @@ def load_source_dependencies():
             ],
             build_file = "//third_party/uwebsockets:uwebsockets.BUILD",
             strip_prefix = "uWebSockets-20.36.0",
+            patches = ["//third_party/uwebsockets:Loop.h.patch"],
         )
