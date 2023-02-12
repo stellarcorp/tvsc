@@ -52,16 +52,25 @@ void stream_file(uWS::HttpResponse<SSL>* response, uWS::HttpRequest* request) {
 }
 
 template <bool SSL>
-void serve_static_files(const std::string& pattern, uWS::TemplatedApp<SSL>* app) {
-  app->get(pattern, stream_file<SSL>);
+void serve_static_files(const std::string& pattern, uWS::TemplatedApp<SSL>& app) {
+  app.get(pattern, stream_file<SSL>);
 }
 
 template <bool SSL>
-void serve_homepage(std::string_view homepage, uWS::TemplatedApp<SSL>* app) {
-  const std::filesystem::path homepage_path{compute_filename(FLAGS_doc_root, homepage)};
-  app->get("/", [homepage_path](uWS::HttpResponse<SSL>* response, uWS::HttpRequest* request) {
-    LOG(INFO) << "Serving homepage. homepage_path: " << homepage_path.native();
-    stream_static_file<SSL>(homepage_path, response, request);
+void serve_homepage(std::string_view homepage_filename, uWS::TemplatedApp<SSL>& app) {
+  const std::filesystem::path path{compute_filename(FLAGS_doc_root, homepage_filename)};
+  app.get("/", [path](uWS::HttpResponse<SSL>* response, uWS::HttpRequest* request) {
+    LOG(INFO) << "Serving homepage. path: " << path.native();
+    stream_static_file<SSL>(path, response, request);
+  });
+}
+
+template <bool SSL>
+void serve_favicon(std::string_view favicon_filename, uWS::TemplatedApp<SSL>& app) {
+  const std::filesystem::path path{compute_filename(FLAGS_doc_root, favicon_filename)};
+  app.get("/favicon.ico", [path](uWS::HttpResponse<SSL>* response, uWS::HttpRequest* request) {
+    LOG(INFO) << "Serving favicon. path: " << path.native();
+    stream_static_file<SSL>(path, response, request);
   });
 }
 

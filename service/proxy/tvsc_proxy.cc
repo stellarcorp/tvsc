@@ -32,8 +32,9 @@ int main(int argc, char* argv[]) {
   tvsc::service::datetime::create_web_socket_behaviors("/service/datetime", app);
   tvsc::service::radio::create_web_socket_behaviors("/service/radio", &app);
 
-  tvsc::http::serve_static_files("/static/*", &app);
-  tvsc::http::serve_homepage("/static/index.html", &app);
+  tvsc::http::serve_static_files("/static/*", app);
+  tvsc::http::serve_homepage("/static/index.html", app);
+  tvsc::http::serve_favicon("/static/favicon.ico", app);
 
   tvsc::services::WebSocketTopic<tvsc::service::datetime::DatetimeReply, SSL, 1> topic{
       tvsc::service::datetime::DatetimeStreamer<SSL>::TOPIC_NAME, app};
