@@ -3,7 +3,7 @@ load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 cc_library(
     name = "pubsub",
     hdrs = [
-        "pub_sub_service.h",
+        "publication_service.h",
         "streamer.h",
         "topic.h",
     ],
@@ -51,9 +51,9 @@ cc_grpc_library(
 )
 
 cc_test(
-    name = "pub_sub_service_test",
+    name = "publication_service_test",
     srcs = [
-        "pub_sub_service_test.cc",
+        "publication_service_test.cc",
     ],
     deps = [
         ":pubsub",

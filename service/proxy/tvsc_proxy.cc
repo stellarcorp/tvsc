@@ -5,6 +5,7 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 #include "http/static_file_server.h"
+#include "pubsub/publication_service.h"
 #include "pubsub/web_socket_topic.h"
 #include "service/datetime/client/datetime_streamer.h"
 #include "service/datetime/client/web_socket_rpc_client.h"

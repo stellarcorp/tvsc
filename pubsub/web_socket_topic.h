@@ -1,12 +1,13 @@
 #pragma once
 
 #include <chrono>
-#include <memory>
 #include <mutex>
+#include <string>
 #include <string_view>
+#include <vector>
 
 #include "App.h"
-#include "pubsub/pub_sub_service.h"
+#include "pubsub/topic.h"
 
 namespace tvsc::pubsub {
 

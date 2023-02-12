@@ -1,4 +1,4 @@
-#include "pubsub/pub_sub_service.h"
+#include "pubsub/publication_service.h"
 
 #include <chrono>
 #include <memory>
