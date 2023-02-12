@@ -4,12 +4,14 @@ cc_library(
     name = "pubsub",
     hdrs = [
         "pub_sub_service.h",
+        "streamer.h",
+        "topic.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
+        "//discovery",
         "//third_party/glog",
         "//third_party/grpc",
-        "//third_party/uwebsockets",
     ],
 )
 

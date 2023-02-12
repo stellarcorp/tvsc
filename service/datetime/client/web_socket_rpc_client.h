@@ -33,8 +33,8 @@ void call(uWS::WebSocket<SSL, true, DatetimeClient> *ws, std::string_view messag
 
 template <bool SSL>
 void subscribe(uWS::WebSocket<SSL, true, int> *ws) {
-  LOG(INFO) << "Web socket subscribing to " << DatetimeStreamer<SSL>::TOPIC_NAME;
-  ws->subscribe(DatetimeStreamer<SSL>::TOPIC_NAME);
+  LOG(INFO) << "Web socket subscribing to " << DatetimeStreamer::TOPIC_NAME;
+  ws->subscribe(DatetimeStreamer::TOPIC_NAME);
 }
 
 void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> &app) {

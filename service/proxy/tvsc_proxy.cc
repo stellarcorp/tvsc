@@ -37,12 +37,13 @@ int main(int argc, char* argv[]) {
   tvsc::http::serve_favicon("/static/favicon.ico", app);
 
   tvsc::pubsub::WebSocketTopic<tvsc::service::datetime::DatetimeReply, SSL, 1> topic{
-      tvsc::service::datetime::DatetimeStreamer<SSL>::TOPIC_NAME, app};
+      tvsc::service::datetime::DatetimeStreamer::TOPIC_NAME, app};
   topic.register_publishing_handler(*uWS::Loop::get());
 
-  tvsc::service::datetime::DatetimeStreamer<SSL> datetime_streamer{topic};
+  tvsc::pubsub::PublicationService<tvsc::service::datetime::DatetimeReply> datetime_publisher{
+      topic, std::make_unique<tvsc::service::datetime::DatetimeStreamer>()};
   // TODO(james): Add capability to start this stream on request.
-  datetime_streamer.start();
+  datetime_publisher.start();
 
   app.listen(FLAGS_port,
              [](auto* listen_socket) {

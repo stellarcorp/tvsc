@@ -1,28 +1,21 @@
 #pragma once
 
-#include <memory>
 #include <string>
 
-#include "discovery/service_types.h"
-#include "grpcpp/grpcpp.h"
-#include "pubsub/pub_sub_service.h"
-#include "service/datetime/client/client.h"
+#include "grpcpp/support/client_callback.h"
+#include "pubsub/streamer.h"
+#include "service/datetime/common/datetime.grpc.pb.h"
 #include "service/datetime/common/datetime.pb.h"
 
 namespace tvsc::service::datetime {
 
 /**
- * Integration of the Datetime::stream_datetime() RPC service method, the PubSubService, and the
- * Topic where the messages are pushed to clients.
+ * Streaming publisher of the Datetime::stream_datetime() method.
  */
-// TODO(james): The functionality of this class should be rolled into the PubSubService class and/or
-// the DatetimeClient.
-template <bool SSL>
-class DatetimeStreamer {
+class DatetimeStreamer final
+    : public tvsc::pubsub::GrpcStreamer<Datetime, DatetimeRequest, DatetimeReply> {
  private:
-  using PubSubT = tvsc::pubsub::PubSubService<DatetimeRequest, DatetimeReply>;
-
-  static DatetimeRequest construct_request() {
+  static DatetimeRequest construct_default_request() {
     DatetimeRequest request{};
     request.set_precision(TimeUnit::MILLISECOND);
     request.set_period_count(100);
@@ -30,32 +23,21 @@ class DatetimeStreamer {
     return request;
   }
 
-  PubSubT::RpcMethodCallerT construct_rpc_method_caller() {
-    return [this](grpc::ClientContext* context, const DatetimeRequest* request,
-                  grpc::ClientReadReactor<DatetimeReply>* reactor) {
-      this->client_->stream(context, request, reactor);
-    };
+ protected:
+  void call_rpc_method(Datetime::StubInterface::async_interface& async_stub,
+                       grpc::ClientContext& context, const DatetimeRequest& request,
+                       grpc::ClientReadReactor<DatetimeReply>& reactor) override {
+    async_stub.stream_datetime(&context, &request, &reactor);
   }
 
  public:
-  static constexpr const char* const TOPIC_NAME = Datetime::service_full_name();
+  static constexpr const char TOPIC_NAME[] = "tvsc.service.datetime.Datetime.stream_datetime";
 
-  DatetimeStreamer(tvsc::pubsub::Topic<DatetimeReply>& topic)
-      : DatetimeStreamer(topic, tvsc::discovery::service_url<Datetime>()) {}
+  DatetimeStreamer() { request() = construct_default_request(); }
 
-  DatetimeStreamer(tvsc::pubsub::Topic<DatetimeReply>& topic, const std::string& bind_addr)
-      : client_(std::make_unique<DatetimeClient>(bind_addr)),
-        pub_sub_(
-            std::make_unique<PubSubT>(topic, construct_rpc_method_caller(), construct_request())) {}
-
-  /**
-   * Start the gRPC stream.
-   */
-  void start() { pub_sub_->start(); }
-
- private:
-  std::unique_ptr<DatetimeClient> client_;
-  std::unique_ptr<PubSubT> pub_sub_;
+  DatetimeStreamer(const std::string& bind_addr) : GrpcStreamer(bind_addr) {
+    request() = construct_default_request();
+  }
 };
 
 }  // namespace tvsc::service::datetime

@@ -11,7 +11,9 @@
 #include "google/protobuf/util/message_differencer.h"
 #include "grpcpp/create_channel.h"
 #include "grpcpp/server_builder.h"
+#include "pubsub/streamer.h"
 #include "pubsub/test.grpc.pb.h"
+#include "pubsub/topic.h"
 
 namespace tvsc::pubsub {
 
@@ -59,7 +61,7 @@ class TestServiceImpl : public TestService::Service {
   grpc::Status server_stream(grpc::ServerContext* /*context*/, const TestRequest* /*request*/,
                              grpc::ServerWriter<TestResponse>* writer) override {
     for (const auto& response : canned_responses) {
-      DLOG(INFO) << "Server::writing response: " << response.DebugString();
+      LOG(INFO) << "Server::server_stream() -- writing response: " << response.DebugString();
       std::this_thread::sleep_for(10ms);
       writer->Write(response);
     }
@@ -67,38 +69,40 @@ class TestServiceImpl : public TestService::Service {
   }
 };
 
-class PubSubServiceTest : public ::testing::Test {
+class TestStreamer final : public GrpcStreamer<TestService, TestRequest, TestResponse> {
+ protected:
+  void call_rpc_method(TestService::StubInterface::async_interface& async_stub,
+                       grpc::ClientContext& context, const TestRequest& request,
+                       grpc::ClientReadReactor<TestResponse>& reactor) override {
+    LOG(INFO) << "TestStreamer::call_rpc_method()";
+    async_stub.server_stream(&context, &request, &reactor);
+  }
+
+ public:
+  TestStreamer(const std::string& bind_addr) : GrpcStreamer(bind_addr) {}
+};
+
+class PublicationServiceTest : public ::testing::Test {
  public:
   std::ostringstream server_address{};
   std::unique_ptr<grpc::Server> server{};
 
   TestServiceImpl service{};
 
-  std::shared_ptr<grpc::Channel> channel{};
-  std::unique_ptr<TestService::Stub> client_stub{};
-
   void SetUp() override {
-    DLOG(INFO) << "PubSubServiceTest::SetUp()";
+    LOG(INFO) << "PublicationServiceTest::SetUp()";
     grpc::ServerBuilder builder;
     int port{};
     builder.AddListeningPort("localhost:0", grpc::InsecureServerCredentials(), &port);
     builder.RegisterService(&service);
     server = builder.BuildAndStart();
 
-    DLOG(INFO) << "PubSubServiceTest::SetUp() -- Listening on port " << port;
+    LOG(INFO) << "PublicationServiceTest::SetUp() -- Listening on port " << port;
 
     server_address << "localhost:" << port;
-    channel = grpc::CreateChannel(server_address.str(), grpc::InsecureChannelCredentials());
-    client_stub = TestService::NewStub(channel);
-
-    DLOG(INFO) << "PubSubServiceTest::SetUp() -- Client connecting to " << server_address.str();
   }
 
-  void TearDown() override {
-    client_stub.reset();
-    channel.reset();
-    server->Shutdown();
-  }
+  void TearDown() override { server->Shutdown(); }
 
   void add_canned_response(std::string_view text) {
     TestResponse response{};
@@ -107,17 +111,13 @@ class PubSubServiceTest : public ::testing::Test {
   }
 };
 
-TEST_F(PubSubServiceTest, CanPublishRpcResponseOverTopic) {
+TEST_F(PublicationServiceTest, CanPublishRpcResponseOverTopic) {
   constexpr char MESSAGE[]{"message"};
   add_canned_response(MESSAGE);
 
   TestTopic<TestResponse> topic{};
-  PubSubService<TestRequest, TestResponse> pub_sub{
-      topic, [this](grpc::ClientContext* context, const TestRequest* request,
-                    grpc::ClientReadReactor<TestResponse>* reactor) {
-        DLOG(INFO) << "Initiating connection to server.";
-        return this->client_stub->async()->server_stream(context, request, reactor);
-      }};
+  PublicationService<TestResponse> pub_sub{topic,
+                                           std::make_unique<TestStreamer>(server_address.str())};
 
   pub_sub.start();
   pub_sub.await();
@@ -126,7 +126,7 @@ TEST_F(PubSubServiceTest, CanPublishRpcResponseOverTopic) {
   EXPECT_EQ(MESSAGE, topic.last_message().message());
 }
 
-TEST_F(PubSubServiceTest, CanPublishRpcStreamOverTopic) {
+TEST_F(PublicationServiceTest, CanPublishRpcStreamOverTopic) {
   for (int i = 0; i < 3; ++i) {
     using std::to_string;
     add_canned_response("Message " + to_string(i));
@@ -138,11 +138,8 @@ TEST_F(PubSubServiceTest, CanPublishRpcStreamOverTopic) {
   topic.register_callback(
       [&responses](const TestResponse& message) { responses.emplace_back(message); });
 
-  PubSubService<TestRequest, TestResponse> pub_sub{
-      topic, [this](grpc::ClientContext* context, const TestRequest* request,
-                    grpc::ClientReadReactor<TestResponse>* reactor) {
-        return this->client_stub->async()->server_stream(context, request, reactor);
-      }};
+  PublicationService<TestResponse> pub_sub{topic,
+                                           std::make_unique<TestStreamer>(server_address.str())};
 
   pub_sub.start();
   pub_sub.await();
@@ -155,7 +152,7 @@ TEST_F(PubSubServiceTest, CanPublishRpcStreamOverTopic) {
   }
 }
 
-TEST_F(PubSubServiceTest, CanPublishLongRpcStreamOverTopic) {
+TEST_F(PublicationServiceTest, CanPublishLongRpcStreamOverTopic) {
   for (int i = 0; i < 20; ++i) {
     using std::to_string;
     add_canned_response("Message " + to_string(i));
@@ -167,11 +164,8 @@ TEST_F(PubSubServiceTest, CanPublishLongRpcStreamOverTopic) {
   topic.register_callback(
       [&responses](const TestResponse& message) { responses.emplace_back(message); });
 
-  PubSubService<TestRequest, TestResponse> pub_sub{
-      topic, [this](grpc::ClientContext* context, const TestRequest* request,
-                    grpc::ClientReadReactor<TestResponse>* reactor) {
-        return this->client_stub->async()->server_stream(context, request, reactor);
-      }};
+  PublicationService<TestResponse> pub_sub{topic,
+                                           std::make_unique<TestStreamer>(server_address.str())};
 
   pub_sub.start();
   pub_sub.await();
