@@ -27,10 +27,10 @@ int main(int argc, char* argv[]) {
   tvsc::discovery::register_mdns_grpc_resolver();
 
   uWS::TemplatedApp<SSL> app{};
-  tvsc::service::hello::create_web_socket_behaviors("/service/hello", &app);
-  tvsc::service::echo::create_web_socket_behaviors("/service/echo", &app);
+  tvsc::service::hello::create_web_socket_behaviors("/service/hello", app);
+  tvsc::service::echo::create_web_socket_behaviors("/service/echo", app);
   tvsc::service::datetime::create_web_socket_behaviors("/service/datetime", app);
-  tvsc::service::radio::create_web_socket_behaviors("/service/radio", &app);
+  tvsc::service::radio::create_web_socket_behaviors("/service/radio", app);
 
   tvsc::http::serve_static_files("/static/*", app);
   tvsc::http::serve_homepage("/static/index.html", app);

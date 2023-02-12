@@ -39,8 +39,21 @@ class Topic {
   virtual void publish(const MessageT& msg) = 0;
 };
 
+/**
+ * Service to use streaming methods of gRPC service clients to create a publish-subscribe mechanism.
+ *
+ * This service wraps a streaming method of a gRPC client and connects it to a pub-sub Topic. That
+ * Topic is then responsible for publishing any messages sent to it.
+ */
+// TODO(james): The structure of this class and the Topic class above need to be rethought. The
+// names don't match the expected structure for a pub-sub system. Investigate the design of
+// RabbitMQ, ØMQ, Kafka, etc. to find better names and solidify the roles and responsibilities for
+// each class, including possible new ones.
+// TODO(james): Move the ClientReadReactor functionality into an internal class. It's an
+// implementation detail. This class uses the functionality of a ClientReadReactor to accomplish its
+// goals, but this class's main role is not to be just another form of ClientReadReactor.
 template <typename RequestT, typename ResponseT>
-class PubSubService final : grpc::ClientReadReactor<ResponseT> {
+class PubSubService final : public grpc::ClientReadReactor<ResponseT> {
  public:
   using RpcMethodCallerT = std::function<void(grpc::ClientContext* context, const RequestT* request,
                                               grpc::ClientReadReactor<ResponseT>* reactor)>;
@@ -60,6 +73,26 @@ class PubSubService final : grpc::ClientReadReactor<ResponseT> {
   mutable std::condition_variable cv_;
 
   bool is_running_{false};
+
+  void OnReadDone(bool ok) override {
+    DLOG_EVERY_N(INFO, 1000) << "PubSubService::OnReadDone()";
+    std::unique_lock<std::mutex> l(mu_);
+    if (ok) {
+      // Publish the response to the PubSub topic.
+      topic_->publish(response_);
+
+      // Initiate a new read.
+      this->StartRead(&response_);
+    }
+  }
+
+  void OnDone(const grpc::Status& s) override {
+    DLOG(INFO) << "PubSubService::OnDone()";
+    std::unique_lock<std::mutex> l(mu_);
+    status_ = s;
+    is_running_ = false;
+    cv_.notify_one();
+  }
 
  public:
   PubSubService(Topic<ResponseT>& topic, RpcMethodCallerT call_rpc_fn)
@@ -83,26 +116,6 @@ class PubSubService final : grpc::ClientReadReactor<ResponseT> {
       this->StartRead(&response_);
       this->StartCall();
     }
-  }
-
-  void OnReadDone(bool ok) override {
-    DLOG_EVERY_N(INFO, 1000) << "PubSubService::OnReadDone()";
-    std::unique_lock<std::mutex> l(mu_);
-    if (ok) {
-      // Publish the response to the PubSub topic.
-      topic_->publish(response_);
-
-      // Initiate a new read.
-      this->StartRead(&response_);
-    }
-  }
-
-  void OnDone(const grpc::Status& s) override {
-    DLOG(INFO) << "PubSubService::OnDone()";
-    std::unique_lock<std::mutex> l(mu_);
-    status_ = s;
-    is_running_ = false;
-    cv_.notify_one();
   }
 
   void stop() {

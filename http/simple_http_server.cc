@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 
   uWS::App app{};
 
-  tvsc::http::serve_static_files("/*", &app);
+  tvsc::http::serve_static_files("/*", app);
 
   app.listen(FLAGS_port,
              [](auto* listen_socket) {

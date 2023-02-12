@@ -89,53 +89,53 @@ void ws_close(uWS::WebSocket<SSL, true, HelloClient> *ws, int, std::string_view 
   LOG(INFO) << "hello::ws_close() -- message: " << message;
 }
 
-void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> *app) {
+void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> &app) {
   constexpr bool SSL{false};
-  app->ws(base_path,  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient>{
-              .upgrade = ws_upgrade<SSL>,
-              .open = ws_open<SSL>,
-              .message = ws_message<SSL>,
-              .drain = ws_drain<SSL>,
-              .ping = ws_ping<SSL>,
-              .pong = ws_pong<SSL>,
-              .close = ws_close<SSL>,
-          });
-  app->ws(base_path + "/say_hello",  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient>{
-              .upgrade = ws_upgrade<SSL>,
-              .open = ws_open<SSL>,
-              .message = ws_message<SSL>,
-              .drain = ws_drain<SSL>,
-              .ping = ws_ping<SSL>,
-              .pong = ws_pong<SSL>,
-              .close = ws_close<SSL>,
-          });
+  app.ws(base_path,  //
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient>{
+             .upgrade = ws_upgrade<SSL>,
+             .open = ws_open<SSL>,
+             .message = ws_message<SSL>,
+             .drain = ws_drain<SSL>,
+             .ping = ws_ping<SSL>,
+             .pong = ws_pong<SSL>,
+             .close = ws_close<SSL>,
+         });
+  app.ws(base_path + "/say_hello",  //
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient>{
+             .upgrade = ws_upgrade<SSL>,
+             .open = ws_open<SSL>,
+             .message = ws_message<SSL>,
+             .drain = ws_drain<SSL>,
+             .ping = ws_ping<SSL>,
+             .pong = ws_pong<SSL>,
+             .close = ws_close<SSL>,
+         });
 }
 
 void create_web_socket_behaviors_with_ssl(const std::string &base_path,
-                                          uWS::TemplatedApp<true> *app) {
+                                          uWS::TemplatedApp<true> &app) {
   constexpr bool SSL{true};
-  app->ws(base_path,  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient>{
-              .upgrade = ws_upgrade<SSL>,
-              .open = ws_open<SSL>,
-              .message = ws_message<SSL>,
-              .drain = ws_drain<SSL>,
-              .ping = ws_ping<SSL>,
-              .pong = ws_pong<SSL>,
-              .close = ws_close<SSL>,
-          });
-  app->ws(base_path + "/say_hello",  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient>{
-              .upgrade = ws_upgrade<SSL>,
-              .open = ws_open<SSL>,
-              .message = ws_message<SSL>,
-              .drain = ws_drain<SSL>,
-              .ping = ws_ping<SSL>,
-              .pong = ws_pong<SSL>,
-              .close = ws_close<SSL>,
-          });
+  app.ws(base_path,  //
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient>{
+             .upgrade = ws_upgrade<SSL>,
+             .open = ws_open<SSL>,
+             .message = ws_message<SSL>,
+             .drain = ws_drain<SSL>,
+             .ping = ws_ping<SSL>,
+             .pong = ws_pong<SSL>,
+             .close = ws_close<SSL>,
+         });
+  app.ws(base_path + "/say_hello",  //
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<HelloClient>{
+             .upgrade = ws_upgrade<SSL>,
+             .open = ws_open<SSL>,
+             .message = ws_message<SSL>,
+             .drain = ws_drain<SSL>,
+             .ping = ws_ping<SSL>,
+             .pong = ws_pong<SSL>,
+             .close = ws_close<SSL>,
+         });
 }
 
 }  // namespace tvsc::service::hello

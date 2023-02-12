@@ -35,29 +35,29 @@ void ws_message(uWS::WebSocket<SSL, true, EchoClient> *ws, std::string_view requ
   }
 }
 
-void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> *app) {
+void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> &app) {
   constexpr bool SSL{false};
-  app->ws(base_path,  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient>{
-              .message = ws_message<SSL>,
-          });
-  app->ws(base_path + "/echo",  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient>{
-              .message = ws_message<SSL>,
-          });
+  app.ws(base_path,  //
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient>{
+             .message = ws_message<SSL>,
+         });
+  app.ws(base_path + "/echo",  //
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient>{
+             .message = ws_message<SSL>,
+         });
 }
 
 void create_web_socket_behaviors_with_ssl(const std::string &base_path,
-                                          uWS::TemplatedApp<true> *app) {
+                                          uWS::TemplatedApp<true> &app) {
   constexpr bool SSL{true};
-  app->ws(base_path,  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient>{
-              .message = ws_message<SSL>,
-          });
-  app->ws(base_path + "/echo",  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient>{
-              .message = ws_message<SSL>,
-          });
+  app.ws(base_path,  //
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient>{
+             .message = ws_message<SSL>,
+         });
+  app.ws(base_path + "/echo",  //
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<EchoClient>{
+             .message = ws_message<SSL>,
+         });
 }
 
 }  // namespace tvsc::service::echo

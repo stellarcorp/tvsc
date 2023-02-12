@@ -26,21 +26,21 @@ void handle_list_radios(uWS::WebSocket<SSL, true, RadioClient> *ws, std::string_
   }
 }
 
-void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> *app) {
+void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> &app) {
   constexpr bool SSL{false};
-  app->ws(base_path + "/list_radios",  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<RadioClient>{
-              .message = handle_list_radios<SSL>,
-          });
+  app.ws(base_path + "/list_radios",  //
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<RadioClient>{
+             .message = handle_list_radios<SSL>,
+         });
 }
 
 void create_web_socket_behaviors_with_ssl(const std::string &base_path,
-                                          uWS::TemplatedApp<true> *app) {
+                                          uWS::TemplatedApp<true> &app) {
   constexpr bool SSL{true};
-  app->ws(base_path + "/list_radios",  //
-          uWS::TemplatedApp<SSL>::WebSocketBehavior<RadioClient>{
-              .message = handle_list_radios<SSL>,
-          });
+  app.ws(base_path + "/list_radios",  //
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<RadioClient>{
+             .message = handle_list_radios<SSL>,
+         });
 }
 
 }  // namespace tvsc::service::radio
