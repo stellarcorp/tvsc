@@ -10,11 +10,12 @@
 
 namespace tvsc::services {
 
-template <typename MessageT, size_t MAX_QUEUE_SIZE = 128>
+template <typename MessageT, bool SSL, size_t MAX_QUEUE_SIZE = 128>
 class WebSocketTopic final : public Topic<MessageT> {
  private:
   std::vector<std::string> message_queue_{};
   std::mutex mu_{};
+  uWS::TemplatedApp<SSL>* app_;
 
   void publish(const MessageT& message) override {
     std::string serialized{};
@@ -29,10 +30,10 @@ class WebSocketTopic final : public Topic<MessageT> {
   }
 
  public:
-  WebSocketTopic(std::string_view topic_name) : Topic<MessageT>(topic_name) {}
+  WebSocketTopic(std::string_view topic_name, uWS::TemplatedApp<SSL>& app)
+      : Topic<MessageT>(topic_name), app_(&app) {}
 
-  template <bool SSL>
-  void transfer_messages(uWS::TemplatedApp<SSL>& app) {
+  void transfer_messages() {
     auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     DLOG_EVERY_N(INFO, 1000) << "WebSocketTopic::transfer_messages() -- now: " << ctime(&now);
 
@@ -42,15 +43,19 @@ class WebSocketTopic final : public Topic<MessageT> {
       // successful and if there exists a subscriber to the message. So, we can't differentiate
       // between a failure in the process where we would normally throw an exception and a lack of
       // interest where we might perform an optimization.
-      app.publish(this->topic_name_, msg, uWS::OpCode::BINARY, should_compress<MessageT>());
+      app_->publish(this->topic_name_, msg, uWS::OpCode::BINARY, should_compress<MessageT>());
     }
     message_queue_.clear();
   }
-};
 
-template <typename MessageT>
-std::unique_ptr<Topic<MessageT>> create_web_socket_topic(std::string_view topic_name) {
-  return std::make_unique<WebSocketTopic<MessageT>>(topic_name);
-}
+  /**
+   * All of the web socket message sending and publishing must occur on the thread(s) allocated to
+   * the uWS::App instance's Loop. Trying to publish from other threads to the same Loop instance
+   * tends to cause deadlock/hanging issues.
+   */
+  void register_publishing_handler(uWS::Loop& loop) {
+    loop.addPreHandler(this, [this](uWS::Loop* /*unused*/) { this->transfer_messages(); });
+  }
+};
 
 }  // namespace tvsc::services

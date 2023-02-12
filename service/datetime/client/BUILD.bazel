@@ -2,11 +2,13 @@ cc_library(
     name = "client",
     hdrs = [
         "client.h",
+        "datetime_streamer.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
         "//discovery",
         "//service/datetime/common",
+        "//services",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/grpc",
@@ -17,7 +19,6 @@ cc_library(
     name = "web_socket_client",
     hdrs = [
         "web_socket_rpc_client.h",
-        "web_socket_streaming_client.h",
     ],
     visibility = ["//visibility:public"],
     deps = [

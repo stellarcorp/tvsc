@@ -41,7 +41,7 @@ class DatetimeClient {
 
   void stream(grpc::ClientContext* context, const DatetimeRequest* request,
               grpc::ClientReadReactor<DatetimeReply>* reactor) {
-    return stub_->async()->stream_datetime(context, request, reactor);
+    stub_->async()->stream_datetime(context, request, reactor);
   }
 
  private:
