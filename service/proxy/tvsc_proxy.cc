@@ -7,6 +7,8 @@
 #include "http/static_file_server.h"
 #include "pubsub/publication_service.h"
 #include "pubsub/web_socket_topic.h"
+#include "service/chat/client/chat_streamer.h"
+#include "service/chat/client/web_socket_rpc_client.h"
 #include "service/datetime/client/datetime_streamer.h"
 #include "service/datetime/client/web_socket_rpc_client.h"
 #include "service/datetime/common/datetime.pb.h"
@@ -28,21 +30,37 @@ int main(int argc, char* argv[]) {
   tvsc::discovery::register_mdns_grpc_resolver();
 
   uWS::TemplatedApp<SSL> app{};
-  tvsc::service::hello::create_web_socket_behaviors("/service/hello", app);
-  tvsc::service::echo::create_web_socket_behaviors("/service/echo", app);
-  tvsc::service::datetime::create_web_socket_behaviors("/service/datetime", app);
-  tvsc::service::radio::create_web_socket_behaviors("/service/radio", app);
-
+  // Serve static files from the /static path.
   tvsc::http::serve_static_files("/static/*", app);
+  // Special logic to serve the homepage and favicon from "/" and "/favicon.ico".
   tvsc::http::serve_homepage("/static/index.html", app);
   tvsc::http::serve_favicon("/static/favicon.ico", app);
 
-  tvsc::pubsub::WebSocketTopic<tvsc::service::datetime::DatetimeReply, SSL, 1> topic{
+  // Web sockets for each service. These handle methods with vanilla RPC mechanics and can set up
+  // subscriptions to streams.
+  tvsc::service::chat::create_web_socket_behaviors("/service/chat", app);
+  tvsc::service::datetime::create_web_socket_behaviors("/service/datetime", app);
+  tvsc::service::echo::create_web_socket_behaviors("/service/echo", app);
+  tvsc::service::hello::create_web_socket_behaviors("/service/hello", app);
+  tvsc::service::radio::create_web_socket_behaviors("/service/radio", app);
+
+  // Publish the stream of chat messages.
+  tvsc::pubsub::WebSocketTopic<tvsc::service::chat::ChatMessage, SSL, 1> chat_topic{
+      tvsc::service::chat::ChatStreamer::TOPIC_NAME, app};
+  chat_topic.register_publishing_handler(*uWS::Loop::get());
+
+  tvsc::pubsub::PublicationService<tvsc::service::chat::ChatMessage> chat_publisher{
+      chat_topic, std::make_unique<tvsc::service::chat::ChatStreamer>()};
+  // TODO(james): Add capability to start this stream on request.
+  chat_publisher.start();
+
+  // Publish the stream of datetime messages.
+  tvsc::pubsub::WebSocketTopic<tvsc::service::datetime::DatetimeReply, SSL, 1> datetime_topic{
       tvsc::service::datetime::DatetimeStreamer::TOPIC_NAME, app};
-  topic.register_publishing_handler(*uWS::Loop::get());
+  datetime_topic.register_publishing_handler(*uWS::Loop::get());
 
   tvsc::pubsub::PublicationService<tvsc::service::datetime::DatetimeReply> datetime_publisher{
-      topic, std::make_unique<tvsc::service::datetime::DatetimeStreamer>()};
+      datetime_topic, std::make_unique<tvsc::service::datetime::DatetimeStreamer>()};
   // TODO(james): Add capability to start this stream on request.
   datetime_publisher.start();
 

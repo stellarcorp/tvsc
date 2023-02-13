@@ -17,6 +17,8 @@ cc_binary(
         "//http",
         "//pubsub",
         "//pubsub:web_socket_pub_sub",
+        "//service/chat/client",
+        "//service/chat/client:web_socket_client",
         "//service/datetime/client",
         "//service/datetime/client:web_socket_client",
         "//service/echo/client:web_socket_rpc_client",

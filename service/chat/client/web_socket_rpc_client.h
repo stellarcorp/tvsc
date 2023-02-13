@@ -6,8 +6,8 @@
 #include "App.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
-#include "service/chat/client/client.h"
 #include "service/chat/client/chat_streamer.h"
+#include "service/chat/client/client.h"
 
 namespace tvsc::service::chat {
 
@@ -16,12 +16,11 @@ void call(uWS::WebSocket<SSL, true, ChatClient> *ws, std::string_view message, u
   using std::to_string;
   LOG_EVERY_N(INFO, 1000) << "Web socket calling RPC method ChatClient::get_time()";
   ChatClient *client = static_cast<ChatClient *>(ws->getUserData());
-  ChatReply reply{};
-  grpc::Status status = client->call(&reply);
+  ChatMessage chat_message{};
+  chat_message.ParseFromString(std::string{message});
+  grpc::Status status = client->post(chat_message);
   if (status.ok()) {
-    std::string serialized_reply{};
-    reply.SerializeToString(&serialized_reply);
-    ws->send(serialized_reply, uWS::OpCode::BINARY);
+    ws->send("", uWS::OpCode::BINARY);
   } else {
     LOG_EVERY_N(WARNING, 1000) << "RPC failed -- " << status.error_code() << ": "
                                << status.error_message();
@@ -39,11 +38,11 @@ void subscribe(uWS::WebSocket<SSL, true, int> *ws) {
 
 void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> &app) {
   constexpr bool SSL{false};
-  app.ws<ChatClient>(base_path + "/get_chat",  //
-                         uWS::TemplatedApp<SSL>::WebSocketBehavior<ChatClient>{
-                             .message = call<SSL>,
-                         });
-  app.ws<int>(base_path + "/stream_chat",  //
+  app.ws<ChatClient>(base_path + "/post_message",  //
+                     uWS::TemplatedApp<SSL>::WebSocketBehavior<ChatClient>{
+                         .message = call<SSL>,
+                     });
+  app.ws<int>(base_path + "/subscribe_to_messages",  //
               uWS::TemplatedApp<SSL>::WebSocketBehavior<int>{
                   .compression = uWS::DISABLED,
                   .maxPayloadLength = 128,
