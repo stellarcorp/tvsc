@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package tvsc.service.chat;
+
+// This chat service allows users to send messages to a general forum and receive any messages
+// posted to the same forum.
+service Chat {
+  // Post a message to the forum. No explicit message for a response, but gRPC will provide an ACK
+  // response.
+  rpc post_message(ChatMessage) returns (EmptyMessage);
+  // Subscribe to any messages on the forum.
+  rpc subscribe_to_messages(EmptyMessage) returns (stream ChatMessage);
+}
+
+message EmptyMessage {
+  // This message intentionally contains no fields.
+}
+
+message ChatMessage {
+  // Username of the person posting the message. This could be a name, callsign, unique user id,
+  // etc. That will be determined by the implementation of the service.
+  string poster = 1;
+  // Free-form string for a message. It is left to the implementation of the service to provide any
+  // required structure or format for this string. Implementations could choose to use HTML,
+  // 8BITMIME (email format), etc.
+  string message = 2;
+}
