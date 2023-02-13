@@ -91,8 +91,8 @@ pkg_deb(
 )
 
 sh_binary(
-    name = "run_proxy",
-    srcs = ["run_proxy.sh"],
+    name = "run_virtual_tower",
+    srcs = ["run_virtual_tower.sh"],
     data = [
         ":tvsc_proxy",
         "//service/chat/server:chat_server",
