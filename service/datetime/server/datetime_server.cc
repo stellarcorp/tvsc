@@ -5,14 +5,12 @@
 #include <string>
 #include <thread>
 
-#include "discovery/service_advertiser.h"
-#include "discovery/service_types.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
-#include "grpcpp/health_check_service_interface.h"
 #include "service/datetime/common/datetime.grpc.pb.h"
 #include "service/datetime/common/datetime_utils.h"
+#include "service/utility/service_runner.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -147,34 +145,15 @@ class DatetimeServiceImpl final : public Datetime::Service {
   }
 };
 
-void run_server() {
-  DatetimeServiceImpl service;
-
-  grpc::EnableDefaultHealthCheckService(true);
-  ServerBuilder builder;
-
-  int port{0};
-  builder.AddListeningPort("dns:///[::]:0", grpc::InsecureServerCredentials(), &port);
-
-  builder.RegisterService(&service);
-
-  std::unique_ptr<Server> server(builder.BuildAndStart());
-
-  tvsc::discovery::ServiceAdvertiser advertiser{};
-  advertiser.advertise_service("TVSC Datetime Service",
-                               tvsc::discovery::generate_service_type<Datetime>(), "local", port);
-
-  LOG(INFO) << "Server listening on port " << port;
-  server->Wait();
-}
-
 }  // namespace tvsc::service::datetime
 
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
 
-  tvsc::service::datetime::run_server();
+  using namespace tvsc::service::datetime;
+  tvsc::service::utility::run_single_service<Datetime, DatetimeServiceImpl>(
+      "TVSC Datetime Service");
 
   return 0;
 }

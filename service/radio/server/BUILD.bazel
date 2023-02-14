@@ -5,11 +5,8 @@ cc_binary(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//discovery",
-        "//discovery:advertise",
-        "//radio",
-        "//radio:radio_server",
         "//service/radio/common",
+        "//service/utility",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/grpc",

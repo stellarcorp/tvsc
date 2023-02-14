@@ -6,14 +6,12 @@
 #include <string>
 #include <vector>
 
-#include "discovery/service_advertiser.h"
-#include "discovery/service_types.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
-#include "grpcpp/health_check_service_interface.h"
 #include "service/chat/common/chat.grpc.pb.h"
 #include "service/chat/common/chat.pb.h"
+#include "service/utility/service_runner.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -82,34 +80,14 @@ class ChatServiceImpl final : public Chat::Service {
   }
 };
 
-void run_server() {
-  ChatServiceImpl service;
-
-  grpc::EnableDefaultHealthCheckService(true);
-  ServerBuilder builder;
-
-  int port{0};
-  builder.AddListeningPort("dns:///[::]:0", grpc::InsecureServerCredentials(), &port);
-
-  builder.RegisterService(&service);
-
-  std::unique_ptr<Server> server(builder.BuildAndStart());
-
-  tvsc::discovery::ServiceAdvertiser advertiser{};
-  advertiser.advertise_service("TVSC Chat Service", tvsc::discovery::generate_service_type<Chat>(),
-                               "local", port);
-
-  LOG(INFO) << "Server listening on port " << port;
-  server->Wait();
-}
-
 }  // namespace tvsc::service::chat
 
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
 
-  tvsc::service::chat::run_server();
+  using namespace tvsc::service::chat;
+  tvsc::service::utility::run_single_service<Chat, ChatServiceImpl>("TVSC Chat Service");
 
   return 0;
 }

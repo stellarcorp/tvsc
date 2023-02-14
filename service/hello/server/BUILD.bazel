@@ -3,9 +3,8 @@ cc_binary(
     srcs = ["greeter_server.cc"],
     visibility = ["//visibility:public"],
     deps = [
-        "//discovery",
-        "//discovery:advertise",
         "//service/hello/common",
+        "//service/utility",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/grpc",
