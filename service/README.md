@@ -8,6 +8,7 @@ This module contains the high-level services used in our projects. These service
 
 See the directory for each service for more details on that service. The list of services as of the time of writing is
 
+- [proxy](./proxy) HTTP server that provides web socket interfaces, and static file serving, to the other services.
 - [radio](./radio) Service for listing and selecting radios for communications.
 - [chat](./chat) Service implementing a trivial chat system.
 - [echo](./echo) Test service that echos inputs as outputs.
