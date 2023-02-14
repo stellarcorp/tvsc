@@ -32,7 +32,7 @@ void run_server() {
   int port{0};
   builder.AddListeningPort("dns:///[::]:0", grpc::InsecureServerCredentials(), &port);
 
-  builder.RegisterService(service);
+  builder.RegisterService(&service);
 
   std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
 
