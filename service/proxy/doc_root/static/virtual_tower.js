@@ -1,13 +1,7 @@
-var protos = {};
+let echo_rpc = null;
 
-var web_sockets = {};
-var datetime_interval_id = -1;
-var current_date = new Date();
-
-function DecodeWsMessage(evt, proto_type) {
-  var as_array = new Uint8Array(evt.data);
-  var received_msg = protos[proto_type].decode(as_array);
-  return received_msg;
+function TypedArrayToBuffer(array) {
+  return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset)
 }
 
 function BuildWebSocketUrl(service, method) {
@@ -15,133 +9,233 @@ function BuildWebSocketUrl(service, method) {
   return 'ws://' + location.host + '/service/' + service + '/' + method;
 }
 
-function CreateEchoSocket() {
-  var ws = new WebSocket(BuildWebSocketUrl('echo', 'echo'));
-  ws.binaryType = 'arraybuffer';
+/**
+ * Class to provide a namespace for holding protobuf factories.
+ *
+ * @class
+ */
+class Protos {
+  static #protos = {};
 
-  ws.onmessage = function(evt) {
-    var received_msg = DecodeWsMessage(evt, 'tvsc.service.echo.EchoReply');
-    $('#echo_reply').text(received_msg.msg);
-  };
+  static add_proto(name, factory) {
+    Protos.#protos[name] = factory;
+  }
 
-  return ws;
-}
-
-function ChangeDatetimeButtonToStop() {
-  $('#datetime_button').html('Pause')
-  $('#datetime_button').on('click.stop', function() {
-    StopDatetimeRequests();
-    $('#datetime_button').off('click.stop');
-  });
-}
-
-function ChangeDatetimeButtonToStart() {
-  $('#datetime_button').html('Resume')
-  $('#datetime_button').on('click.start', function() {
-    StartDatetimeRequests();
-    $('#datetime_button').off('click.start');
-  });
-}
-
-function StartDatetimeRequests() {
-  if (web_sockets['datetime'] == null) {
-    CreateDatetimeSocket(StartDatetimeRequests, StopDatetimeRequests);
-  } else if (
-      web_sockets['datetime'].readyState == 1 /* OPEN */ &&
-      web_sockets['datetime'].bufferedAmount == 0) {
-    web_sockets['datetime'].send('');
-    ChangeDatetimeButtonToStop();
-  } else {
-    // Try again in a bit.
-    window.setTimeout(function() {
-      StartDatetimeRequests();
-    }, 5000);
+  static get_proto_factory(name) {
+    return Protos.#protos[name];
   }
 }
 
-function StopDatetimeRequests() {
-  if (datetime_interval_id != -1) {
-    window.clearInterval(datetime_interval_id);
-    datetime_interval_id = -1;
+/**
+ * Class for managing a websocket-based RPC method.
+ *
+ * @class
+ */
+class WebSocketRpc {
+  #url;
+  #ws;
+  #request_proto_encoder;
+  #response_proto_decoder;
+  #response_handler;
+  #error_handler;
+
+  #create_web_socket(open_handler) {
+    this.#ws = new WebSocket(this.#url);
+
+    this.#ws.binaryType = 'arraybuffer';
+
+    this.#ws.onopen = open_handler;
+
+    this.#ws.onmessage = (evt) => {
+      let as_array = new Uint8Array(evt.data);
+      let received_msg = this.#response_proto_decoder.decode(as_array);
+      this.#response_handler(received_msg);
+    };
+
+    this.#ws.onclose = (evt) => {
+      this.#ws = null;
+    };
+
+    this.#ws.onerror = (evt) => {
+      this.#ws = null;
+      this.#error_handler(evt);
+    };
   }
-  ChangeDatetimeButtonToStart();
-}
 
-function CreateDatetimeSocket(starter, stopper) {
-  // Change to a subscription to a topic.
-  var ws = new WebSocket(BuildWebSocketUrl('datetime', 'stream_datetime'));
-  ws.binaryType = 'arraybuffer';
+  constructor(url, request_proto_encoder_name, response_proto_decoder_name) {
+    this.#url = url;
+    this.#request_proto_encoder = Protos.get_proto_factory(request_proto_encoder_name);
+    this.#response_proto_decoder = Protos.get_proto_factory(response_proto_decoder_name);
+    this.#ws = null;
+    this.#response_handler = null;
+    this.#error_handler = null;
+  }
 
-  ws.onopen = starter;
+  url() {
+    return this.#url;
+  }
 
-  ws.onmessage = function(evt) {
-    var received_msg = DecodeWsMessage(evt, 'tvsc.service.datetime.DatetimeReply');
-    current_date.setTime(received_msg.datetime);
-    var date_text = current_date.toISOString();
-    $('#datetime_reply').text(date_text);
-  };
-
-  ws.onerror = function(evt) {
-    console.log('Error on Datetime socket: ' + evt);
-  };
-
-  ws.onclose = function(evt) {
-    console.log('Closing Datetime socket: ' + evt);
-    stopper(evt);
-    web_sockets['datetime'] = null;
-  };
-
-  web_sockets['datetime'] = ws;
-}
-
-function GetRadioList() {
-  web_sockets['radio/list_radios'].send('');
-}
-
-function CreateRadioListSocket() {
-  var ws = new WebSocket(BuildWebSocketUrl('radio', 'list_radios'));
-  ws.binaryType = 'arraybuffer';
-
-  ws.onmessage = function(evt) {
-    var radios = DecodeWsMessage(evt, 'tvsc.service.radio.Radios');
-    $('#radio_list').empty();
-    console.log(radios.radios)
-    for (let radio of radios.radios) {
-      let item_element = $('<li>');
-      item_element.append(document.createTextNode(radio.name));
-      let keys_values_element = $('<ul class=\'keys_values_element\'>');
-      for (let key_value of radio.keysValues) {
-        let key_value_element = $('<li class=\'key_value_element\'>')
-        key_value_element.append(document.createTextNode(key_value.key + ': ' + key_value.value));
-        keys_values_element.append(key_value_element);
-      }
-      item_element.append(keys_values_element);
-      $('#radio_list').append(item_element);
+  send(request) {
+    if (this.#ws) {
+      let bits = this.#request_proto_encoder.encode(request).finish();
+      this.#ws.send(TypedArrayToBuffer(bits));
+    } else {
+      this.#create_web_socket(() => {
+        this.send(request);
+      });
     }
-  };
+  }
 
-  ws.onopen = function() {
-    GetRadioList();
-  };
+  on_receive(response_handler) {
+    this.#response_handler = response_handler;
+  }
 
-  return ws;
+  on_error(error_handler) {
+    this.#error_handler = error_handler;
+  }
 }
 
-function CreateWebSockets() {
-  if (!('WebSocket' in window)) {
-    // The browser doesn't support WebSocket
-    alert('WebSocket NOT supported by your Browser!');
-  } else {
-    CreateDatetimeSocket(StartDatetimeRequests, StopDatetimeRequests);
+/**
+ * Class for managing a websocket-based server streams.
+ *
+ * @class
+ */
+class WebSocketStream {
+  #url;
+  #ws;
+  #request_proto_encoder;
+  #response_proto_decoder;
 
-    web_sockets['echo'] = CreateEchoSocket();
+  #start_handler;
+  #response_handler;
+  #stop_handler;
+  #error_handler;
 
-    // web_sockets['radio/list_radios'] = CreateRadioListSocket();
+  #create_web_socket(open_handler) {
+    this.#ws = new WebSocket(this.#url);
+
+    this.#ws.binaryType = 'arraybuffer';
+
+    this.#ws.onopen = open_handler;
+
+    this.#ws.onmessage = (evt) => {
+      let as_array = new Uint8Array(evt.data);
+      let received_msg = this.#response_proto_decoder.decode(as_array);
+      this.#response_handler(received_msg);
+    };
+
+    this.#ws.onclose = (evt) => {
+      this.#ws = null;
+      this.#stop_handler(evt);
+    };
+
+    this.#ws.onerror = (evt) => {
+      this.#ws = null;
+      this.#error_handler(evt);
+    };
   }
+
+  constructor(url, request_proto_encoder_name, response_proto_decoder_name) {
+    this.#url = url;
+    this.#request_proto_encoder = Protos.get_proto_factory(request_proto_encoder_name);
+    this.#response_proto_decoder = Protos.get_proto_factory(response_proto_decoder_name);
+    this.#ws = null;
+    this.#response_handler = null;
+    this.#error_handler = null;
+  }
+
+  url() {
+    return this.#url;
+  }
+
+  start() {
+    if (this.#ws) {
+      let bits = this.#request_proto_encoder.encode('').finish();
+      this.#ws.send(TypedArrayToBuffer(bits));
+      this.#start_handler()
+    } else {
+      this.#create_web_socket(() => {
+        this.start();
+      });
+    }
+  }
+
+  stop() {
+    this.#ws.close();
+  }
+
+  toggle() {
+    if (this.is_running()) {
+      this.stop();
+    } else {
+      this.start();
+    }
+  }
+
+  is_running() {
+    return this.#ws != null;
+  }
+
+  on_start(start_handler) {
+    this.#start_handler = start_handler;
+  }
+
+  on_receive(response_handler) {
+    this.#response_handler = response_handler;
+  }
+
+  on_stop(stop_handler) {
+    this.#stop_handler = stop_handler;
+  }
+
+  on_error(error_handler) {
+    this.#error_handler = error_handler;
+  }
+}
+
+function CreateDatetimeStream() {
+  datetime_stream = new WebSocketStream(
+      BuildWebSocketUrl('datetime', 'stream_datetime'),  //
+      'tvsc.service.datetime.DatetimeRequest',           //
+      'tvsc.service.datetime.DatetimeReply');
+  datetime_stream.on_receive(function(reply) {
+    let current_date = new Date();
+    current_date.setTime(reply.datetime);
+    let date_text = current_date.toISOString();
+    $('#datetime_reply').text(date_text);
+  });
+  datetime_stream.on_start(function() {
+    $('#datetime_button').html('Pause')
+  });
+  datetime_stream.on_stop(function(evt) {
+    $('#datetime_button').html('Resume')
+  });
+  datetime_stream.on_error(function(evt) {
+    $('#datetime_button').html('Resume')
+    $('#datetime_reply').text('<error>');
+  });
+  $('#datetime_button').click(function() {
+    datetime_stream.toggle();
+  });
+  datetime_stream.start();
+}
+
+function CreateEchoSocket() {
+  echo_rpc = new WebSocketRpc(
+      BuildWebSocketUrl('echo', 'echo'),  //
+      'tvsc.service.echo.EchoRequest',    //
+      'tvsc.service.echo.EchoReply');
+  echo_rpc.on_receive(function(reply) {
+    $('#echo_reply').text(reply.msg);
+  });
+  echo_rpc.on_error(function(evt) {
+    $('#echo_reply').text('<error>');
+  });
 }
 
 function CallEcho(msg) {
-  web_sockets['echo'].send(msg);
+  let echo_request = Protos.get_proto_factory('tvsc.service.echo.EchoRequest').create({msg: msg});
+  echo_rpc.send(echo_request);
 }
 
 // This script gives a callback after a javascript file has been loaded. We use this to ensure
@@ -149,8 +243,8 @@ function CallEcho(msg) {
 function LoadScript(url, callback) {
   // Add a script tag to the document and leverage that tag's events to trigger the callback at the
   // appropriate time.
-  var head = document.head;
-  var script = document.createElement('script');
+  let head = document.head;
+  let script = document.createElement('script');
   script.type = 'text/javascript';
   script.src = url;
 
@@ -163,26 +257,38 @@ function LoadScript(url, callback) {
 }
 
 function initialize_module() {
-  LoadScript('/static/protobuf-7.2.2.js', function() {
-    protobuf.load('/static/datetime.proto').then(function(root) {
-      protos['tvsc.service.datetime.DatetimeRequest'] =
-          root.lookupType('tvsc.service.datetime.DatetimeRequest');
-      protos['tvsc.service.datetime.DatetimeReply'] =
-          root.lookupType('tvsc.service.datetime.DatetimeReply');
-    });
-    protobuf.load('/static/echo.proto').then(function(root) {
-      protos['tvsc.service.echo.EchoRequest'] = root.lookupType('tvsc.service.echo.EchoRequest');
-      protos['tvsc.service.echo.EchoReply'] = root.lookupType('tvsc.service.echo.EchoReply');
-    });
-    protobuf.load('/static/radio.proto').then(function(root) {
-      protos['tvsc.service.radio.RadioListRequest'] =
-          root.lookupType('tvsc.service.radio.RadioListRequest');
-      protos['tvsc.service.radio.Radio'] = root.lookupType('tvsc.service.radio.Radio');
-      protos['tvsc.service.radio.Radios'] = root.lookupType('tvsc.service.radio.Radios');
-    });
+  if (!('WebSocket' in window)) {
+    // The browser doesn't support WebSocket.
+    alert('WebSocket NOT supported by your Browser!');
+  } else {
+    LoadScript('/static/protobuf-7.2.2.js', function() {
+      protobuf.load('/static/datetime.proto').then(function(root) {
+        Protos.add_proto(
+            'tvsc.service.datetime.DatetimeRequest',
+            root.lookupType('tvsc.service.datetime.DatetimeRequest'));
+        Protos.add_proto(
+            'tvsc.service.datetime.DatetimeReply',
+            root.lookupType('tvsc.service.datetime.DatetimeReply'));
 
-    CreateWebSockets();
-  });
+        CreateDatetimeStream();
+      });
+      protobuf.load('/static/echo.proto').then(function(root) {
+        Protos.add_proto(
+            'tvsc.service.echo.EchoRequest', root.lookupType('tvsc.service.echo.EchoRequest'));
+        Protos.add_proto(
+            'tvsc.service.echo.EchoReply', root.lookupType('tvsc.service.echo.EchoReply'));
+
+        CreateEchoSocket();
+      });
+      protobuf.load('/static/radio.proto').then(function(root) {
+        Protos.add_proto(
+            'tvsc.service.radio.RadioListRequest',
+            root.lookupType('tvsc.service.radio.RadioListRequest'));
+        Protos.add_proto('tvsc.service.radio.Radio', root.lookupType('tvsc.service.radio.Radio'));
+        Protos.add_proto('tvsc.service.radio.Radios', root.lookupType('tvsc.service.radio.Radios'));
+      });
+    });
+  }
 }
 
 window.onload = initialize_module;
