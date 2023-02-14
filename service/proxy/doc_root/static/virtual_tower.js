@@ -1,4 +1,6 @@
+let list_radio_rpc = null;
 let echo_rpc = null;
+let datetime_stream = null;
 
 function TypedArrayToBuffer(array) {
   return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset)
@@ -150,7 +152,7 @@ class WebSocketStream {
 
   start() {
     if (this.#ws) {
-      let bits = this.#request_proto_encoder.encode('').finish();
+      let bits = this.#request_proto_encoder.encode({}).finish();
       this.#ws.send(TypedArrayToBuffer(bits));
       this.#start_handler()
     } else {
@@ -220,6 +222,35 @@ function CreateDatetimeStream() {
   datetime_stream.start();
 }
 
+function CreateRadioListSocket() {
+  list_radio_rpc = new WebSocketRpc(
+      BuildWebSocketUrl('radio', 'list_radios'),  //
+      'tvsc.service.radio.RadioListRequest',      //
+      'tvsc.service.radio.Radios');
+  list_radio_rpc.on_receive(function(reply) {
+    $('#radio_list').empty();
+    for (let radio of reply.radios) {
+      let item_element = $('<li>');
+      item_element.append(document.createTextNode(radio.name));
+      let keys_values_element = $('<ul class=\'keys_values_element\'>');
+      for (let key_value of radio.keysValues) {
+        let key_value_element = $('<li class=\'key_value_element\'>')
+        key_value_element.append(document.createTextNode(key_value.key + ': ' + key_value.value));
+        keys_values_element.append(key_value_element);
+      }
+      item_element.append(keys_values_element);
+      $('#radio_list').append(item_element);
+    }
+  });
+  list_radio_rpc.on_error(function(evt) {
+    $('#radio_list').text('<error>');
+  });
+}
+
+function GetRadioList() {
+  list_radio_rpc.send({});
+}
+
 function CreateEchoSocket() {
   echo_rpc = new WebSocketRpc(
       BuildWebSocketUrl('echo', 'echo'),  //
@@ -286,6 +317,8 @@ function initialize_module() {
             root.lookupType('tvsc.service.radio.RadioListRequest'));
         Protos.add_proto('tvsc.service.radio.Radio', root.lookupType('tvsc.service.radio.Radio'));
         Protos.add_proto('tvsc.service.radio.Radios', root.lookupType('tvsc.service.radio.Radios'));
+
+        CreateRadioListSocket();
       });
     });
   }
