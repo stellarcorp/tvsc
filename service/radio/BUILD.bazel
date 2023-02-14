@@ -8,7 +8,6 @@ pkg_files(
     name = "binaries",
     testonly = True,
     srcs = [
-        "//service/radio/server:list-radio-devices",
         "//service/radio/server:tvsc-radio-service",
     ],
     attributes = pkg_attributes(
@@ -60,9 +59,6 @@ pkg_deb(
     depends = [
         "libavahi-client3 (>= 0.8)",
         "avahi-daemon (>= 0.8)",
-        "librtlsdr0 (>= 0.6)",
-        "libsoapysdr0.7 (>= 0.7)",
-        "soapysdr0.7-module-rtlsdr (>= 0.3)",
     ],
     description = "Radio package from the Virtual Tower system from TVSC",
     maintainer = "info@stellarcorp.tv",
