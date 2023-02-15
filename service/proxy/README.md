@@ -15,3 +15,7 @@ As of the time of writing, the TVSC Proxy Service handles connections to the fol
 ## Structure
 
 The TVSC Proxy Service is based on gRPC and a web socket library called uWebSockets.
+
+## Major libraries
+
+The proxy service is based on our [http](../../http) library that manages static file serving and HTTP and Web Socket request handling.
