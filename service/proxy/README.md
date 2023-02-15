@@ -9,7 +9,7 @@ As of the time of writing, the TVSC Proxy Service handles connections to the fol
 - [radio](../radio)
 - [chat](../chat)
 - [datetime](../datetime) This is a debug service and may be disabled in some builds.
-- [echo](../ech)o This is a debug service and may be disabled in some builds.
+- [echo](../echo) This is a debug service and may be disabled in some builds.
 - [hello](../hello) This is a debug service and may be disabled in some builds.
 
 ## Structure
