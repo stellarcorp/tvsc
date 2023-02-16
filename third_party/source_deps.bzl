@@ -135,8 +135,8 @@ def load_source_dependencies():
             strip_prefix = "EpoxyDuino-1.5.0",
             build_file = "//third_party/epoxy_duino:epoxy_duino.BUILD",
             patches = [
-                "//third_party/epoxy_duino:pins.patch",
-                "//third_party/epoxy_duino:interrupts.patch",
+                "//third_party/epoxy_duino:arduino.h.patch",
+                "//third_party/epoxy_duino:arduino.cpp.patch",
             ],
         )
 
