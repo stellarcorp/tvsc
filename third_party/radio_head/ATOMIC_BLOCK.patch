@@ -1,0 +1,25 @@
+--- RadioHead/RadioHead.h.orig	2023-02-16 10:35:53.295540068 -0500
++++ RadioHead/RadioHead.h	2023-02-16 12:02:46.407283744 -0500
+@@ -1702,7 +1702,21 @@
+  #if defined(__arm__)
+   #include <RHutil/atomic.h>
+  #else
+-  #include <util/atomic.h>
++static __inline__ uint8_t __iCliRetVal(void)
++{
++  noInterrupts();
++  return 1;
++}
++
++static __inline__ void __iRestore(const  uint8_t */*ignored*/)
++{
++  interrupts();
++}
++
++  #define ATOMIC_BLOCK(type) for ( type, __ToDo = __iCliRetVal(); \
++                                 __ToDo ; __ToDo = 0 )
++  #define ATOMIC_RESTORESTATE uint8_t sreg_save \
++          __attribute__((__cleanup__(__iRestore))) = 1
+  #endif
+  #if defined(ARDUINO_ARCH_MBED_RP2040)
+   // Standard arduino ATOMIC block crashes on MBED version of Pico as at 2021-08-12						   

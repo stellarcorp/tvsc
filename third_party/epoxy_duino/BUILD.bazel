@@ -1,0 +1,7 @@
+cc_library(
+    name = "epoxy_duino",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_bxparks_epoxy_duino//:core",
+    ],
+)

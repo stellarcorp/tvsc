@@ -124,3 +124,29 @@ def load_source_dependencies():
             strip_prefix = "uWebSockets-20.36.0",
             patches = ["//third_party/uwebsockets:Loop.h.patch"],
         )
+
+    if not native.existing_rule("com_github_bxparks_epoxy_duino"):
+        http_archive(
+            name = "com_github_bxparks_epoxy_duino",
+            sha256 = "c05755aacd52c02b42b9908554d2cf185d8a5d37ed8ac3f393ed833566608b40",
+            urls = [
+                "https://github.com/bxparks/EpoxyDuino/archive/refs/tags/v1.5.0.tar.gz",
+            ],
+            strip_prefix = "EpoxyDuino-1.5.0",
+            build_file = "//third_party/epoxy_duino:epoxy_duino.BUILD",
+            patches = [
+                "//third_party/epoxy_duino:pins.patch",
+                "//third_party/epoxy_duino:interrupts.patch",
+            ],
+        )
+
+    if not native.existing_rule("com_airspayce_mikem_radio_head"):
+        http_archive(
+            name = "com_airspayce_mikem_radio_head",
+            sha256 = "73400cce6aa7bfb6bfc7acd640f7c9b2354f7d755a92b38c2be814bff85cc44b",
+            urls = [
+                "https://www.airspayce.com/mikem/arduino/RadioHead/RadioHead-1.121.zip",
+            ],
+            build_file = "//third_party/radio_head:radio_head.BUILD",
+            patches = ["//third_party/radio_head:ATOMIC_BLOCK.patch"],
+        )

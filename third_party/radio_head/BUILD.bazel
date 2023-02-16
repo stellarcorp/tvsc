@@ -1,0 +1,30 @@
+cc_library(
+    name = "driver_base",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/epoxy_duino",
+        "@com_airspayce_mikem_radio_head//:driver_base",
+    ],
+)
+
+cc_library(
+    name = "rf69_driver",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/epoxy_duino",
+        "@com_airspayce_mikem_radio_head//:rf69_driver",
+    ],
+)
+
+cc_test(
+    name = "compile_test",
+    srcs = [
+        "compile_test.cc",
+    ],
+    deps = [
+        ":rf69_driver",
+        "//third_party/epoxy_duino",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
