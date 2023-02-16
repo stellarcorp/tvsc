@@ -1,6 +1,0 @@
-#!/bin/bash
- 
-NAME=$(basename "$0")
-TOOLCHAIN_BINDIR=external/com_gitlab_tvsc_toolchains/aarch64-rpi3-linux-gnu/bin
- 
-exec "${TOOLCHAIN_BINDIR}"/"${NAME}" "$@"

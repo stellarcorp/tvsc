@@ -62,6 +62,11 @@ def _impl(ctx):
         ),
     ]
 
+    shared_library_feature = feature(
+        name = "supports_dynamic_linker",
+        enabled = True,
+    )
+
     default_compiler_flags = feature(
         name = "default_compiler_flags",
         enabled = True,
@@ -121,6 +126,7 @@ def _impl(ctx):
     )
 
     features = [
+        shared_library_feature,
         default_compiler_flags,
         default_linker_flags,
         toolchain_debug_linker_flags,
@@ -138,7 +144,7 @@ def _impl(ctx):
         abi_version = "unknown",
         abi_libc_version = "unknown",
         tool_paths = tool_paths,
-        builtin_sysroot = "external/com_gitlab_tvsc_toolchains/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc",
+        builtin_sysroot = "external/com_gitlab_tvsc_gcc_arm_10_2/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc",
     )
 
 cc_toolchain_config = rule(

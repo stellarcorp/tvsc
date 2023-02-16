@@ -2,11 +2,11 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def load_toolchains():
     # TODO(james): Lock this to a release tag.
-    TOOLCHAINS_COMMIT = "b294fa6855299e7e150dfa71db58d4e24dee74d2"
-    if "com_gitlab_tvsc_toolchains" not in native.existing_rules():
+    GCC_ARM_10_2_TOOLCHAIN_COMMIT = "58165f80e16737a7357c32d6e99a893750b726ad"
+    if "com_gitlab_tvsc_gcc_arm_10_2" not in native.existing_rules():
         http_archive(
-            name = "com_gitlab_tvsc_toolchains",
-            sha256 = "be673c9666e11ec5105dfe94526e8b3571056249d4d0a338272df53056ac9611",
-            urls = ["https://gitlab.com/tvsc/toolchains/-/archive/{}.zip".format(TOOLCHAINS_COMMIT)],
-            strip_prefix = "toolchains-{}".format(TOOLCHAINS_COMMIT),
+            name = "com_gitlab_tvsc_gcc_arm_10_2",
+            sha256 = "6994c2eab429fbbe125fd521c0f323461a85bf29666d53b17ba3760dcee3d259",
+            urls = ["https://gitlab.com/tvsc/gcc-arm-10.2/-/archive/{}.zip".format(GCC_ARM_10_2_TOOLCHAIN_COMMIT)],
+            strip_prefix = "gcc-arm-10.2-{}".format(GCC_ARM_10_2_TOOLCHAIN_COMMIT),
         )
