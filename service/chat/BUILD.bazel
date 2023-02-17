@@ -55,3 +55,20 @@ pkg_deb(
     version = version_string(),
     visibility = ["//visibility:public"],
 )
+
+cc_test(
+    name = "chat_service_test",
+    srcs = [
+        "chat_service_test.cc",
+    ],
+    deps = [
+        "//discovery",
+        "//discovery:resolve",
+        "//service/chat/client",
+        "//service/chat/server",
+        "//service/utility",
+        "//service/utility:testing",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)

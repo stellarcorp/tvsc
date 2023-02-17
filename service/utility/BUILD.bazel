@@ -12,3 +12,17 @@ cc_library(
         "//third_party/grpc",
     ],
 )
+
+cc_library(
+    name = "testing",
+    testonly = True,
+    hdrs = [
+        "status_testing.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/glog",
+        "//third_party/grpc",
+        "//third_party/gtest",
+    ],
+)

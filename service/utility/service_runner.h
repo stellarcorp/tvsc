@@ -4,6 +4,7 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <ratio>
 #include <string>
 #include <vector>
 
@@ -162,7 +163,8 @@ class ServiceRunner final {
    *
    * If the server does not shutdown in the required timeout time, it is forcefully shutdown.
    */
-  template <typename Rep, typename Period, typename Clock = std::chrono::system_clock>
+  template <typename Rep = int64_t, typename Period = std::milli,
+            typename Clock = std::chrono::system_clock>
   void stop(std::chrono::duration<Rep, Period> timeout = std::chrono::milliseconds(100)) {
     // Only do the shutdown procedure if the server is running.
     if (server_) {
