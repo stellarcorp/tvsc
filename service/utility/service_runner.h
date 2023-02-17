@@ -172,6 +172,16 @@ class ServiceRunner final {
       reset();
     }
   }
+
+  /**
+   * Return the address where the running server is bound. Note that this only provides for a
+   * localhost context. It does not attempt to provide a form that could be referenced from another
+   * computer.
+   */
+  std::string bind_address() const {
+    using std::to_string;
+    return "dns:///[::]:" + to_string(port_);
+  }
 };
 
 /**

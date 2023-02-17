@@ -62,8 +62,6 @@ cc_test(
         "chat_service_test.cc",
     ],
     deps = [
-        "//discovery",
-        "//discovery:resolve",
         "//service/chat/client",
         "//service/chat/server",
         "//service/utility",
