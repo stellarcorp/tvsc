@@ -1,7 +1,0 @@
-cc_library(
-    name = "transform",
-    hdrs = [
-        "pcm_to_iq.h",
-    ],
-    visibility = ["//visibility:public"],
-)
