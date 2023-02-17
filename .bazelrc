@@ -54,4 +54,5 @@ build:ubsan --linkopt -lubsan
 
 # Code coverage
 # This option gives us a single combined report for the whole repository.
-coverage --combined_report=lcov --experimental_profile_cpu_usage
+coverage --combined_report=lcov
+coverage --instrumentation_filter "^//"
