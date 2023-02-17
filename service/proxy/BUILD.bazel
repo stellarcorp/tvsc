@@ -77,7 +77,7 @@ pkg_deb(
         create_service_dependency_string("tvsc-chat"),
         create_service_dependency_string("tvsc-datetime"),
         create_service_dependency_string("tvsc-echo"),
-        create_service_dependency_string("tvsc-greeter"),
+        create_service_dependency_string("tvsc-hello"),
         create_service_dependency_string("tvsc-radio"),
     ],
     description = "Reverse network proxy package from the Virtual Tower system from TVSC",
@@ -98,7 +98,7 @@ sh_binary(
         "//service/chat/server:chat_server",
         "//service/datetime/server:datetime_server",
         "//service/echo/server:echo_server",
-        "//service/hello/server:greeter_server",
+        "//service/hello/server:hello_server",
         "//service/radio/server:tvsc-radio-service",
     ],
 )

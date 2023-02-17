@@ -61,3 +61,18 @@ pkg_deb(
     version = version_string(),
     visibility = ["//visibility:public"],
 )
+
+cc_test(
+    name = "hello_service_test",
+    srcs = [
+        "hello_service_test.cc",
+    ],
+    deps = [
+        "//service/hello/client",
+        "//service/hello/server",
+        "//service/utility",
+        "//service/utility:testing",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
