@@ -15,8 +15,8 @@ pkg_files(
     testonly = True,
     srcs = [
         ":hello_world",
-        "//service/hello/client:greeter_client",
-        "//service/hello/server:greeter_server",
+        "//service/hello/client:hello_client",
+        "//service/hello/server:hello_server",
     ],
     attributes = pkg_attributes(
         mode = "0755",
@@ -27,7 +27,7 @@ pkg_files(
 pkg_files(
     name = "systemd_files",
     srcs = [
-        ":etc/tvsc-greeter.service",
+        ":etc/tvsc-hello.service",
     ],
     attributes = pkg_attributes(
         mode = "0644",
@@ -35,7 +35,7 @@ pkg_files(
     prefix = "lib/systemd/system",
 )
 
-PACKAGE_NAME = "tvsc-greeter"
+PACKAGE_NAME = "tvsc-hello"
 
 pkg_tar(
     name = "tarball",
@@ -52,12 +52,12 @@ pkg_deb(
     testonly = True,
     architecture = arch_name(),
     data = ":tarball",
-    description = "Greeter package from the Virtual Tower system from TVSC",
+    description = "Hello world package from the Virtual Tower system from TVSC",
     maintainer = "info@stellarcorp.tv",
     package = PACKAGE_NAME,
-    postinst = "debian/tvsc_greeter_service.postinst",
-    preinst = "debian/tvsc_greeter_service.preinst",
-    prerm = "debian/tvsc_greeter_service.prerm",
+    postinst = "debian/tvsc_hello_service.postinst",
+    preinst = "debian/tvsc_hello_service.preinst",
+    prerm = "debian/tvsc_hello_service.prerm",
     version = version_string(),
     visibility = ["//visibility:public"],
 )

@@ -30,8 +30,8 @@ cc_library(
 )
 
 cc_binary(
-    name = "greeter_client",
-    srcs = ["greeter_client.cc"],
+    name = "hello_client",
+    srcs = ["hello_client.cc"],
     visibility = ["//visibility:public"],
     deps = [
         ":client",
