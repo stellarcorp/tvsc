@@ -2,9 +2,11 @@ load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
 load(
     "@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl",
     "feature",
+    "feature_set",
     "flag_group",
     "flag_set",
     "tool_path",
+    "with_feature_set",
 )
 
 all_link_actions = [
@@ -62,6 +64,10 @@ def _impl(ctx):
         ),
     ]
 
+    dbg_feature = feature(name = "dbg")
+
+    opt_feature = feature(name = "opt")
+
     shared_library_feature = feature(
         name = "supports_dynamic_linker",
         enabled = True,
@@ -83,6 +89,44 @@ def _impl(ctx):
                             "-D__TIMESTAMP__=\"redacted\"",
                             "-D__TIME__=\"redacted\"",
                             "-fPIC",
+                            "-U_FORTIFY_SOURCE",
+                        ],
+                    ),
+                ],
+            ),
+        ],
+    )
+
+    opt_compiler_flags = feature(
+        name = "opt_compiler_flags",
+        enabled = True,
+        requires = [feature_set(features = ["opt"])],
+        flag_sets = [
+            flag_set(
+                actions = all_compile_actions,
+                flag_groups = [
+                    flag_group(
+                        flags = [
+                            "-O2",
+                        ],
+                    ),
+                ],
+            ),
+        ],
+    )
+
+    dbg_compiler_flags = feature(
+        name = "dbg_compiler_flags",
+        enabled = True,
+        requires = [feature_set(features = ["dbg"])],
+        flag_sets = [
+            flag_set(
+                actions = all_compile_actions,
+                flag_groups = [
+                    flag_group(
+                        flags = [
+                            "-g",
+                            "-O",
                         ],
                     ),
                 ],
@@ -126,6 +170,10 @@ def _impl(ctx):
     )
 
     features = [
+        opt_feature,
+        dbg_feature,
+        opt_compiler_flags,
+        dbg_compiler_flags,
         shared_library_feature,
         default_compiler_flags,
         default_linker_flags,
