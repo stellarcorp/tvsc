@@ -16,11 +16,6 @@ build:c++20_windows --cxxopt=/std:c++20
 # TODO(james): Re-enable platform support when gRPC and Abseil enable them.
 #build:platform_build --incompatible_enable_cc_toolchain_resolution
 
-# Note: Raspberry Pi builds pick up the build:linux configurations as well.
-# TODO(james): Re-enable platform support when gRPC and Abseil enable them.
-#build:rpi3 --config=platform_build --platforms=//platforms:rpi3
-build:rpi3_cross --crosstool_top=//toolchain/arm64-rpi3-linux-gnu:gcc_toolchain --cpu=arm64 --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
-
 # Note: This configuration picks up the build:linux configurations as well.
 # TODO(james): Re-enable platform support when gRPC and Abseil enable them.
 #build:odroid_m1 --config=platform_build --platforms=//platforms:odroid_m1
@@ -56,3 +51,7 @@ build:ubsan --copt -O3
 build:ubsan --copt -fno-omit-frame-pointer
 build:ubsan --linkopt -fsanitize=undefined
 build:ubsan --linkopt -lubsan
+
+# Code coverage
+# This option gives us a single combined report for the whole repository.
+coverage --combined_report=lcov --experimental_profile_cpu_usage
