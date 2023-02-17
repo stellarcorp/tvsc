@@ -43,7 +43,3 @@ This next step should fail, unless you are running on an ARM processor:
 ## Repository structure
 
 As the Virtual Tower progresses, we will add specific directories to this repository for that project. Until then, the best place to start is in the [service](./service) directory. This directory contains the various services that will comprise the Virtual Tower and future projects.
-
-## Test coverage
-
-Test coverage reports can be found in the [coverage_html](./coverage_html/index.html) subdirectory. This is a temporary workaround until we can configure our CI pipeline to output these reports as an artifact.
