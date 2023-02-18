@@ -1,6 +1,6 @@
 # TVSC
 
-This repository is the principal codebase for the Tennessee Valley Stellar Corporation. We are a small space agency in east Tennessee dedicated to the open development of technologies enabling the public use of space. Our first project is a drone-based communication system called "Virtual Tower". It's goal is to extend radio communications without the need of a physical radio tower. The Virtual Tower is currently under development and is not yet ready for general use.
+This repository is the principal codebase for the Tennessee Valley Stellar Corporation. We are a community-scale space agency in east Tennessee dedicated to the open development of technologies enabling the public use of space. Our first project is a drone-based communication system called "Virtual Tower". Its goal is to extend radio communications without the need of a physical radio tower. The Virtual Tower is currently under development and is not yet ready for general use.
 
 ## Getting started
 
