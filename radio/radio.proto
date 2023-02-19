@@ -1,0 +1,313 @@
+/**
+ * Draft set of concepts for representing the possible settings of a radio. The goal is to be able
+ * to succinctly represent the full capabilities of a radio and any particular settings the radio
+ * could adopt. This file necessarily includes a method for identifying radios.
+ *
+ * These concepts should be considered drafts. We need to go through the exercise of trying to
+ * represent the capabilities and settings of several different radio modules before we can consider
+ * this design to be solid.
+ *
+ * Open questions:
+ * - Do we need to support units? Are we going to have issues with 2427 being interpreted
+ * as 2.427kHz when someone meant 2.427MHz? Similarly for seconds, milliseconds, etc. dBm vs Watts?
+ *
+ * - Do we want to support telemetry concepts here as well? Tentatively, the answer is that
+ * telemetry will be supported elsewhere; the messages in this file are for link management only.
+ *
+ * - Do we want to support unsigned integer values, or should we just support signed integers, like
+ * Java?
+ */
+syntax = "proto3";
+
+package tvsc.radio;
+
+option optimize_for = LITE_RUNTIME;
+
+/**
+ * Identification of a radio. Note that the current idea is for this message to be transmitted
+ * rarely -- on announcement or in response to a specific query -- and only the 32-bit integer id
+ * would be used in most messages.
+ */
+message RadioIdentification {
+  /**
+   * The expanded id will be a randomly generated unsigned 64-bit integer value. This value is good
+   * for uniqueness, but bad for transmission size. As an alternative, we will use a small integer
+   * for the id for most communications. The full id exists so that we can address conflicts. In the
+   * event of a conflict, we will need a method for regenerating and re-advertising the short id.
+   */
+  fixed64 expanded_id = 1;
+
+  /**
+   * The id for the radio. This is a shortened form of the expanded_id above. The goal of this id is
+   * to save space in any transmissions, especially since these transmissions may be going over
+   * radios with high latency and limited bandwidth.
+   */
+  uint32 id = 2;
+
+  /**
+   * Name of the device to help a user understand which device this is. We expect this string could
+   * be displayed as-is to a user. Depending on the application, it might be editable by at least
+   * some users.
+   */
+  string name = 3;
+}
+
+enum ModulationTechnique {
+  UNINITIALIZED = 0;
+
+  // Digital data.
+
+  // Amplitude-based techniques.
+
+  // https://en.wikipedia.org/wiki/On%E2%80%93off_keying
+  OOK = 1;
+
+  // https://en.wikipedia.org/wiki/Amplitude-shift_keying
+  ASK = 2;
+
+  // https://en.wikipedia.org/wiki/Amplitude_and_phase-shift_keying
+  APSK = 3;
+
+  // Frequency-based techniques.
+  // https://en.wikipedia.org/wiki/Frequency-shift_keying
+  FSK = 4;
+
+  // https://en.wikipedia.org/wiki/Frequency-shift_keying
+  AFSK = 5;
+
+  // https://en.wikipedia.org/wiki/Frequency-shift_keying and
+  // https://en.wikipedia.org/wiki/Project_25
+  C4FM = 6;
+
+  // https://en.wikipedia.org/wiki/Frequency-shift_keying#Gaussian_frequency-shift_keying
+  GFSK = 7;
+
+  // https://en.wikipedia.org/wiki/Multiple_frequency-shift_keying
+  MFSK = 8;
+
+  // https://en.wikipedia.org/wiki/Minimum-shift_keying
+  MSK = 9;
+
+  // https://en.wikipedia.org/wiki/Minimum-shift_keying#Gaussian_minimum-shift_keying
+  GMSK = 10;
+
+  // Phase-based techniques.
+
+  // https://en.wikipedia.org/wiki/Pulse-position_modulation
+  PPM = 11;
+
+  // https://en.wikipedia.org/wiki/Continuous_phase_modulation
+  CPM = 12;
+
+  // https://en.wikipedia.org/wiki/Phase-shift_keying
+  PSK = 13;
+
+  // https://en.wikipedia.org/wiki/Phase-shift_keying#Quadrature_phase-shift_keying_.28QPSK.29
+  QPSK = 14;
+
+  // https://en.wikipedia.org/wiki/Phase-shift_keying#Offset_QPSK_(OQPSK)
+  OQPSK = 15;
+
+  // https://en.wikipedia.org/wiki/Quadrature_amplitude_modulation
+  QAM = 16;
+  // https://en.wikipedia.org/wiki/Single-carrier_FDMA
+  SC_FDMA = 17;
+
+  // https://en.wikipedia.org/wiki/Trellis_modulation (* ILMP research)
+  TCM = 18;
+
+  // https://en.wikipedia.org/wiki/Wavelet_modulation (* ILMP research)
+  WDM = 19;
+
+  // Spread spectrum techniques. https://en.wikipedia.org/wiki/Spread_spectrum
+  // https://en.wikipedia.org/wiki/Chirp_spread_spectrum (* ILMP research)
+  CSS = 20;
+
+  // https://en.wikipedia.org/wiki/Direct-sequence_spread_spectrum (* ILMP research)
+  DSSS = 21;
+
+  // https://en.wikipedia.org/wiki/Frequency-hopping_spread_spectrum (* ILMP research)
+  FHSS = 22;
+
+  // https://en.wikipedia.org/wiki/Time-hopping
+  THSS = 23;
+
+  // Analog data.
+  AM = 24;
+  FM = 25;
+  PM = 26;
+
+  // https://en.wikipedia.org/wiki/Single-sideband_modulation
+  USB = 27;
+
+  // https://en.wikipedia.org/wiki/Single-sideband_modulation
+  LSB = 28;
+}
+
+enum LineCoding {
+  NONE = 0;
+
+  WHITENING = 1;
+
+  // This list primarily comes from:
+  // https://en.wikipedia.org/wiki/Line_code#Transmission_and_storage
+  NRZ_L = 2;
+  NRZ_M = 3;
+  NRZ_S = 4;
+  RZ = 5;
+  BIPHASE_L = 6;
+  BIPHASE_M = 7;
+  BIPHASE_S = 8;
+
+  // Manchester encoding and differential Manchester encoding both have multiple implementations.
+  MANCHESTER_ORIGINAL = 9;
+  MANCHESTER_802_3 = 10;
+
+  DIFFERENTIAL_MANCHESTER = 11;
+
+  BIPOLAR = 12;
+}
+
+enum Encryption {
+  NO_ENCRYPTION = 0;
+  AES_128 = 1;
+}
+
+/**
+ * Rudimentary set of functions that a radio has. Each of these might be configurable for a form of
+ * link management.
+ */
+enum Function {
+  UNKNOWN = 0;
+  CARRIER_FREQUENCY_HZ = 1;
+  MODULATION_SCHEME = 2;
+  TX_POWER_DBM = 3;
+  RX_POWER_DBM = 4;  // Needed?
+  MTU = 5;
+  PREAMBLE_LENGTH = 6;
+  SYNC_WORDS_LENGTH = 7;
+  LINE_CODING = 8;
+  ENCRYPTION = 9;
+}
+
+/**
+ * Enumeration of which values in a range may be included in that range. There are four
+ * combinations. For both the minimum value and the maximum value, the endpoint can either be
+ * included or excluded. This enum has those four combinations. For example, INCLUSIVE_EXCLUSIVE
+ * would indicate a range where the minimum value was included as a possible value, but the maximum
+ * was excluded. This could be expressed as [min,max).
+ */
+enum RangeInclusivity {
+  INCLUSIVE_INCLUSIVE = 0;
+  INCLUSIVE_EXCLUSIVE = 1;
+  EXCLUSIVE_INCLUSIVE = 2;
+  EXCLUSIVE_EXCLUSIVE = 3;
+}
+
+/**
+ * Range of integer (32-bit) values.
+ */
+message Int32Range {
+  int32 min = 1;
+  int32 max = 2;
+  RangeInclusivity inclusive = 3;
+}
+
+/**
+ * Range of integer (64-bit) values.
+ */
+message Int64Range {
+  int64 min = 1;
+  int64 max = 2;
+  RangeInclusivity inclusive = 3;
+}
+
+/**
+ * Range of floating point values.
+ */
+message FloatRange {
+  float min = 1;
+  float max = 2;
+  RangeInclusivity inclusive = 3;
+}
+
+/**
+ * General concept of a ranged value. This can be a range of ints, 32 bit or 64 bit, or a range of
+ * floats.
+ */
+message RangedValue {
+  oneof value {
+    Int32Range int32_range = 1;
+    Int64Range int64_range = 2;
+    FloatRange float_range = 3;
+  }
+}
+
+/**
+ * A single value. This could be an integer, 32 bit or 64 bit, or a single floating point value.
+ * This message type can be thought of as a contrast to the RangedValue type above, or it can be
+ * thought of as a specific value in a setting versus the possible values expressing a capability.
+ */
+message DiscreteValue {
+  oneof value {
+    int32 int32_value = 1;
+    int64 int64_value = 2;
+    float float_value = 3;
+  }
+}
+
+// TODO(james): Is this concept what we want for "Value"? It seems too narrow for such a broad term.
+// DiscreteValue and RangedValue would need to be changed as well.
+message Value {
+  repeated DiscreteValue discrete = 1;
+  repeated RangedValue ranged = 2;
+}
+
+/**
+ * A function of a radio (such as frequency, modulation scheme, etc.) along with its allowed values.
+ */
+message Capability {
+  Function function = 1;
+  repeated Value allowed_values = 2;
+}
+
+/**
+ * A collection of the capabilities of a radio. These could be a complete representation of what the
+ * radio is can do, but they may also be incomplete or limited to a particular set of functions.
+ */
+message Capabilities {
+  repeated Capability capabilities = 1;
+}
+
+/**
+ * A value of a function of a radio. For example, a 2.4GHz 802.11g radio operating on channel 4
+ * would have a "carrier frequency" function with a value of 2'427'000'000 (2427MHz).
+ */
+message Setting {
+  Function function = 1;
+  DiscreteValue value = 2;
+}
+
+/**
+ * A collection of the settings of a radio. Like the Capabilities above, they may be a complete
+ * representation or a subset.
+ */
+message Settings {
+  repeated Setting settings = 1;
+}
+
+/**
+ * Settings for the given radio.
+ */
+message RadioSettings {
+  int32 id = 1;
+  Settings settings = 2;
+}
+
+/**
+ * Capabilities of the given radio.
+ */
+message RadioCapabilities {
+  int32 id = 1;
+  Capabilities capabilities = 2;
+}

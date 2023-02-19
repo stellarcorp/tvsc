@@ -1,0 +1,60 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+cc_library(
+    name = "radio",
+    hdrs = [
+        "radio_configuration.h",
+        "radio_head_rf69_configuration.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":radio_cc_proto",
+    ],
+)
+
+cc_library(
+    name = "rh_rf69",
+    hdrs = [
+        "radio_head_rf69_configuration.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":radio",
+        ":radio_cc_proto",
+        "//base",
+        "//random",
+        "//third_party/glog",
+        "//third_party/radio_head:rf69_driver",
+    ],
+)
+
+filegroup(
+    name = "radio_proto_file",
+    srcs = ["radio.proto"],
+    visibility = ["//visibility:public"],
+)
+
+proto_library(
+    name = "radio_proto",
+    srcs = ["radio.proto"],
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "radio_cc_proto",
+    deps = [":radio_proto"],
+)
+
+cc_test(
+    name = "radio_configuration_test",
+    srcs = [
+        "radio_configuration_test.cc",
+    ],
+    deps = [
+        ":radio",
+        ":rh_rf69",
+        "//third_party/gtest",
+        "//third_party/radio_head:rf69_driver",
+    ],
+)
