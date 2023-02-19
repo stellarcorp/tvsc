@@ -2,6 +2,7 @@ cc_library(
     name = "base",
     hdrs = [
         "except.h",
+        "units.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
