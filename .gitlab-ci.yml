@@ -33,5 +33,5 @@ x86_64-optimized-tests:
   artifacts:
     name: "test_logs"
     paths:
-      - "$LOCAL_BAZEL_CACHE/**/test.log"
+      - "**/test.log"
     expire_in: 1 week
