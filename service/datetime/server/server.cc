@@ -14,6 +14,20 @@ namespace tvsc::service::datetime {
 
 using namespace std::literals::chrono_literals;
 
+template <typename Clock, typename Rep, typename Period>
+void sleep_while_checking_for_cancel(std::chrono::duration<Rep, Period> sleep_duration,
+                                     grpc::ServerContext& context) {
+  const std::chrono::time_point<Clock> wakeup_time{Clock::now() + sleep_duration};
+  // We change the meaning of the sleep_duration variable here to avoid allocating a new duration.
+  // It used to mean the total amount of time for this method to sleep. Now it means the individual
+  // interval to sleep between checking if the context has been cancelled.
+  sleep_duration = std::min(std::chrono::duration_cast<std::chrono::duration<Rep, Period>>(50ms),
+                            sleep_duration);
+  while (!context.IsCancelled() && wakeup_time > Clock::now()) {
+    std::this_thread::sleep_for(sleep_duration);
+  }
+}
+
 std::chrono::nanoseconds default_period(TimeUnit requested_precision) {
   switch (requested_precision) {
     case TimeUnit::NANOSECOND:
@@ -131,7 +145,8 @@ grpc::Status DatetimeServiceImpl::stream_datetime(grpc::ServerContext* context,
     auto sleep_duration = std::min(response_period, timeout_duration / 2);
     DLOG_EVERY_N(INFO, 1000) << "DatetimeServerImpl::stream_datetime() -- sleep_duration: "
                              << sleep_duration.count() / 1000 / 1000 << "ms";
-    std::this_thread::sleep_for(sleep_duration);
+
+    sleep_while_checking_for_cancel<Clock>(sleep_duration, *context);
   }
 
   // Client-side cancelling of the stream is expected, so we return OK instead of CANCELLED.

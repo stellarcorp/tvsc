@@ -26,7 +26,11 @@ class DatetimeServiceTest : public ::testing::Test {
 
   void SetUp() override { service_runner.start(); }
 
-  void TearDown() override { service_runner.stop(); }
+  void TearDown() override {
+    DLOG(INFO) << "Stopping the service...";
+    service_runner.stop();
+    DLOG(INFO) << "Service stopped.";
+  }
 };
 
 TEST_F(DatetimeServiceTest, CanCallGet) {
@@ -43,17 +47,15 @@ TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessage) {
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
+  DLOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
+    DLOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::NANOSECOND, received_message.unit());
@@ -72,17 +74,41 @@ TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessageWithRepeatPeriod)
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
+    ++read_message_count;
+    EXPECT_GT(received_message.datetime(), 0);
+    EXPECT_EQ(TimeUnit::YEAR, received_message.unit());
+
+    subscribed_context.TryCancel();
+  }
+  EXPECT_EQ(1, read_message_count);
+}
+
+TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessageWithLongRepeatPeriod) {
+  DatetimeRequest request{};
+  request.set_precision(TimeUnit::YEAR);
+  // This repeat period was chosen to be longer than the test timeout from Bazel. The goal here is
+  // to detect situations when the server is not responsive to the client closing the connection via
+  // ClientContext::TryCancel(). This reproduces issue https://gitlab.com/tvsc/tvsc/-/issues/22.
+  request.set_period_count(1000);
+  request.set_period_unit(TimeUnit::SECOND);
+
+  DatetimeClient subscribed_client{service_runner.bind_address()};
+
+  grpc::ClientContext subscribed_context{};
+
+  std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
+  reader = subscribed_client.stream(&subscribed_context, request);
+
+  DatetimeReply received_message{};
+  int read_message_count{0};
+  while (reader->Read(&received_message)) {
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::YEAR, received_message.unit());
@@ -99,17 +125,13 @@ TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessageNanosecondPrecisi
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::NANOSECOND, received_message.unit());
@@ -126,17 +148,13 @@ TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessageMicrosecondPrecis
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::MICROSECOND, received_message.unit());
@@ -153,17 +171,13 @@ TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessageMillisecondPrecis
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::MILLISECOND, received_message.unit());
@@ -180,17 +194,13 @@ TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessageSecondPrecision) 
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::SECOND, received_message.unit());
@@ -207,17 +217,13 @@ TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessageMinutePrecision) 
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::MINUTE, received_message.unit());
@@ -234,17 +240,13 @@ TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessageHourPrecision) {
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::HOUR, received_message.unit());
@@ -261,17 +263,13 @@ TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessageDayPrecision) {
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::DAY, received_message.unit());
@@ -288,17 +286,13 @@ TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessageWeekPrecision) {
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::WEEK, received_message.unit());
@@ -315,17 +309,13 @@ TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessageMonthPrecision) {
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::MONTH, received_message.unit());
@@ -342,24 +332,24 @@ TEST_F(DatetimeServiceTest, CanRequestStreamAndGetSingleMessageYearPrecision) {
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
+  DLOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
+    DLOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::YEAR, received_message.unit());
 
     subscribed_context.TryCancel();
   }
+  DLOG(INFO) << "Testing message count.";
   EXPECT_EQ(1, read_message_count);
+  DLOG(INFO) << "Test complete.";
 }
 
 TEST_F(DatetimeServiceTest, CanSubscribeAndGetManyMessages) {
@@ -372,17 +362,13 @@ TEST_F(DatetimeServiceTest, CanSubscribeAndGetManyMessages) {
   DatetimeClient subscribed_client{service_runner.bind_address()};
 
   grpc::ClientContext subscribed_context{};
-  // 100ms to get a message.
-  subscribed_context.set_deadline(Clock::now() + 100ms);
 
   std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> reader{};
   reader = subscribed_client.stream(&subscribed_context, request);
 
   DatetimeReply received_message{};
   int read_message_count{0};
-  LOG(INFO) << "Reading messages from reader";
   while (reader->Read(&received_message)) {
-    LOG(INFO) << "Read message! -- received_message: " << received_message.DebugString();
     ++read_message_count;
     EXPECT_GT(received_message.datetime(), 0);
     EXPECT_EQ(TimeUnit::YEAR, received_message.unit());
