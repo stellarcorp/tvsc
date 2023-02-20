@@ -49,9 +49,9 @@ namespace tvsc::radio {
  * segment is 1-60 octets.
  *
  * - Longer payloads are possible if encryption is off. There might be some regulatory implications
- * though. Without encryption, we can send flight or control messages per FCC regulations. Maybe our
- * Tx/Rx API just includes a boolean indicating if the message is a control message and manages that
- * aspect of the configuration directly for those messages?
+ * though. Without encryption, we cannot send flight or control messages per FCC regulations. Maybe
+ * our Tx/Rx API just includes a boolean indicating if the message is a control message and manages
+ * that aspect of the configuration directly for those messages?
  */
 
 template <>
