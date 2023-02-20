@@ -13,6 +13,8 @@
 
 namespace tvsc::radio {
 
+constexpr uint8_t SYNC_WORDS[] = {0x53, 0x52, 0x39, 0x30, 0x74, 0x76, 0x73, 0x63};
+
 /**
  * These templates define an interface for configuring the HopeRF RFM69HCW radio module using the
  * RadioHead RH_RF69 Driver.
@@ -39,11 +41,12 @@ namespace tvsc::radio {
  * But that description leaves off these details:
  *
  * - The PREAMBLE can be configured to be from 0-65535 octets, though the comments indicate that at
- * least 2 octets are needed for stable communications. (TODO(james): Verify. There are two 8-bit
- * registers to store the length of the preamble, but all of those values may not be valid.)
+ * least 2 octets are needed for stable communications. There are two 8-bit registers to store the
+ * length of the preamble.
  *
  * - The length, as well as the contents, of the SYNC words are configurable. Allowed values for the
- * length are [0,4].
+ * length are actually [0,8] where zero implies that the SYNC functionality should be turned off.
+ * Not sure why, but the RadioHead implementation restricts the sync word size to 4 octets.
  *
  * - The implementation does not allow for an empty payload, so the effective range for the DATA
  * segment is 1-60 octets.
@@ -95,10 +98,22 @@ std::unordered_map<Function, Value> generate_capabilities_map<RH_RF69>() {
   return capabilities;
 }
 
-template <typename DriverT>
-DiscreteValue read_setting(Function function);
+template <>
+DiscreteValue read_setting<RH_RF69>(RH_RF69& driver, Function function) {}
 
-template <typename DriverT>
-void write_setting(Function function, const DiscreteValue& value);
+template <>
+void write_setting<RH_RF69>(RH_RF69& driver, Function function, const DiscreteValue& value) {
+  using std::to_string;
+  switch (function) {
+    case PREAMBLE_LENGTH: {
+      driver.setPreambleLength(as<uint16_t>(value));
+      break;
+    }
+    case SYNC_WORDS_LENGTH: {
+      driver.setSyncWords(SYNC_WORDS, as<uint8_t>(value));
+      break;
+    }
+  }
+}
 
 }  // namespace tvsc::radio

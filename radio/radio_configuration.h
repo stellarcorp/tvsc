@@ -63,14 +63,37 @@ Value enumerated(std::initializer_list<T> values) {
   return result;
 }
 
+template <typename T>
+T as(const DiscreteValue& value);
+
+template <>
+uint8_t as<uint8_t>(const DiscreteValue& value) {
+  return static_cast<uint8_t>(value.int32_value());
+}
+
+template <>
+uint16_t as<uint16_t>(const DiscreteValue& value) {
+  return static_cast<uint16_t>(value.int32_value());
+}
+
+template <>
+uint32_t as<uint32_t>(const DiscreteValue& value) {
+  return static_cast<uint32_t>(value.int32_value());
+}
+
+template <>
+uint64_t as<uint64_t>(const DiscreteValue& value) {
+  return static_cast<uint64_t>(value.int64_value());
+}
+
 template <typename DriverT>
 std::unordered_map<Function, Value> generate_capabilities_map();
 
 template <typename DriverT>
-DiscreteValue read_setting(Function function);
+DiscreteValue read_setting(DriverT& driver, Function function);
 
 template <typename DriverT>
-void write_setting(Function function, const DiscreteValue& value);
+void write_setting(DriverT& driver, Function function, const DiscreteValue& value);
 
 /**
  * This template defines an interface for configuring a radio. The specific radio type will be
@@ -130,17 +153,17 @@ class RadioConfiguration final {
   Value get_valid_values(Function function) const { return capabilities_.at(function); }
 
   int32_t get_int32_value(Function function) const {
-    const DiscreteValue value = read_setting<DriverT>(function);
+    const DiscreteValue value = read_setting<DriverT>(*driver_, function);
     return value.int32_value();
   }
 
   int64_t get_int64_value(Function function) const {
-    const DiscreteValue value = read_setting<DriverT>(function);
+    const DiscreteValue value = read_setting<DriverT>(*driver_, function);
     return value.int64_value();
   }
 
   float get_float_value(Function function) const {
-    const DiscreteValue value = read_setting<DriverT>(function);
+    const DiscreteValue value = read_setting<DriverT>(*driver_, function);
     return value.float_value();
   }
 
@@ -165,7 +188,7 @@ class RadioConfiguration final {
   void commit_settings_changes() {
     // Write these settings to the driver. Assumes that every setting can be set independently.
     for (const auto& entry : pending_settings_changes_) {
-      write_setting<DriverT>(entry.first, entry.second);
+      write_setting<DriverT>(*driver_, entry.first, entry.second);
     }
     pending_settings_changes_.clear();
   }
