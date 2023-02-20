@@ -1,12 +1,18 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "radio/radio.pb.h"
+#include "random/random.h"
 
 namespace tvsc::radio {
 
+/**
+ * Generate a Value that is a range of float values from a to b. The value of the inclusivity
+ * parameter dictates which of the endpoints is included.
+ */
 Value float_range(float a, float b,
                   RangeInclusivity inclusivity = RangeInclusivity::INCLUSIVE_INCLUSIVE) {
   Value result{};
@@ -18,6 +24,10 @@ Value float_range(float a, float b,
   return result;
 }
 
+/**
+ * Generate a Value that is a range of 32-bit integer values from a to b. The value of the
+ * inclusivity parameter dictates which of the endpoints is included.
+ */
 Value int32_range(int32_t a, int32_t b,
                   RangeInclusivity inclusivity = RangeInclusivity::INCLUSIVE_INCLUSIVE) {
   Value result{};
@@ -29,6 +39,10 @@ Value int32_range(int32_t a, int32_t b,
   return result;
 }
 
+/**
+ * Generate a Value that is a range of 64-bit integer values from a to b. The value of the
+ * inclusivity parameter dictates which of the endpoints is included.
+ */
 Value int64_range(int64_t a, int64_t b,
                   RangeInclusivity inclusivity = RangeInclusivity::INCLUSIVE_INCLUSIVE) {
   Value result{};
@@ -40,11 +54,23 @@ Value int64_range(int64_t a, int64_t b,
   return result;
 }
 
+/**
+ * Generate a Value that is the set of discrete enumerated values.
+ */
 template <typename T>
 Value enumerated(std::initializer_list<T> values) {
   Value result{};
   return result;
 }
+
+template <typename DriverT>
+std::unordered_map<Function, Value> generate_capabilities_map();
+
+template <typename DriverT>
+DiscreteValue read_setting(Function function);
+
+template <typename DriverT>
+void write_setting(Function function, const DiscreteValue& value);
 
 /**
  * This template defines an interface for configuring a radio. The specific radio type will be
@@ -62,30 +88,89 @@ Value enumerated(std::initializer_list<T> values) {
 template <typename DriverT>
 class RadioConfiguration final {
  private:
-  // Do not instantiate this one. Use a template specialization of this class.
-  RadioConfiguration() {}
+  DriverT* const driver_;
+  const std::unordered_map<Function, Value> capabilities_;
+  const uint64_t expanded_id_;
+  uint16_t id_;
+  const std::string name_;
+
+  std::unordered_map<Function, DiscreteValue> pending_settings_changes_{};
 
  public:
-  uint64_t expanded_id() const { return 0L; }
+  RadioConfiguration(DriverT& driver, std::string_view name = "HopeRF RFM69HCW")
+      : driver_(&driver),
+        capabilities_(generate_capabilities_map<DriverT>()),
+        expanded_id_(tvsc::random::generate_random_value<uint64_t>()),
+        id_(expanded_id_ & static_cast<uint16_t>(0xffff)),
+        name_(name) {
+    // We know the number of settings at compile time, and we know that number will not change.
+    // Because of this, we can reserve the exact number of buckets we need and use a load factor of
+    // 1 to save space. Also, since the number of elements is tiny, even if we "degrade" lookups to
+    // O(n) with this setup, we will still see good performance.
+    pending_settings_changes_.max_load_factor(1.f);
+    pending_settings_changes_.reserve(capabilities_.size());
+  }
 
-  uint32_t id() const { return 0; }
+  uint64_t expanded_id() const { return expanded_id_; }
 
-  const std::string& name() const { return ""; }
+  uint32_t id() const { return id_; }
+  void set_id(uint32_t id) { id_ = id; }
 
-  std::vector<Function> get_configurable_functions() const { return {}; }
+  const std::string& name() const { return name_; }
 
-  int32_t get_int32_value(Function function) const { return 0; }
-  int64_t get_int64_value(Function function) const { return 0L; }
-  float get_float_value(Function function) const { return 0.f; }
+  std::vector<Function> get_configurable_functions() const {
+    std::vector<Function> functions{};
+    functions.reserve(capabilities_.size());
+    for (const auto& [key, _] : capabilities_) {
+      functions.push_back(key);
+    }
+    return functions;
+  }
 
-  void set_int32_value(Function function, int32_t value) const {}
-  void set_int64_value(Function function, int64_t value) const {}
-  void set_float_value(Function function, float value) const {}
+  Value get_valid_values(Function function) const { return capabilities_.at(function); }
 
-  Value get_valid_values(Function function) const { return Value{}; }
+  int32_t get_int32_value(Function function) const {
+    const DiscreteValue value = read_setting<DriverT>(function);
+    return value.int32_value();
+  }
 
-  void commit_settings_changes() {}
-  void abort_settings_changes() {}
+  int64_t get_int64_value(Function function) const {
+    const DiscreteValue value = read_setting<DriverT>(function);
+    return value.int64_value();
+  }
+
+  float get_float_value(Function function) const {
+    const DiscreteValue value = read_setting<DriverT>(function);
+    return value.float_value();
+  }
+
+  void set_int32_value(Function function, int32_t value) {
+    DiscreteValue discrete{};
+    discrete.set_int32_value(value);
+    pending_settings_changes_.insert({function, discrete});
+  }
+
+  void set_int64_value(Function function, int64_t value) {
+    DiscreteValue discrete{};
+    discrete.set_int64_value(value);
+    pending_settings_changes_.insert({function, discrete});
+  }
+
+  void set_float_value(Function function, float value) {
+    DiscreteValue discrete{};
+    discrete.set_float_value(value);
+    pending_settings_changes_.insert({function, discrete});
+  }
+
+  void commit_settings_changes() {
+    // Write these settings to the driver. Assumes that every setting can be set independently.
+    for (const auto& entry : pending_settings_changes_) {
+      write_setting<DriverT>(entry.first, entry.second);
+    }
+    pending_settings_changes_.clear();
+  }
+
+  void abort_settings_changes() { pending_settings_changes_.clear(); }
 };
 
 }  // namespace tvsc::radio

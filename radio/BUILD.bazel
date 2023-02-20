@@ -10,6 +10,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":radio_cc_proto",
+        "//random",
     ],
 )
 
@@ -23,8 +24,6 @@ cc_library(
         ":radio",
         ":radio_cc_proto",
         "//base",
-        "//random",
-        "//third_party/glog",
         "//third_party/radio_head:rf69_driver",
     ],
 )
