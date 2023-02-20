@@ -86,6 +86,11 @@ uint64_t as<uint64_t>(const DiscreteValue& value) {
   return static_cast<uint64_t>(value.int64_value());
 }
 
+template <>
+float as<float>(const DiscreteValue& value) {
+  return value.float_value();
+}
+
 template <typename DriverT>
 std::unordered_map<Function, Value> generate_capabilities_map();
 

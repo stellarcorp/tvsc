@@ -13,7 +13,7 @@
 
 namespace tvsc::radio {
 
-constexpr uint8_t SYNC_WORDS[] = {0x53, 0x52, 0x39, 0x30, 0x74, 0x76, 0x73, 0x63};
+constexpr uint8_t SYNC_WORDS[] = "SR90tvsc";
 
 /**
  * These templates define an interface for configuring the HopeRF RFM69HCW radio module using the
@@ -105,6 +105,12 @@ template <>
 void write_setting<RH_RF69>(RH_RF69& driver, Function function, const DiscreteValue& value) {
   using std::to_string;
   switch (function) {
+    case CARRIER_FREQUENCY_HZ: {
+      float value_hz = as<float>(value);
+      // RadioHead RH_RF69 code expects this value in MHz.
+      driver.setFrequency(value_hz / 1'000'000);
+      break;
+    }
     case PREAMBLE_LENGTH: {
       driver.setPreambleLength(as<uint16_t>(value));
       break;
