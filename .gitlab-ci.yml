@@ -32,7 +32,7 @@ x86_64-optimized-tests:
   after_script:
     - !reference [.cache_setup, after_script]
   script:
-    - bazel --output_base=$BAZEL_CACHE_LOCATION test -c opt //buffer/... //io/...
+    - bazel --output_base=$BAZEL_CACHE_LOCATION test -c opt //base/... //buffer/... //filesystem/... //http/... //io/... //pubsub/... //radio/...
   artifacts:
     name: "test_logs"
     paths:
