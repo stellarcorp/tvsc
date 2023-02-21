@@ -35,6 +35,7 @@ x86_64-optimized-tests:
     - bazel --output_base=$BAZEL_CACHE_LOCATION test -c opt -- //...
   artifacts:
     name: "test_logs"
+    when: always # Unbelievably, artifacts are not uploaded by default when a test fails.
     paths:
       - "**/test.log"
     expire_in: 1 week
