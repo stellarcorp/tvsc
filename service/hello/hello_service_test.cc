@@ -25,7 +25,7 @@ class HelloServiceTest : public ::testing::Test {
     service_runner.add_service<Hello, HelloServiceImpl>("Hello World Service", service);
   }
 
-  void SetUp() override { service_runner.start(); }
+  void SetUp() override { service_runner.start(/* advertise_services */ false); }
 
   void TearDown() override { service_runner.stop(); }
 };

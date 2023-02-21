@@ -1,6 +1,6 @@
 #include <chrono>
-#include <string>
 #include <memory>
+#include <string>
 
 #include "gmock/gmock.h"
 #include "grpcpp/grpcpp.h"
@@ -23,7 +23,7 @@ class EchoServiceTest : public ::testing::Test {
 
   EchoServiceTest() { service_runner.add_service<Echo, EchoServiceImpl>("Echo Service", service); }
 
-  void SetUp() override { service_runner.start(); }
+  void SetUp() override { service_runner.start(/* advertise_services */ false); }
 
   void TearDown() override { service_runner.stop(); }
 };

@@ -22,7 +22,7 @@ class ChatServiceTest : public ::testing::Test {
 
   ChatServiceTest() { service_runner.add_service<Chat, ChatServiceImpl>("Chat Service", service); }
 
-  void SetUp() override { service_runner.start(); }
+  void SetUp() override { service_runner.start(/* advertise_services */ false); }
 
   void TearDown() override { service_runner.stop(); }
 };

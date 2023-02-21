@@ -24,7 +24,7 @@ class DatetimeServiceTest : public ::testing::Test {
     service_runner.add_service<Datetime, DatetimeServiceImpl>("Datetime Service", service);
   }
 
-  void SetUp() override { service_runner.start(); }
+  void SetUp() override { service_runner.start(/* advertise_services */ false); }
 
   void TearDown() override {
     DLOG(INFO) << "Stopping the service...";

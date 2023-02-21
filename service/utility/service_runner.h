@@ -87,7 +87,7 @@ class ServiceRunner final {
    * this method, the port() getter will return the actual port that is being used and the
    * set_port() setter will no longer affect which port is to be listened on.
    */
-  void start() {
+  void start(bool advertise_services = true) {
     using std::to_string;
 
     if (server_) {
@@ -111,12 +111,14 @@ class ServiceRunner final {
     DLOG(INFO) << "ServiceRunner::start() -- starting server.";
     server_ = builder_->BuildAndStart();
 
-    // All of the services are up. Advertise the services.
-    advertiser_ = std::make_unique<tvsc::discovery::ServiceAdvertiser>();
-    DLOG(INFO) << "ServiceRunner::start() -- advertising the services via mDNS.";
-    for (const auto& descriptor : services_) {
-      this->advertiser_->advertise_service(descriptor.service_name, descriptor.service_type,
-                                           "local", this->port_);
+    if (advertise_services) {
+      // All of the services are up. Advertise the services, if requested by caller.
+      advertiser_ = std::make_unique<tvsc::discovery::ServiceAdvertiser>();
+      DLOG(INFO) << "ServiceRunner::start() -- advertising the services via mDNS.";
+      for (const auto& descriptor : services_) {
+        this->advertiser_->advertise_service(descriptor.service_name, descriptor.service_type,
+                                             "local", this->port_);
+      }
     }
 
     // Build the log message so that users know what is running and where.
@@ -192,11 +194,11 @@ class ServiceRunner final {
  * The resulting server can only be shutdown by signals or stopping the process.
  */
 template <typename ServiceT, typename ServiceImplT>
-void run_single_service(const std::string& service_name) {
+void run_single_service(const std::string& service_name, bool advertise_services = true) {
   ServiceRunner runner{};
   ServiceImplT service{};
   runner.add_service<ServiceT, ServiceImplT>(service_name, service);
-  runner.start();
+  runner.start(advertise_services);
   runner.wait();
 }
 
