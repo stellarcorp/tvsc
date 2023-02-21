@@ -5,7 +5,7 @@ default:
 
 variables:
   LOCAL_CACHE_ROOT: ".cache"
-  BAZEL_CACHE_LOCATION: "~/.cache"
+  BAZEL_CACHE_LOCATION: "/home/ubuntu/.cache"
 
 .cache_setup:
   before_script:
