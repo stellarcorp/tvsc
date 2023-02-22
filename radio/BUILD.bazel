@@ -5,13 +5,13 @@ cc_library(
     name = "radio",
     hdrs = [
         "radio_configuration.h",
-        "radio_head_rf69_configuration.h",
         "settings.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
         ":radio_cc_proto",
         ":settings_cc_proto",
+        "//base",
         "//random",
     ],
 )

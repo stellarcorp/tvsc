@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "base/except.h"
 #include "radio/settings.pb.h"
 #include "random/random.h"
 
@@ -58,6 +59,7 @@ Value int64_range(int64_t a, int64_t b,
 /**
  * Generate a Value that is the set of discrete enumerated values.
  */
+// Value from a list of enum values.
 template <typename T>
 Value enumerated(std::initializer_list<T> values) {
   Value result{};
@@ -69,26 +71,7 @@ Value enumerated(std::initializer_list<T> values) {
   return result;
 }
 
-template <>
-Value enumerated<int8_t>(std::initializer_list<int8_t> values) {
-  Value result{};
-  for (auto value : values) {
-    DiscreteValue* discrete = result.add_discrete();
-    discrete->set_int32_value(value);
-  }
-  return result;
-}
-
-template <>
-Value enumerated<int16_t>(std::initializer_list<int16_t> values) {
-  Value result{};
-  for (auto value : values) {
-    DiscreteValue* discrete = result.add_discrete();
-    discrete->set_int32_value(value);
-  }
-  return result;
-}
-
+// Value from a list of int32 values.
 template <>
 Value enumerated<int32_t>(std::initializer_list<int32_t> values) {
   Value result{};
@@ -99,6 +82,7 @@ Value enumerated<int32_t>(std::initializer_list<int32_t> values) {
   return result;
 }
 
+// Value from a list of int64 values.
 template <>
 Value enumerated<int64_t>(std::initializer_list<int64_t> values) {
   Value result{};
@@ -112,52 +96,38 @@ Value enumerated<int64_t>(std::initializer_list<int64_t> values) {
 /**
  * Extract the value from a DiscreteValue as a native type.
  */
+// DiscreteValue translated into an enum value.
 template <typename T>
-T as(const DiscreteValue& value);
-
-template <>
-int8_t as<int8_t>(const DiscreteValue& value) {
-  return static_cast<int8_t>(value.int32_value());
-}
-
-template <>
-uint8_t as<uint8_t>(const DiscreteValue& value) {
-  return static_cast<uint8_t>(value.int32_value());
-}
-
-template <>
-int16_t as<int16_t>(const DiscreteValue& value) {
-  return static_cast<int16_t>(value.int32_value());
-}
-
-template <>
-uint16_t as<uint16_t>(const DiscreteValue& value) {
-  return static_cast<uint16_t>(value.int32_value());
+T as(const DiscreteValue& value) {
+  int32_t int_value = as<int32_t>(value);
+  return static_cast<T>(int_value);
 }
 
 template <>
 int32_t as<int32_t>(const DiscreteValue& value) {
-  return static_cast<int32_t>(value.int32_value());
-}
-
-template <>
-uint32_t as<uint32_t>(const DiscreteValue& value) {
-  return static_cast<uint32_t>(value.int32_value());
+  if (value.has_int32_value()) {
+    return value.int32_value();
+  } else {
+    except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (int32_t)");
+  }
 }
 
 template <>
 int64_t as<int64_t>(const DiscreteValue& value) {
-  return static_cast<int64_t>(value.int64_value());
-}
-
-template <>
-uint64_t as<uint64_t>(const DiscreteValue& value) {
-  return static_cast<uint64_t>(value.int64_value());
+  if (value.has_int64_value()) {
+    return value.int64_value();
+  } else {
+    except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (int64_t)");
+  }
 }
 
 template <>
 float as<float>(const DiscreteValue& value) {
-  return value.float_value();
+  if (value.has_float_value()) {
+    return value.float_value();
+  } else {
+    except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (float)");
+  }
 }
 
 /**

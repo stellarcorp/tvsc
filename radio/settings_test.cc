@@ -1,12 +1,72 @@
+#include "radio/settings.h"
+
 #include <limits>
+#include <stdexcept>
 
 #include "base/units.h"
 #include "gmock/gmock.h"
-#include "radio/radio_configuration.h"
-#include "radio/settings.h"
 #include "radio/radio.pb.h"
+#include "radio/settings.pb.h"
 
 namespace tvsc::radio {
+
+TEST(SettingsTypesTest, CanTranslateEnumToDiscreteValue) {
+  ModulationTechnique initial{ModulationTechnique::OOK};
+  DiscreteValue discrete = as_discrete_value(initial);
+  EXPECT_EQ(initial, as<ModulationTechnique>(discrete));
+}
+
+TEST(SettingsTypesTest, CanTranslateInt32ToDiscreteValue) {
+  int32_t initial{1234};
+  DiscreteValue discrete = as_discrete_value(initial);
+  EXPECT_EQ(initial, as<int32_t>(discrete));
+}
+
+TEST(SettingsTypesTest, CanTranslateInt64ToDiscreteValue) {
+  int64_t initial{1234};
+  DiscreteValue discrete = as_discrete_value(initial);
+  EXPECT_EQ(initial, as<int64_t>(discrete));
+}
+
+TEST(SettingsTypesTest, CanTranslateFloatToDiscreteValue) {
+  float initial{1234.f};
+  DiscreteValue discrete = as_discrete_value(initial);
+  EXPECT_EQ(initial, as<float>(discrete));
+}
+
+TEST(SettingsTypesTest, ThrowsTranslatingDiscreteValueToInappropriateTypeEnum) {
+  ModulationTechnique initial{ModulationTechnique::OOK};
+  DiscreteValue discrete = as_discrete_value(initial);
+  // Currently, we can't distinguish between enum types and int32_t.
+  // EXPECT_THROW(as<int32_t>(discrete), std::exception);
+  EXPECT_THROW(as<int64_t>(discrete), std::exception);
+  EXPECT_THROW(as<float>(discrete), std::exception);
+}
+
+TEST(SettingsTypesTest, ThrowsTranslatingDiscreteValueToInappropriateTypeInt32) {
+  int32_t initial{1234};
+  DiscreteValue discrete = as_discrete_value(initial);
+  // Currently, we can't distinguish between enum types and int32_t.
+  // EXPECT_THROW(as<ModulationTechnique>(discrete), std::exception);
+  EXPECT_THROW(as<int64_t>(discrete), std::exception);
+  EXPECT_THROW(as<float>(discrete), std::exception);
+}
+
+TEST(SettingsTypesTest, ThrowsTranslatingDiscreteValueToInappropriateTypeInt64) {
+  int64_t initial{1234};
+  DiscreteValue discrete = as_discrete_value(initial);
+  EXPECT_THROW(as<ModulationTechnique>(discrete), std::exception);
+  EXPECT_THROW(as<int32_t>(discrete), std::exception);
+  EXPECT_THROW(as<float>(discrete), std::exception);
+}
+
+TEST(SettingsTypesTest, ThrowsTranslatingDiscreteValueToInappropriateTypeFloat) {
+  float initial{1234.f};
+  DiscreteValue discrete = as_discrete_value(initial);
+  EXPECT_THROW(as<ModulationTechnique>(discrete), std::exception);
+  EXPECT_THROW(as<int32_t>(discrete), std::exception);
+  EXPECT_THROW(as<int64_t>(discrete), std::exception);
+}
 
 TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInEnumeratedCapability) {
   const auto& allowed_values{enumerated({0, 1, 2, 3, 4})};
@@ -138,7 +198,7 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapability) {
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65536.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(1e7f)));
-  EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value((1e7f) + 1)));
+  EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value((1e7f) + 1.f)));
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(-1.f)));
 }
 
@@ -149,7 +209,7 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityInclusiveIn
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65536.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(1e7f)));
-  EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value((1e7f) + 1)));
+  EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value((1e7f) + 1.f)));
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(-1.f)));
 }
 
@@ -160,7 +220,7 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityInclusiveEx
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65536.f)));
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(1e7f)));
-  EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value((1e7f) + 1)));
+  EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value((1e7f) + 1.f)));
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(-1.f)));
 }
 
@@ -171,7 +231,7 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityExclusiveIn
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65536.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(1e7f)));
-  EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value((1e7f) + 1)));
+  EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value((1e7f) + 1.f)));
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(-1.f)));
 }
 
@@ -182,7 +242,7 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityExclusiveEx
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65536.f)));
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(1e7f)));
-  EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value((1e7f) + 1)));
+  EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value((1e7f) + 1.f)));
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(-1.f)));
 }
 
