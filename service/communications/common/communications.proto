@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import public "radio/radio.proto";
+
+package tvsc.service.communications;
+
+option optimize_for = LITE_RUNTIME;
+
+service CommunicationsService {
+  rpc list_radios(RadioListRequest) returns (tvsc.radio.Radios);
+}
+
+message RadioListRequest {}

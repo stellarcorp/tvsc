@@ -1,10 +1,10 @@
 [Unit]
-Description=TVSC Radio
+Description=TVSC Communications
 Wants=network-online.target
 After=network-online.target
 
 [Service]
-ExecStart=/usr/bin/tvsc-radio-service
+ExecStart=/usr/bin/tvsc-communications-service
 Type=simple
 KillMode=mixed
 Restart=on-failure

@@ -8,7 +8,7 @@ pkg_files(
     name = "binaries",
     testonly = True,
     srcs = [
-        "//service/radio/server:tvsc-radio-service",
+        "//service/communications/server:tvsc-communications-service",
     ],
     attributes = pkg_attributes(
         mode = "0755",
@@ -19,7 +19,7 @@ pkg_files(
 pkg_files(
     name = "systemd_files",
     srcs = [
-        ":etc/tvsc-radio.service",
+        ":etc/tvsc-communications.service",
     ],
     attributes = pkg_attributes(
         mode = "0644",
@@ -30,7 +30,7 @@ pkg_files(
 pkg_files(
     name = "soapy_modules",
     srcs = [
-        #"//service/radio/server/modules:dummy_radio",
+        #"//service/communications/server/modules:dummy_communications",
     ],
     attributes = pkg_attributes(
         mode = "0644",
@@ -38,7 +38,7 @@ pkg_files(
     prefix = "usr/lib/aarch64-linux-gnu/SoapySDR/modules0.7",
 )
 
-PACKAGE_NAME = "tvsc-radio"
+PACKAGE_NAME = "tvsc-communications"
 
 pkg_tar(
     name = "tarball",
@@ -60,12 +60,12 @@ pkg_deb(
         "libavahi-client3 (>= 0.8)",
         "avahi-daemon (>= 0.8)",
     ],
-    description = "Radio package from the Virtual Tower system from TVSC",
+    description = "Communications package from the Virtual Tower system from TVSC",
     maintainer = "info@stellarcorp.tv",
     package = PACKAGE_NAME,
-    postinst = "debian/tvsc_radio_service.postinst",
-    preinst = "debian/tvsc_radio_service.preinst",
-    prerm = "debian/tvsc_radio_service.prerm",
+    postinst = "debian/tvsc_communications_service.postinst",
+    preinst = "debian/tvsc_communications_service.preinst",
+    prerm = "debian/tvsc_communications_service.prerm",
     version = version_string(),
     visibility = ["//visibility:public"],
 )

@@ -14,7 +14,7 @@
 #include "service/datetime/common/datetime.pb.h"
 #include "service/echo/client/web_socket_rpc_client.h"
 #include "service/hello/client/web_socket_rpc_client.h"
-#include "service/radio/client/web_socket_rpc_client.h"
+#include "service/communications/client/web_socket_rpc_client.h"
 
 DEFINE_int32(port, 50050, "Port to listen on.");
 DEFINE_string(doc_root, "service/proxy/doc_root/", "Location of static files.");
@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
   tvsc::service::datetime::create_web_socket_behaviors("/service/datetime", app);
   tvsc::service::echo::create_web_socket_behaviors("/service/echo", app);
   tvsc::service::hello::create_web_socket_behaviors("/service/hello", app);
-  tvsc::service::radio::create_web_socket_behaviors("/service/radio", app);
+  tvsc::service::communications::create_web_socket_behaviors("/service/communications", app);
 
   // Publish the stream of chat messages.
   tvsc::pubsub::WebSocketTopic<tvsc::service::chat::ChatMessage, SSL, 1> chat_topic{

@@ -1,4 +1,4 @@
-let list_radio_rpc = null;
+let list_communications_rpc = null;
 let echo_rpc = null;
 let datetime_stream = null;
 
@@ -223,32 +223,32 @@ function CreateDatetimeStream() {
 }
 
 function CreateRadioListSocket() {
-  list_radio_rpc = new WebSocketRpc(
-      BuildWebSocketUrl('radio', 'list_radios'),  //
-      'tvsc.service.radio.RadioListRequest',      //
-      'tvsc.service.radio.Radios');
-  list_radio_rpc.on_receive(function(reply) {
-    $('#radio_list').empty();
+  list_communications_rpc = new WebSocketRpc(
+      BuildWebSocketUrl('communications', 'list_radios'),  //
+      'tvsc.service.communications.RadioListRequest',      //
+      'tvsc.radio.Radios');
+  list_communications_rpc.on_receive(function(reply) {
+    $('#communications_list').empty();
     for (let radio of reply.radios) {
       let item_element = $('<li>');
-      item_element.append(document.createTextNode(radio.name));
+      item_element.append(document.createTextNode(communications.name));
       let keys_values_element = $('<ul class=\'keys_values_element\'>');
-      for (let key_value of radio.keysValues) {
+      for (let key_value of communications.keysValues) {
         let key_value_element = $('<li class=\'key_value_element\'>')
         key_value_element.append(document.createTextNode(key_value.key + ': ' + key_value.value));
         keys_values_element.append(key_value_element);
       }
       item_element.append(keys_values_element);
-      $('#radio_list').append(item_element);
+      $('#communications_list').append(item_element);
     }
   });
-  list_radio_rpc.on_error(function(evt) {
-    $('#radio_list').text('<error>');
+  list_communications_rpc.on_error(function(evt) {
+    $('#communications_list').text('<error>');
   });
 }
 
 function GetRadioList() {
-  list_radio_rpc.send({});
+  list_communications_rpc.send({});
 }
 
 function CreateEchoSocket() {
@@ -303,6 +303,7 @@ function initialize_module() {
 
         CreateDatetimeStream();
       });
+
       protobuf.load('/static/echo.proto').then(function(root) {
         Protos.add_proto(
             'tvsc.service.echo.EchoRequest', root.lookupType('tvsc.service.echo.EchoRequest'));
@@ -311,14 +312,23 @@ function initialize_module() {
 
         CreateEchoSocket();
       });
-      protobuf.load('/static/radio.proto').then(function(root) {
-        Protos.add_proto(
-            'tvsc.service.radio.RadioListRequest',
-            root.lookupType('tvsc.service.radio.RadioListRequest'));
-        Protos.add_proto('tvsc.service.radio.Radio', root.lookupType('tvsc.service.radio.Radio'));
-        Protos.add_proto('tvsc.service.radio.Radios', root.lookupType('tvsc.service.radio.Radios'));
 
-        CreateRadioListSocket();
+      protobuf.load('/static/radio_settings.proto').then(function(root) {
+        Protos.add_proto('tvsc.radio.Settings', root.lookupType('tvsc.radio.Settings'));
+        Protos.add_proto('tvsc.radio.Capabilities', root.lookupType('tvsc.radio.Capabilities'));
+
+        protobuf.load('/static/radio.proto').then(function(root) {
+          Protos.add_proto('tvsc.radio.Radio', root.lookupType('tvsc.radio.Radio'));
+          Protos.add_proto('tvsc.radio.Radios', root.lookupType('tvsc.radio.Radios'));
+
+          protobuf.load('/static/communications.proto').then(function(root) {
+            Protos.add_proto(
+                'tvsc.service.communications.RadioListRequest',
+                root.lookupType('tvsc.service.communications.RadioListRequest'));
+
+            CreateRadioListSocket();
+          });
+        });
       });
     });
   }

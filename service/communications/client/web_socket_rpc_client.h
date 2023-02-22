@@ -3,16 +3,17 @@
 
 #include "App.h"
 #include "glog/logging.h"
-#include "service/radio/client/client.h"
+#include "radio/radio.pb.h"
+#include "service/communications/client/client.h"
 
-namespace tvsc::service::radio {
+namespace tvsc::service::communications {
 
 template <bool SSL>
-void handle_list_radios(uWS::WebSocket<SSL, true, RadioClient> *ws, std::string_view msg,
+void handle_list_radios(uWS::WebSocket<SSL, true, CommunicationsClient> *ws, std::string_view msg,
                         uWS::OpCode op) {
-  DLOG(INFO) << "radio::handle_list_radios() -- msg: '" << msg << "', op: " << op;
-  RadioClient *client = static_cast<RadioClient *>(ws->getUserData());
-  Radios reply{};
+  DLOG(INFO) << "communications::handle_list_radios() -- msg: '" << msg << "', op: " << op;
+  CommunicationsClient *client = static_cast<CommunicationsClient *>(ws->getUserData());
+  tvsc::radio::Radios reply{};
   grpc::Status status = client->list_radios(&reply);
   if (status.ok()) {
     std::string serialized_reply{};
@@ -29,7 +30,7 @@ void handle_list_radios(uWS::WebSocket<SSL, true, RadioClient> *ws, std::string_
 void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp<false> &app) {
   constexpr bool SSL{false};
   app.ws(base_path + "/list_radios",  //
-         uWS::TemplatedApp<SSL>::WebSocketBehavior<RadioClient>{
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<CommunicationsClient>{
              .message = handle_list_radios<SSL>,
          });
 }
@@ -38,9 +39,9 @@ void create_web_socket_behaviors_with_ssl(const std::string &base_path,
                                           uWS::TemplatedApp<true> &app) {
   constexpr bool SSL{true};
   app.ws(base_path + "/list_radios",  //
-         uWS::TemplatedApp<SSL>::WebSocketBehavior<RadioClient>{
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<CommunicationsClient>{
              .message = handle_list_radios<SSL>,
          });
 }
 
-}  // namespace tvsc::service::radio
+}  // namespace tvsc::service::communications

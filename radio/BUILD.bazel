@@ -45,6 +45,7 @@ proto_library(
 
 cc_proto_library(
     name = "settings_cc_proto",
+    visibility = ["//visibility:public"],
     deps = [":settings_proto"],
 )
 
@@ -58,10 +59,14 @@ proto_library(
     name = "radio_proto",
     srcs = ["radio.proto"],
     visibility = ["//visibility:public"],
+    deps = [
+        ":settings_proto",
+    ],
 )
 
 cc_proto_library(
     name = "radio_cc_proto",
+    visibility = ["//visibility:public"],
     deps = [":radio_proto"],
 )
 

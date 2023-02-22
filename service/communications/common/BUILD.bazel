@@ -1,0 +1,44 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
+
+cc_library(
+    name = "common",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":communications_cc_grpc",
+        ":communications_cc_proto",
+        "//radio:radio_cc_proto",
+    ],
+)
+
+filegroup(
+    name = "communications_proto_file",
+    srcs = ["communications.proto"],
+    visibility = ["//visibility:public"],
+)
+
+proto_library(
+    name = "communications_proto",
+    srcs = ["communications.proto"],
+    deps = [
+        "//radio:radio_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "communications_cc_proto",
+    deps = [
+        ":communications_proto",
+    ],
+)
+
+cc_grpc_library(
+    name = "communications_cc_grpc",
+    srcs = [":communications_proto"],
+    grpc_only = True,
+    deps = [
+        ":communications_cc_proto",
+        "//radio:radio_cc_proto",
+    ],
+)

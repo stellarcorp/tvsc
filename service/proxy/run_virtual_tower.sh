@@ -7,7 +7,7 @@ service/chat/server/chat_server --alsologtostderr &
 service/datetime/server/datetime_server --alsologtostderr &
 service/echo/server/echo_server --alsologtostderr &
 service/hello/server/hello_server --alsologtostderr &
-service/radio/server/tvsc-radio-service --alsologtostderr &
+service/communications/server/tvsc-communications-service --alsologtostderr &
 
 sleep 2
 

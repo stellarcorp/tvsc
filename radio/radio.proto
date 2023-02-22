@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "radio/settings.proto";
+
 package tvsc.radio;
 
 option optimize_for = LITE_RUNTIME;
@@ -152,4 +154,14 @@ enum LineCoding {
 enum Encryption {
   NO_ENCRYPTION = 0;
   AES_128 = 1;
+}
+
+message Radio {
+  RadioIdentification identification = 1;
+  Settings settings = 2;
+  Capabilities capabilities = 3;
+}
+
+message Radios {
+  repeated Radio radios = 1;
 }

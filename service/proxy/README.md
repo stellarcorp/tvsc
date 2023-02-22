@@ -6,7 +6,7 @@ The TVSC Proxy Service is a combination of a web service to RPC proxy and web se
 
 As of the time of writing, the TVSC Proxy Service handles connections to the following services:
 
-- [radio](../radio)
+- [communications](../communications)
 - [chat](../chat)
 - [datetime](../datetime) This is a debug service and may be disabled in some builds.
 - [echo](../echo) This is a debug service and may be disabled in some builds.
