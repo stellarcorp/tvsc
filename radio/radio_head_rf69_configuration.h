@@ -99,7 +99,9 @@ std::unordered_map<Function, Value> generate_capabilities_map<RH_RF69>() {
 }
 
 template <>
-DiscreteValue read_setting<RH_RF69>(RH_RF69& driver, Function function) {}
+DiscreteValue read_setting<RH_RF69>(RH_RF69& driver, Function function) {
+  return as_discrete_value(0);
+}
 
 template <>
 void write_setting<RH_RF69>(RH_RF69& driver, Function function, const DiscreteValue& value) {

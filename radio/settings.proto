@@ -1,0 +1,144 @@
+/**
+ * Draft set of concepts for representing the possible settings of a radio. The goal is to be able
+ * to succinctly represent the full capabilities of a radio and any particular settings the radio
+ * could adopt.
+ *
+ * These concepts should be considered drafts. We need to go through the exercise of trying to
+ * represent the capabilities and settings of several different radio modules before we can consider
+ * this design to be solid.
+ *
+ * Open questions:
+ * - Do we need to support units? Are we going to have issues with 2427 being interpreted
+ * as 2.427kHz when someone meant 2.427MHz? Similarly for seconds, milliseconds, etc. dBm vs Watts?
+ *
+ * - Do we want to support unsigned integer values, or should we just support signed integers, like
+ * Java?
+ */
+syntax = "proto3";
+
+package tvsc.radio;
+
+option optimize_for = LITE_RUNTIME;
+
+/**
+ * Rudimentary set of functions that a radio has. Each of these might be configurable for a form of
+ * link management.
+ */
+enum Function {
+  UNKNOWN = 0;
+  CARRIER_FREQUENCY_HZ = 1;
+  MODULATION_SCHEME = 2;
+  TX_POWER_DBM = 3;
+  RX_POWER_DBM = 4;  // Needed?
+  MTU = 5;
+  PREAMBLE_LENGTH = 6;
+  SYNC_WORDS_LENGTH = 7;
+  LINE_CODING = 8;
+  ENCRYPTION = 9;
+}
+
+/**
+ * Enumeration of which values in a range may be included in that range. There are four
+ * combinations. For both the minimum value and the maximum value, the endpoint can either be
+ * included or excluded. This enum has those four combinations. For example, INCLUSIVE_EXCLUSIVE
+ * would indicate a range where the minimum value was included as a possible value, but the maximum
+ * was excluded. This could be expressed as [min,max).
+ */
+enum RangeInclusivity {
+  INCLUSIVE_INCLUSIVE = 0;
+  INCLUSIVE_EXCLUSIVE = 1;
+  EXCLUSIVE_INCLUSIVE = 2;
+  EXCLUSIVE_EXCLUSIVE = 3;
+}
+
+/**
+ * Range of integer (32-bit) values.
+ */
+message Int32Range {
+  int32 min = 1;
+  int32 max = 2;
+  RangeInclusivity inclusive = 3;
+}
+
+/**
+ * Range of integer (64-bit) values.
+ */
+message Int64Range {
+  int64 min = 1;
+  int64 max = 2;
+  RangeInclusivity inclusive = 3;
+}
+
+/**
+ * Range of floating point values.
+ */
+message FloatRange {
+  float min = 1;
+  float max = 2;
+  RangeInclusivity inclusive = 3;
+}
+
+/**
+ * General concept of a ranged value. This can be a range of ints, 32 bit or 64 bit, or a range of
+ * floats.
+ */
+message RangedValue {
+  oneof value {
+    Int32Range int32_range = 1;
+    Int64Range int64_range = 2;
+    FloatRange float_range = 3;
+  }
+}
+
+/**
+ * A single value. This could be an integer, 32 bit or 64 bit, or a single floating point value.
+ * This message type can be thought of as a contrast to the RangedValue type above, or it can be
+ * thought of as a specific value in a setting versus the possible values expressing a capability.
+ */
+message DiscreteValue {
+  oneof value {
+    int32 int32_value = 1;
+    int64 int64_value = 2;
+    float float_value = 3;
+  }
+}
+
+// TODO(james): Is this concept what we want for "Value"? It seems too narrow for such a broad term.
+// DiscreteValue and RangedValue would need to be changed as well.
+message Value {
+  repeated DiscreteValue discrete = 1;
+  repeated RangedValue ranged = 2;
+}
+
+/**
+ * A function of a radio (such as frequency, modulation scheme, etc.) along with its allowed values.
+ */
+message Capability {
+  Function function = 1;
+  repeated Value allowed_values = 2;
+}
+
+/**
+ * A collection of the capabilities of a radio. These could be a complete representation of what the
+ * radio is can do, but they may also be incomplete or limited to a particular set of functions.
+ */
+message Capabilities {
+  repeated Capability capabilities = 1;
+}
+
+/**
+ * A value of a function of a radio. For example, a 2.4GHz 802.11g radio operating on channel 4
+ * would have a "carrier frequency" function with a value of 2'427'000'000 (2427MHz).
+ */
+message Setting {
+  Function function = 1;
+  DiscreteValue value = 2;
+}
+
+/**
+ * A collection of the settings of a radio. Like the Capabilities above, they may be a complete
+ * representation or a subset.
+ */
+message Settings {
+  repeated Setting settings = 1;
+}

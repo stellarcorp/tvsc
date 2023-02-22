@@ -6,10 +6,12 @@ cc_library(
     hdrs = [
         "radio_configuration.h",
         "radio_head_rf69_configuration.h",
+        "settings.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
         ":radio_cc_proto",
+        ":settings_cc_proto",
         "//random",
     ],
 )
@@ -26,6 +28,23 @@ cc_library(
         "//base",
         "//third_party/radio_head:rf69_driver",
     ],
+)
+
+filegroup(
+    name = "settings_proto_file",
+    srcs = ["settings.proto"],
+    visibility = ["//visibility:public"],
+)
+
+proto_library(
+    name = "settings_proto",
+    srcs = ["settings.proto"],
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "settings_cc_proto",
+    deps = [":settings_proto"],
 )
 
 filegroup(
@@ -55,5 +74,17 @@ cc_test(
         ":rh_rf69",
         "//third_party/gtest",
         "//third_party/radio_head:rf69_driver",
+    ],
+)
+
+cc_test(
+    name = "settings_test",
+    srcs = [
+        "settings_test.cc",
+    ],
+    deps = [
+        ":radio",
+        "//base",
+        "//third_party/gtest",
     ],
 )
