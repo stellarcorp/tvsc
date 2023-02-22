@@ -5,7 +5,7 @@
 
 #include "gtest/gtest.h"
 
-namespace pack::filesystem {
+namespace tvsc::filesystem {
 
 namespace fs = std::filesystem;
 
@@ -47,4 +47,4 @@ TEST(GenerateRandomPathTest, CanGeneratePathWithSuffix) {
   EXPECT_EQ(filename.length() - suffix.length(), filename.rfind(suffix));
 }
 
-}  // namespace pack::filesystem
+}  // namespace tvsc::filesystem

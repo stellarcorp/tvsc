@@ -37,7 +37,7 @@ GTEST_API_ int main(int argc, char **argv) {
 
   google::InstallFailureSignalHandler();
 
-  ::testing::AddGlobalTestEnvironment(pack::testing::TestTempDirectory::getInstance());
+  ::testing::AddGlobalTestEnvironment(tvsc::testing::TestTempDirectory::getInstance());
 
   return RUN_ALL_TESTS();
 }

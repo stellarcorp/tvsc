@@ -6,7 +6,7 @@
 #include <string>
 #include <string_view>
 
-namespace pack::filesystem {
+namespace tvsc::filesystem {
 
 namespace fs = std::filesystem;
 
@@ -32,10 +32,11 @@ std::string random_string(size_t length) {
   return result;
 }
 
-fs::path generate_random_path(const fs::path& base_dir, std::string_view prefix, std::string_view suffix) {
+fs::path generate_random_path(const fs::path& base_dir, std::string_view prefix,
+                              std::string_view suffix) {
   std::string filename{prefix};
   filename.append(random_string(10)).append(suffix);
   return base_dir / filename;
 }
 
-}  // namespace pack::filesystem
+}  // namespace tvsc::filesystem

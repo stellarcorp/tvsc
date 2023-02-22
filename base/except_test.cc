@@ -5,7 +5,7 @@
 
 #include "gtest/gtest.h"
 
-namespace pack {
+namespace tvsc {
 
 TEST(ExceptTest, HasMessage) {
   if constexpr (has_exception_support()) {
@@ -21,7 +21,8 @@ TEST(ExceptTest, HasMessage) {
 
 TEST(ExceptTest, ThrowsExpectedException) {
   if constexpr (has_exception_support()) {
-    EXPECT_THROW(except<std::invalid_argument>("Throwing std::invalid_argument"), std::invalid_argument);
+    EXPECT_THROW(except<std::invalid_argument>("Throwing std::invalid_argument"),
+                 std::invalid_argument);
     EXPECT_THROW(except<std::runtime_error>("Throwing std::runtime_error"), std::runtime_error);
   }
 }
@@ -33,4 +34,4 @@ TEST(ExceptDeathTest, TerminatesWithoutExceptionSupport) {
   }
 }
 
-}  // namespace pack
+}  // namespace tvsc

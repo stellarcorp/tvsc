@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-namespace pack {
+namespace tvsc {
 
 #define STATIC_EXPECT_EQ(val1, val2) \
   do {                               \
@@ -10,4 +10,4 @@ namespace pack {
     EXPECT_EQ(val1, val2);           \
   } while (false)
 
-}  // namespace pack
+}  // namespace tvsc

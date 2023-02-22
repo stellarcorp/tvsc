@@ -1,10 +1,14 @@
 /**
- * Functions and macros for throwing exceptions while supporting platforms that do not have exceptions.
+ * Functions and macros for throwing exceptions while supporting platforms that do not have
+ * exceptions.
  *
- * The except() function and its overloads log a message and throw an exception. On platforms without exception support,
- * this exception is treated as an uncaught exception and results in terminating the program.
+ * The except() function and its overloads log a message and throw an exception. On platforms
+ * without exception support, this exception is treated as an uncaught exception and results in
+ * terminating the program.
  */
 #pragma once
+
+#include <stdexcept>
 
 #ifdef __has_include
 #if __has_include(<source_location>)
@@ -15,8 +19,8 @@
 #ifdef __has_include
 #if __has_include(<string>)
 #include <string>
-// Create our own feature testing symbol for string support. Note that this symbol follows the pattern of other feature
-// testing macros but is not part of the standard.
+// Create our own feature testing symbol for string support. Note that this symbol follows the
+// pattern of other feature testing macros but is not part of the standard.
 #define __cpp_lib_string 1
 #endif
 #endif
@@ -31,46 +35,48 @@ constexpr bool has_exception_support() {
 #endif
 }
 
-namespace pack {
+namespace tvsc {
 
 #ifdef __cpp_lib_source_location
 
 template <typename ExceptionT>
-[[noreturn]] inline void except(const char* const msg,
-                                const std::source_location& location = std::source_location::current()) {
+[[noreturn]] inline void except(
+    const char* const msg, const std::source_location& location = std::source_location::current()) {
   if constexpr (has_exception_support()) {
-    LOG(ERROR) << "[" << location.function_name() << " (" << location.file_name() << ":" << location.line() << ")] -- "
-               << msg;
+    LOG(ERROR) << "[" << location.function_name() << " (" << location.file_name() << ":"
+               << location.line() << ")] -- " << msg;
     throw ExceptionT(msg);
   } else {
-    LOG(FATAL) << "[" << location.function_name() << " (" << location.file_name() << ":" << location.line() << ")] -- "
-               << msg;
+    LOG(FATAL) << "[" << location.function_name() << " (" << location.file_name() << ":"
+               << location.line() << ")] -- " << msg;
   }
 }
 
-[[noreturn]] inline void except(const char* const msg, const std::error_code& ec,
-                                const std::source_location& location = std::source_location::current()) {
+[[noreturn]] inline void except(
+    const char* const msg, const std::error_code& ec,
+    const std::source_location& location = std::source_location::current()) {
   if constexpr (has_exception_support()) {
-    LOG(ERROR) << "[" << location.function_name() << " (" << location.file_name() << ":" << location.line() << ")] -- "
-               << msg << " (" << ec.message() << ")";
+    LOG(ERROR) << "[" << location.function_name() << " (" << location.file_name() << ":"
+               << location.line() << ")] -- " << msg << " (" << ec.message() << ")";
     throw ExceptionT(ec, msg);
   } else {
-    LOG(FATAL) << "[" << location.function_name() << " (" << location.file_name() << ":" << location.line() << ")] -- "
-               << msg << " (" << ec.message() << ")";
+    LOG(FATAL) << "[" << location.function_name() << " (" << location.file_name() << ":"
+               << location.line() << ")] -- " << msg << " (" << ec.message() << ")";
   }
 }
 
 #ifdef __cpp_lib_string
 
 template <typename ExceptionT>
-[[noreturn]] inline void except(const std::string& msg,
-                                const std::source_location& location = std::source_location::current()) {
+[[noreturn]] inline void except(const std::string& msg, const std::source_location& location =
+                                                            std::source_location::current()) {
   except<ExceptionT>(msg.c_str(), location);
 }
 
 template <typename ExceptionT>
-[[noreturn]] inline void except(const std::string& msg, const std::error_code& ec,
-                                const std::source_location& location = std::source_location::current()) {
+[[noreturn]] inline void except(
+    const std::string& msg, const std::error_code& ec,
+    const std::source_location& location = std::source_location::current()) {
   except<ExceptionT>(msg.c_str(), ec, location);
 }
 
@@ -114,4 +120,4 @@ template <typename ExceptionT>
 
 #endif  // __cpp_lib_source_location
 
-}  // namespace pack
+}  // namespace tvsc

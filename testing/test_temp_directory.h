@@ -5,7 +5,7 @@
 
 #include "gtest/gtest.h"
 
-namespace pack::testing {
+namespace tvsc::testing {
 
 class TestTempDirectory : public ::testing::Environment {
  private:
@@ -23,7 +23,8 @@ class TestTempDirectory : public ::testing::Environment {
 
   bool willRequireRemoval() { return requires_removal_; }
 
-  std::filesystem::path createTestSubdirectory(std::string_view prefix = "", std::string_view suffix = "");
+  std::filesystem::path createTestSubdirectory(std::string_view prefix = "",
+                                               std::string_view suffix = "");
 
  private:
   static TestTempDirectory* instance_;
@@ -32,4 +33,4 @@ class TestTempDirectory : public ::testing::Environment {
   bool requires_removal_{false};
 };
 
-}  // namespace pack::testing
+}  // namespace tvsc::testing
