@@ -10,6 +10,10 @@
 
 namespace tvsc::io {
 
+/**
+ * Techniques for looping over the contents of a file to make the file appear to be infinitely long.
+ * Useful for simulating streams, such as captured waveforms.
+ */
 template <typename ElementT>
 class LoopingFileReader final {
  private:
