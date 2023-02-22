@@ -1,6 +1,10 @@
-# TVSC
+#TVSC
 
 This repository is the principal codebase for the Tennessee Valley Stellar Corporation. We are a community-scale space agency in east Tennessee dedicated to the open development of technologies enabling the public use of space. Our first project is a drone-based communication system called "Virtual Tower". Its goal is to extend radio communications without the need of a physical radio tower. The Virtual Tower is currently under development and is not yet ready for general use.
+
+## Repository structure
+
+As the Virtual Tower progresses, we will add specific directories to this repository for that project. Until then, the best places to start are the [radio](./radio) and the [service](./service) directories. The radio directory contains APIs for working with low-level radio modules, often on embedded systems. The service directory contains the various services that will comprise the Virtual Tower and future projects.
 
 ## Getting started
 
@@ -39,7 +43,3 @@ This next step should fail, unless you are running on an ARM processor:
 ```
 ./bazel-bin/service/hello/hello_world
 ```
-
-## Repository structure
-
-As the Virtual Tower progresses, we will add specific directories to this repository for that project. Until then, the best place to start is in the [service](./service) directory. This directory contains the various services that will comprise the Virtual Tower and future projects.
