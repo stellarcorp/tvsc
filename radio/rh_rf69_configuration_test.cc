@@ -1,8 +1,8 @@
-#include "radio/radio_configuration.h"
+#include "radio/rh_rf69_configuration.h"
 
 #include "RadioHead/RH_RF69.h"
 #include "gmock/gmock.h"
-#include "radio/radio_head_rf69_configuration.h"
+#include "radio/radio_configuration.h"
 
 namespace tvsc::radio {
 
