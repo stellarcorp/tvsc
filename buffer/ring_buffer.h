@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <atomic>
 #include <mutex>
 #include <thread>
@@ -24,6 +25,7 @@ class RingBuffer final {
     RingBuffer* ring_buffer() { return ring_buffer_; }
     void set_ring_buffer(RingBuffer& ring_buffer) { ring_buffer_ = &ring_buffer; }
 
+    // TODO(james): Change to include the Buffer that should be supplied.
     virtual void signal_data_needed() = 0;
   };
 
@@ -37,6 +39,7 @@ class RingBuffer final {
     RingBuffer* ring_buffer() { return ring_buffer_; }
     void set_ring_buffer(RingBuffer& ring_buffer) { ring_buffer_ = &ring_buffer; }
 
+    // TODO(james): Change to include the Buffer that can be consumed.
     virtual void signal_data_available() = 0;
   };
 
@@ -116,7 +119,7 @@ class RingBuffer final {
     return elements_consumed;
   }
 
-  size_t write(size_t num_elements, const ElementT* src) {
+  size_t supply(size_t num_elements, const ElementT* src) {
     size_t read_pointer_value{read_pointer_.load()};
     size_t write_pointer_value{write_pointer_.load()};
 

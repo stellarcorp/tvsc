@@ -12,7 +12,7 @@ class SequentialDataSource final : public RingBuffer<ElementT, BUFFER_SIZE, NUM_
  private:
   ElementT prev_element_{};
   ElementT next_element_{};
-  size_t num_write_calls_{};
+  size_t num_supply_calls_{};
   bool data_needed_{false};
 
  public:
@@ -23,26 +23,26 @@ class SequentialDataSource final : public RingBuffer<ElementT, BUFFER_SIZE, NUM_
 
   bool data_needed() const { return data_needed_; }
 
-  size_t try_write(size_t num_elements) {
+  size_t try_supply(size_t num_elements) {
     num_elements = std::min(num_elements, this->ring_buffer()->max_buffered_elements());
-    size_t total_elements_written{0};
+    size_t total_elements_supplied{0};
     if (data_needed_) {
       prev_element_ = next_element_;
       Buffer<ElementT, BUFFER_SIZE> buffer{};
       while (num_elements > total_elements_written) {
-        size_t elements_to_write = std::min(BUFFER_SIZE, num_elements - total_elements_written);
+        size_t elements_to_supply = std::min(BUFFER_SIZE, num_elements - total_elements_written);
         for (size_t i = 0; i < elements_to_write; ++i) {
           buffer.write(i, next_element_++);
         }
         data_needed_ = false;
-        total_elements_written += this->ring_buffer()->write(elements_to_write, buffer.data());
+        total_elements_supplied += this->ring_buffer()->supply(elements_to_supply, buffer.data());
         ++num_write_calls_;
       }
     }
-    return total_elements_written;
+    return total_elements_supplied;
   }
 
-  size_t num_write_calls() const { return num_write_calls_; }
+  size_t num_supply_calls() const { return num_supply_calls_; }
 
   void reset() {
     prev_element_ = ElementT{};
@@ -65,13 +65,13 @@ class InspectableDataSink final : public RingBuffer<ElementT, BUFFER_SIZE, NUM_B
 
   bool data_available() const { return data_available_; }
 
-  size_t try_read() {
-    size_t elements_read{0};
+  size_t try_consume() {
+    size_t elements_consumed{0};
     if (data_available_) {
       data_available_ = false;
-      elements_read = this->ring_buffer()->consume(buffer_.size(), buffer_.data());
+      elements_consumed = this->ring_buffer()->consume(buffer_.size(), buffer_.data());
     }
-    return elements_read;
+    return elements_consumed;
   }
 
   void reset() {
@@ -126,7 +126,7 @@ TEST(TinyRingBufferTest, CanAcceptDataFromSource) {
 
   TinyRingBuffer<int> ring{source, sink};
 
-  source.try_write(1);
+  source.try_supply(1);
   EXPECT_EQ(1, ring.elements_available());
 }
 
@@ -136,7 +136,7 @@ TEST(TinyRingBufferTest, SourceCanWriteAnMtuWorthOfData) {
 
   TinyRingBuffer<int> ring{source, sink};
 
-  const size_t elements_written{source.try_write(ring.mtu())};
+  const size_t elements_written{source.try_supply(ring.mtu())};
   EXPECT_EQ(ring.mtu(), elements_written);
   EXPECT_EQ(ring.mtu(), ring.elements_available());
   EXPECT_EQ(ring.mtu(), source.next_element());
@@ -148,7 +148,7 @@ TEST(TinyRingBufferTest, SinkNotifiedOnWriteOfMtu) {
 
   TinyRingBuffer<int> ring{source, sink};
 
-  source.try_write(ring.mtu());
+  source.try_supply(ring.mtu());
 
   EXPECT_TRUE(sink.data_available());
 }
@@ -159,7 +159,7 @@ TEST(TinyRingBufferTest, SinkCanReadMtu) {
 
   TinyRingBuffer<int> ring{source, sink};
 
-  source.try_write(ring.mtu());
+  source.try_supply(ring.mtu());
 
   ASSERT_TRUE(sink.data_available());
 
@@ -178,7 +178,7 @@ TEST(TinyRingBufferTest, SinkNotNotifiedOnWriteOfLessThanMtu) {
 
   TinyRingBuffer<int> ring{source, sink};
 
-  source.try_write(ring.mtu() - 1);
+  source.try_supply(ring.mtu() - 1);
 
   EXPECT_FALSE(sink.data_available());
 }
@@ -189,7 +189,7 @@ TEST(TinyRingBufferTest, SourceCanFillRing) {
 
   TinyRingBuffer<int> ring{source, sink};
 
-  const size_t elements_written{source.try_write(ring.max_buffered_elements())};
+  const size_t elements_written{source.try_supply(ring.max_buffered_elements())};
   ASSERT_EQ(ring.max_buffered_elements(), source.next_element());
   ASSERT_EQ(ring.max_buffered_elements(), elements_written);
 
@@ -203,7 +203,7 @@ TEST(TinyRingBufferTest, SinkCanDrainRing) {
 
   TinyRingBuffer<int> ring{source, sink};
 
-  const size_t elements_written{source.try_write(ring.max_buffered_elements())};
+  const size_t elements_written{source.try_supply(ring.max_buffered_elements())};
   ASSERT_EQ(ring.max_buffered_elements(), source.next_element());
   ASSERT_EQ(ring.max_buffered_elements(), elements_written);
 
@@ -238,7 +238,7 @@ TEST(TinyRingBufferTest, CapsWriteAtAnMtuWorthOfData) {
 
   constexpr size_t ELEMENTS_TO_WRITE{ring.mtu() + 1};
 
-  const size_t elements_written{source.try_write(ELEMENTS_TO_WRITE)};
+  const size_t elements_written{source.try_supply(ELEMENTS_TO_WRITE)};
   ASSERT_EQ(ELEMENTS_TO_WRITE, elements_written);
   ASSERT_EQ(ELEMENTS_TO_WRITE, ring.elements_available());
   ASSERT_EQ(ELEMENTS_TO_WRITE, source.next_element());
@@ -264,7 +264,7 @@ TEST(TypicalRingBufferTest, CanAcceptDataFromSource) {
 
   TypicalRingBuffer<int> ring{source, sink};
 
-  source.try_write(1);
+  source.try_supply(1);
   EXPECT_EQ(1, ring.elements_available());
 }
 
@@ -274,7 +274,7 @@ TEST(TypicalRingBufferTest, SourceCanWriteAnMtuWorthOfData) {
 
   TypicalRingBuffer<int> ring{source, sink};
 
-  const size_t elements_written{source.try_write(ring.mtu())};
+  const size_t elements_written{source.try_supply(ring.mtu())};
   EXPECT_EQ(ring.mtu(), elements_written);
   EXPECT_EQ(ring.mtu(), ring.elements_available());
   EXPECT_EQ(ring.mtu(), source.next_element());
@@ -286,7 +286,7 @@ TEST(TypicalRingBufferTest, SinkNotifiedOnWriteOfMtu) {
 
   TypicalRingBuffer<int> ring{source, sink};
 
-  source.try_write(ring.mtu());
+  source.try_supply(ring.mtu());
 
   EXPECT_TRUE(sink.data_available());
 }
@@ -297,7 +297,7 @@ TEST(TypicalRingBufferTest, SinkCanReadMtu) {
 
   TypicalRingBuffer<int> ring{source, sink};
 
-  source.try_write(ring.mtu());
+  source.try_supply(ring.mtu());
 
   ASSERT_TRUE(sink.data_available());
 
@@ -316,7 +316,7 @@ TEST(TypicalRingBufferTest, SinkNotNotifiedOnWriteOfLessThanMtu) {
 
   TypicalRingBuffer<int> ring{source, sink};
 
-  source.try_write(ring.mtu() - 1);
+  source.try_supply(ring.mtu() - 1);
 
   EXPECT_FALSE(sink.data_available());
 }
@@ -327,7 +327,7 @@ TEST(TypicalRingBufferTest, SourceCanFillRing) {
 
   TypicalRingBuffer<int> ring{source, sink};
 
-  const size_t elements_written{source.try_write(ring.max_buffered_elements())};
+  const size_t elements_written{source.try_supply(ring.max_buffered_elements())};
   ASSERT_EQ(ring.max_buffered_elements(), source.next_element());
   ASSERT_EQ(ring.max_buffered_elements(), elements_written);
 
@@ -341,7 +341,7 @@ TEST(TypicalRingBufferTest, SinkCanDrainRing) {
 
   TypicalRingBuffer<int> ring{source, sink};
 
-  const size_t elements_written{source.try_write(ring.max_buffered_elements())};
+  const size_t elements_written{source.try_supply(ring.max_buffered_elements())};
   ASSERT_EQ(ring.max_buffered_elements(), source.next_element());
   ASSERT_EQ(ring.max_buffered_elements(), elements_written);
 
@@ -376,7 +376,7 @@ TEST(TypicalRingBufferTest, CapsWriteAtAnMtuWorthOfData) {
 
   constexpr size_t ELEMENTS_TO_WRITE{ring.mtu() + 1};
 
-  const size_t elements_written{source.try_write(ELEMENTS_TO_WRITE)};
+  const size_t elements_written{source.try_supply(ELEMENTS_TO_WRITE)};
   ASSERT_EQ(ELEMENTS_TO_WRITE, elements_written);
   ASSERT_EQ(ELEMENTS_TO_WRITE, ring.elements_available());
   ASSERT_EQ(ELEMENTS_TO_WRITE, source.next_element());
@@ -402,7 +402,7 @@ TEST(LargeRingBufferTest, CanAcceptDataFromSource) {
 
   std::unique_ptr ring{std::make_unique<LargeRingBuffer<int>>(source, sink)};
 
-  source.try_write(1);
+  source.try_supply(1);
   EXPECT_EQ(1, ring->elements_available());
 }
 
@@ -412,7 +412,7 @@ TEST(LargeRingBufferTest, SourceCanWriteAnMtuWorthOfData) {
 
   std::unique_ptr ring{std::make_unique<LargeRingBuffer<int>>(source, sink)};
 
-  const size_t elements_written{source.try_write(ring->mtu())};
+  const size_t elements_written{source.try_supply(ring->mtu())};
   EXPECT_EQ(ring->mtu(), elements_written);
   EXPECT_EQ(ring->mtu(), ring->elements_available());
   EXPECT_EQ(ring->mtu(), source.next_element());
@@ -424,7 +424,7 @@ TEST(LargeRingBufferTest, SinkNotifiedOnWriteOfMtu) {
 
   std::unique_ptr ring{std::make_unique<LargeRingBuffer<int>>(source, sink)};
 
-  source.try_write(ring->mtu());
+  source.try_supply(ring->mtu());
 
   EXPECT_TRUE(sink.data_available());
 }
@@ -435,7 +435,7 @@ TEST(LargeRingBufferTest, SinkCanReadMtu) {
 
   std::unique_ptr ring{std::make_unique<LargeRingBuffer<int>>(source, sink)};
 
-  source.try_write(ring->mtu());
+  source.try_supply(ring->mtu());
 
   ASSERT_TRUE(sink.data_available());
 
@@ -454,7 +454,7 @@ TEST(LargeRingBufferTest, SinkNotNotifiedOnWriteOfLessThanMtu) {
 
   std::unique_ptr ring{std::make_unique<LargeRingBuffer<int>>(source, sink)};
 
-  source.try_write(ring->mtu() - 1);
+  source.try_supply(ring->mtu() - 1);
 
   EXPECT_FALSE(sink.data_available());
 }
@@ -465,7 +465,7 @@ TEST(LargeRingBufferTest, SourceCanFillRing) {
 
   std::unique_ptr ring{std::make_unique<LargeRingBuffer<int>>(source, sink)};
 
-  const size_t elements_written{source.try_write(ring->max_buffered_elements())};
+  const size_t elements_written{source.try_supply(ring->max_buffered_elements())};
   ASSERT_EQ(ring->max_buffered_elements(), source.next_element());
   ASSERT_EQ(ring->max_buffered_elements(), elements_written);
 
@@ -479,7 +479,7 @@ TEST(LargeRingBufferTest, SinkCanDrainRing) {
 
   std::unique_ptr ring{std::make_unique<LargeRingBuffer<int>>(source, sink)};
 
-  const size_t elements_written{source.try_write(ring->max_buffered_elements())};
+  const size_t elements_written{source.try_supply(ring->max_buffered_elements())};
   ASSERT_EQ(ring->max_buffered_elements(), source.next_element());
   ASSERT_EQ(ring->max_buffered_elements(), elements_written);
 
@@ -514,7 +514,7 @@ TEST(LargeRingBufferTest, CapsWriteAtAnMtuWorthOfData) {
 
   const size_t ELEMENTS_TO_WRITE{ring->mtu() + 1};
 
-  const size_t elements_written{source.try_write(ELEMENTS_TO_WRITE)};
+  const size_t elements_written{source.try_supply(ELEMENTS_TO_WRITE)};
   ASSERT_EQ(ELEMENTS_TO_WRITE, elements_written);
   ASSERT_EQ(ELEMENTS_TO_WRITE, ring->elements_available());
   ASSERT_EQ(ELEMENTS_TO_WRITE, source.next_element());
