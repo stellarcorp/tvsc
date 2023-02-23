@@ -25,7 +25,6 @@ class RingBuffer final {
     RingBuffer* ring_buffer() { return ring_buffer_; }
     void set_ring_buffer(RingBuffer& ring_buffer) { ring_buffer_ = &ring_buffer; }
 
-    // TODO(james): Change to include the Buffer that should be supplied.
     virtual void signal_data_needed() = 0;
   };
 
@@ -39,16 +38,15 @@ class RingBuffer final {
     RingBuffer* ring_buffer() { return ring_buffer_; }
     void set_ring_buffer(RingBuffer& ring_buffer) { ring_buffer_ = &ring_buffer; }
 
-    // TODO(james): Change to include the Buffer that can be consumed.
     virtual void signal_data_available() = 0;
   };
 
  private:
-  // These pointers are monotonically increasing. They count the total number of bytes written into the ring and the
-  // total number of bytes read from the ring. They do not reset to zero. This is done to keep the logic simple. In
-  // particular, it can distinguish between the ring being full and the ring being empty. In both states, the
-  // read_pointer_ and write_pointer_ would be equal if we were to add to these values modulus the number of
-  // max_buffered_elements().
+  // These pointers are monotonically increasing. They count the total number of bytes written into
+  // the ring and the total number of bytes read from the ring. They do not reset to zero. This is
+  // done to keep the logic simple. In particular, it can distinguish between the ring being full
+  // and the ring being empty. In both states, the read_pointer_ and write_pointer_ would be equal
+  // if we were to add to these values modulus the number of max_buffered_elements().
   std::atomic<size_t> read_pointer_{0};
   std::atomic<size_t> write_pointer_{0};
 
@@ -57,14 +55,14 @@ class RingBuffer final {
   DataSource& source_;
   DataSink& sink_;
 
-  void signal_data_available() {
+  void check_data_available() {
     // If we have an mtu's worth of data, signal the sink that it can read more data.
     if (elements_available() >= mtu()) {
       sink_.signal_data_available();
     }
   }
 
-  void signal_data_needed() {
+  void check_data_needed() {
     // If we have space to store an mtu's worth of data, signal the source to provide more data.
     if (max_buffered_elements() - elements_available() >= mtu()) {
       source_.signal_data_needed();
@@ -100,8 +98,9 @@ class RingBuffer final {
     size_t read_buffer_index{compute_buffer_index(read_pointer_value)};
     size_t read_buffer_offset{compute_buffer_offset(read_pointer_value)};
 
-    size_t elements_consumed{std::min(compute_elements_available(read_pointer_value, write_pointer_value),
-                                      std::min(BUFFER_SIZE - read_buffer_offset, num_elements))};
+    size_t elements_consumed{
+        std::min(compute_elements_available(read_pointer_value, write_pointer_value),
+                 std::min(BUFFER_SIZE - read_buffer_offset, num_elements))};
 
     if (elements_consumed > 0) {
       buffers_[read_buffer_index].read(read_buffer_offset, elements_consumed, dest);
@@ -113,8 +112,8 @@ class RingBuffer final {
       }
     }
 
-    signal_data_available();
-    signal_data_needed();
+    check_data_available();
+    check_data_needed();
 
     return elements_consumed;
   }
@@ -126,24 +125,25 @@ class RingBuffer final {
     size_t write_buffer_index{compute_buffer_index(write_pointer_value)};
     size_t write_buffer_offset{compute_buffer_offset(write_pointer_value)};
 
-    size_t elements_written{
-        std::min(max_buffered_elements() - compute_elements_available(read_pointer_value, write_pointer_value),
+    size_t elements_supplied{
+        std::min(max_buffered_elements() -
+                     compute_elements_available(read_pointer_value, write_pointer_value),
                  std::min(BUFFER_SIZE - write_buffer_offset, num_elements))};
 
-    if (elements_written > 0) {
-      buffers_[write_buffer_index].write(write_buffer_offset, elements_written, src);
+    if (elements_supplied > 0) {
+      buffers_[write_buffer_index].write(write_buffer_offset, elements_supplied, src);
 
-      write_buffer_offset += elements_written;
+      write_buffer_offset += elements_supplied;
       size_t new_write_pointer_value = compute_pointer(write_buffer_index, write_buffer_offset);
       if (!write_pointer_.compare_exchange_strong(write_pointer_value, new_write_pointer_value)) {
-        elements_written = 0;
+        elements_supplied = 0;
       }
     }
 
-    signal_data_available();
-    signal_data_needed();
+    check_data_available();
+    check_data_needed();
 
-    return elements_written;
+    return elements_supplied;
   }
 
   size_t elements_available() const {
