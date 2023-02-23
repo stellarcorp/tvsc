@@ -112,6 +112,9 @@ class RadioConfiguration final {
   const RadioIdentification& identification() const { return identification_; }
   RadioIdentification& identification() { return identification_; }
 
+  Settings settings() const { return {}; }
+  Capabilities capabilities() const { return {}; }
+
   std::vector<Function> get_configurable_functions() const {
     std::vector<Function> functions{};
     functions.reserve(capabilities_.size());

@@ -8,7 +8,8 @@
 namespace tvsc::buffer {
 
 template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS>
-class SequentialDataSource final : public RingBuffer<ElementT, BUFFER_SIZE, NUM_BUFFERS>::DataSource {
+class SequentialDataSource final
+    : public RingBuffer<ElementT, BUFFER_SIZE, NUM_BUFFERS>::DataSource {
  private:
   ElementT prev_element_{};
   ElementT next_element_{};
@@ -29,14 +30,14 @@ class SequentialDataSource final : public RingBuffer<ElementT, BUFFER_SIZE, NUM_
     if (data_needed_) {
       prev_element_ = next_element_;
       Buffer<ElementT, BUFFER_SIZE> buffer{};
-      while (num_elements > total_elements_written) {
-        size_t elements_to_supply = std::min(BUFFER_SIZE, num_elements - total_elements_written);
-        for (size_t i = 0; i < elements_to_write; ++i) {
+      while (num_elements > total_elements_supplied) {
+        size_t elements_to_supply = std::min(BUFFER_SIZE, num_elements - total_elements_supplied);
+        for (size_t i = 0; i < elements_to_supply; ++i) {
           buffer.write(i, next_element_++);
         }
         data_needed_ = false;
         total_elements_supplied += this->ring_buffer()->supply(elements_to_supply, buffer.data());
-        ++num_write_calls_;
+        ++num_supply_calls_;
       }
     }
     return total_elements_supplied;
@@ -47,7 +48,7 @@ class SequentialDataSource final : public RingBuffer<ElementT, BUFFER_SIZE, NUM_
   void reset() {
     prev_element_ = ElementT{};
     next_element_ = ElementT{};
-    num_write_calls = 0;
+    num_supply_calls = 0;
     data_needed_ = false;
   }
 };
@@ -95,18 +96,22 @@ template <typename ElementT>
 using LargeRingBuffer = RingBuffer<ElementT, LARGE_BUFFER_SIZE, LARGE_NUM_BUFFERS>;
 
 template <typename ElementT>
-using TypicalSequentialDataSource = SequentialDataSource<ElementT, TYPICAL_BUFFER_SIZE, TYPICAL_NUM_BUFFERS>;
+using TypicalSequentialDataSource =
+    SequentialDataSource<ElementT, TYPICAL_BUFFER_SIZE, TYPICAL_NUM_BUFFERS>;
 template <typename ElementT>
 using TinySequentialDataSource = SequentialDataSource<ElementT, TINY_BUFFER_SIZE, TINY_NUM_BUFFERS>;
 template <typename ElementT>
-using LargeSequentialDataSource = SequentialDataSource<ElementT, LARGE_BUFFER_SIZE, LARGE_NUM_BUFFERS>;
+using LargeSequentialDataSource =
+    SequentialDataSource<ElementT, LARGE_BUFFER_SIZE, LARGE_NUM_BUFFERS>;
 
 template <typename ElementT>
-using TypicalInspectableDataSink = InspectableDataSink<ElementT, TYPICAL_BUFFER_SIZE, TYPICAL_NUM_BUFFERS>;
+using TypicalInspectableDataSink =
+    InspectableDataSink<ElementT, TYPICAL_BUFFER_SIZE, TYPICAL_NUM_BUFFERS>;
 template <typename ElementT>
 using TinyInspectableDataSink = InspectableDataSink<ElementT, TINY_BUFFER_SIZE, TINY_NUM_BUFFERS>;
 template <typename ElementT>
-using LargeInspectableDataSink = InspectableDataSink<ElementT, LARGE_BUFFER_SIZE, LARGE_NUM_BUFFERS>;
+using LargeInspectableDataSink =
+    InspectableDataSink<ElementT, LARGE_BUFFER_SIZE, LARGE_NUM_BUFFERS>;
 
 TEST(TinyRingBufferTest, CallsDataNeededOnConstruction) {
   TinySequentialDataSource<int> source{};
@@ -163,7 +168,7 @@ TEST(TinyRingBufferTest, SinkCanReadMtu) {
 
   ASSERT_TRUE(sink.data_available());
 
-  EXPECT_EQ(ring.mtu(), sink.try_read());
+  EXPECT_EQ(ring.mtu(), sink.try_consume());
 
   int element = source.prev_element();
   for (size_t i = 0; i < ring.mtu(); ++i) {
@@ -215,7 +220,7 @@ TEST(TinyRingBufferTest, SinkCanDrainRing) {
   int expected_element = source.prev_element();
   while (total_elements_read < ring.max_buffered_elements()) {
     ASSERT_TRUE(sink.data_available());
-    const size_t elements_read{sink.try_read()};
+    const size_t elements_read{sink.try_consume()};
     ASSERT_EQ(ring.mtu(), elements_read);
 
     for (size_t i = 0; i < elements_read; ++i) {
@@ -243,7 +248,7 @@ TEST(TinyRingBufferTest, CapsWriteAtAnMtuWorthOfData) {
   ASSERT_EQ(ELEMENTS_TO_WRITE, ring.elements_available());
   ASSERT_EQ(ELEMENTS_TO_WRITE, source.next_element());
 
-  EXPECT_EQ(2, source.num_write_calls());
+  EXPECT_EQ(2, source.num_supply_calls());
 }
 
 TEST(TypicalRingBufferTest, CallsDataNeededOnConstruction) {
@@ -301,7 +306,7 @@ TEST(TypicalRingBufferTest, SinkCanReadMtu) {
 
   ASSERT_TRUE(sink.data_available());
 
-  EXPECT_EQ(ring.mtu(), sink.try_read());
+  EXPECT_EQ(ring.mtu(), sink.try_consume());
 
   int element = source.prev_element();
   for (size_t i = 0; i < ring.mtu(); ++i) {
@@ -353,7 +358,7 @@ TEST(TypicalRingBufferTest, SinkCanDrainRing) {
   int expected_element = source.prev_element();
   while (total_elements_read < ring.max_buffered_elements()) {
     ASSERT_TRUE(sink.data_available());
-    const size_t elements_read{sink.try_read()};
+    const size_t elements_read{sink.try_consume()};
     ASSERT_EQ(ring.mtu(), elements_read);
 
     for (size_t i = 0; i < elements_read; ++i) {
@@ -381,7 +386,7 @@ TEST(TypicalRingBufferTest, CapsWriteAtAnMtuWorthOfData) {
   ASSERT_EQ(ELEMENTS_TO_WRITE, ring.elements_available());
   ASSERT_EQ(ELEMENTS_TO_WRITE, source.next_element());
 
-  EXPECT_EQ(2, source.num_write_calls());
+  EXPECT_EQ(2, source.num_supply_calls());
 }
 
 TEST(LargeRingBufferTest, CallsDataNeededOnConstruction) {
@@ -439,7 +444,7 @@ TEST(LargeRingBufferTest, SinkCanReadMtu) {
 
   ASSERT_TRUE(sink.data_available());
 
-  EXPECT_EQ(ring->mtu(), sink.try_read());
+  EXPECT_EQ(ring->mtu(), sink.try_consume());
 
   int element = source.prev_element();
   for (size_t i = 0; i < ring->mtu(); ++i) {
@@ -491,7 +496,7 @@ TEST(LargeRingBufferTest, SinkCanDrainRing) {
   int expected_element = source.prev_element();
   while (total_elements_read < ring->max_buffered_elements()) {
     ASSERT_TRUE(sink.data_available());
-    const size_t elements_read{sink.try_read()};
+    const size_t elements_read{sink.try_consume()};
     ASSERT_EQ(ring->mtu(), elements_read);
 
     for (size_t i = 0; i < elements_read; ++i) {
@@ -519,7 +524,7 @@ TEST(LargeRingBufferTest, CapsWriteAtAnMtuWorthOfData) {
   ASSERT_EQ(ELEMENTS_TO_WRITE, ring->elements_available());
   ASSERT_EQ(ELEMENTS_TO_WRITE, source.next_element());
 
-  EXPECT_EQ(2, source.num_write_calls());
+  EXPECT_EQ(2, source.num_supply_calls());
 }
 
 }  // namespace tvsc::buffer
