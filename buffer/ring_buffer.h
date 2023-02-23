@@ -152,6 +152,18 @@ class RingBuffer final {
 
     return compute_elements_available(read_pointer_value, write_pointer_value);
   }
+
+  /**
+   * A RingBuffer is full if it has the maximum number of elements available.
+   */
+  bool full() const { return elements_available() == max_buffered_elements(); }
+
+  bool empty() const {
+    size_t read_pointer_value{read_pointer_.load()};
+    size_t write_pointer_value{write_pointer_.load()};
+
+    return read_pointer_value == write_pointer_value;
+  }
 };
 
 }  // namespace tvsc::buffer
