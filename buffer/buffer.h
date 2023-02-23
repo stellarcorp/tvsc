@@ -8,14 +8,17 @@
 namespace tvsc::buffer {
 
 /**
- * std::array-like buffer type with bulk operations based on memcpy(3) for trivially copyable types.
+ * std::array-like buffer type with bulk operations for trivially copyable
+ * (https://en.cppreference.com/w/cpp/named_req/TriviallyCopyable) types. If a type is trivially
+ * copyable, it can be copied with memcpy(3) and similar operations. It does not need to be move or
+ * copy constructed.
  *
  * Buffer is a simple buffer type, similar to std::array, but with bulk read/write operations and
  * optimizations for trivially copyable types.
  *
  * BufferT has two template overloads, one for trivially copyable element types, and one where the
  * element type is not trivially copyable. The non-trivial element implementation uses loops to move
- * data. The implement for elements that are trivially copyable is based on memcpy.
+ * data. The implementation for elements that are trivially copyable is based on memcpy.
  *
  * The Buffer type makes the syntax of choosing the correct BufferT template overload easier. It is
  * defined after the two template overloads.

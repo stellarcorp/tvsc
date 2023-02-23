@@ -7,6 +7,12 @@
 
 namespace tvsc::buffer {
 
+/**
+ * DataSink for a RingBuffer whose read() method blocks until data is available.
+ *
+ * The DataSink makes it easier to consume data from a RingBuffer when it is appropriate to have a
+ * thread just block and wait for the data to be available.
+ */
 template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS>
 class BlockingDataSink final : public RingBuffer<ElementT, BUFFER_SIZE, NUM_BUFFERS>::DataSink {
  private:
@@ -27,10 +33,11 @@ class BlockingDataSink final : public RingBuffer<ElementT, BUFFER_SIZE, NUM_BUFF
   bool data_available() const { return data_available_; }
 
   template <typename Rep, typename Period>
-  size_t try_read(size_t num_elements, ElementT* buffer, const std::chrono::duration<Rep, Period>& timeout) {
+  size_t read(size_t num_elements, ElementT* buffer,
+              const std::chrono::duration<Rep, Period>& timeout) {
     size_t elements_read{0};
     std::unique_lock lock{mutex_};
-    condition_variable_.wait_for(lock, timeout, [this](){ return this->data_available_; });
+    condition_variable_.wait_for(lock, timeout, [this]() { return this->data_available_; });
     if (data_available_) {
       data_available_ = false;
       elements_read = this->ring_buffer()->consume(buffer_.size(), buffer_.data());
