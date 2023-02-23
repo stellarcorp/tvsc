@@ -1,4 +1,4 @@
-#Buffer
+# Buffer
 
 The buffer package contains abstractions for working with blocks of data, organized in different configurations.
 
