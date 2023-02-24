@@ -32,6 +32,7 @@ cc_toolchain(
     objcopy_files = ":all_files",
     strip_files = ":all_files",
     supports_param_files = 1,
+    tags = ["manual"],
     toolchain_config = ":arm64_toolchain_config",
     toolchain_identifier = "arm64-toolchain",
 )
