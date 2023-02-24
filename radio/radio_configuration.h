@@ -1,8 +1,8 @@
 /**
- * This file contains the function templates the represent the API for configuring any radio we work
- * with. These should be specialized to create binding for the driver of the radio module. It is
- * also possible to specialize RadioConfiguration itself, though it will be more difficult to keep
- * specializations in sync with the primary template below.
+ * This file contains the function templates that represent the API for configuring any radio we
+ * work with. These should be specialized to create bindings for the driver of the radio module. It
+ * is also possible to specialize RadioConfiguration itself, though it will be more difficult to
+ * keep specializations in sync with the primary template below.
  *
  * We are trying to avoid an inheritance hierarchy here. We expect there to be many
  * different types of radios, even in the short term. We want a uniform way to interact with them
@@ -138,12 +138,12 @@ class RadioConfiguration final {
     }
   }
 
-  void commit_settings_changes() {
+  void commit_changes() {
     write_settings(*driver_, pending_settings_changes_);
     pending_settings_changes_.clear();
   }
 
-  void abort_settings_changes() { pending_settings_changes_.clear(); }
+  void abort_changes() { pending_settings_changes_.clear(); }
 };
 
 }  // namespace tvsc::radio

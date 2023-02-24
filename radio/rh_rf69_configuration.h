@@ -98,14 +98,50 @@ std::unordered_map<Function, Value> generate_capabilities_map<RH_RF69>() {
   return capabilities;
 }
 
+inline void get_frequency(RH_RF69& driver, DiscreteValue& value) {
+  uint32_t step_count = driver.spiRead(RH_RF69_REG_07_FRFMSB);
+  step_count = (step_count << 8) | driver.spiRead(RH_RF69_REG_08_FRFMID);
+  step_count = (step_count << 8) | driver.spiRead(RH_RF69_REG_09_FRFLSB);
+  const float frequency{step_count * RH_RF69_FSTEP};
+  value.set_float_value(frequency);
+}
+
+inline void get_preamble_length(RH_RF69& driver, DiscreteValue& value) {
+  uint16_t length = driver.spiRead(RH_RF69_REG_2C_PREAMBLEMSB);
+  length = (length << 8) | driver.spiRead(RH_RF69_REG_2D_PREAMBLELSB);
+  value.set_int32_value(length);
+}
+
+inline void get_sync_words_length(RH_RF69& driver, DiscreteValue& value) {
+  uint8_t length = driver.spiRead(RH_RF69_REG_2E_SYNCCONFIG);
+  length &= RH_RF69_SYNCCONFIG_SYNCSIZE;
+  length >>= 3;
+  length += 1;
+  value.set_int32_value(length);
+}
+
 template <>
 DiscreteValue read_setting<RH_RF69>(RH_RF69& driver, Function function) {
-  return as_discrete_value(0);
+  DiscreteValue value{};
+  switch (function) {
+    case CARRIER_FREQUENCY_HZ: {
+      get_frequency(driver, value);
+      break;
+    }
+    case PREAMBLE_LENGTH: {
+      get_preamble_length(driver, value);
+      break;
+    }
+    case SYNC_WORDS_LENGTH: {
+      get_sync_words_length(driver, value);
+      break;
+    }
+  }
+  return value;
 }
 
 template <>
 void write_setting<RH_RF69>(RH_RF69& driver, Function function, const DiscreteValue& value) {
-  using std::to_string;
   switch (function) {
     case CARRIER_FREQUENCY_HZ: {
       float value_hz = as<float>(value);

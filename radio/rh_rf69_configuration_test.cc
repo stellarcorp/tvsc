@@ -41,4 +41,15 @@ TEST(RadioConfigurationTest, HasMinimumCapabilityFunctions) {
               IsSupersetOf({Function::CARRIER_FREQUENCY_HZ, Function::MODULATION_SCHEME}));
 }
 
+TEST(RadioConfigurationTest, CanSetFrequency) {
+  constexpr float FREQUENCY{430.f * 1'000'000};
+  RH_RF69 driver{};
+  RadioConfiguration<RH_RF69> radio{driver};
+
+  radio.set_value(Function::CARRIER_FREQUENCY_HZ, as_discrete_value<float>(FREQUENCY));
+  radio.commit_changes();
+
+  EXPECT_EQ(FREQUENCY, as<float>(radio.get_value(Function::CARRIER_FREQUENCY_HZ)));
+}
+
 }  // namespace tvsc::radio

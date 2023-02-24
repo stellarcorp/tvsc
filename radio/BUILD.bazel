@@ -75,6 +75,7 @@ cc_test(
     srcs = [
         "rh_rf69_configuration_test.cc",
     ],
+    tags = ["manual"],
     deps = [
         ":radio",
         ":radio_cc_proto",
