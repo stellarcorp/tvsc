@@ -10,9 +10,11 @@ variables:
 .cache_setup:
   before_script:
     - rm -rf "$BAZEL_CACHE_LOCATION"
+    - mkdir -p "$LOCAL_CACHE_ROOT"
     - mv "$LOCAL_CACHE_ROOT" "$BAZEL_CACHE_LOCATION"
   after_script:
     - rm -rf "$LOCAL_CACHE_ROOT"
+    - mkdir -p "$BAZEL_CACHE_LOCATION"
     - mv "$BAZEL_CACHE_LOCATION" "$LOCAL_CACHE_ROOT"
 
 stages:
