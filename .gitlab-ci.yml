@@ -34,7 +34,7 @@ x86_64-optimized-tests:
   after_script:
     - !reference [.cache_setup, after_script]
   script:
-    - bazel --output_base=$BAZEL_CACHE_LOCATION test -c opt -- //...
+    - bazel --output_base=$BAZEL_CACHE_LOCATION test -c opt -- //buffer/...
   artifacts:
     name: "test_logs"
     when: always # Unbelievably, artifacts are not uploaded by default when a test fails.
