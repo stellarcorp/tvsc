@@ -1,0 +1,118 @@
+# Run tests on all supported Linux platforms, compilers and C++ dialects. This is not part of the full CI workflow,
+# since these tests are vastly more expensive.
+# MacOS tests are insanely slow, and each minute of testing costs 10x what the Linux tests cost.
+# Windows tests are slow and each minute of testing costs 2x what the Linux tests cost.
+name: Linux full testing
+
+on:
+  # This workflow is run manually from the Actions tab.
+  workflow_dispatch:
+  schedule:
+  # Every Monday at 08:43 UTC (04:43 Eastern)
+  - cron: '43 04 * * 1'
+
+jobs:
+  test_ubuntu-older-clang:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        cc: [clang-10]
+        cpp-dialect: [c++20]
+        os: [ubuntu-20.04]
+      fail-fast: false
+
+    env:
+      bazel-user-root: ~/.cache/bazel/_bazel_${{ github.repository_owner }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Hydrate Bazel cache
+        uses: actions/cache@v2
+        env:
+          cache-name: bazel-build-cache
+
+        with:
+          path: ${{ env.bazel-user-root }}
+          key: ${{ env.cache-name }}-${{ matrix.os }}-${{ github.sha }}
+          restore-keys: |
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}-${{ matrix.cpp-dialect }}-${{ github.sha }}
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}-${{ matrix.cpp-dialect }}
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}
+            ${{ env.cache-name }}-${{ matrix.os }}
+
+      - name: Test
+        run: ./bazelisk-linux-amd64 --output_user_root=${{ env.bazel-user-root }} test -c opt --cxxopt='-std=${{ matrix.cpp-dialect}}' //...
+        env:
+          CC: ${{ matrix.cc }}
+
+  test_ubuntu-gcc:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        cc: [gcc-10]
+        cpp-dialect: [c++20]
+        os: [ubuntu-18.04]
+      fail-fast: false
+
+    env:
+      bazel-user-root: ~/.cache/bazel/_bazel_${{ github.repository_owner }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Hydrate Bazel cache
+        uses: actions/cache@v2
+        env:
+          cache-name: bazel-build-cache
+
+        with:
+          path: ${{ env.bazel-user-root }}
+          key: ${{ env.cache-name }}-${{ matrix.os }}-${{ github.sha }}
+          restore-keys: |
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}-${{ matrix.cpp-dialect }}-${{ github.sha }}
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}-${{ matrix.cpp-dialect }}
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}
+            ${{ env.cache-name }}-${{ matrix.os }}
+
+      - name: Test
+        run: ./bazelisk-linux-amd64 --output_user_root=${{ env.bazel-user-root }} test -c opt --cxxopt='-std=${{ matrix.cpp-dialect}}' //...
+        env:
+          CC: ${{ matrix.cc }}
+
+  test_ubuntu-debug-compile:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        cc: [clang-11]
+        cpp-dialect: [c++20]
+        os: [ubuntu-latest]
+
+    env:
+      bazel-user-root: ~/.cache/bazel/_bazel_${{ github.repository_owner }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Hydrate Bazel cache
+        uses: actions/cache@v2
+        env:
+          cache-name: bazel-build-cache
+
+        with:
+          path: ${{ env.bazel-user-root }}
+          key: ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}-${{ matrix.cpp-dialect }}-${{ github.sha }}
+          restore-keys: |
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}-${{ matrix.cpp-dialect }}-${{ github.sha }}
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}-${{ matrix.cpp-dialect }}
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}
+            ${{ env.cache-name }}-${{ matrix.os }}
+
+      - name: Test
+        run: CC=${{ matrix.cc }} ./bazelisk-linux-amd64 --output_user_root=${{ env.bazel-user-root }} test -c dbg --cxxopt='-std=${{ matrix.cpp-dialect }}' //...

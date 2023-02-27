@@ -1,0 +1,45 @@
+# Tests that get run on every commit. This workflow is meant to find basic failures fast. It is not comprehensive.
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # This workflow can also be run manually from the Actions tab.
+  workflow_dispatch:
+
+jobs:
+  test_ubuntu-current:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        cc: [clang-11]
+        cpp-dialect: [c++20]
+        os: [ubuntu-latest]
+
+    env:
+      bazel-user-root: ~/.cache/bazel/_bazel_${{ github.repository_owner }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Hydrate Bazel cache
+        uses: actions/cache@v2
+        env:
+          cache-name: bazel-build-cache
+
+        with:
+          path: ${{ env.bazel-user-root }}
+          key: ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}-${{ matrix.cpp-dialect }}-${{ github.sha }}
+          restore-keys: |
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}-${{ matrix.cpp-dialect }}-${{ github.sha }}
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}-${{ matrix.cpp-dialect }}
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}
+            ${{ env.cache-name }}-${{ matrix.os }}
+
+      - name: Test
+        run: CC=${{ matrix.cc }} ./bazelisk-linux-amd64 --output_user_root=${{ env.bazel-user-root }} test -c fastbuild --cxxopt='-std=${{ matrix.cpp-dialect }}' //...

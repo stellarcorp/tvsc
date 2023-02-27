@@ -1,0 +1,45 @@
+# Run tests on all supported platforms, compilers and C++ dialects. This is not part of the full CI workflow, since
+# these tests are vastly more expensive.
+# MacOS tests are insanely slow, and each minute of testing costs 10x what the Linux tests cost.
+# Windows tests are slow and each minute of testing costs 2x what the Linux tests cost.
+name: Windows testing
+
+on:
+  # This workflow is run manually from the Actions tab.
+  workflow_dispatch:
+  schedule:
+  # Every Monday at 06:43 UTC (02:43 Eastern)
+  - cron: '43 02 * * 1'
+
+jobs:
+  test_windows-latest:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        cpp-dialect: [c++latest]
+      fail-fast: false
+
+    env:
+      bazel-user-root: ${GITHUB_WORKSPACE}\_bazel_${{ github.repository_owner }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Hydrate Bazel cache
+        uses: actions/cache@v2
+        env:
+          cache-name: bazel-build-cache
+
+        with:
+          path: ${{ env.bazel-user-root }}
+          key: ${{ env.cache-name }}-${{ matrix.os }}-${{ github.sha }}
+          restore-keys: |
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}-${{ matrix.cpp-dialect }}-${{ github.sha }}
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}-${{ matrix.cpp-dialect }}
+            ${{ env.cache-name }}-${{ matrix.os }}-${{ matrix.cc }}
+            ${{ env.cache-name }}-${{ matrix.os }}
+
+      - name: Test
+        run: .\bazelisk-windows-amd64.exe --output_user_root=${{ env.bazel-user-root }} test -c opt --cxxopt='/std:${{ matrix.cpp-dialect}}' //...
