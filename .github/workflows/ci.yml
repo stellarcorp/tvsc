@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        cc: [clang-14]
+        cc: [clang-12]
         config: [c++20]
         os: [ubuntu-20.04]
 
