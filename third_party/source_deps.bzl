@@ -133,11 +133,25 @@ def load_source_dependencies():
                 "https://github.com/bxparks/EpoxyDuino/archive/refs/tags/v1.5.0.tar.gz",
             ],
             strip_prefix = "EpoxyDuino-1.5.0",
-            build_file = "//third_party/epoxy_duino:epoxy_duino.BUILD",
+            build_file = "//third_party/arduino/epoxy_duino:epoxy_duino.BUILD",
             patches = [
-                "//third_party/epoxy_duino:arduino.h.patch",
-                "//third_party/epoxy_duino:arduino.cpp.patch",
+                "//third_party/arduino/epoxy_duino:arduino.h.patch",
+                "//third_party/arduino/epoxy_duino:arduino.cpp.patch",
             ],
+        )
+
+    # This "package" includes all of the source code for supporting C/C++ applications on Teensy
+    # platforms, including Arduino.h.
+    # See note in toolchains.bzl for version information of this package. This package should be
+    # kept in sync with the Teensy toolchains in toolchains.bzl.
+    if "com_pjrc_teensy_package" not in native.existing_rules():
+        http_archive(
+            name = "com_pjrc_teensy_package",
+            sha256 = "1922c67a3d1261efb085eda1d99f5907936b89cc078f3567825cfc49661141c2",
+            urls = [
+                "https://www.pjrc.com/teensy/td_157/teensy-package.tar.bz2",
+            ],
+            build_file = "//third_party/arduino/teensyduino:teensy_package.BUILD",
         )
 
     if not native.existing_rule("com_airspayce_mikem_radio_head"):

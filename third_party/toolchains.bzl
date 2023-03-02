@@ -10,3 +10,25 @@ def load_toolchains():
             urls = ["https://gitlab.com/tvsc/gcc-arm-10.2/-/archive/{}.zip".format(GCC_ARM_10_2_TOOLCHAIN_COMMIT)],
             strip_prefix = "gcc-arm-10.2-{}".format(GCC_ARM_10_2_TOOLCHAIN_COMMIT),
         )
+
+    # Teensy toolchain URLs were extracted from a JSON file used to configure Arduino libraries and
+    # tools: https://www.pjrc.com/teensy/package_teensy_index.json
+    #
+    # The specific URLs were based on the Teensy avr version 0.58.3. Presumably, this was given
+    # the version "0.58.3" as a way of marking it as "beta". The Arduino IDE probably chooses
+    # the highest version number by default, 1.57.2 in this case. I expect this version number
+    # to become 1.58.x in the near future.
+    #
+    # This package should be kept in sync with the Teensy "package" downloaded in source_deps.bzl.
+    #
+    # TODO(james): Consider parsing that JSON file automatically, since there is a very good chance
+    # that file will change and the URLs for these tools will become invalid.
+    if "com_pjrc_teensy_compile" not in native.existing_rules():
+        http_archive(
+            name = "com_pjrc_teensy_compile",
+            sha256 = "936e53df932c156f8aff869960cd9bf158fae5043a8cf6d335410c2221d73a8e",
+            urls = [
+                "https://www.pjrc.com/teensy/td_158-beta3/teensy-compile-linux64.tar.bz2",
+            ],
+            build_file = "//third_party/teensy:teensy_compile.BUILD",
+        )

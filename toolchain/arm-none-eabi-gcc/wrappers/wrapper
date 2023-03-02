@@ -1,0 +1,6 @@
+#!/bin/bash
+ 
+NAME=$(basename "$0")
+TOOLCHAIN_BINDIR=external/com_pjrc_teensy_compile/tools/arm/bin
+ 
+exec "${TOOLCHAIN_BINDIR}"/"${NAME}" "$@"

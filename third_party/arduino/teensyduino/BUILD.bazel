@@ -1,0 +1,6 @@
+cc_library(
+    name = "teensy4_core",
+    deps = [
+        "@com_pjrc_teensy_package//:teensy4_core",
+    ],
+)

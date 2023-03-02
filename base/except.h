@@ -25,7 +25,9 @@
 #endif
 #endif
 
+#ifndef PLATFORM_OS_NONE
 #include "glog/logging.h"
+#endif
 
 constexpr bool has_exception_support() {
 #if defined(__cpp_exceptions) && !defined(NO_EXCEPTIONS)

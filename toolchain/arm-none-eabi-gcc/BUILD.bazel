@@ -1,0 +1,60 @@
+package(default_visibility = ["//visibility:public"])
+
+load(":cc_toolchain_config.bzl", "cc_toolchain_config")
+
+filegroup(name = "empty")
+
+filegroup(
+    name = "wrappers",
+    srcs = glob([
+        "wrappers/**",
+    ]),
+)
+
+filegroup(
+    name = "all_files",
+    srcs = [
+        ":wrappers",
+        "@com_pjrc_teensy_compile//:toolchain",
+    ],
+)
+
+cc_toolchain_config(name = "armv7e-mf_toolchain_config")
+
+cc_toolchain(
+    name = "armv7e-mf_toolchain",
+    all_files = ":all_files",
+    ar_files = ":all_files",
+    as_files = ":all_files",
+    compiler_files = ":all_files",
+    dwp_files = ":empty",
+    linker_files = ":all_files",
+    objcopy_files = ":all_files",
+    strip_files = ":all_files",
+    supports_param_files = 1,
+    tags = ["manual"],
+    toolchain_config = ":armv7e-mf_toolchain_config",
+    toolchain_identifier = "armv7e-mf-toolchain",
+)
+
+cc_toolchain_suite(
+    name = "gcc_toolchain",
+    tags = ["manual"],
+    toolchains = {
+        "armv7e-mf": ":armv7e-mf_toolchain",
+    },
+)
+
+toolchain(
+    name = "arm64_linux_toolchain",
+    exec_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+    target_compatible_with = [
+        "@platforms//os:none",
+        "@platforms//cpu:armv7e-mf",
+    ],
+    toolchain = ":arm64_toolchain",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+)
