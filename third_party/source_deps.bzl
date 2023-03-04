@@ -1,45 +1,14 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def load_source_dependencies():
-    if not native.existing_rule("io_bazel_rules_docker"):
+    if not native.existing_rule("bazel_skylib"):
         http_archive(
-            name = "io_bazel_rules_docker",
-            sha256 = "b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf",
-            urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.25.0/rules_docker-v0.25.0.tar.gz"],
-        )
-
-    if not native.existing_rule("rules_pkg"):
-        http_archive(
-            name = "rules_pkg",
+            name = "bazel_skylib",
             urls = [
-                "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz",
-                "https://github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz",
+                "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
+                "https://github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
             ],
-            sha256 = "8a298e832762eda1830597d64fe7db58178aa84cd5926d76d5b744d6558941c2",
-        )
-
-    if not native.existing_rule("com_google_googletest"):
-        http_archive(
-            name = "com_google_googletest",
-            sha256 = "3c2a0999fb9f85423d17e3000b339fd28501433f70c2e9941c8e784ac8624a10",
-            strip_prefix = "googletest-cead3d57c93ff8c4e5c1bbae57a5c0b0b0f6e168",
-            urls = ["https://github.com/google/googletest/archive/cead3d57c93ff8c4e5c1bbae57a5c0b0b0f6e168.zip"],
-        )
-
-    if not native.existing_rule("com_github_gflags_gflags"):
-        http_archive(
-            name = "com_github_gflags_gflags",
-            sha256 = "34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf",
-            strip_prefix = "gflags-2.2.2",
-            urls = ["https://github.com/gflags/gflags/archive/v2.2.2.tar.gz"],
-        )
-
-    if not native.existing_rule("com_github_google_glog"):
-        http_archive(
-            name = "com_github_google_glog",
-            sha256 = "21bc744fb7f2fa701ee8db339ded7dce4f975d0d55837a97be7d46e8382dea5a",
-            strip_prefix = "glog-0.5.0",
-            urls = ["https://github.com/google/glog/archive/v0.5.0.zip"],
+            sha256 = "f7be3474d42aae265405a592bb7da8e171919d74c16f082a5457840f06054728",
         )
 
     if not native.existing_rule("rules_cc"):
@@ -62,14 +31,53 @@ def load_source_dependencies():
             ],
         )
 
-    if not native.existing_rule("bazel_skylib"):
+    if not native.existing_rule("rules_pkg"):
         http_archive(
-            name = "bazel_skylib",
+            name = "rules_pkg",
             urls = [
-                "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
-                "https://github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
+                "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz",
+                "https://github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz",
             ],
-            sha256 = "f7be3474d42aae265405a592bb7da8e171919d74c16f082a5457840f06054728",
+            sha256 = "8a298e832762eda1830597d64fe7db58178aa84cd5926d76d5b744d6558941c2",
+        )
+
+    if not native.existing_rule("io_bazel_rules_docker"):
+        http_archive(
+            name = "io_bazel_rules_docker",
+            sha256 = "b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf",
+            urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.25.0/rules_docker-v0.25.0.tar.gz"],
+        )
+
+    if not native.existing_rule("com_google_googletest"):
+        http_archive(
+            name = "com_google_googletest",
+            sha256 = "3c2a0999fb9f85423d17e3000b339fd28501433f70c2e9941c8e784ac8624a10",
+            strip_prefix = "googletest-cead3d57c93ff8c4e5c1bbae57a5c0b0b0f6e168",
+            urls = ["https://github.com/google/googletest/archive/cead3d57c93ff8c4e5c1bbae57a5c0b0b0f6e168.zip"],
+        )
+
+    if not native.existing_rule("com_github_google_benchmark"):
+        http_archive(
+            name = "com_github_google_benchmark",
+            sha256 = "2a778d821997df7d8646c9c59b8edb9a573a6e04c534c01892a40aa524a7b68c",
+            strip_prefix = "benchmark-bf585a2789e30585b4e3ce6baf11ef2750b54677",
+            urls = ["https://github.com/google/benchmark/archive/bf585a2789e30585b4e3ce6baf11ef2750b54677.zip"],
+        )
+
+    if not native.existing_rule("com_github_gflags_gflags"):
+        http_archive(
+            name = "com_github_gflags_gflags",
+            sha256 = "34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf",
+            strip_prefix = "gflags-2.2.2",
+            urls = ["https://github.com/gflags/gflags/archive/v2.2.2.tar.gz"],
+        )
+
+    if not native.existing_rule("com_github_google_glog"):
+        http_archive(
+            name = "com_github_google_glog",
+            sha256 = "21bc744fb7f2fa701ee8db339ded7dce4f975d0d55837a97be7d46e8382dea5a",
+            urls = ["https://github.com/google/glog/archive/v0.5.0.zip"],
+            strip_prefix = "glog-0.5.0",
         )
 
     # Hack to work around gRPC's insistence on building boringssl from scratch when we have OpenSSL installed from the
