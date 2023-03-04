@@ -1,5 +1,6 @@
 def arch_name():
     return select({
-        "//platforms:arm64_linux_build": "arm64",
-        "//platforms:x86_64_linux_build": "amd64",
+        "@platforms//cpu:armv7e-mf": "arm7e-mf",
+        "@platforms//cpu:arm64": "arm64",
+        "@platforms//cpu:x86_64": "amd64",
     })

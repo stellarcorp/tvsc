@@ -7,6 +7,14 @@ cc_library(
         "utils.h",
     ],
     linkopts = ["-lstdc++fs"],
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     visibility = ["//visibility:public"],
     deps = [
         "//third_party/glog",

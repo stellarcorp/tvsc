@@ -2,6 +2,14 @@ licenses(["notice"])
 
 cc_library(
     name = "glog",
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_google_glog//:glog",

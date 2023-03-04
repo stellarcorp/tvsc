@@ -1,5 +1,16 @@
 cc_library(
     name = "uwebsockets",
+    target_compatible_with = select(
+        {
+            "//platforms:os_networking": [
+            ],
+            "//platforms:no_networking": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [
+            ],
+        },
+    ),
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_unetworking_uwebsockets//:uwebsockets",

@@ -1,28 +1,22 @@
 # Defaults for all builds
-build --define=allow_oversize_protos=true
-build --enable_platform_specific_config
+build --enable_platform_specific_config --config=c++17 --config=platform_build
 
-build:linux --config=c++17
-build:macos --config=c++17
-build:windows --config=c++17_windows
+build:linux --platforms=//platforms:linux_x86_64_general
 
 # Settings for different C++ dialects
 build:c++17 --cxxopt=-std=c++17
-build:c++17_windows --cxxopt=/std:c++17
 build:c++20 --cxxopt=-std=c++20
 build:c++2a --cxxopt=-std=c++2a
-build:c++20_windows --cxxopt=/std:c++20
 
-# TODO(james): Re-enable platform support when gRPC and Abseil enable them.
-#build:platform_build --incompatible_enable_cc_toolchain_resolution
+# Setting to enable platform builds.
+build:platform_build --incompatible_enable_cc_toolchain_resolution
 
 # Note: This configuration picks up the build:linux configurations as well.
-# TODO(james): Re-enable platform support when gRPC and Abseil enable them.
-#build:odroid_m1 --config=platform_build --platforms=//platforms:odroid_m1
-build:odroid_m1_cross --crosstool_top=//toolchain/arm64-debian-linux-gnu:gcc_toolchain --cpu=arm64 --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:odroid_m1 --platforms=//platforms:odroid_m1
+build:odroid_m1 --cpu=arm64 --crosstool_top=//toolchain/arm64-debian-linux-gnu:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
-#build:teensy_4 --config=platform_build --platforms=//platforms:teensy_4
-build:teensy_4_cross --crosstool_top=//toolchain/arm-none-eabi-gcc:gcc_toolchain --cpu=armv7e-mf --host_crosstool_top=@bazel_tools//tools/cpp:toolchain --copt -DPLATFORM_OS_NONE
+build:teensy4 --config=c++17 --config=platform_build --platforms=//platforms:teensy4
+#build:teensy4_cross --crosstool_top=//toolchain/arm-none-eabi-gcc:gcc_toolchain --cpu=armv7e-mf --host_crosstool_top=@bazel_tools//tools/cpp:toolchain --copt -DPLATFORM_OS_NONE
 
 # Address sanitizer
 # CC=clang bazel build --config asan
