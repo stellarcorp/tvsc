@@ -82,49 +82,21 @@ def tvsc_archive(*, name, libname, x86_64_urls, x86_64_library_paths = {}, x86_6
                 patch_cmds = ["tar xf data.tar.xz"],
             )
 
-        platform_selectors = """
-config_setting(
-    name = "arm64_linux_build",
-    values = {
-        "cpu": "arm64",
-    },
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "arm7_linux_build",
-    values = {
-        "cpu": "armv7",
-    },
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "x86_64_linux_build",
-    values = {
-        "cpu": "k8",
-    },
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "macos_build",
-    values = {
-        "cpu": "darwin",
-    },
-    visibility = ["//visibility:public"],
-)
-"""
-
         # Set up the repo that pivots between the different platforms.
         pivot_repo_build_file_content = """
 cc_library(
     name = "lib",
     visibility = ["//visibility:public"],
     deps = select({{
-      ":arm64_linux_build": ["@{arm64_name}//:lib"],
-      ":x86_64_linux_build": ["@{x86_64_name}//:lib"],
+      "@platforms//cpu:arm64": ["@{arm64_name}//:lib"],
+      "@platforms//cpu:x86_64": ["@{x86_64_name}//:lib"],
     }}) + {extra_deps},
+    target_compatible_with = select({{
+      "@platforms//os:none": [
+        "@platforms//:incompatible",
+      ],
+      "//conditions:default": [],
+    }}),
 )
 """
 
@@ -132,7 +104,7 @@ cc_library(
         for dep in deps:
             extra_deps += '"{}", '.format(dep)
         extra_deps += "]"
-        pivot_repo_build_file_content = platform_selectors + pivot_repo_build_file_content.format(name = name, arm64_name = arm64_name, x86_64_name = x86_64_name, extra_deps = extra_deps)
+        pivot_repo_build_file_content = pivot_repo_build_file_content.format(name = name, arm64_name = arm64_name, x86_64_name = x86_64_name, extra_deps = extra_deps)
 
         native.new_local_repository(
             name = name,
