@@ -15,7 +15,7 @@ cc_library(
     strip_include_prefix = "RadioHead/",
     visibility = ["//visibility:public"],
     deps = [
-        "@com_github_bxparks_epoxy_duino//:core",
+        "@//third_party/arduino",
     ],
 )
 
@@ -37,6 +37,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":driver_base",
-        "@com_github_bxparks_epoxy_duino//:core",
+        "@//third_party/arduino",
     ],
 )
