@@ -1,0 +1,11 @@
+--- avr/cores/teensy4/Time.cpp.orig	2023-03-03 13:46:16.352098689 -0500
++++ avr/cores/teensy4/Time.cpp	2023-03-03 13:46:34.996146165 -0500
+@@ -28,7 +28,7 @@
+ */
+ 
+ #include <Arduino.h>
+-
++#include <time.h>
+ 
+ // TODO: replace this slow Time library code with faster 32 bit approach
+ 

@@ -55,10 +55,10 @@ def load_source_dependencies():
     if not native.existing_rule("rules_proto"):
         http_archive(
             name = "rules_proto",
-            sha256 = "e017528fd1c91c5a33f15493e3a398181a9e821a804eb7ff5acdd1d2d6c2b18d",
-            strip_prefix = "rules_proto-4.0.0-3.20.0",
+            sha256 = "dc3fb206a2cb3441b485eb1e423165b231235a1ea9b031b4433cf7bc1fa460dd",
+            strip_prefix = "rules_proto-5.3.0-21.7",
             urls = [
-                "https://github.com/bazelbuild/rules_proto/archive/refs/tags/4.0.0-3.20.0.tar.gz",
+                "https://github.com/bazelbuild/rules_proto/archive/refs/tags/5.3.0-21.7.tar.gz",
             ],
         )
 
@@ -91,15 +91,25 @@ def load_source_dependencies():
             build_file = "//third_party/zlib:zlib.BUILD",
         )
 
+    if "upb" not in native.existing_rules():
+        http_archive(
+            name = "upb",
+            sha256 = "017a7e8e4e842d01dba5dc8aa316323eee080cd1b75986a7d1f94d87220e6502",
+            strip_prefix = "upb-e4635f223e7d36dfbea3b722a4ca4807a7e882e2",
+            urls = [
+                "https://storage.googleapis.com/grpc-bazel-mirror/github.com/protocolbuffers/upb/archive/e4635f223e7d36dfbea3b722a4ca4807a7e882e2.tar.gz",
+                "https://github.com/protocolbuffers/upb/archive/e4635f223e7d36dfbea3b722a4ca4807a7e882e2.tar.gz",
+            ],
+        )
+
     if not native.existing_rule("com_github_grpc_grpc"):
         http_archive(
             name = "com_github_grpc_grpc",
             urls = [
-                "https://github.com/grpc/grpc/archive/refs/tags/v1.47.0.tar.gz",
+                "https://github.com/grpc/grpc/archive/refs/tags/v1.52.1.tar.gz",
             ],
-            sha256 = "271bdc890bf329a8de5b65819f0f9590a5381402429bca37625b63546ed19e54",
-            strip_prefix = "grpc-1.47.0",
-            patches = ["//third_party/grpc:grpc_build.patch"],
+            sha256 = "ec125d7fdb77ecc25b01050a0d5d32616594834d3fe163b016768e2ae42a2df6",
+            strip_prefix = "grpc-1.52.1",
         )
 
     if not native.existing_rule("com_github_unetworking_usockets"):
@@ -152,6 +162,7 @@ def load_source_dependencies():
                 "https://www.pjrc.com/teensy/td_157/teensy-package.tar.bz2",
             ],
             build_file = "//third_party/arduino/teensyduino:teensy_package.BUILD",
+            patches = ["//third_party/arduino/teensyduino:Time.cpp.patch"],
         )
 
     if not native.existing_rule("com_airspayce_mikem_radio_head"):

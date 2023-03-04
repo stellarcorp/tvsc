@@ -1,0 +1,26 @@
+cc_library(
+    name = "arduino",
+    target_compatible_with = select(
+        {
+            "//platforms:teensyduino": [
+            ],
+            "//platforms:epoxy_duino": [
+            ],
+            "//conditions:default": [
+                "@platforms//:incompatible",
+            ],
+        },
+    ),
+    visibility = ["//visibility:public"],
+    deps = select(
+        {
+            "//platforms:teensyduino": [
+                "//third_party/arduino/teensyduino:teensy4_core",
+            ],
+            "//platforms:epoxy_duino": [
+                "//third_party/arduino/epoxy_duino",
+            ],
+            "//conditions:default": [],
+        },
+    ),
+)
