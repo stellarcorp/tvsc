@@ -27,17 +27,6 @@ pkg_files(
     prefix = "lib/systemd/system",
 )
 
-pkg_files(
-    name = "soapy_modules",
-    srcs = [
-        #"//service/communications/server/modules:dummy_communications",
-    ],
-    attributes = pkg_attributes(
-        mode = "0644",
-    ),
-    prefix = "usr/lib/aarch64-linux-gnu/SoapySDR/modules0.7",
-)
-
 PACKAGE_NAME = "tvsc-communications"
 
 pkg_tar(
@@ -45,7 +34,6 @@ pkg_tar(
     testonly = True,
     srcs = [
         ":binaries",
-        #":soapy_modules",
         ":systemd_files",
     ],
     package_file_name = tarball_name(PACKAGE_NAME),
