@@ -31,4 +31,8 @@ def load_toolchains():
                 "https://www.pjrc.com/teensy/td_158-beta3/teensy-compile-linux64.tar.bz2",
             ],
             build_file = "//third_party/teensy:teensy_compile.BUILD",
+            patches = [
+                "//third_party/teensy:newlib_version.patch",
+                "//third_party/teensy:endian_header.patch",
+            ],
         )
