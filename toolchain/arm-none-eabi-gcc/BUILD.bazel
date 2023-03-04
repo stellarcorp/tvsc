@@ -46,7 +46,7 @@ cc_toolchain_suite(
 )
 
 toolchain(
-    name = "arm64_linux_toolchain",
+    name = "armv7e-mf_none_toolchain",
     exec_compatible_with = [
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
@@ -55,6 +55,6 @@ toolchain(
         "@platforms//os:none",
         "@platforms//cpu:armv7e-mf",
     ],
-    toolchain = ":arm64_toolchain",
+    toolchain = ":armv7e-mf_toolchain",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )

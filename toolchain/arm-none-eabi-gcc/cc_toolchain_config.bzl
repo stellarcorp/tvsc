@@ -65,7 +65,7 @@ def _impl(ctx):
     ]
 
     dbg_feature = feature(name = "dbg")
-
+    fastbuild_feature = feature(name = "fastbuild")
     opt_feature = feature(name = "opt")
 
     shared_library_feature = feature(
@@ -82,14 +82,32 @@ def _impl(ctx):
                 flag_groups = [
                     flag_group(
                         flags = [
+                            "-Wall",
+                            "-ffunction-sections",
+                            "-fdata-sections",
+                            "-nostdlib",
+                            "-fno-exceptions",
+                            "-fpermissive",
+                            "-fno-rtti",
+                            "-fno-threadsafe-statics",
+                            "-felide-constructors",
+                            "-Wno-error=narrowing",
+                            "-mthumb",
+                            "-mcpu=cortex-m7",
+                            "-mfloat-abi=hard",
+                            "-mfpu=fpv5-d16",
+                            "-D__IMXRT1062__",
+                            "-DLAYOUT_US_ENGLISH",
+                            "-DTEENSYDUINO=157",
+                            "-DARDUINO=10607",
+                            "-DARDUINO_TEENSY41",
+                            "-DUSB_SERIAL",
                             "-no-canonical-prefixes",
                             "-fno-canonical-system-headers",
                             "-Wno-builtin-macro-redefined",
                             "-D__DATE__=\"redacted\"",
                             "-D__TIMESTAMP__=\"redacted\"",
                             "-D__TIME__=\"redacted\"",
-                            "-fPIC",
-                            "-U_FORTIFY_SOURCE",
                         ],
                     ),
                 ],
@@ -108,6 +126,24 @@ def _impl(ctx):
                     flag_group(
                         flags = [
                             "-O2",
+                        ],
+                    ),
+                ],
+            ),
+        ],
+    )
+
+    fastbuild_compiler_flags = feature(
+        name = "fastbuild_compiler_flags",
+        enabled = True,
+        requires = [feature_set(features = ["fastbuild"])],
+        flag_sets = [
+            flag_set(
+                actions = all_compile_actions,
+                flag_groups = [
+                    flag_group(
+                        flags = [
+                            "-Os",
                         ],
                     ),
                 ],
@@ -160,6 +196,13 @@ def _impl(ctx):
                 flag_groups = ([
                     flag_group(
                         flags = [
+                            "--specs=nano.specs",
+                            "-Wl,--gc-sections,--relax",
+                            "-mthumb",
+                            "-mcpu=cortex-m7",
+                            "-mfloat-abi=hard",
+                            "-mfpu=fpv5-d16",
+                            "-larm_cortexM7lfsp_math",
                             "-lstdc++",
                             "-lm",
                         ],
@@ -171,8 +214,10 @@ def _impl(ctx):
 
     features = [
         opt_feature,
+        fastbuild_feature,
         dbg_feature,
         opt_compiler_flags,
+        fastbuild_compiler_flags,
         dbg_compiler_flags,
         shared_library_feature,
         default_compiler_flags,
@@ -185,10 +230,10 @@ def _impl(ctx):
         features = features,
         toolchain_identifier = "armv7e-mf-toolchain",
         host_system_name = "local",
-        target_system_name = "unknown",
-        target_cpu = "unknown",
+        target_system_name = "arm-none-eabi-gcc",
+        target_cpu = "armv7e-mf",
         target_libc = "unknown",
-        compiler = "unknown",
+        compiler = "arm-none-eabi-gcc-11.3",
         abi_version = "unknown",
         abi_libc_version = "unknown",
         tool_paths = tool_paths,
