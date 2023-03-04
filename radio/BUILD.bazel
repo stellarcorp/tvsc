@@ -31,6 +31,17 @@ cc_library(
     ],
 )
 
+cc_binary(
+    name = "loop_send",
+    srcs = ["loop_send.cc"],
+    target_compatible_with = [
+        "@platforms//os:none",
+    ],
+    deps = [
+        "//third_party/radio_head:rf69_driver",
+    ],
+)
+
 filegroup(
     name = "settings_proto_file",
     srcs = ["settings.proto"],
