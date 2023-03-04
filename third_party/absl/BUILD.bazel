@@ -1,0 +1,18 @@
+cc_library(
+    name = "strings",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_google_absl//absl/strings",
+    ],
+)
+
+cc_test(
+    name = "compile_test",
+    srcs = [
+        "compile_test.cc",
+    ],
+    deps = [
+        ":strings",
+        "//third_party/gtest",
+    ],
+)
