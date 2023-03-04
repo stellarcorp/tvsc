@@ -4,9 +4,9 @@ build --enable_platform_specific_config --config=c++17 --config=platform_build
 build:linux --platforms=//platforms:linux_x86_64_general
 
 # Settings for different C++ dialects
-build:c++17 --cxxopt=-std=c++17
-build:c++20 --cxxopt=-std=c++20
-build:c++2a --cxxopt=-std=c++2a
+build:c++17 --cxxopt -std=c++17
+build:c++20 --cxxopt -std=c++20
+build:c++2a --cxxopt -std=c++2a
 
 # Setting to enable platform builds.
 build:platform_build --incompatible_enable_cc_toolchain_resolution
@@ -15,8 +15,8 @@ build:platform_build --incompatible_enable_cc_toolchain_resolution
 build:odroid_m1 --platforms=//platforms:odroid_m1
 build:odroid_m1 --cpu=arm64 --crosstool_top=//toolchain/arm64-debian-linux-gnu:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
-build:teensy4 --config=c++17 --config=platform_build --platforms=//platforms:teensy4
-#build:teensy4_cross --crosstool_top=//toolchain/arm-none-eabi-gcc:gcc_toolchain --cpu=armv7e-mf --host_crosstool_top=@bazel_tools//tools/cpp:toolchain --copt -DPLATFORM_OS_NONE
+build:teensy4 --platforms=//platforms:teensy4
+build:teensy4 --cpu=armv7e-mf --crosstool_top=//toolchain/arm-none-eabi-gcc:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
 # Address sanitizer
 # CC=clang bazel build --config asan
