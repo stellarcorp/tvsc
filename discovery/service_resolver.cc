@@ -57,7 +57,6 @@ class MDnsResolver final : public grpc_core::Resolver {
  private:
   ServiceDiscovery* discovery_;
   grpc_core::ResolverArgs args_;
-  grpc_channel_args* channel_args_;
 
   void resolve() {
     LOG(INFO) << "MDnsResolver::resolve()";
@@ -78,29 +77,22 @@ class MDnsResolver final : public grpc_core::Resolver {
       LOG(INFO) << "server:\n" << server.DebugString();
       resolved_server_to_grpc(server, &address);
       LOG(INFO) << "grpc_resolved_address: " << to_string(address);
-      discovered_servers.emplace_back(address, nullptr);
+      discovered_servers.emplace_back(address, args_.args);
     }
 
     // Hack.
     // TODO(james): Figure out where this result_handler is getting cleaned up / set to nullptr and
     // adjust the logic appropriately.
     if (this->args_.result_handler) {
-      grpc_core::Resolver::Result result{};
-      result.args = this->channel_args_;
-      this->channel_args_ = nullptr;
-      result.addresses = std::move(discovered_servers);
-      this->args_.result_handler->ReportResult(std::move(result));
+      grpc_core::Resolver::Result result;
+      result.addresses = discovered_servers;
+      this->args_.result_handler->ReportResult(result);
     }
   }
 
  public:
   MDnsResolver(ServiceDiscovery& discovery, grpc_core::ResolverArgs&& args)
-      : discovery_(&discovery),
-        args_(std::move(args)),
-        channel_args_(grpc_channel_args_copy(args_.args)) {
-    args_.args = nullptr;
-  }
-  ~MDnsResolver() { grpc_channel_args_destroy(channel_args_); }
+      : discovery_(&discovery), args_(std::move(args)) {}
 
   void StartLocked() override { resolve(); }
   void RequestReresolutionLocked() override { resolve(); }
