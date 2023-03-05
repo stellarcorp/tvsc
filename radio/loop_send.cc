@@ -1,32 +1,15 @@
-// rf69_client.pde
-// -*- mode: C++ -*-
-// Example sketch showing how to create a simple messageing client
-// with the RH_RF69 class. RH_RF69 class does not provide for addressing or
-// reliability, so you should only use RH_RF69  if you do not need the higher
-// level messaging abilities.
-// It is designed to work with the other example rf69_server.
-// Demonstrates the use of AES encryption, setting the frequency and modem 
-// configuration
-// Tested on Moteino with RFM69 http://lowpowerlab.com/moteino/
-// Tested on miniWireless with RFM69 www.anarduino.com/miniwireless
-// Tested on Teensy 3.1 with RF69 on PJRC breakout board
-
-#include <Arduino.h>
-#include <SPI.h>
 #include <RH_RF69.h>
+#include <SPI.h>
+
+#include <string>
 
 constexpr int RF69_RST{9};
 constexpr int RF69_CS{10};
 constexpr int RF69_DIO0{24};
 
-// Singleton instance of the radio driver
 RH_RF69 rf69{RF69_CS, digitalPinToInterrupt(RF69_DIO0)};
-//RH_RF69 rf69(15, 16); // For RF69 on PJRC breakout board with Teensy 3.1
-//RH_RF69 rf69(4, 2); // For MoteinoMEGA https://lowpowerlab.com/shop/moteinomega
-//RH_RF69 rf69(8, 7); // Adafruit Feather 32u4
 
-void setup() 
-{
+void setup() {
   Serial.begin(9600);
   // Give the serial connection a small amount of time to come up.
   delay(100);
@@ -46,65 +29,93 @@ void setup()
 
   if (!rf69.init()) {
     Serial.println("init failed");
-    while (true){}
+    while (true) {
+    }
   }
-  // Defaults after init are 434.0MHz, modulation GFSK_Rb250Fd250, +13dbM (for low power module)
-  // No encryption
-  if (!rf69.setFrequency(434.0))
-    Serial.println("setFrequency failed");
 
-  // If you are using a high power RF69 eg RFM69HW, you *must* set a Tx power with the
-  // ishighpowermodule flag set like this:
-  rf69.setTxPower(14, true);
+  if (!rf69.setFrequency(460.0)) Serial.println("setFrequency failed");
+
+  rf69.setTxPower(5, /* ishighpowermodule */ true);
 
   // Use a very slow encoding/modulation scheme like this so that the signal stands out.
-  //rf69.setModemConfig(RH_RF69::OOK_Rb1Bw1);
+  rf69.setModemConfig(RH_RF69::OOK_Rb1Bw1);
   // Use a faster scheme.
-  //rf69.setModemConfig(RH_RF69::OOK_Rb32Bw64);
+  // rf69.setModemConfig(RH_RF69::OOK_Rb32Bw64);
   // Fast/high bandwidth GFSK modulation scheme.
-  //rf69.setModemConfig(RH_RF69::GFSK_Rb250Fd250);
+  // rf69.setModemConfig(RH_RF69::GFSK_Rb250Fd250);
   // Fast/high bandwidth FSK modulation scheme.
-  //rf69.setModemConfig(RH_RF69::FSK_Rb250Fd250);
+  // rf69.setModemConfig(RH_RF69::FSK_Rb250Fd250);
   // Slow FSK modulation scheme.
-  //rf69.setModemConfig(RH_RF69::FSK_Rb2_4Fd4_8);
-  rf69.setModemConfig(RH_RF69::FSK_Rb57_6Fd120);
+  // rf69.setModemConfig(RH_RF69::FSK_Rb2_4Fd4_8);
+  // rf69.setModemConfig(RH_RF69::FSK_Rb57_6Fd120);
 
   // The encryption key has to be the same as the one in the server
-  uint8_t key[] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
-                    0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
-  //rf69.setEncryptionKey(key);
+  uint8_t key[] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+                   0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+  // rf69.setEncryptionKey(key);
 }
 
-
-void loop()
-{
+bool send(const std::string& msg) {
   Serial.println("Sending to rf69_server");
-  // Send a message to rf69_server
-  uint8_t data[] = "Hello World!";
-  rf69.send(data, sizeof(data));
-  
-  rf69.waitPacketSent();
-  // Now wait for a reply
-  uint8_t buf[RH_RF69_MAX_MESSAGE_LEN];
-  uint8_t len = sizeof(buf);
 
-  if (rf69.waitAvailableTimeout(100))
-  { 
-    // Should be a reply message for us now   
-    if (rf69.recv(buf, &len))
-    {
+  bool result;
+  result = rf69.send(msg.data(), msg.length());
+  Serial.println("Send requested.");
+
+  if (result) {
+    result = rf69.waitPacketSent();
+  }
+
+  if (result) {
+    Serial.println("Sent.");
+  }
+
+  return result;
+}
+
+bool recv(std::string& buffer) {
+  bool result;
+  result = rf69.waitAvailableTimeout(100);
+  if (result) {
+    buffer.clear();
+    uint8_t length{rf69.maxMessageLength()};
+
+    buffer.resize(length + 1);
+
+    result = rf69.recv(buffer.data(), &length);
+    if (result) {
+      buffer.resize(length);
       Serial.print("got reply: ");
-      Serial.println((char*)buf);
-    }
-    else
-    {
+      Serial.println(buffer.c_str());
+    } else {
       Serial.println("recv failed");
     }
+  } else {
+    Serial.println("No reply available.");
   }
-  else
-  {
-    Serial.println("No reply, is rf69_server running?");
-  }
-  delay(850);
+
+  return result;
 }
 
+void loop() {
+  constexpr char data[] = "Hello World!";
+  std::string buffer{};
+
+  send(data);
+
+  if (recv(buffer)) {
+    Serial.print("Received: ");
+    Serial.println(buffer.c_str());
+  }
+
+  delay(200);
+
+  send(data);
+
+  if (recv(buffer)) {
+    Serial.print("Received: ");
+    Serial.println(buffer.c_str());
+  }
+
+  delay(750);
+}

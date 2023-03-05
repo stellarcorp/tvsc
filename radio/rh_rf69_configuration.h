@@ -66,18 +66,17 @@ std::unordered_map<Function, Value> generate_capabilities_map<RH_RF69>() {
   // O(n) with this setup, we will still see good performance.
   capabilities.max_load_factor(1.f);
 
-  // Adafruit says we can go from 400MHz to 460MHz. Manufacturer says 424MHz to 510MHz. We limit
-  // ourselves to the intersection of these ranges, since we probably don't care to step too far
-  // from 433MHz anyway.
+  // Adafruit says we can go from 400MHz to 460MHz. Manufacturer says 424MHz to 510MHz. We measured
+  // the range as 405MHz to 510MHz.
   capabilities.insert({Function::CARRIER_FREQUENCY_HZ,
-                       float_range(in_unit<std::mega>(424), in_unit<std::mega>(460))});
+                       float_range(in_unit<std::mega>(405), in_unit<std::mega>(510))});
 
   capabilities.insert(
       {Function::MODULATION_SCHEME,
        enumerated({ModulationTechnique::OOK, ModulationTechnique::FSK, ModulationTechnique::MSK,
                    ModulationTechnique::GFSK, ModulationTechnique::GMSK})});
 
-  capabilities.insert({Function::TX_POWER_DBM, int32_range(11, 17)});
+  capabilities.insert({Function::TX_POWER_DBM, int32_range(1, 20)});
 
   // Note that it might be possible to go up to 65 bytes if we take
   // control of the header generation. The FIFOs have a size of 66 bytes,
