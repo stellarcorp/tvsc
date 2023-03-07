@@ -15,8 +15,11 @@ build:platform_build --incompatible_enable_cc_toolchain_resolution
 build:odroid_m1 --platforms=//platforms:odroid_m1
 build:odroid_m1 --cpu=arm64 --crosstool_top=//toolchain/arm64-debian-linux-gnu:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
-build:teensy4 --platforms=//platforms:teensy4
-build:teensy4 --cpu=armv7e-mf --crosstool_top=//toolchain/arm-none-eabi-gcc:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:teensy40 --platforms=//platforms:teensy40
+build:teensy40 --cpu=armv7e-mf --crosstool_top=//toolchain/arm-none-eabi-gcc:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+
+build:teensy41 --platforms=//platforms:teensy41
+build:teensy41 --cpu=armv7e-mf --crosstool_top=//toolchain/arm-none-eabi-gcc:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
 # Address sanitizer
 # CC=clang bazel build --config asan
