@@ -21,12 +21,24 @@ platform(
 )
 
 platform(
-    name = "teensy4",
+    name = "teensy41",
     constraint_values = [
         "@platforms//cpu:armv7e-mf",
         "@platforms//os:none",
         ":teensyduino",
         ":no_networking",
+        ":radio_module_interrupt_pin_24",
+    ],
+)
+
+platform(
+    name = "teensy40",
+    constraint_values = [
+        "@platforms//cpu:armv7e-mf",
+        "@platforms//os:none",
+        ":teensyduino",
+        ":no_networking",
+        ":radio_module_interrupt_pin_17",
     ],
 )
 
@@ -57,4 +69,16 @@ constraint_value(
 constraint_value(
     name = "no_networking",
     constraint_setting = "networking_implementation",
+)
+
+constraint_setting(name = "radio_module_interrupt_pin")
+
+constraint_value(
+    name = "radio_module_interrupt_pin_24",
+    constraint_setting = "radio_module_interrupt_pin",
+)
+
+constraint_value(
+    name = "radio_module_interrupt_pin_17",
+    constraint_setting = "radio_module_interrupt_pin",
 )

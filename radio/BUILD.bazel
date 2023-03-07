@@ -40,6 +40,10 @@ cc_binary(
     deps = [
         "//third_party/radio_head:rf69_driver",
     ],
+    local_defines = select({
+        "//platforms:radio_module_interrupt_pin_17": ["RFM69_INTERRUPT_PIN=17"],
+        "//platforms:radio_module_interrupt_pin_24": ["RFM69_INTERRUPT_PIN=24"],
+    }),
 )
 
 filegroup(

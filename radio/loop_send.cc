@@ -5,7 +5,12 @@
 
 constexpr int RF69_RST{9};
 constexpr int RF69_CS{10};
-constexpr int RF69_DIO0{24};
+
+#if defined(RFM69_INTERRUPT_PIN)
+constexpr int RF69_DIO0{RFM69_INTERRUPT_PIN};
+#else
+constexpr int RF69_DIO0{17};
+#endif
 
 RH_RF69 rf69{RF69_CS, digitalPinToInterrupt(RF69_DIO0)};
 
