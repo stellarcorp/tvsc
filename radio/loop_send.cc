@@ -40,10 +40,10 @@ void setup() {
 
   if (!rf69.setFrequency(460.0)) Serial.println("setFrequency failed");
 
-  rf69.setTxPower(5, /* ishighpowermodule */ true);
+  rf69.setTxPower(2, /* ishighpowermodule */ true);
 
   // Use a very slow encoding/modulation scheme like this so that the signal stands out.
-  rf69.setModemConfig(RH_RF69::OOK_Rb1Bw1);
+  // rf69.setModemConfig(RH_RF69::OOK_Rb1Bw1);
   // Use a faster scheme.
   // rf69.setModemConfig(RH_RF69::OOK_Rb32Bw64);
   // Fast/high bandwidth GFSK modulation scheme.
@@ -51,7 +51,7 @@ void setup() {
   // Fast/high bandwidth FSK modulation scheme.
   // rf69.setModemConfig(RH_RF69::FSK_Rb250Fd250);
   // Slow FSK modulation scheme.
-  // rf69.setModemConfig(RH_RF69::FSK_Rb2_4Fd4_8);
+  rf69.setModemConfig(RH_RF69::FSK_Rb2_4Fd4_8);
   // rf69.setModemConfig(RH_RF69::FSK_Rb57_6Fd120);
 
   // The encryption key has to be the same as the one in the server
@@ -80,7 +80,7 @@ bool send(const std::string& msg) {
 
 bool recv(std::string& buffer) {
   bool result;
-  result = rf69.waitAvailableTimeout(100);
+  result = rf69.waitAvailableTimeout(10);
   if (result) {
     buffer.clear();
     uint8_t length{rf69.maxMessageLength()};
@@ -112,15 +112,4 @@ void loop() {
     Serial.print("Received: ");
     Serial.println(buffer.c_str());
   }
-
-  delay(200);
-
-  send(data);
-
-  if (recv(buffer)) {
-    Serial.print("Received: ");
-    Serial.println(buffer.c_str());
-  }
-
-  delay(750);
 }
