@@ -9,3 +9,15 @@ cc_library(
         "@com_pjrc_teensy_package//:teensy4_core",
     ],
 )
+
+cc_library(
+    name = "spi",
+    target_compatible_with = select({
+        "@platforms//os:none": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_pjrc_teensy_package//:spi",
+    ],
+)

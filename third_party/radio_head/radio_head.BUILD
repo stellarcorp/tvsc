@@ -16,6 +16,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@//third_party/arduino",
+        "@//third_party/arduino:spi",
     ],
 )
 
@@ -38,5 +39,6 @@ cc_library(
     deps = [
         ":driver_base",
         "@//third_party/arduino",
+        "@//third_party/arduino:spi",
     ],
 )
