@@ -129,7 +129,7 @@ def _impl(ctx):
                 flag_groups = [
                     flag_group(
                         flags = [
-                            "-O2",
+                            "-Os",
                         ],
                     ),
                 ],
@@ -147,7 +147,7 @@ def _impl(ctx):
                 flag_groups = [
                     flag_group(
                         flags = [
-                            "-Os",
+                            "-O",
                         ],
                     ),
                 ],
