@@ -55,6 +55,10 @@ def _impl(ctx):
             path = "wrappers/arm-none-eabi-nm",
         ),
         tool_path(
+            name = "objcopy",
+            path = "wrappers/arm-none-eabi-objcopy",
+        ),
+        tool_path(
             name = "objdump",
             path = "wrappers/arm-none-eabi-objdump",
         ),
@@ -100,7 +104,7 @@ def _impl(ctx):
                             "-DLAYOUT_US_ENGLISH",
                             "-DTEENSYDUINO=157",
                             "-DARDUINO=10607",
-                            "-DARDUINO_TEENSY41",
+                            "-DARDUINO_TEENSY40",
                             "-DUSB_SERIAL",
                             "-no-canonical-prefixes",
                             "-fno-canonical-system-headers",
@@ -205,6 +209,7 @@ def _impl(ctx):
                             "-larm_cortexM7lfsp_math",
                             "-lstdc++",
                             "-lm",
+                            "-Texternal/com_pjrc_teensy_package/avr/cores/teensy4/imxrt1062.ld",
                         ],
                     ),
                 ]),

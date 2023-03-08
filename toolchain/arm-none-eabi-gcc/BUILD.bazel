@@ -16,6 +16,8 @@ filegroup(
     srcs = [
         ":wrappers",
         "@com_pjrc_teensy_compile//:toolchain",
+        "@com_pjrc_teensy_package//:teensy40_linker_script",
+        "@com_pjrc_teensy_package//:teensy41_linker_script",
     ],
 )
 
