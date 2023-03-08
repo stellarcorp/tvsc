@@ -27,7 +27,7 @@ platform(
         "@platforms//os:none",
         ":teensyduino",
         ":no_networking",
-        ":radio_module_interrupt_pin_24",
+        ":teensy41_board",
     ],
 )
 
@@ -38,7 +38,7 @@ platform(
         "@platforms//os:none",
         ":teensyduino",
         ":no_networking",
-        ":radio_module_interrupt_pin_17",
+        ":teensy40_board",
     ],
 )
 
@@ -71,14 +71,14 @@ constraint_value(
     constraint_setting = "networking_implementation",
 )
 
-constraint_setting(name = "radio_module_interrupt_pin")
+constraint_setting(name = "board_type")
 
 constraint_value(
-    name = "radio_module_interrupt_pin_24",
-    constraint_setting = "radio_module_interrupt_pin",
+    name = "teensy40_board",
+    constraint_setting = "board_type",
 )
 
 constraint_value(
-    name = "radio_module_interrupt_pin_17",
-    constraint_setting = "radio_module_interrupt_pin",
+    name = "teensy41_board",
+    constraint_setting = "board_type",
 )

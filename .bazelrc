@@ -1,5 +1,7 @@
 # Defaults for all builds
-build --enable_platform_specific_config --config=c++17 --config=platform_build
+build --enable_platform_specific_config
+build --config=c++17
+build --config=platform_build
 
 build:linux --platforms=//platforms:linux_x86_64_general
 

@@ -1,5 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
+load("//platforms:hex.bzl", "hex")
 
 cc_library(
     name = "radio",
@@ -34,16 +35,22 @@ cc_library(
 cc_binary(
     name = "loop_send",
     srcs = ["loop_send.cc"],
+    local_defines = select({
+        "//platforms:teensy40_board": ["RFM69_INTERRUPT_PIN=17"],
+        "//platforms:teensy41_board": ["RFM69_INTERRUPT_PIN=24"],
+    }),
     target_compatible_with = [
         "@platforms//os:none",
     ],
     deps = [
         "//third_party/radio_head:rf69_driver",
     ],
-    local_defines = select({
-        "//platforms:radio_module_interrupt_pin_17": ["RFM69_INTERRUPT_PIN=17"],
-        "//platforms:radio_module_interrupt_pin_24": ["RFM69_INTERRUPT_PIN=24"],
-    }),
+)
+
+hex(
+    name = "loop_send_hex",
+    src = ":loop_send",
+    out = "loop_send.hex",
 )
 
 filegroup(
