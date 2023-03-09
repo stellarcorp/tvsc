@@ -9,5 +9,53 @@ message TrivialMessage {
 }
 
 message FixedStringLength {
-  string foo = 1  [(nanopb).max_length = 127];
+  string fixed_size = 1 [(nanopb).max_size = 128];
+  string fixed_length = 2 [(nanopb).max_length = 127];
+}
+
+enum Fruit {
+  UNKNOWN = 0;
+  APPLE = 1;
+  PEAR = 2;
+  BANANA = 3;
+}
+
+message OneOfMessage {
+  oneof value {
+    int32 int32_value = 1;
+    int64 int64_value = 2;
+    float float_value = 3;
+  }
+}
+
+message Complicated {
+  enum Complexity {
+    LOW = 0;
+    MEDIUM = 1;
+    HIGH = 2;
+  };
+
+  repeated Complexity complexes = 1;
+  repeated OneOfMessage values = 2;
+  repeated Fruit fruits = 3;
+
+  repeated Complexity fixed_size_complexes = 4 [(nanopb).max_count = 8];
+  repeated OneOfMessage fixed_size_values = 5 [(nanopb).max_count = 32];
+  repeated Fruit fixed_size_fruits = 6 [(nanopb).max_count = 16];
+}
+
+// message WillNotCompile {
+//   // nanopb will define two fields with this same name in the generated WillNotCompile struct. The
+//   // first struct field will refer to this message field. The second struct field will refer to the
+//   // number of values for the second message field.
+//   int32 items_count = 1;
+//   repeated int32 items = 2 [(nanopb).max_count = 128];
+// }
+
+message ButThisWillCompile {
+  int32 items_count = 1;
+  // Without specifying a max_count, nanopb doesn't track the count of the repeated message field
+  // in the struct directly. It will take some judgement to handle these situations; changing a
+  // repeated field to use a callback instead of having a max count will have other repercussions.
+  repeated int32 items = 2;
 }

@@ -40,19 +40,22 @@ TEST(CompileTest, CanRoundTripTrivialMessage) {
   EXPECT_EQ(LUCKY_NUMBER, decoded.lucky_number);
 }
 
-TEST(UnexpectedBehavior, AllocatesExtraByteForEachFixedSizeField) {
-  // We request the field size to be 127 bytes in the proto definition.
-  EXPECT_EQ(127 + 1, sizeof(FixedStringLength::foo));
+TEST(UnexpectedBehavior, AllocatesExtraByteForEachFixedLengthStringField) {
+  // We request the field SIZE to be 128 bytes in the proto definition and get what we expect.
+  EXPECT_EQ(128, sizeof(FixedStringLength::fixed_size));
+  // We request the field LENGTH to be 127 bytes in the proto definition, but nanopb allocates an
+  // extra byte for the terminating zero.
+  EXPECT_EQ(127 + 1, sizeof(FixedStringLength::fixed_length));
 }
 
 TEST(ExplorationTest, CanAllocateStringsAsFixedSizeBuffers) {
   constexpr char GREETING[] = "Not another 'Hello, world!' message.";
 
   FixedStringLength message{};
-  std::strncpy(message.foo, GREETING, sizeof(message.foo));
+  std::strncpy(message.fixed_size, GREETING, sizeof(message.fixed_size));
 
   FixedStringLength decoded = round_trip(FixedStringLength_msg, message);
-  EXPECT_STREQ(GREETING, decoded.foo);
+  EXPECT_STREQ(GREETING, decoded.fixed_size);
 }
 
 TEST(ExplorationTest, MessageCopyCopiesTheValueNotTheAddress) {
@@ -62,52 +65,59 @@ TEST(ExplorationTest, MessageCopyCopiesTheValueNotTheAddress) {
 
   FixedStringLength message1{};
   FixedStringLength message2{};
-  std::strncpy(message1.foo, GREETING1, sizeof(message1.foo));
-  std::strncpy(message2.foo, GREETING2, sizeof(message2.foo));
+  std::strncpy(message1.fixed_size, GREETING1, sizeof(message1.fixed_size));
+  std::strncpy(message2.fixed_size, GREETING2, sizeof(message2.fixed_size));
 
   message1 = message2;
 
-  // Overwrite message2.foo to verify that message1 copies the value of the field in the assignment,
-  // not the address.
-  std::strncpy(message2.foo, GREETING3, sizeof(message2.foo));
+  // Overwrite message2.fixed_size to verify that message1 copies the value of the field in the
+  // assignment, not the address.
+  std::strncpy(message2.fixed_size, GREETING3, sizeof(message2.fixed_size));
 
-  // If the foo fields in both messages have the same address, we will have difficulties working
-  // with this library.
-  EXPECT_NE(message2.foo, message1.foo);
+  // If the fixed_size fields in both messages have the same address, we will have difficulties
+  // working with this library.
+  EXPECT_NE(message2.fixed_size, message1.fixed_size);
 
-  // Check that the values in the foo fields are what we expect.
-  EXPECT_STREQ(GREETING2, message1.foo);
-  EXPECT_STREQ(GREETING3, message2.foo);
+  // Check that the values in the fixed_size fields are what we expect.
+  EXPECT_STREQ(GREETING2, message1.fixed_size);
+  EXPECT_STREQ(GREETING3, message2.fixed_size);
 }
 
 TEST(ExplorationTest, NanoPbMessagesAreTriviallyConstructible) {
   EXPECT_TRUE(std::is_trivially_constructible<TrivialMessage>::value);
   EXPECT_TRUE(std::is_trivially_constructible<FixedStringLength>::value);
+  EXPECT_TRUE(std::is_trivially_constructible<Complicated>::value);
 }
 
 TEST(ExplorationTest, NanoPbMessagesAreTriviallyDefaultConstructible) {
   EXPECT_TRUE(std::is_trivially_default_constructible<TrivialMessage>::value);
   EXPECT_TRUE(std::is_trivially_default_constructible<FixedStringLength>::value);
+  EXPECT_TRUE(std::is_trivially_default_constructible<Complicated>::value);
 }
 
 TEST(ExplorationTest, NanoPbMessagesAreTriviallyCopyable) {
   EXPECT_TRUE(std::is_trivially_copyable<TrivialMessage>::value);
   EXPECT_TRUE(std::is_trivially_copyable<FixedStringLength>::value);
+  EXPECT_TRUE(std::is_trivially_copyable<Complicated>::value);
 }
 
 TEST(ExplorationTest, NanoPbMessagesAreTriviallyAssignable) {
   constexpr bool msg1{std::is_trivially_assignable<TrivialMessage, TrivialMessage>::value};
   constexpr bool msg2{std::is_trivially_assignable<FixedStringLength, FixedStringLength>::value};
+  constexpr bool msg3{std::is_trivially_assignable<Complicated, Complicated>::value};
   EXPECT_TRUE(msg1);
   EXPECT_TRUE(msg2);
+  EXPECT_TRUE(msg3);
 }
 
 TEST(ExplorationTest, NanoPbMessagesAreTriviallyCopyAssignable) {
   EXPECT_TRUE(std::is_trivially_copy_assignable<TrivialMessage>::value);
   EXPECT_TRUE(std::is_trivially_copy_assignable<FixedStringLength>::value);
+  EXPECT_TRUE(std::is_trivially_copy_assignable<Complicated>::value);
 }
 
 TEST(ExplorationTest, NanoPbMessagesAreTriviallyMoveAssignable) {
   EXPECT_TRUE(std::is_trivially_move_assignable<TrivialMessage>::value);
   EXPECT_TRUE(std::is_trivially_move_assignable<FixedStringLength>::value);
+  EXPECT_TRUE(std::is_trivially_move_assignable<Complicated>::value);
 }
