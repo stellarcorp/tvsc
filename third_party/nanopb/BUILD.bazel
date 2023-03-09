@@ -1,0 +1,41 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@com_github_nanopb_nanopb//extra/bazel:nanopb_cc_proto_library.bzl", "cc_nanopb_proto_library")
+
+cc_library(
+    name = "nanopb",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_nanopb_nanopb//:nanopb",
+    ],
+)
+
+proto_library(
+    name = "sample_messages_proto",
+    srcs = ["sample_messages.proto"],
+    deps = [
+        "@com_github_nanopb_nanopb//:nanopb_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "sample_messages_cc_proto",
+    deps = [":sample_messages_proto"],
+)
+
+cc_nanopb_proto_library(
+    name = "sample_messages_nano_cc_proto",
+    protos = [":sample_messages_proto"],
+)
+
+cc_test(
+    name = "compile_test",
+    srcs = [
+        "nanopb_test.cc",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":nanopb",
+        ":sample_messages_nano_cc_proto",
+        "//third_party/gtest",
+    ],
+)

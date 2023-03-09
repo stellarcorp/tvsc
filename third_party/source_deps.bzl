@@ -99,14 +99,13 @@ def load_source_dependencies():
             build_file = "//third_party/zlib:zlib.BUILD",
         )
 
-    if "upb" not in native.existing_rules():
+    if "com_github_nanopb_nanopb" not in native.existing_rules():
         http_archive(
-            name = "upb",
-            sha256 = "017a7e8e4e842d01dba5dc8aa316323eee080cd1b75986a7d1f94d87220e6502",
-            strip_prefix = "upb-e4635f223e7d36dfbea3b722a4ca4807a7e882e2",
+            name = "com_github_nanopb_nanopb",
+            sha256 = "e1d89b166367a3c42d42311bdc2ed57ff78f86aede9a66828516e45490d48c81",
+            strip_prefix = "nanopb-0.4.7",
             urls = [
-                "https://storage.googleapis.com/grpc-bazel-mirror/github.com/protocolbuffers/upb/archive/e4635f223e7d36dfbea3b722a4ca4807a7e882e2.tar.gz",
-                "https://github.com/protocolbuffers/upb/archive/e4635f223e7d36dfbea3b722a4ca4807a7e882e2.tar.gz",
+                "https://github.com/nanopb/nanopb/archive/refs/tags/0.4.7.tar.gz",
             ],
         )
 

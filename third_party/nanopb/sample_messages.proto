@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "nanopb.proto";
+
+message TrivialMessage {
+  string foo = 1;
+  int32 lucky_number = 2;
+  string bar = 3;
+}
+
+message FixedStringLength {
+  string foo = 1  [(nanopb).max_length = 127];
+}
