@@ -19,6 +19,14 @@ proto_library(
 
 cc_proto_library(
     name = "sample_messages_cc_proto",
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     deps = [":sample_messages_proto"],
 )
 

@@ -28,6 +28,14 @@ proto_library(
 
 cc_proto_library(
     name = "communications_cc_proto",
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     deps = [
         ":communications_proto",
     ],
@@ -37,6 +45,14 @@ cc_grpc_library(
     name = "communications_cc_grpc",
     srcs = [":communications_proto"],
     grpc_only = True,
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     deps = [
         ":communications_cc_proto",
         "//radio:radio_cc_proto",

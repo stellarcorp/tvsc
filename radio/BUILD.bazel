@@ -1,5 +1,6 @@
-load("@rules_cc//cc:defs.bzl", "cc_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@com_github_nanopb_nanopb//extra/bazel:nanopb_cc_proto_library.bzl", "cc_nanopb_proto_library")
 load("//platforms:hex.bzl", "hex")
 
 cc_library(
@@ -10,8 +11,8 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        ":radio_cc_proto",
-        ":settings_cc_proto",
+        ":radio_nano_cc_proto",
+        ":settings_nano_cc_proto",
         "//base",
         "//random",
     ],
@@ -25,8 +26,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":radio",
-        ":radio_cc_proto",
-        ":settings_cc_proto",
+        ":radio_nano_cc_proto",
+        ":settings_nano_cc_proto",
         "//base",
         "//third_party/radio_head:rf69_driver",
     ],
@@ -43,6 +44,8 @@ cc_binary(
         "@platforms//os:none",
     ],
     deps = [
+        ":radio",
+        ":rh_rf69",
         "//third_party/radio_head:rf69_driver",
     ],
 )
@@ -67,8 +70,22 @@ proto_library(
 
 cc_proto_library(
     name = "settings_cc_proto",
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     visibility = ["//visibility:public"],
     deps = [":settings_proto"],
+)
+
+cc_nanopb_proto_library(
+    name = "settings_nano_cc_proto",
+    protos = [":settings_proto"],
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -88,8 +105,25 @@ proto_library(
 
 cc_proto_library(
     name = "radio_cc_proto",
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     visibility = ["//visibility:public"],
     deps = [":radio_proto"],
+)
+
+cc_nanopb_proto_library(
+    name = "radio_nano_cc_proto",
+    protos = [
+        ":radio_proto",
+        ":settings_proto",
+    ],
+    visibility = ["//visibility:public"],
 )
 
 cc_test(

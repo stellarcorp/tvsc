@@ -24,6 +24,14 @@ proto_library(
 
 cc_proto_library(
     name = "chat_cc_proto",
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     deps = [":chat_proto"],
 )
 
@@ -31,5 +39,13 @@ cc_grpc_library(
     name = "chat_cc_grpc",
     srcs = [":chat_proto"],
     grpc_only = True,
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     deps = [":chat_cc_proto"],
 )

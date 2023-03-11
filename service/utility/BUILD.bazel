@@ -3,6 +3,14 @@ cc_library(
     hdrs = [
         "service_runner.h",
     ],
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     visibility = ["//visibility:public"],
     deps = [
         "//discovery",
@@ -19,6 +27,14 @@ cc_library(
     hdrs = [
         "status_testing.h",
     ],
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     visibility = ["//visibility:public"],
     deps = [
         "//third_party/glog",

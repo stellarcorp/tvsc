@@ -7,6 +7,14 @@ cc_library(
         "streamer.h",
         "topic.h",
     ],
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     visibility = ["//visibility:public"],
     deps = [
         "//discovery",
@@ -38,6 +46,14 @@ proto_library(
 cc_proto_library(
     name = "test_cc_proto",
     testonly = True,
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     deps = [":test_proto"],
 )
 

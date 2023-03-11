@@ -1,5 +1,13 @@
 cc_library(
     name = "strings",
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
     visibility = ["//visibility:public"],
     deps = [
         "@com_google_absl//absl/strings",

@@ -8,6 +8,14 @@ cc_binary(
     name = "hello_world",
     testonly = True,
     srcs = ["hello_world.cc"],
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
 )
 
 pkg_files(
