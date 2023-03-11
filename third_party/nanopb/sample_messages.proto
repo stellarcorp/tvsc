@@ -2,6 +2,8 @@ syntax = "proto3";
 
 import "nanopb.proto";
 
+option (nanopb_fileopt) = { include: "<vector>" };
+
 message TrivialMessage {
   string foo = 1;
   int32 lucky_number = 2;
@@ -18,6 +20,11 @@ enum Fruit {
   APPLE = 1;
   PEAR = 2;
   BANANA = 3;
+}
+
+message RepeatedFieldMessage {
+  repeated int32 foo = 1 [(nanopb).max_count = 128];
+  repeated int32 bar = 2 [(nanopb).callback_datatype = "std::vector<int>"];
 }
 
 message OneOfMessage {
@@ -45,8 +52,10 @@ message Complicated {
 }
 
 // message WillNotCompile {
-//   // nanopb will define two fields with this same name in the generated WillNotCompile struct. The
-//   // first struct field will refer to this message field. The second struct field will refer to the
+//   // nanopb will define two fields with this same name in the generated WillNotCompile struct.
+//   The
+//   // first struct field will refer to this message field. The second struct field will refer to
+//   the
 //   // number of values for the second message field.
 //   int32 items_count = 1;
 //   repeated int32 items = 2 [(nanopb).max_count = 128];

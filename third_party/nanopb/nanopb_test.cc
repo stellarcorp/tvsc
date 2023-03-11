@@ -1,13 +1,15 @@
 #include <cstring>
 #include <type_traits>
+#include <vector>
 
+#include "glog/logging.h"
 #include "gtest/gtest.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
 #include "third_party/nanopb/sample_messages.pb.h"
 
 template <typename MessageT, size_t BUFFER_SIZE = 128>
-MessageT round_trip(const pb_msgdesc_t& message_descriptor, const MessageT& incoming) {
+MessageT round_trip(const pb_msgdesc_t &message_descriptor, const MessageT &incoming) {
   uint8_t buffer[BUFFER_SIZE];
   size_t message_length{0};
   bool status{false};
@@ -43,8 +45,8 @@ TEST(CompileTest, CanRoundTripTrivialMessage) {
 TEST(UnexpectedBehavior, AllocatesExtraByteForEachFixedLengthStringField) {
   // We request the field SIZE to be 128 bytes in the proto definition and get what we expect.
   EXPECT_EQ(128, sizeof(FixedStringLength::fixed_size));
-  // We request the field LENGTH to be 127 bytes in the proto definition, but nanopb allocates an
-  // extra byte for the terminating zero.
+  // But if we request the field LENGTH to be 127 bytes in the proto definition, but nanopb
+  // allocates an extra byte for the terminating zero.
   EXPECT_EQ(127 + 1, sizeof(FixedStringLength::fixed_length));
 }
 
@@ -83,41 +85,79 @@ TEST(ExplorationTest, MessageCopyCopiesTheValueNotTheAddress) {
   EXPECT_STREQ(GREETING3, message2.fixed_size);
 }
 
-TEST(ExplorationTest, NanoPbMessagesAreTriviallyConstructible) {
-  EXPECT_TRUE(std::is_trivially_constructible<TrivialMessage>::value);
-  EXPECT_TRUE(std::is_trivially_constructible<FixedStringLength>::value);
-  EXPECT_TRUE(std::is_trivially_constructible<Complicated>::value);
+bool RepeatedFieldMessage_callback(pb_istream_t *istream, pb_ostream_t *ostream,
+                                   const pb_field_iter_t *field) {
+  if (ostream != nullptr) {
+    if (field->tag == RepeatedFieldMessage_bar_tag) {
+      const auto &bar_values{*(const std::vector<int> *)field->pData};
+      for (const auto &value : bar_values) {
+        if (!pb_encode_tag_for_field(ostream, field)) {
+          LOG(WARNING) << "Could not encode field tag";
+          return false;
+        }
+        if (!pb_encode_varint(ostream, value)) {
+          LOG(WARNING) << "Could not encode field value";
+          return false;
+        }
+      }
+    }
+  } else if (istream != nullptr) {
+    if (field->tag == RepeatedFieldMessage_bar_tag) {
+      uint32_t value{};
+      if (!pb_decode_varint32(istream, &value)) {
+        LOG(WARNING) << "Could not decode field";
+        return false;
+      }
+      auto &bar_values{*(std::vector<int> *)field->pData};
+      bar_values.push_back(static_cast<int>(value));
+    }
+  }
+
+  return true;
 }
 
-TEST(ExplorationTest, NanoPbMessagesAreTriviallyDefaultConstructible) {
-  EXPECT_TRUE(std::is_trivially_default_constructible<TrivialMessage>::value);
-  EXPECT_TRUE(std::is_trivially_default_constructible<FixedStringLength>::value);
-  EXPECT_TRUE(std::is_trivially_default_constructible<Complicated>::value);
+TEST(ExplorationTest, DemonstrationOfRepeatedFieldCallback) {
+  RepeatedFieldMessage msg1{};
+  for (int i = 0; i < 10; ++i) {
+    msg1.bar.push_back(i);
+  }
+
+  RepeatedFieldMessage msg2 = round_trip(RepeatedFieldMessage_msg, msg1);
+  EXPECT_EQ(msg1.bar, msg2.bar);
 }
 
-TEST(ExplorationTest, NanoPbMessagesAreTriviallyCopyable) {
-  EXPECT_TRUE(std::is_trivially_copyable<TrivialMessage>::value);
-  EXPECT_TRUE(std::is_trivially_copyable<FixedStringLength>::value);
-  EXPECT_TRUE(std::is_trivially_copyable<Complicated>::value);
+template <typename MessageT>
+::testing::AssertionResult has_expected_traits() {
+  if (!std::is_trivially_constructible<TrivialMessage>::value) {
+    return ::testing::AssertionFailure();
+  }
+  if (!std::is_trivially_default_constructible<TrivialMessage>::value) {
+    return ::testing::AssertionFailure();
+  }
+  if (!std::is_trivially_copyable<TrivialMessage>::value) {
+    return ::testing::AssertionFailure();
+  }
+
+  constexpr bool is_trivially_assignable{
+      std::is_trivially_assignable<TrivialMessage, TrivialMessage>::value};
+  if (!is_trivially_assignable) {
+    return ::testing::AssertionFailure();
+  }
+
+  if (!std::is_trivially_copy_assignable<TrivialMessage>::value) {
+    return ::testing::AssertionFailure();
+  }
+  if (!std::is_trivially_move_assignable<TrivialMessage>::value) {
+    return ::testing::AssertionFailure();
+  }
+
+  return ::testing::AssertionSuccess();
 }
 
-TEST(ExplorationTest, NanoPbMessagesAreTriviallyAssignable) {
-  constexpr bool msg1{std::is_trivially_assignable<TrivialMessage, TrivialMessage>::value};
-  constexpr bool msg2{std::is_trivially_assignable<FixedStringLength, FixedStringLength>::value};
-  constexpr bool msg3{std::is_trivially_assignable<Complicated, Complicated>::value};
-  EXPECT_TRUE(msg1);
-  EXPECT_TRUE(msg2);
-  EXPECT_TRUE(msg3);
-}
-
-TEST(ExplorationTest, NanoPbMessagesAreTriviallyCopyAssignable) {
-  EXPECT_TRUE(std::is_trivially_copy_assignable<TrivialMessage>::value);
-  EXPECT_TRUE(std::is_trivially_copy_assignable<FixedStringLength>::value);
-  EXPECT_TRUE(std::is_trivially_copy_assignable<Complicated>::value);
-}
-
-TEST(ExplorationTest, NanoPbMessagesAreTriviallyMoveAssignable) {
-  EXPECT_TRUE(std::is_trivially_move_assignable<TrivialMessage>::value);
-  EXPECT_TRUE(std::is_trivially_move_assignable<FixedStringLength>::value);
-  EXPECT_TRUE(std::is_trivially_move_assignable<Complicated>::value);
+TEST(ExplorationTest, NanoPbMessagesHaveExpectedTypeTraits) {
+  EXPECT_TRUE(has_expected_traits<TrivialMessage>());
+  EXPECT_TRUE(has_expected_traits<Complicated>());
+  EXPECT_TRUE(has_expected_traits<FixedStringLength>());
+  EXPECT_TRUE(has_expected_traits<RepeatedFieldMessage>());
+  EXPECT_TRUE(has_expected_traits<OneOfMessage>());
 }
