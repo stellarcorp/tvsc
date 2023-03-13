@@ -77,7 +77,7 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_Value> generate_capabilities_
                    tvsc_radio_ModulationTechnique_MSK, tvsc_radio_ModulationTechnique_GFSK,
                    tvsc_radio_ModulationTechnique_GMSK})});
 
-  capabilities.insert({tvsc_radio_Function_TX_POWER_DBM, int32_range(1, 20)});
+  capabilities.insert({tvsc_radio_Function_TX_POWER_DBM, int32_range(-2, 20)});
 
   // Note that it might be possible to go up to 65 bytes if we take
   // control of the header generation. The FIFOs have a size of 66 bytes,
@@ -125,6 +125,96 @@ inline void get_sync_words_length(RH_RF69& driver, tvsc_radio_DiscreteValue& val
   value.value.int32_value = length;
 }
 
+inline void get_power(RH_RF69& driver, tvsc_radio_DiscreteValue& value) {
+  // TODO(james): Expose the RH_RF69::_power data member to make this symmetric with the setter.
+  int8_t power{-2};
+  uint8_t palevel = driver.spiRead(RH_RF69_REG_11_PALEVEL);
+
+  if ((palevel & RH_RF69_PALEVEL_PA2ON) && (palevel & RH_RF69_PALEVEL_PA1ON)) {
+    // Note: +18dBm to +20dBm look just like +15dBm to +17dBm. The actual value is not exposed via
+    // the RH_RF69 API.
+    power = (palevel & RH_RF69_PALEVEL_OUTPUTPOWER) - 14;
+  } else if (palevel & RH_RF69_PALEVEL_PA1ON) {
+    power = (palevel & RH_RF69_PALEVEL_OUTPUTPOWER) - 18;
+  }
+
+  value.which_value = 0;
+  value.value.int32_value = power;
+}
+
+inline void set_modulation_scheme(RH_RF69& driver, const tvsc_radio_DiscreteValue& value) {
+  tvsc_radio_ModulationTechnique modulation{as<tvsc_radio_ModulationTechnique>(value)};
+  uint8_t register_value{RH_RF69_DATAMODUL_DATAMODE_PACKET};
+  switch (modulation) {
+    case tvsc_radio_ModulationTechnique_OOK:
+      register_value |=
+          RH_RF69_DATAMODUL_MODULATIONTYPE_OOK | RH_RF69_DATAMODUL_MODULATIONSHAPING_OOK_NONE;
+      break;
+    case tvsc_radio_ModulationTechnique_FSK:
+      register_value |=
+          RH_RF69_DATAMODUL_MODULATIONTYPE_FSK | RH_RF69_DATAMODUL_MODULATIONSHAPING_FSK_NONE;
+      break;
+    case tvsc_radio_ModulationTechnique_GFSK:
+      register_value |=
+          RH_RF69_DATAMODUL_MODULATIONTYPE_FSK | RH_RF69_DATAMODUL_MODULATIONSHAPING_FSK_BT1_0;
+      break;
+    default:
+      except<std::domain_error>("Invalid modulation technique");
+  }
+  driver.spiWrite(RH_RF69_REG_02_DATAMODUL, register_value);
+}
+
+inline void get_modulation_scheme(RH_RF69& driver, tvsc_radio_DiscreteValue& value) {
+  uint8_t register_value = driver.spiRead(RH_RF69_REG_02_DATAMODUL);
+
+  value.which_value = 0;
+  if (register_value & RH_RF69_DATAMODUL_MODULATIONTYPE_FSK) {
+    if (register_value & RH_RF69_DATAMODUL_MODULATIONSHAPING_FSK_BT1_0) {
+      value.value.int32_value = tvsc_radio_ModulationTechnique_GFSK;
+    } else {
+      value.value.int32_value = tvsc_radio_ModulationTechnique_FSK;
+    }
+  } else if (register_value & RH_RF69_DATAMODUL_MODULATIONTYPE_OOK) {
+    value.value.int32_value = tvsc_radio_ModulationTechnique_OOK;
+  } else {
+    except<std::domain_error>("Unknown modulation technique");
+  }
+}
+
+inline void set_line_coding(RH_RF69& driver, const tvsc_radio_DiscreteValue& value) {
+  tvsc_radio_LineCoding coding{as<tvsc_radio_LineCoding>(value)};
+  uint8_t register_value{RH_RF69_PACKETCONFIG1_PACKETFORMAT_VARIABLE |
+                         RH_RF69_PACKETCONFIG1_CRC_ON |
+                         RH_RF69_PACKETCONFIG1_ADDRESSFILTERING_NONE};
+  switch (coding) {
+    case tvsc_radio_LineCoding_NONE:
+      register_value |= RH_RF69_PACKETCONFIG1_DCFREE_NONE;
+      break;
+    case tvsc_radio_LineCoding_WHITENING:
+      register_value |= RH_RF69_PACKETCONFIG1_DCFREE_WHITENING;
+      break;
+    case tvsc_radio_LineCoding_MANCHESTER_ORIGINAL:
+      register_value |= RH_RF69_PACKETCONFIG1_DCFREE_MANCHESTER;
+      break;
+    default:
+      except<std::domain_error>("Invalid line coding");
+  }
+  driver.spiWrite(RH_RF69_REG_37_PACKETCONFIG1, register_value);
+}
+
+inline void get_line_coding(RH_RF69& driver, tvsc_radio_DiscreteValue& value) {
+  uint8_t register_value = driver.spiRead(RH_RF69_REG_37_PACKETCONFIG1);
+
+  value.which_value = 0;
+  if (register_value & RH_RF69_PACKETCONFIG1_DCFREE_MANCHESTER) {
+    value.value.int32_value = tvsc_radio_LineCoding_MANCHESTER_ORIGINAL;
+  } else if (register_value & RH_RF69_PACKETCONFIG1_DCFREE_WHITENING) {
+    value.value.int32_value = tvsc_radio_LineCoding_WHITENING;
+  } else {
+    value.value.int32_value = tvsc_radio_LineCoding_NONE;
+  }
+}
+
 template <>
 tvsc_radio_DiscreteValue read_setting<RH_RF69>(RH_RF69& driver, tvsc_radio_Function function) {
   tvsc_radio_DiscreteValue value{};
@@ -139,6 +229,18 @@ tvsc_radio_DiscreteValue read_setting<RH_RF69>(RH_RF69& driver, tvsc_radio_Funct
     }
     case tvsc_radio_Function_SYNC_WORDS_LENGTH: {
       get_sync_words_length(driver, value);
+      break;
+    }
+    case tvsc_radio_Function_TX_POWER_DBM: {
+      get_power(driver, value);
+      break;
+    }
+    case tvsc_radio_Function_MODULATION_SCHEME: {
+      get_modulation_scheme(driver, value);
+      break;
+    }
+    case tvsc_radio_Function_LINE_CODING: {
+      get_line_coding(driver, value);
       break;
     }
   }
@@ -161,6 +263,18 @@ void write_setting<RH_RF69>(RH_RF69& driver, tvsc_radio_Function function,
     }
     case tvsc_radio_Function_SYNC_WORDS_LENGTH: {
       driver.setSyncWords(SYNC_WORDS, as<uint8_t>(value));
+      break;
+    }
+    case tvsc_radio_Function_TX_POWER_DBM: {
+      driver.setTxPower(as<int8_t>(value), /* ishighpowermodule */ true);
+      break;
+    }
+    case tvsc_radio_Function_MODULATION_SCHEME: {
+      set_modulation_scheme(driver, value);
+      break;
+    }
+    case tvsc_radio_Function_LINE_CODING: {
+      set_line_coding(driver, value);
       break;
     }
   }

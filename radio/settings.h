@@ -171,6 +171,14 @@ tvsc_radio_DiscreteValue as_discrete_value(T value) {
 }
 
 template <>
+tvsc_radio_DiscreteValue as_discrete_value<int8_t>(int8_t value) {
+  tvsc_radio_DiscreteValue discrete{};
+  discrete.which_value = 0;
+  discrete.value.int32_value = value;
+  return discrete;
+}
+
+template <>
 tvsc_radio_DiscreteValue as_discrete_value<int32_t>(int32_t value) {
   tvsc_radio_DiscreteValue discrete{};
   discrete.which_value = 0;

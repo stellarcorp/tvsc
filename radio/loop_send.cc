@@ -22,12 +22,10 @@ tvsc::radio::RadioConfiguration<RH_RF69> configuration{rf69, "RH_RF69"};
 
 void setup() {
   Serial.begin(9600);
-  // Give the serial connection a small amount of time to come up.
-  delay(100);
 
   pinMode(RF69_RST, OUTPUT);
   digitalWrite(RF69_RST, LOW);
-  delay(100);
+  delay(10);
 
   Serial.println("Teensy RFM69 Client!");
   Serial.println();
@@ -44,8 +42,6 @@ void setup() {
     }
   }
 
-  rf69.setTxPower(2, /* ishighpowermodule */ true);
-
   // Use a very slow encoding/modulation scheme like this so that the signal stands out.
   // rf69.setModemConfig(RH_RF69::OOK_Rb1Bw1);
   // Use a faster scheme.
@@ -56,10 +52,18 @@ void setup() {
   // rf69.setModemConfig(RH_RF69::FSK_Rb250Fd250);
   // Slow FSK modulation scheme.
   rf69.setModemConfig(RH_RF69::FSK_Rb2_4Fd4_8);
+  // rf69.setModemConfig(RH_RF69::GFSK_Rb2_4Fd4_8);
   // rf69.setModemConfig(RH_RF69::FSK_Rb57_6Fd120);
 
   configuration.set_value(tvsc_radio_Function_CARRIER_FREQUENCY_HZ,
-                          tvsc::radio::as_discrete_value(430e6f));
+                          tvsc::radio::as_discrete_value(433e6f));
+  configuration.set_value(tvsc_radio_Function_TX_POWER_DBM,
+                          tvsc::radio::as_discrete_value<int8_t>(-2));
+  configuration.set_value(tvsc_radio_Function_MODULATION_SCHEME,
+                          tvsc::radio::as_discrete_value(tvsc_radio_ModulationTechnique_GFSK));
+  configuration.set_value(tvsc_radio_Function_LINE_CODING,
+                          tvsc::radio::as_discrete_value(tvsc_radio_LineCoding_NONE));
+
   configuration.commit_changes();
 }
 
