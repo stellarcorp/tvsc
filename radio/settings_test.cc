@@ -11,32 +11,34 @@
 namespace tvsc::radio {
 
 TEST(SettingsTypesTest, CanTranslateEnumToDiscreteValue) {
-  ModulationTechnique initial{ModulationTechnique::OOK};
-  DiscreteValue discrete = as_discrete_value(initial);
-  EXPECT_EQ(initial, as<ModulationTechnique>(discrete));
+  tvsc_radio_ModulationTechnique initial{
+      tvsc_radio_ModulationTechnique::tvsc_radio_ModulationTechnique_OOK};
+  tvsc_radio_DiscreteValue discrete = as_discrete_value(initial);
+  EXPECT_EQ(initial, as<tvsc_radio_ModulationTechnique>(discrete));
 }
 
 TEST(SettingsTypesTest, CanTranslateInt32ToDiscreteValue) {
   int32_t initial{1234};
-  DiscreteValue discrete = as_discrete_value(initial);
+  tvsc_radio_DiscreteValue discrete = as_discrete_value(initial);
   EXPECT_EQ(initial, as<int32_t>(discrete));
 }
 
 TEST(SettingsTypesTest, CanTranslateInt64ToDiscreteValue) {
   int64_t initial{1234};
-  DiscreteValue discrete = as_discrete_value(initial);
+  tvsc_radio_DiscreteValue discrete = as_discrete_value(initial);
   EXPECT_EQ(initial, as<int64_t>(discrete));
 }
 
 TEST(SettingsTypesTest, CanTranslateFloatToDiscreteValue) {
   float initial{1234.f};
-  DiscreteValue discrete = as_discrete_value(initial);
+  tvsc_radio_DiscreteValue discrete = as_discrete_value(initial);
   EXPECT_EQ(initial, as<float>(discrete));
 }
 
 TEST(SettingsTypesTest, ThrowsTranslatingDiscreteValueToInappropriateTypeEnum) {
-  ModulationTechnique initial{ModulationTechnique::OOK};
-  DiscreteValue discrete = as_discrete_value(initial);
+  tvsc_radio_ModulationTechnique initial{
+      tvsc_radio_ModulationTechnique::tvsc_radio_ModulationTechnique_OOK};
+  tvsc_radio_DiscreteValue discrete = as_discrete_value(initial);
   // Currently, we can't distinguish between enum types and int32_t.
   // EXPECT_THROW(as<int32_t>(discrete), std::exception);
   EXPECT_THROW(as<int64_t>(discrete), std::exception);
@@ -45,25 +47,25 @@ TEST(SettingsTypesTest, ThrowsTranslatingDiscreteValueToInappropriateTypeEnum) {
 
 TEST(SettingsTypesTest, ThrowsTranslatingDiscreteValueToInappropriateTypeInt32) {
   int32_t initial{1234};
-  DiscreteValue discrete = as_discrete_value(initial);
+  tvsc_radio_DiscreteValue discrete = as_discrete_value(initial);
   // Currently, we can't distinguish between enum types and int32_t.
-  // EXPECT_THROW(as<ModulationTechnique>(discrete), std::exception);
+  // EXPECT_THROW(as<tvsc_radio_ModulationTechnique>(discrete), std::exception);
   EXPECT_THROW(as<int64_t>(discrete), std::exception);
   EXPECT_THROW(as<float>(discrete), std::exception);
 }
 
 TEST(SettingsTypesTest, ThrowsTranslatingDiscreteValueToInappropriateTypeInt64) {
   int64_t initial{1234};
-  DiscreteValue discrete = as_discrete_value(initial);
-  EXPECT_THROW(as<ModulationTechnique>(discrete), std::exception);
+  tvsc_radio_DiscreteValue discrete = as_discrete_value(initial);
+  EXPECT_THROW(as<tvsc_radio_ModulationTechnique>(discrete), std::exception);
   EXPECT_THROW(as<int32_t>(discrete), std::exception);
   EXPECT_THROW(as<float>(discrete), std::exception);
 }
 
 TEST(SettingsTypesTest, ThrowsTranslatingDiscreteValueToInappropriateTypeFloat) {
   float initial{1234.f};
-  DiscreteValue discrete = as_discrete_value(initial);
-  EXPECT_THROW(as<ModulationTechnique>(discrete), std::exception);
+  tvsc_radio_DiscreteValue discrete = as_discrete_value(initial);
+  EXPECT_THROW(as<tvsc_radio_ModulationTechnique>(discrete), std::exception);
   EXPECT_THROW(as<int32_t>(discrete), std::exception);
   EXPECT_THROW(as<int64_t>(discrete), std::exception);
 }
@@ -88,7 +90,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapability) {
 }
 
 TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityInclusiveInclusive) {
-  const auto& allowed_values{int32_range(0, 65535, RangeInclusivity::INCLUSIVE_INCLUSIVE)};
+  const auto& allowed_values{int32_range(
+      0, 65535, tvsc_radio_RangeInclusivity::tvsc_radio_RangeInclusivity_INCLUSIVE_INCLUSIVE)};
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(0)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535)));
@@ -97,7 +100,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityInclusiveIn
 }
 
 TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityInclusiveExclusive) {
-  const auto& allowed_values{int32_range(0, 65535, RangeInclusivity::INCLUSIVE_EXCLUSIVE)};
+  const auto& allowed_values{int32_range(
+      0, 65535, tvsc_radio_RangeInclusivity::tvsc_radio_RangeInclusivity_INCLUSIVE_EXCLUSIVE)};
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(0)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23)));
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(65535)));
@@ -106,7 +110,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityInclusiveEx
 }
 
 TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityExclusiveInclusive) {
-  const auto& allowed_values{int32_range(0, 65535, RangeInclusivity::EXCLUSIVE_INCLUSIVE)};
+  const auto& allowed_values{int32_range(
+      0, 65535, tvsc_radio_RangeInclusivity::tvsc_radio_RangeInclusivity_EXCLUSIVE_INCLUSIVE)};
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(0)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535)));
@@ -115,7 +120,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityExclusiveIn
 }
 
 TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityExclusiveExclusive) {
-  const auto& allowed_values{int32_range(0, 65535, RangeInclusivity::EXCLUSIVE_EXCLUSIVE)};
+  const auto& allowed_values{int32_range(
+      0, 65535, tvsc_radio_RangeInclusivity::tvsc_radio_RangeInclusivity_EXCLUSIVE_EXCLUSIVE)};
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(0)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23)));
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(65535)));
@@ -148,7 +154,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapability) {
 }
 
 TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityInclusiveInclusive) {
-  const auto& allowed_values{int64_range(0, (1L << 40), RangeInclusivity::INCLUSIVE_INCLUSIVE)};
+  const auto& allowed_values{int64_range(
+      0, (1L << 40), tvsc_radio_RangeInclusivity::tvsc_radio_RangeInclusivity_INCLUSIVE_INCLUSIVE)};
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(0L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535L)));
@@ -159,7 +166,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityInclusiveIn
 }
 
 TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityInclusiveExclusive) {
-  const auto& allowed_values{int64_range(0, (1L << 40), RangeInclusivity::INCLUSIVE_EXCLUSIVE)};
+  const auto& allowed_values{int64_range(
+      0, (1L << 40), tvsc_radio_RangeInclusivity::tvsc_radio_RangeInclusivity_INCLUSIVE_EXCLUSIVE)};
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(0L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535L)));
@@ -170,7 +178,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityInclusiveEx
 }
 
 TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityExclusiveInclusive) {
-  const auto& allowed_values{int64_range(0, (1L << 40), RangeInclusivity::EXCLUSIVE_INCLUSIVE)};
+  const auto& allowed_values{int64_range(
+      0, (1L << 40), tvsc_radio_RangeInclusivity::tvsc_radio_RangeInclusivity_EXCLUSIVE_INCLUSIVE)};
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(0L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535L)));
@@ -181,7 +190,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityExclusiveIn
 }
 
 TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityExclusiveExclusive) {
-  const auto& allowed_values{int64_range(0, (1L << 40), RangeInclusivity::EXCLUSIVE_EXCLUSIVE)};
+  const auto& allowed_values{int64_range(
+      0, (1L << 40), tvsc_radio_RangeInclusivity::tvsc_radio_RangeInclusivity_EXCLUSIVE_EXCLUSIVE)};
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(0L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535L)));
@@ -203,7 +213,8 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapability) {
 }
 
 TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityInclusiveInclusive) {
-  const auto& allowed_values{float_range(0.f, 1e7f, RangeInclusivity::INCLUSIVE_INCLUSIVE)};
+  const auto& allowed_values{float_range(
+      0.f, 1e7f, tvsc_radio_RangeInclusivity::tvsc_radio_RangeInclusivity_INCLUSIVE_INCLUSIVE)};
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(0.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
@@ -214,7 +225,8 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityInclusiveIn
 }
 
 TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityInclusiveExclusive) {
-  const auto& allowed_values{float_range(0.f, 1e7f, RangeInclusivity::INCLUSIVE_EXCLUSIVE)};
+  const auto& allowed_values{float_range(
+      0.f, 1e7f, tvsc_radio_RangeInclusivity::tvsc_radio_RangeInclusivity_INCLUSIVE_EXCLUSIVE)};
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(0.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
@@ -225,7 +237,8 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityInclusiveEx
 }
 
 TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityExclusiveInclusive) {
-  const auto& allowed_values{float_range(0.f, 1e7f, RangeInclusivity::EXCLUSIVE_INCLUSIVE)};
+  const auto& allowed_values{float_range(
+      0.f, 1e7f, tvsc_radio_RangeInclusivity::tvsc_radio_RangeInclusivity_EXCLUSIVE_INCLUSIVE)};
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(0.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
@@ -236,7 +249,8 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityExclusiveIn
 }
 
 TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityExclusiveExclusive) {
-  const auto& allowed_values{float_range(0.f, 1e7f, RangeInclusivity::EXCLUSIVE_EXCLUSIVE)};
+  const auto& allowed_values{float_range(
+      0.f, 1e7f, tvsc_radio_RangeInclusivity::tvsc_radio_RangeInclusivity_EXCLUSIVE_EXCLUSIVE)};
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(0.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
@@ -248,17 +262,27 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityExclusiveEx
 
 TEST(RadioSettingsTest, CanIdentifyValidEnumerationValuesInEnumeratedCapability) {
   const auto& allowed_values{enumerated({
-      ModulationTechnique::OOK,
-      ModulationTechnique::FSK,
-      ModulationTechnique::GFSK,
-      ModulationTechnique::MSK,
-      ModulationTechnique::GMSK,
+      tvsc_radio_ModulationTechnique::tvsc_radio_ModulationTechnique_OOK,
+      tvsc_radio_ModulationTechnique::tvsc_radio_ModulationTechnique_FSK,
+      tvsc_radio_ModulationTechnique::tvsc_radio_ModulationTechnique_GFSK,
+      tvsc_radio_ModulationTechnique::tvsc_radio_ModulationTechnique_MSK,
+      tvsc_radio_ModulationTechnique::tvsc_radio_ModulationTechnique_GMSK,
   })};
-  EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(ModulationTechnique::OOK)));
-  EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(ModulationTechnique::MSK)));
-  EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(ModulationTechnique::GFSK)));
-  EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(ModulationTechnique::QPSK)));
-  EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(ModulationTechnique::DSSS)));
+  EXPECT_TRUE(is_valid_setting(
+      allowed_values,
+      as_discrete_value(tvsc_radio_ModulationTechnique::tvsc_radio_ModulationTechnique_OOK)));
+  EXPECT_TRUE(is_valid_setting(
+      allowed_values,
+      as_discrete_value(tvsc_radio_ModulationTechnique::tvsc_radio_ModulationTechnique_MSK)));
+  EXPECT_TRUE(is_valid_setting(
+      allowed_values,
+      as_discrete_value(tvsc_radio_ModulationTechnique::tvsc_radio_ModulationTechnique_GFSK)));
+  EXPECT_FALSE(is_valid_setting(
+      allowed_values,
+      as_discrete_value(tvsc_radio_ModulationTechnique::tvsc_radio_ModulationTechnique_QPSK)));
+  EXPECT_FALSE(is_valid_setting(
+      allowed_values,
+      as_discrete_value(tvsc_radio_ModulationTechnique::tvsc_radio_ModulationTechnique_DSSS)));
 }
 
 }  // namespace tvsc::radio

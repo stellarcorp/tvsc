@@ -1,10 +1,9 @@
 syntax = "proto3";
 
 import "radio/settings.proto";
+import "nanopb.proto";
 
 package tvsc.radio;
-
-option optimize_for = LITE_RUNTIME;
 
 /**
  * Identification of a radio. Note that the current idea is for this message to be transmitted
@@ -163,5 +162,5 @@ message Radio {
 }
 
 message Radios {
-  repeated Radio radios = 1;
+  repeated Radio radios = 1 [(nanopb).max_count = 4];
 }

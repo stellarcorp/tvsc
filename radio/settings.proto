@@ -16,9 +16,9 @@
  */
 syntax = "proto3";
 
-package tvsc.radio;
+import "nanopb.proto";
 
-option optimize_for = LITE_RUNTIME;
+package tvsc.radio;
 
 /**
  * Rudimentary set of functions that a radio has. Each of these might be configurable for a form of
@@ -103,11 +103,20 @@ message DiscreteValue {
   }
 }
 
+/**
+ * The value of a radio setting or a set of values describing a radio's capabilities.
+ *
+ * The max_count parameters were determined by considering how many independent capability values
+ * might be possible. For the size of the discrete field, we guess that the number of possible
+ * modulation schemes give the max_count. The RFM69 supports 5 different modulation schemes. We set
+ * the max_count to the next power of 2. For the size of the ranged field, we simply guessed a size,
+ * since none of our current use cases needs more than one ranged value.
+ */
 // TODO(james): Is this concept what we want for "Value"? It seems too narrow for such a broad term.
 // DiscreteValue and RangedValue would need to be changed as well.
 message Value {
-  repeated DiscreteValue discrete = 1;
-  repeated RangedValue ranged = 2;
+  repeated DiscreteValue discrete = 1 [(nanopb).max_count = 8];
+  repeated RangedValue ranged = 2 [(nanopb).max_count = 4];
 }
 
 /**
@@ -115,15 +124,19 @@ message Value {
  */
 message Capability {
   Function function = 1;
-  repeated Value allowed_values = 2;
+  Value allowed_values = 2;
 }
 
 /**
  * A collection of the capabilities of a radio. These could be a complete representation of what the
  * radio is can do, but they may also be incomplete or limited to a particular set of functions.
+ *
+ * The max_count was determined by considering the number of capabilities of the RFM69HCW that we
+ * might want to configure. This max_count should be the same as the max_count of Settings below,
+ * since every capability will have one setting.
  */
 message Capabilities {
-  repeated Capability capabilities = 1;
+  repeated Capability capabilities = 1 [(nanopb).max_count = 14];
 }
 
 /**
@@ -138,7 +151,9 @@ message Setting {
 /**
  * A collection of the settings of a radio. Like the Capabilities above, they may be a complete
  * representation or a subset.
+ *
+ * For the max_count determination, see the Capabilities message above.
  */
 message Settings {
-  repeated Setting settings = 1;
+  repeated Setting settings = 1 [(nanopb).max_count = 14];
 }
