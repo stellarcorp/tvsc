@@ -3,6 +3,11 @@
 
 #include <string>
 
+#include "radio/radio_configuration.h"
+#include "radio/rh_rf69_configuration.h"
+#include "radio/settings.h"
+#include "radio/settings.pb.h"
+
 constexpr int RF69_RST{9};
 constexpr int RF69_CS{10};
 
@@ -13,6 +18,7 @@ constexpr int RF69_DIO0{17};
 #endif
 
 RH_RF69 rf69{RF69_CS, digitalPinToInterrupt(RF69_DIO0)};
+tvsc::radio::RadioConfiguration<RH_RF69> configuration{rf69, "RH_RF69"};
 
 void setup() {
   Serial.begin(9600);
@@ -38,8 +44,6 @@ void setup() {
     }
   }
 
-  if (!rf69.setFrequency(460.0)) Serial.println("setFrequency failed");
-
   rf69.setTxPower(2, /* ishighpowermodule */ true);
 
   // Use a very slow encoding/modulation scheme like this so that the signal stands out.
@@ -54,10 +58,9 @@ void setup() {
   rf69.setModemConfig(RH_RF69::FSK_Rb2_4Fd4_8);
   // rf69.setModemConfig(RH_RF69::FSK_Rb57_6Fd120);
 
-  // The encryption key has to be the same as the one in the server
-  uint8_t key[] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
-                   0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
-  // rf69.setEncryptionKey(key);
+  configuration.set_value(tvsc_radio_Function_CARRIER_FREQUENCY_HZ,
+                          tvsc::radio::as_discrete_value(430e6f));
+  configuration.commit_changes();
 }
 
 bool send(const std::string& msg) {

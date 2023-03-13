@@ -30,8 +30,12 @@ message RadioIdentification {
    * Name of the device to help a user understand which device this is. We expect this string could
    * be displayed as-is to a user. Depending on the application, it might be editable by at least
    * some users.
+   *
+   * The max_size is simply an estimate of an appropriate maximum length for the name of a radio.
+   * Update as needed.
    */
-  string name = 3;
+  // Note that this field size must be kept manually in sync with all usages of this field.
+  string name = 3 [(nanopb).max_size = 32];
 }
 
 enum ModulationTechnique {

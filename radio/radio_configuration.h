@@ -18,7 +18,6 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
-#include <typeinfo>
 #include <unordered_map>
 #include <vector>
 
@@ -35,14 +34,14 @@ namespace tvsc::radio {
  * template function is undefined.
  */
 template <typename DriverT>
-std::unordered_map<Function, Value> generate_capabilities_map();
+std::unordered_map<tvsc_radio_Function, tvsc_radio_Value> generate_capabilities_map();
 
 /**
  * Read a single setting from the driver. This function should be specialized for each driver. By
  * default, this template function is undefined.
  */
 template <typename DriverT>
-DiscreteValue read_setting(DriverT& driver, Function function);
+tvsc_radio_DiscreteValue read_setting(DriverT& driver, tvsc_radio_Function function);
 
 /**
  * Write a single setting to a driver. Only specialize this template if settings can be set
@@ -51,7 +50,8 @@ DiscreteValue read_setting(DriverT& driver, Function function);
  * undefined.
  */
 template <typename DriverT>
-void write_setting(DriverT& driver, Function function, const DiscreteValue& value);
+void write_setting(DriverT& driver, tvsc_radio_Function function,
+                   const tvsc_radio_DiscreteValue& value);
 
 /**
  * Write some settings to the driver. Assumes that every setting can be set independently.
@@ -59,8 +59,9 @@ void write_setting(DriverT& driver, Function function, const DiscreteValue& valu
  * driver to set them using whatever approach is needed.
  */
 template <typename DriverT>
-void write_settings(DriverT& driver,
-                    const std::unordered_map<Function, DiscreteValue>& pending_settings) {
+void write_settings(
+    DriverT& driver,
+    const std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue>& pending_settings) {
   for (const auto& entry : pending_settings) {
     write_setting<DriverT>(driver, entry.first, entry.second);
   }
@@ -76,21 +77,21 @@ template <typename DriverT>
 class RadioConfiguration final {
  private:
   DriverT* const driver_;
-  const std::unordered_map<Function, Value> capabilities_;
-  RadioIdentification identification_;
+  const std::unordered_map<tvsc_radio_Function, tvsc_radio_Value> capabilities_;
+  tvsc_radio_RadioIdentification identification_;
 
-  std::unordered_map<Function, DiscreteValue> pending_settings_changes_{};
+  std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> pending_settings_changes_{};
 
-  static RadioIdentification generate_identification(std::string_view name) {
-    RadioIdentification identification{};
-    identification.set_expanded_id(tvsc::random::generate_random_value<uint64_t>());
-    identification.set_id(identification.expanded_id() & static_cast<uint16_t>(0xffff));
-    identification.set_name(std::string{name});
+  static tvsc_radio_RadioIdentification generate_identification(std::string_view name) {
+    tvsc_radio_RadioIdentification identification{};
+    identification.expanded_id = tvsc::random::generate_random_value<uint64_t>();
+    identification.id = identification.expanded_id & static_cast<uint16_t>(0xffff);
+    name.copy(identification.name, 31);
     return identification;
   }
 
  public:
-  RadioConfiguration(DriverT& driver, std::string_view name = typeid(DriverT).name())
+  RadioConfiguration(DriverT& driver, std::string_view name)
       : driver_(&driver),
         capabilities_(generate_capabilities_map<DriverT>()),
         identification_(generate_identification(name)) {
@@ -104,19 +105,19 @@ class RadioConfiguration final {
 
   uint64_t expanded_id() const { return identification_.expanded_id(); }
 
-  uint32_t id() const { return identification_.id(); }
-  void set_id(uint32_t id) { identification_.set_id(id); }
+  uint32_t id() const { return identification_.id; }
+  void set_id(uint32_t id) { identification_.id = id; }
 
-  const std::string& name() const { return identification_.name(); }
+  const std::string& name() const { return identification_.name; }
 
-  const RadioIdentification& identification() const { return identification_; }
-  RadioIdentification& identification() { return identification_; }
+  const tvsc_radio_RadioIdentification& identification() const { return identification_; }
+  tvsc_radio_RadioIdentification& identification() { return identification_; }
 
-  Settings settings() const { return {}; }
-  Capabilities capabilities() const { return {}; }
+  tvsc_radio_Settings settings() const { return {}; }
+  tvsc_radio_Capabilities capabilities() const { return {}; }
 
-  std::vector<Function> get_configurable_functions() const {
-    std::vector<Function> functions{};
+  std::vector<tvsc_radio_Function> get_configurable_functions() const {
+    std::vector<tvsc_radio_Function> functions{};
     functions.reserve(capabilities_.size());
     for (const auto& [key, _] : capabilities_) {
       functions.push_back(key);
@@ -124,17 +125,19 @@ class RadioConfiguration final {
     return functions;
   }
 
-  Value get_valid_values(Function function) const { return capabilities_.at(function); }
+  tvsc_radio_Value get_valid_values(tvsc_radio_Function function) const {
+    return capabilities_.at(function);
+  }
 
-  DiscreteValue get_value(Function function) const {
+  tvsc_radio_DiscreteValue get_value(tvsc_radio_Function function) const {
     return read_setting<DriverT>(*driver_, function);
   }
 
-  void set_value(Function function, const DiscreteValue& value) {
+  void set_value(tvsc_radio_Function function, const tvsc_radio_DiscreteValue& value) {
     if (is_valid_setting(get_valid_values(function), value)) {
       pending_settings_changes_.insert({function, value});
     } else {
-      throw std::domain_error("Invalid value for function.");
+      except<std::domain_error>("Invalid value for function.");
     }
   }
 
