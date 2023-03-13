@@ -4,17 +4,34 @@ PLATFORM_DEPS = select(
             # Can't log without an OS. At least not now.
         ],
         "//conditions:default": [
-            #"//third_party/glog",
+            "//third_party/glog",
         ],
     },
 )
 
 cc_library(
     name = "base",
-    hdrs = [
-        "except.h",
-        "units.h",
-    ],
+    hdrs =
+        select(
+            {
+                "@platforms//os:none": [
+                    "except_without_glog.h",
+                ],
+                "//conditions:default": [
+                    "except_with_glog.h",
+                ],
+            },
+        ) + [
+            "except.h",
+            "units.h",
+        ],
+    defines = select({
+        "@platforms//os:none": [
+            "PLATFORM_OS_NONE",
+        ],
+        "//conditions:default": [
+        ],
+    }),
     visibility = ["//visibility:public"],
     deps = PLATFORM_DEPS,
 )
