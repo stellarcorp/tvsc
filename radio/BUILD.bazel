@@ -35,8 +35,8 @@ cc_binary(
     name = "loop_send",
     srcs = ["loop_send.cc"],
     local_defines = select({
-        "//platforms:teensy40_board": ["RFM69_INTERRUPT_PIN=17"],
-        "//platforms:teensy41_board": ["RFM69_INTERRUPT_PIN=24"],
+        "//platforms:teensy40_board": ["RFM69_INTERRUPT_PIN=17", "TEENSY40"],
+        "//platforms:teensy41_board": ["RFM69_INTERRUPT_PIN=24", "TEENSY41"],
     }),
     target_compatible_with = [
         "@platforms//os:none",
@@ -44,6 +44,7 @@ cc_binary(
     deps = [
         ":radio",
         ":rh_rf69",
+        "//random",
         "//third_party/radio_head:rf69_driver",
     ],
 )
