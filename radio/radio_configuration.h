@@ -112,6 +112,9 @@ class RadioConfiguration final {
 
   const tvsc_radio_RadioIdentification& identification() const { return identification_; }
   tvsc_radio_RadioIdentification& identification() { return identification_; }
+  void regenerate_identifiers() {
+    identification_ = generate_identification(identification_.name);
+  }
 
   tvsc_radio_Settings settings() const { return {}; }
   tvsc_radio_Capabilities capabilities() const { return {}; }

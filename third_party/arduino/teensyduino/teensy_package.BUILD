@@ -63,3 +63,31 @@ cc_library(
         ":teensy4_core",
     ],
 )
+
+cc_library(
+    name = "entropy_headers",
+    hdrs = [
+        "avr/libraries/Entropy/Entropy.h",
+    ],
+    strip_include_prefix = "avr/libraries/Entropy",
+    target_compatible_with = [
+        "@platforms//os:none",
+        "@platforms//cpu:armv7e-mf",
+    ],
+)
+
+cc_library(
+    name = "entropy",
+    srcs = [
+        "avr/libraries/Entropy/Entropy.cpp",
+    ],
+    target_compatible_with = [
+        "@platforms//os:none",
+        "@platforms//cpu:armv7e-mf",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":entropy_headers",
+        ":teensy4_core",
+    ],
+)

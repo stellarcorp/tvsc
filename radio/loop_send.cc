@@ -1,3 +1,4 @@
+#include <Entropy.h>
 #include <RH_RF69.h>
 #include <SPI.h>
 
@@ -52,6 +53,10 @@ void print_id(const tvsc_radio_RadioIdentification& id) {
 
 void setup() {
   Serial.begin(9600);
+
+  Entropy.Initialize();
+  tvsc::random::engine().seed(Entropy.random());
+  configuration.regenerate_identifiers();
 
   pinMode(RF69_RST, OUTPUT);
 
