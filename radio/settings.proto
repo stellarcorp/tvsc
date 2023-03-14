@@ -35,6 +35,9 @@ enum Function {
   SYNC_WORDS_LENGTH = 7;
   LINE_CODING = 8;
   ENCRYPTION = 9;
+  BIT_RATE = 10;
+  // For FSK variants, frequency delta from carrier, both up and down, to encode bits.
+  FREQUENCY_DEVIATION = 11;
 }
 
 /**

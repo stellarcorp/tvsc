@@ -20,21 +20,36 @@ constexpr int RF69_DIO0{17};
 RH_RF69 rf69{RF69_CS, digitalPinToInterrupt(RF69_DIO0)};
 tvsc::radio::RadioConfiguration<RH_RF69> configuration{rf69, "RH_RF69"};
 
+/**
+ * TODO(james): For telemetry, monitor the following:
+ *
+ * - power
+ * - rssi (ambient)
+ * - rssi (receiving)
+ * - snr: the ratio of the receiving rssi to the ambient rssi.
+ * - modulation index: 2 * Fdev / BR
+ * - afc frequency error
+ * - temperature of radio module
+ */
+
 void setup() {
   Serial.begin(9600);
 
   pinMode(RF69_RST, OUTPUT);
-  digitalWrite(RF69_RST, LOW);
-  delay(10);
 
   Serial.println("Teensy RFM69 Client!");
   Serial.println();
 
   // Manual reset of board.
-  digitalWrite(RF69_RST, HIGH);
-  delay(10);
+  // To reset, according to the datasheet, the reset pin needs to be high for 100us, then low for
+  // 5ms, and then it will be ready. The pin should be pulled low by default on the radio module,
+  // but we drive it low first anyway.
   digitalWrite(RF69_RST, LOW);
-  delay(10);
+  delay(2);
+  digitalWrite(RF69_RST, HIGH);
+  delay(2);
+  digitalWrite(RF69_RST, LOW);
+  delay(7);
 
   if (!rf69.init()) {
     Serial.println("init failed");
@@ -42,27 +57,24 @@ void setup() {
     }
   }
 
-  // Use a very slow encoding/modulation scheme like this so that the signal stands out.
-  // rf69.setModemConfig(RH_RF69::OOK_Rb1Bw1);
-  // Use a faster scheme.
-  // rf69.setModemConfig(RH_RF69::OOK_Rb32Bw64);
-  // Fast/high bandwidth GFSK modulation scheme.
-  // rf69.setModemConfig(RH_RF69::GFSK_Rb250Fd250);
-  // Fast/high bandwidth FSK modulation scheme.
-  // rf69.setModemConfig(RH_RF69::FSK_Rb250Fd250);
-  // Slow FSK modulation scheme.
-  rf69.setModemConfig(RH_RF69::FSK_Rb2_4Fd4_8);
-  // rf69.setModemConfig(RH_RF69::GFSK_Rb2_4Fd4_8);
-  // rf69.setModemConfig(RH_RF69::FSK_Rb57_6Fd120);
-
   configuration.set_value(tvsc_radio_Function_CARRIER_FREQUENCY_HZ,
                           tvsc::radio::as_discrete_value(433e6f));
+
   configuration.set_value(tvsc_radio_Function_TX_POWER_DBM,
                           tvsc::radio::as_discrete_value<int8_t>(-2));
+
   configuration.set_value(tvsc_radio_Function_MODULATION_SCHEME,
                           tvsc::radio::as_discrete_value(tvsc_radio_ModulationTechnique_GFSK));
-  configuration.set_value(tvsc_radio_Function_LINE_CODING,
-                          tvsc::radio::as_discrete_value(tvsc_radio_LineCoding_NONE));
+
+  configuration.set_value(
+      tvsc_radio_Function_LINE_CODING,
+      tvsc::radio::as_discrete_value(tvsc_radio_LineCoding_MANCHESTER_ORIGINAL));
+
+  configuration.set_value(tvsc_radio_Function_BIT_RATE,
+                          tvsc::radio::as_discrete_value<float>(57600.f));
+
+  configuration.set_value(tvsc_radio_Function_FREQUENCY_DEVIATION,
+                          tvsc::radio::as_discrete_value<float>(120000.f));
 
   configuration.commit_changes();
 }

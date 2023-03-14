@@ -132,6 +132,24 @@ T as(const tvsc_radio_DiscreteValue& value) {
 }
 
 template <>
+int8_t as<int8_t>(const tvsc_radio_DiscreteValue& value) {
+  if (value.which_value == 0) {
+    return value.value.int32_value;
+  } else {
+    except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (int8_t)");
+  }
+}
+
+template <>
+int16_t as<int16_t>(const tvsc_radio_DiscreteValue& value) {
+  if (value.which_value == 0) {
+    return value.value.int32_value;
+  } else {
+    except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (int16_t)");
+  }
+}
+
+template <>
 int32_t as<int32_t>(const tvsc_radio_DiscreteValue& value) {
   if (value.which_value == 0) {
     return value.value.int32_value;
@@ -146,6 +164,42 @@ int64_t as<int64_t>(const tvsc_radio_DiscreteValue& value) {
     return value.value.int64_value;
   } else {
     except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (int64_t)");
+  }
+}
+
+template <>
+uint8_t as<uint8_t>(const tvsc_radio_DiscreteValue& value) {
+  if (value.which_value == 0) {
+    return value.value.int32_value;
+  } else {
+    except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (uint8_t)");
+  }
+}
+
+template <>
+uint16_t as<uint16_t>(const tvsc_radio_DiscreteValue& value) {
+  if (value.which_value == 0) {
+    return value.value.int32_value;
+  } else {
+    except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (uint16_t)");
+  }
+}
+
+template <>
+uint32_t as<uint32_t>(const tvsc_radio_DiscreteValue& value) {
+  if (value.which_value == 0) {
+    return value.value.int32_value;
+  } else {
+    except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (uint32_t)");
+  }
+}
+
+template <>
+uint64_t as<uint64_t>(const tvsc_radio_DiscreteValue& value) {
+  if (value.which_value == 1) {
+    return value.value.int64_value;
+  } else {
+    except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (uint64_t)");
   }
 }
 
@@ -179,6 +233,14 @@ tvsc_radio_DiscreteValue as_discrete_value<int8_t>(int8_t value) {
 }
 
 template <>
+tvsc_radio_DiscreteValue as_discrete_value<int16_t>(int16_t value) {
+  tvsc_radio_DiscreteValue discrete{};
+  discrete.which_value = 0;
+  discrete.value.int32_value = value;
+  return discrete;
+}
+
+template <>
 tvsc_radio_DiscreteValue as_discrete_value<int32_t>(int32_t value) {
   tvsc_radio_DiscreteValue discrete{};
   discrete.which_value = 0;
@@ -188,6 +250,38 @@ tvsc_radio_DiscreteValue as_discrete_value<int32_t>(int32_t value) {
 
 template <>
 tvsc_radio_DiscreteValue as_discrete_value<int64_t>(int64_t value) {
+  tvsc_radio_DiscreteValue discrete{};
+  discrete.which_value = 1;
+  discrete.value.int64_value = value;
+  return discrete;
+}
+
+template <>
+tvsc_radio_DiscreteValue as_discrete_value<uint8_t>(uint8_t value) {
+  tvsc_radio_DiscreteValue discrete{};
+  discrete.which_value = 0;
+  discrete.value.int32_value = value;
+  return discrete;
+}
+
+template <>
+tvsc_radio_DiscreteValue as_discrete_value<uint16_t>(uint16_t value) {
+  tvsc_radio_DiscreteValue discrete{};
+  discrete.which_value = 0;
+  discrete.value.int32_value = value;
+  return discrete;
+}
+
+template <>
+tvsc_radio_DiscreteValue as_discrete_value<uint32_t>(uint32_t value) {
+  tvsc_radio_DiscreteValue discrete{};
+  discrete.which_value = 0;
+  discrete.value.int32_value = value;
+  return discrete;
+}
+
+template <>
+tvsc_radio_DiscreteValue as_discrete_value<uint64_t>(uint64_t value) {
   tvsc_radio_DiscreteValue discrete{};
   discrete.which_value = 1;
   discrete.value.int64_value = value;

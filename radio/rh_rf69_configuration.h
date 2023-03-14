@@ -84,7 +84,7 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_Value> generate_capabilities_
   // but we would need to leave one byte for the message length.
   capabilities.insert({tvsc_radio_Function_MTU, int32_range(1, 60)});
 
-  capabilities.insert({tvsc_radio_Function_PREAMBLE_LENGTH, int32_range(0, 65535)});
+  capabilities.insert({tvsc_radio_Function_PREAMBLE_LENGTH, int32_range(0, 0xffff)});
 
   capabilities.insert({tvsc_radio_Function_SYNC_WORDS_LENGTH, int32_range(0, 4)});
 
@@ -96,6 +96,12 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_Value> generate_capabilities_
   capabilities.insert(
       {tvsc_radio_Function_ENCRYPTION,
        enumerated({tvsc_radio_Encryption_NO_ENCRYPTION, tvsc_radio_Encryption_AES_128})});
+
+  capabilities.insert(
+      {tvsc_radio_Function_BIT_RATE, float_range(RH_RF69_FXOSC / 0xffff, RH_RF69_FXOSC)});
+
+  capabilities.insert(
+      {tvsc_radio_Function_FREQUENCY_DEVIATION, float_range(600.f, 0x3fff * RH_RF69_FSTEP)});
 
   return capabilities;
 }
@@ -215,6 +221,127 @@ inline void get_line_coding(RH_RF69& driver, tvsc_radio_DiscreteValue& value) {
   }
 }
 
+inline void set_bit_rate(RH_RF69& driver, const tvsc_radio_DiscreteValue& value) {
+  float bit_rate{as<float>(value)};
+  uint16_t bit_rate_register_values = RH_RF69_FXOSC / bit_rate;
+  driver.spiWrite(RH_RF69_REG_03_BITRATEMSB, ((bit_rate_register_values >> 8) & 0xff));
+  driver.spiWrite(RH_RF69_REG_04_BITRATELSB, bit_rate_register_values & 0xff);
+
+  // Setting the bit rate also means that we need to set the Rx bandwidth. We set the Rx bandwidth
+  // to be 2 * bit rate. Also, we put the same value in the AfcRxBw register.
+  // See page 67 of the datasheet:
+  // https://cdn-shop.adafruit.com/product-files/3076/RFM69HCW-V1.1.pdf for the register
+  // descriptions. See page 26 for the lookup table driving the if-block that we use below.
+  // TODO(james): Adjust lookup values after measurements.
+  // TODO(james): Adjust lookup values for OOK modulation. Currently, these values are for FSK
+  // variants. The datasheet recommends lowering the rx_bw thresholds by 2x for OOK.
+  const float rx_bw = 2.f * bit_rate;
+  uint8_t mantissa{};
+  uint8_t exponent{};
+  if (rx_bw < 2.6f) {
+    mantissa = 0b10;
+    exponent = 7;
+  } else if (rx_bw < 3.1f) {
+    mantissa = 0b01;
+    exponent = 7;
+  } else if (rx_bw < 3.9f) {
+    mantissa = 0b00;
+    exponent = 7;
+  } else if (rx_bw < 5.2f) {
+    mantissa = 0b10;
+    exponent = 6;
+  } else if (rx_bw < 6.3f) {
+    mantissa = 0b01;
+    exponent = 6;
+  } else if (rx_bw < 7.8f) {
+    mantissa = 0b00;
+    exponent = 6;
+  } else if (rx_bw < 10.4f) {
+    mantissa = 0b10;
+    exponent = 5;
+  } else if (rx_bw < 12.5f) {
+    mantissa = 0b01;
+    exponent = 5;
+  } else if (rx_bw < 15.6f) {
+    mantissa = 0b00;
+    exponent = 5;
+  } else if (rx_bw < 20.8f) {
+    mantissa = 0b10;
+    exponent = 4;
+  } else if (rx_bw < 25.0f) {
+    mantissa = 0b01;
+    exponent = 4;
+  } else if (rx_bw < 31.3f) {
+    mantissa = 0b00;
+    exponent = 4;
+  } else if (rx_bw < 41.7f) {
+    mantissa = 0b10;
+    exponent = 3;
+  } else if (rx_bw < 50.0f) {
+    mantissa = 0b01;
+    exponent = 3;
+  } else if (rx_bw < 62.5f) {
+    mantissa = 0b00;
+    exponent = 3;
+  } else if (rx_bw < 83.3f) {
+    mantissa = 0b10;
+    exponent = 2;
+  } else if (rx_bw < 100.0f) {
+    mantissa = 0b01;
+    exponent = 2;
+  } else if (rx_bw < 125.0f) {
+    mantissa = 0b00;
+    exponent = 2;
+  } else if (rx_bw < 166.7f) {
+    mantissa = 0b10;
+    exponent = 1;
+  } else if (rx_bw < 200.0f) {
+    mantissa = 0b01;
+    exponent = 1;
+  } else if (rx_bw < 250.0f) {
+    mantissa = 0b00;
+    exponent = 1;
+  } else if (rx_bw < 333.3f) {
+    mantissa = 0b10;
+    exponent = 0;
+  } else if (rx_bw < 400.0f) {
+    mantissa = 0b01;
+    exponent = 0;
+  } else {  // rx_bw ~= 500.0f
+    mantissa = 0b00;
+    exponent = 0;
+  }
+
+  constexpr uint8_t rx_bw_dcc_freq{2};
+  constexpr uint8_t afc_bw_dcc_freq{4};
+  driver.spiWrite(RH_RF69_REG_19_RXBW, (rx_bw_dcc_freq << 5) | (mantissa << 3) | exponent);
+  driver.spiWrite(RH_RF69_REG_1A_AFCBW, (afc_bw_dcc_freq << 5) | (mantissa << 3) | exponent);
+}
+
+inline void get_bit_rate(RH_RF69& driver, tvsc_radio_DiscreteValue& value) {
+  uint8_t bit_rate_msb = driver.spiRead(RH_RF69_REG_03_BITRATEMSB);
+  uint8_t bit_rate_lsb = driver.spiRead(RH_RF69_REG_04_BITRATELSB);
+
+  value.which_value = 2;
+  value.value.float_value = RH_RF69_FXOSC / ((bit_rate_msb << 8) | bit_rate_lsb);
+}
+
+inline void set_frequency_deviation(RH_RF69& driver, const tvsc_radio_DiscreteValue& value) {
+  float deviation{as<float>(value)};
+  uint16_t scaled_deviation{static_cast<uint16_t>(deviation / RH_RF69_FSTEP)};
+  scaled_deviation &= 0x3fff;  // MSB two bits are unused.
+  driver.spiWrite(RH_RF69_REG_05_FDEVMSB, ((scaled_deviation >> 8) & 0xff));
+  driver.spiWrite(RH_RF69_REG_06_FDEVLSB, scaled_deviation & 0xff);
+}
+
+inline void get_frequency_deviation(RH_RF69& driver, tvsc_radio_DiscreteValue& value) {
+  uint8_t deviation_msb = driver.spiRead(RH_RF69_REG_05_FDEVMSB);
+  uint8_t deviation_lsb = driver.spiRead(RH_RF69_REG_06_FDEVLSB);
+
+  value.which_value = 2;
+  value.value.float_value = RH_RF69_FSTEP * ((deviation_msb << 8) | deviation_lsb);
+}
+
 template <>
 tvsc_radio_DiscreteValue read_setting<RH_RF69>(RH_RF69& driver, tvsc_radio_Function function) {
   tvsc_radio_DiscreteValue value{};
@@ -241,6 +368,14 @@ tvsc_radio_DiscreteValue read_setting<RH_RF69>(RH_RF69& driver, tvsc_radio_Funct
     }
     case tvsc_radio_Function_LINE_CODING: {
       get_line_coding(driver, value);
+      break;
+    }
+    case tvsc_radio_Function_BIT_RATE: {
+      get_bit_rate(driver, value);
+      break;
+    }
+    case tvsc_radio_Function_FREQUENCY_DEVIATION: {
+      get_frequency_deviation(driver, value);
       break;
     }
   }
@@ -275,6 +410,14 @@ void write_setting<RH_RF69>(RH_RF69& driver, tvsc_radio_Function function,
     }
     case tvsc_radio_Function_LINE_CODING: {
       set_line_coding(driver, value);
+      break;
+    }
+    case tvsc_radio_Function_BIT_RATE: {
+      set_bit_rate(driver, value);
+      break;
+    }
+    case tvsc_radio_Function_FREQUENCY_DEVIATION: {
+      set_frequency_deviation(driver, value);
       break;
     }
   }
