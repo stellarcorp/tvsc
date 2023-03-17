@@ -1,0 +1,19 @@
+cc_library(
+    name = "wiringpi",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_ubuntu_ports_libwiringpi_dev//:lib",
+    ],
+)
+
+cc_test(
+    name = "compile_test",
+    srcs = [
+        "compile_test.cc",
+    ],
+    deps = [
+        ":wiringpi",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)

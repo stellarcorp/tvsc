@@ -59,6 +59,20 @@ def load_debian_dependencies():
         x86_64_sha256 = "92247c2c011ec4c01f5832a38de0ec1a9c2cfac5c6c5dc229e5a1ac81148854c",
     )
 
+    # WiringPi
+    tvsc_archive(
+        name = "com_ubuntu_ports_libwiringpi_dev",
+        libname = "libwiringpi-dev",
+        arm64_urls = [
+            "http://us.ports.ubuntu.com/ubuntu-ports/pool/universe/w/wiringpi/libwiringpi-dev_2.50-0ubuntu1_arm64.deb",
+        ],
+        arm64_sha256 = "29e3928b26cbb3aea4db727bd96e0df7a28f7f7a53fbaf01b6f643d4792a2034",
+        x86_64_urls = [
+            "http://mirrors.kernel.org/ubuntu/pool/universe/w/wiringpi/libwiringpi-dev_2.50-0ubuntu1_amd64.deb",
+        ],
+        x86_64_sha256 = "168b0bcc6a5e148f1c9e4280f854cc89469829d25df7e75a084b789be0edf8b1",
+    )
+
     # Avahi
     tvsc_archive(
         name = "org_debian_ftp_libavahi_client_dev",
