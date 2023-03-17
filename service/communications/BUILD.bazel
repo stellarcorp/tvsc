@@ -45,8 +45,8 @@ pkg_deb(
     architecture = arch_name(),
     data = ":tarball",
     depends = [
-        "libavahi-client3 (>= 0.8)",
-        "avahi-daemon (>= 0.8)",
+        "libavahi-client3",
+        "avahi-daemon",
     ],
     description = "Communications package from the Virtual Tower system from TVSC",
     maintainer = "info@stellarcorp.tv",

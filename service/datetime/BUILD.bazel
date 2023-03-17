@@ -45,6 +45,10 @@ pkg_deb(
     testonly = True,
     architecture = arch_name(),
     data = ":tarball",
+    depends = [
+        "libavahi-client3",
+        "avahi-daemon",
+    ],
     description = "Datetime package from the Virtual Tower system from TVSC",
     maintainer = "info@stellarcorp.tv",
     package = PACKAGE_NAME,

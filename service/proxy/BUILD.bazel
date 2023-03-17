@@ -19,11 +19,11 @@ cc_binary(
         "//pubsub:web_socket_pub_sub",
         "//service/chat/client",
         "//service/chat/client:web_socket_client",
+        "//service/communications/client:web_socket_rpc_client",
         "//service/datetime/client",
         "//service/datetime/client:web_socket_client",
         "//service/echo/client:web_socket_rpc_client",
         "//service/hello/client:web_socket_rpc_client",
-        "//service/communications/client:web_socket_rpc_client",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/grpc",
@@ -72,6 +72,8 @@ pkg_deb(
     architecture = arch_name(),
     data = ":tarball",
     depends = [
+        "libavahi-client3",
+        "avahi-daemon",
         "iptables (>= 1.6)",
         "iptables-persistent (>= 1.0.11)",
         create_service_dependency_string("tvsc-chat"),
@@ -96,9 +98,9 @@ sh_binary(
     data = [
         ":tvsc_proxy",
         "//service/chat/server:chat_server",
+        "//service/communications/server:tvsc-communications-service",
         "//service/datetime/server:datetime_server",
         "//service/echo/server:echo_server",
         "//service/hello/server:hello_server",
-        "//service/communications/server:tvsc-communications-service",
     ],
 )
