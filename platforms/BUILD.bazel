@@ -5,7 +5,7 @@ platform(
     constraint_values = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
-        ":epoxy_duino",
+        ":no_arduino_implementation",
         ":os_networking",
     ],
 )
@@ -15,8 +15,9 @@ platform(
     constraint_values = [
         "@platforms//cpu:arm64",
         "@platforms//os:linux",
-        ":no_arduino_implementation",
+        ":wiringpi",
         ":os_networking",
+        ":odroid_m1_board",
     ],
 )
 
@@ -45,12 +46,14 @@ platform(
 constraint_setting(name = "arduino_implementation")
 
 constraint_value(
-    name = "epoxy_duino",
+    name = "teensyduino",
     constraint_setting = "arduino_implementation",
 )
 
 constraint_value(
-    name = "teensyduino",
+    # TODO(james): This doesn't quite map correctly. Ideally, we would enumerate the different
+    # components of the Arduino API and have explicit implementation constraints for each component.
+    name = "wiringpi",
     constraint_setting = "arduino_implementation",
 )
 
@@ -80,5 +83,10 @@ constraint_value(
 
 constraint_value(
     name = "teensy41_board",
+    constraint_setting = "board_type",
+)
+
+constraint_value(
+    name = "odroid_m1_board",
     constraint_setting = "board_type",
 )
