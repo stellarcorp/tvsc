@@ -4,7 +4,7 @@ cc_library(
         {
             "//platforms:teensyduino": [
             ],
-            "//platforms:epoxy_duino": [
+            "//platforms:wiringpi": [
             ],
             "//conditions:default": [
                 "@platforms//:incompatible",
@@ -17,8 +17,8 @@ cc_library(
             "//platforms:teensyduino": [
                 "//third_party/arduino/teensyduino:teensy4_core",
             ],
-            "//platforms:epoxy_duino": [
-                "//third_party/arduino/epoxy_duino",
+            "//platforms:wiringpi": [
+                "//third_party/arduino/wiringpi",
             ],
             "//conditions:default": [],
         },
@@ -31,11 +31,7 @@ cc_library(
         {
             "//platforms:teensyduino": [
             ],
-            "//platforms:epoxy_duino": [
-                # TODO(james): Provide an emulation layer that can support SPI, either directly
-                # in the emulation library or via an SPI implementation like the one in the Teensy
-                # package.
-                "@platforms//:incompatible",
+            "//platforms:wiringpi": [
             ],
             "//conditions:default": [
                 "@platforms//:incompatible",
@@ -48,7 +44,8 @@ cc_library(
             "//platforms:teensyduino": [
                 "//third_party/arduino/teensyduino:spi",
             ],
-            "//platforms:epoxy_duino": [
+            "//platforms:wiringpi": [
+                "//third_party/arduino/wiringpi",
             ],
             "//conditions:default": [],
         },
@@ -61,10 +58,6 @@ cc_library(
         {
             "//platforms:teensyduino": [
             ],
-            "//platforms:epoxy_duino": [
-                # TODO(james): Provide an emulation layer that can support the Entropy library.
-                "@platforms//:incompatible",
-            ],
             "//conditions:default": [
                 "@platforms//:incompatible",
             ],
@@ -75,8 +68,6 @@ cc_library(
         {
             "//platforms:teensyduino": [
                 "//third_party/arduino/teensyduino:entropy",
-            ],
-            "//platforms:epoxy_duino": [
             ],
             "//conditions:default": [],
         },
