@@ -1,5 +1,5 @@
+#include <Arduino.h>
 #include <Entropy.h>
-#include <RH_RF69.h>
 #include <SPI.h>
 
 #include <string>
@@ -7,26 +7,27 @@
 #include "pb_decode.h"
 #include "pb_encode.h"
 #include "radio/radio_configuration.h"
-#include "radio/rh_rf69_configuration.h"
+#include "radio/rf69hcw_configuration.h"
 #include "radio/settings.h"
 #include "radio/settings.pb.h"
 #include "random/random.h"
 
-constexpr int RF69_RST{9};
-constexpr int RF69_CS{10};
+constexpr uint8_t RF69_RST{9};
+constexpr uint8_t RF69_CS{10};
 
 #if defined(RFM69_INTERRUPT_PIN)
-constexpr int RF69_DIO0{RFM69_INTERRUPT_PIN};
+constexpr uint8_t RF69_DIO0{RFM69_INTERRUPT_PIN};
 #else
-constexpr int RF69_DIO0{17};
+constexpr uint8_t RF69_DIO0{17};
 #endif
 
-RH_RF69 rf69{RF69_CS, digitalPinToInterrupt(RF69_DIO0)};
+SPISettings spi_settings{};
+tvsc::radio::RF69HCW rf69{RF69_CS, digitalPinToInterrupt(RF69_DIO0), SPI, spi_settings};
 
 #ifdef TEENSY40
-tvsc::radio::RadioConfiguration<RH_RF69> configuration{rf69, "RH_RF69 433 Teensy40"};
+tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{rf69, "RF69HCW 433 Teensy40"};
 #elif TEENSY41
-tvsc::radio::RadioConfiguration<RH_RF69> configuration{rf69, "RH_RF69 433 Teensy41"};
+tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{rf69, "RF69HCW 433 Teensy41"};
 #endif
 
 void print_id(const tvsc_radio_RadioIdentification& id) {
@@ -55,7 +56,7 @@ void setup() {
   Serial.begin(9600);
 
   Entropy.Initialize();
-  tvsc::random::engine().seed(Entropy.random());
+  tvsc::random::set_seed(Entropy.random());
   configuration.regenerate_identifiers();
 
   pinMode(RF69_RST, OUTPUT);
@@ -81,33 +82,44 @@ void setup() {
   print_id(configuration.identification());
   Serial.println();
 
-  configuration.set_value(tvsc_radio_Function_CARRIER_FREQUENCY_HZ,
-                          tvsc::radio::as_discrete_value(433e6f));
+  configuration.change_value(tvsc_radio_Function_CARRIER_FREQUENCY_HZ,
+                             tvsc::radio::as_discrete_value(433e6f));
 
-  configuration.set_value(tvsc_radio_Function_TX_POWER_DBM,
-                          tvsc::radio::as_discrete_value<int8_t>(-2));
+  configuration.change_value(tvsc_radio_Function_TX_POWER_DBM,
+                             tvsc::radio::as_discrete_value<int8_t>(-2));
 
-  configuration.set_value(tvsc_radio_Function_MODULATION_SCHEME,
-                          tvsc::radio::as_discrete_value(tvsc_radio_ModulationTechnique_GFSK));
+  configuration.change_value(tvsc_radio_Function_MODULATION_SCHEME,
+                             tvsc::radio::as_discrete_value(tvsc_radio_ModulationTechnique_GFSK));
 
-  configuration.set_value(
+  configuration.change_value(
       tvsc_radio_Function_LINE_CODING,
       tvsc::radio::as_discrete_value(tvsc_radio_LineCoding_MANCHESTER_ORIGINAL));
 
-  configuration.set_value(tvsc_radio_Function_BIT_RATE,
-                          tvsc::radio::as_discrete_value<float>(70000.f));
+  configuration.change_value(tvsc_radio_Function_BIT_RATE,
+                             tvsc::radio::as_discrete_value<float>(70000.f));
 
-  configuration.set_value(tvsc_radio_Function_FREQUENCY_DEVIATION,
-                          tvsc::radio::as_discrete_value<float>(150000.f));
+  configuration.change_value(tvsc_radio_Function_FREQUENCY_DEVIATION,
+                             tvsc::radio::as_discrete_value<float>(150000.f));
+
+  configuration.change_value(tvsc_radio_Function_CHANNEL_ACTIVITY_DETECTION_TIMEOUT_MS,
+                             tvsc::radio::as_discrete_value<uint32_t>(0));
+
+  configuration.change_value(tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
+                             tvsc::radio::as_discrete_value<float>(-70.f));
+
+  configuration.change_value(
+      tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
+      // Initialize these thresholds to the same value.
+      configuration.get_pending_value(tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM));
 
   configuration.commit_changes();
 }
 
 bool send(const std::string& msg) {
   bool result;
-  result = rf69.send(msg.data(), msg.length());
+  result = rf69.send(reinterpret_cast<const uint8_t*>(msg.data()), msg.length());
   if (result) {
-    result = rf69.waitPacketSent();
+    result = rf69.wait_packet_sent();
   }
 
   return result;
@@ -115,14 +127,14 @@ bool send(const std::string& msg) {
 
 bool recv(std::string& buffer) {
   bool result;
-  result = rf69.waitAvailableTimeout(1000);
+  result = rf69.wait_available_timeout(1000);
   if (result) {
     buffer.clear();
-    uint8_t length{rf69.maxMessageLength()};
+    uint8_t length{rf69.mtu()};
 
-    buffer.resize(length + 1);
+    buffer.resize(length);
 
-    result = rf69.recv(buffer.data(), &length);
+    result = rf69.recv(reinterpret_cast<uint8_t*>(buffer.data()), &length);
     if (result) {
       buffer.resize(length);
     }
@@ -133,8 +145,9 @@ bool recv(std::string& buffer) {
 
 template <typename MessageT>
 void encode(const MessageT& message, std::string& buffer) {
-  buffer.resize(rf69.maxMessageLength() + 1);
-  pb_ostream_t ostream = pb_ostream_from_buffer(buffer.data(), rf69.maxMessageLength());
+  buffer.resize(rf69.mtu());
+  pb_ostream_t ostream =
+      pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(buffer.data()), rf69.mtu());
   bool status = pb_encode(&ostream, nanopb::MessageDescriptor<MessageT>::fields(), &message);
   if (!status) {
     tvsc::except<std::runtime_error>("Could not encode incoming message");
@@ -144,7 +157,8 @@ void encode(const MessageT& message, std::string& buffer) {
 
 template <typename MessageT>
 void decode(const std::string& buffer, MessageT& message) {
-  pb_istream_t istream = pb_istream_from_buffer(buffer.data(), buffer.size());
+  pb_istream_t istream =
+      pb_istream_from_buffer(reinterpret_cast<const uint8_t*>(buffer.data()), buffer.size());
 
   bool status = pb_decode(&istream, nanopb::MessageDescriptor<MessageT>::fields(), &message);
   if (!status) {

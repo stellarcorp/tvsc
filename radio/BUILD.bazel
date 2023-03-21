@@ -18,16 +18,22 @@ cc_library(
 )
 
 cc_library(
-    name = "rh_rf69",
+    name = "rf69hcw",
+    srcs = [
+        "rf69hcw.cc",
+    ],
     hdrs = [
-        "rh_rf69_configuration.h",
+        "rf69hcw.h",
+        "rf69hcw_configuration.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
         ":radio",
         ":radio_nano_cc_proto",
         "//base",
-        "//third_party/radio_head:rf69_driver",
+        "//random",
+        "//third_party/arduino",
+        "//third_party/arduino:spi",
     ],
 )
 
@@ -49,10 +55,10 @@ cc_binary(
     ],
     deps = [
         ":radio",
-        ":rh_rf69",
+        ":rf69hcw",
         "//random",
         "//third_party/arduino:entropy",
-        "//third_party/radio_head:rf69_driver",
+        "//third_party/arduino:spi",
     ],
 )
 
@@ -154,18 +160,17 @@ cc_nanopb_proto_library(
 )
 
 cc_test(
-    name = "rh_rf69_configuration_test",
+    name = "rf69hcw_configuration_test",
     srcs = [
-        "rh_rf69_configuration_test.cc",
+        "rf69hcw_configuration_test.cc",
     ],
     tags = ["manual"],
     deps = [
         ":radio",
         ":radio_cc_proto",
-        ":rh_rf69",
+        ":rf69hcw",
         ":settings_cc_proto",
         "//third_party/gtest",
-        "//third_party/radio_head:rf69_driver",
     ],
 )
 

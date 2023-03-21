@@ -136,7 +136,11 @@ class RadioConfiguration final {
     return read_setting<DriverT>(*driver_, function);
   }
 
-  void set_value(tvsc_radio_Function function, const tvsc_radio_DiscreteValue& value) {
+  const tvsc_radio_DiscreteValue& get_pending_value(tvsc_radio_Function function) const {
+    return pending_settings_changes_.at(function);
+  }
+
+  void change_value(tvsc_radio_Function function, const tvsc_radio_DiscreteValue& value) {
     if (is_valid_setting(get_valid_values(function), value)) {
       pending_settings_changes_.insert({function, value});
     } else {
