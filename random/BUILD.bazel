@@ -2,6 +2,13 @@ cc_library(
     name = "random",
     hdrs = [
         "random.h",
-    ],
+    ] + select({
+        "//platforms:teensyduino": ["arduino_random.h"],
+        "//conditions:default": ["std_cpp_random.h"],
+    }),
     visibility = ["//visibility:public"],
+    deps = select({
+        "//platforms:teensyduino": ["//third_party/arduino"],
+        "//conditions:default": [],
+    }),
 )

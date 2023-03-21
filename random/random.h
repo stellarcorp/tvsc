@@ -1,29 +1,23 @@
 #pragma once
 
+#include <cstdint>
 #include <limits>
-#include <random>
 
 namespace tvsc::random {
 
-std::mt19937& engine() {
-  static std::mt19937 engine{};
-  return engine;
-}
+template <typename SeedT>
+inline void set_seed(SeedT seed);
 
 template <typename ResultT>
-ResultT generate_random_value(ResultT minimum = std::numeric_limits<ResultT>::lowest(),
+inline ResultT generate_random_value(ResultT minimum = std::numeric_limits<ResultT>::lowest(),
                               ResultT maximum = std::numeric_limits<ResultT>::max());
 
-template <>
-uint8_t generate_random_value(uint8_t minimum, uint8_t maximum) {
-  std::uniform_int_distribution<> distribution(minimum, maximum);
-  return distribution(engine());
-}
-
-template <>
-uint64_t generate_random_value(uint64_t minimum, uint64_t maximum) {
-  std::uniform_int_distribution<> distribution(minimum, maximum);
-  return distribution(engine());
-}
-
 }  // namespace tvsc::random
+
+// These headers define actual specializations of the templates above that are appropriate to the
+// target platform.
+#ifdef ARDUINO
+#include "random/arduino_random.h"
+#else
+#include "random/std_cpp_random.h"
+#endif
