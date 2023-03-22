@@ -16,7 +16,11 @@ inline int32_t generate_random_value(int32_t minimum_value, int32_t maximum_valu
 
 template <>
 inline uint32_t generate_random_value(uint32_t minimum_value, uint32_t maximum_value) {
-  return ::random(minimum_value, maximum_value);
+  int32_t value = ::random();
+  if (value < 0) { value = -1 * value; }
+  value = value % (maximum_value - minimum_value);
+  minimum_value += value;
+  return minimum_value;
 }
 
 template <>
