@@ -19,7 +19,6 @@ inline uint32_t generate_random_value(uint32_t minimum_value, uint32_t maximum_v
   return ::random(minimum_value, maximum_value);
 }
 
-  
 template <>
 inline uint8_t generate_random_value(uint8_t minimum, uint8_t maximum) {
   return generate_random_value<int32_t>(minimum, maximum);
@@ -27,8 +26,11 @@ inline uint8_t generate_random_value(uint8_t minimum, uint8_t maximum) {
 
 template <>
 inline uint64_t generate_random_value(uint64_t minimum, uint64_t maximum) {
-  uint64_t result = (generate_random_value<uint32_t>() << 32) | generate_random_value<uint32_t>();
+  uint64_t result = generate_random_value<uint32_t>();
+  result = result << 32;
+  result |= generate_random_value<uint32_t>();
   result = result % (maximum - minimum);
+  result += minimum;
   return result;
 }
 
