@@ -529,10 +529,7 @@ class RF69HCW final {
     }
   }
 
-  bool has_channel_activity() {
-    return false;
-    // return read_rssi() > channel_activity_threshold_dbm_;
-  }
+  bool has_channel_activity() { return read_rssi_dbm() > channel_activity_threshold_dbm_; }
 
  public:
   RF69HCW(uint8_t peripheral_select_pin, uint8_t interrupt_pin, SPIClass& bus,
@@ -698,6 +695,11 @@ class RF69HCW final {
     // Start the transmitter.
     set_mode_tx();
     return true;
+  }
+
+  float read_rssi_dbm() {
+    uint8_t rssi = spi_read(RF69HCW_REG_24_RSSIVALUE);
+    return -1.f * rssi / 2.f;
   }
 
   bool wait_channel_activity_detector() {
