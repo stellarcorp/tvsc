@@ -63,6 +63,7 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_Value> generate_capabilities_
   // 1 to save space. Also, since the number of elements is tiny, even if we "degrade" lookups to
   // O(n) with this setup, we will still see good performance.
   capabilities.max_load_factor(1.f);
+  capabilities.reserve(16);
 
   // Adafruit says we can go from 400MHz to 460MHz. Manufacturer says 424MHz to 510MHz. We measured
   // the range as 405MHz to 510MHz.
@@ -329,6 +330,47 @@ void write_setting<RF69HCW>(RF69HCW& driver, tvsc_radio_Function function,
       break;
     }
   }
+}
+
+template <>
+std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_configuration<RF69HCW>() {
+  std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> configuration{};
+  configuration.max_load_factor(1.f);
+  configuration.reserve(16);
+
+  configuration.insert(
+      {tvsc_radio_Function_CARRIER_FREQUENCY_HZ, tvsc::radio::as_discrete_value(433e6f)});
+
+  configuration.insert(
+      {tvsc_radio_Function_TX_POWER_DBM, tvsc::radio::as_discrete_value<int8_t>(-2)});
+
+  configuration.insert({tvsc_radio_Function_MODULATION_SCHEME,
+                        tvsc::radio::as_discrete_value(tvsc_radio_ModulationTechnique_GFSK)});
+
+  configuration.insert({tvsc_radio_Function_LINE_CODING,
+                        tvsc::radio::as_discrete_value(tvsc_radio_LineCoding_MANCHESTER_ORIGINAL)});
+
+  configuration.insert(
+      {tvsc_radio_Function_BIT_RATE, tvsc::radio::as_discrete_value<float>(9600.f)});
+
+  configuration.insert(
+      {tvsc_radio_Function_FREQUENCY_DEVIATION, tvsc::radio::as_discrete_value<float>(9600.f)});
+
+  configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_DETECTION_TIMEOUT_MS,
+                        tvsc::radio::as_discrete_value<uint32_t>(0)});
+
+  configuration.insert({tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
+                        tvsc::radio::as_discrete_value<float>(-127.f)});
+
+  // configuration.insert({
+  //     tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
+  //     // Initialize these thresholds to the same value.
+  //     configuration.get_pending_value(tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM)});
+
+  configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
+                        tvsc::radio::as_discrete_value<float>(-0.5f)});
+
+  return configuration;
 }
 
 }  // namespace tvsc::radio
