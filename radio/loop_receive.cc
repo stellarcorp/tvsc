@@ -133,9 +133,7 @@ void loop() {
     if (decode_packet(buffer, packet, other_id)) {
       if (packet.sequence_number != previous_sequence_number + 1 && previous_sequence_number != 0) {
         ++dropped_packet_count;
-        Serial.print("Dropped: ");
-        Serial.print(packet.sequence_number - previous_sequence_number);
-        Serial.print(" packets. packet.sequence_number: ");
+        Serial.print("Dropped packets. packet.sequence_number: ");
         Serial.print(packet.sequence_number);
         Serial.print(", previous_sequence_number: ");
         Serial.print(previous_sequence_number);
