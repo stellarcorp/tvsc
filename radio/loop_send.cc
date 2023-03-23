@@ -142,5 +142,5 @@ void loop() {
     Serial.println(rf69.read_rssi_dbm());
   }
 
-  delay(100);
+  delayMicroseconds(2475);
 }

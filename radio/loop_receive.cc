@@ -83,11 +83,9 @@ void setup() {
 bool recv(std::string& buffer) {
   uint8_t length{buffer.capacity()};
   bool result = rf69.recv(reinterpret_cast<uint8_t*>(buffer.data()), &length, 200);
-
   if (result) {
     buffer.resize(length);
   }
-
   return result;
 }
 
@@ -125,6 +123,8 @@ uint32_t last_print_time{};
 void loop() {
   std::string buffer{};
   buffer.resize(rf69.mtu());
+
+  rf69.set_mode_rx();
 
   if (recv(buffer)) {
     ++total_packet_count;

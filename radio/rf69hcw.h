@@ -457,8 +457,16 @@ class RF69HCW final {
     opmode |= (mode & RF69HCW_OPMODE_MODE);
     spi_write(RF69HCW_REG_01_OPMODE, opmode);
 
+    uint8_t target_mode_flag{255};
+    if (mode == RF69HCW_OPMODE_MODE_TX) {
+      target_mode_flag = RF69HCW_IRQFLAGS1_TXREADY;
+    } else if (mode == RF69HCW_OPMODE_MODE_RX) {
+      target_mode_flag = RF69HCW_IRQFLAGS1_RXREADY;
+    }
+
     // Block until the RF module is ready.
-    while (!(spi_read(RF69HCW_REG_27_IRQFLAGS1) & RF69HCW_IRQFLAGS1_MODEREADY)) {
+    while (!((spi_read(RF69HCW_REG_27_IRQFLAGS1) & RF69HCW_IRQFLAGS1_MODEREADY) &&
+             (spi_read(RF69HCW_REG_27_IRQFLAGS1) & target_mode_flag))) {
       // Do nothing.
       // Note: this works, but it feels weird polling on an IRQ register.
       // Also, adding a YIELD here, instead of just looping as fast as possible, causes spurious
@@ -506,6 +514,7 @@ class RF69HCW final {
   void handle_interrupt() {
     // TODO(james): Do we need to handle any interrupts from RF69HCW_REG_27_IRQFLAGS1?
     uint8_t irq_flags = spi_read(RF69HCW_REG_28_IRQFLAGS2);
+
     if (op_mode_ == OperationalMode::TX && (irq_flags & RF69HCW_IRQFLAGS2_PACKETSENT)) {
       // A message has been fully transmitted.
       // Clear the FIFO and move the operational mode away from TX.
@@ -526,6 +535,12 @@ class RF69HCW final {
       // Transfer the data in the FIFO to our buffer.
       read_fifo();
     }
+    // if (op_mode_ == OperationalMode::RX && (irq_flags & RF69HCW_IRQFLAGS2_CRCOK)) {
+    //   set_mode_standby();
+
+    //   // Transfer the data in the FIFO to our buffer.
+    //   read_fifo();
+    // }
   }
 
   bool has_channel_activity() { return read_rssi_dbm() > channel_activity_threshold_dbm_; }

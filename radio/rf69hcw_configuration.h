@@ -350,7 +350,7 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_config
   // 0x11
   // 0x14
   // 0x15
-  // 0x01
+  // 0x01 <- Probably too small for high bit rates and high duty cycles.
   // Unsuccessful values:
   // 0xff
   // 0x7f
@@ -379,23 +379,28 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_config
   configuration.insert({tvsc_radio_Function_MODULATION_SCHEME,
                         tvsc::radio::as_discrete_value(tvsc_radio_ModulationTechnique_GFSK)});
 
+  // WHITENING seems to perform better at high bit rates & high duty cycles.
+  // MANCHESTER_ORIGINAL performs well, but results in dropped packets with high bit rates and duty
+  // cycles.
   configuration.insert({tvsc_radio_Function_LINE_CODING,
-                        tvsc::radio::as_discrete_value(tvsc_radio_LineCoding_MANCHESTER_ORIGINAL)});
+                        tvsc::radio::as_discrete_value(tvsc_radio_LineCoding_WHITENING)});
+
+  const float bit_rate{290000.f};
+  const float freq_dev = std::min(500000.f - bit_rate / 2.f, 1.4f * bit_rate);
 
   configuration.insert(
-      {tvsc_radio_Function_BIT_RATE, tvsc::radio::as_discrete_value<float>(12500.f)});
+      {tvsc_radio_Function_BIT_RATE, tvsc::radio::as_discrete_value<float>(bit_rate)});
 
   // Seems to be used only during TX. The receiver detects this spread and adjusts to the sender's
   // value (likely some significant limits to this), but ignores this particular setting.
   configuration.insert(
-      {tvsc_radio_Function_FREQUENCY_DEVIATION,
-       as_discrete_value<float>(1.4f * as<float>(configuration.at(tvsc_radio_Function_BIT_RATE)))});
+      {tvsc_radio_Function_FREQUENCY_DEVIATION, as_discrete_value<float>(freq_dev)});
 
   configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_DETECTION_TIMEOUT_MS,
                         tvsc::radio::as_discrete_value<uint32_t>(5)});
 
   configuration.insert({tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
-                        tvsc::radio::as_discrete_value<float>(-80.f)});
+                        tvsc::radio::as_discrete_value<float>(-50.f)});
 
   configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
                         // Initialize these thresholds to the same value.
