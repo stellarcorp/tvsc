@@ -68,6 +68,37 @@ hex(
     out = "loop_send.hex",
 )
 
+cc_binary(
+    name = "loop_receive",
+    srcs = ["loop_receive.cc"],
+    local_defines = select({
+        "//platforms:teensy40_board": [
+            "RFM69_INTERRUPT_PIN=17",
+            "TEENSY40",
+        ],
+        "//platforms:teensy41_board": [
+            "RFM69_INTERRUPT_PIN=24",
+            "TEENSY41",
+        ],
+    }),
+    target_compatible_with = [
+        "@platforms//os:none",
+    ],
+    deps = [
+        ":radio",
+        ":rf69hcw",
+        "//random",
+        "//third_party/arduino:entropy",
+        "//third_party/arduino:spi",
+    ],
+)
+
+hex(
+    name = "loop_receive_hex",
+    src = ":loop_receive",
+    out = "loop_receive.hex",
+)
+
 filegroup(
     name = "settings_proto_file",
     srcs = ["settings.proto"],

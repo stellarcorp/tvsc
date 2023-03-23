@@ -40,18 +40,6 @@ void print_id(const tvsc_radio_RadioIdentification& id) {
   Serial.println("}");
 }
 
-/**
- * TODO(james): For telemetry, monitor the following:
- *
- * - power
- * - rssi (ambient)
- * - rssi (receiving)
- * - snr: the ratio of the receiving rssi to the ambient rssi.
- * - modulation index: 2 * Fdev / BR
- * - afc frequency error
- * - temperature of radio module
- */
-
 void setup() {
   Serial.begin(9600);
 
@@ -86,38 +74,39 @@ void setup() {
   configuration.commit_changes();
 }
 
-bool send(const std::string& msg) {
-  bool result;
-  result = rf69.send(reinterpret_cast<const uint8_t*>(msg.data()), msg.length());
+bool recv(std::string& buffer) {
+  uint8_t length{buffer.capacity()};
+  bool result = rf69.recv(reinterpret_cast<uint8_t*>(buffer.data()), &length, 200);
+
   if (result) {
-    result = rf69.wait_packet_sent();
+    buffer.resize(length);
+  } else {
+    Serial.println("recv() call failed.");
   }
 
   return result;
 }
 
 template <typename MessageT>
-void encode(const MessageT& message, std::string& buffer) {
-  buffer.resize(rf69.mtu());
-  pb_ostream_t ostream =
-      pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(buffer.data()), rf69.mtu());
-  bool status = pb_encode(&ostream, nanopb::MessageDescriptor<MessageT>::fields(), &message);
+void decode(const std::string& buffer, MessageT& message) {
+  pb_istream_t istream =
+      pb_istream_from_buffer(reinterpret_cast<const uint8_t*>(buffer.data()), buffer.size());
+
+  bool status = pb_decode(&istream, nanopb::MessageDescriptor<MessageT>::fields(), &message);
   if (!status) {
-    tvsc::except<std::runtime_error>("Could not encode incoming message");
+    tvsc::except<std::runtime_error>("Could not decode to outgoing message");
   }
-  buffer.resize(ostream.bytes_written);
 }
 
 void loop() {
-  std::string id{};
-  encode(configuration.identification(), id);
+  std::string buffer{};
+  buffer.resize(rf69.mtu());
 
-  if (send(id)) {
-    Serial.println("Published id.");
-  } else {
-    Serial.print("send() failed. RSSI: ");
-    Serial.println(rf69.read_rssi_dbm());
+  if (recv(buffer)) {
+    tvsc_radio_RadioIdentification other_id{};
+    decode(buffer, other_id);
+
+    Serial.print("Received id: ");
+    print_id(other_id);
   }
-
-  delay(100);
 }
