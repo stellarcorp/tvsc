@@ -588,6 +588,10 @@ class RF69HCW final {
     spi_write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
     spi_write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
 
+    spi_write(RF69HCW_REG_37_PACKETCONFIG1, RF69HCW_PACKETCONFIG1_PACKETFORMAT_VARIABLE |
+                                                RF69HCW_PACKETCONFIG1_CRC_ON |
+                                                RF69HCW_PACKETCONFIG1_ADDRESSFILTERING_NONE);
+
     set_sync_words_length(8);
 
     // Reset to +13dBm, same as power-on default.
@@ -947,9 +951,8 @@ class RF69HCW final {
   }
 
   void set_line_coding(tvsc_radio_LineCoding coding) {
-    uint8_t register_value{RF69HCW_PACKETCONFIG1_PACKETFORMAT_VARIABLE |
-                           RF69HCW_PACKETCONFIG1_CRC_ON |
-                           RF69HCW_PACKETCONFIG1_ADDRESSFILTERING_NONE};
+    uint8_t register_value = spi_read(RF69HCW_REG_37_PACKETCONFIG1);
+    register_value &= ~RF69HCW_PACKETCONFIG1_DCFREE;
     switch (coding) {
       case tvsc_radio_LineCoding_NONE:
         register_value |= RF69HCW_PACKETCONFIG1_DCFREE_NONE;
