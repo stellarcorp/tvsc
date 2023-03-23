@@ -571,8 +571,18 @@ class RF69HCW final {
 
     set_mode_standby();
 
-    spi_write(RF69HCW_REG_3C_FIFOTHRESH, RF69HCW_FIFOTHRESH_TXSTARTCONDITION_NOTEMPTY | 0x0f);
+    // Ramp the amplifiers up and down as quickly as possible. This should result in 10us ramps.
+    // spi_write(RF69HCW_REG_12_PARAMP, 0x0f);
+
+    spi_write(RF69HCW_REG_3C_FIFOTHRESH, RF69HCW_FIFOTHRESH_TXSTARTCONDITION_NOTEMPTY | 0x02);
+
     spi_write(RF69HCW_REG_6F_TESTDAGC, RF69HCW_TESTDAGC_CONTINUOUSDAGC_IMPROVED_LOWBETAOFF);
+
+    // spi_write(RF69HCW_REG_37_PACKETCONFIG1,
+    //           RF69HCW_PACKETCONFIG1_CRC_ON | RF69HCW_PACKETCONFIG1_PACKETFORMAT_VARIABLE);
+
+    // spi_write(RF69HCW_REG_3D_PACKETCONFIG2, (0x0100 & RF69HCW_PACKETCONFIG2_INTERPACKETRXDELAY) |
+    //                                             RF69HCW_PACKETCONFIG2_AUTORXRESTARTON);
 
     // Reset the power amplifiers.
     spi_write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
@@ -774,6 +784,10 @@ class RF69HCW final {
   }
 
   bool wait_available_timeout(uint16_t timeout_ms, uint16_t poll_delay_ms = 1) {
+    if (available()) {
+      return true;
+    }
+
     unsigned long start = millis();
     while ((millis() - start) < timeout_ms) {
       if (available()) {
@@ -853,7 +867,10 @@ class RF69HCW final {
 
   uint8_t get_sync_words_length() {
     uint8_t length = spi_read(RF69HCW_REG_2E_SYNCCONFIG);
-    // TODO(james): Document where this logic comes from. At least document the +1.
+    // RF69HCW_REG_2E_SYNCCONFIG stores the sync words length minus 1 and has an explicit flag for
+    // turning on the sync words at all. The assumption here is that if you turn on the sync words,
+    // the length will be at least 1. See page 71 of the datasheet
+    // (https://cdn-shop.adafruit.com/product-files/3076/RFM69HCW-V1.1.pdf) for more details.
     length &= RF69HCW_SYNCCONFIG_SYNCSIZE;
     length >>= 3;
     length += 1;

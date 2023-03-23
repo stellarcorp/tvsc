@@ -85,7 +85,7 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_Value> generate_capabilities_
 
   capabilities.insert({tvsc_radio_Function_PREAMBLE_LENGTH, int32_range(0, 0xffff)});
 
-  capabilities.insert({tvsc_radio_Function_SYNC_WORDS_LENGTH, int32_range(0, 4)});
+  capabilities.insert({tvsc_radio_Function_SYNC_WORDS_LENGTH, int32_range(0, 8)});
 
   capabilities.insert(
       {tvsc_radio_Function_LINE_CODING,
@@ -344,6 +344,12 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_config
   configuration.insert(
       {tvsc_radio_Function_TX_POWER_DBM, tvsc::radio::as_discrete_value<int8_t>(-2)});
 
+  // configuration.insert(
+  //     {tvsc_radio_Function_PREAMBLE_LENGTH, tvsc::radio::as_discrete_value<uint16_t>(0xff)});
+
+  // configuration.insert(
+  //     {tvsc_radio_Function_SYNC_WORDS_LENGTH, tvsc::radio::as_discrete_value<uint8_t>(2)});
+
   configuration.insert({tvsc_radio_Function_MODULATION_SCHEME,
                         tvsc::radio::as_discrete_value(tvsc_radio_ModulationTechnique_GFSK)});
 
@@ -354,21 +360,22 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_config
       {tvsc_radio_Function_BIT_RATE, tvsc::radio::as_discrete_value<float>(9600.f)});
 
   configuration.insert(
-      {tvsc_radio_Function_FREQUENCY_DEVIATION, tvsc::radio::as_discrete_value<float>(9600.f)});
+      {tvsc_radio_Function_FREQUENCY_DEVIATION,
+       as_discrete_value<float>(1.f * as<float>(configuration.at(tvsc_radio_Function_BIT_RATE)))});
 
   configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_DETECTION_TIMEOUT_MS,
                         tvsc::radio::as_discrete_value<uint32_t>(0)});
 
-  configuration.insert({tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
-                        tvsc::radio::as_discrete_value<float>(-127.f)});
+  // configuration.insert({tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
+  //                       tvsc::radio::as_discrete_value<float>(-80.f)});
 
   // configuration.insert({
   //     tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
   //     // Initialize these thresholds to the same value.
   //     configuration.get_pending_value(tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM)});
 
-  configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
-                        tvsc::radio::as_discrete_value<float>(-0.5f)});
+  // configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
+  //                       tvsc::radio::as_discrete_value<float>(-0.5f)});
 
   return configuration;
 }
