@@ -364,7 +364,7 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_config
   // Seems to be used only during TX. The receiver watches for the preamble to stop, but ignores
   // this particular setting.
   configuration.insert(
-      {tvsc_radio_Function_PREAMBLE_LENGTH, tvsc::radio::as_discrete_value<uint16_t>(0x10)});
+      {tvsc_radio_Function_PREAMBLE_LENGTH, tvsc::radio::as_discrete_value<uint16_t>(0x08)});
 
   // Successful values:
   // 8
@@ -374,7 +374,7 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_config
   // 1 -- intermittent
   // The transmitter and receiver must agree both on length and content of the sync words.
   configuration.insert(
-      {tvsc_radio_Function_SYNC_WORDS_LENGTH, tvsc::radio::as_discrete_value<uint8_t>(8)});
+      {tvsc_radio_Function_SYNC_WORDS_LENGTH, tvsc::radio::as_discrete_value<uint8_t>(2)});
 
   configuration.insert({tvsc_radio_Function_MODULATION_SCHEME,
                         tvsc::radio::as_discrete_value(tvsc_radio_ModulationTechnique_GFSK)});
