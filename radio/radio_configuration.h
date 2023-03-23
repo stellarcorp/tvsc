@@ -68,6 +68,13 @@ void write_settings(
 }
 
 /**
+ * Get the default configuration for a radio module. This configuration should include values for
+ * any capability that needs to be initialized.
+ */
+template <typename DriverT>
+std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_configuration();
+
+/**
  * This template defines an interface for configuring a radio. The specific radio type will be
  * driven by the template parameter. While it is possible to specialize this class template, it
  * should be avoided, if possible. A better approach is to specialize the template functions above
@@ -112,9 +119,7 @@ class RadioConfiguration final {
 
   const tvsc_radio_RadioIdentification& identification() const { return identification_; }
   tvsc_radio_RadioIdentification& identification() { return identification_; }
-  void regenerate_identifiers() {
-    identification_ = generate_identification(identification_.name);
-  }
+  void regenerate_identifiers() { identification_ = generate_identification(identification_.name); }
 
   tvsc_radio_Settings settings() const { return {}; }
   tvsc_radio_Capabilities capabilities() const { return {}; }
@@ -145,6 +150,13 @@ class RadioConfiguration final {
       pending_settings_changes_.insert({function, value});
     } else {
       except<std::domain_error>("Invalid value for function.");
+    }
+  }
+
+  void change_values(
+      const std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue>& values) {
+    for (const auto& [function, value] : values) {
+      change_value(function, value);
     }
   }
 
