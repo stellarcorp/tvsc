@@ -100,6 +100,21 @@ hex(
 )
 
 filegroup(
+    name = "packet_proto_file",
+    srcs = ["packet.proto"],
+    visibility = ["//visibility:public"],
+)
+
+proto_library(
+    name = "packet_proto",
+    srcs = ["packet.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_nanopb_nanopb//:nanopb_proto",
+    ],
+)
+
+filegroup(
     name = "settings_proto_file",
     srcs = ["settings.proto"],
     visibility = ["//visibility:public"],
@@ -184,6 +199,7 @@ cc_nanopb_proto_library(
         ],
     },
     protos = [
+        ":packet_proto",
         ":radio_proto",
         ":settings_proto",
     ],
