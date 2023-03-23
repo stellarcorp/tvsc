@@ -324,7 +324,7 @@ class RF69HCW final {
   // before we transmit.
   uint32_t cad_timeout_ms_{100};
 
-  float channel_activity_threshold_dbm_{-114.f};
+  float channel_activity_threshold_dbm_{-.5f};
 
   // Pin assignments.
   uint8_t peripheral_select_pin_;
@@ -504,7 +504,7 @@ class RF69HCW final {
   static uint8_t next_interrupt_index_;
 
   void handle_interrupt() {
-    // TODO(james): Do we need to handle any interrupts from RF69HCW_REG_27_IRQFLAGS?
+    // TODO(james): Do we need to handle any interrupts from RF69HCW_REG_27_IRQFLAGS1?
     uint8_t irq_flags = spi_read(RF69HCW_REG_28_IRQFLAGS2);
     if (op_mode_ == OperationalMode::TX && (irq_flags & RF69HCW_IRQFLAGS2_PACKETSENT)) {
       // A message has been fully transmitted.
@@ -521,7 +521,6 @@ class RF69HCW final {
     // set before decryption. Instead, we check for PAYLOADREADY which gets set after decryption.
     // This check also guarantees that we have a valid CRC.
     if (op_mode_ == OperationalMode::RX && (irq_flags & RF69HCW_IRQFLAGS2_PAYLOADREADY)) {
-      // Do we need to do this?
       set_mode_standby();
 
       // Transfer the data in the FIFO to our buffer.
@@ -579,7 +578,7 @@ class RF69HCW final {
     spi_write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
     spi_write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
 
-    set_sync_words_length(2);
+    set_sync_words_length(8);
 
     // Reset to +13dBm, same as power-on default.
     set_power_dbm(13);
@@ -587,13 +586,7 @@ class RF69HCW final {
     return true;
   }
 
-  bool available() {
-    if (op_mode_ == OperationalMode::TX) {
-      return false;
-    }
-    set_mode_rx();
-    return rx_buffer_length_ > 0;
-  }
+  bool available() { return rx_buffer_length_ > 0; }
 
   void set_mode_rx() {
     if (op_mode_ != OperationalMode::RX) {
@@ -647,7 +640,7 @@ class RF69HCW final {
     }
   }
 
-  bool recv(uint8_t* buffer, uint8_t* length) {
+  bool read_received_packet(uint8_t* buffer, uint8_t* length) {
     bool received_data{false};
 
     ATOMIC_BLOCK_START;
@@ -660,6 +653,18 @@ class RF69HCW final {
     ATOMIC_BLOCK_END;
 
     return received_data;
+  }
+
+  bool recv(uint8_t* buffer, uint8_t* length) {
+    set_mode_rx();
+    wait_available();
+    return read_received_packet(buffer, length);
+  }
+
+  bool recv(uint8_t* buffer, uint8_t* length, uint16_t timeout_ms) {
+    set_mode_rx();
+    wait_available_timeout(timeout_ms);
+    return read_received_packet(buffer, length);
   }
 
   bool send(const uint8_t* buffer, uint8_t length) {
@@ -698,7 +703,20 @@ class RF69HCW final {
   }
 
   float read_rssi_dbm() {
+    // From page 28 of the datasheet:
+    // "RssiValue can only be read when it exceeds RssiThreshold"
+    // We cache the current value of RssiThreshold, set the threshold to the minimum value, make our
+    // measurement, and then reset the threshold.
+    const float saved_threshold{get_receive_sensitivity_threshold_dbm()};
+
+    // Set the threshold to its minimum value.
+    set_receive_sensitivity_threshold_dbm(-127.5f);
+
     uint8_t rssi = spi_read(RF69HCW_REG_24_RSSIVALUE);
+
+    // Reset the threshold to its previous value.
+    set_receive_sensitivity_threshold_dbm(saved_threshold);
+
     return -1.f * rssi / 2.f;
   }
 
@@ -723,11 +741,12 @@ class RF69HCW final {
     return true;
   }
 
-  void wait_available(uint16_t poll_delay_ms = 0) {
+  void wait_available(uint16_t poll_delay_ms = 1) {
     while (!available()) {
-      YIELD;
       if (poll_delay_ms > 0) {
         delay(poll_delay_ms);
+      } else {
+        YIELD;
       }
     }
   }
@@ -754,15 +773,16 @@ class RF69HCW final {
     return false;
   }
 
-  bool wait_available_timeout(uint16_t timeout_ms, uint16_t poll_delay_ms = 0) {
+  bool wait_available_timeout(uint16_t timeout_ms, uint16_t poll_delay_ms = 1) {
     unsigned long start = millis();
     while ((millis() - start) < timeout_ms) {
       if (available()) {
         return true;
       }
-      YIELD;
       if (poll_delay_ms > 0) {
         delay(poll_delay_ms);
+      } else {
+        YIELD;
       }
     }
     return false;
