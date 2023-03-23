@@ -6,6 +6,7 @@
 
 #include "pb_decode.h"
 #include "pb_encode.h"
+#include "radio/packet.pb.h"
 #include "radio/radio_configuration.h"
 #include "radio/rf69hcw_configuration.h"
 #include "radio/settings.h"
@@ -97,22 +98,44 @@ bool send(const std::string& msg) {
 }
 
 template <typename MessageT>
-void encode(const MessageT& message, std::string& buffer) {
-  buffer.resize(rf69.mtu());
-  pb_ostream_t ostream =
-      pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(buffer.data()), rf69.mtu());
-  bool status = pb_encode(&ostream, nanopb::MessageDescriptor<MessageT>::fields(), &message);
-  if (!status) {
-    tvsc::except<std::runtime_error>("Could not encode incoming message");
+void encode_packet(uint32_t protocol, uint32_t sequence_number, const MessageT& message,
+                   std::string& buffer) {
+  {
+    buffer.resize(rf69.mtu());
+    pb_ostream_t ostream =
+        pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(buffer.data()), buffer.capacity());
+    bool status = pb_encode(&ostream, nanopb::MessageDescriptor<MessageT>::fields(), &message);
+    if (!status) {
+      tvsc::except<std::runtime_error>("Could not encode message");
+    }
+    buffer.resize(ostream.bytes_written);
   }
-  buffer.resize(ostream.bytes_written);
+
+  tvsc_radio_Packet packet{};
+  packet.protocol = protocol;
+  packet.sequence_number = sequence_number;
+  packet.payload.size = buffer.size();
+  strncpy(packet.payload.bytes, buffer.data(), buffer.size());
+
+  {
+    buffer.resize(rf69.mtu());
+    pb_ostream_t ostream =
+        pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(buffer.data()), buffer.capacity());
+    bool status =
+        pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_Packet>::fields(), &packet);
+    if (!status) {
+      tvsc::except<std::runtime_error>("Could not encode packet for message");
+    }
+    buffer.resize(ostream.bytes_written);
+  }
 }
 
+uint32_t sequence_number{};
 void loop() {
-  std::string id{};
-  encode(configuration.identification(), id);
+  std::string packet{};
+  encode_packet(1, ++sequence_number, configuration.identification(), packet);
 
-  if (send(id)) {
+  if (send(packet)) {
     Serial.println("Published id.");
   } else {
     Serial.print("send() failed. RSSI: ");
