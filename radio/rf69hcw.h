@@ -465,8 +465,7 @@ class RF69HCW final {
     }
 
     // Block until the RF module is ready.
-    while (!((spi_read(RF69HCW_REG_27_IRQFLAGS1) & RF69HCW_IRQFLAGS1_MODEREADY) &&
-             (spi_read(RF69HCW_REG_27_IRQFLAGS1) & target_mode_flag))) {
+    while (!(spi_read(RF69HCW_REG_27_IRQFLAGS1) & RF69HCW_IRQFLAGS1_MODEREADY)) {
       // Do nothing.
       // Note: this works, but it feels weird polling on an IRQ register.
       // Also, adding a YIELD here, instead of just looping as fast as possible, causes spurious
