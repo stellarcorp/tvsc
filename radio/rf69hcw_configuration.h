@@ -383,25 +383,23 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_config
                         tvsc::radio::as_discrete_value(tvsc_radio_LineCoding_MANCHESTER_ORIGINAL)});
 
   configuration.insert(
-      {tvsc_radio_Function_BIT_RATE, tvsc::radio::as_discrete_value<float>(9600.f)});
+      {tvsc_radio_Function_BIT_RATE, tvsc::radio::as_discrete_value<float>(12500.f)});
 
+  // Seems to be used only during TX. The receiver detects this spread and adjusts to the sender's
+  // value (likely some significant limits to this), but ignores this particular setting.
   configuration.insert(
       {tvsc_radio_Function_FREQUENCY_DEVIATION,
-       as_discrete_value<float>(1.f * as<float>(configuration.at(tvsc_radio_Function_BIT_RATE)))});
+       as_discrete_value<float>(1.4f * as<float>(configuration.at(tvsc_radio_Function_BIT_RATE)))});
 
   configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_DETECTION_TIMEOUT_MS,
-                        tvsc::radio::as_discrete_value<uint32_t>(0)});
+                        tvsc::radio::as_discrete_value<uint32_t>(5)});
 
-  // configuration.insert({tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
-  //                       tvsc::radio::as_discrete_value<float>(-80.f)});
+  configuration.insert({tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
+                        tvsc::radio::as_discrete_value<float>(-80.f)});
 
-  // configuration.insert({
-  //     tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
-  //     // Initialize these thresholds to the same value.
-  //     configuration.get_pending_value(tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM)});
-
-  // configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
-  //                       tvsc::radio::as_discrete_value<float>(-0.5f)});
+  configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
+                        // Initialize these thresholds to the same value.
+                        configuration.at(tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM)});
 
   return configuration;
 }
