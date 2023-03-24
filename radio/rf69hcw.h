@@ -457,13 +457,6 @@ class RF69HCW final {
     opmode |= (mode & RF69HCW_OPMODE_MODE);
     spi_write(RF69HCW_REG_01_OPMODE, opmode);
 
-    uint8_t target_mode_flag{255};
-    if (mode == RF69HCW_OPMODE_MODE_TX) {
-      target_mode_flag = RF69HCW_IRQFLAGS1_TXREADY;
-    } else if (mode == RF69HCW_OPMODE_MODE_RX) {
-      target_mode_flag = RF69HCW_IRQFLAGS1_RXREADY;
-    }
-
     // Block until the RF module is ready.
     while (!(spi_read(RF69HCW_REG_27_IRQFLAGS1) & RF69HCW_IRQFLAGS1_MODEREADY)) {
       // Do nothing.

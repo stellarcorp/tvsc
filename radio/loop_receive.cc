@@ -124,8 +124,6 @@ void loop() {
   std::string buffer{};
   buffer.resize(rf69.mtu());
 
-  rf69.set_mode_rx();
-
   if (recv(buffer)) {
     ++total_packet_count;
     tvsc_radio_Packet packet{};
