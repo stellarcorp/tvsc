@@ -332,8 +332,7 @@ void write_setting<RF69HCW>(RF69HCW& driver, tvsc_radio_Function function,
   }
 }
 
-template <>
-std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_configuration<RF69HCW>() {
+std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> high_throughput_configuration() {
   std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> configuration{};
   configuration.max_load_factor(1.f);
   configuration.reserve(16);
@@ -407,6 +406,87 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_config
                         configuration.at(tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM)});
 
   return configuration;
+}
+
+std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> standard_configuration() {
+  std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> configuration{};
+  configuration.max_load_factor(1.f);
+  configuration.reserve(16);
+
+  configuration.insert(
+      {tvsc_radio_Function_CARRIER_FREQUENCY_HZ, tvsc::radio::as_discrete_value(433e6f)});
+
+  configuration.insert(
+      {tvsc_radio_Function_TX_POWER_DBM, tvsc::radio::as_discrete_value<int8_t>(-2)});
+
+  // Successful values:
+  // 0x0f
+  // 0x10
+  // 0x11
+  // 0x14
+  // 0x15
+  // 0x01 <- Probably too small for high bit rates and high duty cycles.
+  // Unsuccessful values:
+  // 0xff
+  // 0x7f
+  // 0x3f
+  // 0x1f
+  // 0x1a
+  // 0x18 -- intermittent
+  // 0x17 -- intermittent
+  // 0x16 -- intermittent
+  // 0x00 -- intermittent
+  // Seems to be used only during TX. The receiver watches for the preamble to stop, but ignores
+  // this particular setting.
+  configuration.insert(
+      {tvsc_radio_Function_PREAMBLE_LENGTH, tvsc::radio::as_discrete_value<uint16_t>(0x08)});
+
+  // Successful values:
+  // 8
+  // 2
+  // Unsuccessful values:
+  // 0
+  // 1 -- intermittent
+  // The transmitter and receiver must agree both on length and content of the sync words.
+  configuration.insert(
+      {tvsc_radio_Function_SYNC_WORDS_LENGTH, tvsc::radio::as_discrete_value<uint8_t>(2)});
+
+  configuration.insert({tvsc_radio_Function_MODULATION_SCHEME,
+                        tvsc::radio::as_discrete_value(tvsc_radio_ModulationTechnique_GFSK)});
+
+  // WHITENING seems to perform better at high bit rates & high duty cycles.
+  // MANCHESTER_ORIGINAL performs well, but results in dropped packets with high bit rates and duty
+  // cycles.
+  configuration.insert({tvsc_radio_Function_LINE_CODING,
+                        tvsc::radio::as_discrete_value(tvsc_radio_LineCoding_WHITENING)});
+
+  const float bit_rate{125000.f};
+  const float freq_dev = std::min(500000.f - bit_rate / 2.f, 1.4f * bit_rate);
+
+  configuration.insert(
+      {tvsc_radio_Function_BIT_RATE, tvsc::radio::as_discrete_value<float>(bit_rate)});
+
+  // Seems to be used only during TX. The receiver detects this spread and adjusts to the sender's
+  // value (likely some significant limits to this), but ignores this particular setting.
+  configuration.insert(
+      {tvsc_radio_Function_FREQUENCY_DEVIATION, as_discrete_value<float>(freq_dev)});
+
+  configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_DETECTION_TIMEOUT_MS,
+                        tvsc::radio::as_discrete_value<uint32_t>(5)});
+
+  configuration.insert({tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
+                        tvsc::radio::as_discrete_value<float>(-50.f)});
+
+  configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
+                        // Initialize these thresholds to the same value.
+                        configuration.at(tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM)});
+
+  return configuration;
+}
+
+template <>
+std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_configuration<RF69HCW>() {
+  return standard_configuration();
 }
 
 }  // namespace tvsc::radio

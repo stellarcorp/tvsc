@@ -83,7 +83,7 @@ void setup() {
   print_id(configuration.identification());
   Serial.println();
 
-  configuration.change_values(tvsc::radio::default_configuration<tvsc::radio::RF69HCW>());
+  configuration.change_values(tvsc::radio::high_throughput_configuration());
   configuration.commit_changes();
 }
 
@@ -98,8 +98,8 @@ bool send(const std::string& msg) {
 }
 
 template <typename MessageT>
-void encode_packet(uint32_t protocol, uint32_t sequence_number, const MessageT& message,
-                   std::string& buffer) {
+void encode_packet(uint32_t protocol, uint32_t sequence_number, uint32_t id,
+                   const MessageT& message, std::string& buffer) {
   {
     buffer.resize(rf69.mtu());
     pb_ostream_t ostream =
@@ -114,6 +114,7 @@ void encode_packet(uint32_t protocol, uint32_t sequence_number, const MessageT& 
   tvsc_radio_Packet packet{};
   packet.protocol = protocol;
   packet.sequence_number = sequence_number;
+  packet.sender = id;
   packet.payload.size = buffer.size();
   strncpy(packet.payload.bytes, buffer.data(), buffer.size());
 
@@ -133,7 +134,7 @@ void encode_packet(uint32_t protocol, uint32_t sequence_number, const MessageT& 
 uint32_t sequence_number{};
 void loop() {
   std::string packet{};
-  encode_packet(1, ++sequence_number, configuration.identification(), packet);
+  encode_packet(1, ++sequence_number, configuration.id(), configuration.identification(), packet);
 
   if (send(packet)) {
     Serial.println("Published id.");

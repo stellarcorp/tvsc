@@ -74,7 +74,7 @@ void setup() {
   print_id(configuration.identification());
   Serial.println();
 
-  configuration.change_values(tvsc::radio::default_configuration<tvsc::radio::RF69HCW>());
+  configuration.change_values(tvsc::radio::high_throughput_configuration());
   configuration.commit_changes();
 
   start = millis();
