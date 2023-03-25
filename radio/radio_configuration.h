@@ -92,7 +92,7 @@ class RadioConfiguration final {
   static tvsc_radio_RadioIdentification generate_identification(std::string_view name) {
     tvsc_radio_RadioIdentification identification{};
     identification.expanded_id = tvsc::random::generate_random_value<uint64_t>();
-    identification.id = identification.expanded_id & static_cast<uint16_t>(0xffff);
+    identification.id = identification.expanded_id & static_cast<uint16_t>(0xff);
     name.copy(identification.name, 31);
     return identification;
   }
