@@ -9,5 +9,7 @@ message Packet {
 
   uint32 sequence_number = 2;
 
-  bytes payload = 3 [(nanopb).max_size = 62];
+  uint32 sender = 3;
+
+  bytes payload = 4 [(nanopb).max_size = 62];
 }
