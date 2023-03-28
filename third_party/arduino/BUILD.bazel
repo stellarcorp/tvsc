@@ -4,7 +4,7 @@ cc_library(
         {
             "//platforms:teensyduino": [
             ],
-            "//platforms:wiringpi": [
+            "//platforms:wiring_pi": [
             ],
             "//conditions:default": [
                 "@platforms//:incompatible",
@@ -17,8 +17,8 @@ cc_library(
             "//platforms:teensyduino": [
                 "//third_party/arduino/teensyduino:teensy4_core",
             ],
-            "//platforms:wiringpi": [
-                "//third_party/arduino/wiringpi",
+            "//platforms:wiring_pi": [
+                "//third_party/arduino/wiring_pi",
             ],
             "//conditions:default": [],
         },
@@ -31,7 +31,7 @@ cc_library(
         {
             "//platforms:teensyduino": [
             ],
-            "//platforms:wiringpi": [
+            "//platforms:wiring_pi": [
             ],
             "//conditions:default": [
                 "@platforms//:incompatible",
@@ -44,8 +44,8 @@ cc_library(
             "//platforms:teensyduino": [
                 "//third_party/arduino/teensyduino:spi",
             ],
-            "//platforms:wiringpi": [
-                "//third_party/arduino/wiringpi",
+            "//platforms:wiring_pi": [
+                "//third_party/arduino/wiring_pi",
             ],
             "//conditions:default": [],
         },

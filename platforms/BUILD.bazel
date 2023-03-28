@@ -15,7 +15,7 @@ platform(
     constraint_values = [
         "@platforms//cpu:arm64",
         "@platforms//os:linux",
-        ":wiringpi",
+        ":wiring_pi",
         ":os_networking",
         ":odroid_m1_board",
     ],
@@ -53,7 +53,7 @@ constraint_value(
 constraint_value(
     # TODO(james): This doesn't quite map correctly. Ideally, we would enumerate the different
     # components of the Arduino API and have explicit implementation constraints for each component.
-    name = "wiringpi",
+    name = "wiring_pi",
     constraint_setting = "arduino_implementation",
 )
 
