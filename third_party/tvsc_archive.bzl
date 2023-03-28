@@ -36,7 +36,7 @@ cc_library(
 
     return result
 
-def tvsc_archive(*, name, libname, x86_64_urls, x86_64_library_paths = {}, x86_64_build_file = "", x86_64_sha256 = "", arm64_urls, arm64_library_paths = {}, arm64_build_file = "", arm64_sha256 = "", deps = []):
+def tvsc_archive(*, name, libname, x86_64_urls = [], x86_64_library_paths = {}, x86_64_build_file = "", x86_64_sha256 = "", x86_64_patches = [], arm64_urls = [], arm64_library_paths = {}, arm64_build_file = "", arm64_sha256 = "", arm64_patches = [], deps = []):
     if not native.existing_rule(name):
         x86_64_name = "{}_x86_64".format(name)
         arm64_name = "{}_arm64".format(name)
@@ -51,6 +51,7 @@ def tvsc_archive(*, name, libname, x86_64_urls, x86_64_library_paths = {}, x86_6
                 build_file = x86_64_build_file,
                 sha256 = x86_64_sha256,
                 patch_cmds = ["tar xf data.tar.xz"],
+                patches = x86_64_patches,
             )
         else:
             x86_64_build_file_content = _build_arch_targets(arch = "x86_64", libname = libname, library_paths = x86_64_library_paths)
@@ -61,6 +62,7 @@ def tvsc_archive(*, name, libname, x86_64_urls, x86_64_library_paths = {}, x86_6
                 build_file_content = x86_64_build_file_content,
                 sha256 = x86_64_sha256,
                 patch_cmds = ["tar xf data.tar.xz"],
+                patches = x86_64_patches,
             )
 
         if arm64_build_file:
@@ -70,6 +72,7 @@ def tvsc_archive(*, name, libname, x86_64_urls, x86_64_library_paths = {}, x86_6
                 build_file = arm64_build_file,
                 sha256 = arm64_sha256,
                 patch_cmds = ["tar xf data.tar.xz"],
+                patches = arm64_patches,
             )
         else:
             arm64_build_file_content = _build_arch_targets(arch = "aarch64", libname = libname, library_paths = arm64_library_paths)
@@ -80,6 +83,7 @@ def tvsc_archive(*, name, libname, x86_64_urls, x86_64_library_paths = {}, x86_6
                 build_file_content = arm64_build_file_content,
                 sha256 = arm64_sha256,
                 patch_cmds = ["tar xf data.tar.xz"],
+                patches = arm64_patches,
             )
 
         # Set up the repo that pivots between the different platforms.
