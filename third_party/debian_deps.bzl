@@ -67,10 +67,73 @@ def load_debian_dependencies():
             "http://us.ports.ubuntu.com/ubuntu-ports/pool/universe/w/wiringpi/libwiringpi-dev_2.50-0ubuntu1_arm64.deb",
         ],
         arm64_sha256 = "29e3928b26cbb3aea4db727bd96e0df7a28f7f7a53fbaf01b6f643d4792a2034",
+        arm64_patches = ["//third_party/arduino/wiring_pi:arduino_h.patch"],
         x86_64_urls = [
             "http://mirrors.kernel.org/ubuntu/pool/universe/w/wiringpi/libwiringpi-dev_2.50-0ubuntu1_amd64.deb",
         ],
         x86_64_sha256 = "168b0bcc6a5e148f1c9e4280f854cc89469829d25df7e75a084b789be0edf8b1",
+        x86_64_patches = ["//third_party/arduino/wiring_pi:arduino_h.patch"],
+    )
+
+    tvsc_archive(
+        name = "com_ubuntu_ports_libwiringpi",
+        libname = "libwiringpi",
+        arm64_urls = [
+            "http://us.ports.ubuntu.com/ubuntu-ports/pool/universe/w/wiringpi/libwiringpi2_2.50-0ubuntu1_arm64.deb",
+        ],
+        arm64_library_paths = {
+            "libwiringPiDev": "usr/lib/aarch64-linux-gnu/libwiringPiDev.so.2",
+            "libwiringPi": "usr/lib/aarch64-linux-gnu/libwiringPi.so.2",
+        },
+        arm64_sha256 = "b81a03902ec3ebdb88d28080b82b0b373680fcd2e26659240c78716e897e27ac",
+        x86_64_urls = [
+            "http://mirrors.kernel.org/ubuntu/pool/universe/w/wiringpi/libwiringpi2_2.50-0ubuntu1_amd64.deb",
+        ],
+        x86_64_library_paths = {
+            "libwiringPiDev": "usr/lib/x86_64-linux-gnu/libwiringPiDev.so.2",
+            "libwiringPi": "usr/lib/x86_64-linux-gnu/libwiringPi.so.2",
+        },
+        x86_64_sha256 = "d8a804b4b1fc94703f8d3141bb9344fc346d0f331b2b5ab1af479a64d7b27fb6",
+    )
+
+    tvsc_archive(
+        name = "kr_or_linuxfactory_libwiringpi_dev",
+        libname = "odroid_libwiringpi-dev",
+        arm64_urls = [
+            "http://ppa.linuxfactory.or.kr/pool/main/o/odroid-wiringpi/libwiringpi-dev_3.14.6+202303091450~focal_arm64.deb",
+        ],
+        arm64_sha256 = "84528d6e07172da0a2868fb8c6afc0847291ca81fc58106ba7c9ef909b327d8b",
+        arm64_patches = ["//third_party/arduino/wiring_pi:arduino_h.patch"],
+        arm64_build_file = "//third_party/arduino/wiring_pi:odroid_libwiringpi_dev.BUILD",
+    )
+
+    tvsc_archive(
+        name = "kr_or_linuxfactory_libwiringpi",
+        libname = "odroid_libwiringpi",
+        arm64_urls = [
+            "http://ppa.linuxfactory.or.kr/pool/main/o/odroid-wiringpi/libwiringpi2_3.14.6+202303091450~focal_arm64.deb",
+        ],
+        arm64_library_paths = {
+            "libwiringPiDev": "usr/lib/aarch64-linux-gnu/libwiringPiDev.so.2",
+            "libwiringPi": "usr/lib/aarch64-linux-gnu/libwiringPi.so.2",
+        },
+        arm64_sha256 = "784ff422271f1dbbc3ae061a2c973ab234b470b5f9005a3d7e2fd56ee91bb71e",
+        deps = [
+            "@com_ubuntu_ports_libcrypt1//:lib",
+        ],
+    )
+
+    # libcrypt1, only needed by libwiringpi2.
+    tvsc_archive(
+        name = "com_ubuntu_ports_libcrypt1",
+        libname = "libcrypt1",
+        arm64_urls = [
+            "http://us.ports.ubuntu.com/ubuntu-ports/pool/main/libx/libxcrypt/libcrypt1_4.4.10-10ubuntu4_arm64.deb",
+        ],
+        arm64_library_paths = {
+            "libcrypt": "lib/aarch64-linux-gnu/libcrypt.so.1",
+        },
+        arm64_sha256 = "89907b6c1b613c430a53ef10909934b9ce5854a396cd173360495f6f8e5e7ea4",
     )
 
     # Avahi
