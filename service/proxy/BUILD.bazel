@@ -76,6 +76,7 @@ pkg_deb(
         "avahi-daemon",
         "iptables (>= 1.6)",
         "iptables-persistent (>= 1.0.11)",
+        "libwiringpi2",
         create_service_dependency_string("tvsc-chat"),
         create_service_dependency_string("tvsc-datetime"),
         create_service_dependency_string("tvsc-echo"),
