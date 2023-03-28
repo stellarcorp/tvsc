@@ -1,3 +1,5 @@
+load("//platforms:hex.bzl", "hex")
+
 cc_library(
     name = "arduino",
     target_compatible_with = select(
@@ -72,4 +74,29 @@ cc_library(
             "//conditions:default": [],
         },
     ),
+)
+
+cc_binary(
+    name = "blink",
+    srcs = ["blink.cc"],
+    target_compatible_with = select(
+        {
+            "//platforms:teensyduino": [
+            ],
+            "//platforms:wiring_pi": [
+            ],
+            "//conditions:default": [
+                "@platforms//:incompatible",
+            ],
+        },
+    ),
+    deps = [
+        ":arduino",
+    ],
+)
+
+hex(
+    name = "blink_hex",
+    src = ":blink",
+    out = "blink.hex",
 )
