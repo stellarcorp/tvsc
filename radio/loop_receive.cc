@@ -11,25 +11,18 @@
 #include "radio/rf69hcw_configuration.h"
 #include "radio/settings.h"
 #include "radio/settings.pb.h"
+#include "radio/single_radio_pin_mapping.h"
 #include "random/random.h"
 
-constexpr uint8_t RF69_RST{9};
-constexpr uint8_t RF69_CS{10};
-
-#if defined(RFM69_INTERRUPT_PIN)
-constexpr uint8_t RF69_DIO0{RFM69_INTERRUPT_PIN};
-#else
-constexpr uint8_t RF69_DIO0{17};
-#endif
+const uint8_t RF69_RST{tvsc::radio::SingleRadioPinMapping::reset_pin()};
+const uint8_t RF69_CS{tvsc::radio::SingleRadioPinMapping::chip_select_pin()};
+const uint8_t RF69_DIO0{tvsc::radio::SingleRadioPinMapping::interrupt_pin()};
 
 SPISettings spi_settings{};
 tvsc::radio::RF69HCW rf69{RF69_CS, digitalPinToInterrupt(RF69_DIO0), SPI, spi_settings};
 
-#ifdef TEENSY40
-tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{rf69, "RF69HCW 433 Teensy40"};
-#elif TEENSY41
-tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{rf69, "RF69HCW 433 Teensy41"};
-#endif
+tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
+    rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
 
 // Start time in milliseconds.
 uint32_t start{};

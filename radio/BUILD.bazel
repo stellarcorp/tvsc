@@ -37,29 +37,93 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "single_radio_pin_mapping",
+    hdrs = [
+        "single_radio_pin_mapping.h",
+    ],
+)
+
+cc_library(
+    name = "single_radio_pin_mapping_teensy40_default",
+    srcs = [
+        "single_radio_pin_mapping_teensy40_default.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:teensy40_board": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":single_radio_pin_mapping",
+    ],
+)
+
+cc_library(
+    name = "single_radio_pin_mapping_teensy41_default",
+    srcs = [
+        "single_radio_pin_mapping_teensy41_default.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:teensy41_board": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":single_radio_pin_mapping",
+    ],
+)
+
+cc_library(
+    name = "single_radio_pin_mapping_odroid_m1_default",
+    srcs = [
+        "single_radio_pin_mapping_odroid_m1_default.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:odroid_m1_board": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":single_radio_pin_mapping",
+    ],
+)
+
 cc_binary(
     name = "echo_client",
     srcs = ["echo_client.cc"],
-    local_defines = select({
-        "//platforms:teensy40_board": [
-            "RFM69_INTERRUPT_PIN=17",
-            "TEENSY40",
+    target_compatible_with = select({
+        "//platforms:no_arduino_implementation": [
+            "@platforms//:incompatible",
         ],
-        "//platforms:teensy41_board": [
-            "RFM69_INTERRUPT_PIN=24",
-            "TEENSY41",
+        "//conditions:default": [
         ],
     }),
-    target_compatible_with = [
-        "@platforms//os:none",
-    ],
     deps = [
         ":radio",
         ":rf69hcw",
         "//random",
         "//third_party/arduino:entropy",
         "//third_party/arduino:spi",
-    ],
+    ] + select(
+        {
+            "//platforms:teensy40_board": [
+                ":single_radio_pin_mapping_teensy40_default",
+            ],
+            "//platforms:teensy41_board": [
+                ":single_radio_pin_mapping_teensy41_default",
+            ],
+            "//platforms:odroid_m1_board": [
+                ":single_radio_pin_mapping_odroid_m1_default",
+            ],
+        },
+    ),
 )
 
 hex(
@@ -71,26 +135,32 @@ hex(
 cc_binary(
     name = "echo_server",
     srcs = ["echo_server.cc"],
-    local_defines = select({
-        "//platforms:teensy40_board": [
-            "RFM69_INTERRUPT_PIN=17",
-            "TEENSY40",
+    target_compatible_with = select({
+        "//platforms:no_arduino_implementation": [
+            "@platforms//:incompatible",
         ],
-        "//platforms:teensy41_board": [
-            "RFM69_INTERRUPT_PIN=24",
-            "TEENSY41",
+        "//conditions:default": [
         ],
     }),
-    target_compatible_with = [
-        "@platforms//os:none",
-    ],
     deps = [
         ":radio",
         ":rf69hcw",
         "//random",
         "//third_party/arduino:entropy",
         "//third_party/arduino:spi",
-    ],
+    ] + select(
+        {
+            "//platforms:teensy40_board": [
+                ":single_radio_pin_mapping_teensy40_default",
+            ],
+            "//platforms:teensy41_board": [
+                ":single_radio_pin_mapping_teensy41_default",
+            ],
+            "//platforms:odroid_m1_board": [
+                ":single_radio_pin_mapping_odroid_m1_default",
+            ],
+        },
+    ),
 )
 
 hex(
@@ -102,26 +172,32 @@ hex(
 cc_binary(
     name = "loop_send",
     srcs = ["loop_send.cc"],
-    local_defines = select({
-        "//platforms:teensy40_board": [
-            "RFM69_INTERRUPT_PIN=17",
-            "TEENSY40",
+    target_compatible_with = select({
+        "//platforms:no_arduino_implementation": [
+            "@platforms//:incompatible",
         ],
-        "//platforms:teensy41_board": [
-            "RFM69_INTERRUPT_PIN=24",
-            "TEENSY41",
+        "//conditions:default": [
         ],
     }),
-    target_compatible_with = [
-        "@platforms//os:none",
-    ],
     deps = [
         ":radio",
         ":rf69hcw",
         "//random",
         "//third_party/arduino:entropy",
         "//third_party/arduino:spi",
-    ],
+    ] + select(
+        {
+            "//platforms:teensy40_board": [
+                ":single_radio_pin_mapping_teensy40_default",
+            ],
+            "//platforms:teensy41_board": [
+                ":single_radio_pin_mapping_teensy41_default",
+            ],
+            "//platforms:odroid_m1_board": [
+                ":single_radio_pin_mapping_odroid_m1_default",
+            ],
+        },
+    ),
 )
 
 hex(
@@ -133,26 +209,32 @@ hex(
 cc_binary(
     name = "loop_receive",
     srcs = ["loop_receive.cc"],
-    local_defines = select({
-        "//platforms:teensy40_board": [
-            "RFM69_INTERRUPT_PIN=17",
-            "TEENSY40",
+    target_compatible_with = select({
+        "//platforms:no_arduino_implementation": [
+            "@platforms//:incompatible",
         ],
-        "//platforms:teensy41_board": [
-            "RFM69_INTERRUPT_PIN=24",
-            "TEENSY41",
+        "//conditions:default": [
         ],
     }),
-    target_compatible_with = [
-        "@platforms//os:none",
-    ],
     deps = [
         ":radio",
         ":rf69hcw",
         "//random",
         "//third_party/arduino:entropy",
         "//third_party/arduino:spi",
-    ],
+    ] + select(
+        {
+            "//platforms:teensy40_board": [
+                ":single_radio_pin_mapping_teensy40_default",
+            ],
+            "//platforms:teensy41_board": [
+                ":single_radio_pin_mapping_teensy41_default",
+            ],
+            "//platforms:odroid_m1_board": [
+                ":single_radio_pin_mapping_odroid_m1_default",
+            ],
+        },
+    ),
 )
 
 hex(
