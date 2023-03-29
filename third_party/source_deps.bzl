@@ -171,14 +171,3 @@ def load_source_dependencies():
             build_file = "//third_party/arduino/teensyduino:teensy_package.BUILD",
             patches = ["//third_party/arduino/teensyduino:Time.cpp.patch"],
         )
-
-    if not native.existing_rule("com_airspayce_mikem_radio_head"):
-        http_archive(
-            name = "com_airspayce_mikem_radio_head",
-            sha256 = "73400cce6aa7bfb6bfc7acd640f7c9b2354f7d755a92b38c2be814bff85cc44b",
-            urls = [
-                "https://www.airspayce.com/mikem/arduino/RadioHead/RadioHead-1.121.zip",
-            ],
-            build_file = "//third_party/radio_head:radio_head.BUILD",
-            patches = ["//third_party/radio_head:ATOMIC_BLOCK.patch"],
-        )
