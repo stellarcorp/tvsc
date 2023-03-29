@@ -130,6 +130,13 @@ hex(
     name = "echo_client_hex",
     src = ":echo_client",
     out = "echo_client.hex",
+    target_compatible_with = select({
+        "@platforms//os:none": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
 )
 
 cc_binary(
@@ -167,6 +174,13 @@ hex(
     name = "echo_server_hex",
     src = ":echo_server",
     out = "echo_server.hex",
+    target_compatible_with = select({
+        "@platforms//os:none": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
 )
 
 cc_binary(
@@ -204,6 +218,13 @@ hex(
     name = "loop_send_hex",
     src = ":loop_send",
     out = "loop_send.hex",
+    target_compatible_with = select({
+        "@platforms//os:none": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
 )
 
 cc_binary(
@@ -241,6 +262,13 @@ hex(
     name = "loop_receive_hex",
     src = ":loop_receive",
     out = "loop_receive.hex",
+    target_compatible_with = select({
+        "@platforms//os:none": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
 )
 
 filegroup(

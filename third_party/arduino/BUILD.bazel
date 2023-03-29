@@ -155,4 +155,11 @@ hex(
     name = "blink_hex",
     src = ":blink",
     out = "blink.hex",
+    target_compatible_with = select({
+        "@platforms//os:none": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
 )
