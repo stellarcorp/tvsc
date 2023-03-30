@@ -4,15 +4,11 @@
 #include <cstring>
 #include <stdexcept>
 
-#include "SPI.h"
+#include "Arduino.h"
 #include "base/except.h"
+#include "bus/spi/spi.h"
 #include "radio/radio.pb.h"
 #include "random/random.h"
-
-extern void digitalWrite(uint8_t, uint8_t);
-extern void delayMicroseconds(uint32_t);
-extern void delay(uint32_t);
-extern uint32_t millis();
 
 namespace tvsc::radio {
 
@@ -310,8 +306,7 @@ class RF69HCW final {
 
   static constexpr uint8_t RX_BUFFER_LENGTH{RF69HCW_FIFO_SIZE};
 
-  SPIClass* spi_;
-  SPISettings* spi_settings_;
+  tvsc::bus::spi::SpiPeripheral* spi_;
 
   uint8_t rx_buffer_[RX_BUFFER_LENGTH];
   // Number of valid bytes available to be recv'd in the rx_buffer_.
@@ -327,138 +322,17 @@ class RF69HCW final {
   float channel_activity_threshold_dbm_{-.5f};
 
   // Pin assignments.
-  uint8_t peripheral_select_pin_;
   uint8_t interrupt_pin_;
 
-  // SPI operations.
-  // For folks familiar with the old names for SPI signals, but not the new names, please read:
-  // https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names/#:~:text=MOSI%20%E2%80%93%20Master%20Out%20Slave%20In,MOMI%20%E2%80%93%20Master%20Out%20Master%20In
-  // TODO(james): Abstract these into their own SPI interface to allow non-Arduino bindings.
-
-  // This is the bit in the SPI address that marks it as a write.
-  static constexpr uint8_t RF69HCW_SPI_WRITE_MASK{0x80};
-
-  // TODO(james): Move this to a constructor for the SPI interface.
-  void spi_begin(uint8_t peripheral_select_pin, uint8_t interrupt_pin, void (*interrupt_fn)(void)) {
-    spi_->begin();
-
-    set_peripheral_select_pin(peripheral_select_pin);
-
-    // We get spurious failures without a delay. But this seems excessive.
-    // TODO(james): Test to find what delay, if any, is needed. This value is just the first thing I
-    // tried that worked.
-    delay(100);
-
-    set_spi_interrupt_pin(interrupt_pin, interrupt_fn);
-  }
-
-  void set_peripheral_select_pin(uint8_t pin) {
-    if (pin != 0xff) {
-      peripheral_select_pin_ = pin;
-      pinMode(peripheral_select_pin_, OUTPUT);
-    } else {
-      except<std::domain_error>("Invalid pin value for SPI slave pin.");
-    }
-
-    // Initialize the pin to deselect state.
-    deselect_peripheral();
-  }
-
-  void set_spi_interrupt_pin(uint8_t interrupt_pin, void (*interrupt_fn)(void)) {
-    int interrupt_number = digitalPinToInterrupt(interrupt_pin_);
-    if (interrupt_number == NOT_AN_INTERRUPT) {
-      except<std::domain_error>(
-          "Invalid pin value for SPI interrupt pin. That pin is not capable of generating "
-          "interrupts.");
-    }
-
-    pinMode(interrupt_pin_, INPUT);
-
-    spi_->usingInterrupt(interrupt_number);
-
-    attachInterrupt(interrupt_number, interrupt_fn, RISING);
-  }
-
-  void select_peripheral() { digitalWrite(peripheral_select_pin_, LOW); }
-
-  void deselect_peripheral() { digitalWrite(peripheral_select_pin_, HIGH); }
-
-  void spi_end() { spi_->end(); }
-
-  void spi_begin_transaction() { spi_->beginTransaction(*spi_settings_); }
-
-  void spi_end_transaction() { spi_->endTransaction(); }
-
-  uint8_t spi_read(uint8_t reg) {
-    uint8_t value{};
-    ATOMIC_BLOCK_START;
-    spi_begin_transaction();
-    select_peripheral();
-    spi_->transfer(reg & ~RF69HCW_SPI_WRITE_MASK);
-    value = spi_->transfer(0);
-    deselect_peripheral();
-    spi_end_transaction();
-    ATOMIC_BLOCK_END;
-    return value;
-  }
-
-  uint8_t spi_write(uint8_t reg, uint8_t value) {
-    uint8_t status{};
-    ATOMIC_BLOCK_START;
-    spi_begin_transaction();
-    select_peripheral();
-    status = spi_->transfer(reg | RF69HCW_SPI_WRITE_MASK);
-    spi_->transfer(value);
-    // Based on https://forum.pjrc.com/attachment.php?attachmentid=10948&d=1499109224
-    // Note that since the Teensy can run upwards of 900MHz if overclocked, other devices on the bus
-    // may not be able to keep up. A full microsecond may be excessive though.
-    // TODO(james): Test if this is needed for the radios we use at the Teensy speeds we use.
-    delayMicroseconds(1);
-    deselect_peripheral();
-    spi_end_transaction();
-    ATOMIC_BLOCK_END;
-    return status;
-  }
-
-  uint8_t spi_burst_read(uint8_t reg, uint8_t* buffer, uint8_t length) {
-    uint8_t status{};
-    ATOMIC_BLOCK_START;
-    spi_begin_transaction();
-    select_peripheral();
-    status = spi_->transfer(reg & ~RF69HCW_SPI_WRITE_MASK);
-    while (length--) {
-      *buffer++ = spi_->transfer(0);
-    }
-    deselect_peripheral();
-    spi_end_transaction();
-    ATOMIC_BLOCK_END;
-    return status;
-  }
-
-  uint8_t spi_burst_write(uint8_t reg, const uint8_t* buffer, uint8_t length) {
-    uint8_t status{};
-    ATOMIC_BLOCK_START;
-    spi_begin_transaction();
-    select_peripheral();
-    status = spi_->transfer(reg | RF69HCW_SPI_WRITE_MASK);
-    while (length--) {
-      spi_->transfer(*buffer++);
-    }
-    deselect_peripheral();
-    spi_end_transaction();
-    ATOMIC_BLOCK_END;
-    return status;
-  }
-
   void set_op_mode(uint8_t mode) {
-    uint8_t opmode = spi_read(RF69HCW_REG_01_OPMODE);
+    uint8_t opmode = spi_->read(RF69HCW_REG_01_OPMODE);
 
     opmode &= ~RF69HCW_OPMODE_MODE;
     opmode |= (mode & RF69HCW_OPMODE_MODE);
-    spi_write(RF69HCW_REG_01_OPMODE, opmode);
+    spi_->write(RF69HCW_REG_01_OPMODE, opmode);
 
     // Block until the RF module is ready.
-    while (!(spi_read(RF69HCW_REG_27_IRQFLAGS1) & RF69HCW_IRQFLAGS1_MODEREADY)) {
+    while (!(spi_->read(RF69HCW_REG_27_IRQFLAGS1) & RF69HCW_IRQFLAGS1_MODEREADY)) {
       // Do nothing.
       // Note: this works, but it feels weird polling on an IRQ register.
       // Also, adding a YIELD here, instead of just looping as fast as possible, causes spurious
@@ -470,26 +344,7 @@ class RF69HCW final {
    * Read the received data from the FIFO into the RX buffer in this class.
    */
   void read_fifo() {
-    ATOMIC_BLOCK_START;
-    spi_begin_transaction();
-    select_peripheral();
-
-    spi_->transfer(RF69HCW_REG_00_FIFO);
-
-    // The first byte is the length of the payload.
-    uint8_t payload_length = spi_->transfer(0);
-
-    // We assume that if the payload_length is too large for this radio that it is noise or a packet
-    // we can ignore.
-    if (payload_length <= RX_BUFFER_LENGTH) {
-      for (rx_buffer_length_ = 0; rx_buffer_length_ < payload_length; ++rx_buffer_length_) {
-        rx_buffer_[rx_buffer_length_] = spi_->transfer(0);
-      }
-    }
-
-    deselect_peripheral();
-    spi_end_transaction();
-    ATOMIC_BLOCK_END;
+    rx_buffer_length_ = spi_->fifo_read(RF69HCW_REG_00_FIFO, rx_buffer_, RX_BUFFER_LENGTH);
   }
 
   // Interrupt vectoring.
@@ -505,7 +360,7 @@ class RF69HCW final {
 
   void handle_interrupt() {
     // TODO(james): Do we need to handle any interrupts from RF69HCW_REG_27_IRQFLAGS1?
-    uint8_t irq_flags = spi_read(RF69HCW_REG_28_IRQFLAGS2);
+    uint8_t irq_flags = spi_->read(RF69HCW_REG_28_IRQFLAGS2);
 
     if (op_mode_ == OperationalMode::TX && (irq_flags & RF69HCW_IRQFLAGS2_PACKETSENT)) {
       // A message has been fully transmitted.
@@ -538,16 +393,10 @@ class RF69HCW final {
   bool has_channel_activity() { return read_rssi_dbm() > channel_activity_threshold_dbm_; }
 
  public:
-  RF69HCW(uint8_t peripheral_select_pin, uint8_t interrupt_pin, SPIClass& bus,
-          SPISettings& spi_settings)
-      : spi_(&bus),
-        spi_settings_(&spi_settings),
-        peripheral_select_pin_(peripheral_select_pin),
-        interrupt_pin_(interrupt_pin) {}
+  bool init(tvsc::bus::spi::SpiPeripheral& peripheral, uint8_t interrupt_pin) {
+    spi_ = &peripheral;
+    interrupt_pin_ = interrupt_pin;
 
-  ~RF69HCW() { spi_end(); }
-
-  bool init() {
     void (*interrupt_fn)(void) = nullptr;
     if (next_interrupt_index_ <= 2) {
       interrupt_devices_[next_interrupt_index_] = this;
@@ -564,40 +413,52 @@ class RF69HCW final {
           "No interrupts available. Too many devices or instantiations of the RF69HCW class.");
     }
 
-    spi_begin(peripheral_select_pin_, interrupt_pin_, interrupt_fn);
+    int interrupt_number = digitalPinToInterrupt(interrupt_pin_);
+    if (interrupt_number == NOT_AN_INTERRUPT) {
+      except<std::domain_error>(
+          "Invalid pin value for SPI interrupt pin. That pin is not capable of generating "
+          "interrupts.");
+    }
+
+    pinMode(interrupt_pin_, INPUT);
+    spi_->bus().using_interrupt(interrupt_number);
+    attachInterrupt(interrupt_number, interrupt_fn, RISING);
 
     // Verify that we are actually connected to a device. We expect this will return 0x00 or 0xff
     // only if the device is not connected correctly.
     // TODO(james): Include this information in telemetry via a periodic check (not a cached value)
     // and in device identification. This check will provide a good way to determine if a wire has
     // come loose.
-    uint8_t device_type = spi_read(RF69HCW_REG_10_VERSION);
+    uint8_t device_type = spi_->read(RF69HCW_REG_10_VERSION);
     if (device_type == 00 || device_type == 0xff) {
       return false;
     }
+    Serial.print("Device type: ");
+    Serial.println(device_type);
 
     set_mode_standby();
 
     // Ramp the amplifiers up and down as quickly as possible. This should result in 10us ramps.
-    // spi_write(RF69HCW_REG_12_PARAMP, 0x0f);
+    // spi_->write(RF69HCW_REG_12_PARAMP, 0x0f);
 
-    spi_write(RF69HCW_REG_3C_FIFOTHRESH, RF69HCW_FIFOTHRESH_TXSTARTCONDITION_NOTEMPTY | 0x02);
+    spi_->write(RF69HCW_REG_3C_FIFOTHRESH, RF69HCW_FIFOTHRESH_TXSTARTCONDITION_NOTEMPTY | 0x02);
 
-    spi_write(RF69HCW_REG_6F_TESTDAGC, RF69HCW_TESTDAGC_CONTINUOUSDAGC_IMPROVED_LOWBETAOFF);
+    spi_->write(RF69HCW_REG_6F_TESTDAGC, RF69HCW_TESTDAGC_CONTINUOUSDAGC_IMPROVED_LOWBETAOFF);
 
-    // spi_write(RF69HCW_REG_37_PACKETCONFIG1,
+    // spi_->write(RF69HCW_REG_37_PACKETCONFIG1,
     //           RF69HCW_PACKETCONFIG1_CRC_ON | RF69HCW_PACKETCONFIG1_PACKETFORMAT_VARIABLE);
 
-    // spi_write(RF69HCW_REG_3D_PACKETCONFIG2, (0x0100 & RF69HCW_PACKETCONFIG2_INTERPACKETRXDELAY) |
+    // spi_->write(RF69HCW_REG_3D_PACKETCONFIG2, (0x0100 & RF69HCW_PACKETCONFIG2_INTERPACKETRXDELAY)
+    // |
     //                                             RF69HCW_PACKETCONFIG2_AUTORXRESTARTON);
 
     // Reset the power amplifiers.
-    spi_write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
-    spi_write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
+    spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
+    spi_->write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
 
-    spi_write(RF69HCW_REG_37_PACKETCONFIG1, RF69HCW_PACKETCONFIG1_PACKETFORMAT_VARIABLE |
-                                                RF69HCW_PACKETCONFIG1_CRC_ON |
-                                                RF69HCW_PACKETCONFIG1_ADDRESSFILTERING_NONE);
+    spi_->write(RF69HCW_REG_37_PACKETCONFIG1, RF69HCW_PACKETCONFIG1_PACKETFORMAT_VARIABLE |
+                                                  RF69HCW_PACKETCONFIG1_CRC_ON |
+                                                  RF69HCW_PACKETCONFIG1_ADDRESSFILTERING_NONE);
 
     set_sync_words_length(8);
 
@@ -613,10 +474,10 @@ class RF69HCW final {
     if (op_mode_ != OperationalMode::RX) {
       if (power_ >= 18) {
         // If we are using the high power boost, we must turn it off to receive.
-        spi_write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
-        spi_write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
+        spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
+        spi_->write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
       }
-      spi_write(RF69HCW_REG_25_DIOMAPPING1, RF69HCW_DIOMAPPING1_DIO0MAPPING_01);
+      spi_->write(RF69HCW_REG_25_DIOMAPPING1, RF69HCW_DIOMAPPING1_DIO0MAPPING_01);
       set_op_mode(RF69HCW_OPMODE_MODE_RX);
       op_mode_ = OperationalMode::RX;
     }
@@ -629,10 +490,10 @@ class RF69HCW final {
         // TODO(james): Determine if we need to turn off over current protection (OCP) to activate
         // high power boost. The datasheet suggests so (page 21), but we seem to get high power
         // boost with OCP on.
-        spi_write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_BOOST);
-        spi_write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_BOOST);
+        spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_BOOST);
+        spi_->write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_BOOST);
       }
-      spi_write(RF69HCW_REG_25_DIOMAPPING1, RF69HCW_DIOMAPPING1_DIO0MAPPING_00);
+      spi_->write(RF69HCW_REG_25_DIOMAPPING1, RF69HCW_DIOMAPPING1_DIO0MAPPING_00);
       set_op_mode(RF69HCW_OPMODE_MODE_TX);
       op_mode_ = OperationalMode::TX;
     }
@@ -640,7 +501,7 @@ class RF69HCW final {
 
   void set_mode_sleep() {
     if (op_mode_ != OperationalMode::SLEEP) {
-      spi_write(RF69HCW_REG_01_OPMODE, RF69HCW_OPMODE_MODE_SLEEP);
+      spi_->write(RF69HCW_REG_01_OPMODE, RF69HCW_OPMODE_MODE_SLEEP);
       op_mode_ = OperationalMode::SLEEP;
     }
   }
@@ -653,8 +514,8 @@ class RF69HCW final {
         // entering this mode to conserve power, we turn it off here.
         // TODO(james): Determine how the high power boost is expected to interact with the
         // different operational modes.
-        spi_write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
-        spi_write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
+        spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
+        spi_->write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
       }
       set_op_mode(RF69HCW_OPMODE_MODE_STDBY);
       op_mode_ = OperationalMode::STANDBY;
@@ -704,19 +565,7 @@ class RF69HCW final {
       return false;
     }
 
-    ATOMIC_BLOCK_START;
-    spi_begin_transaction();
-    select_peripheral();
-    spi_->transfer(RF69HCW_REG_00_FIFO | RF69HCW_SPI_WRITE_MASK);
-    spi_->transfer(length);
-    while (length > 0) {
-      spi_->transfer(*buffer);
-      ++buffer;
-      --length;
-    }
-    deselect_peripheral();
-    spi_end_transaction();
-    ATOMIC_BLOCK_END;
+    spi_->fifo_write(RF69HCW_REG_00_FIFO, buffer, length);
 
     // Start the transmitter.
     set_mode_tx();
@@ -733,7 +582,7 @@ class RF69HCW final {
     // Set the threshold to its minimum value.
     set_receive_sensitivity_threshold_dbm(-127.5f);
 
-    uint8_t rssi = spi_read(RF69HCW_REG_24_RSSIVALUE);
+    uint8_t rssi = spi_->read(RF69HCW_REG_24_RSSIVALUE);
 
     // Reset the threshold to its previous value.
     set_receive_sensitivity_threshold_dbm(saved_threshold);
@@ -821,11 +670,11 @@ class RF69HCW final {
 
   void set_receive_sensitivity_threshold_dbm(float threshold_dbm) {
     const uint8_t value = static_cast<uint8_t>(threshold_dbm * -2);
-    spi_write(RF69HCW_REG_29_RSSITHRESH, value);
+    spi_->write(RF69HCW_REG_29_RSSITHRESH, value);
   }
 
   float get_receive_sensitivity_threshold_dbm() {
-    uint8_t rssi_threshold = spi_read(RF69HCW_REG_29_RSSITHRESH);
+    uint8_t rssi_threshold = spi_->read(RF69HCW_REG_29_RSSITHRESH);
     return -1.f * rssi_threshold / 2.f;
   }
 
@@ -837,26 +686,26 @@ class RF69HCW final {
 
   void set_frequency_hz(float frequency_hz) {
     uint32_t frf = static_cast<uint32_t>(frequency_hz / RF69HCW_FSTEP);
-    spi_write(RF69HCW_REG_07_FRFMSB, (frf >> 16) & 0xff);
-    spi_write(RF69HCW_REG_08_FRFMID, (frf >> 8) & 0xff);
-    spi_write(RF69HCW_REG_09_FRFLSB, frf & 0xff);
+    spi_->write(RF69HCW_REG_07_FRFMSB, (frf >> 16) & 0xff);
+    spi_->write(RF69HCW_REG_08_FRFMID, (frf >> 8) & 0xff);
+    spi_->write(RF69HCW_REG_09_FRFLSB, frf & 0xff);
   }
 
   float get_frequency_hz() {
-    uint32_t frf = spi_read(RF69HCW_REG_07_FRFMSB);
-    frf = (frf << 8) | spi_read(RF69HCW_REG_08_FRFMID);
-    frf = (frf << 8) | spi_read(RF69HCW_REG_09_FRFLSB);
+    uint32_t frf = spi_->read(RF69HCW_REG_07_FRFMSB);
+    frf = (frf << 8) | spi_->read(RF69HCW_REG_08_FRFMID);
+    frf = (frf << 8) | spi_->read(RF69HCW_REG_09_FRFLSB);
     return frf * RF69HCW_FSTEP;
   }
 
   void set_preamble_length(uint16_t length) {
-    spi_write(RF69HCW_REG_2C_PREAMBLEMSB, length >> 8);
-    spi_write(RF69HCW_REG_2D_PREAMBLELSB, length & 0xff);
+    spi_->write(RF69HCW_REG_2C_PREAMBLEMSB, length >> 8);
+    spi_->write(RF69HCW_REG_2D_PREAMBLELSB, length & 0xff);
   }
 
   uint16_t get_preamble_length() {
-    uint16_t length = spi_read(RF69HCW_REG_2C_PREAMBLEMSB);
-    length = (length << 8) | spi_read(RF69HCW_REG_2D_PREAMBLELSB);
+    uint16_t length = spi_->read(RF69HCW_REG_2C_PREAMBLEMSB);
+    length = (length << 8) | spi_->read(RF69HCW_REG_2D_PREAMBLELSB);
     return length;
   }
 
@@ -864,20 +713,20 @@ class RF69HCW final {
     if (length > 8) {
       length = 8;
     }
-    uint8_t sync_configuration = spi_read(RF69HCW_REG_2E_SYNCCONFIG);
+    uint8_t sync_configuration = spi_->read(RF69HCW_REG_2E_SYNCCONFIG);
     if (length == 0) {
       sync_configuration &= ~RF69HCW_SYNCCONFIG_SYNCON;
     } else {
-      spi_burst_write(RF69HCW_REG_2F_SYNCVALUE1, SYNC_WORDS, length);
+      spi_->burst_write(RF69HCW_REG_2F_SYNCVALUE1, SYNC_WORDS, length);
       sync_configuration |= RF69HCW_SYNCCONFIG_SYNCON;
     }
     sync_configuration &= ~RF69HCW_SYNCCONFIG_SYNCSIZE;
     sync_configuration |= (length - 1) << 3;
-    spi_write(RF69HCW_REG_2E_SYNCCONFIG, sync_configuration);
+    spi_->write(RF69HCW_REG_2E_SYNCCONFIG, sync_configuration);
   }
 
   uint8_t get_sync_words_length() {
-    uint8_t length = spi_read(RF69HCW_REG_2E_SYNCCONFIG);
+    uint8_t length = spi_->read(RF69HCW_REG_2E_SYNCCONFIG);
     // RF69HCW_REG_2E_SYNCCONFIG stores the sync words length minus 1 and has an explicit flag for
     // turning on the sync words at all. The assumption here is that if you turn on the sync words,
     // the length will be at least 1. See page 71 of the datasheet
@@ -915,7 +764,7 @@ class RF69HCW final {
                                 ((power_ + 14) & RF69HCW_PALEVEL_OUTPUTPOWER);
     }
 
-    spi_write(RF69HCW_REG_11_PALEVEL, amplifier_configuration);
+    spi_->write(RF69HCW_REG_11_PALEVEL, amplifier_configuration);
   }
 
   int8_t get_power_dbm() const { return power_; }
@@ -938,11 +787,11 @@ class RF69HCW final {
       default:
         except<std::domain_error>("Invalid modulation technique");
     }
-    spi_write(RF69HCW_REG_02_DATAMODUL, register_value);
+    spi_->write(RF69HCW_REG_02_DATAMODUL, register_value);
   }
 
   tvsc_radio_ModulationTechnique get_modulation_scheme() {
-    uint8_t register_value = spi_read(RF69HCW_REG_02_DATAMODUL);
+    uint8_t register_value = spi_->read(RF69HCW_REG_02_DATAMODUL);
 
     if (register_value & RF69HCW_DATAMODUL_MODULATIONTYPE_FSK) {
       if (register_value & RF69HCW_DATAMODUL_MODULATIONSHAPING_FSK_BT1_0) {
@@ -958,7 +807,7 @@ class RF69HCW final {
   }
 
   void set_line_coding(tvsc_radio_LineCoding coding) {
-    uint8_t register_value = spi_read(RF69HCW_REG_37_PACKETCONFIG1);
+    uint8_t register_value = spi_->read(RF69HCW_REG_37_PACKETCONFIG1);
     register_value &= ~RF69HCW_PACKETCONFIG1_DCFREE;
     switch (coding) {
       case tvsc_radio_LineCoding_NONE:
@@ -973,11 +822,11 @@ class RF69HCW final {
       default:
         except<std::domain_error>("Invalid line coding");
     }
-    spi_write(RF69HCW_REG_37_PACKETCONFIG1, register_value);
+    spi_->write(RF69HCW_REG_37_PACKETCONFIG1, register_value);
   }
 
   tvsc_radio_LineCoding get_line_coding() {
-    uint8_t register_value = spi_read(RF69HCW_REG_37_PACKETCONFIG1);
+    uint8_t register_value = spi_->read(RF69HCW_REG_37_PACKETCONFIG1);
 
     if (register_value & RF69HCW_PACKETCONFIG1_DCFREE_MANCHESTER) {
       return tvsc_radio_LineCoding_MANCHESTER_ORIGINAL;
@@ -990,8 +839,8 @@ class RF69HCW final {
 
   void set_bit_rate(float bit_rate) {
     uint16_t bit_rate_register_values = RF69HCW_FXOSC / bit_rate;
-    spi_write(RF69HCW_REG_03_BITRATEMSB, ((bit_rate_register_values >> 8) & 0xff));
-    spi_write(RF69HCW_REG_04_BITRATELSB, bit_rate_register_values & 0xff);
+    spi_->write(RF69HCW_REG_03_BITRATEMSB, ((bit_rate_register_values >> 8) & 0xff));
+    spi_->write(RF69HCW_REG_04_BITRATELSB, bit_rate_register_values & 0xff);
 
     // Setting the bit rate also means that we need to set the Rx bandwidth. We set the Rx bandwidth
     // to be 2 * bit rate. Also, we put the same value in the AfcRxBw register.
@@ -1080,13 +929,13 @@ class RF69HCW final {
 
     constexpr uint8_t rx_bw_dcc_freq{2};
     constexpr uint8_t afc_bw_dcc_freq{4};
-    spi_write(RF69HCW_REG_19_RXBW, (rx_bw_dcc_freq << 5) | (mantissa << 3) | exponent);
-    spi_write(RF69HCW_REG_1A_AFCBW, (afc_bw_dcc_freq << 5) | (mantissa << 3) | exponent);
+    spi_->write(RF69HCW_REG_19_RXBW, (rx_bw_dcc_freq << 5) | (mantissa << 3) | exponent);
+    spi_->write(RF69HCW_REG_1A_AFCBW, (afc_bw_dcc_freq << 5) | (mantissa << 3) | exponent);
   }
 
   float get_bit_rate() {
-    uint8_t bit_rate_msb = spi_read(RF69HCW_REG_03_BITRATEMSB);
-    uint8_t bit_rate_lsb = spi_read(RF69HCW_REG_04_BITRATELSB);
+    uint8_t bit_rate_msb = spi_->read(RF69HCW_REG_03_BITRATEMSB);
+    uint8_t bit_rate_lsb = spi_->read(RF69HCW_REG_04_BITRATELSB);
 
     return RF69HCW_FXOSC / ((bit_rate_msb << 8) | bit_rate_lsb);
   }
@@ -1095,13 +944,13 @@ class RF69HCW final {
   void set_frequency_deviation_hz(float deviation_hz) {
     uint16_t scaled_deviation{static_cast<uint16_t>(deviation_hz / RF69HCW_FSTEP)};
     scaled_deviation &= 0x3fff;
-    spi_write(RF69HCW_REG_05_FDEVMSB, ((scaled_deviation >> 8) & 0xff));
-    spi_write(RF69HCW_REG_06_FDEVLSB, scaled_deviation & 0xff);
+    spi_->write(RF69HCW_REG_05_FDEVMSB, ((scaled_deviation >> 8) & 0xff));
+    spi_->write(RF69HCW_REG_06_FDEVLSB, scaled_deviation & 0xff);
   }
 
   float get_frequency_deviation_hz() {
-    uint8_t deviation_msb = spi_read(RF69HCW_REG_05_FDEVMSB);
-    uint8_t deviation_lsb = spi_read(RF69HCW_REG_06_FDEVLSB);
+    uint8_t deviation_msb = spi_->read(RF69HCW_REG_05_FDEVMSB);
+    uint8_t deviation_lsb = spi_->read(RF69HCW_REG_06_FDEVLSB);
 
     return RF69HCW_FSTEP * ((deviation_msb << 8) | deviation_lsb);
   }

@@ -4,6 +4,7 @@
 
 #include <string>
 
+#include "bus/spi/spi.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
 #include "radio/packet.pb.h"
@@ -18,8 +19,9 @@ const uint8_t RF69_RST{tvsc::radio::SingleRadioPinMapping::reset_pin()};
 const uint8_t RF69_CS{tvsc::radio::SingleRadioPinMapping::chip_select_pin()};
 const uint8_t RF69_DIO0{tvsc::radio::SingleRadioPinMapping::interrupt_pin()};
 
-SPISettings spi_settings{};
-tvsc::radio::RF69HCW rf69{RF69_CS, digitalPinToInterrupt(RF69_DIO0), SPI, spi_settings};
+tvsc::bus::spi::SpiBus bus{tvsc::bus::spi::get_default_spi_bus()};
+tvsc::bus::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
+tvsc::radio::RF69HCW rf69{};
 
 tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
     rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
@@ -57,13 +59,17 @@ void setup() {
   digitalWrite(RF69_RST, LOW);
   delay(10);
 
-  if (!rf69.init()) {
+  Serial.println("Initializing SPI bus.");
+  bus.init();
+
+  Serial.println("Initializing RF69HCW.");
+  if (!rf69.init(spi_peripheral, RF69_DIO0)) {
     Serial.println("init failed");
     while (true) {
     }
   }
 
-  Serial.print("Board id: ");
+  Serial.println("Board id: ");
   print_id(configuration.identification());
   Serial.println();
 
@@ -172,16 +178,16 @@ void loop() {
     }
   }
 
-  // if (millis() - last_print_time > 1000) {
-  //   last_print_time = millis();
+  if (millis() - last_print_time > 1000) {
+    last_print_time = millis();
 
-  //   Serial.print("dropped_packet_count: ");
-  //   Serial.print(dropped_packet_count);
-  //   Serial.print(", total_packet_count: ");
-  //   Serial.print(total_packet_count);
-  //   Serial.print(", throughput: ");
-  //   Serial.print(total_packet_count * 1000.f / (millis() - start));
-  //   Serial.print(" packets/sec");
-  //   Serial.println();
-  // }
+    Serial.print("dropped_packet_count: ");
+    Serial.print(dropped_packet_count);
+    Serial.print(", total_packet_count: ");
+    Serial.print(total_packet_count);
+    Serial.print(", throughput: ");
+    Serial.print(total_packet_count * 1000.f / (millis() - start));
+    Serial.print(" packets/sec");
+    Serial.println();
+  }
 }

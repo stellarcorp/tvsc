@@ -31,6 +31,7 @@ cc_library(
         ":radio",
         ":radio_nano_cc_proto",
         "//base",
+        "//bus/spi",
         "//random",
         "//third_party/arduino",
         "//third_party/arduino:spi",
