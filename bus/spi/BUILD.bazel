@@ -63,5 +63,8 @@ cc_library(
     }),
     deps = [
         ":spi_header",
+        "//base",
+        "//third_party/arduino/wiring_pi",
+        "//third_party/glog",
     ],
 )

@@ -13,11 +13,13 @@ class SpiBus;
 class SpiTransaction final {
  private:
   SpiBus* bus_{nullptr};
+  uint8_t peripheral_select_pin_{0xff};
 
  public:
   SpiTransaction() = default;
 
-  SpiTransaction(SpiBus& bus) : bus_(&bus) {}
+  SpiTransaction(SpiBus& bus, uint8_t peripheral_select_pin)
+      : bus_(&bus), peripheral_select_pin_(peripheral_select_pin) {}
 
   ~SpiTransaction();
 
@@ -32,57 +34,15 @@ class SpiTransaction final {
    */
   SpiTransaction(SpiTransaction&& rhs) {
     bus_ = rhs.bus_;
-    rhs.bus_ = nullptr;
-  }
-
-  /**
-   * Allow moving from another transaction to this transaction.
-   */
-  SpiTransaction& operator=(SpiTransaction&& rhs) {
-    SpiBus* const prev{bus_};
-    bus_ = rhs.bus_;
-    rhs.bus_ = prev;
-    return *this;
-  }
-};
-
-/**
- * RIAA approach to managing peripheral selections on an SpiBus. Hold an instance of this class on
- * the stack while doing operations on a selected peripheral on the bus.
- */
-class SpiPeripheralSelection final {
- private:
-  SpiBus* bus_{nullptr};
-  uint8_t peripheral_select_pin_{0xff};
-
- public:
-  SpiPeripheralSelection() = default;
-
-  SpiPeripheralSelection(SpiBus& bus, uint8_t peripheral_select_pin)
-      : bus_(&bus), peripheral_select_pin_(peripheral_select_pin) {}
-
-  ~SpiPeripheralSelection();
-
-  /**
-   * Disallow copying of a peripheral selection.
-   */
-  SpiPeripheralSelection(const SpiPeripheralSelection&) = delete;
-  SpiPeripheralSelection& operator=(const SpiPeripheralSelection&) = delete;
-
-  /**
-   * Allow moving from another peripheral selection to this selection.
-   */
-  SpiPeripheralSelection(SpiPeripheralSelection&& rhs) {
-    bus_ = rhs.bus_;
     peripheral_select_pin_ = rhs.peripheral_select_pin_;
     rhs.bus_ = nullptr;
     rhs.peripheral_select_pin_ = 0xff;
   }
 
   /**
-   * Allow moving from another peripheral selection to this selection.
+   * Allow moving from another transaction to this transaction.
    */
-  SpiPeripheralSelection& operator=(SpiPeripheralSelection&& rhs) {
+  SpiTransaction& operator=(SpiTransaction&& rhs) {
     SpiBus* const prev_bus{bus_};
     const uint8_t prev_pin{peripheral_select_pin_};
 
@@ -107,10 +67,9 @@ class SpiBus {
  private:
   void* spi_;
 
-  void end_transaction();
+  void end_transaction(uint8_t peripheral_select_pin);
 
-  void initialize_peripheral(uint8_t peripheral_select_pin, uint8_t write_address_mask);
-  void deselect_peripheral(uint8_t peripheral_select_pin);
+  void initialize_peripheral(uint8_t peripheral_select_pin);
 
   friend class SpiTransaction;
   friend class SpiPeripheralSelection;
@@ -120,8 +79,32 @@ class SpiBus {
   SpiBus(void* spi_implementation);
   ~SpiBus();
 
+  /**
+   * Disallow copying of this bus.
+   */
+  SpiBus(const SpiBus&) = delete;
+  SpiBus& operator=(const SpiBus&) = delete;
+
+  /**
+   * Allow moving from another bus to this bus.
+   */
+  SpiBus(SpiBus&& rhs) {
+    spi_ = rhs.spi_;
+    rhs.spi_ = nullptr;
+  }
+
+  /**
+   * Allow moving from another bus to this bus.
+   */
+  SpiBus& operator=(SpiBus&& rhs) {
+    void* const prev{spi_};
+    spi_ = rhs.spi_;
+    rhs.spi_ = prev;
+    return *this;
+  }
+
   void init();
-  
+
   /**
    * Indicate to the bus that a particular interrupt number is in use elsewhere. This method is
    * based on the Arduino SPI function called "usingInterrupt()". It's documentation
@@ -141,13 +124,7 @@ class SpiBus {
    * Start a transaction on this SPI bus. This is a low-level function to handle use cases that
    * aren't met by the rest of the API.
    */
-  [[nodiscard]] SpiTransaction begin_transaction();
-
-  /**
-   * Indicate to a peripheral that the next SPI messages are targeted at it. This is a low-level
-   * function to handle use cases that aren't met by the rest of the API.
-   */
-  [[nodiscard]] SpiPeripheralSelection select_peripheral(uint8_t peripheral_select_pin);
+  [[nodiscard]] SpiTransaction begin_transaction(uint8_t peripheral_select_pin);
 
   /**
    * Transfer a single byte via the SPI bus. This is a low-level function to handle use cases that
@@ -175,7 +152,7 @@ class SpiPeripheral {
       : bus_(&bus),
         peripheral_select_pin_(peripheral_select_pin),
         write_address_mask_(write_address_mask) {
-    bus_->initialize_peripheral(peripheral_select_pin_, write_address_mask_);
+    bus_->initialize_peripheral(peripheral_select_pin_);
   }
 
   /**
@@ -187,8 +164,7 @@ class SpiPeripheral {
    * Read a value from an address. Returns the value at address.
    */
   uint8_t read(uint8_t address) {
-    SpiTransaction transaction{bus_->begin_transaction()};
-    SpiPeripheralSelection selection{select()};
+    SpiTransaction transaction{bus_->begin_transaction(peripheral_select_pin_)};
     bus_->transfer(address & ~write_address_mask_);
     return bus_->transfer(0);
   }
@@ -199,8 +175,7 @@ class SpiPeripheral {
    */
   uint8_t write(uint8_t address, uint8_t value) {
     uint8_t status{};
-    SpiTransaction transaction{bus_->begin_transaction()};
-    SpiPeripheralSelection selection{select()};
+    SpiTransaction transaction{bus_->begin_transaction(peripheral_select_pin_)};
 
     status = bus_->transfer(address | write_address_mask_);
     bus_->transfer(value);
@@ -214,8 +189,7 @@ class SpiPeripheral {
    */
   uint8_t burst_read(uint8_t address, uint8_t* buffer, uint8_t count) {
     uint8_t status{};
-    SpiTransaction transaction{bus_->begin_transaction()};
-    SpiPeripheralSelection selection{select()};
+    SpiTransaction transaction{bus_->begin_transaction(peripheral_select_pin_)};
 
     status = bus_->transfer(address & ~write_address_mask_);
 
@@ -232,8 +206,7 @@ class SpiPeripheral {
    */
   uint8_t burst_write(uint8_t address, const uint8_t* buffer, uint8_t count) {
     uint8_t status{};
-    SpiTransaction transaction{bus_->begin_transaction()};
-    SpiPeripheralSelection selection{select()};
+    SpiTransaction transaction{bus_->begin_transaction(peripheral_select_pin_)};
 
     status = bus_->transfer(address | write_address_mask_);
 
@@ -257,8 +230,7 @@ class SpiPeripheral {
    * Returns the number of bytes actually read.
    */
   uint8_t fifo_read(uint8_t address, uint8_t* buffer, uint8_t count) {
-    SpiTransaction transaction{bus_->begin_transaction()};
-    SpiPeripheralSelection selection{select()};
+    SpiTransaction transaction{bus_->begin_transaction(peripheral_select_pin_)};
 
     bus_->transfer(address & ~write_address_mask_);
     uint8_t bytes_available = bus_->transfer(0);
@@ -286,8 +258,7 @@ class SpiPeripheral {
    */
   uint8_t fifo_write(uint8_t address, const uint8_t* buffer, uint8_t count) {
     uint8_t status{};
-    SpiTransaction transaction{bus_->begin_transaction()};
-    SpiPeripheralSelection selection{select()};
+    SpiTransaction transaction{bus_->begin_transaction(peripheral_select_pin_)};
 
     status = bus_->transfer(address | write_address_mask_);
 
@@ -297,14 +268,6 @@ class SpiPeripheral {
     }
 
     return status;
-  }
-
-  /**
-   * Indicate to this peripheral that the next SPI messages are targeted at it. This is a low-level
-   * function to handle use cases that aren't met by the rest of the API.
-   */
-  [[nodiscard]] SpiPeripheralSelection select() {
-    return bus_->select_peripheral(peripheral_select_pin_);
   }
 };
 
