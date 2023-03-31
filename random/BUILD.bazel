@@ -3,12 +3,12 @@ cc_library(
     hdrs = [
         "random.h",
     ] + select({
-        "//platforms:teensyduino": ["arduino_random.h"],
-        "//conditions:default": ["std_cpp_random.h"],
+        "//platforms:teensyduino_core": ["arduino_random.h"],
+        "//platforms:std_cpp": ["std_cpp_random.h"],
     }),
     visibility = ["//visibility:public"],
     deps = select({
-        "//platforms:teensyduino": ["//third_party/arduino"],
+        "//platforms:teensyduino_core": ["//third_party/arduino:core"],
         "//conditions:default": [],
     }),
 )

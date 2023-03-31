@@ -3,21 +3,19 @@ load("//platforms:hex.bzl", "hex")
 cc_library(
     name = "spi",
     target_compatible_with = select({
-        "//platforms:teensyduino": [
-        ],
-        "//platforms:wiring_pi": [
-        ],
         "//conditions:default": [
+        ],
+        "//platforms:no_spi": [
             "@platforms//:incompatible",
         ],
     }),
     visibility = ["//visibility:public"],
     deps = [":spi_header"] + select({
-        "//platforms:teensyduino": [
+        "//platforms:teensyduino_spi": [
             ":teensyduino_spi",
         ],
-        "//platforms:wiring_pi": [
-            ":wiring_pi_spi",
+        "//platforms:spidev_spi": [
+            ":spidev_spi",
         ],
     }),
 )
@@ -38,7 +36,7 @@ cc_library(
         "teensyduino_spi.cc",
     ],
     target_compatible_with = select({
-        "//platforms:teensyduino": [
+        "//platforms:teensyduino_spi": [
         ],
         "//conditions:default": [
             "@platforms//:incompatible",
@@ -46,18 +44,18 @@ cc_library(
     }),
     deps = [
         ":spi_header",
-        "//third_party/arduino",
+        "//third_party/arduino:core",
         "//third_party/arduino:spi",
     ],
 )
 
 cc_library(
-    name = "wiring_pi_spi",
+    name = "spidev_spi",
     srcs = [
-        "wiring_pi_spi.cc",
+        "spidev_spi.cc",
     ],
     target_compatible_with = select({
-        "//platforms:wiring_pi": [
+        "//platforms:spidev_spi": [
         ],
         "//conditions:default": [
             "@platforms//:incompatible",

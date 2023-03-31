@@ -1,12 +1,10 @@
 load("//platforms:hex.bzl", "hex")
 
 cc_library(
-    name = "arduino",
+    name = "core",
     target_compatible_with = select(
         {
-            "//platforms:teensyduino": [
-            ],
-            "//platforms:wiring_pi": [
+            "//platforms:teensyduino_core": [
             ],
             "//conditions:default": [
                 "@platforms//:incompatible",
@@ -16,10 +14,34 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = select(
         {
-            "//platforms:teensyduino": [
+            "//platforms:teensyduino_core": [
                 "//third_party/arduino/teensyduino:teensy4_core",
             ],
-            "//platforms:wiring_pi": [
+            "//conditions:default": [],
+        },
+    ),
+)
+
+cc_library(
+    name = "gpio",
+    target_compatible_with = select(
+        {
+            "//platforms:teensyduino_gpio": [
+            ],
+            "//platforms:wiring_pi_gpio": [
+            ],
+            "//conditions:default": [
+                "@platforms//:incompatible",
+            ],
+        },
+    ),
+    visibility = ["//visibility:public"],
+    deps = select(
+        {
+            "//platforms:teensyduino_gpio": [
+                ":core",
+            ],
+            "//platforms:wiring_pi_gpio": [
                 "//third_party/arduino/wiring_pi",
             ],
             "//conditions:default": [],
@@ -31,9 +53,7 @@ cc_library(
     name = "spi",
     target_compatible_with = select(
         {
-            "//platforms:teensyduino": [
-            ],
-            "//platforms:wiring_pi": [
+            "//platforms:teensyduino_spi": [
             ],
             "//conditions:default": [
                 "@platforms//:incompatible",
@@ -43,11 +63,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = select(
         {
-            "//platforms:teensyduino": [
+            "//platforms:teensyduino_spi": [
                 "//third_party/arduino/teensyduino:spi",
-            ],
-            "//platforms:wiring_pi": [
-                "//third_party/arduino/wiring_pi",
             ],
             "//conditions:default": [],
         },
@@ -58,7 +75,7 @@ cc_library(
     name = "entropy",
     target_compatible_with = select(
         {
-            "//platforms:teensyduino": [
+            "//platforms:teensyduino_core": [
             ],
             "//conditions:default": [
                 "@platforms//:incompatible",
@@ -68,7 +85,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = select(
         {
-            "//platforms:teensyduino": [
+            "//platforms:teensyduino_core": [
                 "//third_party/arduino/teensyduino:entropy",
             ],
             "//conditions:default": [],
@@ -98,8 +115,8 @@ cc_library(
         ],
     }),
     deps = [
-        ":arduino",
         ":blink_pin_mapping",
+        ":core",
     ],
 )
 
@@ -123,32 +140,35 @@ cc_library(
 cc_binary(
     name = "blink",
     srcs = ["blink.cc"],
-    target_compatible_with = select(
-        {
-            "//platforms:teensyduino": [
-            ],
-            "//platforms:wiring_pi": [
-            ],
-            "//conditions:default": [
-                "@platforms//:incompatible",
-            ],
-        },
-    ),
+    target_compatible_with = select({
+        "//platforms:teensyduino_gpio": [
+        ],
+        "//platforms:wiring_pi_gpio": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
     deps = [
-        ":arduino",
-    ] + select(
-        {
-            "//platforms:teensy40_board": [
-                ":blink_pin_mapping_teensy_default",
-            ],
-            "//platforms:teensy41_board": [
-                ":blink_pin_mapping_teensy_default",
-            ],
-            "//platforms:odroid_m1_board": [
-                ":blink_pin_mapping_odroid_default",
-            ],
-        },
-    ),
+        ":core",
+    ] + select({
+        "//platforms:teensy40_board": [
+            ":blink_pin_mapping_teensy_default",
+        ],
+        "//platforms:teensy41_board": [
+            ":blink_pin_mapping_teensy_default",
+        ],
+        "//platforms:odroid_m1_board": [
+            ":blink_pin_mapping_odroid_default",
+        ],
+    }) + select({
+        "//platforms:teensyduino_gpio": [
+            ":gpio",
+        ],
+        "//platforms:wiring_pi_gpio": [
+            ":wiring_pi_gpio",
+        ],
+    }),
 )
 
 hex(
