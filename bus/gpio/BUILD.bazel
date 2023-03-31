@@ -1,0 +1,98 @@
+load("//platforms:hex.bzl", "hex")
+
+cc_library(
+    name = "gpio",
+    target_compatible_with = select({
+        "//conditions:default": [
+        ],
+        "//platforms:no_gpio": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    visibility = ["//visibility:public"],
+    deps = select({
+        "//platforms:teensyduino_gpio": [
+            "//third_party/arduino:gpio",
+        ],
+        "//platforms:wiring_pi_gpio": [
+            "//third_party/wiring_pi",
+        ],
+    }),
+)
+
+# Blink example to verify GPIO.
+cc_library(
+    name = "blink_pin_mapping",
+    hdrs = [
+        "blink_pin_mapping.h",
+    ],
+)
+
+cc_library(
+    name = "blink_pin_mapping_teensy_default",
+    srcs = [
+        "blink_pin_mapping_teensy_default.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:teensy40_board": [
+        ],
+        "//platforms:teensy41_board": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":blink_pin_mapping",
+        "//third_party/arduino:core",
+    ],
+)
+
+cc_library(
+    name = "blink_pin_mapping_odroid_default",
+    srcs = [
+        "blink_pin_mapping_odroid_default.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:odroid_m1_board": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":blink_pin_mapping",
+    ],
+)
+
+cc_binary(
+    name = "blink",
+    srcs = ["blink.cc"],
+    deps = [
+        ":gpio",
+    ] + select({
+        "//platforms:teensy40_board": [
+            ":blink_pin_mapping_teensy_default",
+        ],
+        "//platforms:teensy41_board": [
+            ":blink_pin_mapping_teensy_default",
+        ],
+        "//platforms:odroid_m1_board": [
+            ":blink_pin_mapping_odroid_default",
+        ],
+        "//conditions:default": [],
+    }),
+)
+
+hex(
+    name = "blink_hex",
+    src = ":blink",
+    out = "blink.hex",
+    target_compatible_with = select({
+        "@platforms//os:none": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+)
