@@ -31,11 +31,9 @@ cc_library(
         ":radio",
         ":radio_nano_cc_proto",
         "//base",
+        "//bus/gpio",
         "//bus/spi",
         "//random",
-        "//third_party/arduino:core",
-        "//third_party/arduino:gpio",
-        "//third_party/arduino:spi",
     ],
 )
 
@@ -111,8 +109,9 @@ cc_binary(
         ":radio",
         ":rf69hcw",
         "//random",
+        "//bus/gpio",
+        "//bus/spi",
         "//third_party/arduino:entropy",
-        "//third_party/arduino:spi",
     ] + select(
         {
             "//platforms:teensy40_board": [
@@ -155,8 +154,9 @@ cc_binary(
         ":radio",
         ":rf69hcw",
         "//random",
+        "//bus/gpio",
+        "//bus/spi",
         "//third_party/arduino:entropy",
-        "//third_party/arduino:spi",
     ] + select(
         {
             "//platforms:teensy40_board": [
@@ -199,8 +199,9 @@ cc_binary(
         ":radio",
         ":rf69hcw",
         "//random",
+        "//bus/gpio",
+        "//bus/spi",
         "//third_party/arduino:entropy",
-        "//third_party/arduino:spi",
     ] + select(
         {
             "//platforms:teensy40_board": [
@@ -243,8 +244,9 @@ cc_binary(
         ":radio",
         ":rf69hcw",
         "//random",
+        "//bus/gpio",
+        "//bus/spi",
         "//third_party/arduino:entropy",
-        "//third_party/arduino:spi",
     ] + select(
         {
             "//platforms:teensy40_board": [

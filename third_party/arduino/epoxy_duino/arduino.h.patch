@@ -11,7 +11,7 @@
 +  #define LOW  0x0
 +#endif
  
- // Used by pinMode() and other GPIO functions.
+ // Used by tvsc::bus::gpio::set_mode() and other GPIO functions.
  #if defined(EPOXY_CORE_AVR)
    #define INPUT 0x0
    #define OUTPUT 0x1

@@ -6,6 +6,9 @@
 
 #include "Arduino.h"
 #include "base/except.h"
+#include "bus/gpio/interrupts.h"
+#include "bus/gpio/pins.h"
+#include "bus/gpio/time.h"
 #include "bus/spi/spi.h"
 #include "radio/radio.pb.h"
 #include "random/random.h"
@@ -420,9 +423,9 @@ class RF69HCW final {
           "interrupts.");
     }
 
-    pinMode(interrupt_pin_, INPUT);
+    tvsc::bus::gpio::set_mode(interrupt_pin_, tvsc::bus::gpio::PinMode::MODE_INPUT);
     spi_->bus().using_interrupt(interrupt_number);
-    attachInterrupt(interrupt_number, interrupt_fn, RISING);
+    tvsc::bus::gpio::attach_interrupt(interrupt_pin_, interrupt_fn);
 
     // Verify that we are actually connected to a device. We expect this will return 0x00 or 0xff
     // only if the device is not connected correctly.
@@ -605,7 +608,7 @@ class RF69HCW final {
       if (millis() - t > cad_timeout_ms_) {
         return false;
       }
-      delay(tvsc::random::generate_random_value<uint8_t>(10, 200));
+      tvsc::bus::gpio::delay_ms(tvsc::random::generate_random_value<uint8_t>(10, 200));
     }
 
     return true;
@@ -614,7 +617,7 @@ class RF69HCW final {
   void wait_available(uint16_t poll_delay_ms = 1) {
     while (!available()) {
       if (poll_delay_ms > 0) {
-        delay(poll_delay_ms);
+        tvsc::bus::gpio::delay_ms(poll_delay_ms);
       } else {
         YIELD;
       }
@@ -654,7 +657,7 @@ class RF69HCW final {
         return true;
       }
       if (poll_delay_ms > 0) {
-        delay(poll_delay_ms);
+        tvsc::bus::gpio::delay_ms(poll_delay_ms);
       } else {
         YIELD;
       }

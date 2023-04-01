@@ -44,6 +44,7 @@ cc_library(
     }),
     deps = [
         ":spi_header",
+        "//bus/gpio",
         "//third_party/arduino:core",
         "//third_party/arduino:spi",
     ],

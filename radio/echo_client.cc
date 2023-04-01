@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include "bus/gpio/pins.h"
+#include "bus/gpio/time.h"
 #include "bus/spi/spi.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
@@ -55,21 +57,21 @@ void setup() {
   tvsc::random::set_seed(Entropy.random());
   configuration.regenerate_identifiers();
 
-  pinMode(RF69_RST, OUTPUT);
+  tvsc::bus::gpio::set_mode(RF69_RST, tvsc::bus::gpio::PinMode::MODE_OUTPUT);
 
   // Manual reset of board.
   // To reset, according to the datasheet, the reset pin needs to be high for 100us, then low for
   // 5ms, and then it will be ready. The pin should be pulled low by default on the radio module,
   // but we drive it low first anyway.
-  digitalWrite(RF69_RST, LOW);
-  delay(10);
-  digitalWrite(RF69_RST, HIGH);
-  delay(10);
-  digitalWrite(RF69_RST, LOW);
-  delay(10);
+  tvsc::bus::gpio::write_pin(RF69_RST, tvsc::bus::gpio::DigitalValue::VALUE_LOW);
+  tvsc::bus::gpio::delay_ms(10);
+  tvsc::bus::gpio::write_pin(RF69_RST, tvsc::bus::gpio::DigitalValue::VALUE_HIGH);
+  tvsc::bus::gpio::delay_ms(10);
+  tvsc::bus::gpio::write_pin(RF69_RST, tvsc::bus::gpio::DigitalValue::VALUE_LOW);
+  tvsc::bus::gpio::delay_ms(10);
 
   bus.init();
-  
+
   if (!rf69.init(spi_peripheral, RF69_DIO0)) {
     Serial.println("init failed");
     while (true) {

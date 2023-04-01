@@ -1,5 +1,7 @@
 #include "Arduino.h"
 #include "SPI.h"
+#include "bus/gpio/pins.h"
+#include "bus/gpio/time.h"
 #include "bus/spi/spi.h"
 
 #ifndef ATOMIC_BLOCK_START
@@ -9,6 +11,9 @@
 
 namespace tvsc::bus::spi {
 
+// This file depends heavily on the functions in the gpio namespace.
+using namespace tvsc::bus::gpio;
+
 inline SPIClass* as_spi(void* ptr) { return reinterpret_cast<SPIClass*>(ptr); }
 
 SpiBus::SpiBus(void* spi_implementation) : spi_(spi_implementation) {}
@@ -16,15 +21,15 @@ SpiBus::~SpiBus() { as_spi(spi_)->end(); }
 void SpiBus::init() { as_spi(spi_)->begin(); }
 
 void SpiBus::initialize_peripheral(uint8_t peripheral_select_pin) {
-  pinMode(peripheral_select_pin, OUTPUT);
+  set_mode(peripheral_select_pin, PinMode::MODE_OUTPUT);
 
   // Initialize the pin to deselect state.
-  digitalWrite(peripheral_select_pin, HIGH);
+  write_pin(peripheral_select_pin, DigitalValue::VALUE_HIGH);
 
   // We get spurious failures without a delay. But this seems excessive.
   // TODO(james): Test to find what delay, if any, is needed. This value is just the first thing I
   // tried that worked.
-  delay(100);
+  delay_ms(100);
 }
 
 void SpiBus::using_interrupt(uint8_t interrupt_number) {
@@ -38,7 +43,7 @@ SpiTransaction SpiBus::begin_transaction(uint8_t peripheral_select_pin) {
   as_spi(spi_)->beginTransaction(SETTINGS);
 
   // Select the peripheral by dropping the peripheral's chipselect pin to LOW.
-  digitalWrite(peripheral_select_pin, LOW);
+  write_pin(peripheral_select_pin, DigitalValue::VALUE_LOW);
 
   return SpiTransaction{*this, peripheral_select_pin};
 }
@@ -50,10 +55,10 @@ void SpiBus::end_transaction(uint8_t peripheral_select_pin) {
   // Teensy is not holding NSS low long enough for the peripherals to complete their side of the
   // transfer. A full microsecond seems excessive though.
   // TODO(james): Test if this is needed for the radios for the Teensy 4.x at the speeds we use.
-  delayMicroseconds(1);
+  delay_us(1);
 
   // Deselect the peripheral by raising the peripheral's chipselect pin to HIGH.
-  digitalWrite(peripheral_select_pin, HIGH);
+  write_pin(peripheral_select_pin, DigitalValue::VALUE_HIGH);
 
   as_spi(spi_)->endTransaction();
   ATOMIC_BLOCK_END;

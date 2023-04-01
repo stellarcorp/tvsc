@@ -74,7 +74,7 @@ void SpiBus::init() {
 }
 
 void SpiBus::initialize_peripheral(uint8_t peripheral_select_pin) {
-  pinMode(peripheral_select_pin, OUTPUT);
+  tvsc::bus::gpio::set_mode(peripheral_select_pin, OUTPUT);
 
   // Deselect the peripheral by raising the peripheral's chipselect pin to HIGH.
   digitalWrite(peripheral_select_pin, HIGH);
