@@ -1,5 +1,6 @@
 load("//platforms:hex.bzl", "hex")
 
+# GPIO targets
 cc_library(
     name = "gpio",
     target_compatible_with = select({
@@ -10,9 +11,9 @@ cc_library(
         ],
     }),
     visibility = ["//visibility:public"],
-    deps = select({
+    deps = [":gpio_headers"] + select({
         "//platforms:teensyduino_gpio": [
-            "//third_party/arduino:gpio",
+            ":teensyduino_gpio",
         ],
         "//platforms:wiring_pi_gpio": [
             "//third_party/wiring_pi",
@@ -20,7 +21,76 @@ cc_library(
     }),
 )
 
+cc_library(
+    name = "gpio_headers",
+    hdrs = [
+        "interrupts.h",
+        "pins.h",
+        "time.h",
+    ],
+)
+
+cc_library(
+    name = "teensyduino_gpio",
+    srcs = [
+        "teensyduino_interrupts.cc",
+        "teensyduino_pins.cc",
+        "teensyduino_time.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:teensyduino_gpio": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":gpio_headers",
+        "//base",
+        "//third_party/arduino:core",
+        "//third_party/arduino:gpio",
+    ],
+)
+
+cc_library(
+    name = "wiring_pi_gpio",
+    srcs = [
+        "wiring_pi_interrupts.cc",
+        "wiring_pi_pins.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:wiring_pi_gpio": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":gpio_headers",
+        "//third_party/wiring_pi",
+    ],
+)
+
 # Blink example to verify GPIO.
+cc_binary(
+    name = "blink",
+    srcs = ["blink.cc"],
+    deps = [
+        ":gpio",
+    ] + select({
+        "//platforms:teensy40_board": [
+            ":blink_pin_mapping_teensy_default",
+        ],
+        "//platforms:teensy41_board": [
+            ":blink_pin_mapping_teensy_default",
+        ],
+        "//platforms:odroid_m1_board": [
+            ":blink_pin_mapping_odroid_default",
+        ],
+        "//conditions:default": [],
+    }),
+)
+
 cc_library(
     name = "blink_pin_mapping",
     hdrs = [
@@ -63,25 +133,6 @@ cc_library(
     deps = [
         ":blink_pin_mapping",
     ],
-)
-
-cc_binary(
-    name = "blink",
-    srcs = ["blink.cc"],
-    deps = [
-        ":gpio",
-    ] + select({
-        "//platforms:teensy40_board": [
-            ":blink_pin_mapping_teensy_default",
-        ],
-        "//platforms:teensy41_board": [
-            ":blink_pin_mapping_teensy_default",
-        ],
-        "//platforms:odroid_m1_board": [
-            ":blink_pin_mapping_odroid_default",
-        ],
-        "//conditions:default": [],
-    }),
 )
 
 hex(
