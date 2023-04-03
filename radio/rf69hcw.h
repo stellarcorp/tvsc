@@ -8,9 +8,9 @@
 #include "base/except.h"
 #include "hal/gpio/interrupts.h"
 #include "hal/gpio/pins.h"
-#include "hal/gpio/time.h"
 #include "hal/output/output.h"
 #include "hal/spi/spi.h"
+#include "hal/time/time.h"
 #include "radio/radio.pb.h"
 #include "random/random.h"
 
@@ -602,7 +602,7 @@ class RF69HCW final {
       if (millis() - t > cad_timeout_ms_) {
         return false;
       }
-      tvsc::hal::gpio::delay_ms(tvsc::random::generate_random_value<uint8_t>(10, 200));
+      tvsc::hal::time::delay_ms(tvsc::random::generate_random_value<uint8_t>(10, 200));
     }
 
     return true;
@@ -611,7 +611,7 @@ class RF69HCW final {
   void wait_available(uint16_t poll_delay_ms = 1) {
     while (!available()) {
       if (poll_delay_ms > 0) {
-        tvsc::hal::gpio::delay_ms(poll_delay_ms);
+        tvsc::hal::time::delay_ms(poll_delay_ms);
       } else {
         YIELD;
       }
@@ -651,7 +651,7 @@ class RF69HCW final {
         return true;
       }
       if (poll_delay_ms > 0) {
-        tvsc::hal::gpio::delay_ms(poll_delay_ms);
+        tvsc::hal::time::delay_ms(poll_delay_ms);
       } else {
         YIELD;
       }

@@ -1,8 +1,8 @@
 #include "Arduino.h"
 #include "SPI.h"
 #include "hal/gpio/pins.h"
-#include "hal/gpio/time.h"
 #include "hal/spi/spi.h"
+#include "hal/time/time.h"
 
 #ifndef ATOMIC_BLOCK_START
 #define ATOMIC_BLOCK_START
@@ -11,8 +11,9 @@
 
 namespace tvsc::hal::spi {
 
-// This file depends heavily on the functions in the gpio namespace.
+// This file depends heavily on the functions in the gpio and time namespaces.
 using namespace tvsc::hal::gpio;
+using namespace tvsc::hal::time;
 
 inline SPIClass* as_spi(void* ptr) { return reinterpret_cast<SPIClass*>(ptr); }
 

@@ -1,12 +1,11 @@
-#include <Arduino.h>
 #include <Entropy.h>
-#include <SPI.h>
 
 #include <string>
 
 #include "hal/gpio/pins.h"
-#include "hal/gpio/time.h"
+#include "hal/output/output.h"
 #include "hal/spi/spi.h"
+#include "hal/time/time.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
 #include "radio/packet.pb.h"
@@ -29,13 +28,13 @@ tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
     rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
 
 void print_id(const tvsc_radio_RadioIdentification& id) {
-  Serial.print("{");
-  Serial.print(id.expanded_id);
-  Serial.print(", ");
-  Serial.print(id.id);
-  Serial.print(", ");
-  Serial.print(id.name);
-  Serial.println("}");
+  tvsc::hal::output::print("{");
+  tvsc::hal::output::print(id.expanded_id);
+  tvsc::hal::output::print(", ");
+  tvsc::hal::output::print(id.id);
+  tvsc::hal::output::print(", ");
+  tvsc::hal::output::print(id.name);
+  tvsc::hal::output::println("}");
 }
 
 /**
@@ -64,23 +63,23 @@ void setup() {
   // 5ms, and then it will be ready. The pin should be pulled low by default on the radio module,
   // but we drive it low first anyway.
   tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
-  tvsc::hal::gpio::delay_ms(10);
+  tvsc::hal::time::delay_ms(10);
   tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_HIGH);
-  tvsc::hal::gpio::delay_ms(10);
+  tvsc::hal::time::delay_ms(10);
   tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
-  tvsc::hal::gpio::delay_ms(10);
+  tvsc::hal::time::delay_ms(10);
 
   bus.init();
 
   if (!rf69.init(spi_peripheral, RF69_DIO0)) {
-    Serial.println("init failed");
+    tvsc::hal::output::println("init failed");
     while (true) {
     }
   }
 
-  Serial.print("Board id: ");
+  tvsc::hal::output::print("Board id: ");
   print_id(configuration.identification());
-  Serial.println();
+  tvsc::hal::output::println();
 
   configuration.change_values(tvsc::radio::default_configuration<tvsc::radio::RF69HCW>());
   configuration.commit_changes();
@@ -124,10 +123,10 @@ void loop() {
   encode_packet(1, ++sequence_number, configuration.id(), "Hello, world!", packet);
 
   if (send(packet)) {
-    Serial.println("Sent.");
+    tvsc::hal::output::println("Sent.");
   } else {
-    Serial.print("send() failed. RSSI: ");
-    Serial.println(rf69.read_rssi_dbm());
+    tvsc::hal::output::print("send() failed. RSSI: ");
+    tvsc::hal::output::println(rf69.read_rssi_dbm());
 
     // Resend the "same" packet.
     --sequence_number;

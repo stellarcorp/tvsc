@@ -31,5 +31,6 @@ void println(int32_t value);
 void println(int64_t value);
 void println(float value);
 void println(double value);
+void println();
 
 }  // namespace tvsc::hal::output

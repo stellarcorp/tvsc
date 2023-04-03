@@ -34,6 +34,7 @@ cc_library(
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
+        "//hal/time",
         "//random",
     ],
 )
@@ -111,7 +112,9 @@ cc_binary(
         ":rf69hcw",
         "//random",
         "//hal/gpio",
+        "//hal/output",
         "//hal/spi",
+        "//hal/time",
         "//third_party/arduino:entropy",
     ] + select(
         {
@@ -156,7 +159,9 @@ cc_binary(
         ":rf69hcw",
         "//random",
         "//hal/gpio",
+        "//hal/output",
         "//hal/spi",
+        "//hal/time",
         "//third_party/arduino:entropy",
     ] + select(
         {
@@ -201,7 +206,9 @@ cc_binary(
         ":rf69hcw",
         "//random",
         "//hal/gpio",
+        "//hal/output",
         "//hal/spi",
+        "//hal/time",
         "//third_party/arduino:entropy",
     ] + select(
         {
@@ -246,7 +253,9 @@ cc_binary(
         ":rf69hcw",
         "//random",
         "//hal/gpio",
+        "//hal/output",
         "//hal/spi",
+        "//hal/time",
         "//third_party/arduino:entropy",
     ] + select(
         {

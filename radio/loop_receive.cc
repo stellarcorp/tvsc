@@ -1,12 +1,11 @@
-#include <Arduino.h>
 #include <Entropy.h>
-#include <SPI.h>
 
 #include <string>
 
 #include "hal/gpio/pins.h"
-#include "hal/gpio/time.h"
+#include "hal/output/output.h"
 #include "hal/spi/spi.h"
+#include "hal/time/time.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
 #include "radio/packet.pb.h"
@@ -32,13 +31,13 @@ tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
 uint32_t start{};
 
 void print_id(const tvsc_radio_RadioIdentification& id) {
-  Serial.print("{");
-  Serial.print(id.expanded_id);
-  Serial.print(", ");
-  Serial.print(id.id);
-  Serial.print(", ");
-  Serial.print(id.name);
-  Serial.println("}");
+  tvsc::hal::output::print("{");
+  tvsc::hal::output::print(id.expanded_id);
+  tvsc::hal::output::print(", ");
+  tvsc::hal::output::print(id.id);
+  tvsc::hal::output::print(", ");
+  tvsc::hal::output::print(id.name);
+  tvsc::hal::output::println("}");
 }
 
 void setup() {
@@ -55,23 +54,23 @@ void setup() {
   // 5ms, and then it will be ready. The pin should be pulled low by default on the radio module,
   // but we drive it low first anyway.
   tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
-  tvsc::hal::gpio::delay_ms(10);
+  tvsc::hal::time::delay_ms(10);
   tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_HIGH);
-  tvsc::hal::gpio::delay_ms(10);
+  tvsc::hal::time::delay_ms(10);
   tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
-  tvsc::hal::gpio::delay_ms(10);
+  tvsc::hal::time::delay_ms(10);
 
   bus.init();
 
   if (!rf69.init(spi_peripheral, RF69_DIO0)) {
-    Serial.println("init failed");
+    tvsc::hal::output::println("init failed");
     while (true) {
     }
   }
 
-  Serial.print("Board id: ");
+  tvsc::hal::output::print("Board id: ");
   print_id(configuration.identification());
-  Serial.println();
+  tvsc::hal::output::println();
 
   configuration.change_values(tvsc::radio::high_throughput_configuration());
   configuration.commit_changes();
@@ -97,7 +96,7 @@ bool decode_packet(const std::string& buffer, tvsc_radio_Packet& packet, Message
     bool status =
         pb_decode(&istream, nanopb::MessageDescriptor<tvsc_radio_Packet>::fields(), &packet);
     if (!status) {
-      Serial.println("Could not decode packet");
+      tvsc::hal::output::println("Could not decode packet");
       return false;
     }
   }
@@ -107,7 +106,7 @@ bool decode_packet(const std::string& buffer, tvsc_radio_Packet& packet, Message
         reinterpret_cast<const uint8_t*>(packet.payload.bytes), packet.payload.size);
     bool status = pb_decode(&istream, nanopb::MessageDescriptor<MessageT>::fields(), &contents);
     if (!status) {
-      Serial.println("Could not decode packet contents");
+      tvsc::hal::output::println("Could not decode packet contents");
       return false;
     }
   }
@@ -130,11 +129,11 @@ void loop() {
     if (decode_packet(buffer, packet, other_id)) {
       if (packet.sequence_number != previous_sequence_number + 1 && previous_sequence_number != 0) {
         ++dropped_packet_count;
-        Serial.print("Dropped packets. packet.sequence_number: ");
-        Serial.print(packet.sequence_number);
-        Serial.print(", previous_sequence_number: ");
-        Serial.print(previous_sequence_number);
-        Serial.println();
+        tvsc::hal::output::print("Dropped packets. packet.sequence_number: ");
+        tvsc::hal::output::print(packet.sequence_number);
+        tvsc::hal::output::print(", previous_sequence_number: ");
+        tvsc::hal::output::print(previous_sequence_number);
+        tvsc::hal::output::println();
       }
     }
     previous_sequence_number = packet.sequence_number;
@@ -146,18 +145,18 @@ void loop() {
   if (millis() - last_print_time > 1000) {
     last_print_time = millis();
 
-    Serial.print("dropped_packet_count: ");
-    Serial.print(dropped_packet_count);
-    Serial.print(", total_packet_count: ");
-    Serial.print(total_packet_count);
-    Serial.print(", throughput: ");
-    Serial.print(total_packet_count * 1000.f / (millis() - start));
-    Serial.print(" packets/sec");
-    Serial.println();
+    tvsc::hal::output::print("dropped_packet_count: ");
+    tvsc::hal::output::print(dropped_packet_count);
+    tvsc::hal::output::print(", total_packet_count: ");
+    tvsc::hal::output::print(total_packet_count);
+    tvsc::hal::output::print(", throughput: ");
+    tvsc::hal::output::print(total_packet_count * 1000.f / (millis() - start));
+    tvsc::hal::output::print(" packets/sec");
+    tvsc::hal::output::println();
   }
 
   if (receive_timeout_count > 0 && (receive_timeout_count % 10) == 0) {
-    Serial.print("Receive timeout count: ");
-    Serial.println(receive_timeout_count);
+    tvsc::hal::output::print("Receive timeout count: ");
+    tvsc::hal::output::println(receive_timeout_count);
   }
 }

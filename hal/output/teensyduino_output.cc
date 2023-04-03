@@ -29,5 +29,6 @@ void println(int32_t value) { Serial.println(value); }
 void println(int64_t value) { Serial.println(value); }
 void println(float value) { Serial.println(value); }
 void println(double value) { Serial.println(value); }
+void println() { Serial.println(); }
 
 }  // namespace tvsc::hal::output

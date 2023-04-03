@@ -29,5 +29,6 @@ void println(int32_t value) { std::cout << value << "\n"; }
 void println(int64_t value) { std::cout << value << "\n"; }
 void println(float value) { std::cout << value << "\n"; }
 void println(double value) { std::cout << value << "\n"; }
+void println() { std::cout << "\n"; }
 
 }  // namespace tvsc::hal::output

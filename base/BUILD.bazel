@@ -1,27 +1,14 @@
-PLATFORM_DEPS = select(
-    {
-        "@platforms//os:none": [
-            # Can't log without an OS. At least not now.
-        ],
-        "//conditions:default": [
-            "//third_party/glog",
-        ],
-    },
-)
-
 cc_library(
     name = "base",
     hdrs =
-        select(
-            {
-                "@platforms//os:none": [
-                    "except_without_glog.h",
-                ],
-                "//conditions:default": [
-                    "except_with_glog.h",
-                ],
-            },
-        ) + [
+        select({
+            "@platforms//os:none": [
+                "except_without_glog.h",
+            ],
+            "//conditions:default": [
+                "except_with_glog.h",
+            ],
+        }) + [
             "except.h",
             "units.h",
         ],
@@ -33,7 +20,14 @@ cc_library(
         ],
     }),
     visibility = ["//visibility:public"],
-    deps = PLATFORM_DEPS,
+    deps = select({
+        "@platforms//os:none": [
+            "//hal/output",
+        ],
+        "//conditions:default": [
+            "//third_party/glog",
+        ],
+    }),
 )
 
 cc_test(

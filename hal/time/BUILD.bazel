@@ -1,0 +1,57 @@
+load("//platforms:hex.bzl", "hex")
+
+cc_library(
+    name = "time",
+    visibility = ["//visibility:public"],
+    deps = [":time_headers"] + select({
+        "//platforms:teensyduino_gpio": [
+            ":teensyduino_time",
+        ],
+        "//conditions:default": [
+            ":std_cpp_time",
+        ],
+    }),
+)
+
+cc_library(
+    name = "time_headers",
+    hdrs = [
+        "time.h",
+    ],
+)
+
+cc_library(
+    name = "teensyduino_time",
+    srcs = [
+        "teensyduino_time.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:teensyduino_gpio": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":time_headers",
+        "//third_party/arduino:core",
+    ],
+)
+
+cc_library(
+    name = "std_cpp_time",
+    srcs = [
+        "std_cpp_time.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:teensyduino_gpio": [
+            "@platforms//:incompatible",
+        ],
+        "//conditions:default": [
+        ],
+    }),
+    deps = [
+        ":time_headers",
+        "//third_party/arduino:core",
+    ],
+)

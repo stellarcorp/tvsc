@@ -11,6 +11,8 @@
 #include <stdexcept>
 #include <system_error>
 
+#include "hal/output/output.h"
+
 #ifdef __has_include
 #if __has_include(<string>)
 #include <string>
@@ -36,24 +38,24 @@ template <typename ExceptionT>
 [[noreturn]] inline void except(
     const char* const msg, const std::source_location& location = std::source_location::current()) {
   if constexpr (has_exception_support()) {
-    Serial.print("[");
-    Serial.print(location.function_name());
-    Serial.print(" (");
-    Serial.print(location.file_name());
-    Serial.print(":");
-    Serial.print(location.line());
-    Serial.print(")] -- ");
-    Serial.println(msg);
+    tvsc::hal::output::print("[");
+    tvsc::hal::output::print(location.function_name());
+    tvsc::hal::output::print(" (");
+    tvsc::hal::output::print(location.file_name());
+    tvsc::hal::output::print(":");
+    tvsc::hal::output::print(location.line());
+    tvsc::hal::output::print(")] -- ");
+    tvsc::hal::output::println(msg);
     throw ExceptionT(msg);
   } else {
-    Serial.print("[");
-    Serial.print(location.function_name());
-    Serial.print(" (");
-    Serial.print(location.file_name());
-    Serial.print(":");
-    Serial.print(location.line());
-    Serial.print(")] -- ");
-    Serial.println(msg);
+    tvsc::hal::output::print("[");
+    tvsc::hal::output::print(location.function_name());
+    tvsc::hal::output::print(" (");
+    tvsc::hal::output::print(location.file_name());
+    tvsc::hal::output::print(":");
+    tvsc::hal::output::print(location.line());
+    tvsc::hal::output::print(")] -- ");
+    tvsc::hal::output::println(msg);
     abort();
   }
 }
@@ -62,30 +64,30 @@ template <typename ExceptionT>
     const char* const msg, const std::error_code& ec,
     const std::source_location& location = std::source_location::current()) {
   if constexpr (has_exception_support()) {
-    Serial.print("[");
-    Serial.print(location.function_name());
-    Serial.print(" (");
-    Serial.print(location.file_name());
-    Serial.print(":");
-    Serial.print(location.line());
-    Serial.print(")] -- ");
-    Serial.print(msg);
-    Serial.print(" (");
-    Serial.print(ec.message().c_str());
-    Serial.println(")");
+    tvsc::hal::output::print("[");
+    tvsc::hal::output::print(location.function_name());
+    tvsc::hal::output::print(" (");
+    tvsc::hal::output::print(location.file_name());
+    tvsc::hal::output::print(":");
+    tvsc::hal::output::print(location.line());
+    tvsc::hal::output::print(")] -- ");
+    tvsc::hal::output::print(msg);
+    tvsc::hal::output::print(" (");
+    tvsc::hal::output::print(ec.message().c_str());
+    tvsc::hal::output::println(")");
     throw ExceptionT(ec, msg);
   } else {
-    Serial.print("[");
-    Serial.print(location.function_name());
-    Serial.print(" (");
-    Serial.print(location.file_name());
-    Serial.print(":");
-    Serial.print(location.line());
-    Serial.print(")] -- ");
-    Serial.print(msg);
-    Serial.print(" (");
-    Serial.print(ec.message().c_str());
-    Serial.println(")");
+    tvsc::hal::output::print("[");
+    tvsc::hal::output::print(location.function_name());
+    tvsc::hal::output::print(" (");
+    tvsc::hal::output::print(location.file_name());
+    tvsc::hal::output::print(":");
+    tvsc::hal::output::print(location.line());
+    tvsc::hal::output::print(")] -- ");
+    tvsc::hal::output::print(msg);
+    tvsc::hal::output::print(" (");
+    tvsc::hal::output::print(ec.message().c_str());
+    tvsc::hal::output::println(")");
     abort();
   }
 }
@@ -112,10 +114,10 @@ template <typename ExceptionT>
 template <typename ExceptionT>
 [[noreturn]] inline void except(const char* const msg) {
   if constexpr (has_exception_support()) {
-    Serial.println(msg);
+    tvsc::hal::output::println(msg);
     throw ExceptionT(msg);
   } else {
-    Serial.println(msg);
+    tvsc::hal::output::println(msg);
     abort();
   }
 }
@@ -123,16 +125,16 @@ template <typename ExceptionT>
 template <typename ExceptionT>
 [[noreturn]] inline void except(const char* const msg, const std::error_code& ec) {
   if constexpr (has_exception_support()) {
-    Serial.print(msg);
-    Serial.print(" (");
-    Serial.print(ec.message().c_str());
-    Serial.println(")");
+    tvsc::hal::output::print(msg);
+    tvsc::hal::output::print(" (");
+    tvsc::hal::output::print(ec.message().c_str());
+    tvsc::hal::output::println(")");
     throw ExceptionT(ec, msg);
   } else {
-    Serial.print(msg);
-    Serial.print(" (");
-    Serial.print(ec.message().c_str());
-    Serial.println(")");
+    tvsc::hal::output::print(msg);
+    tvsc::hal::output::print(" (");
+    tvsc::hal::output::print(ec.message().c_str());
+    tvsc::hal::output::println(")");
     abort();
   }
 }

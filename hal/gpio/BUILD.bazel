@@ -26,7 +26,6 @@ cc_library(
     hdrs = [
         "interrupts.h",
         "pins.h",
-        "time.h",
     ],
 )
 
@@ -35,7 +34,6 @@ cc_library(
     srcs = [
         "teensyduino_interrupts.cc",
         "teensyduino_pins.cc",
-        "teensyduino_time.cc",
     ],
     target_compatible_with = select({
         "//platforms:teensyduino_gpio": [
@@ -55,7 +53,6 @@ cc_library(
 cc_library(
     name = "wiring_pi_gpio",
     srcs = [
-        "std_cpp_time.cc",
         "wiring_pi_interrupts.cc",
         "wiring_pi_pins.cc",
     ],
@@ -79,6 +76,7 @@ cc_binary(
     srcs = ["blink.cc"],
     deps = [
         ":gpio",
+        "//hal/time",
     ] + select({
         "//platforms:teensy40_board": [
             ":blink_pin_mapping_teensy_default",

@@ -45,6 +45,7 @@ cc_library(
     deps = [
         ":spi_header",
         "//hal/gpio",
+        "//hal/time",
         "//third_party/arduino:core",
         "//third_party/arduino:spi",
     ],
