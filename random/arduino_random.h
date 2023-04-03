@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
+#include <Entropy.h>
 
 namespace tvsc::random {
 
@@ -17,7 +18,9 @@ inline int32_t generate_random_value(int32_t minimum_value, int32_t maximum_valu
 template <>
 inline uint32_t generate_random_value(uint32_t minimum_value, uint32_t maximum_value) {
   int32_t value = ::random();
-  if (value < 0) { value = -1 * value; }
+  if (value < 0) {
+    value = -1 * value;
+  }
   value = value % (maximum_value - minimum_value);
   minimum_value += value;
   return minimum_value;
@@ -36,6 +39,11 @@ inline uint64_t generate_random_value(uint64_t minimum, uint64_t maximum) {
   result = result % (maximum - minimum);
   result += minimum;
   return result;
+}
+
+inline void initialize_seed() {
+  Entropy.Initialize();
+  set_seed(Entropy.random());
 }
 
 }  // namespace tvsc::random

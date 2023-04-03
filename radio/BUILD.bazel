@@ -110,12 +110,11 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
-        "//random",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
         "//hal/time",
-        "//third_party/arduino:entropy",
+        "//random",
     ] + select(
         {
             "//platforms:teensy40_board": [
@@ -157,12 +156,11 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
-        "//random",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
         "//hal/time",
-        "//third_party/arduino:entropy",
+        "//random",
     ] + select(
         {
             "//platforms:teensy40_board": [
@@ -204,12 +202,11 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
-        "//random",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
         "//hal/time",
-        "//third_party/arduino:entropy",
+        "//random",
     ] + select(
         {
             "//platforms:teensy40_board": [
@@ -251,12 +248,11 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
-        "//random",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
         "//hal/time",
-        "//third_party/arduino:entropy",
+        "//random",
     ] + select(
         {
             "//platforms:teensy40_board": [

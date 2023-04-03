@@ -67,12 +67,10 @@ def load_debian_dependencies():
             "http://us.ports.ubuntu.com/ubuntu-ports/pool/universe/w/wiringpi/libwiringpi-dev_2.50-0ubuntu1_arm64.deb",
         ],
         arm64_sha256 = "29e3928b26cbb3aea4db727bd96e0df7a28f7f7a53fbaf01b6f643d4792a2034",
-        arm64_patches = ["//third_party/wiring_pi:arduino_h.patch"],
         x86_64_urls = [
             "http://mirrors.kernel.org/ubuntu/pool/universe/w/wiringpi/libwiringpi-dev_2.50-0ubuntu1_amd64.deb",
         ],
         x86_64_sha256 = "168b0bcc6a5e148f1c9e4280f854cc89469829d25df7e75a084b789be0edf8b1",
-        x86_64_patches = ["//third_party/wiring_pi:arduino_h.patch"],
     )
 
     tvsc_archive(
@@ -103,7 +101,6 @@ def load_debian_dependencies():
             "http://ppa.linuxfactory.or.kr/pool/main/o/odroid-wiringpi/libwiringpi-dev_3.14.6+202303091450~focal_arm64.deb",
         ],
         arm64_sha256 = "84528d6e07172da0a2868fb8c6afc0847291ca81fc58106ba7c9ef909b327d8b",
-        arm64_patches = ["//third_party/wiring_pi:arduino_h.patch"],
         arm64_build_file = "//third_party/wiring_pi:odroid_libwiringpi_dev.BUILD",
     )
 

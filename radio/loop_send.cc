@@ -1,5 +1,3 @@
-#include <Entropy.h>
-
 #include <string>
 
 #include "hal/gpio/pins.h"
@@ -50,10 +48,7 @@ void print_id(const tvsc_radio_RadioIdentification& id) {
  */
 
 void setup() {
-  Serial.begin(9600);
-
-  Entropy.Initialize();
-  tvsc::random::set_seed(Entropy.random());
+  tvsc::random::initialize_seed();
   configuration.regenerate_identifiers();
 
   tvsc::hal::gpio::set_mode(RF69_RST, tvsc::hal::gpio::PinMode::MODE_OUTPUT);
@@ -70,6 +65,7 @@ void setup() {
   tvsc::hal::time::delay_ms(10);
 
   bus.init();
+  spi_peripheral.init();
 
   if (!rf69.init(spi_peripheral, RF69_DIO0)) {
     tvsc::hal::output::println("init failed");
@@ -114,7 +110,7 @@ void encode_packet(uint32_t protocol, uint32_t sequence_number, uint32_t id,
   packet.sequence_number = sequence_number;
   packet.sender = id;
   packet.payload.size = buffer.size();
-  strncpy(packet.payload.bytes, buffer.data(), buffer.size());
+  std::strncpy(reinterpret_cast<char*>(packet.payload.bytes), buffer.data(), buffer.size());
 
   {
     buffer.resize(rf69.mtu());

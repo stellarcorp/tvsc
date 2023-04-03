@@ -4,7 +4,6 @@
 #include <cstring>
 #include <stdexcept>
 
-#include "Arduino.h"
 #include "base/except.h"
 #include "hal/gpio/interrupts.h"
 #include "hal/gpio/pins.h"
@@ -321,7 +320,7 @@ class RF69HCW final {
 
   // Channel activity detection timeout -- how long we wait for existing channel activity to die off
   // before we transmit.
-  uint32_t cad_timeout_ms_{100};
+  uint16_t cad_timeout_ms_{100};
 
   float channel_activity_threshold_dbm_{-.5f};
 
@@ -597,9 +596,9 @@ class RF69HCW final {
     // colliding with another transmitter. See
     // https://en.wikipedia.org/wiki/Distributed_coordination_function for a more detailed
     // explanation.
-    unsigned long t = millis();
+    auto t = tvsc::hal::time::time_millis();
     while (has_channel_activity()) {
-      if (millis() - t > cad_timeout_ms_) {
+      if (tvsc::hal::time::time_millis() - t > cad_timeout_ms_) {
         return false;
       }
       tvsc::hal::time::delay_ms(tvsc::random::generate_random_value<uint8_t>(10, 200));
@@ -626,8 +625,8 @@ class RF69HCW final {
   }
 
   bool wait_packet_sent(uint16_t timeout_ms) {
-    unsigned long start = millis();
-    while ((millis() - start) < timeout_ms) {
+    auto start = tvsc::hal::time::time_millis();
+    while ((tvsc::hal::time::time_millis() - start) < timeout_ms) {
       // We gate the determination that a packet has been sent on the transition to any non-TX
       // operational mode. This could probably be more efficient, since it means that we send
       // multiple SPI messages toggling the operational mode and turn off amplifiers after every
@@ -645,8 +644,8 @@ class RF69HCW final {
       return true;
     }
 
-    unsigned long start = millis();
-    while ((millis() - start) < timeout_ms) {
+    auto start = tvsc::hal::time::time_millis();
+    while ((tvsc::hal::time::time_millis() - start) < timeout_ms) {
       if (available()) {
         return true;
       }

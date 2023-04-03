@@ -1,4 +1,3 @@
-# TODO(james): Move this out from underneath the //third_party/arduino package.
 cc_library(
     name = "wiring_pi",
     srcs = ["main.cc"],

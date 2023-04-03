@@ -52,6 +52,5 @@ cc_library(
     }),
     deps = [
         ":output_headers",
-        "//third_party/arduino:core",
     ],
 )

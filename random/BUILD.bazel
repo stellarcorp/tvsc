@@ -8,7 +8,10 @@ cc_library(
     }),
     visibility = ["//visibility:public"],
     deps = select({
-        "//platforms:teensyduino_core": ["//third_party/arduino:core"],
+        "//platforms:teensyduino_core": [
+            "//third_party/arduino:core",
+            "//third_party/arduino:entropy",
+        ],
         "//conditions:default": [],
     }),
 )

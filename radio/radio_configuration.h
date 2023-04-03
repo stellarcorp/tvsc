@@ -85,7 +85,7 @@ class RadioConfiguration final {
  private:
   DriverT* const driver_;
   const std::unordered_map<tvsc_radio_Function, tvsc_radio_Value> capabilities_;
-  tvsc_radio_RadioIdentification identification_;
+  tvsc_radio_RadioIdentification identification_{};
 
   std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> pending_settings_changes_{};
 

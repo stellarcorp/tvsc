@@ -1,5 +1,3 @@
-#include <Entropy.h>
-
 #include <string>
 
 #include "hal/gpio/pins.h"
@@ -28,7 +26,7 @@ tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
     rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
 
 // Start time in milliseconds.
-uint32_t start{};
+uint64_t start{};
 
 void print_id(const tvsc_radio_RadioIdentification& id) {
   tvsc::hal::output::print("{");
@@ -41,10 +39,7 @@ void print_id(const tvsc_radio_RadioIdentification& id) {
 }
 
 void setup() {
-  Serial.begin(9600);
-
-  Entropy.Initialize();
-  tvsc::random::set_seed(Entropy.random());
+  tvsc::random::initialize_seed();
   configuration.regenerate_identifiers();
 
   tvsc::hal::gpio::set_mode(RF69_RST, tvsc::hal::gpio::PinMode::MODE_OUTPUT);
@@ -62,6 +57,7 @@ void setup() {
 
   tvsc::hal::output::println("Initializing SPI bus.");
   bus.init();
+  spi_peripheral.init();
 
   tvsc::hal::output::println("Initializing RF69HCW.");
   if (!rf69.init(spi_peripheral, RF69_DIO0)) {
@@ -77,7 +73,7 @@ void setup() {
   configuration.change_values(tvsc::radio::default_configuration<tvsc::radio::RF69HCW>());
   configuration.commit_changes();
 
-  start = millis();
+  start = tvsc::hal::time::time_millis();
 }
 
 bool recv(std::string& buffer) {
@@ -130,7 +126,7 @@ uint32_t dropped_packet_count{};
 uint32_t send_success_count{};
 uint32_t send_failure_count{};
 uint32_t previous_sequence_number{};
-uint32_t last_print_time{};
+uint64_t last_print_time{};
 
 void loop() {
   std::string buffer{};
@@ -179,15 +175,16 @@ void loop() {
     }
   }
 
-  if (millis() - last_print_time > 1000) {
-    last_print_time = millis();
+  if (tvsc::hal::time::time_millis() - last_print_time > 1000) {
+    last_print_time = tvsc::hal::time::time_millis();
 
     tvsc::hal::output::print("dropped_packet_count: ");
     tvsc::hal::output::print(dropped_packet_count);
     tvsc::hal::output::print(", total_packet_count: ");
     tvsc::hal::output::print(total_packet_count);
     tvsc::hal::output::print(", throughput: ");
-    tvsc::hal::output::print(total_packet_count * 1000.f / (millis() - start));
+    tvsc::hal::output::print(total_packet_count * 1000.f /
+                             (tvsc::hal::time::time_millis() - start));
     tvsc::hal::output::print(" packets/sec");
     tvsc::hal::output::println();
   }
