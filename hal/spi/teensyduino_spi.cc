@@ -1,18 +1,18 @@
 #include "Arduino.h"
 #include "SPI.h"
-#include "bus/gpio/pins.h"
-#include "bus/gpio/time.h"
-#include "bus/spi/spi.h"
+#include "hal/gpio/pins.h"
+#include "hal/gpio/time.h"
+#include "hal/spi/spi.h"
 
 #ifndef ATOMIC_BLOCK_START
 #define ATOMIC_BLOCK_START
 #define ATOMIC_BLOCK_END
 #endif
 
-namespace tvsc::bus::spi {
+namespace tvsc::hal::spi {
 
 // This file depends heavily on the functions in the gpio namespace.
-using namespace tvsc::bus::gpio;
+using namespace tvsc::hal::gpio;
 
 inline SPIClass* as_spi(void* ptr) { return reinterpret_cast<SPIClass*>(ptr); }
 
@@ -32,8 +32,8 @@ void SpiBus::initialize_peripheral(uint8_t peripheral_select_pin) {
   delay_ms(100);
 }
 
-void SpiBus::using_interrupt(uint8_t interrupt_number) {
-  as_spi(spi_)->usingInterrupt(interrupt_number);
+void SpiBus::using_interrupt(uint8_t pin) {
+  as_spi(spi_)->usingInterrupt(digitalPinToInterrupt(pin));
 }
 
 SpiTransaction SpiBus::begin_transaction(uint8_t peripheral_select_pin) {
@@ -68,4 +68,4 @@ uint8_t SpiBus::transfer(uint8_t value) { return as_spi(spi_)->transfer(value); 
 
 SpiBus get_default_spi_bus() { return SpiBus(reinterpret_cast<void*>(&SPI)); }
 
-}  // namespace tvsc::bus::spi
+}  // namespace tvsc::hal::spi

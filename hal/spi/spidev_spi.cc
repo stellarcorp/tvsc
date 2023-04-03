@@ -1,4 +1,4 @@
-#include "bus/spi/spi.h"
+#include "hal/spi/spi.h"
 
 #include <fcntl.h>
 #include <linux/spi/spidev.h>
@@ -10,9 +10,10 @@
 
 #include "base/except.h"
 #include "glog/logging.h"
+#include "hal/gpio/pins.h"
 #include "wiringPi.h"
 
-namespace tvsc::bus::spi {
+namespace tvsc::hal::spi {
 
 struct BusState final {
   int fd{-1};
@@ -74,13 +75,13 @@ void SpiBus::init() {
 }
 
 void SpiBus::initialize_peripheral(uint8_t peripheral_select_pin) {
-  tvsc::bus::gpio::set_mode(peripheral_select_pin, OUTPUT);
+  tvsc::hal::gpio::set_mode(peripheral_select_pin, tvsc::hal::gpio::PinMode::MODE_OUTPUT);
 
   // Deselect the peripheral by raising the peripheral's chipselect pin to HIGH.
   digitalWrite(peripheral_select_pin, HIGH);
 }
 
-void SpiBus::using_interrupt(uint8_t interrupt_number) {
+void SpiBus::using_interrupt(uint8_t pin) {
   // TODO(james): It's not clear what this should do, if anything.
   // We lock a transaction_mutex on begin_transaction and unlock it in end_transaction. If this bus
   // is being used without transactions, it seems like interruptions should be expected by the
@@ -149,4 +150,4 @@ uint8_t SpiBus::transfer(uint8_t value) {
 
 SpiBus get_default_spi_bus() { return SpiBus(const_cast<char*>("/dev/spidev0.0")); }
 
-}  // namespace tvsc::bus::spi
+}  // namespace tvsc::hal::spi

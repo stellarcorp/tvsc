@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace tvsc::bus::spi {
+namespace tvsc::hal::spi {
 
 class SpiBus;
 
@@ -118,7 +118,7 @@ class SpiBus {
    * endTransaction().
    *
    */
-  void using_interrupt(uint8_t interrupt_number);
+  void using_interrupt(uint8_t pin);
 
   /**
    * Start a transaction on this SPI bus. This is a low-level function to handle use cases that
@@ -281,4 +281,4 @@ SpiBus get_second_spi_bus();
 SpiBus get_third_spi_bus();
 SpiBus get_fourth_spi_bus();
 
-}  // namespace tvsc::bus::spi
+}  // namespace tvsc::hal::spi

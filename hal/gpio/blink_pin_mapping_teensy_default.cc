@@ -1,8 +1,8 @@
 #include "Arduino.h"
-#include "bus/gpio/blink_pin_mapping.h"
+#include "hal/gpio/blink_pin_mapping.h"
 
-namespace tvsc::bus::gpio {
+namespace tvsc::hal::gpio {
 
 int BlinkPinMapping::led_pin() { return LED_BUILTIN; }
 
-}  // namespace tvsc::bus::gpio
+}  // namespace tvsc::hal::gpio

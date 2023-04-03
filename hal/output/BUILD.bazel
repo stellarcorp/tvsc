@@ -1,0 +1,57 @@
+load("//platforms:hex.bzl", "hex")
+
+cc_library(
+    name = "output",
+    visibility = ["//visibility:public"],
+    deps = [":output_headers"] + select({
+        "//platforms:teensyduino_gpio": [
+            ":teensyduino_output",
+        ],
+        "//conditions:default": [
+            ":std_cpp_output",
+        ],
+    }),
+)
+
+cc_library(
+    name = "output_headers",
+    hdrs = [
+        "output.h",
+    ],
+)
+
+cc_library(
+    name = "teensyduino_output",
+    srcs = [
+        "teensyduino_output.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:teensyduino_gpio": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":output_headers",
+        "//third_party/arduino:core",
+    ],
+)
+
+cc_library(
+    name = "std_cpp_output",
+    srcs = [
+        "std_cpp_output.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:teensyduino_gpio": [
+            "@platforms//:incompatible",
+        ],
+        "//conditions:default": [
+        ],
+    }),
+    deps = [
+        ":output_headers",
+        "//third_party/arduino:core",
+    ],
+)

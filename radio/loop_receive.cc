@@ -4,9 +4,9 @@
 
 #include <string>
 
-#include "bus/gpio/pins.h"
-#include "bus/gpio/time.h"
-#include "bus/spi/spi.h"
+#include "hal/gpio/pins.h"
+#include "hal/gpio/time.h"
+#include "hal/spi/spi.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
 #include "radio/packet.pb.h"
@@ -21,8 +21,8 @@ const uint8_t RF69_RST{tvsc::radio::SingleRadioPinMapping::reset_pin()};
 const uint8_t RF69_CS{tvsc::radio::SingleRadioPinMapping::chip_select_pin()};
 const uint8_t RF69_DIO0{tvsc::radio::SingleRadioPinMapping::interrupt_pin()};
 
-tvsc::bus::spi::SpiBus bus{tvsc::bus::spi::get_default_spi_bus()};
-tvsc::bus::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
+tvsc::hal::spi::SpiBus bus{tvsc::hal::spi::get_default_spi_bus()};
+tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
 tvsc::radio::RF69HCW rf69{};
 
 tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
@@ -48,18 +48,18 @@ void setup() {
   tvsc::random::set_seed(Entropy.random());
   configuration.regenerate_identifiers();
 
-  tvsc::bus::gpio::set_mode(RF69_RST, tvsc::bus::gpio::PinMode::MODE_OUTPUT);
+  tvsc::hal::gpio::set_mode(RF69_RST, tvsc::hal::gpio::PinMode::MODE_OUTPUT);
 
   // Manual reset of board.
   // To reset, according to the datasheet, the reset pin needs to be high for 100us, then low for
   // 5ms, and then it will be ready. The pin should be pulled low by default on the radio module,
   // but we drive it low first anyway.
-  tvsc::bus::gpio::write_pin(RF69_RST, tvsc::bus::gpio::DigitalValue::VALUE_LOW);
-  tvsc::bus::gpio::delay_ms(10);
-  tvsc::bus::gpio::write_pin(RF69_RST, tvsc::bus::gpio::DigitalValue::VALUE_HIGH);
-  tvsc::bus::gpio::delay_ms(10);
-  tvsc::bus::gpio::write_pin(RF69_RST, tvsc::bus::gpio::DigitalValue::VALUE_LOW);
-  tvsc::bus::gpio::delay_ms(10);
+  tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
+  tvsc::hal::gpio::delay_ms(10);
+  tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_HIGH);
+  tvsc::hal::gpio::delay_ms(10);
+  tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
+  tvsc::hal::gpio::delay_ms(10);
 
   bus.init();
 

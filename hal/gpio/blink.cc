@@ -1,15 +1,15 @@
 #include "Arduino.h"
-#include "bus/gpio/blink_pin_mapping.h"
-#include "bus/gpio/pins.h"
-#include "bus/gpio/time.h"
+#include "hal/gpio/blink_pin_mapping.h"
+#include "hal/gpio/pins.h"
+#include "hal/gpio/time.h"
 
-static const int LED_PIN{tvsc::bus::gpio::BlinkPinMapping::led_pin()};
+static const int LED_PIN{tvsc::hal::gpio::BlinkPinMapping::led_pin()};
 
-void setup() { tvsc::bus::gpio::set_mode(LED_PIN, tvsc::bus::gpio::PinMode::MODE_OUTPUT); }
+void setup() { tvsc::hal::gpio::set_mode(LED_PIN, tvsc::hal::gpio::PinMode::MODE_OUTPUT); }
 
 void loop() {
-  tvsc::bus::gpio::write_pin(LED_PIN, tvsc::bus::gpio::DigitalValue::VALUE_HIGH);
-  tvsc::bus::gpio::delay_ms(200);
-  tvsc::bus::gpio::write_pin(LED_PIN, tvsc::bus::gpio::DigitalValue::VALUE_LOW);
-  tvsc::bus::gpio::delay_ms(500);
+  tvsc::hal::gpio::write_pin(LED_PIN, tvsc::hal::gpio::DigitalValue::VALUE_HIGH);
+  tvsc::hal::gpio::delay_ms(200);
+  tvsc::hal::gpio::write_pin(LED_PIN, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
+  tvsc::hal::gpio::delay_ms(500);
 }

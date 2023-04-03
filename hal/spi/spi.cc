@@ -1,6 +1,6 @@
-#include "bus/spi/spi.h"
+#include "hal/spi/spi.h"
 
-namespace tvsc::bus::spi {
+namespace tvsc::hal::spi {
 
 SpiTransaction::~SpiTransaction() {
   if (bus_ != nullptr) {
@@ -8,4 +8,4 @@ SpiTransaction::~SpiTransaction() {
   }
 }
 
-}  // namespace tvsc::bus::spi
+}  // namespace tvsc::hal::spi

@@ -31,8 +31,9 @@ cc_library(
         ":radio",
         ":radio_nano_cc_proto",
         "//base",
-        "//bus/gpio",
-        "//bus/spi",
+        "//hal/gpio",
+        "//hal/output",
+        "//hal/spi",
         "//random",
     ],
 )
@@ -109,8 +110,8 @@ cc_binary(
         ":radio",
         ":rf69hcw",
         "//random",
-        "//bus/gpio",
-        "//bus/spi",
+        "//hal/gpio",
+        "//hal/spi",
         "//third_party/arduino:entropy",
     ] + select(
         {
@@ -154,8 +155,8 @@ cc_binary(
         ":radio",
         ":rf69hcw",
         "//random",
-        "//bus/gpio",
-        "//bus/spi",
+        "//hal/gpio",
+        "//hal/spi",
         "//third_party/arduino:entropy",
     ] + select(
         {
@@ -199,8 +200,8 @@ cc_binary(
         ":radio",
         ":rf69hcw",
         "//random",
-        "//bus/gpio",
-        "//bus/spi",
+        "//hal/gpio",
+        "//hal/spi",
         "//third_party/arduino:entropy",
     ] + select(
         {
@@ -244,8 +245,8 @@ cc_binary(
         ":radio",
         ":rf69hcw",
         "//random",
-        "//bus/gpio",
-        "//bus/spi",
+        "//hal/gpio",
+        "//hal/spi",
         "//third_party/arduino:entropy",
     ] + select(
         {

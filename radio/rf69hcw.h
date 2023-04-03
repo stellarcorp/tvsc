@@ -6,10 +6,11 @@
 
 #include "Arduino.h"
 #include "base/except.h"
-#include "bus/gpio/interrupts.h"
-#include "bus/gpio/pins.h"
-#include "bus/gpio/time.h"
-#include "bus/spi/spi.h"
+#include "hal/gpio/interrupts.h"
+#include "hal/gpio/pins.h"
+#include "hal/gpio/time.h"
+#include "hal/output/output.h"
+#include "hal/spi/spi.h"
 #include "radio/radio.pb.h"
 #include "random/random.h"
 
@@ -309,7 +310,7 @@ class RF69HCW final {
 
   static constexpr uint8_t RX_BUFFER_LENGTH{RF69HCW_FIFO_SIZE};
 
-  tvsc::bus::spi::SpiPeripheral* spi_;
+  tvsc::hal::spi::SpiPeripheral* spi_;
 
   uint8_t rx_buffer_[RX_BUFFER_LENGTH];
   // Number of valid bytes available to be recv'd in the rx_buffer_.
@@ -396,7 +397,7 @@ class RF69HCW final {
   bool has_channel_activity() { return read_rssi_dbm() > channel_activity_threshold_dbm_; }
 
  public:
-  bool init(tvsc::bus::spi::SpiPeripheral& peripheral, uint8_t interrupt_pin) {
+  bool init(tvsc::hal::spi::SpiPeripheral& peripheral, uint8_t interrupt_pin) {
     spi_ = &peripheral;
     interrupt_pin_ = interrupt_pin;
 
@@ -416,16 +417,9 @@ class RF69HCW final {
           "No interrupts available. Too many devices or instantiations of the RF69HCW class.");
     }
 
-    int interrupt_number = digitalPinToInterrupt(interrupt_pin_);
-    if (interrupt_number == NOT_AN_INTERRUPT) {
-      except<std::domain_error>(
-          "Invalid pin value for SPI interrupt pin. That pin is not capable of generating "
-          "interrupts.");
-    }
-
-    tvsc::bus::gpio::set_mode(interrupt_pin_, tvsc::bus::gpio::PinMode::MODE_INPUT);
-    spi_->bus().using_interrupt(interrupt_number);
-    tvsc::bus::gpio::attach_interrupt(interrupt_pin_, interrupt_fn);
+    tvsc::hal::gpio::set_mode(interrupt_pin_, tvsc::hal::gpio::PinMode::MODE_INPUT);
+    spi_->bus().using_interrupt(interrupt_pin_);
+    tvsc::hal::gpio::attach_interrupt(interrupt_pin_, interrupt_fn);
 
     // Verify that we are actually connected to a device. We expect this will return 0x00 or 0xff
     // only if the device is not connected correctly.
@@ -436,8 +430,8 @@ class RF69HCW final {
     if (device_type == 00 || device_type == 0xff) {
       return false;
     }
-    Serial.print("Device type: ");
-    Serial.println(device_type);
+    tvsc::hal::output::print("Device type: ");
+    tvsc::hal::output::println(device_type);
 
     set_mode_standby();
 
@@ -608,7 +602,7 @@ class RF69HCW final {
       if (millis() - t > cad_timeout_ms_) {
         return false;
       }
-      tvsc::bus::gpio::delay_ms(tvsc::random::generate_random_value<uint8_t>(10, 200));
+      tvsc::hal::gpio::delay_ms(tvsc::random::generate_random_value<uint8_t>(10, 200));
     }
 
     return true;
@@ -617,7 +611,7 @@ class RF69HCW final {
   void wait_available(uint16_t poll_delay_ms = 1) {
     while (!available()) {
       if (poll_delay_ms > 0) {
-        tvsc::bus::gpio::delay_ms(poll_delay_ms);
+        tvsc::hal::gpio::delay_ms(poll_delay_ms);
       } else {
         YIELD;
       }
@@ -657,7 +651,7 @@ class RF69HCW final {
         return true;
       }
       if (poll_delay_ms > 0) {
-        tvsc::bus::gpio::delay_ms(poll_delay_ms);
+        tvsc::hal::gpio::delay_ms(poll_delay_ms);
       } else {
         YIELD;
       }

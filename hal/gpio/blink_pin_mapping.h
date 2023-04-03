@@ -1,6 +1,6 @@
 #pragma once
 
-namespace tvsc::bus::gpio {
+namespace tvsc::hal::gpio {
 
 /**
  * Mapping of functions to pin numbers. This mapping may be the physical pin, a GPIO or WiringPi
@@ -28,4 +28,4 @@ class BlinkPinMapping final {
   static int led_pin();
 };
 
-}  // namespace tvsc::bus::gpio
+}  // namespace tvsc::hal::gpio

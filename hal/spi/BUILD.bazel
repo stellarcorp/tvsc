@@ -44,7 +44,7 @@ cc_library(
     }),
     deps = [
         ":spi_header",
-        "//bus/gpio",
+        "//hal/gpio",
         "//third_party/arduino:core",
         "//third_party/arduino:spi",
     ],
@@ -65,7 +65,8 @@ cc_library(
     deps = [
         ":spi_header",
         "//base",
-        "//third_party/arduino/wiring_pi",
+        "//hal/gpio",
         "//third_party/glog",
+        "//third_party/wiring_pi",
     ],
 )

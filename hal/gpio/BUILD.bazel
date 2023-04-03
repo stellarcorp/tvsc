@@ -16,7 +16,7 @@ cc_library(
             ":teensyduino_gpio",
         ],
         "//platforms:wiring_pi_gpio": [
-            "//third_party/wiring_pi",
+            ":wiring_pi_gpio",
         ],
     }),
 )
@@ -55,6 +55,7 @@ cc_library(
 cc_library(
     name = "wiring_pi_gpio",
     srcs = [
+        "std_cpp_time.cc",
         "wiring_pi_interrupts.cc",
         "wiring_pi_pins.cc",
     ],
@@ -67,6 +68,7 @@ cc_library(
     }),
     deps = [
         ":gpio_headers",
+        "//base",
         "//third_party/wiring_pi",
     ],
 )

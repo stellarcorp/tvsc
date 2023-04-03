@@ -3,9 +3,9 @@
 
 #include "Arduino.h"
 #include "base/except.h"
-#include "bus/gpio/interrupts.h"
+#include "hal/gpio/interrupts.h"
 
-namespace tvsc::bus::gpio {
+namespace tvsc::hal::gpio {
 
 constexpr uint16_t NUMBER_INTERRUPTS{70};
 std::array<std::function<void()>, NUMBER_INTERRUPTS> functions{};
@@ -237,4 +237,4 @@ void attach_interrupt(uint8_t pin, std::function<void()> fn) {
   }
 }
 
-}  // namespace tvsc::bus::gpio
+}  // namespace tvsc::hal::gpio

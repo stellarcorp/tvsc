@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace tvsc::bus::gpio {
+namespace tvsc::hal::gpio {
 
 enum class PinMode : uint8_t {
   MODE_INPUT = 0,
@@ -20,4 +20,4 @@ void set_mode(uint8_t pin, PinMode mode);
 DigitalValue read_pin(uint8_t pin);
 void write_pin(uint8_t pin, DigitalValue value);
 
-}  // namespace tvsc::bus::gpio
+}  // namespace tvsc::hal::gpio
