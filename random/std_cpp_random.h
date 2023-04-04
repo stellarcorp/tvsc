@@ -1,34 +1,29 @@
 #pragma once
 
+#include <cstdint>
 #include <random>
 
 namespace tvsc::random {
 
-inline std::mt19937& engine() {
-  static std::mt19937 engine{};
+namespace internal {
+
+inline std::default_random_engine& engine() {
+  static std::random_device device{};
+  static std::default_random_engine engine{device()};
   return engine;
 }
 
-template <>
-inline void set_seed<uint32_t>(uint32_t seed) {
-  engine().seed(seed);
-}
+}  // namespace internal
 
-template <>
-inline uint8_t generate_random_value(uint8_t minimum, uint8_t maximum) {
-  std::uniform_int_distribution<> distribution(minimum, maximum);
-  return distribution(engine());
-}
+inline void set_seed(uint32_t seed) { internal::engine().seed(seed); }
 
-template <>
-inline uint64_t generate_random_value(uint64_t minimum, uint64_t maximum) {
-  std::uniform_int_distribution<> distribution(minimum, maximum);
-  return distribution(engine());
+inline uint32_t generate_entropy() {
+  std::uniform_int_distribution<uint32_t> distribution{};
+  return distribution(internal::engine());
 }
 
 inline void initialize_seed() {
-  std::random_device device{};
-  set_seed(device());
+  // Always initialized on first use.
 }
 
 }  // namespace tvsc::random
