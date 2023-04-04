@@ -14,27 +14,6 @@
 #include "radio/single_radio_pin_mapping.h"
 #include "random/random.h"
 
-const uint8_t RF69_RST{tvsc::radio::SingleRadioPinMapping::reset_pin()};
-const uint8_t RF69_CS{tvsc::radio::SingleRadioPinMapping::chip_select_pin()};
-const uint8_t RF69_DIO0{tvsc::radio::SingleRadioPinMapping::interrupt_pin()};
-
-tvsc::hal::spi::SpiBus bus{tvsc::hal::spi::get_default_spi_bus()};
-tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
-tvsc::radio::RF69HCW rf69{};
-
-tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
-    rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
-
-void print_id(const tvsc_radio_RadioIdentification& id) {
-  tvsc::hal::output::print("{");
-  tvsc::hal::output::print(id.expanded_id);
-  tvsc::hal::output::print(", ");
-  tvsc::hal::output::print(id.id);
-  tvsc::hal::output::print(", ");
-  tvsc::hal::output::print(id.name);
-  tvsc::hal::output::println("}");
-}
-
 /**
  * TODO(james): For telemetry, monitor the following:
  *
@@ -47,41 +26,21 @@ void print_id(const tvsc_radio_RadioIdentification& id) {
  * - temperature of radio module
  */
 
-void setup() {
-  tvsc::random::initialize_seed();
-  configuration.regenerate_identifiers();
+const uint8_t RF69_RST{tvsc::radio::SingleRadioPinMapping::reset_pin()};
+const uint8_t RF69_CS{tvsc::radio::SingleRadioPinMapping::chip_select_pin()};
+const uint8_t RF69_DIO0{tvsc::radio::SingleRadioPinMapping::interrupt_pin()};
 
-  tvsc::hal::gpio::set_mode(RF69_RST, tvsc::hal::gpio::PinMode::MODE_OUTPUT);
-
-  // Manual reset of board.
-  // To reset, according to the datasheet, the reset pin needs to be high for 100us, then low for
-  // 5ms, and then it will be ready. The pin should be pulled low by default on the radio module,
-  // but we drive it low first anyway.
-  tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
-  tvsc::hal::time::delay_ms(10);
-  tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_HIGH);
-  tvsc::hal::time::delay_ms(10);
-  tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
-  tvsc::hal::time::delay_ms(10);
-
-  bus.init();
-  spi_peripheral.init();
-
-  if (!rf69.init(spi_peripheral, RF69_DIO0)) {
-    tvsc::hal::output::println("init failed");
-    while (true) {
-    }
-  }
-
-  tvsc::hal::output::print("Board id: ");
-  print_id(configuration.identification());
-  tvsc::hal::output::println();
-
-  configuration.change_values(tvsc::radio::high_throughput_configuration());
-  configuration.commit_changes();
+void print_id(const tvsc_radio_RadioIdentification& id) {
+  tvsc::hal::output::print("{");
+  tvsc::hal::output::print(id.expanded_id);
+  tvsc::hal::output::print(", ");
+  tvsc::hal::output::print(id.id);
+  tvsc::hal::output::print(", ");
+  tvsc::hal::output::print(id.name);
+  tvsc::hal::output::println("}");
 }
 
-bool send(const std::string& msg) {
+bool send(tvsc::radio::RF69HCW& rf69, const std::string& msg) {
   bool result;
   result = rf69.send(reinterpret_cast<const uint8_t*>(msg.data()), msg.length());
   if (result) {
@@ -92,8 +51,8 @@ bool send(const std::string& msg) {
 }
 
 template <typename MessageT>
-void encode_packet(uint32_t protocol, uint32_t sequence_number, uint32_t id,
-                   const MessageT& message, std::string& buffer) {
+void encode_packet(tvsc::radio::RF69HCW& rf69, uint32_t protocol, uint32_t sequence_number,
+                   uint32_t id, const MessageT& message, std::string& buffer) {
   {
     buffer.resize(rf69.mtu());
     pb_ostream_t ostream =
@@ -125,17 +84,61 @@ void encode_packet(uint32_t protocol, uint32_t sequence_number, uint32_t id,
   }
 }
 
-uint32_t sequence_number{};
-void loop() {
-  std::string packet{};
-  encode_packet(1, ++sequence_number, configuration.id(), configuration.identification(), packet);
+int main() {
+  tvsc::random::initialize_seed();
 
-  if (send(packet)) {
-    tvsc::hal::output::println("Published id.");
-  } else {
-    tvsc::hal::output::print("send() failed. RSSI: ");
-    tvsc::hal::output::println(rf69.read_rssi_dbm());
+  tvsc::hal::spi::SpiBus bus{tvsc::hal::spi::get_default_spi_bus()};
+  tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
+  tvsc::radio::RF69HCW rf69{};
+
+  tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
+      rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
+
+  tvsc::hal::gpio::set_mode(RF69_RST, tvsc::hal::gpio::PinMode::MODE_OUTPUT);
+
+  // Manual reset of board.
+  // To reset, according to the datasheet, the reset pin needs to be high for 100us, then low for
+  // 5ms, and then it will be ready. The pin should be pulled low by default on the radio module,
+  // but we drive it low first anyway.
+  tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
+  tvsc::hal::time::delay_ms(10);
+  tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_HIGH);
+  tvsc::hal::time::delay_ms(10);
+  tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
+  tvsc::hal::time::delay_ms(10);
+
+  bus.init();
+  spi_peripheral.init();
+
+  if (!rf69.init(spi_peripheral, RF69_DIO0)) {
+    tvsc::hal::output::println("init failed");
+    while (true) {
+    }
   }
 
-  tvsc::hal::time::delay_us(2425);
+  tvsc::hal::output::print("Board id: ");
+  print_id(configuration.identification());
+  tvsc::hal::output::println();
+
+  configuration.change_values(tvsc::radio::high_throughput_configuration());
+  configuration.commit_changes();
+
+  uint32_t sequence_number{};
+
+  while (true) {
+    std::string packet{};
+    encode_packet(rf69, 1, ++sequence_number, configuration.id(), configuration.identification(),
+                  packet);
+
+    if (send(rf69, packet)) {
+      tvsc::hal::output::println("Published id.");
+    } else {
+      tvsc::hal::output::print("send() failed. RSSI: ");
+      tvsc::hal::output::println(rf69.read_rssi_dbm());
+    }
+
+    tvsc::hal::time::delay_us(2425);
+  }
+
+  return 0;
 }

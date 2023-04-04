@@ -10,10 +10,13 @@ cc_library(
 
 cc_library(
     name = "teensy4_core",
-    srcs = glob([
-        "avr/cores/teensy4/**/*.c",
-        "avr/cores/teensy4/**/*.cpp",
-    ]),
+    srcs = glob(
+        [
+            "avr/cores/teensy4/**/*.c",
+            "avr/cores/teensy4/**/*.cpp",
+        ],
+        exclude = ["avr/cores/teensy4/main.cpp"],
+    ),
     target_compatible_with = [
         "@platforms//os:none",
         "@platforms//cpu:armv7e-mf",

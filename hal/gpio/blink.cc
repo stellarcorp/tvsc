@@ -5,14 +5,16 @@
 
 static const int LED_PIN{tvsc::hal::gpio::BlinkPinMapping::led_pin()};
 
-void setup() {
+int main() {
   tvsc::hal::output::println("Blink");
   tvsc::hal::gpio::set_mode(LED_PIN, tvsc::hal::gpio::PinMode::MODE_OUTPUT);
-}
 
-void loop() {
-  tvsc::hal::gpio::write_pin(LED_PIN, tvsc::hal::gpio::DigitalValue::VALUE_HIGH);
-  tvsc::hal::time::delay_ms(200);
-  tvsc::hal::gpio::write_pin(LED_PIN, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
-  tvsc::hal::time::delay_ms(500);
+  while (true) {
+    tvsc::hal::gpio::write_pin(LED_PIN, tvsc::hal::gpio::DigitalValue::VALUE_HIGH);
+    tvsc::hal::time::delay_ms(200);
+    tvsc::hal::gpio::write_pin(LED_PIN, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
+    tvsc::hal::time::delay_ms(500);
+  }
+
+  return 0;
 }

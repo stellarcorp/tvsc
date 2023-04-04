@@ -1,6 +1,5 @@
 cc_library(
     name = "wiring_pi",
-    srcs = ["main.cc"],
     target_compatible_with = select({
         "//platforms:wiring_pi_gpio": [],
         "//conditions:default": ["@platforms//:incompatible"],

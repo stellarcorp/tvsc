@@ -18,16 +18,6 @@ const uint8_t RF69_RST{tvsc::radio::SingleRadioPinMapping::reset_pin()};
 const uint8_t RF69_CS{tvsc::radio::SingleRadioPinMapping::chip_select_pin()};
 const uint8_t RF69_DIO0{tvsc::radio::SingleRadioPinMapping::interrupt_pin()};
 
-tvsc::hal::spi::SpiBus bus{tvsc::hal::spi::get_default_spi_bus()};
-tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
-tvsc::radio::RF69HCW rf69{};
-
-tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
-    rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
-
-// Start time in milliseconds.
-uint64_t start{};
-
 void print_id(const tvsc_radio_RadioIdentification& id) {
   tvsc::hal::output::print("{");
   tvsc::hal::output::print(id.expanded_id);
@@ -38,9 +28,61 @@ void print_id(const tvsc_radio_RadioIdentification& id) {
   tvsc::hal::output::println("}");
 }
 
-void setup() {
+bool recv(tvsc::radio::RF69HCW& rf69, std::string& buffer) {
+  uint8_t length{buffer.capacity()};
+  bool result = rf69.recv(reinterpret_cast<uint8_t*>(buffer.data()), &length, 1000);
+  if (result) {
+    buffer.resize(length);
+  }
+  return result;
+}
+
+bool send(tvsc::radio::RF69HCW& rf69, const std::string& msg) {
+  bool result;
+  result = rf69.send(reinterpret_cast<const uint8_t*>(msg.data()), msg.length());
+  if (result) {
+    result = rf69.wait_packet_sent();
+  }
+
+  return result;
+}
+
+bool decode_packet(const std::string& buffer, tvsc_radio_Packet& packet) {
+  pb_istream_t istream =
+      pb_istream_from_buffer(reinterpret_cast<const uint8_t*>(buffer.data()), buffer.size());
+
+  bool status =
+      pb_decode(&istream, nanopb::MessageDescriptor<tvsc_radio_Packet>::fields(), &packet);
+  if (!status) {
+    tvsc::hal::output::println("Could not decode packet");
+    return false;
+  }
+
+  return true;
+}
+
+void encode_packet(tvsc::radio::RF69HCW& rf69, const tvsc_radio_Packet& packet,
+                   std::string& buffer) {
+  buffer.resize(rf69.mtu());
+  pb_ostream_t ostream =
+      pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(buffer.data()), buffer.capacity());
+  bool status =
+      pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_Packet>::fields(), &packet);
+  if (!status) {
+    tvsc::except<std::runtime_error>("Could not encode packet for message");
+  }
+  buffer.resize(ostream.bytes_written);
+}
+
+int main() {
   tvsc::random::initialize_seed();
-  configuration.regenerate_identifiers();
+
+  tvsc::hal::spi::SpiBus bus{tvsc::hal::spi::get_default_spi_bus()};
+  tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
+  tvsc::radio::RF69HCW rf69{};
+
+  tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
+      rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
 
   tvsc::hal::gpio::set_mode(RF69_RST, tvsc::hal::gpio::PinMode::MODE_OUTPUT);
 
@@ -73,119 +115,77 @@ void setup() {
   configuration.change_values(tvsc::radio::default_configuration<tvsc::radio::RF69HCW>());
   configuration.commit_changes();
 
-  start = tvsc::hal::time::time_millis();
-}
+  // Start time in milliseconds.
+  uint64_t start = tvsc::hal::time::time_millis();
 
-bool recv(std::string& buffer) {
-  uint8_t length{buffer.capacity()};
-  bool result = rf69.recv(reinterpret_cast<uint8_t*>(buffer.data()), &length, 1000);
-  if (result) {
-    buffer.resize(length);
-  }
-  return result;
-}
+  uint32_t total_packet_count{};
+  uint32_t dropped_packet_count{};
+  uint32_t send_success_count{};
+  uint32_t send_failure_count{};
+  uint32_t previous_sequence_number{};
+  uint64_t last_print_time{};
 
-bool send(const std::string& msg) {
-  bool result;
-  result = rf69.send(reinterpret_cast<const uint8_t*>(msg.data()), msg.length());
-  if (result) {
-    result = rf69.wait_packet_sent();
-  }
+  while (true) {
+    std::string buffer{};
+    buffer.resize(rf69.mtu());
 
-  return result;
-}
+    if (recv(rf69, buffer)) {
+      tvsc_radio_Packet packet{};
+      if (decode_packet(buffer, packet)) {
+        if (packet.sender != configuration.id()) {
+          ++total_packet_count;
 
-bool decode_packet(const std::string& buffer, tvsc_radio_Packet& packet) {
-  pb_istream_t istream =
-      pb_istream_from_buffer(reinterpret_cast<const uint8_t*>(buffer.data()), buffer.size());
+          if (packet.sequence_number != previous_sequence_number + 1 &&
+              previous_sequence_number != 0) {
+            ++dropped_packet_count;
+            tvsc::hal::output::print("Dropped packets. packet.sequence_number: ");
+            tvsc::hal::output::print(packet.sequence_number);
+            tvsc::hal::output::print(", previous_sequence_number: ");
+            tvsc::hal::output::print(previous_sequence_number);
+            tvsc::hal::output::println();
+          }
 
-  bool status =
-      pb_decode(&istream, nanopb::MessageDescriptor<tvsc_radio_Packet>::fields(), &packet);
-  if (!status) {
-    tvsc::hal::output::println("Could not decode packet");
-    return false;
-  }
+          previous_sequence_number = packet.sequence_number;
 
-  return true;
-}
-
-void encode_packet(const tvsc_radio_Packet& packet, std::string& buffer) {
-  buffer.resize(rf69.mtu());
-  pb_ostream_t ostream =
-      pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(buffer.data()), buffer.capacity());
-  bool status =
-      pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_Packet>::fields(), &packet);
-  if (!status) {
-    tvsc::except<std::runtime_error>("Could not encode packet for message");
-  }
-  buffer.resize(ostream.bytes_written);
-}
-
-uint32_t total_packet_count{};
-uint32_t dropped_packet_count{};
-uint32_t send_success_count{};
-uint32_t send_failure_count{};
-uint32_t previous_sequence_number{};
-uint64_t last_print_time{};
-
-void loop() {
-  std::string buffer{};
-  buffer.resize(rf69.mtu());
-
-  if (recv(buffer)) {
-    tvsc_radio_Packet packet{};
-    if (decode_packet(buffer, packet)) {
-      if (packet.sender != configuration.id()) {
-        ++total_packet_count;
-
-        if (packet.sequence_number != previous_sequence_number + 1 &&
-            previous_sequence_number != 0) {
-          ++dropped_packet_count;
-          tvsc::hal::output::print("Dropped packets. packet.sequence_number: ");
+          tvsc::hal::output::print("From sender: ");
+          tvsc::hal::output::print(packet.sender);
+          tvsc::hal::output::print(", sequence: ");
           tvsc::hal::output::print(packet.sequence_number);
-          tvsc::hal::output::print(", previous_sequence_number: ");
-          tvsc::hal::output::print(previous_sequence_number);
-          tvsc::hal::output::println();
-        }
+          tvsc::hal::output::print(" -- ");
+          tvsc::hal::output::println(reinterpret_cast<char*>(packet.payload.bytes));
 
-        previous_sequence_number = packet.sequence_number;
+          // Clear previous contents with all zeros.
+          buffer.clear();
+          buffer.resize(rf69.mtu());
 
-        tvsc::hal::output::print("From sender: ");
-        tvsc::hal::output::print(packet.sender);
-        tvsc::hal::output::print(", sequence: ");
-        tvsc::hal::output::print(packet.sequence_number);
-        tvsc::hal::output::print(" -- ");
-        tvsc::hal::output::println(reinterpret_cast<char*>(packet.payload.bytes));
+          // Mark ourselves as the sender now.
+          packet.sender = configuration.id();
 
-        // Clear previous contents with all zeros.
-        buffer.clear();
-        buffer.resize(rf69.mtu());
-
-        // Mark ourselves as the sender now.
-        packet.sender = configuration.id();
-
-        encode_packet(packet, buffer);
-        // Note that switching into TX mode and sending a packet takes between 50-150ms.
-        if (send(buffer)) {
-          ++send_success_count;
-        } else {
-          ++send_failure_count;
+          encode_packet(rf69, packet, buffer);
+          // Note that switching into TX mode and sending a packet takes between 50-150ms.
+          if (send(rf69, buffer)) {
+            ++send_success_count;
+          } else {
+            ++send_failure_count;
+          }
         }
       }
     }
+
+    if (tvsc::hal::time::time_millis() - last_print_time > 1000) {
+      last_print_time = tvsc::hal::time::time_millis();
+
+      tvsc::hal::output::print("dropped_packet_count: ");
+      tvsc::hal::output::print(dropped_packet_count);
+      tvsc::hal::output::print(", total_packet_count: ");
+      tvsc::hal::output::print(total_packet_count);
+      tvsc::hal::output::print(", throughput: ");
+      tvsc::hal::output::print(total_packet_count * 1000.f /
+                               (tvsc::hal::time::time_millis() - start));
+      tvsc::hal::output::print(" packets/sec");
+      tvsc::hal::output::println();
+    }
   }
 
-  if (tvsc::hal::time::time_millis() - last_print_time > 1000) {
-    last_print_time = tvsc::hal::time::time_millis();
-
-    tvsc::hal::output::print("dropped_packet_count: ");
-    tvsc::hal::output::print(dropped_packet_count);
-    tvsc::hal::output::print(", total_packet_count: ");
-    tvsc::hal::output::print(total_packet_count);
-    tvsc::hal::output::print(", throughput: ");
-    tvsc::hal::output::print(total_packet_count * 1000.f /
-                             (tvsc::hal::time::time_millis() - start));
-    tvsc::hal::output::print(" packets/sec");
-    tvsc::hal::output::println();
-  }
+  return 0;
 }
