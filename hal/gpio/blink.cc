@@ -6,6 +6,8 @@
 static const int LED_PIN{tvsc::hal::gpio::BlinkPinMapping::led_pin()};
 
 int main() {
+  tvsc::hal::gpio::initialize_gpio();
+
   tvsc::hal::output::println("Blink");
   tvsc::hal::gpio::set_mode(LED_PIN, tvsc::hal::gpio::PinMode::MODE_OUTPUT);
 

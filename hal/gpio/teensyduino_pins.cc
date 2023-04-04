@@ -5,6 +5,8 @@
 
 namespace tvsc::hal::gpio {
 
+void initialize_gpio() {}
+
 void set_mode(uint8_t pin, PinMode mode) {
   pinMode(pin, static_cast<std::underlying_type_t<PinMode>>(mode));
 }

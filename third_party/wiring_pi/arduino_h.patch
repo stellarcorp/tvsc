@@ -1,7 +1,0 @@
---- usr/include/Arduino.h.orig	1969-12-31 19:00:00.000000000 -0500
-+++ usr/include/Arduino.h	2023-03-02 16:23:36.474654194 -0500
-@@ -0,0 +1,4 @@
-+#ifndef Arduino_h
-+#define Arduino_h
-+#include "wiringPi.h"
-+#endif /* Arduino_H */

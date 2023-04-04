@@ -16,6 +16,8 @@ enum class DigitalValue {
   VALUE_HIGH = 1,
 };
 
+void initialize_gpio();
+
 void set_mode(uint8_t pin, PinMode mode);
 DigitalValue read_pin(uint8_t pin);
 void write_pin(uint8_t pin, DigitalValue value);

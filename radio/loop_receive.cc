@@ -65,6 +65,7 @@ bool decode_packet(const std::string& buffer, tvsc_radio_Packet& packet, Message
 
 int main() {
   tvsc::random::initialize_seed();
+  tvsc::hal::gpio::initialize_gpio();
 
   tvsc::hal::spi::SpiBus bus{tvsc::hal::spi::get_default_spi_bus()};
   tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};

@@ -61,7 +61,7 @@ void SpiBus::init() {
     except<std::runtime_error>("Failed to bit justification (MSB or LSB).");
   }
 
-  uint32_t speed{4'000'000};  // Speed of transfers in Hz.
+  uint32_t speed{12'000'000};  // Speed of transfers in Hz.
   status = ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
   if (status == -1) {
     except<std::runtime_error>("Failed to set transfer speed.");

@@ -3,6 +3,8 @@
 
 namespace tvsc::hal::gpio {
 
+void initialize_gpio() { wiringPiSetupGpio(); }
+
 void set_mode(uint8_t pin, PinMode mode) {
   switch (mode) {
     case PinMode::MODE_INPUT:

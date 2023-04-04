@@ -86,6 +86,7 @@ void encode_packet(tvsc::radio::RF69HCW& rf69, uint32_t protocol, uint32_t seque
 
 int main() {
   tvsc::random::initialize_seed();
+  tvsc::hal::gpio::initialize_gpio();
 
   tvsc::hal::spi::SpiBus bus{tvsc::hal::spi::get_default_spi_bus()};
   tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};

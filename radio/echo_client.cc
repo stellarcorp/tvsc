@@ -72,6 +72,7 @@ void encode_packet(tvsc::radio::RF69HCW& rf69, uint32_t protocol, uint32_t seque
 
 int main() {
   tvsc::random::initialize_seed();
+  tvsc::hal::gpio::initialize_gpio();
 
   tvsc::hal::spi::SpiBus bus{tvsc::hal::spi::get_default_spi_bus()};
   tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
@@ -119,6 +120,10 @@ int main() {
 
     if (send(rf69, packet)) {
       tvsc::hal::output::println("Sent.");
+      tvsc::hal::output::print("Board id: ");
+      print_id(configuration.identification());
+      tvsc::hal::output::println();
+
     } else {
       tvsc::hal::output::print("send() failed. RSSI: ");
       tvsc::hal::output::println(rf69.read_rssi_dbm());
