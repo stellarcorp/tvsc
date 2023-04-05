@@ -326,6 +326,7 @@ class RF69HCW final {
 
   // Pin assignments.
   uint8_t interrupt_pin_;
+  uint8_t reset_pin_;
 
   void set_op_mode(uint8_t mode) {
     uint8_t opmode = spi_->read(RF69HCW_REG_01_OPMODE);
@@ -396,9 +397,9 @@ class RF69HCW final {
   bool has_channel_activity() { return read_rssi_dbm() > channel_activity_threshold_dbm_; }
 
  public:
-  bool init(tvsc::hal::spi::SpiPeripheral& peripheral, uint8_t interrupt_pin) {
-    spi_ = &peripheral;
-    interrupt_pin_ = interrupt_pin;
+  RF69HCW(tvsc::hal::spi::SpiPeripheral& peripheral, uint8_t interrupt_pin, uint8_t reset_pin)
+      : spi_(&peripheral), interrupt_pin_(interrupt_pin), reset_pin_(reset_pin) {
+    tvsc::hal::gpio::set_mode(reset_pin_, tvsc::hal::gpio::PinMode::MODE_OUTPUT);
 
     void (*interrupt_fn)(void) = nullptr;
     if (next_interrupt_index_ <= 2) {
@@ -419,6 +420,19 @@ class RF69HCW final {
     tvsc::hal::gpio::set_mode(interrupt_pin_, tvsc::hal::gpio::PinMode::MODE_INPUT);
     spi_->bus().using_interrupt(interrupt_pin_);
     tvsc::hal::gpio::attach_interrupt(interrupt_pin_, interrupt_fn);
+  }
+
+  void reset() {
+    // Manual reset of board.
+    // To reset, according to the datasheet, the reset pin needs to be high for 100us, then low for
+    // 5ms, and then it will be ready. The pin should be pulled low by default on the radio module,
+    // but we drive it low first anyway.
+    tvsc::hal::gpio::write_pin(reset_pin_, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
+    tvsc::hal::time::delay_ms(10);
+    tvsc::hal::gpio::write_pin(reset_pin_, tvsc::hal::gpio::DigitalValue::VALUE_HIGH);
+    tvsc::hal::time::delay_ms(10);
+    tvsc::hal::gpio::write_pin(reset_pin_, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
+    tvsc::hal::time::delay_ms(10);
 
     // Verify that we are actually connected to a device. We expect this will return 0x00 or 0xff
     // only if the device is not connected correctly.
@@ -427,7 +441,7 @@ class RF69HCW final {
     // come loose.
     uint8_t device_type = spi_->read(RF69HCW_REG_10_VERSION);
     if (device_type == 00 || device_type == 0xff) {
-      return false;
+      except<std::runtime_error>("Could not read radio device type.");
     }
     tvsc::hal::output::print("Device type: ");
     tvsc::hal::output::println(device_type);
@@ -460,8 +474,6 @@ class RF69HCW final {
 
     // Reset to +13dBm, same as power-on default.
     set_power_dbm(13);
-
-    return true;
   }
 
   bool available() { return rx_buffer_length_ > 0; }

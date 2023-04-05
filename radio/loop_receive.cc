@@ -69,32 +69,12 @@ int main() {
 
   tvsc::hal::spi::SpiBus bus{tvsc::hal::spi::get_default_spi_bus()};
   tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
-  tvsc::radio::RF69HCW rf69{};
+  tvsc::radio::RF69HCW rf69{spi_peripheral, RF69_DIO0, RF69_RST};
+
+  rf69.reset();
 
   tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
       rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
-
-  tvsc::hal::gpio::set_mode(RF69_RST, tvsc::hal::gpio::PinMode::MODE_OUTPUT);
-
-  // Manual reset of board.
-  // To reset, according to the datasheet, the reset pin needs to be high for 100us, then low for
-  // 5ms, and then it will be ready. The pin should be pulled low by default on the radio module,
-  // but we drive it low first anyway.
-  tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
-  tvsc::hal::time::delay_ms(10);
-  tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_HIGH);
-  tvsc::hal::time::delay_ms(10);
-  tvsc::hal::gpio::write_pin(RF69_RST, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
-  tvsc::hal::time::delay_ms(10);
-
-  bus.init();
-  spi_peripheral.init();
-
-  if (!rf69.init(spi_peripheral, RF69_DIO0)) {
-    tvsc::hal::output::println("init failed");
-    while (true) {
-    }
-  }
 
   tvsc::hal::output::print("Board id: ");
   print_id(configuration.identification());
@@ -106,6 +86,7 @@ int main() {
   // Start time in milliseconds.
   uint64_t start = tvsc::hal::time::time_millis();
 
+  // Ad hoc telemetry.
   uint32_t total_packet_count{};
   uint32_t dropped_packet_count{};
   uint32_t previous_sequence_number{};

@@ -35,17 +35,7 @@ SpiBus::SpiBus(void* device_name) : spi_(reinterpret_cast<void*>(new BusState())
   if (as_state(spi_)->fd < 0) {
     except<std::runtime_error>("Could not open device");
   }
-}
 
-SpiBus::~SpiBus() {
-  LOG(INFO) << "SpiBus::~SpiBus()";
-  if (spi_ != nullptr) {
-    close(as_state(spi_)->fd);
-    delete as_state(spi_);
-  }
-}
-
-void SpiBus::init() {
   // TODO(james): Change the API to allow these settings to be different for each peripheral.
   int fd = as_state(spi_)->fd;
 
@@ -71,6 +61,14 @@ void SpiBus::init() {
   status = ioctl(fd, SPI_IOC_WR_MODE, &mode);
   if (status == -1) {
     except<std::runtime_error>("Failed to set SPI transfer mode.");
+  }
+}
+
+SpiBus::~SpiBus() {
+  LOG(INFO) << "SpiBus::~SpiBus()";
+  if (spi_ != nullptr) {
+    close(as_state(spi_)->fd);
+    delete as_state(spi_);
   }
 }
 

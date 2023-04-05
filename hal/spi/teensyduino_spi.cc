@@ -17,9 +17,8 @@ using namespace tvsc::hal::time;
 
 inline SPIClass* as_spi(void* ptr) { return reinterpret_cast<SPIClass*>(ptr); }
 
-SpiBus::SpiBus(void* spi_implementation) : spi_(spi_implementation) {}
+SpiBus::SpiBus(void* spi_implementation) : spi_(spi_implementation) { as_spi(spi_)->begin(); }
 SpiBus::~SpiBus() { as_spi(spi_)->end(); }
-void SpiBus::init() { as_spi(spi_)->begin(); }
 
 void SpiBus::initialize_peripheral(uint8_t peripheral_select_pin) {
   set_mode(peripheral_select_pin, PinMode::MODE_OUTPUT);
@@ -39,7 +38,7 @@ void SpiBus::using_interrupt(uint8_t pin) {
 
 SpiTransaction SpiBus::begin_transaction(uint8_t peripheral_select_pin) {
   // TODO(james): Change the API to allow these settings to be different for each peripheral.
-  static const SPISettings SETTINGS{4'000'000, MSBFIRST, SPI_MODE0};
+  static const SPISettings SETTINGS{12'000'000, MSBFIRST, SPI_MODE0};
   ATOMIC_BLOCK_START;
   as_spi(spi_)->beginTransaction(SETTINGS);
 

@@ -103,8 +103,6 @@ class SpiBus {
     return *this;
   }
 
-  void init();
-
   /**
    * Indicate to the bus that a particular interrupt number is in use elsewhere. This method is
    * based on the Arduino SPI function called "usingInterrupt()". It's documentation
@@ -151,9 +149,9 @@ class SpiPeripheral {
   SpiPeripheral(SpiBus& bus, uint8_t peripheral_select_pin, uint8_t write_address_mask)
       : bus_(&bus),
         peripheral_select_pin_(peripheral_select_pin),
-        write_address_mask_(write_address_mask) {}
-
-  void init() { bus_->initialize_peripheral(peripheral_select_pin_); }
+        write_address_mask_(write_address_mask) {
+    bus_->initialize_peripheral(peripheral_select_pin_);
+  }
 
   /**
    * Accessor to use the bus directly when necessary.
