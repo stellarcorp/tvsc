@@ -19,6 +19,7 @@ cc_binary(
         "//pubsub:web_socket_pub_sub",
         "//service/chat/client",
         "//service/chat/client:web_socket_client",
+        "//service/communications/client",
         "//service/communications/client:web_socket_rpc_client",
         "//service/datetime/client",
         "//service/datetime/client:web_socket_client",

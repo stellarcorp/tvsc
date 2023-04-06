@@ -9,12 +9,13 @@
 #include "pubsub/web_socket_topic.h"
 #include "service/chat/client/chat_streamer.h"
 #include "service/chat/client/web_socket_rpc_client.h"
+#include "service/communications/client/rx_streamer.h"
+#include "service/communications/client/web_socket_rpc_client.h"
 #include "service/datetime/client/datetime_streamer.h"
 #include "service/datetime/client/web_socket_rpc_client.h"
 #include "service/datetime/common/datetime.pb.h"
 #include "service/echo/client/web_socket_rpc_client.h"
 #include "service/hello/client/web_socket_rpc_client.h"
-#include "service/communications/client/web_socket_rpc_client.h"
 
 DEFINE_int32(port, 50050, "Port to listen on.");
 DEFINE_string(doc_root, "service/proxy/doc_root/", "Location of static files.");
@@ -63,6 +64,16 @@ int main(int argc, char* argv[]) {
       datetime_topic, std::make_unique<tvsc::service::datetime::DatetimeStreamer>()};
   // TODO(james): Add capability to start this stream on request.
   datetime_publisher.start();
+
+  // Publish the stream of datetime messages.
+  tvsc::pubsub::WebSocketTopic<tvsc::service::communications::Message, SSL, 1> radio_rx_topic{
+      tvsc::service::communications::RxStreamer::TOPIC_NAME, app};
+  radio_rx_topic.register_publishing_handler(*uWS::Loop::get());
+
+  tvsc::pubsub::PublicationService<tvsc::service::communications::Message> radio_rx_publisher{
+      radio_rx_topic, std::make_unique<tvsc::service::communications::RxStreamer>()};
+  // TODO(james): Add capability to start this stream on request.
+  radio_rx_publisher.start();
 
   app.listen(FLAGS_port,
              [](auto* listen_socket) {
