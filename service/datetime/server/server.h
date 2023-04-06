@@ -8,10 +8,10 @@ namespace tvsc::service::datetime {
 
 class DatetimeServiceImpl final : public Datetime::Service {
   grpc::Status get_datetime(grpc::ServerContext* context, const DatetimeRequest* request,
-                      DatetimeReply* reply) override;
+                            DatetimeReply* reply) override;
 
   grpc::Status stream_datetime(grpc::ServerContext* context, const DatetimeRequest* request,
-                         grpc::ServerWriter<DatetimeReply>* writer) override;
+                               grpc::ServerWriter<DatetimeReply>* writer) override;
 };
 
 }  // namespace tvsc::service::datetime
