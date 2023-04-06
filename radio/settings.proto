@@ -54,6 +54,42 @@ enum Function {
 }
 
 /**
+ * Measurements that can be made on a radio for use in telemetry.
+ */
+enum Measurement {
+  // The current time on the device.
+  TIME = 0;
+  // Current observed RSSI in dBm.
+  RSSI_DBM = 2;
+  // Current power consumption in Watts.
+  POWER_W = 3;
+  PACKETS_RX = 4;
+  PACKETS_TX = 5;
+  DROPPED_PACKETS = 6;
+  TX_ERRORS = 7;
+  TX_QUEUE_SIZE = 8;
+}
+
+message TelemetryEvent {
+  /**
+   * Time  of the event in milliseconds since the epoch of the clock on the device. Note that this
+   * clock may or may not be monotonically increasing, and in particular, it may overflow between
+   * measurements. To maintain some basic time synchronization, devices should periodically issue
+   * TIME measurements with the current value of the clock. These events should be published with a
+   * predictable (preferably zero) delay.
+   */
+  uint32 time_ms = 1;
+  /**
+   * What is being measured.
+   */
+  Measurement domain = 2;
+  /**
+   * The measured value.
+   */
+  DiscreteValue measurement = 3;
+}
+
+/**
  * Enumeration of which values in a range may be included in that range. There are four
  * combinations. For both the minimum value and the maximum value, the endpoint can either be
  * included or excluded. This enum has those four combinations. For example, INCLUSIVE_EXCLUSIVE

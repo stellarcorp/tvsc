@@ -8,7 +8,8 @@ package tvsc.radio;
 /**
  * Identification of a radio. Note that the current idea is for this message to be transmitted
  * rarely -- on announcement or in response to a specific query -- and only the 32-bit integer id
- * would be used in most messages.
+ * would be used in most messages. When working on 64-bit systems with a full OS, the 64-bit
+ * expanded id should be used as the identifier for the radio.
  */
 message RadioIdentification {
   /**
@@ -163,6 +164,16 @@ message Radio {
   RadioIdentification identification = 1;
   Settings settings = 2;
   Capabilities capabilities = 3;
+}
+
+message RadioSettings {
+  RadioIdentification identification = 1;
+  Settings settings = 2;
+}
+
+message RadioTelemetryEvent {
+  RadioIdentification identification = 1;
+  TelemetryEvent event = 2;
 }
 
 message Radios {
