@@ -1,10 +1,13 @@
 cc_library(
     name = "client",
-    hdrs = ["client.h"],
+    hdrs = [
+        "client.h",
+        "rx_streamer.h",
+    ],
     visibility = ["//visibility:public"],
     deps = [
         "//discovery",
-        "//radio",
+        "//pubsub",
         "//service/communications/common",
         "//third_party/gflags",
         "//third_party/glog",
@@ -20,11 +23,24 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":client",
-        "//radio",
         "//service/communications/common",
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/grpc",
         "//third_party/uwebsockets",
+    ],
+)
+
+cc_binary(
+    name = "comms_client",
+    srcs = ["comms_client.cc"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":client",
+        "//discovery:resolve",
+        "//service/communications/common",
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/grpc",
     ],
 )

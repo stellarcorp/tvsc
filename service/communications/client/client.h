@@ -3,7 +3,6 @@
 
 #include "discovery/service_types.h"
 #include "grpcpp/grpcpp.h"
-#include "radio/radio.pb.h"
 #include "service/communications/common/communications.grpc.pb.h"
 
 namespace tvsc::service::communications {
@@ -17,9 +16,31 @@ class CommunicationsClient {
       : stub_(CommunicationsService::NewStub(
             grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials()))) {}
 
-  grpc::Status list_radios(tvsc::radio::Radios* reply) {
+  grpc::Status list_radios(Radios* reply) {
     grpc::ClientContext context{};
-    return stub_->list_radios(&context, RadioListRequest{}, reply);
+    LOG(INFO) << "CommunicationsClient::list_radios()";
+    return stub_->list_radios(&context, EmptyMessage{}, reply);
+  }
+
+  std::unique_ptr<grpc::ClientReaderInterface<Message>> receive(grpc::ClientContext* context) {
+    return stub_->receive(context, EmptyMessage{});
+  }
+
+  void receive(grpc::ClientContext* context, grpc::ClientReadReactor<Message>* reactor) {
+    EmptyMessage request{};
+    stub_->async()->receive(context, &request, reactor);
+  }
+
+  grpc::Status transmit(const std::string& message, SuccessResult* reply) {
+    grpc::ClientContext context{};
+    Message m{};
+    m.set_message(message);
+    return stub_->transmit(&context, m, reply);
+  }
+
+  grpc::Status transmit(const Message& message, SuccessResult* reply) {
+    grpc::ClientContext context{};
+    return stub_->transmit(&context, message, reply);
   }
 
  private:

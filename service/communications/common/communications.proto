@@ -1,13 +1,34 @@
 syntax = "proto3";
 
-import public "radio/radio.proto";
-
 package tvsc.service.communications;
 
-option optimize_for = LITE_RUNTIME;
-
 service CommunicationsService {
-  rpc list_radios(RadioListRequest) returns (tvsc.radio.Radios);
+  rpc list_radios(EmptyMessage) returns (Radios);
+
+  rpc transmit(Message) returns (SuccessResult);
+  rpc receive(EmptyMessage) returns (stream Message);
 }
 
-message RadioListRequest {}
+message EmptyMessage {}
+
+message SuccessResult {
+  enum ResultType {
+    SUCCESS = 0;
+    FAILURE = 1;
+  }
+
+  ResultType result = 1;
+}
+
+message Message {
+  string message = 1;
+}
+
+message Radio {
+  fixed64 id = 1;
+  string name = 2;
+}
+
+message Radios {
+  repeated Radio radios = 1;
+}
