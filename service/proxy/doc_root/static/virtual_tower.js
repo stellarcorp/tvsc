@@ -225,8 +225,8 @@ function CreateDatetimeStream() {
 function CreateRadioListSocket() {
   list_communications_rpc = new WebSocketRpc(
       BuildWebSocketUrl('communications', 'list_radios'),  //
-      'tvsc.service.communications.RadioListRequest',      //
-      'tvsc.radio.Radios');
+      'tvsc.service.communications.EmptyMessage',          //
+      'tvsc.service.communications.Radios');
   list_communications_rpc.on_receive(function(reply) {
     $('#communications_list').empty();
     for (let radio of reply.radios) {
@@ -313,22 +313,15 @@ function initialize_module() {
         CreateEchoSocket();
       });
 
-      protobuf.load('/static/radio_settings.proto').then(function(root) {
-        Protos.add_proto('tvsc.radio.Settings', root.lookupType('tvsc.radio.Settings'));
-        Protos.add_proto('tvsc.radio.Capabilities', root.lookupType('tvsc.radio.Capabilities'));
+      protobuf.load('/static/communications.proto').then(function(root) {
+        Protos.add_proto(
+            'tvsc.service.communications.EmptyMessage',
+            root.lookupType('tvsc.service.communications.EmptyMessage'));
+        Protos.add_proto(
+            'tvsc.service.communications.Radios',
+            root.lookupType('tvsc.service.communications.Radios'));
 
-        protobuf.load('/static/radio.proto').then(function(root) {
-          Protos.add_proto('tvsc.radio.Radio', root.lookupType('tvsc.radio.Radio'));
-          Protos.add_proto('tvsc.radio.Radios', root.lookupType('tvsc.radio.Radios'));
-
-          protobuf.load('/static/communications.proto').then(function(root) {
-            Protos.add_proto(
-                'tvsc.service.communications.RadioListRequest',
-                root.lookupType('tvsc.service.communications.RadioListRequest'));
-
-            CreateRadioListSocket();
-          });
-        });
+        CreateRadioListSocket();
       });
     });
   }

@@ -1,20 +1,6 @@
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 
 copy_file(
-    name = "radio_settings_proto_file",
-    src = "//radio:settings_proto_file",
-    out = "static/radio_settings.proto",
-    allow_symlink = True,
-)
-
-copy_file(
-    name = "radio_proto_file",
-    src = "//radio:radio_proto_file",
-    out = "static/radio.proto",
-    allow_symlink = True,
-)
-
-copy_file(
     name = "communications_proto_file",
     src = "//service/communications/common:communications_proto_file",
     out = "static/communications.proto",
@@ -41,8 +27,6 @@ filegroup(
         ":communications_proto_file",
         ":datetime_proto_file",
         ":echo_proto_file",
-        ":radio_proto_file",
-        ":radio_settings_proto_file",
     ],
     visibility = ["//visibility:public"],
 )
