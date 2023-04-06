@@ -15,6 +15,7 @@ void print(int8_t value) { Serial.print(value); }
 void print(int16_t value) { Serial.print(value); }
 void print(int32_t value) { Serial.print(value); }
 void print(int64_t value) { Serial.print(value); }
+void print(std::size_t value) { Serial.print(value); }
 void print(float value) { Serial.print(value); }
 void print(double value) { Serial.print(value); }
 
@@ -27,6 +28,7 @@ void println(int8_t value) { Serial.println(value); }
 void println(int16_t value) { Serial.println(value); }
 void println(int32_t value) { Serial.println(value); }
 void println(int64_t value) { Serial.println(value); }
+void println(std::size_t value) { Serial.println(value); }
 void println(float value) { Serial.println(value); }
 void println(double value) { Serial.println(value); }
 void println() { Serial.println(); }
