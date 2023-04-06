@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <numeric>
 #include <stdexcept>
 
 #include "base/except.h"
@@ -320,7 +321,7 @@ class RF69HCW final {
 
   // Channel activity detection timeout -- how long we wait for existing channel activity to die off
   // before we transmit.
-  uint16_t cad_timeout_ms_{100};
+  uint16_t cad_timeout_ms_{10};
 
   float channel_activity_threshold_dbm_{-.5f};
 
@@ -570,6 +571,7 @@ class RF69HCW final {
 
     // Don't transmit if we detect another radio transmitting on the same channel.
     if (!wait_channel_activity_detector()) {
+      tvsc::hal::output::println("Can't send. Channel activity detected.");
       return false;
     }
 
@@ -590,12 +592,22 @@ class RF69HCW final {
     // Set the threshold to its minimum value.
     set_receive_sensitivity_threshold_dbm(-127.5f);
 
-    uint8_t rssi = spi_->read(RF69HCW_REG_24_RSSIVALUE);
+    static constexpr int NUMBER_MEASUREMENTS{4};
+    static constexpr int DELAY_BETWEEN_MEASUREMENTS_US{5};
+    std::array<uint8_t, NUMBER_MEASUREMENTS> rssi{};
+    for (int i = 0; i < NUMBER_MEASUREMENTS; ++i) {
+      if (i > 0) {
+        tvsc::hal::time::delay_us(DELAY_BETWEEN_MEASUREMENTS_US);
+      }
+      rssi[i] = spi_->read(RF69HCW_REG_24_RSSIVALUE);
+    }
 
     // Reset the threshold to its previous value.
     set_receive_sensitivity_threshold_dbm(saved_threshold);
 
-    return -1.f * rssi / 2.f;
+    // Return the average RSSI measurement converted to dBm.
+    float result = -1.f * std::accumulate(rssi.begin(), rssi.end(), 0) / 2.f / NUMBER_MEASUREMENTS;
+    return result;
   }
 
   bool wait_channel_activity_detector() {
