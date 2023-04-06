@@ -260,20 +260,44 @@ void ServiceDiscovery::add_service_type(const std::string &service_type,
                                 avahi_browser, avahi_service_browser_free});
     service_type_watchers_.emplace(service_type, std::move(ready_callback));
   } else {
+    LOG(INFO)
+        << "ServiceDiscovery::add_service_type() -- browser already launched for service_type: "
+        << service_type;
     ready_callback(service_type);
   }
 }
 
 void ServiceDiscovery::add_service_type_and_block_until_ready(const std::string &service_type) {
-  std::mutex m{};
-  std::condition_variable condition{};
-  add_service_type(service_type, [&m, &condition](const std::string & /*unused*/) {
-    std::unique_lock lock{m};
-    condition.notify_one();
-  });
-  std::unique_lock lock{m};
-  // Block here until the ready callback (lambda) above gets called.
-  condition.wait(lock);
+  if (avahi_browsers_.count(service_type) == 0) {
+    LOG(INFO) << "Watching for services announcing for service type '" << service_type << "'";
+    std::unique_lock avahi_lock{avahi_call_mutex_};
+    auto avahi_browser{avahi_service_browser_new(
+        avahi_client_.get(), AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, service_type.c_str(), nullptr,
+        static_cast<AvahiLookupFlags>(0), on_browser_change, this)};
+
+    if (!avahi_browser) {
+      throw std::runtime_error("Could not create AvahiServiceBrowser for service type '" +
+                               service_type +
+                               "': " + avahi_strerror(avahi_client_errno(avahi_client_.get())));
+    }
+    avahi_browsers_.emplace(service_type,
+                            std::unique_ptr<AvahiServiceBrowser, int (*)(AvahiServiceBrowser *)>{
+                                avahi_browser, avahi_service_browser_free});
+
+    std::mutex m{};
+    std::condition_variable condition{};
+    std::unique_lock condition_lock{m};
+    service_type_watchers_.emplace(service_type,
+                                   [&m, &condition, &service_type](const std::string & /*unused*/) {
+                                     std::unique_lock lock{m};
+                                     condition.notify_one();
+                                   });
+
+    avahi_lock.unlock();
+
+    // Block here until the ready callback (lambda) above gets called.
+    condition.wait(condition_lock);
+  }
 }
 
 }  // namespace tvsc::discovery
