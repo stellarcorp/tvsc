@@ -8,8 +8,8 @@ message IPv4Address {
 }
 
 message IPv6Address {
-  // TODO(james): Change this structure to use a byte array to line up with struct sockaddr_in6.sin6_addr.
-  // IPv6 address as four unsigned 32-bit integers in network byte order.
+  // TODO(james): Change this structure to use a byte array to line up with struct
+  // sockaddr_in6.sin6_addr. IPv6 address as four unsigned 32-bit integers in network byte order.
   fixed32 address_0 = 1;  // Highest order bytes.
   fixed32 address_1 = 2;
   fixed32 address_2 = 3;
@@ -26,9 +26,9 @@ message NetworkAddress {
 }
 
 message ServerDetails {
-  string hostname = 4;
-  NetworkAddress address = 5;
-  int32 port = 6;
+  string hostname = 1;
+  NetworkAddress address = 2;
+  int32 port = 3;
 }
 
 message ServiceDescriptor {
