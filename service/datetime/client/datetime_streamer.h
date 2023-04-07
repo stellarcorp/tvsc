@@ -18,7 +18,7 @@ class DatetimeStreamer final
   static DatetimeRequest construct_default_request() {
     DatetimeRequest request{};
     request.set_precision(TimeUnit::MILLISECOND);
-    request.set_period_count(100);
+    request.set_period_count(50);
     request.set_period_unit(TimeUnit::MILLISECOND);
     return request;
   }
