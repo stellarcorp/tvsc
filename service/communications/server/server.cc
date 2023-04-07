@@ -50,7 +50,7 @@ grpc::Status CommunicationsServiceImpl::receive(grpc::ServerContext* context,
     std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
     std::time_t as_time_t{std::chrono::system_clock::to_time_t(now)};
     std::stringstream buffer{};
-    buffer << std::put_time(std::localtime(&as_time_t), "%F %T") << "\n";
+    buffer << std::put_time(std::localtime(&as_time_t), "%F %T");
     reply.set_message(buffer.str());
     writer->Write(reply);
 
