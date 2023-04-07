@@ -1,6 +1,9 @@
 let list_communications_rpc = null;
 let echo_rpc = null;
+let transmit_rpc = null;
+
 let datetime_stream = null;
+let receive_stream = null;
 
 function TypedArrayToBuffer(array) {
   return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset)
@@ -51,7 +54,9 @@ class WebSocketRpc {
     this.#ws.onmessage = (evt) => {
       let as_array = new Uint8Array(evt.data);
       let received_msg = this.#response_proto_decoder.decode(as_array);
-      this.#response_handler(received_msg);
+      if (this.#response_handler != null) {
+        this.#response_handler(received_msg);
+      }
     };
 
     this.#ws.onclose = (evt) => {
@@ -60,7 +65,9 @@ class WebSocketRpc {
 
     this.#ws.onerror = (evt) => {
       this.#ws = null;
-      this.#error_handler(evt);
+      if (this.#error_handler != null) {
+        this.#error_handler(evt);
+      }
     };
   }
 
@@ -123,17 +130,27 @@ class WebSocketStream {
     this.#ws.onmessage = (evt) => {
       let as_array = new Uint8Array(evt.data);
       let received_msg = this.#response_proto_decoder.decode(as_array);
-      this.#response_handler(received_msg);
+      if (this.#response_handler != null) {
+        this.#response_handler(received_msg);
+      } else {
+        console.log('received: ' + received_msg);
+      }
     };
 
     this.#ws.onclose = (evt) => {
       this.#ws = null;
-      this.#stop_handler(evt);
+      if (this.#stop_handler != null) {
+        this.#stop_handler(evt);
+      } else {
+        console.log('receive stream closed.');
+      }
     };
 
     this.#ws.onerror = (evt) => {
       this.#ws = null;
-      this.#error_handler(evt);
+      if (this.#error_handler != null) {
+        console.log('receive stream error.');
+      }
     };
   }
 
@@ -142,7 +159,10 @@ class WebSocketStream {
     this.#request_proto_encoder = Protos.get_proto_factory(request_proto_encoder_name);
     this.#response_proto_decoder = Protos.get_proto_factory(response_proto_decoder_name);
     this.#ws = null;
+
+    this.#start_handler = null;
     this.#response_handler = null;
+    this.#stop_handler = null;
     this.#error_handler = null;
   }
 
@@ -154,7 +174,9 @@ class WebSocketStream {
     if (this.#ws) {
       let bits = this.#request_proto_encoder.encode({}).finish();
       this.#ws.send(TypedArrayToBuffer(bits));
-      this.#start_handler()
+      if (this.#start_handler != null) {
+        this.#start_handler()
+      }
     } else {
       this.#create_web_socket(() => {
         this.start();
@@ -228,7 +250,7 @@ function CreateRadioListSocket() {
       'tvsc.service.communications.EmptyMessage',          //
       'tvsc.service.communications.Radios');
   list_communications_rpc.on_receive(function(reply) {
-    $('#communications_list').empty();
+    $('#radios_list').empty();
     for (let radio of reply.radios) {
       let item_element = $('<li>');
       item_element.append(document.createTextNode(communications.name));
@@ -239,11 +261,11 @@ function CreateRadioListSocket() {
         keys_values_element.append(key_value_element);
       }
       item_element.append(keys_values_element);
-      $('#communications_list').append(item_element);
+      $('#radio_list').append(item_element);
     }
   });
   list_communications_rpc.on_error(function(evt) {
-    $('#communications_list').text('<error>');
+    $('#radio__list').text('<error>');
   });
 }
 
@@ -264,9 +286,53 @@ function CreateEchoSocket() {
   });
 }
 
+function CreateTransmitSocket() {
+  transmit_rpc = new WebSocketRpc(
+      BuildWebSocketUrl('communications', 'transmit'),  //
+      'tvsc.service.communications.Message',            //
+      'tvsc.service.communications.SuccessResult');
+
+  transmit_rpc.on_receive(function(evt) {
+    $('#transmit_message').text();
+  });
+
+  transmit_rpc.on_error(function(evt) {
+    let item_element = $('<span>');
+    item_element.append(document.createTextNode('<TX error>'));
+    item_element.insertBefore('#received_messages_scroll_anchor');
+  });
+}
+
+function CreateReceiveStream() {
+  receive_stream = new WebSocketStream(
+      BuildWebSocketUrl('communications', 'receive'),  //
+      'tvsc.service.communications.EmptyMessage',      //
+      'tvsc.service.communications.Message');
+
+  receive_stream.on_receive(function(reply) {
+    let item_element = $('<div>');
+    item_element.append(document.createTextNode(reply.message));
+    item_element.insertBefore('#received_messages_scroll_anchor');
+  });
+
+  receive_stream.on_error(function(evt) {
+    let item_element = $('<div>');
+    item_element.append(document.createTextNode('<RX error>'));
+    item_element.insertBefore('#received_messages_scroll_anchor');
+  });
+
+  receive_stream.start();
+}
+
 function CallEcho(msg) {
   let echo_request = Protos.get_proto_factory('tvsc.service.echo.EchoRequest').create({msg: msg});
   echo_rpc.send(echo_request);
+}
+
+function CallTransmit(msg) {
+  let transmit_request =
+      Protos.get_proto_factory('tvsc.service.communications.Message').create({message: msg});
+  transmit_rpc.send(transmit_request);
 }
 
 // This script gives a callback after a javascript file has been loaded. We use this to ensure
@@ -318,10 +384,19 @@ function initialize_module() {
             'tvsc.service.communications.EmptyMessage',
             root.lookupType('tvsc.service.communications.EmptyMessage'));
         Protos.add_proto(
+            'tvsc.service.communications.Message',
+            root.lookupType('tvsc.service.communications.Message'));
+        Protos.add_proto(
             'tvsc.service.communications.Radios',
             root.lookupType('tvsc.service.communications.Radios'));
+        Protos.add_proto(
+            'tvsc.service.communications.SuccessResult',
+            root.lookupType('tvsc.service.communications.SuccessResult'));
 
         CreateRadioListSocket();
+        CreateTransmitSocket();
+
+        CreateReceiveStream();
       });
     });
   }

@@ -21,18 +21,18 @@
       <a href="#" style="float:right">Other Link</a>
     </div>
 
-    <div class="row">
-
-      <div class="leftcolumn">
-	<div class="menu_widget">
-	  <h2>Radios</h2>
-	  <ul id="communications_list">
-	  </ul>
-	  <form action="javascript:GetRadioList()">
-	    <input type="submit" value="Refresh"/>
-	  </form>
-	</div>
+    <div class="leftcolumn">
+      <div class="menu_widget">
+	<h2>Radios</h2>
+	<ul id="radios_list">
+	</ul>
+	<form action="javascript:GetRadioList()">
+	  <input type="submit" value="Refresh"/>
+	</form>
       </div>
+    </div>
+
+    <div class="row">
 
       <div class="centercolumn">
 	<div class="panel_widget">
@@ -51,9 +51,24 @@
 	    <button id="datetime_button"></button>
 	  </div>
 	</div>
-
       </div>
 
+    </div>
+
+    <div class="row">
+      <div class="centercolumn">
+	<div class="panel_widget chat_box">
+	  <h2>Transmit</h2>
+	  <div id="received_messages" class="msg_container">
+	    <div id="received_messages_scroll_anchor" class="scroll_anchor">
+	    </div>
+	  </div>
+	  <form action="javascript:CallTransmit($('#transmit_message').val())">
+	    <input type="text" id="transmit_message" value=""/>
+	    <input type="submit" value="Send"/>
+	  </form>
+	</div>
+      </div>
     </div>
 
     <div class="footer">
