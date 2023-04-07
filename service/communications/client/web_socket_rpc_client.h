@@ -75,11 +75,12 @@ void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp
          uWS::TemplatedApp<SSL>::WebSocketBehavior<CommunicationsClient>{
              .message = handle_transmit<SSL>,
          });
+
   app.ws<int>(base_path + "/receive",  //
               uWS::TemplatedApp<SSL>::WebSocketBehavior<int>{
                   .compression = uWS::DISABLED,
                   .maxPayloadLength = 128,
-                  .idleTimeout = 8,
+                  .idleTimeout = 960,
                   .maxBackpressure = 0,
                   .closeOnBackpressureLimit = false,
                   .resetIdleTimeoutOnSend = true,
