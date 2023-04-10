@@ -68,12 +68,8 @@ class InspectableDataSink final
   bool data_available() const { return data_available_; }
 
   size_t try_consume() {
-    size_t elements_consumed{0};
-    if (data_available_) {
-      data_available_ = false;
-      elements_consumed = this->ring_buffer()->consume(buffer_.size(), buffer_.data());
-    }
-    return elements_consumed;
+    data_available_ = false;
+    return this->ring_buffer()->consume(buffer_.size(), buffer_.data());
   }
 
   void reset() {
@@ -198,6 +194,19 @@ TYPED_TEST(RingBufferTest, SinkNotifiedOnWriteOfMtu) {
   EXPECT_TRUE(sink.data_available());
 }
 
+TYPED_TEST(RingBufferTest, SinkCanReadSingleElement) {
+  typename TestFixture::DataSourceT source{};
+  typename TestFixture::DataSinkT sink{};
+
+  typename TestFixture::RingBufferT ring{source, sink};
+
+  source.try_supply(1);
+
+  EXPECT_EQ(1, sink.try_consume());
+
+  EXPECT_EQ(source.prev_element(), sink.last_buffer_read()[0]);
+}
+
 TYPED_TEST(RingBufferTest, SinkCanReadMtu) {
   typename TestFixture::DataSourceT source{};
   typename TestFixture::DataSinkT sink{};
@@ -215,6 +224,29 @@ TYPED_TEST(RingBufferTest, SinkCanReadMtu) {
     EXPECT_EQ(element, sink.last_buffer_read()[i]);
     ++element;
   }
+}
+
+TYPED_TEST(RingBufferTest, CanPeekSingleElement) {
+  typename TestFixture::RingBufferT ring{};
+
+  ring.supply(1);
+
+  const int* value{};
+  EXPECT_TRUE(ring.peek(&value));
+  EXPECT_EQ(1, *value);
+}
+
+TYPED_TEST(RingBufferTest, CanPeekPopSingleElement) {
+  typename TestFixture::RingBufferT ring{};
+
+  ring.supply(1);
+
+  const int* value{};
+  ASSERT_TRUE(ring.peek(&value));
+  ASSERT_EQ(1, *value);
+
+  EXPECT_TRUE(ring.pop());
+  EXPECT_TRUE(ring.empty());
 }
 
 TYPED_TEST(RingBufferTest, SinkNotNotifiedOnWriteOfLessThanMtu) {

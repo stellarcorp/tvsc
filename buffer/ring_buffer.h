@@ -10,9 +10,9 @@
 namespace tvsc::buffer {
 
 /**
- * Lock-free RingBuffer with a single source and a single sink.
+ * Lock-free paged RingBuffer with a single optional source and a single optional sink.
  */
-template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS,
+template <typename ElementT, size_t PAGE_SIZE, size_t NUM_PAGES,
           bool PRIORITIZE_OLD_ELEMENTS = true>
 class RingBuffer final {
  public:
@@ -51,29 +51,33 @@ class RingBuffer final {
   std::atomic<size_t> read_pointer_{0};
   std::atomic<size_t> write_pointer_{0};
 
-  std::array<Buffer<ElementT, BUFFER_SIZE>, NUM_BUFFERS> buffers_{};
-  DataSource* source_;
-  DataSink* sink_;
+  std::array<Buffer<ElementT, PAGE_SIZE>, NUM_PAGES> buffers_{};
+  DataSource* source_{nullptr};
+  DataSink* sink_{nullptr};
 
   void check_data_available() {
     // If we have an mtu's worth of data, signal the sink that it can read more data.
-    if (elements_available() >= mtu()) {
-      sink_->signal_data_available();
+    if (sink_ != nullptr) {
+      if (elements_available() >= mtu()) {
+        sink_->signal_data_available();
+      }
     }
   }
 
   void check_data_needed() {
     // If we have space to store an mtu's worth of data, signal the source to provide more data.
-    if (max_buffered_elements() - elements_available() >= mtu()) {
-      source_->signal_data_needed();
+    if (source_ != nullptr) {
+      if (max_buffered_elements() - elements_available() >= mtu()) {
+        source_->signal_data_needed();
+      }
     }
   }
 
-  size_t compute_buffer_index(size_t pointer) const { return pointer / BUFFER_SIZE; }
+  size_t compute_buffer_index(size_t pointer) const { return pointer / PAGE_SIZE; }
 
-  size_t compute_buffer_offset(size_t pointer) const { return pointer % BUFFER_SIZE; }
+  size_t compute_buffer_offset(size_t pointer) const { return pointer % PAGE_SIZE; }
 
-  size_t compute_pointer(size_t index, size_t offset) const { return index * BUFFER_SIZE + offset; }
+  size_t compute_pointer(size_t index, size_t offset) const { return index * PAGE_SIZE + offset; }
 
   size_t compute_elements_available(size_t read_pointer_value, size_t write_pointer_value) const {
     return write_pointer_value - read_pointer_value;
@@ -84,24 +88,26 @@ class RingBuffer final {
     if constexpr (PRIORITIZE_OLD_ELEMENTS) {
       return std::min(max_buffered_elements() -
                           compute_elements_available(read_pointer_value, write_pointer_value),
-                      std::min(BUFFER_SIZE - write_buffer_offset, num_elements));
+                      std::min(PAGE_SIZE - write_buffer_offset, num_elements));
     } else {
       return std::min(max_buffered_elements(),
-                      std::min(BUFFER_SIZE - write_buffer_offset, num_elements));
+                      std::min(PAGE_SIZE - write_buffer_offset, num_elements));
     }
   }
 
  public:
+  RingBuffer() = default;
+
   RingBuffer(DataSource& source, DataSink& sink) : source_(&source), sink_(&sink) {
     source_->set_ring_buffer(*this);
     sink_->set_ring_buffer(*this);
     source_->signal_data_needed();
   }
 
-  constexpr size_t mtu() const { return BUFFER_SIZE; }
-  constexpr size_t buffer_size() const { return BUFFER_SIZE; }
-  constexpr size_t num_buffers() const { return NUM_BUFFERS; }
-  constexpr size_t max_buffered_elements() const { return NUM_BUFFERS * BUFFER_SIZE; }
+  constexpr size_t mtu() const { return PAGE_SIZE; }
+  constexpr size_t buffer_size() const { return PAGE_SIZE; }
+  constexpr size_t num_buffers() const { return NUM_PAGES; }
+  constexpr size_t max_buffered_elements() const { return NUM_PAGES * PAGE_SIZE; }
 
   /**
    * Consume up to num_elements from the RingBuffer. The number of elements made available may be
@@ -119,10 +125,10 @@ class RingBuffer final {
 
     size_t elements_consumed{
         std::min(compute_elements_available(read_pointer_value, write_pointer_value),
-                 std::min(BUFFER_SIZE - read_buffer_offset, num_elements))};
+                 std::min(PAGE_SIZE - read_buffer_offset, num_elements))};
 
     if (elements_consumed > 0) {
-      buffers_[read_buffer_index % NUM_BUFFERS].read(read_buffer_offset, elements_consumed, dest);
+      buffers_[read_buffer_index % NUM_PAGES].read(read_buffer_offset, elements_consumed, dest);
 
       read_buffer_offset += elements_consumed;
       size_t new_read_pointer_value = compute_pointer(read_buffer_index, read_buffer_offset);
@@ -143,6 +149,57 @@ class RingBuffer final {
    * Returns true if an element was consumed.
    */
   bool consume(ElementT* dest) { return consume(1, dest) == 1; }
+
+  /**
+   * Peek at a single element from the RingBuffer.
+   *
+   * Returns true if an element was available.
+   */
+  bool peek(const ElementT** const dest) const {
+    size_t read_pointer_value{read_pointer_.load()};
+    size_t write_pointer_value{write_pointer_.load()};
+
+    size_t read_buffer_index{compute_buffer_index(read_pointer_value)};
+    size_t read_buffer_offset{compute_buffer_offset(read_pointer_value)};
+
+    bool elements_available{compute_elements_available(read_pointer_value, write_pointer_value) >
+                            0};
+
+    if (elements_available) {
+      *dest = &buffers_[read_buffer_index % NUM_PAGES][read_buffer_offset];
+    }
+
+    return elements_available;
+  }
+
+  /**
+   * Pop a single element from the RingBuffer, if one is available.
+   *
+   * Returns true if an element was available to be removed.
+   */
+  bool pop() {
+    size_t read_pointer_value{read_pointer_.load()};
+    size_t write_pointer_value{write_pointer_.load()};
+
+    size_t read_buffer_index{compute_buffer_index(read_pointer_value)};
+    size_t read_buffer_offset{compute_buffer_offset(read_pointer_value)};
+
+    bool elements_available{compute_elements_available(read_pointer_value, write_pointer_value) >
+                            0};
+
+    if (elements_available) {
+      read_buffer_offset += 1;
+      size_t new_read_pointer_value = compute_pointer(read_buffer_index, read_buffer_offset);
+      if (!read_pointer_.compare_exchange_strong(read_pointer_value, new_read_pointer_value)) {
+        elements_available = false;
+      }
+    }
+
+    check_data_available();
+    check_data_needed();
+
+    return elements_available;
+  }
 
   /**
    * Supply num_elements to the RingBuffer. The number of elements actually copied into the
@@ -179,8 +236,7 @@ class RingBuffer final {
       }
 
       if (elements_supplied > 0) {
-        buffers_[write_buffer_index % NUM_BUFFERS].write(write_buffer_offset, elements_supplied,
-                                                         src);
+        buffers_[write_buffer_index % NUM_PAGES].write(write_buffer_offset, elements_supplied, src);
 
         write_buffer_offset += elements_supplied;
 
@@ -198,7 +254,7 @@ class RingBuffer final {
     return elements_supplied;
   }
 
-  bool supply(const ElementT* src) { return supply(1, src) == 1; }
+  bool supply(const ElementT& src) { return supply(1, &src) == 1; }
 
   size_t elements_available() const {
     size_t read_pointer_value{read_pointer_.load()};
