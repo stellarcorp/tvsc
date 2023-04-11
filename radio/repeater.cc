@@ -22,6 +22,15 @@ const uint8_t RF69_DIO0{tvsc::radio::SingleRadioPinMapping::interrupt_pin()};
 constexpr uint32_t TX_SIZE_THRESHOLD{16};
 constexpr uint32_t TX_TIME_THRESHOLD_MS{50};
 
+struct RadioStatistics final {
+  uint32_t packet_rx_count{};
+  uint32_t packet_tx_count{};
+  uint32_t dropped_packet_count{};
+  uint32_t tx_failure_count{};
+  uint64_t last_tx_time{};
+  uint64_t last_print_time{};
+};
+
 void print_id(const tvsc_radio_RadioIdentification& id) {
   tvsc::hal::output::print("{");
   tvsc::hal::output::print(id.expanded_id);
@@ -98,14 +107,10 @@ int main() {
 
   // Start time in milliseconds.
   uint64_t start = tvsc::hal::time::time_millis();
-
-  uint32_t packet_rx_count{};
-  uint32_t packet_tx_count{};
-  uint32_t dropped_packet_count{};
-  uint32_t tx_failure_count{};
   uint32_t previous_sequence_number{};
-  uint64_t last_tx_time{start};
-  uint64_t last_print_time{};
+  RadioStatistics statistics{};
+  statistics.last_tx_time = start;
+  statistics.last_print_time = start;
 
   std::vector<tvsc_radio_Packet> packet_queue{};
   std::vector<tvsc_radio_Packet> send_queue{packet_queue};
@@ -121,11 +126,11 @@ int main() {
         tvsc_radio_Packet packet{};
         if (decode_packet(buffer, packet)) {
           if (packet.sender != configuration.id()) {
-            ++packet_rx_count;
+            ++statistics.packet_rx_count;
 
             if (packet.sequence_number != previous_sequence_number + 1 &&
                 previous_sequence_number != 0) {
-              ++dropped_packet_count;
+              ++statistics.dropped_packet_count;
             }
             previous_sequence_number = packet.sequence_number;
 
@@ -144,7 +149,7 @@ int main() {
 
     if (!packet_queue.empty()) {
       if (packet_queue.size() > TX_SIZE_THRESHOLD ||
-          tvsc::hal::time::time_millis() - last_tx_time > TX_TIME_THRESHOLD_MS) {
+          tvsc::hal::time::time_millis() - statistics.last_tx_time > TX_TIME_THRESHOLD_MS) {
         send_queue.swap(packet_queue);
         // We are going to pop packets off of the back, since that is an O(1) operation, but popping
         // off the front is O(n). And while reversing the vector is also O(n), we only have to do it
@@ -163,11 +168,11 @@ int main() {
 
           encode_packet(packet, buffer);
           if (send(rf69, buffer)) {
-            ++packet_tx_count;
+            ++statistics.packet_tx_count;
           } else {
             // Any packets that we fail to send, we put back in the queue to try again.
             packet_queue.emplace_back(packet);
-            ++tx_failure_count;
+            ++statistics.tx_failure_count;
             // Typically, after a single failure, we have a lot more failures. So, just go back to
             // receiving and try again in a moment.
             break;
@@ -187,21 +192,22 @@ int main() {
       }
     }
 
-    if (tvsc::hal::time::time_millis() - last_print_time > 1000) {
-      last_print_time = tvsc::hal::time::time_millis();
+    if (tvsc::hal::time::time_millis() - statistics.last_print_time > 1000) {
+      statistics.last_print_time = tvsc::hal::time::time_millis();
 
       tvsc::hal::output::print("packet_rx_count: ");
-      tvsc::hal::output::print(packet_rx_count);
+      tvsc::hal::output::print(statistics.packet_rx_count);
       tvsc::hal::output::print(", packet_tx_count: ");
-      tvsc::hal::output::print(packet_tx_count);
+      tvsc::hal::output::print(statistics.packet_tx_count);
       tvsc::hal::output::print(", packet_queue.size(): ");
       tvsc::hal::output::print(packet_queue.size());
       tvsc::hal::output::print(", dropped_packet_count: ");
-      tvsc::hal::output::print(dropped_packet_count);
+      tvsc::hal::output::print(statistics.dropped_packet_count);
       tvsc::hal::output::print(", tx_failure_count: ");
-      tvsc::hal::output::print(tx_failure_count);
+      tvsc::hal::output::print(statistics.tx_failure_count);
       tvsc::hal::output::print(", throughput: ");
-      tvsc::hal::output::print(packet_tx_count * 1000.f / (tvsc::hal::time::time_millis() - start));
+      tvsc::hal::output::print(statistics.packet_tx_count * 1000.f /
+                               (tvsc::hal::time::time_millis() - start));
       tvsc::hal::output::print(" packets/sec");
       tvsc::hal::output::println();
     }
