@@ -1,10 +1,10 @@
-#include "buffer/packet_queue.h"
+#include "packet/packet_queue.h"
 
 #include <array>
 
 #include "gmock/gmock.h"
 
-namespace tvsc::buffer {
+namespace tvsc::packet {
 
 using TypicalPacketT = std::array<unsigned char, 64>;
 
@@ -192,4 +192,4 @@ TEST(PacketQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingLow) {
   EXPECT_TRUE(packet == control_packet || packet == normal_packet);
 }
 
-}  // namespace tvsc::buffer
+}  // namespace tvsc::packet

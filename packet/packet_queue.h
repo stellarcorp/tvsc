@@ -5,7 +5,7 @@
 #include "buffer/ring_buffer.h"
 #include "random/random.h"
 
-namespace tvsc::buffer {
+namespace tvsc::packet {
 
 template <typename PacketT, size_t NUM_PACKETS>
 class PacketQueue;
@@ -119,10 +119,10 @@ class PacketQueue final {
     }
   }
 
-  RingBuffer<PacketT, 1, NUM_PACKETS, false> immediate_priority_{};
-  RingBuffer<PacketT, 1, NUM_PACKETS, false> control_priority_{};
-  RingBuffer<PacketT, 1, NUM_PACKETS, false> normal_priority_{};
-  RingBuffer<PacketT, 1, NUM_PACKETS, false> low_priority_{};
+  tvsc::buffer::RingBuffer<PacketT, 1, NUM_PACKETS, false> immediate_priority_{};
+  tvsc::buffer::RingBuffer<PacketT, 1, NUM_PACKETS, false> control_priority_{};
+  tvsc::buffer::RingBuffer<PacketT, 1, NUM_PACKETS, false> normal_priority_{};
+  tvsc::buffer::RingBuffer<PacketT, 1, NUM_PACKETS, false> low_priority_{};
 
   typename PacketSink<PacketT, NUM_PACKETS>::PeekResponse peek() const {
     typename PacketSink<PacketT, NUM_PACKETS>::PeekResponse result{};
@@ -196,4 +196,4 @@ class PacketQueue final {
   PacketSink<PacketT, NUM_PACKETS> create_sink() { return PacketSink<PacketT, NUM_PACKETS>{*this}; }
 };
 
-}  // namespace tvsc::buffer
+}  // namespace tvsc::packet
