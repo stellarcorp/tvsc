@@ -546,12 +546,20 @@ class RF69HCW final {
     return received_data;
   }
 
+  /**
+   * Helper function to put the radio in the received state, block until an interrupt is received,
+   * and then return the received packet.
+   */
   bool recv(uint8_t* buffer, uint8_t* length) {
     set_mode_rx();
     wait_available();
     return read_received_packet(buffer, length);
   }
 
+  /**
+   * Helper function to put the radio in the received state, block with timeout until an interrupt
+   * is received, and then return the received packet.
+   */
   bool recv(uint8_t* buffer, uint8_t* length, uint16_t timeout_ms) {
     set_mode_rx();
     wait_available_timeout(timeout_ms);
