@@ -1,18 +1,35 @@
 cc_library(
     name = "packet",
+    srcs = [
+        "packet.cc",
+    ],
     hdrs = [
+        "encoding.h",
+        "packet.h",
         "packet_queue.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
+        "//base",
         "//buffer",
         "//random",
+        "//third_party/glog",
     ],
 )
 
 cc_test(
     name = "packet_queue_test",
     srcs = ["packet_queue_test.cc"],
+    deps = [
+        ":packet",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "encoding_test",
+    srcs = ["encoding_test.cc"],
     deps = [
         ":packet",
         "//third_party/glog",
