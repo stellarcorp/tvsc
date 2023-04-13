@@ -5,7 +5,7 @@
 #include "buffer/ring_buffer.h"
 #include "random/random.h"
 
-namespace tvsc::packet {
+namespace tvsc::radio {
 
 template <typename PacketT, size_t NUM_PACKETS>
 class PacketTxQueue;
@@ -203,4 +203,4 @@ template <typename PacketT, size_t NUM_PACKETS>
 using PacketRxQueue =
     tvsc::buffer::RingBuffer<PacketT, 1, NUM_PACKETS, /*PRIORITIZE_OLD_ELEMENTS*/ false>;
 
-}  // namespace tvsc::packet
+}  // namespace tvsc::radio

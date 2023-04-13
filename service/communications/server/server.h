@@ -5,8 +5,8 @@
 #include <mutex>
 
 #include "grpcpp/grpcpp.h"
-#include "packet/packet.h"
-#include "packet/packet_queue.h"
+#include "radio/packet.h"
+#include "radio/packet_queue.h"
 #include "service/communications/common/communications.grpc.pb.h"
 #include "service/communications/common/communications.pb.h"
 
@@ -19,7 +19,7 @@ class CommunicationsServiceImpl final : public CommunicationsService::Service {
 
   std::map<grpc::ServerWriter<Message>*, std::vector<Message>> writer_queues_{};
 
-  void post_received_packet(const tvsc::packet::Packet& packet);
+  void post_received_packet(const tvsc::radio::Packet& packet);
 
  public:
   grpc::Status list_radios(grpc::ServerContext* context, const EmptyMessage* request,

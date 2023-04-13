@@ -4,10 +4,10 @@
 #include <type_traits>
 
 #include "buffer/buffer.h"
-#include "packet/packet.h"
 #include "radio/fragment.h"
+#include "radio/packet.h"
 
-namespace tvsc::packet {
+namespace tvsc::radio {
 
 /**
  * An encoding of a packet into transmittable fragment buffers. Note that any information about the
@@ -16,7 +16,7 @@ namespace tvsc::packet {
 template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
 struct EncodedPacket final {
   size_t num_fragments{};
-  tvsc::buffer::Buffer<tvsc::radio::Fragment<MTU>, MAX_FRAGMENTS_PER_PACKET> buffers{};
+  tvsc::buffer::Buffer<Fragment<MTU>, MAX_FRAGMENTS_PER_PACKET> buffers{};
 };
 
 template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
@@ -52,7 +52,7 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
 
   uint8_t fragment_index{0};
   size_t bytes_written{0};
-  tvsc::radio::Fragment<MTU>* current_fragment{nullptr};
+  Fragment<MTU>* current_fragment{nullptr};
   size_t remaining_payload{packet.payload_length()};
   bool have_written_payload_size{false};
   bool have_more_to_encode{true};
@@ -121,7 +121,7 @@ void assemble(const EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments,
   size_t bytes_read{0};
   size_t header_size{0};
   size_t payload_bytes_read{0};
-  const tvsc::radio::Fragment<MTU>* current_fragment{nullptr};
+  const Fragment<MTU>* current_fragment{nullptr};
 
   for (uint8_t fragment_index = 0; fragment_index < fragments.num_fragments; ++fragment_index) {
     current_fragment = &fragments.buffers[fragment_index];
@@ -162,4 +162,4 @@ void assemble(const EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments,
   }
 }
 
-}  // namespace tvsc::packet
+}  // namespace tvsc::radio

@@ -1,9 +1,9 @@
-#include "packet/encoding.h"
+#include "radio/encoding.h"
 
 #include "gmock/gmock.h"
-#include "packet/packet.h"
+#include "radio/packet.h"
 
-namespace tvsc::packet {
+namespace tvsc::radio {
 
 template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
 Packet roundtrip(const Packet& in) {
@@ -278,4 +278,4 @@ TEST(EncodingTest, CanEncodeTinyPacketWithPayloadLargerThanMtu) {
   EXPECT_TRUE(roundtrip_gives_same_packet_tiny_sizes(packet));
 }
 
-}  // namespace tvsc::packet
+}  // namespace tvsc::radio

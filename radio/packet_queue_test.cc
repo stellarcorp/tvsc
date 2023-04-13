@@ -1,10 +1,10 @@
-#include "packet/packet_queue.h"
+#include "radio/packet_queue.h"
 
 #include <array>
 
 #include "gmock/gmock.h"
 
-namespace tvsc::packet {
+namespace tvsc::radio {
 
 using TypicalPacketT = std::array<unsigned char, 64>;
 
@@ -192,4 +192,4 @@ TEST(PacketTxQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingLow) {
   EXPECT_TRUE(packet == control_packet || packet == normal_packet);
 }
 
-}  // namespace tvsc::packet
+}  // namespace tvsc::radio

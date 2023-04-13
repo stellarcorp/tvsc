@@ -9,7 +9,7 @@
 
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
-#include "packet/packet.h"
+#include "radio/packet.h"
 #include "service/communications/common/communications.grpc.pb.h"
 #include "service/communications/common/communications.pb.h"
 
@@ -17,7 +17,7 @@ namespace tvsc::service::communications {
 
 using namespace std::literals::chrono_literals;
 
-void CommunicationsServiceImpl::post_received_packet(const tvsc::packet::Packet& packet) {
+void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& packet) {
   DLOG(INFO) << "CommunicationsServerImpl::post_received_packet()";
   {
     Message message{};

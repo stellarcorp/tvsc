@@ -1,8 +1,8 @@
-#include "packet/packet.h"
+#include "radio/packet.h"
 
 #include <string>
 
-namespace tvsc::packet {
+namespace tvsc::radio {
 
 std::string to_string(Protocol protocol) {
   std::string result{};
@@ -17,4 +17,4 @@ std::string to_string(Protocol protocol) {
   return result;
 }
 
-}  // namespace tvsc::packet
+}  // namespace tvsc::radio

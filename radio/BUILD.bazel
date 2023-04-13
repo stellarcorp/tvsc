@@ -5,8 +5,14 @@ load("//platforms:hex.bzl", "hex")
 
 cc_library(
     name = "radio",
+    srcs = [
+        "packet.cc",
+    ],
     hdrs = [
+        "encoding.h",
         "fragment.h",
+        "packet.h",
+        "packet_queue.h",
         "radio_configuration.h",
         "settings.h",
         "transceiver.h",
@@ -479,6 +485,26 @@ cc_test(
     deps = [
         ":radio",
         "//base",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "packet_queue_test",
+    srcs = ["packet_queue_test.cc"],
+    deps = [
+        ":radio",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "encoding_test",
+    srcs = ["encoding_test.cc"],
+    deps = [
+        ":radio",
+        "//third_party/glog",
         "//third_party/gtest",
     ],
 )

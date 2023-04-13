@@ -11,7 +11,7 @@
 #include "base/except.h"
 #include "buffer/buffer.h"
 
-namespace tvsc::packet {
+namespace tvsc::radio {
 
 namespace internal {
 
@@ -144,4 +144,4 @@ std::string to_string(const PacketT<MAX_PAYLOAD_SIZE>& packet) {
 constexpr size_t DEFAULT_PACKET_MAX_PAYLOAD_SIZE{1024};
 using Packet = PacketT<DEFAULT_PACKET_MAX_PAYLOAD_SIZE>;
 
-}  // namespace tvsc::packet
+}  // namespace tvsc::radio
