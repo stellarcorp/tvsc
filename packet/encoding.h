@@ -73,17 +73,11 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
   size_t bytes_written{0};
   Fragment<MTU>* current_fragment{nullptr};
   size_t remaining_payload{packet.payload_length()};
-  LOG(INFO) << "Length of payload to encode: " << remaining_payload;
   bool have_written_payload_size{false};
   bool have_more_to_encode{true};
 
   for (fragment_index = 0; fragment_index < MAX_FRAGMENTS_PER_PACKET && have_more_to_encode;
        ++fragment_index) {
-    LOG(INFO) << "fragment_index: " << static_cast<int>(fragment_index);
-    LOG(INFO) << "have_more_to_encode: " << have_more_to_encode;
-    LOG(INFO) << "have_written_payload_size: " << have_written_payload_size;
-    LOG(INFO) << "remaining_payload: " << remaining_payload;
-
     current_fragment = &fragments.buffers[fragment_index];
     bytes_written = 0;
 
@@ -120,7 +114,6 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
       bytes_written += amount_to_write;
     }
     current_fragment->length = bytes_written;
-    LOG(INFO) << "encoded fragment length: " << current_fragment->length;
 
     have_more_to_encode = !have_written_payload_size || remaining_payload > 0;
   }
@@ -149,7 +142,6 @@ void assemble(const EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments,
   size_t payload_bytes_read{0};
   const Fragment<MTU>* current_fragment{nullptr};
 
-  LOG(INFO) << "Num fragments: " << fragments.num_fragments;
   for (uint8_t fragment_index = 0; fragment_index < fragments.num_fragments; ++fragment_index) {
     current_fragment = &fragments.buffers[fragment_index];
     bytes_read = 0;
@@ -157,17 +149,11 @@ void assemble(const EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments,
     if (fragment_index == 0) {
       // These fields are included in every fragment.
       packet.set_protocol(static_cast<Protocol>(current_fragment->data[bytes_read++]));
-      LOG(INFO) << "byte: " << (bytes_read - 1) << ", protocol: " << to_string(packet.protocol());
       packet.set_sender_id(current_fragment->data[bytes_read++]);
-      LOG(INFO) << "byte: " << (bytes_read - 1) << ", sender_id: " << to_string(packet.sender_id());
       packet.set_destination_id(current_fragment->data[bytes_read++]);
-      LOG(INFO) << "byte: " << (bytes_read - 1)
-                << ", destination_id: " << to_string(packet.destination_id());
 
       packet.set_sequence_number((current_fragment->data[bytes_read] << 8) |
                                  current_fragment->data[bytes_read + 1]);
-      LOG(INFO) << "bytes: [" << bytes_read << "-" << (bytes_read + 1)
-                << "], sequence_number: " << to_string(packet.sequence_number());
       bytes_read += 2;
 
       // Skip over the fragment_index, since the fragments are in the proper order now.
@@ -177,12 +163,8 @@ void assemble(const EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments,
 
       size_t payload_size{0};
       for (uint8_t i = 0; i < Packet::payload_size_bytes_required(); ++i) {
-        LOG(INFO) << "assemble() -- reading payload_size -- i: " << static_cast<uint32_t>(i)
-                  << ", current_fragment->data[bytes_read + i]: "
-                  << static_cast<uint32_t>(current_fragment->data[bytes_read + i]);
         payload_size = (payload_size << 8) | current_fragment->data[bytes_read + i];
       }
-      LOG(INFO) << "assemble() -- payload_size: " << payload_size;
       bytes_read += Packet::payload_size_bytes_required();
       packet.set_payload_length(payload_size);
     } else {
@@ -192,8 +174,6 @@ void assemble(const EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments,
     // Payload handling.
     const size_t payload_bytes_to_copy{current_fragment->length - bytes_read};
     if (payload_bytes_to_copy > 0) {
-      LOG(INFO) << "assemble() -- copying payload -- payload_bytes_to_copy: "
-                << payload_bytes_to_copy;
       packet.payload().write(payload_bytes_read, payload_bytes_to_copy,
                              current_fragment->data.data() + bytes_read);
       payload_bytes_read += payload_bytes_to_copy;
