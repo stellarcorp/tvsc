@@ -46,8 +46,9 @@ namespace tvsc::radio {
  * length are actually [0,8] where zero implies that the SYNC functionality should be turned off.
  * Not sure why, but the RadioHead implementation restricts the sync word size to 4 octets.
  *
- * - The implementation does not allow for an empty payload, so the effective range for the DATA
- * segment is 1-60 octets.
+ * - The implementation does not allow for an empty payload. Also, the hardware FIFO is documented
+ * as 66 bytes, but requires the first byte as a length. So the effective range for the DATA segment
+ * is likely 1-65 octets.
  *
  * - Longer payloads are possible if encryption is off. There might be some regulatory implications
  * though. Without encryption, we cannot send flight or control messages per FCC regulations. Maybe
@@ -56,7 +57,8 @@ namespace tvsc::radio {
  */
 
 template <>
-std::unordered_map<tvsc_radio_Function, tvsc_radio_Value> generate_capabilities_map<RF69HCW>() {
+inline std::unordered_map<tvsc_radio_Function, tvsc_radio_Value>
+generate_capabilities_map<RF69HCW>() {
   std::unordered_map<tvsc_radio_Function, tvsc_radio_Value> capabilities{};
   // We know the number of settings at compile time, and we know that number will not change.
   // Because of this, we can reserve the exact number of buckets we need and use a load factor of
@@ -215,7 +217,8 @@ inline void get_channel_activity_threshold_dbm(RF69HCW& driver, tvsc_radio_Discr
 }
 
 template <>
-tvsc_radio_DiscreteValue read_setting<RF69HCW>(RF69HCW& driver, tvsc_radio_Function function) {
+inline tvsc_radio_DiscreteValue read_setting<RF69HCW>(RF69HCW& driver,
+                                                      tvsc_radio_Function function) {
   tvsc_radio_DiscreteValue value{};
   switch (function) {
     case tvsc_radio_Function_CARRIER_FREQUENCY_HZ: {
@@ -263,8 +266,8 @@ tvsc_radio_DiscreteValue read_setting<RF69HCW>(RF69HCW& driver, tvsc_radio_Funct
 }
 
 template <>
-void write_setting<RF69HCW>(RF69HCW& driver, tvsc_radio_Function function,
-                            const tvsc_radio_DiscreteValue& value) {
+inline void write_setting<RF69HCW>(RF69HCW& driver, tvsc_radio_Function function,
+                                   const tvsc_radio_DiscreteValue& value) {
   switch (function) {
     case tvsc_radio_Function_CARRIER_FREQUENCY_HZ: {
       set_frequency_hz(driver, value);
@@ -309,7 +312,8 @@ void write_setting<RF69HCW>(RF69HCW& driver, tvsc_radio_Function function,
   }
 }
 
-std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> high_throughput_configuration() {
+inline std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue>
+high_throughput_configuration() {
   std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> configuration{};
   configuration.max_load_factor(1.f);
   configuration.reserve(16);
@@ -382,7 +386,7 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> high_throughpu
   return configuration;
 }
 
-std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> standard_configuration() {
+inline std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> standard_configuration() {
   std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> configuration{};
   configuration.max_load_factor(1.f);
   configuration.reserve(16);
@@ -455,13 +459,14 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> standard_confi
   // TODO(James): Determine why the RX and TX thresholds need to be inverted to get successful
   // behavior.
   configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
-                        tvsc::radio::as_discrete_value<float>(-50.f)});
+                        tvsc::radio::as_discrete_value<float>(-0.5f)});
 
   return configuration;
 }
 
 template <>
-std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> default_configuration<RF69HCW>() {
+inline std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue>
+default_configuration<RF69HCW>() {
   return standard_configuration();
 }
 

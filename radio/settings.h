@@ -15,7 +15,7 @@ namespace tvsc::radio {
  * Generate a Value that is a range of float values from a to b. The value of the inclusivity
  * parameter dictates which of the endpoints is included.
  */
-tvsc_radio_Value float_range(
+inline tvsc_radio_Value float_range(
     float a, float b,
     tvsc_radio_RangeInclusivity inclusivity = tvsc_radio_RangeInclusivity_INCLUSIVE_INCLUSIVE) {
   tvsc_radio_Value result{};
@@ -29,7 +29,7 @@ tvsc_radio_Value float_range(
  * Generate a Value that is a range of 32-bit integer values from a to b. The value of the
  * inclusivity parameter dictates which of the endpoints is included.
  */
-tvsc_radio_Value int32_range(
+inline tvsc_radio_Value int32_range(
     int32_t a, int32_t b,
     tvsc_radio_RangeInclusivity inclusivity = tvsc_radio_RangeInclusivity_INCLUSIVE_INCLUSIVE) {
   tvsc_radio_Value result{};
@@ -43,7 +43,7 @@ tvsc_radio_Value int32_range(
  * Generate a Value that is a range of 64-bit integer values from a to b. The value of the
  * inclusivity parameter dictates which of the endpoints is included.
  */
-tvsc_radio_Value int64_range(
+inline tvsc_radio_Value int64_range(
     int64_t a, int64_t b,
     tvsc_radio_RangeInclusivity inclusivity = tvsc_radio_RangeInclusivity_INCLUSIVE_INCLUSIVE) {
   tvsc_radio_Value result{};
@@ -58,7 +58,7 @@ tvsc_radio_Value int64_range(
  */
 // Value from a list of enum values.
 template <typename T>
-tvsc_radio_Value enumerated(std::initializer_list<T> values) {
+inline tvsc_radio_Value enumerated(std::initializer_list<T> values) {
   tvsc_radio_Value result{};
   result.discrete_count = values.size();
 
@@ -74,7 +74,7 @@ tvsc_radio_Value enumerated(std::initializer_list<T> values) {
 
 // Value from a list of int32 values.
 template <>
-tvsc_radio_Value enumerated<int32_t>(std::initializer_list<int32_t> values) {
+inline tvsc_radio_Value enumerated<int32_t>(std::initializer_list<int32_t> values) {
   tvsc_radio_Value result{};
   result.discrete_count = values.size();
 
@@ -90,7 +90,7 @@ tvsc_radio_Value enumerated<int32_t>(std::initializer_list<int32_t> values) {
 
 // Value from a list of int64 values.
 template <>
-tvsc_radio_Value enumerated<int64_t>(std::initializer_list<int64_t> values) {
+inline tvsc_radio_Value enumerated<int64_t>(std::initializer_list<int64_t> values) {
   tvsc_radio_Value result{};
   result.discrete_count = values.size();
 
@@ -106,7 +106,7 @@ tvsc_radio_Value enumerated<int64_t>(std::initializer_list<int64_t> values) {
 
 // Value from a list of float values.
 template <>
-tvsc_radio_Value enumerated<float>(std::initializer_list<float> values) {
+inline tvsc_radio_Value enumerated<float>(std::initializer_list<float> values) {
   tvsc_radio_Value result{};
   result.discrete_count = values.size();
 
@@ -125,13 +125,13 @@ tvsc_radio_Value enumerated<float>(std::initializer_list<float> values) {
  */
 // DiscreteValue translated into an enum value.
 template <typename T>
-T as(const tvsc_radio_DiscreteValue& value) {
+inline T as(const tvsc_radio_DiscreteValue& value) {
   int32_t int_value = as<int32_t>(value);
   return static_cast<T>(int_value);
 }
 
 template <>
-int8_t as<int8_t>(const tvsc_radio_DiscreteValue& value) {
+inline int8_t as<int8_t>(const tvsc_radio_DiscreteValue& value) {
   if (value.which_value == 0) {
     return value.value.int32_value;
   } else {
@@ -140,7 +140,7 @@ int8_t as<int8_t>(const tvsc_radio_DiscreteValue& value) {
 }
 
 template <>
-int16_t as<int16_t>(const tvsc_radio_DiscreteValue& value) {
+inline int16_t as<int16_t>(const tvsc_radio_DiscreteValue& value) {
   if (value.which_value == 0) {
     return value.value.int32_value;
   } else {
@@ -149,7 +149,7 @@ int16_t as<int16_t>(const tvsc_radio_DiscreteValue& value) {
 }
 
 template <>
-int32_t as<int32_t>(const tvsc_radio_DiscreteValue& value) {
+inline int32_t as<int32_t>(const tvsc_radio_DiscreteValue& value) {
   if (value.which_value == 0) {
     return value.value.int32_value;
   } else {
@@ -158,7 +158,7 @@ int32_t as<int32_t>(const tvsc_radio_DiscreteValue& value) {
 }
 
 template <>
-int64_t as<int64_t>(const tvsc_radio_DiscreteValue& value) {
+inline int64_t as<int64_t>(const tvsc_radio_DiscreteValue& value) {
   if (value.which_value == 1) {
     return value.value.int64_value;
   } else {
@@ -167,7 +167,7 @@ int64_t as<int64_t>(const tvsc_radio_DiscreteValue& value) {
 }
 
 template <>
-uint8_t as<uint8_t>(const tvsc_radio_DiscreteValue& value) {
+inline uint8_t as<uint8_t>(const tvsc_radio_DiscreteValue& value) {
   if (value.which_value == 0) {
     return value.value.int32_value;
   } else {
@@ -176,34 +176,37 @@ uint8_t as<uint8_t>(const tvsc_radio_DiscreteValue& value) {
 }
 
 template <>
-uint16_t as<uint16_t>(const tvsc_radio_DiscreteValue& value) {
+inline uint16_t as<uint16_t>(const tvsc_radio_DiscreteValue& value) {
   if (value.which_value == 0) {
     return value.value.int32_value;
   } else {
-    except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (uint16_t)");
+    except<std::domain_error>(
+        "Attempt to translate DiscreteValue to inappropriate type (uint16_t)");
   }
 }
 
 template <>
-uint32_t as<uint32_t>(const tvsc_radio_DiscreteValue& value) {
+inline uint32_t as<uint32_t>(const tvsc_radio_DiscreteValue& value) {
   if (value.which_value == 0) {
     return value.value.int32_value;
   } else {
-    except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (uint32_t)");
+    except<std::domain_error>(
+        "Attempt to translate DiscreteValue to inappropriate type (uint32_t)");
   }
 }
 
 template <>
-uint64_t as<uint64_t>(const tvsc_radio_DiscreteValue& value) {
+inline uint64_t as<uint64_t>(const tvsc_radio_DiscreteValue& value) {
   if (value.which_value == 1) {
     return value.value.int64_value;
   } else {
-    except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (uint64_t)");
+    except<std::domain_error>(
+        "Attempt to translate DiscreteValue to inappropriate type (uint64_t)");
   }
 }
 
 template <>
-float as<float>(const tvsc_radio_DiscreteValue& value) {
+inline float as<float>(const tvsc_radio_DiscreteValue& value) {
   if (value.which_value == 2) {
     return value.value.float_value;
   } else {
@@ -215,7 +218,7 @@ float as<float>(const tvsc_radio_DiscreteValue& value) {
  * Generate a DiscreteValue from a native type.
  */
 template <typename T>
-tvsc_radio_DiscreteValue as_discrete_value(T value) {
+inline tvsc_radio_DiscreteValue as_discrete_value(T value) {
   tvsc_radio_DiscreteValue discrete{};
   auto v{static_cast<typename std::underlying_type<T>::type>(value)};
   discrete.which_value = 0;
@@ -224,7 +227,7 @@ tvsc_radio_DiscreteValue as_discrete_value(T value) {
 }
 
 template <>
-tvsc_radio_DiscreteValue as_discrete_value<int8_t>(int8_t value) {
+inline tvsc_radio_DiscreteValue as_discrete_value<int8_t>(int8_t value) {
   tvsc_radio_DiscreteValue discrete{};
   discrete.which_value = 0;
   discrete.value.int32_value = value;
@@ -232,7 +235,7 @@ tvsc_radio_DiscreteValue as_discrete_value<int8_t>(int8_t value) {
 }
 
 template <>
-tvsc_radio_DiscreteValue as_discrete_value<int16_t>(int16_t value) {
+inline tvsc_radio_DiscreteValue as_discrete_value<int16_t>(int16_t value) {
   tvsc_radio_DiscreteValue discrete{};
   discrete.which_value = 0;
   discrete.value.int32_value = value;
@@ -240,7 +243,7 @@ tvsc_radio_DiscreteValue as_discrete_value<int16_t>(int16_t value) {
 }
 
 template <>
-tvsc_radio_DiscreteValue as_discrete_value<int32_t>(int32_t value) {
+inline tvsc_radio_DiscreteValue as_discrete_value<int32_t>(int32_t value) {
   tvsc_radio_DiscreteValue discrete{};
   discrete.which_value = 0;
   discrete.value.int32_value = value;
@@ -248,7 +251,7 @@ tvsc_radio_DiscreteValue as_discrete_value<int32_t>(int32_t value) {
 }
 
 template <>
-tvsc_radio_DiscreteValue as_discrete_value<int64_t>(int64_t value) {
+inline tvsc_radio_DiscreteValue as_discrete_value<int64_t>(int64_t value) {
   tvsc_radio_DiscreteValue discrete{};
   discrete.which_value = 1;
   discrete.value.int64_value = value;
@@ -256,7 +259,7 @@ tvsc_radio_DiscreteValue as_discrete_value<int64_t>(int64_t value) {
 }
 
 template <>
-tvsc_radio_DiscreteValue as_discrete_value<uint8_t>(uint8_t value) {
+inline tvsc_radio_DiscreteValue as_discrete_value<uint8_t>(uint8_t value) {
   tvsc_radio_DiscreteValue discrete{};
   discrete.which_value = 0;
   discrete.value.int32_value = value;
@@ -264,7 +267,7 @@ tvsc_radio_DiscreteValue as_discrete_value<uint8_t>(uint8_t value) {
 }
 
 template <>
-tvsc_radio_DiscreteValue as_discrete_value<uint16_t>(uint16_t value) {
+inline tvsc_radio_DiscreteValue as_discrete_value<uint16_t>(uint16_t value) {
   tvsc_radio_DiscreteValue discrete{};
   discrete.which_value = 0;
   discrete.value.int32_value = value;
@@ -272,7 +275,7 @@ tvsc_radio_DiscreteValue as_discrete_value<uint16_t>(uint16_t value) {
 }
 
 template <>
-tvsc_radio_DiscreteValue as_discrete_value<uint32_t>(uint32_t value) {
+inline tvsc_radio_DiscreteValue as_discrete_value<uint32_t>(uint32_t value) {
   tvsc_radio_DiscreteValue discrete{};
   discrete.which_value = 0;
   discrete.value.int32_value = value;
@@ -280,7 +283,7 @@ tvsc_radio_DiscreteValue as_discrete_value<uint32_t>(uint32_t value) {
 }
 
 template <>
-tvsc_radio_DiscreteValue as_discrete_value<uint64_t>(uint64_t value) {
+inline tvsc_radio_DiscreteValue as_discrete_value<uint64_t>(uint64_t value) {
   tvsc_radio_DiscreteValue discrete{};
   discrete.which_value = 1;
   discrete.value.int64_value = value;
@@ -288,7 +291,7 @@ tvsc_radio_DiscreteValue as_discrete_value<uint64_t>(uint64_t value) {
 }
 
 template <>
-tvsc_radio_DiscreteValue as_discrete_value<float>(float value) {
+inline tvsc_radio_DiscreteValue as_discrete_value<float>(float value) {
   tvsc_radio_DiscreteValue discrete{};
   discrete.which_value = 2;
   discrete.value.float_value = value;
@@ -303,7 +306,8 @@ tvsc_radio_DiscreteValue as_discrete_value<float>(float value) {
  *
  * TODO(james): Add an epsilon concept for evaluating equivalence of floating point numbers.
  */
-bool are_equivalent(const tvsc_radio_DiscreteValue& lhs, const tvsc_radio_DiscreteValue& rhs) {
+inline bool are_equivalent(const tvsc_radio_DiscreteValue& lhs,
+                           const tvsc_radio_DiscreteValue& rhs) {
   if (lhs.which_value == rhs.which_value) {
     if (lhs.which_value == 0) {
       return lhs.value.int32_value == rhs.value.int32_value;
@@ -322,7 +326,8 @@ bool are_equivalent(const tvsc_radio_DiscreteValue& lhs, const tvsc_radio_Discre
  * Currently, this requires that the value and the range have the same type. Only int32 values can
  * be in an int32_range, for example.
  */
-bool range_contains(const tvsc_radio_RangedValue& range, const tvsc_radio_DiscreteValue& value) {
+inline bool range_contains(const tvsc_radio_RangedValue& range,
+                           const tvsc_radio_DiscreteValue& value) {
   if (value.which_value == 0) {
     if (range.which_value == 0) {
       const auto& typed_range = range.value.int32_range;
@@ -390,8 +395,8 @@ bool range_contains(const tvsc_radio_RangedValue& range, const tvsc_radio_Discre
 /**
  * Is the given value in the set of allowed_values?
  */
-bool is_valid_setting(const tvsc_radio_Value& allowed_values,
-                      const tvsc_radio_DiscreteValue& value) {
+inline bool is_valid_setting(const tvsc_radio_Value& allowed_values,
+                             const tvsc_radio_DiscreteValue& value) {
   for (int i = 0; i < allowed_values.discrete_count; ++i) {
     if (are_equivalent(allowed_values.discrete[i], value)) {
       return true;
