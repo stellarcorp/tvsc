@@ -1,5 +1,6 @@
 #pragma once
 
+#include "radio/fragment.h"
 #include "random/random.h"
 
 namespace tvsc::radio {
@@ -16,6 +17,7 @@ namespace tvsc::radio {
 template <size_t MTU>
 class HalfDuplexTransceiver {
  public:
+  static constexpr size_t MAX_MTU_VALUE{MTU};
   static constexpr size_t max_mtu() { return MTU; }
 
   virtual ~HalfDuplexTransceiver() = default;
@@ -87,13 +89,8 @@ class HalfDuplexTransceiver {
   /**
    * Read a fragment that has already been received by the transceiver. After being read, the
    * transceiver will discard the fragment.
-   *
-   * The length parameter should contain the capacity of the buffer when called. This capacity
-   * should probably be the current mtu() or larger. Any remaining data in the fragment,
-   * beyond the capacity of the buffer, will be dropped after this call. On return, length will
-   * contain the number of bytes actually read.
    */
-  virtual void read_received_fragment(uint8_t* buffer, uint8_t* length) = 0;
+  virtual void read_received_fragment(Fragment<MTU>& fragment) = 0;
 
   /**
    * Flag to poll if the transceiver is detecting channel activity. Before transmitting, the
@@ -139,22 +136,22 @@ class HalfDuplexTransceiver {
    * Returns true if the transmission was initiated, false if it could not start within the timeout.
    * True does not guarantee that it was received.
    */
-  virtual bool transmit_fragment(const uint8_t* buffer, uint8_t length, uint16_t timeout_ms) = 0;
+  virtual bool transmit_fragment(const Fragment<MTU>& fragment, uint16_t timeout_ms) = 0;
 
   /**
    * Helper function to receive a fragment.
    */
-  bool receive_fragment(uint8_t* buffer, uint8_t* length, uint16_t timeout_ms) {
+  bool receive_fragment(Fragment<MTU>& fragment, uint16_t timeout_ms) {
     // Put the transceiver into receive mode.
     receive();
     // Wait until data is avaiable, up to timeout_ms milliseconds.
     if (wait_fragment_available(timeout_ms)) {
       // A fragment is available. Read it into the provided buffer.
-      read_received_fragment(buffer, length);
+      read_received_fragment(fragment);
       return true;
     } else {
       // No fragment was available within timeout_ms.
-      *length = 0;
+      fragment.length = 0;
       return false;
     }
   }

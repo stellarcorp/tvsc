@@ -6,12 +6,15 @@
 #include "hal/time/time.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
+#include "radio/fragment.h"
 #include "radio/packet.pb.h"
 #include "radio/radio_configuration.h"
+#include "radio/rf69hcw.h"
 #include "radio/rf69hcw_configuration.h"
 #include "radio/settings.h"
 #include "radio/settings.pb.h"
 #include "radio/single_radio_pin_mapping.h"
+#include "radio/utilities.h"
 #include "random/random.h"
 
 /**
@@ -30,46 +33,6 @@ const uint8_t RF69_RST{tvsc::radio::SingleRadioPinMapping::reset_pin()};
 const uint8_t RF69_CS{tvsc::radio::SingleRadioPinMapping::chip_select_pin()};
 const uint8_t RF69_DIO0{tvsc::radio::SingleRadioPinMapping::interrupt_pin()};
 
-void print_id(const tvsc_radio_RadioIdentification& id) {
-  tvsc::hal::output::print("{");
-  tvsc::hal::output::print(id.expanded_id);
-  tvsc::hal::output::print(", ");
-  tvsc::hal::output::print(id.id);
-  tvsc::hal::output::print(", ");
-  tvsc::hal::output::print(id.name);
-  tvsc::hal::output::println("}");
-}
-
-bool send(tvsc::radio::RF69HCW& rf69, const std::string& msg) {
-  bool result;
-  result = rf69.transmit_fragment(reinterpret_cast<const uint8_t*>(msg.data()), msg.length(), 250);
-  if (result) {
-    result = rf69.wait_fragment_transmitted(250);
-  }
-
-  return result;
-}
-
-void encode_packet(tvsc::radio::RF69HCW& rf69, uint32_t protocol, uint32_t sequence_number,
-                   uint32_t id, const std::string& message, std::string& buffer) {
-  tvsc_radio_Packet packet{};
-  packet.protocol = protocol;
-  packet.sequence_number = sequence_number;
-  packet.sender = id;
-  packet.payload.size = std::min(message.length(), static_cast<std::string::size_type>(62));
-  std::strncpy(reinterpret_cast<char*>(packet.payload.bytes), message.data(), packet.payload.size);
-
-  buffer.resize(rf69.mtu());
-  pb_ostream_t ostream =
-      pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(buffer.data()), buffer.capacity());
-  bool status =
-      pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_Packet>::fields(), &packet);
-  if (!status) {
-    tvsc::except<std::runtime_error>("Could not encode packet for message");
-  }
-  buffer.resize(ostream.bytes_written);
-}
-
 int main() {
   tvsc::random::initialize_seed();
   tvsc::hal::gpio::initialize_gpio();
@@ -84,7 +47,7 @@ int main() {
   rf69.reset();
 
   tvsc::hal::output::print("Board id: ");
-  print_id(configuration.identification());
+  tvsc::radio::print_id(configuration.identification());
   tvsc::hal::output::println();
 
   configuration.change_values(tvsc::radio::default_configuration<tvsc::radio::RF69HCW>());
@@ -93,15 +56,14 @@ int main() {
   uint32_t sequence_number{};
 
   while (true) {
-    std::string packet{};
-    packet.resize(rf69.mtu());
+    tvsc::radio::Fragment<tvsc::radio::RF69HCW::max_mtu()> fragment{};
 
-    encode_packet(rf69, 1, ++sequence_number, configuration.id(), "Hello, world!", packet);
+    tvsc::radio::encode_packet(1, ++sequence_number, configuration.id(), "Hello, world!", fragment);
 
-    if (send(rf69, packet)) {
+    if (tvsc::radio::send(rf69, fragment)) {
       tvsc::hal::output::println("Sent.");
       tvsc::hal::output::print("Board id: ");
-      print_id(configuration.identification());
+      tvsc::radio::print_id(configuration.identification());
       tvsc::hal::output::println();
 
     } else {

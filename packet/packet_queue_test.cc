@@ -8,28 +8,28 @@ namespace tvsc::packet {
 
 using TypicalPacketT = std::array<unsigned char, 64>;
 
-TEST(PacketQueueTest, CanCompile) {
-  PacketQueue<unsigned long, 128> queue{};
+TEST(PacketTxQueueTest, CanCompile) {
+  PacketTxQueue<unsigned long, 128> queue{};
 
   EXPECT_TRUE(queue.empty());
 }
 
-TEST(PacketQueueTest, CanUseContainersAsPacketTypes) {
-  PacketQueue<TypicalPacketT, 128> queue{};
+TEST(PacketTxQueueTest, CanUseContainersAsPacketTypes) {
+  PacketTxQueue<TypicalPacketT, 128> queue{};
 
   EXPECT_TRUE(queue.empty());
 }
 
-TEST(PacketQueueTest, CanAddPacketFundamentalType) {
-  PacketQueue<unsigned char, 128> queue{};
+TEST(PacketTxQueueTest, CanAddPacketFundamentalType) {
+  PacketTxQueue<unsigned char, 128> queue{};
 
   queue.push_normal('a');
 
   EXPECT_FALSE(queue.empty());
 }
 
-TEST(PacketQueueTest, CanAddPacket) {
-  PacketQueue<TypicalPacketT, 128> queue{};
+TEST(PacketTxQueueTest, CanAddPacket) {
+  PacketTxQueue<TypicalPacketT, 128> queue{};
 
   TypicalPacketT packet{};
   packet[0] = 42;
@@ -39,8 +39,8 @@ TEST(PacketQueueTest, CanAddPacket) {
   EXPECT_FALSE(queue.empty());
 }
 
-TEST(PacketQueueTest, ReturnsSingleImmediatePacket) {
-  PacketQueue<TypicalPacketT, 128> queue{};
+TEST(PacketTxQueueTest, ReturnsSingleImmediatePacket) {
+  PacketTxQueue<TypicalPacketT, 128> queue{};
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT packet{};
@@ -52,8 +52,8 @@ TEST(PacketQueueTest, ReturnsSingleImmediatePacket) {
   EXPECT_EQ(packet, sink.peek());
 }
 
-TEST(PacketQueueTest, ReturnsSingleControlPacket) {
-  PacketQueue<TypicalPacketT, 128> queue{};
+TEST(PacketTxQueueTest, ReturnsSingleControlPacket) {
+  PacketTxQueue<TypicalPacketT, 128> queue{};
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT packet{};
@@ -65,8 +65,8 @@ TEST(PacketQueueTest, ReturnsSingleControlPacket) {
   EXPECT_EQ(packet, sink.peek());
 }
 
-TEST(PacketQueueTest, ReturnsSingleNormalPacket) {
-  PacketQueue<TypicalPacketT, 128> queue{};
+TEST(PacketTxQueueTest, ReturnsSingleNormalPacket) {
+  PacketTxQueue<TypicalPacketT, 128> queue{};
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT packet{};
@@ -78,8 +78,8 @@ TEST(PacketQueueTest, ReturnsSingleNormalPacket) {
   EXPECT_EQ(packet, sink.peek());
 }
 
-TEST(PacketQueueTest, ReturnsSingleLowPacket) {
-  PacketQueue<TypicalPacketT, 128> queue{};
+TEST(PacketTxQueueTest, ReturnsSingleLowPacket) {
+  PacketTxQueue<TypicalPacketT, 128> queue{};
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT packet{};
@@ -91,8 +91,8 @@ TEST(PacketQueueTest, ReturnsSingleLowPacket) {
   EXPECT_EQ(packet, sink.peek());
 }
 
-TEST(PacketQueueTest, ReturnsImmediatePacketEvenIfOtherPacketsAvailable) {
-  PacketQueue<TypicalPacketT, 128> queue{};
+TEST(PacketTxQueueTest, ReturnsImmediatePacketEvenIfOtherPacketsAvailable) {
+  PacketTxQueue<TypicalPacketT, 128> queue{};
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT immediate_packet{};
@@ -116,8 +116,8 @@ TEST(PacketQueueTest, ReturnsImmediatePacketEvenIfOtherPacketsAvailable) {
   EXPECT_EQ(immediate_packet, sink.peek());
 }
 
-TEST(PacketQueueTest, ReturnsPacketWhenImmediateNotAvailable) {
-  PacketQueue<TypicalPacketT, 128> queue{};
+TEST(PacketTxQueueTest, ReturnsPacketWhenImmediateNotAvailable) {
+  PacketTxQueue<TypicalPacketT, 128> queue{};
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT control_packet{};
@@ -138,8 +138,8 @@ TEST(PacketQueueTest, ReturnsPacketWhenImmediateNotAvailable) {
   EXPECT_TRUE(packet == control_packet || packet == normal_packet || packet == low_packet);
 }
 
-TEST(PacketQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingControl) {
-  PacketQueue<TypicalPacketT, 128> queue{};
+TEST(PacketTxQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingControl) {
+  PacketTxQueue<TypicalPacketT, 128> queue{};
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT normal_packet{};
@@ -156,8 +156,8 @@ TEST(PacketQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingControl) {
   EXPECT_TRUE(packet == normal_packet || packet == low_packet);
 }
 
-TEST(PacketQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingNormal) {
-  PacketQueue<TypicalPacketT, 128> queue{};
+TEST(PacketTxQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingNormal) {
+  PacketTxQueue<TypicalPacketT, 128> queue{};
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT control_packet{};
@@ -174,8 +174,8 @@ TEST(PacketQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingNormal) {
   EXPECT_TRUE(packet == control_packet || packet == low_packet);
 }
 
-TEST(PacketQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingLow) {
-  PacketQueue<TypicalPacketT, 128> queue{};
+TEST(PacketTxQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingLow) {
+  PacketTxQueue<TypicalPacketT, 128> queue{};
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT control_packet{};

@@ -8,7 +8,7 @@
 namespace tvsc::packet {
 
 template <typename PacketT, size_t NUM_PACKETS>
-class PacketQueue;
+class PacketTxQueue;
 
 template <typename PacketT, size_t NUM_PACKETS>
 class PacketSink final {
@@ -18,15 +18,15 @@ class PacketSink final {
     const void* queue{nullptr};
   };
 
-  PacketQueue<PacketT, NUM_PACKETS>* packet_queue_{nullptr};
+  PacketTxQueue<PacketT, NUM_PACKETS>* packet_queue_{nullptr};
   PeekResponse last_peek_{};
 
-  PacketSink(PacketQueue<PacketT, NUM_PACKETS>& queue) : packet_queue_(&queue) {}
+  PacketSink(PacketTxQueue<PacketT, NUM_PACKETS>& queue) : packet_queue_(&queue) {}
 
-  friend class PacketQueue<PacketT, NUM_PACKETS>;
+  friend class PacketTxQueue<PacketT, NUM_PACKETS>;
 
  public:
-  PacketQueue<PacketT, NUM_PACKETS>& packet_queue() { return *packet_queue_; }
+  PacketTxQueue<PacketT, NUM_PACKETS>& packet_queue() { return *packet_queue_; }
 
   /**
    * Peek at the current packet. Subsequent calls to peek() are not guaranteed to return the same
@@ -64,9 +64,9 @@ class PacketSink final {
 /**
  * A queue structure for scheduling the sending of packets.
  *
- * The PacketQueue implements a variation on generalized processor sharing
+ * The PacketTxQueue implements a variation on generalized processor sharing
  * (https://en.wikipedia.org/wiki/Generalized_processor_sharing), with the exception that it
- * provides for an immediate priority that always supercedes all other priorities. The PacketQueue
+ * provides for an immediate priority that always supercedes all other priorities. The PacketTxQueue
  * provides for four classes of service:
  *
  * - immediate: Used for communications whose timeliness affects safety or viability of the vehicle.
@@ -81,9 +81,8 @@ class PacketSink final {
  * - low: Used for communications that should be considered optional. This class mainly includes low
  * priority telemetry data.
  */
-
 template <typename PacketT, size_t NUM_PACKETS>
-class PacketQueue final {
+class PacketTxQueue final {
  private:
   using WeightT = unsigned int;
   static constexpr WeightT CONTROL_PRIORITY_WEIGHT{100};
@@ -195,5 +194,13 @@ class PacketQueue final {
 
   PacketSink<PacketT, NUM_PACKETS> create_sink() { return PacketSink<PacketT, NUM_PACKETS>{*this}; }
 };
+
+/**
+ * PacketRxQueue is just a RingBuffer configured to prioritize new packets and dropping old packets
+ * if the buffer is full.
+ */
+template <typename PacketT, size_t NUM_PACKETS>
+using PacketRxQueue =
+    tvsc::buffer::RingBuffer<PacketT, 1, NUM_PACKETS, /*PRIORITIZE_OLD_ELEMENTS*/ false>;
 
 }  // namespace tvsc::packet

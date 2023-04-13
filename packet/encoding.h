@@ -5,28 +5,9 @@
 
 #include "buffer/buffer.h"
 #include "packet/packet.h"
+#include "radio/fragment.h"
 
 namespace tvsc::packet {
-
-/**
- * A fragment is the unit of information that a radio can receive and transmit. A fragment
- * may include all of the information of a single packet, or it may be smaller than a packet.
- * Fragments should not include information from multiple packets.
- */
-template <size_t MTU>
-struct Fragment final {
-  size_t length{};
-  tvsc::buffer::Buffer<uint8_t, MTU> data{};
-};
-
-template <size_t MTU>
-std::string to_string(const Fragment<MTU>& fragment) {
-  using std::to_string;
-  std::string result{};
-  result.append("length: ").append(to_string(fragment.length)).append("\n");
-  result.append("data:\n").append(to_string(fragment.data)).append("\n");
-  return result;
-}
 
 /**
  * An encoding of a packet into transmittable fragment buffers. Note that any information about the
@@ -35,7 +16,7 @@ std::string to_string(const Fragment<MTU>& fragment) {
 template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
 struct EncodedPacket final {
   size_t num_fragments{};
-  tvsc::buffer::Buffer<Fragment<MTU>, MAX_FRAGMENTS_PER_PACKET> buffers{};
+  tvsc::buffer::Buffer<tvsc::radio::Fragment<MTU>, MAX_FRAGMENTS_PER_PACKET> buffers{};
 };
 
 template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
@@ -71,7 +52,7 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
 
   uint8_t fragment_index{0};
   size_t bytes_written{0};
-  Fragment<MTU>* current_fragment{nullptr};
+  tvsc::radio::Fragment<MTU>* current_fragment{nullptr};
   size_t remaining_payload{packet.payload_length()};
   bool have_written_payload_size{false};
   bool have_more_to_encode{true};
@@ -140,7 +121,7 @@ void assemble(const EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments,
   size_t bytes_read{0};
   size_t header_size{0};
   size_t payload_bytes_read{0};
-  const Fragment<MTU>* current_fragment{nullptr};
+  const tvsc::radio::Fragment<MTU>* current_fragment{nullptr};
 
   for (uint8_t fragment_index = 0; fragment_index < fragments.num_fragments; ++fragment_index) {
     current_fragment = &fragments.buffers[fragment_index];

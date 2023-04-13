@@ -6,6 +6,7 @@ load("//platforms:hex.bzl", "hex")
 cc_library(
     name = "radio",
     hdrs = [
+        "fragment.h",
         "radio_configuration.h",
         "settings.h",
         "transceiver.h",
@@ -14,6 +15,7 @@ cc_library(
     deps = [
         ":radio_nano_cc_proto",
         "//base",
+        "//buffer",
         "//random",
     ],
 )
@@ -35,6 +37,20 @@ cc_library(
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
+        "//hal/time",
+        "//random",
+    ],
+)
+
+cc_library(
+    name = "utilities",
+    srcs = [],
+    hdrs = ["utilities.h"],
+    deps = [
+        ":radio",
+        ":radio_nano_cc_proto",
+        ":rf69hcw",
+        "//hal/output",
         "//hal/time",
         "//random",
     ],
@@ -111,6 +127,7 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
+        ":utilities",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
@@ -157,6 +174,7 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
+        ":utilities",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
@@ -203,6 +221,7 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
+        ":utilities",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
@@ -249,6 +268,7 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
+        ":utilities",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
@@ -295,6 +315,7 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
+        ":utilities",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",

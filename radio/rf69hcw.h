@@ -11,6 +11,7 @@
 #include "hal/output/output.h"
 #include "hal/spi/spi.h"
 #include "hal/time/time.h"
+#include "radio/fragment.h"
 #include "radio/radio.pb.h"
 #include "radio/transceiver.h"
 #include "random/random.h"
@@ -302,13 +303,11 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
 
   static constexpr uint8_t SYNC_WORDS[] = "SR90tvsc";
 
-  static constexpr uint8_t RX_BUFFER_LENGTH{max_mtu()};
+  // static constexpr uint8_t RX_BUFFER_LENGTH{max_mtu()};
 
   tvsc::hal::spi::SpiPeripheral* spi_;
 
-  uint8_t rx_buffer_[max_mtu()];
-  // Number of valid bytes available to be recv'd in the rx_buffer_.
-  uint8_t rx_buffer_length_{0};
+  Fragment<MAX_MTU_VALUE> rx_buffer_{};
 
   int8_t power_;
   OperationalMode op_mode_{OperationalMode::STANDBY};
@@ -339,7 +338,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
    * Read the received data from the FIFO into the RX buffer in this class.
    */
   void read_fifo() {
-    rx_buffer_length_ = spi_->fifo_read(RF69HCW_REG_00_FIFO, rx_buffer_, RX_BUFFER_LENGTH);
+    rx_buffer_.length = spi_->fifo_read(RF69HCW_REG_00_FIFO, rx_buffer_.data.data(), max_mtu());
   }
 
   // Interrupt vectoring.
@@ -541,7 +540,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
   void receive() override { set_mode_rx(); }
   void standby() override { set_mode_standby(); }
 
-  bool has_fragment_available() const override { return rx_buffer_length_ > 0; }
+  bool has_fragment_available() const override { return rx_buffer_.length > 0; }
 
   bool wait_fragment_available(uint16_t timeout_ms) const override {
     if (has_fragment_available()) {
@@ -563,13 +562,10 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     return false;
   }
 
-  void read_received_fragment(uint8_t* buffer, uint8_t* length) override {
+  void read_received_fragment(Fragment<MAX_MTU_VALUE>& fragment) override {
     ATOMIC_BLOCK_START;
-    *length = std::min(*length, rx_buffer_length_);
-    if (rx_buffer_length_ > 0) {
-      std::memcpy(buffer, rx_buffer_, *length);
-      rx_buffer_length_ = 0;
-    }
+    fragment = rx_buffer_;
+    rx_buffer_.length = 0;
     ATOMIC_BLOCK_END;
   }
 
@@ -577,8 +573,8 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     return read_rssi_dbm() > channel_activity_threshold_dbm_;
   }
 
-  bool transmit_fragment(const uint8_t* buffer, uint8_t length, uint16_t timeout_ms) override {
-    if (length > mtu()) {
+  bool transmit_fragment(const Fragment<MAX_MTU_VALUE>& fragment, uint16_t timeout_ms) override {
+    if (fragment.length > mtu()) {
       return false;
     }
 
@@ -594,7 +590,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
       return false;
     }
 
-    spi_->fifo_write(RF69HCW_REG_00_FIFO, buffer, length);
+    spi_->fifo_write(RF69HCW_REG_00_FIFO, fragment.data.data(), fragment.length);
 
     // Start the transmitter.
     set_mode_tx();

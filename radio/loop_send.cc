@@ -12,6 +12,7 @@
 #include "radio/settings.h"
 #include "radio/settings.pb.h"
 #include "radio/single_radio_pin_mapping.h"
+#include "radio/utilities.h"
 #include "random/random.h"
 
 /**
@@ -30,60 +31,6 @@ const uint8_t RF69_RST{tvsc::radio::SingleRadioPinMapping::reset_pin()};
 const uint8_t RF69_CS{tvsc::radio::SingleRadioPinMapping::chip_select_pin()};
 const uint8_t RF69_DIO0{tvsc::radio::SingleRadioPinMapping::interrupt_pin()};
 
-void print_id(const tvsc_radio_RadioIdentification& id) {
-  tvsc::hal::output::print("{");
-  tvsc::hal::output::print(id.expanded_id);
-  tvsc::hal::output::print(", ");
-  tvsc::hal::output::print(id.id);
-  tvsc::hal::output::print(", ");
-  tvsc::hal::output::print(id.name);
-  tvsc::hal::output::println("}");
-}
-
-bool send(tvsc::radio::RF69HCW& rf69, const std::string& msg) {
-  bool result;
-  result = rf69.transmit_fragment(reinterpret_cast<const uint8_t*>(msg.data()), msg.length(), 250);
-  if (result) {
-    result = rf69.wait_fragment_transmitted(250);
-  }
-
-  return result;
-}
-
-template <typename MessageT>
-void encode_packet(tvsc::radio::RF69HCW& rf69, uint32_t protocol, uint32_t sequence_number,
-                   uint32_t id, const MessageT& message, std::string& buffer) {
-  {
-    buffer.resize(rf69.mtu());
-    pb_ostream_t ostream =
-        pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(buffer.data()), buffer.capacity());
-    bool status = pb_encode(&ostream, nanopb::MessageDescriptor<MessageT>::fields(), &message);
-    if (!status) {
-      tvsc::except<std::runtime_error>("Could not encode message");
-    }
-    buffer.resize(ostream.bytes_written);
-  }
-
-  tvsc_radio_Packet packet{};
-  packet.protocol = protocol;
-  packet.sequence_number = sequence_number;
-  packet.sender = id;
-  packet.payload.size = buffer.size();
-  std::strncpy(reinterpret_cast<char*>(packet.payload.bytes), buffer.data(), buffer.size());
-
-  {
-    buffer.resize(rf69.mtu());
-    pb_ostream_t ostream =
-        pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(buffer.data()), buffer.capacity());
-    bool status =
-        pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_Packet>::fields(), &packet);
-    if (!status) {
-      tvsc::except<std::runtime_error>("Could not encode packet for message");
-    }
-    buffer.resize(ostream.bytes_written);
-  }
-}
-
 int main() {
   tvsc::random::initialize_seed();
   tvsc::hal::gpio::initialize_gpio();
@@ -98,7 +45,7 @@ int main() {
       rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
 
   tvsc::hal::output::print("Board id: ");
-  print_id(configuration.identification());
+  tvsc::radio::print_id(configuration.identification());
   tvsc::hal::output::println();
 
   configuration.change_values(tvsc::radio::high_throughput_configuration());
@@ -106,12 +53,27 @@ int main() {
 
   uint32_t sequence_number{};
 
-  while (true) {
-    std::string packet{};
-    encode_packet(rf69, 1, ++sequence_number, configuration.id(), configuration.identification(),
-                  packet);
+  std::string identification_message{};
+  {
+    identification_message.resize(rf69.mtu());
+    pb_ostream_t ostream =
+        pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(identification_message.data()),
+                               identification_message.capacity());
+    bool status =
+        pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_RadioIdentification>::fields(),
+                  &configuration.identification());
+    if (!status) {
+      tvsc::except<std::runtime_error>("Could not encode message");
+    }
+    identification_message.resize(ostream.bytes_written);
+  }
 
-    if (send(rf69, packet)) {
+  while (true) {
+    tvsc::radio::Fragment<tvsc::radio::RF69HCW::max_mtu()> fragment{};
+    tvsc::radio::encode_packet(1, ++sequence_number, configuration.id(), identification_message,
+                               fragment);
+
+    if (tvsc::radio::send(rf69, fragment)) {
       tvsc::hal::output::println("Published id.");
     } else {
       tvsc::hal::output::print("send() failed. RSSI: ");

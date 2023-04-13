@@ -8,60 +8,17 @@
 #include "pb_encode.h"
 #include "radio/packet.pb.h"
 #include "radio/radio_configuration.h"
+#include "radio/rf69hcw.h"
 #include "radio/rf69hcw_configuration.h"
 #include "radio/settings.h"
 #include "radio/settings.pb.h"
 #include "radio/single_radio_pin_mapping.h"
+#include "radio/utilities.h"
 #include "random/random.h"
 
 const uint8_t RF69_RST{tvsc::radio::SingleRadioPinMapping::reset_pin()};
 const uint8_t RF69_CS{tvsc::radio::SingleRadioPinMapping::chip_select_pin()};
 const uint8_t RF69_DIO0{tvsc::radio::SingleRadioPinMapping::interrupt_pin()};
-
-void print_id(const tvsc_radio_RadioIdentification& id) {
-  tvsc::hal::output::print("{");
-  tvsc::hal::output::print(id.expanded_id);
-  tvsc::hal::output::print(", ");
-  tvsc::hal::output::print(id.id);
-  tvsc::hal::output::print(", ");
-  tvsc::hal::output::print(id.name);
-  tvsc::hal::output::println("}");
-}
-
-bool recv(tvsc::radio::RF69HCW& rf69, std::string& buffer) {
-  uint8_t length{buffer.capacity()};
-  bool result = rf69.receive_fragment(reinterpret_cast<uint8_t*>(buffer.data()), &length, 200);
-  if (result) {
-    buffer.resize(length);
-  }
-  return result;
-}
-
-template <typename MessageT>
-bool decode_packet(const std::string& buffer, tvsc_radio_Packet& packet, MessageT& contents) {
-  {
-    pb_istream_t istream =
-        pb_istream_from_buffer(reinterpret_cast<const uint8_t*>(buffer.data()), buffer.size());
-
-    bool status =
-        pb_decode(&istream, nanopb::MessageDescriptor<tvsc_radio_Packet>::fields(), &packet);
-    if (!status) {
-      tvsc::hal::output::println("Could not decode packet");
-      return false;
-    }
-  }
-
-  {
-    pb_istream_t istream = pb_istream_from_buffer(
-        reinterpret_cast<const uint8_t*>(packet.payload.bytes), packet.payload.size);
-    bool status = pb_decode(&istream, nanopb::MessageDescriptor<MessageT>::fields(), &contents);
-    if (!status) {
-      tvsc::hal::output::println("Could not decode packet contents");
-      return false;
-    }
-  }
-  return true;
-}
 
 int main() {
   tvsc::random::initialize_seed();
@@ -77,7 +34,7 @@ int main() {
       rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
 
   tvsc::hal::output::print("Board id: ");
-  print_id(configuration.identification());
+  tvsc::radio::print_id(configuration.identification());
   tvsc::hal::output::println();
 
   configuration.change_values(tvsc::radio::high_throughput_configuration());
@@ -94,14 +51,12 @@ int main() {
   uint64_t last_print_time{};
 
   while (true) {
-    std::string buffer{};
-    buffer.resize(rf69.mtu());
+    tvsc::radio::Fragment<tvsc::radio::RF69HCW::max_mtu()> fragment{};
 
-    if (recv(rf69, buffer)) {
+    if (tvsc::radio::recv(rf69, fragment)) {
       ++total_packet_count;
       tvsc_radio_Packet packet{};
-      tvsc_radio_RadioIdentification other_id{};
-      if (decode_packet(buffer, packet, other_id)) {
+      if (tvsc::radio::decode_packet(fragment, packet)) {
         if (packet.sequence_number != previous_sequence_number + 1 &&
             previous_sequence_number != 0) {
           ++dropped_packet_count;
