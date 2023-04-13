@@ -318,7 +318,7 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> high_throughpu
       {tvsc_radio_Function_CARRIER_FREQUENCY_HZ, tvsc::radio::as_discrete_value(433e6f)});
 
   configuration.insert(
-      {tvsc_radio_Function_TX_POWER_DBM, tvsc::radio::as_discrete_value<int8_t>(-2)});
+      {tvsc_radio_Function_TX_POWER_DBM, tvsc::radio::as_discrete_value<int8_t>(13)});
 
   // Successful values:
   // 0x0f
@@ -391,7 +391,7 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> standard_confi
       {tvsc_radio_Function_CARRIER_FREQUENCY_HZ, tvsc::radio::as_discrete_value(433e6f)});
 
   configuration.insert(
-      {tvsc_radio_Function_TX_POWER_DBM, tvsc::radio::as_discrete_value<int8_t>(-2)});
+      {tvsc_radio_Function_TX_POWER_DBM, tvsc::radio::as_discrete_value<int8_t>(13)});
 
   // Successful values:
   // 0x0f
@@ -455,7 +455,7 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> standard_confi
   // TODO(James): Determine why the RX and TX thresholds need to be inverted to get successful
   // behavior.
   configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
-                        tvsc::radio::as_discrete_value<float>(-40.f)});
+                        tvsc::radio::as_discrete_value<float>(-50.f)});
 
   return configuration;
 }
