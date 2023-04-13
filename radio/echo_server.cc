@@ -80,10 +80,15 @@ int main() {
           packet.sender = configuration.id();
 
           tvsc::radio::encode_packet(packet, fragment);
+
+          tvsc::hal::time::delay_ms(250);
+
           // Note that switching into TX mode and sending a packet takes between 50-150ms.
           if (tvsc::radio::send(rf69, fragment)) {
             ++send_success_count;
           } else {
+	    tvsc::hal::output::print("RSSI: ");
+	    tvsc::hal::output::println(rf69.read_rssi_dbm());
             ++send_failure_count;
           }
         }
