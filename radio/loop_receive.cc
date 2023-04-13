@@ -30,7 +30,7 @@ void print_id(const tvsc_radio_RadioIdentification& id) {
 
 bool recv(tvsc::radio::RF69HCW& rf69, std::string& buffer) {
   uint8_t length{buffer.capacity()};
-  bool result = rf69.recv(reinterpret_cast<uint8_t*>(buffer.data()), &length, 200);
+  bool result = rf69.receive_fragment(reinterpret_cast<uint8_t*>(buffer.data()), &length, 200);
   if (result) {
     buffer.resize(length);
   }

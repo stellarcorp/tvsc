@@ -42,9 +42,9 @@ void print_id(const tvsc_radio_RadioIdentification& id) {
 
 bool send(tvsc::radio::RF69HCW& rf69, const std::string& msg) {
   bool result;
-  result = rf69.send(reinterpret_cast<const uint8_t*>(msg.data()), msg.length());
+  result = rf69.transmit_fragment(reinterpret_cast<const uint8_t*>(msg.data()), msg.length(), 250);
   if (result) {
-    result = rf69.wait_packet_sent();
+    result = rf69.wait_fragment_transmitted(250);
   }
 
   return result;

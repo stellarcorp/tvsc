@@ -103,9 +103,6 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_Value> generate_capabilities_
                        float_range(600.f, 0x3fff * RF69HCW::RF69HCW_FSTEP)});
 
   capabilities.insert(
-      {tvsc_radio_Function_CHANNEL_ACTIVITY_DETECTION_TIMEOUT_MS, int32_range(0, 10000)});
-
-  capabilities.insert(
       {tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM, float_range(-127.5f, 0.f)});
 
   capabilities.insert(
@@ -194,18 +191,6 @@ inline void get_frequency_deviation_hz(RF69HCW& driver, tvsc_radio_DiscreteValue
   value.value.float_value = driver.get_frequency_deviation_hz();
 }
 
-inline void set_channel_activity_detection_timeout_ms(RF69HCW& driver,
-                                                      const tvsc_radio_DiscreteValue& value) {
-  uint16_t timeout_ms{as<uint16_t>(value)};
-  driver.set_channel_activity_detection_timeout_ms(timeout_ms);
-}
-
-inline void get_channel_activity_detection_timeout_ms(RF69HCW& driver,
-                                                      tvsc_radio_DiscreteValue& value) {
-  value.which_value = 0;
-  value.value.int32_value = driver.get_channel_activity_detection_timeout_ms();
-}
-
 inline void set_receive_sensitivity_threshold_dbm(RF69HCW& driver,
                                                   const tvsc_radio_DiscreteValue& value) {
   float threshold_dbm{as<float>(value)};
@@ -265,10 +250,6 @@ tvsc_radio_DiscreteValue read_setting<RF69HCW>(RF69HCW& driver, tvsc_radio_Funct
       get_frequency_deviation_hz(driver, value);
       break;
     }
-    case tvsc_radio_Function_CHANNEL_ACTIVITY_DETECTION_TIMEOUT_MS: {
-      get_channel_activity_detection_timeout_ms(driver, value);
-      break;
-    }
     case tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM: {
       get_receive_sensitivity_threshold_dbm(driver, value);
       break;
@@ -315,10 +296,6 @@ void write_setting<RF69HCW>(RF69HCW& driver, tvsc_radio_Function function,
     }
     case tvsc_radio_Function_FREQUENCY_DEVIATION: {
       set_frequency_deviation_hz(driver, value);
-      break;
-    }
-    case tvsc_radio_Function_CHANNEL_ACTIVITY_DETECTION_TIMEOUT_MS: {
-      set_channel_activity_detection_timeout_ms(driver, value);
       break;
     }
     case tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM: {
@@ -395,9 +372,6 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> high_throughpu
   configuration.insert(
       {tvsc_radio_Function_FREQUENCY_DEVIATION, as_discrete_value<float>(freq_dev)});
 
-  configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_DETECTION_TIMEOUT_MS,
-                        tvsc::radio::as_discrete_value<uint32_t>(5)});
-
   configuration.insert({tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
                         tvsc::radio::as_discrete_value<float>(-50.f)});
 
@@ -470,9 +444,6 @@ std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> standard_confi
   // value (likely some significant limits to this), but ignores this particular setting.
   configuration.insert(
       {tvsc_radio_Function_FREQUENCY_DEVIATION, as_discrete_value<float>(freq_dev)});
-
-  configuration.insert({tvsc_radio_Function_CHANNEL_ACTIVITY_DETECTION_TIMEOUT_MS,
-                        tvsc::radio::as_discrete_value<uint32_t>(5)});
 
   configuration.insert({tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
                         tvsc::radio::as_discrete_value<float>(-50.f)});

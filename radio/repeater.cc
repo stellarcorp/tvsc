@@ -14,6 +14,7 @@
 #include "radio/settings.h"
 #include "radio/settings.pb.h"
 #include "radio/single_radio_pin_mapping.h"
+#include "radio/transceiver.h"
 #include "random/random.h"
 
 const uint8_t RF69_RST{tvsc::radio::SingleRadioPinMapping::reset_pin()};
@@ -43,18 +44,16 @@ void print_id(const tvsc_radio_RadioIdentification& id) {
 
 bool recv(tvsc::radio::RF69HCW& rf69, std::string& buffer) {
   uint8_t length{buffer.capacity()};
-  bool result = rf69.recv(reinterpret_cast<uint8_t*>(buffer.data()), &length, 1000);
-  if (result) {
-    buffer.resize(length);
-  }
-  return result;
+  rf69.read_received_fragment(reinterpret_cast<uint8_t*>(buffer.data()), &length);
+  buffer.resize(length);
+  return length > 0;
 }
 
 bool send(tvsc::radio::RF69HCW& rf69, const std::string& msg) {
   bool result;
-  result = rf69.send(reinterpret_cast<const uint8_t*>(msg.data()), msg.length());
+  result = rf69.transmit_fragment(reinterpret_cast<const uint8_t*>(msg.data()), msg.length(), 250);
   if (result) {
-    result = rf69.wait_packet_sent();
+    result = rf69.wait_fragment_transmitted(250);
   }
 
   return result;
@@ -116,12 +115,12 @@ int main() {
   std::vector<tvsc_radio_Packet> send_queue{packet_queue};
 
   while (true) {
-    rf69.set_mode_rx();
+    rf69.receive();
 
     std::string buffer{};
     buffer.resize(rf69.mtu());
 
-    if (rf69.available()) {
+    if (rf69.has_fragment_available()) {
       if (recv(rf69, buffer)) {
         tvsc_radio_Packet packet{};
         if (decode_packet(buffer, packet)) {
@@ -188,7 +187,7 @@ int main() {
         // Switch back to RX mode ASAP. Helps avoid dropped packets.
         // Switching into TX mode from RX mode, sending a packet, and switching back to
         // RX mode takes 50-150ms, so these TX ops can get expensive.
-        rf69.set_mode_rx();
+        rf69.receive();
       }
     }
 

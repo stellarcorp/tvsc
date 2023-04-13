@@ -12,6 +12,7 @@
 #include "hal/spi/spi.h"
 #include "hal/time/time.h"
 #include "radio/radio.pb.h"
+#include "radio/transceiver.h"
 #include "random/random.h"
 
 namespace tvsc::radio {
@@ -25,7 +26,9 @@ namespace tvsc::radio {
 #define ATOMIC_BLOCK_END
 #endif
 
-class RF69HCW final {
+class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the FIFO size of 66
+                                                      bytes minus one byte for the message size. */
+                                                   65> {
  public:
   enum class OperationalMode {
     STANDBY,
@@ -42,16 +45,7 @@ class RF69HCW final {
   // The frequency synthesizer step interval. All frequencies are multiples of this interval.
   static constexpr float RF69HCW_FSTEP{RF69HCW_FXOSC / (1 << 19)};
 
-  /**
-   * Maximum Transmission Unit. Length of the maximum message that can be sent or received. It is
-   * the size of the hardware FIFOs minus one byte for the message length.
-   */
-  static constexpr uint8_t mtu() { return RF69HCW_FIFO_SIZE - 1; }
-
  private:
-  // Size of the RH_RF69 Rx and Tx FIFOs in bytes.
-  static constexpr uint8_t RF69HCW_FIFO_SIZE{66};
-
   // Register names and addresses from the RFM69 datasheet:
   // https://cdn-shop.adafruit.com/product-files/3076/RFM69HCW-V1.1.pdf
   static constexpr uint8_t RF69HCW_REG_00_FIFO{0x00};
@@ -308,20 +302,16 @@ class RF69HCW final {
 
   static constexpr uint8_t SYNC_WORDS[] = "SR90tvsc";
 
-  static constexpr uint8_t RX_BUFFER_LENGTH{RF69HCW_FIFO_SIZE};
+  static constexpr uint8_t RX_BUFFER_LENGTH{max_mtu()};
 
   tvsc::hal::spi::SpiPeripheral* spi_;
 
-  uint8_t rx_buffer_[RX_BUFFER_LENGTH];
+  uint8_t rx_buffer_[max_mtu()];
   // Number of valid bytes available to be recv'd in the rx_buffer_.
   uint8_t rx_buffer_length_{0};
 
   int8_t power_;
   OperationalMode op_mode_{OperationalMode::STANDBY};
-
-  // Channel activity detection timeout -- how long we wait for existing channel activity to die off
-  // before we transmit.
-  uint16_t cad_timeout_ms_{10};
 
   float channel_activity_threshold_dbm_{-.5f};
 
@@ -395,7 +385,50 @@ class RF69HCW final {
     // }
   }
 
-  bool has_channel_activity() { return read_rssi_dbm() > channel_activity_threshold_dbm_; }
+  void set_mode_rx() {
+    if (op_mode_ != OperationalMode::RX) {
+      if (power_ >= 18) {
+        // If we are using the high power boost, we must turn it off to receive.
+        spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
+        spi_->write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
+      }
+      spi_->write(RF69HCW_REG_25_DIOMAPPING1, RF69HCW_DIOMAPPING1_DIO0MAPPING_01);
+      set_op_mode(RF69HCW_OPMODE_MODE_RX);
+      op_mode_ = OperationalMode::RX;
+    }
+  }
+
+  void set_mode_standby() {
+    if (op_mode_ != OperationalMode::STANDBY) {
+      if (power_ >= 18) {
+        // If we are using the high power boost, we must turn it off to receive.
+        // It's unclear if we need to turn it off to enter standby mode, but since we are likely
+        // entering this mode to conserve power, we turn it off here.
+        // TODO(james): Determine how the high power boost is expected to interact with the
+        // different operational modes.
+        spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
+        spi_->write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
+      }
+      set_op_mode(RF69HCW_OPMODE_MODE_STDBY);
+      op_mode_ = OperationalMode::STANDBY;
+    }
+  }
+
+  void set_mode_tx() {
+    if (op_mode_ != OperationalMode::TX) {
+      if (power_ >= 18) {
+        // Turn on the high power boost.
+        // TODO(james): Determine if we need to turn off over current protection (OCP) to activate
+        // high power boost. The datasheet suggests so (page 21), but we seem to get high power
+        // boost with OCP on.
+        spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_BOOST);
+        spi_->write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_BOOST);
+      }
+      spi_->write(RF69HCW_REG_25_DIOMAPPING1, RF69HCW_DIOMAPPING1_DIO0MAPPING_00);
+      set_op_mode(RF69HCW_OPMODE_MODE_TX);
+      op_mode_ = OperationalMode::TX;
+    }
+  }
 
  public:
   RF69HCW(tvsc::hal::spi::SpiPeripheral& peripheral, uint8_t interrupt_pin, uint8_t reset_pin)
@@ -423,7 +456,7 @@ class RF69HCW final {
     tvsc::hal::gpio::attach_interrupt(interrupt_pin_, interrupt_fn);
   }
 
-  void reset() {
+  void reset() override {
     // Manual reset of board.
     // To reset, according to the datasheet, the reset pin needs to be high for 100us, then low for
     // 5ms, and then it will be ready. The pin should be pulled low by default on the radio module,
@@ -477,120 +510,7 @@ class RF69HCW final {
     set_power_dbm(13);
   }
 
-  bool available() { return rx_buffer_length_ > 0; }
-
-  void set_mode_rx() {
-    if (op_mode_ != OperationalMode::RX) {
-      if (power_ >= 18) {
-        // If we are using the high power boost, we must turn it off to receive.
-        spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
-        spi_->write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
-      }
-      spi_->write(RF69HCW_REG_25_DIOMAPPING1, RF69HCW_DIOMAPPING1_DIO0MAPPING_01);
-      set_op_mode(RF69HCW_OPMODE_MODE_RX);
-      op_mode_ = OperationalMode::RX;
-    }
-  }
-
-  void set_mode_tx() {
-    if (op_mode_ != OperationalMode::TX) {
-      if (power_ >= 18) {
-        // Turn on the high power boost.
-        // TODO(james): Determine if we need to turn off over current protection (OCP) to activate
-        // high power boost. The datasheet suggests so (page 21), but we seem to get high power
-        // boost with OCP on.
-        spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_BOOST);
-        spi_->write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_BOOST);
-      }
-      spi_->write(RF69HCW_REG_25_DIOMAPPING1, RF69HCW_DIOMAPPING1_DIO0MAPPING_00);
-      set_op_mode(RF69HCW_OPMODE_MODE_TX);
-      op_mode_ = OperationalMode::TX;
-    }
-  }
-
-  void set_mode_sleep() {
-    if (op_mode_ != OperationalMode::SLEEP) {
-      spi_->write(RF69HCW_REG_01_OPMODE, RF69HCW_OPMODE_MODE_SLEEP);
-      op_mode_ = OperationalMode::SLEEP;
-    }
-  }
-
-  void set_mode_standby() {
-    if (op_mode_ != OperationalMode::STANDBY) {
-      if (power_ >= 18) {
-        // If we are using the high power boost, we must turn it off to receive.
-        // It's unclear if we need to turn it off to enter standby mode, but since we are likely
-        // entering this mode to conserve power, we turn it off here.
-        // TODO(james): Determine how the high power boost is expected to interact with the
-        // different operational modes.
-        spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
-        spi_->write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
-      }
-      set_op_mode(RF69HCW_OPMODE_MODE_STDBY);
-      op_mode_ = OperationalMode::STANDBY;
-    }
-  }
-
-  bool read_received_packet(uint8_t* buffer, uint8_t* length) {
-    bool received_data{false};
-
-    ATOMIC_BLOCK_START;
-    if (rx_buffer_length_ > 0) {
-      *length = std::min(*length, rx_buffer_length_);
-      std::memcpy(buffer, rx_buffer_, *length);
-      rx_buffer_length_ = 0;
-      received_data = true;
-    }
-    ATOMIC_BLOCK_END;
-
-    return received_data;
-  }
-
-  /**
-   * Helper function to put the radio in the received state, block until an interrupt is received,
-   * and then return the received packet.
-   */
-  bool recv(uint8_t* buffer, uint8_t* length) {
-    set_mode_rx();
-    wait_available();
-    return read_received_packet(buffer, length);
-  }
-
-  /**
-   * Helper function to put the radio in the received state, block with timeout until an interrupt
-   * is received, and then return the received packet.
-   */
-  bool recv(uint8_t* buffer, uint8_t* length, uint16_t timeout_ms) {
-    set_mode_rx();
-    wait_available_timeout(timeout_ms);
-    return read_received_packet(buffer, length);
-  }
-
-  bool send(const uint8_t* buffer, uint8_t length) {
-    if (length > mtu()) {
-      return false;
-    }
-
-    // Ensure that we aren't interrupting an ongoing transmission.
-    wait_packet_sent();
-
-    // Ensure that we don't start receiving a message while we are pushing data into the FIFO.
-    set_mode_standby();
-
-    // Don't transmit if we detect another radio transmitting on the same channel.
-    if (!wait_channel_activity_detector()) {
-      tvsc::hal::output::println("Can't send. Channel activity detected.");
-      return false;
-    }
-
-    spi_->fifo_write(RF69HCW_REG_00_FIFO, buffer, length);
-
-    // Start the transmitter.
-    set_mode_tx();
-    return true;
-  }
-
-  float read_rssi_dbm() {
+  float read_rssi_dbm() override {
     // From page 28 of the datasheet:
     // "RssiValue can only be read when it exceeds RssiThreshold"
     // We cache the current value of RssiThreshold, set the threshold to the minimum value, make our
@@ -618,45 +538,70 @@ class RF69HCW final {
     return result;
   }
 
-  bool wait_channel_activity_detector() {
-    if (cad_timeout_ms_ == 0) {
+  void receive() override { set_mode_rx(); }
+  void standby() override { set_mode_standby(); }
+
+  bool has_fragment_available() const override { return rx_buffer_length_ > 0; }
+
+  bool wait_fragment_available(uint16_t timeout_ms) const override {
+    if (has_fragment_available()) {
       return true;
     }
 
-    // Wait for the detected channel activity to finish.
-    // We use a random delay here to ensure that when we do try to transmit, we aren't immediately
-    // colliding with another transmitter. See
-    // https://en.wikipedia.org/wiki/Distributed_coordination_function for a more detailed
-    // explanation.
-    auto t = tvsc::hal::time::time_millis();
-    while (has_channel_activity()) {
-      if (tvsc::hal::time::time_millis() - t > cad_timeout_ms_) {
-        return false;
+    static constexpr uint16_t poll_delay_ms{1};
+    auto start = tvsc::hal::time::time_millis();
+    while ((tvsc::hal::time::time_millis() - start) < timeout_ms) {
+      if (has_fragment_available()) {
+        return true;
       }
-      tvsc::hal::time::delay_ms(tvsc::random::generate_random_value<uint8_t>(10, 200));
-    }
-
-    return true;
-  }
-
-  void wait_available(uint16_t poll_delay_ms = 1) {
-    while (!available()) {
       if (poll_delay_ms > 0) {
         tvsc::hal::time::delay_ms(poll_delay_ms);
       } else {
         YIELD;
       }
     }
+    return false;
   }
 
-  bool wait_packet_sent() {
-    while (op_mode_ == OperationalMode::TX) {
-      YIELD;
+  void read_received_fragment(uint8_t* buffer, uint8_t* length) override {
+    ATOMIC_BLOCK_START;
+    *length = std::min(*length, rx_buffer_length_);
+    if (rx_buffer_length_ > 0) {
+      std::memcpy(buffer, rx_buffer_, *length);
+      rx_buffer_length_ = 0;
     }
+    ATOMIC_BLOCK_END;
+  }
+
+  bool channel_activity_detected() override {
+    return read_rssi_dbm() > channel_activity_threshold_dbm_;
+  }
+
+  bool transmit_fragment(const uint8_t* buffer, uint8_t length, uint16_t timeout_ms) override {
+    if (length > mtu()) {
+      return false;
+    }
+
+    // Ensure that we aren't interrupting an ongoing transmission.
+    wait_fragment_transmitted(timeout_ms);
+
+    // Ensure that we don't start receiving a message while we are pushing data into the FIFO.
+    standby();
+
+    // Don't transmit if we detect another radio transmitting on the same channel.
+    if (!wait_channel_activity_clear(timeout_ms)) {
+      tvsc::hal::output::println("Can't send. Channel activity detected.");
+      return false;
+    }
+
+    spi_->fifo_write(RF69HCW_REG_00_FIFO, buffer, length);
+
+    // Start the transmitter.
+    set_mode_tx();
     return true;
   }
 
-  bool wait_packet_sent(uint16_t timeout_ms) {
+  bool wait_fragment_transmitted(uint16_t timeout_ms) const override {
     auto start = tvsc::hal::time::time_millis();
     while ((tvsc::hal::time::time_millis() - start) < timeout_ms) {
       // We gate the determination that a packet has been sent on the transition to any non-TX
@@ -670,31 +615,6 @@ class RF69HCW final {
     }
     return false;
   }
-
-  bool wait_available_timeout(uint16_t timeout_ms, uint16_t poll_delay_ms = 1) {
-    if (available()) {
-      return true;
-    }
-
-    auto start = tvsc::hal::time::time_millis();
-    while ((tvsc::hal::time::time_millis() - start) < timeout_ms) {
-      if (available()) {
-        return true;
-      }
-      if (poll_delay_ms > 0) {
-        tvsc::hal::time::delay_ms(poll_delay_ms);
-      } else {
-        YIELD;
-      }
-    }
-    return false;
-  }
-
-  void set_channel_activity_detection_timeout_ms(uint16_t timeout_ms) {
-    cad_timeout_ms_ = timeout_ms;
-  }
-
-  uint16_t get_channel_activity_detection_timeout_ms() const { return cad_timeout_ms_; }
 
   void set_receive_sensitivity_threshold_dbm(float threshold_dbm) {
     const uint8_t value = static_cast<uint8_t>(threshold_dbm * -2);

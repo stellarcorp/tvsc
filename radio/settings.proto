@@ -38,19 +38,16 @@ enum Function {
   BIT_RATE = 10;
   // For FSK variants, frequency delta from carrier, both up and down, to encode bits.
   FREQUENCY_DEVIATION = 11;
-  // Timeout in milliseconds. When attempting to transmit, if CAD continues to show the channel is
-  // in use, give up after this amount of time.
-  CHANNEL_ACTIVITY_DETECTION_TIMEOUT_MS = 12;
   // Threshold before the detected power in the channel is considered valid to receive. Signals
   // lower than this power will be considered noise. If there is noise above this threshold we will
   // attempt to receive and decode it.
-  RECEIVE_SENSITIVITY_THRESHOLD_DBM = 13;
+  RECEIVE_SENSITIVITY_THRESHOLD_DBM = 12;
   // Similar to the RECEIVE_SENSITIVITY_THRESHOLD_DBM, but this threshold gates transmissions. If
   // the detected power level is higher than this threshold, we won't transmit until it abates. This
   // threshold could be the same as the receive threshold above, or it could be set lower to avoid
   // collissions with devices outside of its range. In particular, it could be set lower to avoid
   // corrupting the reception of a signal by a receiver in between this device and a distant sender.
-  CHANNEL_ACTIVITY_THRESHOLD_DBM = 14;
+  CHANNEL_ACTIVITY_THRESHOLD_DBM = 13;
 }
 
 /**
