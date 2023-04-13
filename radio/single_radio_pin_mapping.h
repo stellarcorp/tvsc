@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 namespace tvsc::radio {
 
 class SingleRadioPinMapping final {
@@ -9,13 +11,13 @@ class SingleRadioPinMapping final {
   /**
    * Pin connected to the RF69HCW reset line.
    */
-  static int reset_pin();
+  static uint8_t reset_pin();
 
   /**
    * Pin connected to the SPI Chip Select line on the RF69HCW. Note that the RF69HCW datasheet
    * designation for this line is NSS.
    */
-  static int chip_select_pin();
+  static uint8_t chip_select_pin();
 
   /**
    * Pin connected to the GPIO0 interrupt line of the Adafruit breakout board for the RF69HCW.
@@ -26,7 +28,7 @@ class SingleRadioPinMapping final {
    * looking at the board wiring, this pin refers to the pin connected to the daughterboard's G0
    * pin.
    */
-  static int interrupt_pin();
+  static uint8_t interrupt_pin();
 };
 
 }  // namespace tvsc::radio
