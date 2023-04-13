@@ -118,7 +118,19 @@ class BufferT final {
   constexpr const ElementT* data() const noexcept { return elements_; }
 
   constexpr std::string_view as_string_view() const {
-    return std::string_view(elements_, NUM_ELEMENTS * sizeof(ElementT));
+    return std::string_view(reinterpret_cast<const char*>(elements_),
+                            NUM_ELEMENTS * sizeof(ElementT));
+  }
+
+  constexpr std::string_view as_string_view(size_t count) const {
+    validate_index(count - 1);
+    return std::string_view(reinterpret_cast<const char*>(elements_), count * sizeof(ElementT));
+  }
+
+  constexpr std::string_view as_string_view(size_t offset, size_t count) const {
+    validate_index(offset + count - 1);
+    return std::string_view(reinterpret_cast<const char*>(elements_ + offset),
+                            count * sizeof(ElementT));
   }
 
   template <size_t RHS_NUM_ELEMENTS>
@@ -225,7 +237,19 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
   constexpr const ElementT* data() const noexcept { return elements_; }
 
   constexpr std::string_view as_string_view() const {
-    return std::string_view(elements_, NUM_ELEMENTS * sizeof(ElementT));
+    return std::string_view(reinterpret_cast<const char*>(elements_),
+                            NUM_ELEMENTS * sizeof(ElementT));
+  }
+
+  constexpr std::string_view as_string_view(size_t count) const {
+    validate_index(count - 1);
+    return std::string_view(reinterpret_cast<const char*>(elements_), count * sizeof(ElementT));
+  }
+
+  constexpr std::string_view as_string_view(size_t offset, size_t count) const {
+    validate_index(offset + count - 1);
+    return std::string_view(reinterpret_cast<const char*>(elements_ + offset),
+                            count * sizeof(ElementT));
   }
 
   template <size_t RHS_NUM_ELEMENTS>
