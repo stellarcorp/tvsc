@@ -45,8 +45,6 @@ int main() {
   tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
       rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
 
-  rf69.reset();
-
   tvsc::hal::output::println("Board id: ");
   tvsc::radio::print_id(configuration.identification());
   tvsc::hal::output::println();

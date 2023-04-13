@@ -39,8 +39,6 @@ int main() {
   tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
   tvsc::radio::RF69HCW rf69{spi_peripheral, RF69_DIO0, RF69_RST};
 
-  rf69.reset();
-
   tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW> configuration{
       rf69, tvsc::radio::SingleRadioPinMapping::board_name()};
 

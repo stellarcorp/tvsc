@@ -453,6 +453,9 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     tvsc::hal::gpio::set_mode(interrupt_pin_, tvsc::hal::gpio::PinMode::MODE_INPUT);
     spi_->bus().using_interrupt(interrupt_pin_);
     tvsc::hal::gpio::attach_interrupt(interrupt_pin_, interrupt_fn);
+
+    // Put the radio module into its default state.
+    reset();
   }
 
   void reset() override {
