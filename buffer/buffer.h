@@ -2,6 +2,9 @@
 
 #include <array>
 #include <cstring>
+#include <iomanip>
+#include <limits>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 
@@ -37,6 +40,9 @@ class BufferT final {
                               " (NUM_ELEMENTS: " + to_string(NUM_ELEMENTS));
     }
   }
+
+  template <typename, size_t, bool>
+  friend class BufferT;
 
  public:
   constexpr size_t size() const { return NUM_ELEMENTS; }
@@ -113,6 +119,24 @@ class BufferT final {
 
   constexpr std::string_view as_string_view() const {
     return std::string_view(elements_, NUM_ELEMENTS * sizeof(ElementT));
+  }
+
+  template <size_t RHS_NUM_ELEMENTS>
+  int compare(const BufferT<ElementT, RHS_NUM_ELEMENTS, is_trivially_copyable>& rhs,
+              size_t count = std::numeric_limits<size_t>::max()) const {
+    if constexpr (RHS_NUM_ELEMENTS < NUM_ELEMENTS) {
+      return std::memcmp(elements_, rhs.elements_,
+                         std::min(RHS_NUM_ELEMENTS, count) * sizeof(ElementT));
+    } else {
+      return std::memcmp(elements_, rhs.elements_,
+                         std::min(NUM_ELEMENTS, count) * sizeof(ElementT));
+    }
+  }
+
+  template <size_t RHS_NUM_ELEMENTS>
+  bool is_equal(const BufferT<ElementT, RHS_NUM_ELEMENTS, is_trivially_copyable>& rhs,
+                size_t count = std::numeric_limits<size_t>::max()) const {
+    return compare(rhs, count) == 0;
   }
 };
 
@@ -203,7 +227,54 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
   constexpr std::string_view as_string_view() const {
     return std::string_view(elements_, NUM_ELEMENTS * sizeof(ElementT));
   }
+
+  template <size_t RHS_NUM_ELEMENTS>
+  int compare(const BufferT<ElementT, RHS_NUM_ELEMENTS, true>& rhs,
+              size_t count = std::numeric_limits<size_t>::max()) const {
+    if constexpr (RHS_NUM_ELEMENTS < NUM_ELEMENTS) {
+      return std::memcmp(elements_, rhs.elements_,
+                         std::min(RHS_NUM_ELEMENTS, count) * sizeof(ElementT));
+    } else {
+      return std::memcmp(elements_, rhs.elements_,
+                         std::min(NUM_ELEMENTS, count) * sizeof(ElementT));
+    }
+  }
+
+  template <size_t RHS_NUM_ELEMENTS>
+  bool is_equal(const BufferT<ElementT, RHS_NUM_ELEMENTS, true>& rhs,
+                size_t count = std::numeric_limits<size_t>::max()) const {
+    return compare(rhs, count) == 0;
+  }
 };
+
+template <typename ElementT, size_t NUM_ELEMENTS, bool is_trivially_copyable>
+std::string to_string(const BufferT<ElementT, NUM_ELEMENTS, is_trivially_copyable>& buffer) {
+  using std::to_string;
+  std::string result{};
+  static constexpr size_t ROW_SIZE{10};
+  for (size_t i = 0; i < NUM_ELEMENTS; i += ROW_SIZE) {
+    for (size_t j = 0; (j < ROW_SIZE) && (i * ROW_SIZE + j < NUM_ELEMENTS); ++j) {
+      result.append(to_string(buffer[i * ROW_SIZE + j])).append(" ");
+    }
+    result.append("\n");
+  }
+  return result;
+}
+
+template <size_t NUM_ELEMENTS>
+std::string to_string(const BufferT<uint8_t, NUM_ELEMENTS, true>& buffer) {
+  std::ostringstream ss;
+  static constexpr size_t ROW_SIZE{10};
+  for (size_t i = 0; i < NUM_ELEMENTS; i += ROW_SIZE) {
+    for (size_t j = 0; (j < ROW_SIZE) && (i + j < NUM_ELEMENTS); ++j) {
+      ss << std::hex << "0x" << std::setw(2) << std::setfill('0')
+         << static_cast<uint32_t>(buffer[i + j]) << " ";
+    }
+    ss << "\n";
+  }
+
+  return ss.str();
+}
 
 template <typename ElementT, size_t NUM_ELEMENTS>
 using Buffer = BufferT<ElementT, NUM_ELEMENTS, std::is_trivially_copyable<ElementT>::value>;
