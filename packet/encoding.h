@@ -58,8 +58,10 @@ std::string to_string(const EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& encode
  * fragments. The identity of each fragment, as well as an indicator for the number of fragments,
  * should be encoded directly into the Fragment data.
  */
-template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
-void encode(const Packet& packet, EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments) {
+template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET,
+          size_t PACKET_MAX_PAYLOAD_SIZE = DEFAULT_PACKET_MAX_PAYLOAD_SIZE>
+void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
+            EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments) {
   static_assert(MAX_FRAGMENTS_PER_PACKET < 128,
                 "MAX_FRAGMENTS_PER_PACKET is too large. We only reserve 7 bits for this value (8 "
                 "bits including continuation bit).");
@@ -137,8 +139,10 @@ void encode(const Packet& packet, EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& 
  * Assemble a number of fragments into a single packet. The fragments do *not* need to be ordered
  * correctly in the fragments structure. The assemble function should handle out of order fragments.
  */
-template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
-void assemble(const EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments, Packet& packet) {
+template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET,
+          size_t PACKET_MAX_PAYLOAD_SIZE = DEFAULT_PACKET_MAX_PAYLOAD_SIZE>
+void assemble(const EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments,
+              PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet) {
   using std::to_string;
   size_t bytes_read{0};
   size_t header_size{0};

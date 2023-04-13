@@ -95,7 +95,10 @@ class PacketT final {
   size_t payload_length() const { return payload_length_; }
   void set_payload_length(size_t payload_length) {
     if (payload_length > MAX_PAYLOAD_SIZE) {
-      except<std::domain_error>("Payload is larger than MAX_PAYLOAD_SIZE");
+      using std::to_string;
+      except<std::domain_error>(
+          "Payload is larger than MAX_PAYLOAD_SIZE. payload_length: " + to_string(payload_length) +
+          " (MAX_PAYLOAD_SIZE: " + to_string(MAX_PAYLOAD_SIZE) + ")");
     }
     payload_length_ = payload_length;
   }
@@ -138,6 +141,7 @@ std::string to_string(const PacketT<MAX_PAYLOAD_SIZE>& packet) {
 
 // By default, we work with packets that have a maximum payload size about 30% smaller than that of
 // an ethernet frame.
-using Packet = PacketT<1024>;
+constexpr size_t DEFAULT_PACKET_MAX_PAYLOAD_SIZE{1024};
+using Packet = PacketT<DEFAULT_PACKET_MAX_PAYLOAD_SIZE>;
 
 }  // namespace tvsc::packet
