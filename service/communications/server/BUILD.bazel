@@ -8,7 +8,9 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
+        "//hal/spi",
         "//radio",
+        "//radio:rf69hcw",
         "//service/communications/common",
         "//service/utility",
         "//third_party/glog",

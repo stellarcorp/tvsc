@@ -5,17 +5,52 @@
 #include <ctime>
 #include <iomanip>
 #include <iostream>
+#include <memory>
 #include <thread>
 
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
+#include "hal/spi/spi.h"
+#include "hal/time/time.h"
 #include "radio/packet.h"
+#include "radio/radio_configuration.h"
+#include "radio/rf69hcw.h"
+#include "radio/rf69hcw_configuration.h"
+#include "radio/single_radio_pin_mapping.h"
+#include "radio/transceiver.h"
+#include "random/random.h"
 #include "service/communications/common/communications.grpc.pb.h"
 #include "service/communications/common/communications.pb.h"
 
 namespace tvsc::service::communications {
 
 using namespace std::literals::chrono_literals;
+
+void CommunicationsServiceImpl::receive_packets() {}
+
+void CommunicationsServiceImpl::reset_radio() {
+  rf69_->reset();
+
+  configuration_->change_values(tvsc::radio::default_configuration<tvsc::radio::RF69HCW>());
+  configuration_->commit_changes();
+}
+
+CommunicationsServiceImpl::CommunicationsServiceImpl() {
+  const uint8_t RF69_RST{tvsc::radio::SingleRadioPinMapping::reset_pin()};
+  const uint8_t RF69_CS{tvsc::radio::SingleRadioPinMapping::chip_select_pin()};
+  const uint8_t RF69_DIO0{tvsc::radio::SingleRadioPinMapping::interrupt_pin()};
+
+  tvsc::random::initialize_seed();
+  tvsc::hal::gpio::initialize_gpio();
+
+  bus_ = std::make_unique<tvsc::hal::spi::SpiBus>(tvsc::hal::spi::get_default_spi_bus());
+  spi_peripheral_ = std::make_unique<tvsc::hal::spi::SpiPeripheral>(*bus_, RF69_CS, 0x80);
+  rf69_ = std::make_unique<tvsc::radio::RF69HCW>(*spi_peripheral_, RF69_DIO0, RF69_RST);
+  configuration_ = std::make_unique<tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW>>(
+      *rf69_, tvsc::radio::SingleRadioPinMapping::board_name());
+
+  reset_radio();
+}
 
 void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& packet) {
   DLOG(INFO) << "CommunicationsServerImpl::post_received_packet()";
