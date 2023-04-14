@@ -12,21 +12,26 @@ class PacketTxQueue;
 
 template <typename PacketT, size_t NUM_PACKETS>
 class PacketSink final {
+ public:
+  using PacketTxQueueT = PacketTxQueue<PacketT, NUM_PACKETS>;
+
+  using DataAvailableCallback = std::function<void(PacketTxQueueT&)>;
+
  private:
   struct PeekResponse {
     const PacketT* packet{nullptr};
     const void* queue{nullptr};
   };
 
-  PacketTxQueue<PacketT, NUM_PACKETS>* packet_queue_{nullptr};
+  PacketTxQueueT* packet_queue_{nullptr};
   PeekResponse last_peek_{};
 
-  PacketSink(PacketTxQueue<PacketT, NUM_PACKETS>& queue) : packet_queue_(&queue) {}
+  PacketSink(PacketTxQueueT& queue) : packet_queue_(&queue) {}
 
-  friend class PacketTxQueue<PacketT, NUM_PACKETS>;
+  friend PacketTxQueueT;
 
  public:
-  PacketTxQueue<PacketT, NUM_PACKETS>& packet_queue() { return *packet_queue_; }
+  PacketTxQueueT& packet_queue() { return *packet_queue_; }
 
   /**
    * Peek at the current packet. Subsequent calls to peek() are not guaranteed to return the same
@@ -59,6 +64,15 @@ class PacketSink final {
   }
 
   bool empty() const { return packet_queue_->empty(); }
+
+  void set_data_available_callback(DataAvailableCallback callback) {
+    if (callback) {
+      packet_queue_->set_data_available_callback(
+          [this, callback](PacketTxQueueT& queue) { callback(*this); });
+    } else {
+      packet_queue_->set_data_available_callback(std::function<void(PacketTxQueueT&)>{});
+    }
+  }
 };
 
 /**
@@ -66,24 +80,28 @@ class PacketSink final {
  *
  * The PacketTxQueue implements a variation on generalized processor sharing
  * (https://en.wikipedia.org/wiki/Generalized_processor_sharing), with the exception that it
- * provides for an immediate priority that always supercedes all other priorities. The PacketTxQueue
- * provides for four classes of service:
+ * provides for an immediate priority that always supercedes all other priorities. The
+ * PacketTxQueue provides for four classes of service:
  *
- * - immediate: Used for communications whose timeliness affects safety or viability of the vehicle.
- * These packets override all other packets.
+ * - immediate: Used for communications whose timeliness affects safety or viability of the
+ * vehicle. These packets override all other packets.
  *
- * - control: Used for communications to control the vehicle, communications channels, etc. as well
- * as high priority telemetry data.
+ * - control: Used for communications to control the vehicle, communications channels, etc. as
+ * well as high priority telemetry data.
  *
  * - normal: Used for communications with no special priority. Most packets should have this
  * priority.
  *
- * - low: Used for communications that should be considered optional. This class mainly includes low
- * priority telemetry data.
+ * - low: Used for communications that should be considered optional. This class mainly includes
+ * low priority telemetry data.
  */
 template <typename PacketT, size_t NUM_PACKETS>
 class PacketTxQueue final {
  private:
+  using DataAvailableCallback = std::function<void(PacketTxQueue&)>;
+
+  using RingBufferT = tvsc::buffer::RingBuffer<PacketT, 1, NUM_PACKETS, false>;
+
   using WeightT = unsigned int;
   static constexpr WeightT CONTROL_PRIORITY_WEIGHT{100};
   static constexpr WeightT NORMAL_PRIORITY_WEIGHT{10};
@@ -118,10 +136,10 @@ class PacketTxQueue final {
     }
   }
 
-  tvsc::buffer::RingBuffer<PacketT, 1, NUM_PACKETS, false> immediate_priority_{};
-  tvsc::buffer::RingBuffer<PacketT, 1, NUM_PACKETS, false> control_priority_{};
-  tvsc::buffer::RingBuffer<PacketT, 1, NUM_PACKETS, false> normal_priority_{};
-  tvsc::buffer::RingBuffer<PacketT, 1, NUM_PACKETS, false> low_priority_{};
+  RingBufferT immediate_priority_{};
+  RingBufferT control_priority_{};
+  RingBufferT normal_priority_{};
+  RingBufferT low_priority_{};
 
   typename PacketSink<PacketT, NUM_PACKETS>::PeekResponse peek() const {
     typename PacketSink<PacketT, NUM_PACKETS>::PeekResponse result{};
@@ -178,6 +196,25 @@ class PacketTxQueue final {
 
   friend class PacketSink<PacketT, NUM_PACKETS>;
 
+  void set_data_available_callback(DataAvailableCallback callback) {
+    if (callback) {
+      immediate_priority_.set_data_available_callback(
+          [this, callback](RingBufferT& /*ring*/) { callback(*this); });
+      control_priority_.set_data_available_callback(
+          [this, callback](RingBufferT& /*ring*/) { callback(*this); });
+      normal_priority_.set_data_available_callback(
+          [this, callback](RingBufferT& /*ring*/) { callback(*this); });
+      low_priority_.set_data_available_callback(
+          [this, callback](RingBufferT& /*ring*/) { callback(*this); });
+    } else {
+      immediate_priority_.set_data_available_callback(
+          typename RingBufferT::DataAvailableCallback{});
+      control_priority_.set_data_available_callback(typename RingBufferT::DataAvailableCallback{});
+      normal_priority_.set_data_available_callback(typename RingBufferT::DataAvailableCallback{});
+      low_priority_.set_data_available_callback(typename RingBufferT::DataAvailableCallback{});
+    }
+  }
+
  public:
   void push_immediate(const PacketT& packet) { immediate_priority_.supply(packet); }
 
@@ -196,8 +233,8 @@ class PacketTxQueue final {
 };
 
 /**
- * PacketRxQueue is just a RingBuffer configured to prioritize new packets and dropping old packets
- * if the buffer is full.
+ * PacketRxQueue is just a RingBuffer configured to prioritize new packets and dropping old
+ * packets if the buffer is full.
  */
 template <typename PacketT, size_t NUM_PACKETS>
 using PacketRxQueue =
