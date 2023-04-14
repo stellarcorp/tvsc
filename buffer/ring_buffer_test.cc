@@ -8,9 +8,9 @@
 
 namespace tvsc::buffer {
 
-template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS, bool PRIORITIZE_OLD_ELEMENTS>
+template <typename ElementT, size_t PAGE_SIZE, size_t NUM_PAGES, bool PRIORITIZE_OLD_ELEMENTS>
 class SequentialDataSource final
-    : public RingBuffer<ElementT, BUFFER_SIZE, NUM_BUFFERS, PRIORITIZE_OLD_ELEMENTS>::DataSource {
+    : public RingBuffer<ElementT, PAGE_SIZE, NUM_PAGES, PRIORITIZE_OLD_ELEMENTS>::DataSource {
  private:
   ElementT prev_element_{};
   ElementT next_element_{};
@@ -29,9 +29,9 @@ class SequentialDataSource final
     size_t total_elements_supplied{0};
 
     prev_element_ = next_element_;
-    Buffer<ElementT, BUFFER_SIZE> buffer{};
+    Buffer<ElementT, PAGE_SIZE> buffer{};
     while (num_elements > total_elements_supplied) {
-      size_t elements_to_supply = std::min(BUFFER_SIZE, num_elements - total_elements_supplied);
+      size_t elements_to_supply = std::min(PAGE_SIZE, num_elements - total_elements_supplied);
       for (size_t i = 0; i < elements_to_supply; ++i) {
         buffer.write(i, next_element_++);
       }
@@ -53,17 +53,17 @@ class SequentialDataSource final
   }
 };
 
-template <typename ElementT, size_t BUFFER_SIZE, size_t NUM_BUFFERS, bool PRIORITIZE_OLD_ELEMENTS>
+template <typename ElementT, size_t PAGE_SIZE, size_t NUM_PAGES, bool PRIORITIZE_OLD_ELEMENTS>
 class InspectableDataSink final
-    : public RingBuffer<ElementT, BUFFER_SIZE, NUM_BUFFERS, PRIORITIZE_OLD_ELEMENTS>::DataSink {
+    : public RingBuffer<ElementT, PAGE_SIZE, NUM_PAGES, PRIORITIZE_OLD_ELEMENTS>::DataSink {
  private:
-  Buffer<ElementT, BUFFER_SIZE> buffer_{};
+  Buffer<ElementT, PAGE_SIZE> buffer_{};
   bool data_available_{false};
 
  public:
   void signal_data_available() override { data_available_ = true; }
 
-  const Buffer<ElementT, BUFFER_SIZE>& last_buffer_read() const { return buffer_; }
+  const Buffer<ElementT, PAGE_SIZE>& last_buffer_read() const { return buffer_; }
 
   bool data_available() const { return data_available_; }
 
@@ -93,12 +93,12 @@ class RingBufferTest : public ::testing::Test {
  * Tests for the RingBuffer where we prioritize new elements over old.
  */
 template <typename SizesT>
-class DropOldRingBufferTest : public RingBufferTest<SizesT> {};
+class PrioritizeNewRingBufferTest : public RingBufferTest<SizesT> {};
 
-template <size_t BUFFER_SIZE, size_t NUM_BUFFERS, bool PRIORITIZE_OLD_ELEMENTS>
+template <size_t PAGE_SIZE, size_t NUM_PAGES, bool PRIORITIZE_OLD_ELEMENTS>
 struct Sizes final {
-  static constexpr size_t buffer_size{BUFFER_SIZE};
-  static constexpr size_t num_buffers{NUM_BUFFERS};
+  static constexpr size_t buffer_size{PAGE_SIZE};
+  static constexpr size_t num_buffers{NUM_PAGES};
   static constexpr bool prioritize_old_elements{PRIORITIZE_OLD_ELEMENTS};
 };
 
@@ -113,7 +113,20 @@ using SmallTestSizes =
     ::testing::Types<Sizes<2, 3, PRIORITIZE_OLD_ELEMENTS>, Sizes<8, 8, PRIORITIZE_OLD_ELEMENTS>>;
 
 TYPED_TEST_SUITE(RingBufferTest, TestSizes<true>);
-TYPED_TEST_SUITE(DropOldRingBufferTest, TestSizes<false>);
+TYPED_TEST_SUITE(PrioritizeNewRingBufferTest, TestSizes<false>);
+
+TYPED_TEST(RingBufferTest, CanUseWithoutDataSource) {
+  typename TestFixture::DataSinkT sink{};
+
+  typename TestFixture::RingBufferT ring{sink};
+
+  static constexpr int value{1};
+  ring.supply(value);
+
+  EXPECT_EQ(1, sink.try_consume());
+
+  EXPECT_EQ(value, sink.last_buffer_read()[0]);
+}
 
 TYPED_TEST(RingBufferTest, CallsDataNeededOnConstruction) {
   typename TestFixture::DataSourceT source{};
@@ -129,9 +142,8 @@ TYPED_TEST(RingBufferTest, CallsDataNeededOnConstruction) {
 
 TYPED_TEST(RingBufferTest, CanAcceptDataFromSource) {
   typename TestFixture::DataSourceT source{};
-  typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{source};
 
   source.try_supply(1);
   EXPECT_EQ(1, ring.elements_available());
@@ -139,9 +151,8 @@ TYPED_TEST(RingBufferTest, CanAcceptDataFromSource) {
 
 TYPED_TEST(RingBufferTest, SourceCanWriteAnMtuWorthOfData) {
   typename TestFixture::DataSourceT source{};
-  typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{source};
 
   const size_t elements_written{source.try_supply(ring.mtu())};
   EXPECT_EQ(ring.mtu(), elements_written);
@@ -151,9 +162,8 @@ TYPED_TEST(RingBufferTest, SourceCanWriteAnMtuWorthOfData) {
 
 TYPED_TEST(RingBufferTest, SourceCanWriteAnMtuFollowedBySingleElement) {
   typename TestFixture::DataSourceT source{};
-  typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{source};
 
   size_t elements_written{source.try_supply(ring.mtu())};
   ASSERT_EQ(ring.mtu(), elements_written);
@@ -168,9 +178,8 @@ TYPED_TEST(RingBufferTest, SourceCanWriteAnMtuFollowedBySingleElement) {
 
 TYPED_TEST(RingBufferTest, SourceCanWriteTwoMtusInARow) {
   typename TestFixture::DataSourceT source{};
-  typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{source};
 
   size_t elements_written{source.try_supply(ring.mtu())};
   ASSERT_EQ(ring.mtu(), elements_written);
@@ -323,7 +332,7 @@ TYPED_TEST(RingBufferTest, CapsWriteAtAnMtuWorthOfData) {
   EXPECT_EQ(2, source.num_supply_calls());
 }
 
-TYPED_TEST(DropOldRingBufferTest, SourceCanOverfillRingIfPrioritizeOldElementsIsFalse) {
+TYPED_TEST(PrioritizeNewRingBufferTest, SourceCanOverfillRingIfPrioritizeOldElementsIsFalse) {
   typename TestFixture::DataSourceT source{};
   typename TestFixture::DataSinkT sink{};
 
@@ -340,7 +349,8 @@ TYPED_TEST(DropOldRingBufferTest, SourceCanOverfillRingIfPrioritizeOldElementsIs
   EXPECT_EQ(1, second_elements_written);
 }
 
-TYPED_TEST(DropOldRingBufferTest, SourceCanOverfillRingByAnMtuIfPrioritizeOldElementsIsFalse) {
+TYPED_TEST(PrioritizeNewRingBufferTest,
+           SourceCanOverfillRingByAnMtuIfPrioritizeOldElementsIsFalse) {
   typename TestFixture::DataSinkT sink{};
   typename TestFixture::DataSourceT source{};
 
@@ -360,7 +370,8 @@ TYPED_TEST(DropOldRingBufferTest, SourceCanOverfillRingByAnMtuIfPrioritizeOldEle
   EXPECT_EQ(NUM_ELEMENTS_TO_SUPPLY, second_elements_written);
 }
 
-TYPED_TEST(DropOldRingBufferTest, SourceCanOverfillRingManyTimesIfPrioritizeOldElementsIsFalse) {
+TYPED_TEST(PrioritizeNewRingBufferTest,
+           SourceCanOverfillRingManyTimesIfPrioritizeOldElementsIsFalse) {
   typename TestFixture::DataSourceT source{};
   typename TestFixture::DataSinkT sink{};
 

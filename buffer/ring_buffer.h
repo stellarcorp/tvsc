@@ -98,6 +98,13 @@ class RingBuffer final {
  public:
   RingBuffer() = default;
 
+  RingBuffer(DataSource& source) : source_(&source) {
+    source_->set_ring_buffer(*this);
+    source_->signal_data_needed();
+  }
+
+  RingBuffer(DataSink& sink) : sink_(&sink) { sink_->set_ring_buffer(*this); }
+
   RingBuffer(DataSource& source, DataSink& sink) : source_(&source), sink_(&sink) {
     source_->set_ring_buffer(*this);
     sink_->set_ring_buffer(*this);
