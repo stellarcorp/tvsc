@@ -9,16 +9,25 @@
 namespace tvsc::buffer {
 
 template <typename ElementT, size_t PAGE_SIZE, size_t NUM_PAGES, bool PRIORITIZE_OLD_ELEMENTS>
-class SequentialDataSource final
-    : public RingBuffer<ElementT, PAGE_SIZE, NUM_PAGES, PRIORITIZE_OLD_ELEMENTS>::DataSource {
+class SequentialDataSource final {
  private:
   ElementT prev_element_{};
   ElementT next_element_{};
   size_t num_supply_calls_{};
   bool data_needed_{false};
 
+  RingBuffer<ElementT, PAGE_SIZE, NUM_PAGES, PRIORITIZE_OLD_ELEMENTS>* ring_buffer_{nullptr};
+
  public:
-  void signal_data_needed() override { data_needed_ = true; }
+  void signal_data_needed() { data_needed_ = true; }
+
+  void connect(RingBuffer<ElementT, PAGE_SIZE, NUM_PAGES, PRIORITIZE_OLD_ELEMENTS>& ring) {
+    ring_buffer_ = &ring;
+    ring.set_data_needed_callback(
+        [this](RingBuffer<ElementT, PAGE_SIZE, NUM_PAGES, PRIORITIZE_OLD_ELEMENTS>& /*ring*/) {
+          this->signal_data_needed();
+        });
+  }
 
   const ElementT& prev_element() const { return prev_element_; }
   const ElementT& next_element() const { return next_element_; }
@@ -36,7 +45,7 @@ class SequentialDataSource final
         buffer.write(i, next_element_++);
       }
       data_needed_ = false;
-      total_elements_supplied += this->ring_buffer()->supply(elements_to_supply, buffer.data());
+      total_elements_supplied += ring_buffer_->supply(elements_to_supply, buffer.data());
       ++num_supply_calls_;
     }
 
@@ -54,14 +63,23 @@ class SequentialDataSource final
 };
 
 template <typename ElementT, size_t PAGE_SIZE, size_t NUM_PAGES, bool PRIORITIZE_OLD_ELEMENTS>
-class InspectableDataSink final
-    : public RingBuffer<ElementT, PAGE_SIZE, NUM_PAGES, PRIORITIZE_OLD_ELEMENTS>::DataSink {
+class InspectableDataSink final {
  private:
   Buffer<ElementT, PAGE_SIZE> buffer_{};
   bool data_available_{false};
 
+  RingBuffer<ElementT, PAGE_SIZE, NUM_PAGES, PRIORITIZE_OLD_ELEMENTS>* ring_buffer_{nullptr};
+
  public:
-  void signal_data_available() override { data_available_ = true; }
+  void signal_data_available() { data_available_ = true; }
+
+  void connect(RingBuffer<ElementT, PAGE_SIZE, NUM_PAGES, PRIORITIZE_OLD_ELEMENTS>& ring) {
+    ring_buffer_ = &ring;
+    ring.set_data_available_callback(
+        [this](RingBuffer<ElementT, PAGE_SIZE, NUM_PAGES, PRIORITIZE_OLD_ELEMENTS>& /*ring*/) {
+          this->signal_data_available();
+        });
+  }
 
   const Buffer<ElementT, PAGE_SIZE>& last_buffer_read() const { return buffer_; }
 
@@ -69,7 +87,7 @@ class InspectableDataSink final
 
   size_t try_consume() {
     data_available_ = false;
-    return this->ring_buffer()->consume(buffer_.size(), buffer_.data());
+    return ring_buffer_->consume(buffer_.size(), buffer_.data());
   }
 
   void reset() {
@@ -118,7 +136,8 @@ TYPED_TEST_SUITE(PrioritizeNewRingBufferTest, TestSizes<false>);
 TYPED_TEST(RingBufferTest, CanUseWithoutDataSource) {
   typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{sink};
+  typename TestFixture::RingBufferT ring{};
+  sink.connect(ring);
 
   static constexpr int value{1};
   ring.supply(value);
@@ -135,7 +154,10 @@ TYPED_TEST(RingBufferTest, CallsDataNeededOnConstruction) {
   ASSERT_FALSE(source.data_needed());
   ASSERT_FALSE(sink.data_available());
 
-  typename TestFixture::RingBufferT{source, sink};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
+  sink.connect(ring);
+
   EXPECT_TRUE(source.data_needed());
   EXPECT_FALSE(sink.data_available());
 }
@@ -143,7 +165,8 @@ TYPED_TEST(RingBufferTest, CallsDataNeededOnConstruction) {
 TYPED_TEST(RingBufferTest, CanAcceptDataFromSource) {
   typename TestFixture::DataSourceT source{};
 
-  typename TestFixture::RingBufferT ring{source};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
 
   source.try_supply(1);
   EXPECT_EQ(1, ring.elements_available());
@@ -152,7 +175,8 @@ TYPED_TEST(RingBufferTest, CanAcceptDataFromSource) {
 TYPED_TEST(RingBufferTest, SourceCanWriteAnMtuWorthOfData) {
   typename TestFixture::DataSourceT source{};
 
-  typename TestFixture::RingBufferT ring{source};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
 
   const size_t elements_written{source.try_supply(ring.mtu())};
   EXPECT_EQ(ring.mtu(), elements_written);
@@ -163,7 +187,8 @@ TYPED_TEST(RingBufferTest, SourceCanWriteAnMtuWorthOfData) {
 TYPED_TEST(RingBufferTest, SourceCanWriteAnMtuFollowedBySingleElement) {
   typename TestFixture::DataSourceT source{};
 
-  typename TestFixture::RingBufferT ring{source};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
 
   size_t elements_written{source.try_supply(ring.mtu())};
   ASSERT_EQ(ring.mtu(), elements_written);
@@ -179,7 +204,8 @@ TYPED_TEST(RingBufferTest, SourceCanWriteAnMtuFollowedBySingleElement) {
 TYPED_TEST(RingBufferTest, SourceCanWriteTwoMtusInARow) {
   typename TestFixture::DataSourceT source{};
 
-  typename TestFixture::RingBufferT ring{source};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
 
   size_t elements_written{source.try_supply(ring.mtu())};
   ASSERT_EQ(ring.mtu(), elements_written);
@@ -196,7 +222,9 @@ TYPED_TEST(RingBufferTest, SinkNotifiedOnWriteOfMtu) {
   typename TestFixture::DataSourceT source{};
   typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
+  sink.connect(ring);
 
   source.try_supply(ring.mtu());
 
@@ -207,7 +235,9 @@ TYPED_TEST(RingBufferTest, SinkCanReadSingleElement) {
   typename TestFixture::DataSourceT source{};
   typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
+  sink.connect(ring);
 
   source.try_supply(1);
 
@@ -220,7 +250,9 @@ TYPED_TEST(RingBufferTest, SinkCanReadMtu) {
   typename TestFixture::DataSourceT source{};
   typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
+  sink.connect(ring);
 
   source.try_supply(ring.mtu());
 
@@ -262,7 +294,9 @@ TYPED_TEST(RingBufferTest, SinkNotNotifiedOnWriteOfLessThanMtu) {
   typename TestFixture::DataSourceT source{};
   typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
+  sink.connect(ring);
 
   source.try_supply(ring.mtu() - 1);
 
@@ -273,7 +307,9 @@ TYPED_TEST(RingBufferTest, SourceCanFillRing) {
   typename TestFixture::DataSourceT source{};
   typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
+  sink.connect(ring);
 
   const size_t elements_written{source.try_supply(ring.max_buffered_elements())};
   ASSERT_EQ(ring.max_buffered_elements(), source.next_element());
@@ -287,7 +323,9 @@ TYPED_TEST(RingBufferTest, SinkCanDrainRing) {
   typename TestFixture::DataSourceT source{};
   typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
+  sink.connect(ring);
 
   const size_t elements_written{source.try_supply(ring.max_buffered_elements())};
   ASSERT_EQ(ring.max_buffered_elements(), source.next_element());
@@ -320,7 +358,9 @@ TYPED_TEST(RingBufferTest, CapsWriteAtAnMtuWorthOfData) {
   typename TestFixture::DataSourceT source{};
   typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
+  sink.connect(ring);
 
   constexpr size_t ELEMENTS_TO_WRITE{ring.mtu() + 1};
 
@@ -336,7 +376,9 @@ TYPED_TEST(PrioritizeNewRingBufferTest, SourceCanOverfillRingIfPrioritizeOldElem
   typename TestFixture::DataSourceT source{};
   typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
+  sink.connect(ring);
 
   const size_t first_elements_written{source.try_supply(ring.max_buffered_elements())};
   ASSERT_EQ(ring.max_buffered_elements(), source.next_element());
@@ -354,7 +396,9 @@ TYPED_TEST(PrioritizeNewRingBufferTest,
   typename TestFixture::DataSinkT sink{};
   typename TestFixture::DataSourceT source{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
+  sink.connect(ring);
 
   const size_t first_elements_written{source.try_supply(ring.max_buffered_elements())};
   ASSERT_EQ(ring.max_buffered_elements(), source.next_element());
@@ -375,7 +419,9 @@ TYPED_TEST(PrioritizeNewRingBufferTest,
   typename TestFixture::DataSourceT source{};
   typename TestFixture::DataSinkT sink{};
 
-  typename TestFixture::RingBufferT ring{source, sink};
+  typename TestFixture::RingBufferT ring{};
+  source.connect(ring);
+  sink.connect(ring);
 
   const size_t first_elements_written{source.try_supply(ring.max_buffered_elements())};
   ASSERT_EQ(ring.max_buffered_elements(), source.next_element());

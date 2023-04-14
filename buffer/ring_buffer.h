@@ -1,7 +1,9 @@
 #pragma once
 
+#include <algorithm>
 #include <array>
 #include <atomic>
+#include <functional>
 #include <mutex>
 #include <thread>
 
@@ -10,37 +12,37 @@
 namespace tvsc::buffer {
 
 /**
- * Lock-free paged RingBuffer with a single optional source and a single optional sink.
+ * Lock-free paged RingBuffer with a single optional source callback and a single optional sink
+ * callback.
+ *
+ * The primary use case for this class is a data streaming system. When the RingBuffer has enough
+ * data (a full page worth), it signals the sink that data is available. When the RingBuffer has
+ * space for more data (again, defined as a full page), the source is signalled to supply more data.
+ * This allows the source and the sink to react to the amount of data in the buffer.
+ *
+ * Note that either or both of the callbacks can be omitted, resulting in a more standard ring
+ * buffer data structure.
+ *
+ * Also, the PAGE_SIZE can be set to one and NUM_PAGES set to the total number of elements for the
+ * ring buffer. In this scenario, every time a new element is added, the data available callback
+ * will be called. Similarly, every time an element is consumed, the data needed callback will be
+ * called. This is desirable when the time of individual elements moving through the ring buffer
+ * (likely a source of latency) should be minimized.
+ *
+ * PRIORITIZE_OLD_ELEMENTS can be used to give different behaviors. If it is true, an attempt to
+ * supply more elements than the RingBuffer can hold will fail. If it is false, the oldest element
+ * in the ring buffer is dropped, and the new element is added. The first scenario
+ * (PRIORITIZE_OLD_ELEMENTS equals true) allows for standard tail drop
+ * (https://en.wikipedia.org/wiki/Tail_drop) queuing behavior. The second (PRIORITIZE_OLD_ELEMENTS
+ * equals false) allows for streaming use cases where data loses importance as it ages (think
+ * telemetry systems or video streaming).
  */
 template <typename ElementT, size_t PAGE_SIZE, size_t NUM_PAGES,
           bool PRIORITIZE_OLD_ELEMENTS = true>
 class RingBuffer final {
  public:
-  class DataSource {
-   private:
-    RingBuffer* ring_buffer_{nullptr};
-
-   public:
-    virtual ~DataSource() = default;
-
-    RingBuffer* ring_buffer() { return ring_buffer_; }
-    void set_ring_buffer(RingBuffer& ring_buffer) { ring_buffer_ = &ring_buffer; }
-
-    virtual void signal_data_needed() = 0;
-  };
-
-  class DataSink {
-   private:
-    RingBuffer* ring_buffer_{nullptr};
-
-   public:
-    virtual ~DataSink() = default;
-
-    RingBuffer* ring_buffer() { return ring_buffer_; }
-    void set_ring_buffer(RingBuffer& ring_buffer) { ring_buffer_ = &ring_buffer; }
-
-    virtual void signal_data_available() = 0;
-  };
+  using DataNeededCallback = std::function<void(RingBuffer&)>;
+  using DataAvailableCallback = std::function<void(RingBuffer&)>;
 
  private:
   // These pointers are monotonically increasing. They count the total number of elements written
@@ -52,23 +54,24 @@ class RingBuffer final {
   std::atomic<size_t> write_pointer_{0};
 
   std::array<Buffer<ElementT, PAGE_SIZE>, NUM_PAGES> buffers_{};
-  DataSource* source_{nullptr};
-  DataSink* sink_{nullptr};
+
+  DataNeededCallback data_needed_callback_{};
+  DataAvailableCallback data_available_callback_{};
 
   void check_data_available() {
     // If we have an mtu's worth of data, signal the sink that it can read more data.
-    if (sink_ != nullptr) {
+    if (data_available_callback_) {
       if (elements_available() >= mtu()) {
-        sink_->signal_data_available();
+        data_available_callback_(*this);
       }
     }
   }
 
   void check_data_needed() {
     // If we have space to store an mtu's worth of data, signal the source to provide more data.
-    if (source_ != nullptr) {
+    if (data_needed_callback_) {
       if (max_buffered_elements() - elements_available() >= mtu()) {
-        source_->signal_data_needed();
+        data_needed_callback_(*this);
       }
     }
   }
@@ -98,17 +101,21 @@ class RingBuffer final {
  public:
   RingBuffer() = default;
 
-  RingBuffer(DataSource& source) : source_(&source) {
-    source_->set_ring_buffer(*this);
-    source_->signal_data_needed();
+  RingBuffer(DataNeededCallback data_needed_callback, DataAvailableCallback data_available_callback)
+      : data_needed_callback_(std::move(data_needed_callback)),
+        data_available_callback_(std::move(data_available_callback)) {
+    check_data_available();
+    check_data_needed();
   }
 
-  RingBuffer(DataSink& sink) : sink_(&sink) { sink_->set_ring_buffer(*this); }
+  void set_data_needed_callback(DataNeededCallback callback) {
+    data_needed_callback_ = std::move(callback);
+    check_data_needed();
+  }
 
-  RingBuffer(DataSource& source, DataSink& sink) : source_(&source), sink_(&sink) {
-    source_->set_ring_buffer(*this);
-    sink_->set_ring_buffer(*this);
-    source_->signal_data_needed();
+  void set_data_available_callback(DataAvailableCallback callback) {
+    data_available_callback_ = std::move(callback);
+    check_data_available();
   }
 
   constexpr size_t mtu() const { return PAGE_SIZE; }
@@ -148,6 +155,17 @@ class RingBuffer final {
     check_data_needed();
 
     return elements_consumed;
+  }
+
+  /**
+   * Consume a buffer's worth of elements.
+   */
+  template <size_t NUM_ELEMENTS>
+  size_t consume(Buffer<ElementT, NUM_ELEMENTS>& buffer) {
+    // TODO(james): Provide a direct implementation in terms of the Buffer API. Transferring
+    // directly between Buffer instances, especially if they have the same size, should be
+    // incredibly efficient.
+    return consume(NUM_ELEMENTS, buffer.data());
   }
 
   /**
@@ -261,6 +279,21 @@ class RingBuffer final {
     return elements_supplied;
   }
 
+  /**
+   * Supply a buffer's worth of data.
+   */
+  template <size_t NUM_ELEMENTS>
+  size_t supply(const Buffer<ElementT, NUM_ELEMENTS>& buffer) {
+    // TODO(james): Provide a direct implementation in terms of the Buffer API. Transferring
+    // directly between Buffer instances, especially if they have the same size, should be
+    // incredibly efficient.
+    return supply(NUM_ELEMENTS, buffer.data());
+  }
+
+  /**
+   * Supply a single element to the RingBuffer. Returns true if the src element could be copied into
+   * the RingBuffer; false, otherwise.
+   */
   bool supply(const ElementT& src) { return supply(1, &src) == 1; }
 
   size_t elements_available() const {
