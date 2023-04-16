@@ -1,9 +1,26 @@
 #include "radio/encoding.h"
 
+#include <algorithm>
+#include <numeric>
+#include <random>
+#include <string>
+#include <vector>
+
 #include "gmock/gmock.h"
 #include "radio/packet.h"
 
 namespace tvsc::radio {
+
+std::vector<size_t> create_shuffle_vector(size_t num_fragments) {
+  std::vector<size_t> result(num_fragments);
+  LOG(INFO) << "num_fragments: " << num_fragments << ", result.size(): " << result.size();
+  std::iota(result.begin(), result.end(), 0);
+  std::random_device rd;
+  std::mt19937 g(rd());
+  std::shuffle(result.begin(), result.end(), g);
+
+  return result;
+}
 
 template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
 Packet roundtrip(const Packet& in) {
@@ -13,11 +30,38 @@ Packet roundtrip(const Packet& in) {
 
   LOG(INFO) << "encoded packet: " << to_string(fragments) << "\n";
 
-  Packet out{};
+  // We assemble the fragments in a shuffled order to simulate fragments arriving out of order.
+  // The shuffle_vector is a vector of indexes into the fragments structure above.
+  std::vector<size_t> shuffle_vector{create_shuffle_vector(fragments.num_fragments)};
 
-  assemble(fragments, out);
+  // LOG the shuffle_vector.
+  std::string shuffle_string{};
+  shuffle_string.append("<");
+  bool needs_comma{false};
+  for (auto index : shuffle_vector) {
+    if (needs_comma) {
+      shuffle_string.append(", ");
+    }
+    shuffle_string.append(to_string(index));
+    needs_comma = true;
+  }
+  shuffle_string.append(">");
+  LOG(INFO) << "shuffle_vector: " << shuffle_string;
+
+  std::vector<Packet> packets{};
+  for (auto index : shuffle_vector) {
+    LOG(INFO) << "decoding fragment index: " << index
+              << " (Note: this is simulating receiving fragments out of order)";
+    Packet p{};
+    decode(fragments.buffers[index], p);
+    packets.push_back(p);
+  }
+
+  Packet out{};
+  assemble(packets, out);
   return out;
 }
+
 constexpr size_t LARGE_PACKET_MAX_PAYLOAD_SIZE{65000};
 
 template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
@@ -29,9 +73,19 @@ PacketT<LARGE_PACKET_MAX_PAYLOAD_SIZE> roundtrip_large_packet(
 
   LOG(INFO) << "encoded packet: " << to_string(fragments) << "\n";
 
-  PacketT<LARGE_PACKET_MAX_PAYLOAD_SIZE> out{};
+  // We assemble the fragments in a shuffled order to simulate fragments arriving out of order.
+  // The shuffle_vector is a vector of indexes into the fragments structure above.
+  std::vector<size_t> shuffle_vector{create_shuffle_vector(fragments.num_fragments)};
 
-  assemble(fragments, out);
+  std::vector<PacketT<LARGE_PACKET_MAX_PAYLOAD_SIZE>> packets{};
+  for (auto index : shuffle_vector) {
+    PacketT<LARGE_PACKET_MAX_PAYLOAD_SIZE> p{};
+    decode(fragments.buffers[index], p);
+    packets.push_back(p);
+  }
+
+  PacketT<LARGE_PACKET_MAX_PAYLOAD_SIZE> out{};
+  assemble(packets, out);
   return out;
 }
 
