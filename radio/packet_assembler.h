@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <iterator>
+#include <mutex>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -10,11 +11,22 @@
 
 namespace tvsc::radio {
 
+/**
+ * Utility class for collecting Fragments and assembling them into Packets. This class has basic
+ * mutex locking so that it can act as a boundary between threads. The expected design is for one
+ * thread to loop to receive fragments and add them to this assembler, while another thread
+ * periodically polls to see if a packet can be consumed.
+ */
+// TODO(james): Add support for callbacks, rather than requiring polling. But, any callback for
+// completed packets must find a way (std::async(deferred)?) to trigger the callback off of the
+// thread that adds the fragment. The thread that adds fragments may be time-sensitive or even
+// have soft real-time requirements.
 template <typename PacketT>
 class PacketAssembler final {
  private:
   std::unordered_multimap<uint64_t, PacketT> incoming_{};
   std::unordered_set<uint64_t> complete_packets_{};
+  std::mutex m_{};
 
   // TODO(james): This looks useful. Extract this to a place where it can be used elsewhere.
   template <typename PairIterator>
@@ -82,15 +94,20 @@ class PacketAssembler final {
   void add_fragment(const Fragment<MTU>& fragment) {
     PacketT packet{};
     decode(fragment, packet);
+    std::lock_guard lock{m_};
     incoming_.insert({packet.header_hash(), std::move(packet)});
     if (packet.is_last_fragment()) {
       complete_packets_.insert(packet.header_hash());
     }
   }
 
-  bool have_complete_packets() const { return !complete_packets_.empty(); }
+  bool have_complete_packets() const {
+    std::lock_guard lock{m_};
+    return !complete_packets_.empty();
+  }
 
   void consume_packet(PacketT& output) {
+    std::lock_guard lock{m_};
     const auto first{complete_packets_.begin()};
     const uint64_t id{*first};
     const auto range{incoming_.equal_range(id)};
