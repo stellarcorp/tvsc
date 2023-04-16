@@ -232,12 +232,4 @@ class PacketTxQueue final {
   PacketSink<PacketT, NUM_PACKETS> create_sink() { return PacketSink<PacketT, NUM_PACKETS>{*this}; }
 };
 
-/**
- * PacketRxQueue is just a RingBuffer configured to prioritize new packets and dropping old
- * packets if the buffer is full.
- */
-template <typename PacketT, size_t NUM_PACKETS>
-using PacketRxQueue =
-    tvsc::buffer::RingBuffer<PacketT, 1, NUM_PACKETS, /*PRIORITIZE_OLD_ELEMENTS*/ false>;
-
 }  // namespace tvsc::radio
