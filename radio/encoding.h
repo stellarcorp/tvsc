@@ -1,6 +1,5 @@
 #pragma once
 
-#include <algorithm>
 #include <cstdint>
 #include <string>
 #include <type_traits>
@@ -176,35 +175,43 @@ bool decode(const Fragment<MTU>& fragment, PacketT<PACKET_MAX_PAYLOAD_SIZE>& pac
 }
 
 /**
- * Assemble a number of fragments into a single packet. The list of fragments does *not* need to be
- * ordered correctly.
- *
- * Note that this function will change the order of the fragments vector.
+ * Assemble a number of fragments into a single packet. The list of fragments (designated by the two
+ * iterators) does *not* need to be ordered correctly.
  */
-template <size_t PACKET_MAX_PAYLOAD_SIZE>
-bool assemble(std::vector<PacketT<PACKET_MAX_PAYLOAD_SIZE>>& fragments,
+template <size_t PACKET_MAX_PAYLOAD_SIZE, typename IteratorT>
+bool assemble(IteratorT fragments_begin, IteratorT fragments_end,
               PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet) {
-  // TODO(james): Add assertions on expected invariants.
-  std::sort(
-      fragments.begin(), fragments.end(),
-      [](const PacketT<PACKET_MAX_PAYLOAD_SIZE>& lhs, const PacketT<PACKET_MAX_PAYLOAD_SIZE>& rhs) {
-        uint8_t lhs_fragment_index = lhs.fragment_index();
-        uint8_t rhs_fragment_index = rhs.fragment_index();
-        return lhs_fragment_index < rhs_fragment_index;
-      });
+  bool found_last_fragment{false};
+  size_t fragment_index{0};
+  while (!found_last_fragment) {
+    bool found_fragment_with_index{false};
+    for (auto iter = fragments_begin; iter != fragments_end; ++iter) {
+      const PacketT<PACKET_MAX_PAYLOAD_SIZE>& fragment{*iter};
+      if (fragment.fragment_index() == fragment_index) {
+        packet.set_protocol(fragment.protocol());
+        packet.set_sender_id(fragment.sender_id());
+        packet.set_destination_id(fragment.destination_id());
+        packet.set_sequence_number(fragment.sequence_number());
 
-  for (const auto& fragment : fragments) {
-    packet.set_protocol(fragment.protocol());
-    packet.set_sender_id(fragment.sender_id());
-    packet.set_destination_id(fragment.destination_id());
-    packet.set_sequence_number(fragment.sequence_number());
+        // Copy payload.
+        if (fragment.payload_length() > 0) {
+          packet.payload().write(packet.payload_length(), fragment.payload_length(),
+                                 fragment.payload().data());
 
-    // Copy payload.
-    if (fragment.payload_length() > 0) {
-      packet.payload().write(packet.payload_length(), fragment.payload_length(),
-                             fragment.payload().data());
-
-      packet.set_payload_length(packet.payload_length() + fragment.payload_length());
+          packet.set_payload_length(packet.payload_length() + fragment.payload_length());
+        }
+        found_fragment_with_index = true;
+        if (fragment.is_last_fragment()) {
+          found_last_fragment = true;
+        }
+        break;
+      }
+    }
+    if (found_fragment_with_index) {
+      ++fragment_index;
+    } else {
+      // Error. Don't have all of the fragments to assemble the full packet.
+      return false;
     }
   }
 

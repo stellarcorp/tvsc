@@ -8,6 +8,7 @@
 
 #include "gmock/gmock.h"
 #include "radio/packet.h"
+#include "radio/packet_assembler.h"
 
 namespace tvsc::radio {
 
@@ -48,18 +49,16 @@ Packet roundtrip(const Packet& in) {
   shuffle_string.append(">");
   LOG(INFO) << "shuffle_vector: " << shuffle_string;
 
-  std::vector<Packet> packets{};
+  PacketAssembler<Packet> assembler{};
+
   for (auto index : shuffle_vector) {
     LOG(INFO) << "decoding fragment index: " << index
               << " (Note: this is simulating receiving fragments out of order)";
-    Packet p{};
-    decode(fragments.buffers[index], p);
-    packets.push_back(p);
+
+    assembler.add_fragment(fragments.buffers[index]);
   }
 
-  Packet out{};
-  assemble(packets, out);
-  return out;
+  return assembler.consume_packet();
 }
 
 constexpr size_t LARGE_PACKET_MAX_PAYLOAD_SIZE{65000};
@@ -85,7 +84,7 @@ PacketT<LARGE_PACKET_MAX_PAYLOAD_SIZE> roundtrip_large_packet(
   }
 
   PacketT<LARGE_PACKET_MAX_PAYLOAD_SIZE> out{};
-  assemble(packets, out);
+  assemble(packets.begin(), packets.end(), out);
   return out;
 }
 
