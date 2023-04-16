@@ -200,7 +200,7 @@ class PacketT final {
   }
 
  public:
-  uint64_t header_hash() {
+  uint64_t header_hash() const {
     uint64_t aggregated{};
     aggregated = (aggregated << 8) | static_cast<std::underlying_type_t<Protocol>>(protocol_);
     aggregated = (aggregated << 16) | sequence_number_;
@@ -209,7 +209,7 @@ class PacketT final {
     return integer_hash(aggregated);
   }
 
-  uint64_t hash() {
+  uint64_t hash() const {
     uint64_t payload_hash{};
     for (size_t i = 0; i < payload_length_; i += 8) {
       uint64_t payload_unit{};
