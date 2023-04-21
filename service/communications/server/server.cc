@@ -3,6 +3,7 @@
 #include <chrono>
 #include <condition_variable>
 #include <ctime>
+#include <future>
 #include <iomanip>
 #include <iostream>
 #include <memory>
@@ -49,7 +50,17 @@ CommunicationsServiceImpl::CommunicationsServiceImpl() {
   configuration_ = std::make_unique<tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW>>(
       *rf69_, tvsc::radio::SingleRadioPinMapping::board_name());
 
+  monitor_ = std ::make_unique<tvsc::radio::TransceiverMonitor<
+      tvsc::radio::Packet, RadioT::max_mtu(), MAX_TX_QUEUE_SIZE, MAX_FRAGMENTS_PER_PACKET>>(
+      *rf69_, tx_queue_, rx_queue_);
+
   reset_radio();
+
+  monitor_task_ = std::async(
+      std::launch::async,
+      &tvsc::radio::TransceiverMonitor<tvsc::radio::Packet, RadioT::max_mtu(), MAX_TX_QUEUE_SIZE,
+                                       MAX_FRAGMENTS_PER_PACKET>::start,
+      monitor_.get());
 }
 
 void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& packet) {

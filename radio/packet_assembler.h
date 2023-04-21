@@ -121,6 +121,14 @@ class PacketAssembler final {
     consume_packet(output);
     return output;
   }
+
+  size_t num_incomplete_fragments() const {
+    return incoming_.size();
+  }
+
+  size_t num_outstanding_complete_packets() const {
+    return complete_packets_.size();
+  }
 };
 
 }  // namespace tvsc::radio

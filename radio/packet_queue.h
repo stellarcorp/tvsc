@@ -229,6 +229,11 @@ class PacketTxQueue final {
            low_priority_.empty();
   }
 
+  size_t elements_available() const {
+    return immediate_priority_.elements_available() + control_priority_.elements_available() +
+           normal_priority_.elements_available() + low_priority_.elements_available();
+  }
+
   PacketSink<PacketT, NUM_PACKETS> create_sink() { return PacketSink<PacketT, NUM_PACKETS>{*this}; }
 };
 

@@ -17,6 +17,7 @@ cc_library(
         "radio_configuration.h",
         "settings.h",
         "transceiver.h",
+        "transceiver_monitor.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
