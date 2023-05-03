@@ -10,6 +10,8 @@
 
 #include "base/except.h"
 #include "buffer/buffer.h"
+#include "hash/hash_combine.h"
+#include "hash/integer_hash.h"
 
 namespace tvsc::radio {
 
@@ -158,70 +160,30 @@ class PacketT final {
            sequence_number_ == rhs.sequence_number_;
   }
 
- private:
-  // Put these hash utilities in a private section, since it's not part of the public API, but keep
-  // it close to the hash function(s) that use it.
-  // TODO(james): Move these hash utilities to their own class/package.
-  static inline uint64_t ror64(uint64_t value, uint8_t bits) {
-    return (value >> bits) | (value << (64 - bits));
+  std::size_t header_hash() const {
+    std::size_t aggregated{};
+    aggregated = tvsc::hash::hash_combine(
+        aggregated,
+        tvsc::hash::integer_hash(static_cast<std::underlying_type_t<Protocol>>(protocol_)));
+    aggregated = tvsc::hash::hash_combine(aggregated, tvsc::hash::integer_hash(sequence_number_));
+    aggregated = tvsc::hash::hash_combine(aggregated, tvsc::hash::integer_hash(sender_id_));
+    aggregated = tvsc::hash::hash_combine(aggregated, tvsc::hash::integer_hash(destination_id_));
+    return aggregated;
   }
 
-  template <uint8_t bits>
-  static inline uint64_t rotate(uint64_t value) {
-    return (value >> bits) | (value << (64 - bits));
-  }
-
-  // rrxmrrxmsx_0 from Pelle Evensen
-  // http://mostlymangling.blogspot.com/2019/01/better-stronger-mixer-and-test-procedure.html
-  static inline uint64_t integer_hash(uint64_t value) {
-    value ^= rotate<25>(value) ^ rotate<50>(value);
-    value *= 0xA24BAED4963EE407UL;
-    value ^= rotate<24>(value) ^ rotate<49>(value);
-    value *= 0x9FB21C651E98DF25UL;
-    return value ^ (value >> 28);
-  }
-
-  static inline uint64_t integer_hash(uint32_t value) {
-    uint64_t expanded{value};
-    expanded = (expanded << 32) | expanded;
-    return integer_hash(expanded);
-  }
-
-  static inline uint64_t integer_hash(uint16_t value) {
-    uint32_t expanded{value};
-    expanded = (expanded << 16) | expanded;
-    return integer_hash(expanded);
-  }
-
-  static inline uint64_t integer_hash(uint8_t value) {
-    uint16_t expanded{value};
-    expanded = (expanded << 8) | expanded;
-    return integer_hash(expanded);
-  }
-
- public:
-  uint64_t header_hash() const {
-    uint64_t aggregated{};
-    aggregated = (aggregated << 8) | static_cast<std::underlying_type_t<Protocol>>(protocol_);
-    aggregated = (aggregated << 16) | sequence_number_;
-    aggregated = (aggregated << 8) | sender_id_;
-    aggregated = (aggregated << 8) | destination_id_;
-    return integer_hash(aggregated);
-  }
-
-  uint64_t hash() const {
-    uint64_t payload_hash{};
+  std::size_t hash() const {
+    std::size_t payload_hash{};
     for (size_t i = 0; i < payload_length_; i += 8) {
       uint64_t payload_unit{};
       for (size_t j = 0; j < 8 && i + j < payload_length_; ++j) {
         payload_unit = (payload_unit << 8) | payload_[i + j];
       }
-      payload_hash = payload_hash ^ integer_hash(payload_unit);
+      payload_hash = tvsc::hash::hash_combine(payload_hash, tvsc::hash::integer_hash(payload_unit));
     }
-    uint64_t payload_length_hash{integer_hash(payload_length_)};
-    uint64_t header_hash_value{header_hash()};
+    const std::size_t payload_length_hash{tvsc::hash::integer_hash(payload_length_)};
+    const std::size_t header_hash_value{header_hash()};
 
-    return payload_hash ^ payload_length_hash ^ header_hash_value;
+    return tvsc::hash::hash_combine(payload_hash, payload_length_hash, header_hash_value);
   }
 };
 

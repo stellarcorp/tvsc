@@ -24,6 +24,7 @@ cc_library(
         ":radio_nano_cc_proto",
         "//base",
         "//buffer",
+        "//hash",
         "//random",
     ],
 )
