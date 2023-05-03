@@ -1,0 +1,19 @@
+cc_library(
+    name = "hash",
+    hdrs = [
+        "hash_combine.h",
+        "integer_hash.h",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_test(
+    name = "hash_combine_test",
+    srcs = [
+        "hash_combine_test.cc",
+    ],
+    deps = [
+        ":hash",
+        "//third_party/gtest",
+    ],
+)
