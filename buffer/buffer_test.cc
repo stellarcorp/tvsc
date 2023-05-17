@@ -54,6 +54,28 @@ TEST(BufferTest, IsZeroInitializedWhenDynamicallyAllocated) {
   }
 }
 
+TEST(BufferTest, CanCompareEqualBuffers) {
+  constexpr size_t SIZE{64};
+  Buffer<int, SIZE> lhs{};
+  Buffer<int, SIZE> rhs{};
+  for (size_t i = 0; i < SIZE; ++i) {
+    lhs[i] = i;
+    rhs[i] = i;
+  }
+  EXPECT_EQ(lhs, rhs);
+}
+
+TEST(BufferTest, CanCompareNonequalBuffers) {
+  constexpr size_t SIZE{64};
+  Buffer<int, SIZE> lhs{};
+  Buffer<int, SIZE> rhs{};
+  for (size_t i = 0; i < SIZE; ++i) {
+    lhs[i] = i;
+    rhs[i] = i + 1;
+  }
+  EXPECT_NE(lhs, rhs);
+}
+
 TEST(BufferTest, CanBulkReadViaCArray) {
   constexpr size_t SIZE{256};
   int other[SIZE];
@@ -61,7 +83,7 @@ TEST(BufferTest, CanBulkReadViaCArray) {
   for (size_t i = 0; i < SIZE; ++i) {
     buffer[i] = i;
   }
-  buffer.read(0, SIZE, other);
+  buffer.read_array(0, SIZE, other);
   for (size_t i = 0; i < SIZE; ++i) {
     EXPECT_EQ(i, other[i]);
   }
@@ -75,7 +97,7 @@ TEST(BufferTest, CanBulkReadViaCArrayWithOffset) {
   for (size_t i = 0; i < SIZE; ++i) {
     buffer[i] = i;
   }
-  buffer.read(OFFSET, SIZE - OFFSET, other);
+  buffer.read_array(OFFSET, SIZE - OFFSET, other);
   for (size_t i = 0; i < SIZE - OFFSET; ++i) {
     EXPECT_EQ(i + OFFSET, other[i]);
   }
@@ -115,7 +137,7 @@ TEST(BufferTest, CanBulkWriteViaCArray) {
   for (size_t i = 0; i < SIZE; ++i) {
     other[i] = i;
   }
-  buffer.write(0, SIZE, other);
+  buffer.write_array(0, SIZE, other);
   for (size_t i = 0; i < SIZE; ++i) {
     EXPECT_EQ(i, buffer[i]);
   }
@@ -129,7 +151,7 @@ TEST(BufferTest, CanBulkWriteViaCArrayWithOffset) {
   for (size_t i = 0; i < SIZE - OFFSET; ++i) {
     other[i] = i;
   }
-  buffer.write(OFFSET, SIZE - OFFSET, other);
+  buffer.write_array(OFFSET, SIZE - OFFSET, other);
   for (size_t i = 0; i < SIZE; ++i) {
     if (i < OFFSET) {
       EXPECT_EQ(0, buffer[i]);
@@ -232,10 +254,33 @@ TEST(TriviallyCopyableBufferTest, IsZeroInitialized) {
 }
 
 TEST(TriviallyCopyableBufferTest, IsZeroInitializedWhenDynamicallyAllocated) {
-  std::unique_ptr<Buffer<TriviallyCopyableType, 128>> buffer{new Buffer<TriviallyCopyableType, 128>{}};
+  std::unique_ptr<Buffer<TriviallyCopyableType, 128>> buffer{
+      new Buffer<TriviallyCopyableType, 128>{}};
   for (size_t i = 0; i < buffer->size(); ++i) {
     EXPECT_EQ(0, (*buffer)[i].value());
   }
+}
+
+TEST(TriviallyCopyableBufferTest, CanCompareEqualBuffers) {
+  constexpr size_t SIZE{64};
+  Buffer<TriviallyCopyableType, SIZE> lhs{};
+  Buffer<TriviallyCopyableType, SIZE> rhs{};
+  for (size_t i = 0; i < SIZE; ++i) {
+    lhs[i] = i;
+    rhs[i] = i;
+  }
+  EXPECT_EQ(lhs, rhs);
+}
+
+TEST(TriviallyCopyableBufferTest, CanCompareNonequalBuffers) {
+  constexpr size_t SIZE{64};
+  Buffer<TriviallyCopyableType, SIZE> lhs{};
+  Buffer<TriviallyCopyableType, SIZE> rhs{};
+  for (size_t i = 0; i < SIZE; ++i) {
+    lhs[i] = i;
+    rhs[i] = i + 1;
+  }
+  EXPECT_NE(lhs, rhs);
 }
 
 TEST(TriviallyCopyableBufferTest, CanBulkReadViaCArray) {
@@ -245,7 +290,7 @@ TEST(TriviallyCopyableBufferTest, CanBulkReadViaCArray) {
   for (size_t i = 0; i < SIZE; ++i) {
     buffer[i] = i;
   }
-  buffer.read(0, SIZE, other);
+  buffer.read_array(0, SIZE, other);
   for (size_t i = 0; i < SIZE; ++i) {
     EXPECT_EQ(i, other[i]);
   }
@@ -259,7 +304,7 @@ TEST(TriviallyCopyableBufferTest, CanBulkReadViaCArrayWithOffset) {
   for (size_t i = 0; i < SIZE; ++i) {
     buffer[i] = i;
   }
-  buffer.read(OFFSET, SIZE - OFFSET, other);
+  buffer.read_array(OFFSET, SIZE - OFFSET, other);
   for (size_t i = 0; i < SIZE - OFFSET; ++i) {
     EXPECT_EQ(i + OFFSET, other[i]);
   }
@@ -299,7 +344,7 @@ TEST(TriviallyCopyableBufferTest, CanBulkWriteViaCArray) {
   for (size_t i = 0; i < SIZE; ++i) {
     other[i] = i;
   }
-  buffer.write(0, SIZE, other);
+  buffer.write_array(0, SIZE, other);
   for (size_t i = 0; i < SIZE; ++i) {
     EXPECT_EQ(i, buffer[i]);
   }
@@ -313,7 +358,7 @@ TEST(TriviallyCopyableBufferTest, CanBulkWriteViaCArrayWithOffset) {
   for (size_t i = 0; i < SIZE - OFFSET; ++i) {
     other[i] = i;
   }
-  buffer.write(OFFSET, SIZE - OFFSET, other);
+  buffer.write_array(OFFSET, SIZE - OFFSET, other);
   for (size_t i = 0; i < SIZE; ++i) {
     if (i < OFFSET) {
       EXPECT_EQ(0, buffer[i]);
@@ -357,6 +402,10 @@ TEST(TriviallyCopyableBufferTest, CanBulkWriteViaStdArrayWithOffset) {
 class NontrivialType final {
  private:
   int value_{};
+  // This field guarantees that different instances of this class are not equal according to
+  // memcmp(). memcmp() or a similar function is used to compare Buffers of trivially copyable
+  // types. This field forces the use of the comparator operators below.
+  const uintptr_t nontrivial_element_{reinterpret_cast<uintptr_t>(this)};
 
  public:
   NontrivialType() = default;
@@ -365,7 +414,10 @@ class NontrivialType final {
   // Adding this copy constructor makes this type non-trivially copyable.
   NontrivialType(const NontrivialType& rhs) : value_(rhs.value_) {}
 
-  NontrivialType& operator=(const NontrivialType& rhs) = default;
+  NontrivialType& operator=(const NontrivialType& rhs) {
+    value_ = rhs.value_;
+    return *this;
+  }
 
   NontrivialType& operator=(int value) {
     value_ = value;
@@ -375,6 +427,8 @@ class NontrivialType final {
   int value() const { return value_; }
 
   bool operator==(const NontrivialType& rhs) const { return value_ == rhs.value_; }
+
+  bool operator<(const NontrivialType& rhs) const { return value_ < rhs.value_; }
 };
 
 bool operator==(int lhs, const NontrivialType& rhs) { return lhs == rhs.value(); }
@@ -426,6 +480,28 @@ TEST(NontrivialTypeBufferTest, IsZeroInitializedWhenDynamicallyAllocated) {
   for (size_t i = 0; i < buffer->size(); ++i) {
     EXPECT_EQ(0, (*buffer)[i].value());
   }
+}
+
+TEST(NontrivialTypeBufferTest, CanCompareEqualBuffers) {
+  constexpr size_t SIZE{64};
+  Buffer<NontrivialType, SIZE> lhs{};
+  Buffer<NontrivialType, SIZE> rhs{};
+  for (size_t i = 0; i < SIZE; ++i) {
+    lhs[i] = i;
+    rhs[i] = i;
+  }
+  EXPECT_EQ(lhs, rhs);
+}
+
+TEST(NontrivialTypeBufferTest, CanCompareNonequalBuffers) {
+  constexpr size_t SIZE{64};
+  Buffer<NontrivialType, SIZE> lhs{};
+  Buffer<NontrivialType, SIZE> rhs{};
+  for (size_t i = 0; i < SIZE; ++i) {
+    lhs[i] = i;
+    rhs[i] = i + 1;
+  }
+  EXPECT_NE(lhs, rhs);
 }
 
 TEST(NontrivialTypeBufferTest, CanBulkReadViaCArray) {

@@ -87,7 +87,8 @@ class RingBuffer final {
   }
 
   size_t compute_elements_to_accept(size_t num_elements, size_t write_buffer_offset,
-                                    size_t read_pointer_value, size_t write_pointer_value) const {
+                                    __attribute__((unused)) size_t read_pointer_value,
+                                    __attribute__((unused)) size_t write_pointer_value) const {
     if constexpr (PRIORITIZE_OLD_ELEMENTS) {
       return std::min(max_buffered_elements() -
                           compute_elements_available(read_pointer_value, write_pointer_value),
@@ -142,7 +143,7 @@ class RingBuffer final {
                  std::min(PAGE_SIZE - read_buffer_offset, num_elements))};
 
     if (elements_consumed > 0) {
-      buffers_[read_buffer_index % NUM_PAGES].read(read_buffer_offset, elements_consumed, dest);
+      buffers_[read_buffer_index % NUM_PAGES].read_array(read_buffer_offset, elements_consumed, dest);
 
       read_buffer_offset += elements_consumed;
       size_t new_read_pointer_value = compute_pointer(read_buffer_index, read_buffer_offset);
@@ -246,7 +247,7 @@ class RingBuffer final {
                                                         read_pointer_value, write_pointer_value)};
 
     if (elements_supplied > 0) {
-      size_t new_read_pointer_value{read_pointer_value};
+      __attribute__((unused)) size_t new_read_pointer_value{read_pointer_value};
       if (elements_available + elements_supplied > max_buffered_elements()) {
         if constexpr (PRIORITIZE_OLD_ELEMENTS) {
           throw std::logic_error(
@@ -261,7 +262,8 @@ class RingBuffer final {
       }
 
       if (elements_supplied > 0) {
-        buffers_[write_buffer_index % NUM_PAGES].write(write_buffer_offset, elements_supplied, src);
+        buffers_[write_buffer_index % NUM_PAGES].write_array(write_buffer_offset, elements_supplied,
+                                                             src);
 
         write_buffer_offset += elements_supplied;
 

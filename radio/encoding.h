@@ -101,7 +101,7 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
 
       bytes_written += Packet::payload_size_bytes_required();
 
-      current_fragment->data.write(
+      current_fragment->data.write_array(
           bytes_written, fragment_payload_size,
           packet.payload().data() + packet.payload_length() - remaining_payload);
 
@@ -165,7 +165,7 @@ bool decode(const Fragment<MTU>& fragment, PacketT<PACKET_MAX_PAYLOAD_SIZE>& pac
     LOG(INFO) << "tvsc::radio::decode() -- payload_size: " << payload_size
               << ", fragment.length: " << fragment.length << ", bytes_read: " << bytes_read;
     if (payload_size > 0) {
-      packet.payload().write(0, payload_size, fragment.data.data() + bytes_read);
+      packet.payload().write_array(0, payload_size, fragment.data.data() + bytes_read);
       payload_bytes_read += payload_size;
     }
   }
@@ -195,8 +195,8 @@ bool assemble(IteratorT fragments_begin, IteratorT fragments_end,
 
         // Copy payload.
         if (fragment.payload_length() > 0) {
-          packet.payload().write(packet.payload_length(), fragment.payload_length(),
-                                 fragment.payload().data());
+          packet.payload().write_array(packet.payload_length(), fragment.payload_length(),
+                                       fragment.payload().data());
 
           packet.set_payload_length(packet.payload_length() + fragment.payload_length());
         }

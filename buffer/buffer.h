@@ -11,7 +11,7 @@
 namespace tvsc::buffer {
 
 /**
- * std::array-like buffer type with bulk operations for trivially copyable
+ * std::array-like buffer type with bounds checking and bulk operations for trivially copyable
  * (https://en.cppreference.com/w/cpp/named_req/TriviallyCopyable) types. If a type is trivially
  * copyable, it can be copied with memcpy(3) and similar operations. It does not need to be move or
  * copy constructed.
@@ -50,6 +50,7 @@ class BufferT final {
 
  public:
   constexpr size_t size() const { return NUM_ELEMENTS; }
+  constexpr size_t max_size() const { return NUM_ELEMENTS; }
 
   void clear() {
     ElementT default_element{};
@@ -60,7 +61,7 @@ class BufferT final {
 
   const ElementT& read(size_t index) const { return operator[](index); }
 
-  void read(size_t offset, size_t count, ElementT dest[]) const {
+  void read_array(size_t offset, size_t count, ElementT dest[]) const {
     validate_index(offset);
     validate_index(offset + count - 1);
     for (size_t i = 0; i < count; ++i) {
@@ -68,15 +69,10 @@ class BufferT final {
     }
   }
 
-  template <size_t ARRAY_SIZE>
-  void read(size_t offset, size_t count, std::array<ElementT, ARRAY_SIZE>& dest) const {
+  template <typename DestT>
+  void read(size_t offset, size_t count, DestT& dest) const {
     validate_index(offset);
     validate_index(offset + count - 1);
-    if (ARRAY_SIZE < count) {
-      using std::to_string;
-      throw std::overflow_error("dest has insufficient space (" + to_string(count) + " vs " +
-                                to_string(ARRAY_SIZE) + ")");
-    }
     for (size_t i = 0; i < count; ++i) {
       dest[i] = operator[](i + offset);
     }
@@ -86,7 +82,7 @@ class BufferT final {
 
   void write(size_t index, ElementT&& element) { operator[](index) = std::move(element); }
 
-  void write(size_t offset, size_t count, const ElementT src[]) {
+  void write_array(size_t offset, size_t count, const ElementT src[]) {
     validate_index(offset);
     validate_index(offset + count - 1);
     for (size_t i = 0; i < count; ++i) {
@@ -94,15 +90,10 @@ class BufferT final {
     }
   }
 
-  template <size_t ARRAY_SIZE>
-  void write(size_t offset, size_t count, const std::array<ElementT, ARRAY_SIZE>& src) {
+  template <typename SrcT>
+  void write(size_t offset, size_t count, const SrcT& src) {
     validate_index(offset);
     validate_index(offset + count - 1);
-    if (ARRAY_SIZE < count) {
-      using std::to_string;
-      throw std::overflow_error("src has insufficient space (" + to_string(count) + " vs " +
-                                to_string(ARRAY_SIZE) + ")");
-    }
     for (size_t i = 0; i < count; ++i) {
       operator[](i + offset) = src[i];
     }
@@ -122,7 +113,7 @@ class BufferT final {
   int compare(const BufferT<ElementT, RHS_NUM_ELEMENTS, is_trivially_copyable>& rhs,
               size_t count = std::numeric_limits<size_t>::max()) const {
     if constexpr (RHS_NUM_ELEMENTS < NUM_ELEMENTS) {
-      for (size_t i = 0; i < RHS_NUM_ELEMENTS; ++i) {
+      for (size_t i = 0; i < std::min(RHS_NUM_ELEMENTS, count); ++i) {
         if (elements_[i] < rhs.elements_[i]) {
           return -1;
         } else if (!(elements_[i] == rhs.elements_[i])) {
@@ -131,7 +122,7 @@ class BufferT final {
       }
       return 0;
     } else {
-      for (size_t i = 0; i < NUM_ELEMENTS; ++i) {
+      for (size_t i = 0; i < std::min(NUM_ELEMENTS, count); ++i) {
         if (elements_[i] < rhs.elements_[i]) {
           return -1;
         } else if (!(elements_[i] == rhs.elements_[i])) {
@@ -146,6 +137,16 @@ class BufferT final {
   bool is_equal(const BufferT<ElementT, RHS_NUM_ELEMENTS, is_trivially_copyable>& rhs,
                 size_t count = std::numeric_limits<size_t>::max()) const {
     return compare(rhs, count) == 0;
+  }
+
+  template <size_t RHS_NUM_ELEMENTS>
+  bool operator==(const BufferT<ElementT, RHS_NUM_ELEMENTS, is_trivially_copyable>& rhs) const {
+    return compare(rhs) == 0;
+  }
+
+  template <size_t RHS_NUM_ELEMENTS>
+  bool operator!=(const BufferT<ElementT, RHS_NUM_ELEMENTS, is_trivially_copyable>& rhs) const {
+    return compare(rhs) != 0;
   }
 
   constexpr ElementT* data() noexcept { return elements_; }
@@ -186,6 +187,7 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
 
  public:
   constexpr size_t size() const { return NUM_ELEMENTS; }
+  constexpr size_t max_size() const { return NUM_ELEMENTS; }
 
   void clear() {
     // ElementT is trivially copyable, but that does not mean that we can just memset the elements_
@@ -199,21 +201,22 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
 
   const ElementT& read(size_t index) const { return operator[](index); }
 
-  void read(size_t offset, size_t count, ElementT dest[]) const {
+  void read_array(size_t offset, size_t count, ElementT dest[]) const {
     validate_index(offset);
     validate_index(offset + count - 1);
     std::memcpy(dest, elements_ + offset, count * sizeof(ElementT));
   }
 
-  template <size_t ARRAY_SIZE>
-  void read(size_t offset, size_t count, std::array<ElementT, ARRAY_SIZE>& dest) const {
+  template <typename DestT>
+  void read(size_t offset, size_t count, DestT& dest) const {
     validate_index(offset);
     validate_index(offset + count - 1);
-    if (ARRAY_SIZE < count) {
+    if (dest.max_size() < count) {
       using std::to_string;
       throw std::overflow_error("dest has insufficient space (" + to_string(count) + " vs " +
-                                to_string(ARRAY_SIZE) + ")");
+                                to_string(dest.max_size()) + ")");
     }
+
     std::memcpy(dest.data(), elements_ + offset, count * sizeof(ElementT));
   }
 
@@ -221,20 +224,20 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
 
   void write(size_t index, ElementT&& element) { operator[](index) = std::move(element); }
 
-  void write(size_t offset, size_t count, const ElementT src[]) {
+  void write_array(size_t offset, size_t count, const ElementT src[]) {
     validate_index(offset);
     validate_index(offset + count - 1);
     std::memcpy(elements_ + offset, src, count * sizeof(ElementT));
   }
 
-  template <size_t ARRAY_SIZE>
-  void write(size_t offset, size_t count, const std::array<ElementT, ARRAY_SIZE>& src) {
+  template <typename SrcT>
+  void write(size_t offset, size_t count, const SrcT& src) {
     validate_index(offset);
     validate_index(offset + count - 1);
-    if (ARRAY_SIZE < count) {
+    if (src.max_size() < count) {
       using std::to_string;
       throw std::overflow_error("src has insufficient space (" + to_string(count) + " vs " +
-                                to_string(ARRAY_SIZE) + ")");
+                                to_string(src.max_size()) + ")");
     }
     std::memcpy(elements_ + offset, src.data(), count * sizeof(ElementT));
   }
@@ -265,6 +268,16 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
   bool is_equal(const BufferT<ElementT, RHS_NUM_ELEMENTS, true>& rhs,
                 size_t count = std::numeric_limits<size_t>::max()) const {
     return compare(rhs, count) == 0;
+  }
+
+  template <size_t RHS_NUM_ELEMENTS>
+  bool operator==(const BufferT<ElementT, RHS_NUM_ELEMENTS, true>& rhs) const {
+    return compare(rhs) == 0;
+  }
+
+  template <size_t RHS_NUM_ELEMENTS>
+  bool operator!=(const BufferT<ElementT, RHS_NUM_ELEMENTS, true>& rhs) const {
+    return compare(rhs) != 0;
   }
 
   constexpr ElementT* data() noexcept { return elements_; }
