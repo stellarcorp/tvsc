@@ -26,10 +26,6 @@ namespace tvsc::buffer {
  * The Buffer type makes the syntax of choosing the correct BufferT template overload easier. It is
  * defined after the two template overloads.
  */
-// TODO(james): Add methods to transfer directly between Buffer instances. This would include read
-// and write methods, plus copy/move constructors and assignment operators, as well as swap. This
-// has the potential to vastly improve the efficiency of these operations over the current method of
-// transferring data between Buffers using C-style arrays (mainly, via the data() method).
 template <typename ElementT, size_t NUM_ELEMENTS, bool is_trivially_copyable>
 class BufferT final {
  private:
