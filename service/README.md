@@ -16,3 +16,5 @@ See the directory for each service for more details on that service. The list of
 - [echo](./echo) Test service that echos inputs as outputs.
 - [hello](./hello) Test service that issues a greeting. This service has more debugging structure than the other test services.
 - [datetime](./datetime) Test service that gives the current date and time using server-side streaming.
+
+Also, this module contains [utilities for running and testing services](./utility).
