@@ -81,7 +81,7 @@ class ServiceRunner final {
   int port() const { return port_; }
 
   /**
-   * Start the server.
+   * Start the server with all of the services previously added via add_service().
    *
    * This method selects an unused port if a port was not set. Note that after
    * this method, the port() getter will return the actual port that is being used and the
