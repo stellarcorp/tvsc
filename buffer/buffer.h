@@ -118,6 +118,36 @@ class BufferT final {
     return elements_[index];
   }
 
+  template <size_t RHS_NUM_ELEMENTS>
+  int compare(const BufferT<ElementT, RHS_NUM_ELEMENTS, is_trivially_copyable>& rhs,
+              size_t count = std::numeric_limits<size_t>::max()) const {
+    if constexpr (RHS_NUM_ELEMENTS < NUM_ELEMENTS) {
+      for (size_t i = 0; i < RHS_NUM_ELEMENTS; ++i) {
+        if (elements_[i] < rhs.elements_[i]) {
+          return -1;
+        } else if (!(elements_[i] == rhs.elements_[i])) {
+          return 1;
+        }
+      }
+      return 0;
+    } else {
+      for (size_t i = 0; i < NUM_ELEMENTS; ++i) {
+        if (elements_[i] < rhs.elements_[i]) {
+          return -1;
+        } else if (!(elements_[i] == rhs.elements_[i])) {
+          return 1;
+        }
+      }
+      return 0;
+    }
+  }
+
+  template <size_t RHS_NUM_ELEMENTS>
+  bool is_equal(const BufferT<ElementT, RHS_NUM_ELEMENTS, is_trivially_copyable>& rhs,
+                size_t count = std::numeric_limits<size_t>::max()) const {
+    return compare(rhs, count) == 0;
+  }
+
   constexpr ElementT* data() noexcept { return elements_; }
   constexpr const ElementT* data() const noexcept { return elements_; }
 
@@ -135,24 +165,6 @@ class BufferT final {
     validate_index(offset + count - 1);
     return std::string_view(reinterpret_cast<const char*>(elements_ + offset),
                             count * sizeof(ElementT));
-  }
-
-  template <size_t RHS_NUM_ELEMENTS>
-  int compare(const BufferT<ElementT, RHS_NUM_ELEMENTS, is_trivially_copyable>& rhs,
-              size_t count = std::numeric_limits<size_t>::max()) const {
-    if constexpr (RHS_NUM_ELEMENTS < NUM_ELEMENTS) {
-      return std::memcmp(elements_, rhs.elements_,
-                         std::min(RHS_NUM_ELEMENTS, count) * sizeof(ElementT));
-    } else {
-      return std::memcmp(elements_, rhs.elements_,
-                         std::min(NUM_ELEMENTS, count) * sizeof(ElementT));
-    }
-  }
-
-  template <size_t RHS_NUM_ELEMENTS>
-  bool is_equal(const BufferT<ElementT, RHS_NUM_ELEMENTS, is_trivially_copyable>& rhs,
-                size_t count = std::numeric_limits<size_t>::max()) const {
-    return compare(rhs, count) == 0;
   }
 };
 
@@ -237,6 +249,24 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
     return elements_[index];
   }
 
+  template <size_t RHS_NUM_ELEMENTS>
+  int compare(const BufferT<ElementT, RHS_NUM_ELEMENTS, true>& rhs,
+              size_t count = std::numeric_limits<size_t>::max()) const {
+    if constexpr (RHS_NUM_ELEMENTS < NUM_ELEMENTS) {
+      return std::memcmp(elements_, rhs.elements_,
+                         std::min(RHS_NUM_ELEMENTS, count) * sizeof(ElementT));
+    } else {
+      return std::memcmp(elements_, rhs.elements_,
+                         std::min(NUM_ELEMENTS, count) * sizeof(ElementT));
+    }
+  }
+
+  template <size_t RHS_NUM_ELEMENTS>
+  bool is_equal(const BufferT<ElementT, RHS_NUM_ELEMENTS, true>& rhs,
+                size_t count = std::numeric_limits<size_t>::max()) const {
+    return compare(rhs, count) == 0;
+  }
+
   constexpr ElementT* data() noexcept { return elements_; }
   constexpr const ElementT* data() const noexcept { return elements_; }
 
@@ -254,24 +284,6 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
     validate_index(offset + count - 1);
     return std::string_view(reinterpret_cast<const char*>(elements_ + offset),
                             count * sizeof(ElementT));
-  }
-
-  template <size_t RHS_NUM_ELEMENTS>
-  int compare(const BufferT<ElementT, RHS_NUM_ELEMENTS, true>& rhs,
-              size_t count = std::numeric_limits<size_t>::max()) const {
-    if constexpr (RHS_NUM_ELEMENTS < NUM_ELEMENTS) {
-      return std::memcmp(elements_, rhs.elements_,
-                         std::min(RHS_NUM_ELEMENTS, count) * sizeof(ElementT));
-    } else {
-      return std::memcmp(elements_, rhs.elements_,
-                         std::min(NUM_ELEMENTS, count) * sizeof(ElementT));
-    }
-  }
-
-  template <size_t RHS_NUM_ELEMENTS>
-  bool is_equal(const BufferT<ElementT, RHS_NUM_ELEMENTS, true>& rhs,
-                size_t count = std::numeric_limits<size_t>::max()) const {
-    return compare(rhs, count) == 0;
   }
 };
 
