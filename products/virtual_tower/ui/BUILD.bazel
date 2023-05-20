@@ -22,7 +22,7 @@ copy_file(
 )
 
 filegroup(
-    name = "doc_root",
+    name = "ui",
     srcs = glob(["static/**/*"]) + [
         ":communications_proto_file",
         ":datetime_proto_file",

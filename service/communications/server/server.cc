@@ -32,7 +32,7 @@ void CommunicationsServiceImpl::receive_packets() {}
 void CommunicationsServiceImpl::reset_radio() {
   rf69_->reset();
 
-  configuration_->change_values(tvsc::radio::default_configuration<tvsc::radio::RF69HCW>());
+  configuration_->change_values(tvsc::radio::default_configuration<RadioT>());
   configuration_->commit_changes();
 }
 
@@ -47,7 +47,7 @@ CommunicationsServiceImpl::CommunicationsServiceImpl() {
   bus_ = std::make_unique<tvsc::hal::spi::SpiBus>(tvsc::hal::spi::get_default_spi_bus());
   spi_peripheral_ = std::make_unique<tvsc::hal::spi::SpiPeripheral>(*bus_, RF69_CS, 0x80);
   rf69_ = std::make_unique<tvsc::radio::RF69HCW>(*spi_peripheral_, RF69_DIO0, RF69_RST);
-  configuration_ = std::make_unique<tvsc::radio::RadioConfiguration<tvsc::radio::RF69HCW>>(
+  configuration_ = std::make_unique<tvsc::radio::RadioConfiguration<RadioT>>(
       *rf69_, tvsc::radio::SingleRadioPinMapping::board_name());
 
   monitor_ = std ::make_unique<tvsc::radio::TransceiverMonitor<

@@ -1,0 +1,14 @@
+[Unit]
+Description=TVSC Virtual Tower
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/tvsc_proxy --doc_root="usr/share/tvsc/virtual_tower/ui"
+Type=simple
+KillMode=mixed
+Restart=on-failure
+LimitRTPRIO=99
+
+[Install]
+WantedBy=multi-user.target

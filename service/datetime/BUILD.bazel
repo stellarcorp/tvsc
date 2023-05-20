@@ -15,6 +15,7 @@ pkg_files(
         mode = "0755",
     ),
     prefix = "usr/bin",
+    visibility = ["//visibility:public"],
 )
 
 pkg_files(
@@ -26,6 +27,7 @@ pkg_files(
         mode = "0644",
     ),
     prefix = "lib/systemd/system",
+    visibility = ["//visibility:public"],
 )
 
 PACKAGE_NAME = "tvsc-datetime"

@@ -1,4 +1,4 @@
-load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
 load("//platforms:platform.bzl", "arch_name")
@@ -9,9 +9,7 @@ cc_binary(
     srcs = [
         "tvsc_proxy.cc",
     ],
-    data = [
-        "//service/proxy/doc_root",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         "//discovery:resolve",
         "//http",
@@ -42,6 +40,7 @@ pkg_files(
         mode = "0755",
     ),
     prefix = "usr/bin",
+    visibility = ["//visibility:public"],
 )
 
 pkg_files(
@@ -53,6 +52,7 @@ pkg_files(
         mode = "0644",
     ),
     prefix = "lib/systemd/system",
+    visibility = ["//visibility:public"],
 )
 
 PACKAGE_NAME = "tvsc-proxy"
@@ -92,17 +92,4 @@ pkg_deb(
     prerm = "debian/tvsc_proxy_service.prerm",
     version = version_string(),
     visibility = ["//visibility:public"],
-)
-
-sh_binary(
-    name = "run_virtual_tower",
-    srcs = ["run_virtual_tower.sh"],
-    data = [
-        ":tvsc_proxy",
-        "//service/chat/server:chat_server",
-        "//service/communications/server:tvsc-communications-service",
-        "//service/datetime/server:datetime_server",
-        "//service/echo/server:echo_server",
-        "//service/hello/server:hello_server",
-    ],
 )
