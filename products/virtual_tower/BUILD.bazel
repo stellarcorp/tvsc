@@ -15,7 +15,7 @@ pkg_files(
     attributes = pkg_attributes(
         mode = "0644",
     ),
-    prefix = "usr/share/tvsc/virtual_tower/ui",
+    prefix = "usr/share/tvsc/virtual_tower/ui/static",
     visibility = ["//visibility:public"],
 )
 
