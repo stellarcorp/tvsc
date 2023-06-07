@@ -14,26 +14,13 @@
       </div>
     </div>
 
-    <div class="topnav">
-      <a href="#">Link 1</a>
-      <a href="#">Link 2</a>
-      <a href="#">Link 3</a>
-      <a href="#" style="float:right">Other Link</a>
+    <div class="topnav" id="topnav">
+      <a href="javascript:DisplayTelemetry();" class="navigation">Telemetry</a>
+      <a href="javascript:DisplayCommunications();" class="navigation">Communications</a>
+      <a href="javascript:DisplayDebug();" class="navigation" style="float:right">Debug</a>
     </div>
 
-    <div class="leftcolumn">
-      <div class="menu_widget">
-	<h2>Radios</h2>
-	<ul id="radios_list">
-	</ul>
-	<form action="javascript:GetRadioList()">
-	  <input type="submit" value="Refresh"/>
-	</form>
-      </div>
-    </div>
-
-    <div class="row">
-
+    <div class="row debug">
       <div class="centercolumn">
 	<div class="panel_widget">
 	  <h2>Echo Service</h2>
@@ -52,22 +39,91 @@
 	  </div>
 	</div>
       </div>
-
     </div>
 
-    <div class="row">
-      <div class="centercolumn">
-	<div class="panel_widget chat_box">
-	  <h2>Transmit</h2>
-	  <div id="received_messages" class="msg_container">
-	    <div id="received_messages_scroll_anchor" class="scroll_anchor">
+    <div class="row communications">
+      <!-- Chat inbox  -->
+      <div class="chat-page">
+        <div class="chat-inbox">
+          <div class="chats">
+	    <!-- Message container -->
+	    <div class="msg-page">
+	      <!-- Incoming messages -->
+
+	      <div class="outgoing-chats">
+                <div class="outgoing-msg">
+                  <div class="outgoing-chats-msg">
+		    <p>
+		      Hi !! This message was received from Riya . Lorem ipsum, dolor sit
+		      amet consectetur adipisicing elit. Non quas nemo eum,
+		      earum sunt, nobis similique quisquam eveniet pariatur
+		      commodi modi voluptatibus iusto omnis harum illum iste
+		      distinctio expedita illo!
+		    </p>
+		    <span class="msg-time">18:06 PM | July 24</span>
+                  </div>
+                </div>
+	      </div>
+	      <!-- Outgoing messages -->
+	      <div class="outgoing-chats">
+                <div class="outgoing-msg">
+                  <div class="outgoing-chats-msg">
+		    <p class="multi-msg">
+		      Hi riya , Lorem ipsum dolor sit amet consectetur
+		      adipisicing elit. Illo nobis deleniti earum magni
+		      recusandae assumenda.
+		    </p>
+		    <p class="multi-msg">
+		      Lorem ipsum dolor sit amet consectetur.
+		    </p>
+
+		    <span class="msg-time">18:30 PM | July 24</span>
+                  </div>
+                </div>
+	      </div>
+	      <div class="outgoing-chats">
+                <div class="outgoing-msg">
+                  <div class="outgoing-chats-msg">
+		    <p class="single-msg">
+		      Hi !! This is me responding to the message. Lorem ipsum, dolor
+		      sit amet consectetur adipisicing elit. iste distinctio
+		      expedita illo!
+		    </p>
+		    <span class="msg-time">18:31 PM | July 24</span>
+                  </div>
+                </div>
+	      </div>
+	      <div class="outgoing-chats">
+                <div class="outgoing-msg">
+                  <div class="outgoing-chats-msg">
+		    <p>
+		      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+		      Velit, sequi.
+		    </p>
+
+		    <span class="msg-time">18:34 PM | July 24</span>
+                  </div>
+                </div>
+	      </div>
 	    </div>
-	  </div>
-	  <form action="javascript:CallTransmit($('#transmit_message').val())">
-	    <input type="text" id="transmit_message" value=""/>
-	    <input type="submit" value="Send"/>
-	  </form>
-	</div>
+          </div>
+
+          <!-- msg-bottom section -->
+
+          <div class="msg-bottom">
+	    <div class="input-group">
+	      <input
+                type="text"
+                class="form-control"
+                placeholder="Write message..."
+		/>
+
+	      <span class="input-group-text send-icon">
+                <i class="bi bi-send"></i>
+	      </span>
+	    </div>
+          </div>
+        </div>
       </div>
     </div>
 

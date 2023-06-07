@@ -353,7 +353,27 @@ function LoadScript(url, callback) {
   head.appendChild(script);
 }
 
+function DisplayCommunications() {
+  $('.debug').hide();
+  $('.communications').show();
+  $('.telemetry').hide();
+}
+
+function DisplayDebug() {
+  $('.debug').show();
+  $('.communications').hide();
+  $('.telemetry').hide();
+}
+
+function DisplayTelemetry() {
+  $('.debug').hide();
+  $('.communications').hide();
+  $('.telemetry').show();
+}
+
 function initialize_module() {
+  DisplayCommunications();
+
   if (!('WebSocket' in window)) {
     // The browser doesn't support WebSocket.
     alert('WebSocket NOT supported by your Browser!');
