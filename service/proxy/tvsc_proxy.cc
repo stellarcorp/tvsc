@@ -7,8 +7,6 @@
 #include "http/static_file_server.h"
 #include "pubsub/publication_service.h"
 #include "pubsub/web_socket_topic.h"
-#include "service/chat/client/chat_streamer.h"
-#include "service/chat/client/web_socket_rpc_client.h"
 #include "service/communications/client/rx_streamer.h"
 #include "service/communications/client/web_socket_rpc_client.h"
 #include "service/datetime/client/datetime_streamer.h"
@@ -39,21 +37,10 @@ int main(int argc, char* argv[]) {
 
   // Web sockets for each service. These handle methods with vanilla RPC mechanics and can set up
   // subscriptions to streams.
-  tvsc::service::chat::create_web_socket_behaviors("/service/chat", app);
   tvsc::service::datetime::create_web_socket_behaviors("/service/datetime", app);
   tvsc::service::echo::create_web_socket_behaviors("/service/echo", app);
   tvsc::service::hello::create_web_socket_behaviors("/service/hello", app);
   tvsc::service::communications::create_web_socket_behaviors("/service/communications", app);
-
-  // Publish the stream of chat messages.
-  tvsc::pubsub::WebSocketTopic<tvsc::service::chat::ChatMessage, SSL, 1> chat_topic{
-      tvsc::service::chat::ChatStreamer::TOPIC_NAME, app};
-  chat_topic.register_publishing_handler(*uWS::Loop::get());
-
-  tvsc::pubsub::PublicationService<tvsc::service::chat::ChatMessage> chat_publisher{
-      chat_topic, std::make_unique<tvsc::service::chat::ChatStreamer>()};
-  // TODO(james): Add capability to start this stream on request.
-  chat_publisher.start();
 
   // Publish the stream of datetime messages.
   tvsc::pubsub::WebSocketTopic<tvsc::service::datetime::DatetimeReply, SSL, 1> datetime_topic{
@@ -65,15 +52,15 @@ int main(int argc, char* argv[]) {
   // TODO(james): Add capability to start this stream on request.
   datetime_publisher.start();
 
-  // Publish the stream of datetime messages.
-  tvsc::pubsub::WebSocketTopic<tvsc::service::communications::Message, SSL, 1> radio_rx_topic{
-      tvsc::service::communications::RxStreamer::TOPIC_NAME, app};
-  radio_rx_topic.register_publishing_handler(*uWS::Loop::get());
+  // Publish the stream of radio messages.
+  // tvsc::pubsub::WebSocketTopic<tvsc::service::communications::Message, SSL, 1> radio_rx_topic{
+  //     tvsc::service::communications::RxStreamer::TOPIC_NAME, app};
+  // radio_rx_topic.register_publishing_handler(*uWS::Loop::get());
 
-  tvsc::pubsub::PublicationService<tvsc::service::communications::Message> radio_rx_publisher{
-      radio_rx_topic, std::make_unique<tvsc::service::communications::RxStreamer>()};
-  // TODO(james): Add capability to start this stream on request.
-  radio_rx_publisher.start();
+  // tvsc::pubsub::PublicationService<tvsc::service::communications::Message> radio_rx_publisher{
+  //     radio_rx_topic, std::make_unique<tvsc::service::communications::RxStreamer>()};
+  // // TODO(james): Add capability to start this stream on request.
+  // radio_rx_publisher.start();
 
   app.listen(FLAGS_port,
              [](auto* listen_socket) {
