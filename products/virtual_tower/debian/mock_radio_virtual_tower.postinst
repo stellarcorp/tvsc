@@ -6,7 +6,7 @@ then
     # Start the service and enable it to start on boot.
     if [ -x "`which systemctl 2>/dev/null`" ]
     then
-	for service in "tvsc-mock-communications" "tvsc-datetime" "tvsc-echo" "tvsc-hello" "tvsc-virtual-tower"
+	for service in "mock-radio-communications" "tvsc-datetime" "tvsc-echo" "tvsc-hello" "tvsc-virtual-tower"
 	do
 	    systemctl start "${service}"
 	    systemctl enable "${service}"

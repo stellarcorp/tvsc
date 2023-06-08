@@ -102,9 +102,6 @@ pkg_deb(
     depends = [
         "libavahi-client3",
         "avahi-daemon",
-        "iptables (>= 1.6)",
-        "iptables-persistent (>= 1.0.11)",
-        "libwiringpi2",
     ],
     description = "Virtual Tower system from TVSC with a mock radio. For development purposes only.",
     maintainer = "info@stellarcorp.tv",
