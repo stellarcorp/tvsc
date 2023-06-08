@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "remove" ]
+then
+    if [ -x "`which systemctl 2>/dev/null`" ]
+    then
+	for service in "tvsc-virtual-tower" "tvsc-mock-communications" "tvsc-datetime" "tvsc-echo" "tvsc-hello"
+	do
+	    systemctl stop "${service}"
+	    systemctl disable "${service}"
+	done
+    fi
+fi

@@ -1,0 +1,14 @@
+[Unit]
+Description=TVSC Communications using a mock radio. For development purposes only.
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/mock-radio-communications-service
+Type=simple
+KillMode=mixed
+Restart=on-failure
+LimitRTPRIO=99
+
+[Install]
+WantedBy=multi-user.target
