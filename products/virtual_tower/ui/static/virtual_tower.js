@@ -293,14 +293,27 @@ function CreateTransmitSocket() {
       'tvsc.service.communications.SuccessResult');
 
   transmit_rpc.on_receive(function(evt) {
+    // Clear the transmit input box.
     $('#transmit_message').text();
   });
 
   transmit_rpc.on_error(function(evt) {
-    let item_element = $('<span>');
-    item_element.append(document.createTextNode('<TX error>'));
-    item_element.insertBefore('#received_messages_scroll_anchor');
+    RenderReceivedMessage('<TX error>');
   });
+}
+
+function RenderReceivedMessage(msg) {
+  let level1 = $('<div class="outgoing-chats">');
+  let level2 = $('<div class="outgoing-msg">');
+  let level3 = $('<div class="outgoing-chats-msg">');
+  let message_element = $('<p>').text(msg);
+  let timestamp_element = $('<span class="msg-time">').text('18:06 PM | July 24');
+
+  level3.append(message_element, timestamp_element);
+  level2.append(level3);
+  level1.append(level2);
+
+  $('#msg-container').append(level1);
 }
 
 function CreateReceiveStream() {
@@ -310,15 +323,11 @@ function CreateReceiveStream() {
       'tvsc.service.communications.Message');
 
   receive_stream.on_receive(function(reply) {
-    let item_element = $('<div>');
-    item_element.append(document.createTextNode(reply.message));
-    item_element.insertBefore('#received_messages_scroll_anchor');
+    RenderReceivedMessage(reply.message);
   });
 
   receive_stream.on_error(function(evt) {
-    let item_element = $('<div>');
-    item_element.append(document.createTextNode('<RX error>'));
-    item_element.insertBefore('#received_messages_scroll_anchor');
+    RenderReceivedMessage('<RX error>');
   });
 
   receive_stream.start();
@@ -372,6 +381,11 @@ function DisplayTelemetry() {
 }
 
 function AddSampleMessageData() {
+  RenderReceivedMessage(
+      'Hi !! This message was received from Riya . Lorem ipsum, dolor si amet consectetur adipisicing elit.Non quas nemo eum, earum sunt, nobis similique quisquam eveniet pariatur commodi modi voluptatibus iusto omnis harum illum iste distinctio expedita illo!');
+  RenderReceivedMessage(
+      'Hi riya , Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nobis deleniti earum magni recusandae assumenda.');
+  RenderReceivedMessage('Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, sequi.');
 }
 
 function initialize_module() {
