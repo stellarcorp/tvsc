@@ -11,6 +11,7 @@ cc_library(
         "//hal/spi",
         "//radio",
         "//radio:rf69hcw",
+	"//random",
         "//service/communications/common",
         "//service/utility",
         "//third_party/glog",
@@ -24,6 +25,37 @@ cc_binary(
     visibility = ["//visibility:public"],
     deps = [
         ":server",
+        "//service/communications/common",
+        "//service/utility",
+        "//third_party/gflags",
+        "//third_party/glog",
+        "//third_party/grpc",
+    ],
+)
+cc_library(
+    name = "mock_radio_server",
+    srcs = [
+        "mock_radio_server.cc",
+    ],
+    hdrs = [
+        "mock_radio_server.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+	"//random",
+        "//service/communications/common",
+        "//service/utility",
+        "//third_party/glog",
+        "//third_party/grpc",
+    ],
+)
+
+cc_binary(
+    name = "mock-radio-communications-service",
+    srcs = ["mock_radio_communications_server.cc"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":mock_radio_server",
         "//service/communications/common",
         "//service/utility",
         "//third_party/gflags",

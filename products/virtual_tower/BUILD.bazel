@@ -5,6 +5,7 @@ load("//platforms:platform.bzl", "arch_name")
 load("//service:version.bzl", "tarball_name", "version_string")
 
 PACKAGE_NAME = "tvsc-virtual-tower"
+MOCK_RADIO_PACKAGE_NAME = "tvsc-virtual-tower-with-mock-radio"
 
 pkg_files(
     name = "ui_files",
@@ -50,6 +51,25 @@ pkg_tar(
     package_file_name = tarball_name(PACKAGE_NAME),
 )
 
+pkg_tar(
+    name = "mock_radio_tarball",
+    testonly = True,
+    srcs = [
+        ":systemd_files",
+        ":ui_files",
+        "//service/communications:mock_binaries",
+        "//service/communications:mock_systemd_files",
+        "//service/datetime:binaries",
+        "//service/datetime:systemd_files",
+        "//service/echo:binaries",
+        "//service/echo:systemd_files",
+        "//service/hello:binaries",
+        "//service/hello:systemd_files",
+        "//service/proxy:binaries",
+    ],
+    package_file_name = tarball_name(MOCK_RADIO_PACKAGE_NAME),
+)
+
 pkg_deb(
     name = "deb",
     testonly = True,
@@ -70,6 +90,27 @@ pkg_deb(
     postinst = "debian/tvsc_virtual_tower.postinst",
     preinst = "debian/tvsc_virtual_tower.preinst",
     prerm = "debian/tvsc_virtual_tower.prerm",
+    version = version_string(),
+    visibility = ["//visibility:public"],
+)
+
+pkg_deb(
+    name = "mock_radio_deb",
+    testonly = True,
+    architecture = arch_name(),
+    data = ":mock_radio_tarball",
+    depends = [
+        "libavahi-client3",
+        "avahi-daemon",
+        "iptables (>= 1.6)",
+        "iptables-persistent (>= 1.0.11)",
+        "libwiringpi2",
+    ],
+    description = "Virtual Tower system from TVSC with a mock radio. For development purposes only.",
+    maintainer = "info@stellarcorp.tv",
+    package = MOCK_RADIO_PACKAGE_NAME,
+    postinst = "debian/mock_radio_virtual_tower.postinst",
+    prerm = "debian/mock_radio_virtual_tower.prerm",
     version = version_string(),
     visibility = ["//visibility:public"],
 )

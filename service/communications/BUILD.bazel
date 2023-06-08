@@ -6,7 +6,6 @@ load("//service:version.bzl", "tarball_name", "version_string")
 
 pkg_files(
     name = "binaries",
-    testonly = True,
     srcs = [
         "//service/communications/server:tvsc-communications-service",
     ],
@@ -21,6 +20,31 @@ pkg_files(
     name = "systemd_files",
     srcs = [
         ":etc/tvsc-communications.service",
+    ],
+    attributes = pkg_attributes(
+        mode = "0644",
+    ),
+    prefix = "lib/systemd/system",
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "mock_binaries",
+    testonly = True,
+    srcs = [
+        "//service/communications/server:mock-radio-communications-service",
+    ],
+    attributes = pkg_attributes(
+        mode = "0755",
+    ),
+    prefix = "usr/bin",
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "mock_systemd_files",
+    srcs = [
+        ":etc/mock-radio-communications.service",
     ],
     attributes = pkg_attributes(
         mode = "0644",
