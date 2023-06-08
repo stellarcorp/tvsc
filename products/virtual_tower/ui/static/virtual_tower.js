@@ -371,6 +371,9 @@ function DisplayTelemetry() {
   $('.telemetry').show();
 }
 
+function AddSampleMessageData() {
+}
+
 function initialize_module() {
   DisplayCommunications();
 
@@ -417,6 +420,8 @@ function initialize_module() {
         CreateTransmitSocket();
 
         CreateReceiveStream();
+
+        AddSampleMessageData();
       });
     });
   }
