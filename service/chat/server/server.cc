@@ -32,7 +32,7 @@ grpc::Status ChatServiceImpl::post_message(grpc::ServerContext* context, const C
 }
 
 grpc::Status ChatServiceImpl::subscribe_to_messages(grpc::ServerContext* context,
-                                                    const EmptyMessage* request,
+                                                    const EmptyMessage* /*request*/,
                                                     grpc::ServerWriter<ChatMessage>* writer) {
   using namespace std::literals::chrono_literals;
   DLOG(INFO) << "ChatServerImpl::subscribe_to_messages()";
