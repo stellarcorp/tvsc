@@ -53,14 +53,14 @@ int main(int argc, char* argv[]) {
   datetime_publisher.start();
 
   // Publish the stream of radio messages.
-  // tvsc::pubsub::WebSocketTopic<tvsc::service::communications::Message, SSL, 1> radio_rx_topic{
-  //     tvsc::service::communications::RxStreamer::TOPIC_NAME, app};
-  // radio_rx_topic.register_publishing_handler(*uWS::Loop::get());
+  tvsc::pubsub::WebSocketTopic<tvsc::service::communications::Message, SSL, 1> radio_rx_topic{
+      tvsc::service::communications::RxStreamer::TOPIC_NAME, app};
+  radio_rx_topic.register_publishing_handler(*uWS::Loop::get());
 
-  // tvsc::pubsub::PublicationService<tvsc::service::communications::Message> radio_rx_publisher{
-  //     radio_rx_topic, std::make_unique<tvsc::service::communications::RxStreamer>()};
-  // // TODO(james): Add capability to start this stream on request.
-  // radio_rx_publisher.start();
+  tvsc::pubsub::PublicationService<tvsc::service::communications::Message> radio_rx_publisher{
+      radio_rx_topic, std::make_unique<tvsc::service::communications::RxStreamer>()};
+  // TODO(james): Add capability to start this stream on request.
+  radio_rx_publisher.start();
 
   app.listen(FLAGS_port,
              [](auto* listen_socket) {
