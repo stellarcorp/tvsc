@@ -52,8 +52,8 @@
 
           <!-- msg-bottom section -->
           <div class="msg-bottom">
-	    <div class="input-group">
-	      <input
+	    <form class="input-group" action="javascript:CallTransmit($('#transmit_message').val())">
+	      <input id="transmit_message"
                 type="text"
                 class="form-control"
                 placeholder="Write message..."
@@ -62,7 +62,7 @@
 	      <span class="input-group-text send-icon">
                 <i class="bi bi-send"></i>
 	      </span>
-	    </div>
+	    </form>
           </div>
         </div>
       </div>
