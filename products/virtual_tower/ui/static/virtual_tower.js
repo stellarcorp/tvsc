@@ -1,14 +1,22 @@
-let list_communications_rpc = null;
+// Objects storing WebSocketRpc instances for various RPCs.
 let echo_rpc = null;
 let transmit_rpc = null;
 
+// Objects storing WebSocketStreams instances for various streams.
 let datetime_stream = null;
 let receive_stream = null;
 
+/**
+ * The protobuf library generates TypedArrays, but the web socket API uses buffers. Here we
+ * transform from the encoded protobuf to the buffer that is needed to transmit the data.
+ */
 function TypedArrayToBuffer(array) {
   return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset)
 }
 
+/**
+ * Consolidate how web socket URLs are structured.
+ */
 function BuildWebSocketUrl(service, method) {
   // Note that location.host includes the hostname and the port as "hostname:port".
   return 'ws://' + location.host + '/service/' + service + '/' + method;
@@ -244,35 +252,6 @@ function CreateDatetimeStream() {
   datetime_stream.start();
 }
 
-function CreateRadioListSocket() {
-  list_communications_rpc = new WebSocketRpc(
-      BuildWebSocketUrl('communications', 'list_radios'),  //
-      'tvsc.service.communications.EmptyMessage',          //
-      'tvsc.service.communications.Radios');
-  list_communications_rpc.on_receive(function(reply) {
-    $('#radios_list').empty();
-    for (let radio of reply.radios) {
-      let item_element = $('<li>');
-      item_element.append(document.createTextNode(communications.name));
-      let keys_values_element = $('<ul class=\'keys_values_element\'>');
-      for (let key_value of communications.keysValues) {
-        let key_value_element = $('<li class=\'key_value_element\'>')
-        key_value_element.append(document.createTextNode(key_value.key + ': ' + key_value.value));
-        keys_values_element.append(key_value_element);
-      }
-      item_element.append(keys_values_element);
-      $('#radio_list').append(item_element);
-    }
-  });
-  list_communications_rpc.on_error(function(evt) {
-    $('#radio__list').text('<error>');
-  });
-}
-
-function GetRadioList() {
-  list_communications_rpc.send({});
-}
-
 function CreateEchoSocket() {
   echo_rpc = new WebSocketRpc(
       BuildWebSocketUrl('echo', 'echo'),  //
@@ -294,7 +273,7 @@ function CreateTransmitSocket() {
 
   transmit_rpc.on_receive(function(evt) {
     // Clear the transmit input box.
-    $('#transmit_message').text();
+    $('#transmit_message').val('');
   });
 
   transmit_rpc.on_error(function(evt) {
@@ -380,6 +359,10 @@ function DisplayTelemetry() {
   $('.telemetry').show();
 }
 
+/**
+ * Function to add sample message data to help with debugging CSS and logic around message
+ * rendering. Note that these messages are rendered in the same way as a received message.
+ */
 function AddSampleMessageData() {
   RenderReceivedMessage(
       'Hi !! This message was received from Riya . Lorem ipsum, dolor si amet consectetur adipisicing elit.Non quas nemo eum, earum sunt, nobis similique quisquam eveniet pariatur commodi modi voluptatibus iusto omnis harum illum iste distinctio expedita illo!');
@@ -388,7 +371,7 @@ function AddSampleMessageData() {
   RenderReceivedMessage('Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, sequi.');
 }
 
-function initialize_module() {
+function InitializeModule() {
   DisplayCommunications();
 
   if (!('WebSocket' in window)) {
@@ -424,15 +407,10 @@ function initialize_module() {
             'tvsc.service.communications.Message',
             root.lookupType('tvsc.service.communications.Message'));
         Protos.add_proto(
-            'tvsc.service.communications.Radios',
-            root.lookupType('tvsc.service.communications.Radios'));
-        Protos.add_proto(
             'tvsc.service.communications.SuccessResult',
             root.lookupType('tvsc.service.communications.SuccessResult'));
 
-        CreateRadioListSocket();
         CreateTransmitSocket();
-
         CreateReceiveStream();
 
         AddSampleMessageData();
@@ -441,4 +419,4 @@ function initialize_module() {
   }
 }
 
-window.onload = initialize_module;
+window.onload = InitializeModule;
