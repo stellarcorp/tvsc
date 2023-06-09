@@ -72,7 +72,7 @@ int main() {
       --sequence_number;
     }
 
-    tvsc::hal::time::delay_ms(5000);
+    tvsc::hal::time::delay_ms(1000);
   }
 
   return 0;
