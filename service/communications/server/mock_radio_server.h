@@ -20,11 +20,6 @@ class MockRadioCommunicationsService final : public CommunicationsService::Servi
   std::map<grpc::ServerWriter<Message>*, std::vector<Message>> writer_queues_{};
 
  public:
-  MockRadioCommunicationsService();
-
-  grpc::Status list_radios(grpc::ServerContext* context, const EmptyMessage* request,
-                           Radios* reply) override;
-
   grpc::Status transmit(grpc::ServerContext* context, const Message* request,
                         SuccessResult* reply) override;
 

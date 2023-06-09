@@ -82,12 +82,6 @@ void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& 
   cv_.notify_all();
 }
 
-grpc::Status CommunicationsServiceImpl::list_radios(grpc::ServerContext* context,
-                                                    const EmptyMessage* request, Radios* reply) {
-  LOG(INFO) << "list_radios() called.";
-  return grpc::Status::OK;
-}
-
 grpc::Status CommunicationsServiceImpl::transmit(grpc::ServerContext* context,
                                                  const Message* request, SuccessResult* reply) {
   LOG(INFO) << "transmit() called. Message: " << request->message();

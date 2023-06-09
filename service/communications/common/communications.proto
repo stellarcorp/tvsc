@@ -3,8 +3,6 @@ syntax = "proto3";
 package tvsc.service.communications;
 
 service CommunicationsService {
-  rpc list_radios(EmptyMessage) returns (Radios);
-
   rpc transmit(Message) returns (SuccessResult);
   rpc receive(EmptyMessage) returns (stream Message);
 }
@@ -22,13 +20,4 @@ message SuccessResult {
 
 message Message {
   string message = 1;
-}
-
-message Radio {
-  fixed64 id = 1;
-  string name = 2;
-}
-
-message Radios {
-  repeated Radio radios = 1;
 }

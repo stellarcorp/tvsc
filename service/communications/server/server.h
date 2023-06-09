@@ -54,9 +54,6 @@ class CommunicationsServiceImpl final : public CommunicationsService::Service {
  public:
   CommunicationsServiceImpl();
 
-  grpc::Status list_radios(grpc::ServerContext* context, const EmptyMessage* request,
-                           Radios* reply) override;
-
   grpc::Status transmit(grpc::ServerContext* context, const Message* request,
                         SuccessResult* reply) override;
 

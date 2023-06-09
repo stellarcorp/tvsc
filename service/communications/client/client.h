@@ -16,12 +16,6 @@ class CommunicationsClient {
       : stub_(CommunicationsService::NewStub(
             grpc::CreateChannel(bind_addr, grpc::InsecureChannelCredentials()))) {}
 
-  grpc::Status list_radios(Radios* reply) {
-    grpc::ClientContext context{};
-    LOG(INFO) << "CommunicationsClient::list_radios()";
-    return stub_->list_radios(&context, EmptyMessage{}, reply);
-  }
-
   std::unique_ptr<grpc::ClientReaderInterface<Message>> receive(grpc::ClientContext* context) {
     return stub_->receive(context, EmptyMessage{});
   }
