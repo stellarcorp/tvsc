@@ -47,8 +47,6 @@ class CommunicationsServiceImpl final : public CommunicationsService::Service {
 
   void post_received_packet(const tvsc::radio::Packet& packet);
 
-  void receive_packets();
-
   void reset_radio();
 
  public:

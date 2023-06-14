@@ -26,7 +26,7 @@ class PacketAssembler final {
  private:
   std::unordered_multimap<uint64_t, PacketT> incoming_{};
   std::unordered_set<uint64_t> complete_packets_{};
-  std::mutex m_{};
+  mutable std::mutex m_{};
 
   // TODO(james): This looks useful. Extract this to a place where it can be used elsewhere.
   template <typename PairIterator>
@@ -101,7 +101,7 @@ class PacketAssembler final {
     }
   }
 
-  bool have_complete_packets() const {
+  bool has_complete_packets() const {
     std::lock_guard lock{m_};
     return !complete_packets_.empty();
   }
@@ -122,13 +122,9 @@ class PacketAssembler final {
     return output;
   }
 
-  size_t num_incomplete_fragments() const {
-    return incoming_.size();
-  }
+  size_t num_incomplete_fragments() const { return incoming_.size(); }
 
-  size_t num_outstanding_complete_packets() const {
-    return complete_packets_.size();
-  }
+  size_t num_outstanding_complete_packets() const { return complete_packets_.size(); }
 };
 
 }  // namespace tvsc::radio

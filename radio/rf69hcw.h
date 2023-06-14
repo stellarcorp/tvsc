@@ -593,6 +593,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
       return false;
     }
 
+    tvsc::hal::output::println("Moving fragment to fifo");
     spi_->fifo_write(RF69HCW_REG_00_FIFO, fragment.data.data(), fragment.length);
 
     // Start the transmitter.

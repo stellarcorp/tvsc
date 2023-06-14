@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 
 #include "hal/output/output.h"
 #include "hal/time/time.h"
@@ -24,6 +25,8 @@ class TransceiverMonitor final {
   PacketTxQueue<PacketT, MAX_TX_QUEUE_SIZE>* tx_queue_;
   PacketSink<PacketT, MAX_TX_QUEUE_SIZE> tx_queue_sink_;
   PacketAssembler<PacketT>* rx_queue_;
+  std::function<void(const Packet& packet)> notify_fn_;
+
   bool cancel_requested_{false};
 
   struct RadioStatistics final {
@@ -38,6 +41,12 @@ class TransceiverMonitor final {
   uint32_t start_time_ms_{};
 
   bool should_transmit() const {
+    LOG(WARNING) << "TransceiverMonitor::should_transmit()";
+    LOG(WARNING) << "TransceiverMonitor::should_transmit() -- tx_queue_->elements_available(): "
+                 << tx_queue_->elements_available();
+    LOG(WARNING) << "TransceiverMonitor::should_transmit() -- tvsc::hal::time::time_millis() - "
+                    "statistics_.last_tx_time: "
+                 << (tvsc::hal::time::time_millis() - statistics_.last_tx_time);
     return tx_queue_->elements_available() > TX_ELEMENTS_AVAILABLE_THRESHOLD ||
            tvsc::hal::time::time_millis() - statistics_.last_tx_time > TX_TIME_THRESHOLD_MS;
   }
@@ -49,11 +58,13 @@ class TransceiverMonitor final {
  public:
   TransceiverMonitor(HalfDuplexTransceiver<MTU>& radio,
                      PacketTxQueue<PacketT, MAX_TX_QUEUE_SIZE>& tx_queue,
-                     PacketAssembler<PacketT>& rx_queue)
+                     PacketAssembler<PacketT>& rx_queue,
+                     std::function<void(const Packet& packet)> notify_fn)
       : radio_(&radio),
         tx_queue_(&tx_queue),
         tx_queue_sink_(tx_queue_->create_sink()),
-        rx_queue_(&rx_queue) {}
+        rx_queue_(&rx_queue),
+        notify_fn_(std::move(notify_fn)) {}
 
   void start() {
     cancel_requested_ = false;
@@ -74,6 +85,10 @@ class TransceiverMonitor final {
       Fragment<HalfDuplexTransceiver<MTU>::max_mtu()> fragment{};
       radio_->read_received_fragment(fragment);
       rx_queue_->add_fragment(fragment);
+    }
+
+    if (rx_queue_->has_complete_packets()) {
+      notify_fn_(rx_queue_->consume_packet());
     }
 
     // Transmit any packets we have outstanding, if we decide we should transmit.

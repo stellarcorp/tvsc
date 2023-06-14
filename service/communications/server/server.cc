@@ -27,8 +27,6 @@ namespace tvsc::service::communications {
 
 using namespace std::literals::chrono_literals;
 
-void CommunicationsServiceImpl::receive_packets() {}
-
 void CommunicationsServiceImpl::reset_radio() {
   rf69_->reset();
 
@@ -52,7 +50,8 @@ CommunicationsServiceImpl::CommunicationsServiceImpl() {
 
   monitor_ = std ::make_unique<tvsc::radio::TransceiverMonitor<
       tvsc::radio::Packet, RadioT::max_mtu(), MAX_TX_QUEUE_SIZE, MAX_FRAGMENTS_PER_PACKET>>(
-      *rf69_, tx_queue_, rx_queue_);
+      *rf69_, tx_queue_, rx_queue_,
+      [this](const tvsc::radio::Packet& packet) { this->post_received_packet(packet); });
 
   reset_radio();
 
@@ -64,7 +63,7 @@ CommunicationsServiceImpl::CommunicationsServiceImpl() {
 }
 
 void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& packet) {
-  DLOG(INFO) << "CommunicationsServerImpl::post_received_packet()";
+  LOG(WARNING) << "CommunicationsServerImpl::post_received_packet()";
   {
     Message message{};
     message.ParseFromString(std::string(packet.payload().as_string_view(packet.payload_length())));
@@ -74,17 +73,22 @@ void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& 
       // TODO(james): Make this more efficient. This approach just copies the message to the queue
       // for every writer. Better would be to share a single instance of the message across all of
       // the writers.
-      DLOG(INFO) << "CommunicationsServerImpl::post_received_packet() -- posting to writer queue";
+      LOG(WARNING) << "CommunicationsServerImpl::post_received_packet() -- posting to writer queue";
       writer_queue.second.push_back(message);
     }
   }
-  DLOG(INFO) << "CommunicationsServerImpl::post_received_packet() -- notifying writers";
+  LOG(WARNING) << "CommunicationsServerImpl::post_received_packet() -- notifying writers";
   cv_.notify_all();
 }
 
 grpc::Status CommunicationsServiceImpl::transmit(grpc::ServerContext* context,
                                                  const Message* request, SuccessResult* reply) {
-  LOG(INFO) << "transmit() called. Message: " << request->message();
+  LOG(WARNING) << "CommunicationsServiceImpl::transmit() -- message: " << request->message();
+  tvsc::radio::Packet packet{};
+  request->SerializeToArray(packet.payload().data(), packet.payload().size());
+  packet.set_payload_length(request->ByteSizeLong());
+  tx_queue_.push_normal(packet);
+  LOG(WARNING) << "CommunicationsServiceImpl::transmit() -- message pushed to TX queue";
   return grpc::Status::OK;
 }
 
@@ -92,29 +96,29 @@ grpc::Status CommunicationsServiceImpl::receive(grpc::ServerContext* context,
                                                 const EmptyMessage* /*request*/,
                                                 grpc::ServerWriter<Message>* writer) {
   using namespace std::literals::chrono_literals;
-  DLOG(INFO) << "CommunicationsServiceImpl::receive()";
+  LOG(WARNING) << "CommunicationsServiceImpl::receive()";
   std::unique_lock<std::mutex> l(mu_);
   writer_queues_.emplace(writer, std::vector<Message>{});
 
   while (!context->IsCancelled()) {
     if (cv_.wait_for(l, 20ms, [context] { return context->IsCancelled(); })) {
-      DLOG(INFO) << "CommunicationsServiceImpl::receive() -- context->IsCancelled()";
+      LOG(WARNING) << "CommunicationsServiceImpl::receive() -- context->IsCancelled()";
       break;
     }
 
     auto& queue{writer_queues_.at(writer)};
     for (const auto& msg : queue) {
-      DLOG(INFO) << "CommunicationsServiceImpl::receive() -- writing message.";
+      LOG(WARNING) << "CommunicationsServiceImpl::receive() -- writing message.";
       writer->Write(msg);
     }
     queue.clear();
   }
-  DLOG(INFO) << "CommunicationsServiceImpl::receive() -- context->IsCancelled(): "
-             << (context->IsCancelled() ? "true" : "false");
+  LOG(WARNING) << "CommunicationsServiceImpl::receive() -- context->IsCancelled(): "
+               << (context->IsCancelled() ? "true" : "false");
 
   writer_queues_.erase(writer);
 
-  DLOG(INFO) << "CommunicationsServiceImpl::receive() -- exiting.";
+  LOG(WARNING) << "CommunicationsServiceImpl::receive() -- exiting.";
   // Client-side cancelling of the stream is expected, so we return OK instead of CANCELLED.
   return grpc::Status::OK;
 }
