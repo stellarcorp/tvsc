@@ -56,5 +56,9 @@ build:ubsan --linkopt -lubsan
 
 # Code coverage
 # This option gives us a single combined report for the whole repository.
+# To generate HTML for browsing the code coverage, run the following from the top level of the repository:
+#   $ bazel coverage -c opt //...
+#   $ genhtml --output coverage "$(bazel info output_path)/_coverage/_coverage_report.dat"
+# The resulting html will be in a directory named "coverage".
 coverage --combined_report=lcov
 coverage --instrumentation_filter "^//"
