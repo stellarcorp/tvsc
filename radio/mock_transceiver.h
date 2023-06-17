@@ -2,6 +2,7 @@
 
 #include <atomic>
 #include <limits>
+#include <mutex>
 #include <stdexcept>
 #include <vector>
 
@@ -29,6 +30,8 @@ class TransceiverInterrupter final {
   std::atomic<bool> stop_requested_{false};
 
   uint64_t possibly_receive_fragment() {
+    std::unique_lock<std::mutex> lock(transceiver_->mutex_);
+
     // Simulate an external radio broadcasting a fragment every fragment_receive_interval_ms_.
     // Note that this is independent of the mode of the transceiver. If the transceiver is not in RX
     // mode, this fragment gets dropped.
@@ -41,13 +44,16 @@ class TransceiverInterrupter final {
           current_time_ms) {
         DLOG(INFO) << "TransceiverInterrupter::possibly_receive_fragments() -- transceiver "
                       "receiving mocked fragment.";
+        lock.unlock();
         if (transceiver_->in_rx_mode()) {
+          lock.lock();
           DLOG(INFO) << "TransceiverInterrupter::possibly_receive_fragments() -- transceiver "
                         "received mocked fragment.";
           DLOG(INFO) << "TransceiverInterrupter::possibly_receive_fragments() -- fragment: "
                      << to_string(transceiver_->rx_fragments_.front());
           transceiver_->buffered_fragment_ = transceiver_->rx_fragments_.front();
         } else {
+          lock.lock();
           DLOG(INFO) << "TransceiverInterrupter::possibly_receive_fragments() -- transceiver not "
                         "in rx mode. Dropping fragment.";
           ++transceiver_->count_dropped_fragments_;
@@ -65,14 +71,19 @@ class TransceiverInterrupter final {
   }
 
   uint64_t possibly_transmit_fragment() {
+    std::unique_lock<std::mutex> lock(transceiver_->mutex_);
+
     if (!transceiver_->have_fragment_for_tx_) {
       const uint64_t current_time_ms{tvsc::hal::time::time_millis()};
       if (transceiver_->last_switch_to_tx_mode_ms_ +
               MockTransceiverT<MTU>::fragment_transmit_time_ms >
           current_time_ms) {
+        lock.unlock();
         if (transceiver_->in_tx_mode()) {
+          lock.lock();
           transceiver_->sent_fragments_.emplace_back(transceiver_->buffered_fragment_);
         } else {
+          lock.lock();
           ++transceiver_->count_corrupted_fragments_;
         }
 
@@ -190,6 +201,8 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
   // mode during this time.
   static constexpr uint16_t fragment_transmit_time_ms{15};
 
+  mutable std::mutex mutex_{};
+
   // Timestamp of the last time a fragment was received. This should just increment in
   // fragment_receive_interval_ms increments and is used to figure out when the next fragment should
   // be received.
@@ -247,6 +260,8 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
    * Start an async process/thread to simulate interrupts coming from various hardware subsystems.
    */
   void start_interrupts() {
+    const std::lock_guard<std::mutex> lock(mutex_);
+
     last_receive_time_ms_ = tvsc::hal::time::time_millis();
     interrupter_ = std::make_unique<TransceiverInterrupter<MTU>>(*this);
     auto t = std::thread(&TransceiverInterrupter<MTU>::start, interrupter_.get());
@@ -269,23 +284,48 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
   /**
    * Add a fragment to be received. This method helps configure the mock transceiver state.
    */
-  void add_rx_fragment(const Fragment<MTU>& fragment) { rx_fragments_.emplace_back(fragment); }
+  void add_rx_fragment(const Fragment<MTU>& fragment) {
+    const std::lock_guard<std::mutex> lock(mutex_);
+    rx_fragments_.emplace_back(fragment);
+  }
 
-  size_t remaining_rx_fragment_count() const { return rx_fragments_.size(); }
+  size_t remaining_rx_fragment_count() const {
+    const std::lock_guard<std::mutex> lock(mutex_);
+    return rx_fragments_.size();
+  }
 
   /**
    * Get collection of fragments that were transmitted successfully.
    */
-  const std::vector<Fragment<MTU>>& sent_fragments() const { return sent_fragments_; }
+  const std::vector<Fragment<MTU>>& sent_fragments() const {
+    const std::lock_guard<std::mutex> lock(mutex_);
+    return sent_fragments_;
+  }
 
-  size_t count_dropped_fragments() const { return count_dropped_fragments_; }
-  size_t count_corrupted_fragments() const { return count_corrupted_fragments_; }
+  size_t count_dropped_fragments() const {
+    const std::lock_guard<std::mutex> lock(mutex_);
+    return count_dropped_fragments_;
+  }
 
-  bool in_standby_mode() const { return current_mode_ == Mode::STANDBY; }
+  size_t count_corrupted_fragments() const {
+    const std::lock_guard<std::mutex> lock(mutex_);
+    return count_corrupted_fragments_;
+  }
 
-  bool in_rx_mode() const { return current_mode_ == Mode::RX; }
+  bool in_standby_mode() const {
+    const std::lock_guard<std::mutex> lock(mutex_);
+    return current_mode_ == Mode::STANDBY;
+  }
 
-  bool in_tx_mode() const { return current_mode_ == Mode::TX; }
+  bool in_rx_mode() const {
+    const std::lock_guard<std::mutex> lock(mutex_);
+    return current_mode_ == Mode::RX;
+  }
+
+  bool in_tx_mode() const {
+    const std::lock_guard<std::mutex> lock(mutex_);
+    return current_mode_ == Mode::TX;
+  }
 
   /**
    * Reset the transceiver back to a default state and in standby mode. This may include a hardware
@@ -298,7 +338,10 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
    * This call should be idempotent.
    */
   void reset() override {
-    buffered_fragment_.length = 0;
+    {
+      const std::lock_guard<std::mutex> lock(mutex_);
+      buffered_fragment_.length = 0;
+    }
     stop_interrupts();
     set_standby_mode();
   }
@@ -322,6 +365,7 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
    */
   void set_standby_mode() override {
     if (!in_standby_mode()) {
+      const std::lock_guard<std::mutex> lock(mutex_);
       corrupt_transmit_fragment();
       current_mode_ = Mode::STANDBY;
     }
@@ -334,6 +378,7 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
    */
   void set_receive_mode() override {
     if (!in_rx_mode()) {
+      const std::lock_guard<std::mutex> lock(mutex_);
       corrupt_transmit_fragment();
       current_mode_ = Mode::RX;
     }
@@ -342,13 +387,17 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
   /**
    * Flag to poll if the transceiver has rx data available to read.
    */
-  bool has_fragment_available() const override { return buffered_fragment_.length > 0; }
+  bool has_fragment_available() const override {
+    const std::lock_guard<std::mutex> lock(mutex_);
+    return buffered_fragment_.length > 0;
+  }
 
   /**
    * Read a fragment that has already been received by the transceiver. After being read, the
    * transceiver will discard the fragment.
    */
   void read_received_fragment(Fragment<MTU>& fragment) override {
+    const std::lock_guard<std::mutex> lock(mutex_);
     fragment = buffered_fragment_;
     buffered_fragment_.length = 0;
   }
@@ -372,11 +421,14 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
    * Returns true if we are clear to send; false if a fragment is still waiting to be sent.
    */
   bool wait_fragment_transmitted(uint16_t timeout_ms) override {
+    std::unique_lock<std::mutex> lock(mutex_);
     while (have_fragment_for_tx_) {
       static constexpr uint16_t default_delay_ms{5};
+      lock.unlock();
       const uint32_t amount_to_delay_ms{
           std::min({timeout_ms, fragment_transmit_time_ms, default_delay_ms})};
       tvsc::hal::time::delay_ms(amount_to_delay_ms);
+      lock.lock();
     }
     return !have_fragment_for_tx_;
   }
@@ -389,16 +441,8 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
    */
   bool transmit_fragment(const Fragment<MTU>& fragment, uint16_t timeout_ms) override {
     const uint64_t abandon_time_ms{tvsc::hal::time::time_millis() + timeout_ms};
-    if (have_fragment_for_tx_) {
-      if (!wait_fragment_transmitted(timeout_ms)) {
-        return false;
-      }
-    }
-
-    if (have_fragment_for_tx_) {
-      throw std::logic_error(
-          "wait_fragment_transmitted() should not return true if there is still a fragment "
-          "available to be transmitted.");
+    if (!wait_fragment_transmitted(timeout_ms)) {
+      return false;
     }
 
     // Wait until we have a clear channel to transmit.
@@ -410,6 +454,8 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
     }
 
     set_standby_mode();
+
+    const std::lock_guard<std::mutex> lock(mutex_);
     buffered_fragment_ = fragment;
     have_fragment_for_tx_ = true;
     current_mode_ = Mode::TX;
