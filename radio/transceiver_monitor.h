@@ -1,8 +1,10 @@
 #pragma once
 
+#include <atomic>
 #include <cstdint>
 #include <functional>
 
+#include "glog/logging.h"
 #include "hal/output/output.h"
 #include "hal/time/time.h"
 #include "radio/packet_assembler.h"
@@ -27,7 +29,8 @@ class TransceiverMonitor final {
   PacketAssembler<PacketT>* rx_queue_;
   std::function<void(const Packet& packet)> notify_fn_;
 
-  bool cancel_requested_{false};
+  std::atomic<bool> is_running_{false};
+  std::atomic<bool> cancel_requested_{false};
 
   struct RadioStatistics final {
     uint32_t packet_rx_count{};
@@ -66,34 +69,65 @@ class TransceiverMonitor final {
         rx_queue_(&rx_queue),
         notify_fn_(std::move(notify_fn)) {}
 
-  void start() {
-    cancel_requested_ = false;
-    start_time_ms_ = tvsc::hal::time::time_millis();
-    while (!cancel_requested_) {
-      iterate();
+  ~TransceiverMonitor() {
+    DLOG(INFO) << "TransceiverMonitor::~TransceiverMonitor()";
+    cancel();
+    static constexpr uint32_t max_delay_ms{500};
+    uint32_t total_delay_ms{0};
+    while (is_running_ && total_delay_ms < max_delay_ms) {
+      total_delay_ms += 5;
+      tvsc::hal::time::delay_ms(5);
+    }
+    if (is_running_) {
+      LOG(FATAL) << "TransceiverMonitor::~TransceiverMonitor() -- Background thread still running. "
+                    "This will cause a crash in the future. Aborting.";
     }
   }
 
-  void cancel() { cancel_requested_ = true; }
+  void start() {
+    cancel_requested_ = false;
+    is_running_ = true;
+    start_time_ms_ = tvsc::hal::time::time_millis();
+    while (!cancel_requested_) {
+      const uint64_t iteration_start_ms{tvsc::hal::time::time_millis()};
+      iterate();
+      DLOG(INFO) << "Iteration required " << (tvsc::hal::time::time_millis() - iteration_start_ms)
+                 << "ms";
+    }
+    DLOG(INFO) << "TransceiverMonitor::start() -- cancel_requested_ is true";
+    is_running_ = false;
+  }
+
+  void cancel() {
+    DLOG(INFO) << "TransceiverMonitor::cancel()";
+    cancel_requested_ = true;
+  }
 
   void iterate() {
+    DLOG(INFO) << "TransceiverMonitor::iterate()";
+
     // Stay in receive mode as much as possible to avoid missing fragments.
-    radio_->receive();
+    radio_->set_receive_mode();
 
     // Receive a fragment, if one is available.
     if (radio_->has_fragment_available()) {
+      DLOG(INFO) << "TransceiverMonitor::iterate() -- radio has RX fragment available.";
       Fragment<HalfDuplexTransceiver<MTU>::max_mtu()> fragment{};
       radio_->read_received_fragment(fragment);
       rx_queue_->add_fragment(fragment);
+      DLOG(INFO) << "TransceiverMonitor::iterate() -- fragment added to RX queue.";
     }
 
     if (rx_queue_->has_complete_packets()) {
+      DLOG(INFO) << "TransceiverMonitor::iterate() -- radio has complete RX packet available.";
       notify_fn_(rx_queue_->consume_packet());
     }
 
     // Transmit any packets we have outstanding, if we decide we should transmit.
     if (!tx_queue_->empty()) {
+      DLOG(INFO) << "TransceiverMonitor::iterate() -- tx_queue has packets available.";
       if (should_transmit()) {
+        DLOG(INFO) << "TransceiverMonitor::iterate() -- transmitting.";
         bool success{true};
         while (success && !tx_queue_->empty()) {
           const PacketT packet{tx_queue_sink_.peek()};
@@ -111,12 +145,13 @@ class TransceiverMonitor final {
           }
         }
         // Switch back to receive mode while we do other operations so that we don't miss fragments.
-        radio_->receive();
+        radio_->set_receive_mode();
       }
     }
 
     // Publish our statistics, if it is time.
     if (should_publish_statistics()) {
+      DLOG(INFO) << "TransceiverMonitor::iterate() -- publishing statistics.";
       statistics_.last_statistics_publish_time = tvsc::hal::time::time_millis();
 
       tvsc::hal::output::print("packet_rx_count: ");
@@ -139,6 +174,8 @@ class TransceiverMonitor final {
       tvsc::hal::output::print(" packets/sec");
       tvsc::hal::output::println();
     }
+
+    DLOG(INFO) << "TransceiverMonitor::iterate() -- iteration complete.";
   }
 };
 

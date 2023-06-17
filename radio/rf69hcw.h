@@ -540,8 +540,8 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     return result;
   }
 
-  void receive() override { set_mode_rx(); }
-  void standby() override { set_mode_standby(); }
+  void set_receive_mode() override { set_mode_rx(); }
+  void set_standby_mode() override { set_mode_standby(); }
 
   bool has_fragment_available() const override { return rx_buffer_.length > 0; }
 
@@ -585,7 +585,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     wait_fragment_transmitted(timeout_ms);
 
     // Ensure that we don't start receiving a message while we are pushing data into the FIFO.
-    standby();
+    set_standby_mode();
 
     // Don't transmit if we detect another radio transmitting on the same channel.
     if (!wait_channel_activity_clear(timeout_ms)) {
@@ -601,7 +601,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     return true;
   }
 
-  bool wait_fragment_transmitted(uint16_t timeout_ms) const override {
+  bool wait_fragment_transmitted(uint16_t timeout_ms) override {
     auto start = tvsc::hal::time::time_millis();
     while ((tvsc::hal::time::time_millis() - start) < timeout_ms) {
       // We gate the determination that a packet has been sent on the transition to any non-TX

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cstdint>
+
+#include "hal/time/time.h"
 #include "radio/fragment.h"
 #include "random/random.h"
 
@@ -53,14 +56,14 @@ class HalfDuplexTransceiver {
    *
    * This call should be idempotent.
    */
-  virtual void standby() = 0;
+  virtual void set_standby_mode() = 0;
 
   /**
    * Configure the transceiver to receive data.
    *
    * This call should be idempotent.
    */
-  virtual void receive() = 0;
+  virtual void set_receive_mode() = 0;
 
   /**
    * Flag to poll if the transceiver has rx data available to read.
@@ -128,7 +131,7 @@ class HalfDuplexTransceiver {
   /**
    * Block up to timeout_ms milliseconds for a fragment to be transmitted.
    */
-  virtual bool wait_fragment_transmitted(uint16_t timeout_ms) const = 0;
+  virtual bool wait_fragment_transmitted(uint16_t timeout_ms) = 0;
 
   /**
    * Transmit a fragment.
@@ -143,7 +146,7 @@ class HalfDuplexTransceiver {
    */
   bool receive_fragment(Fragment<MTU>& fragment, uint16_t timeout_ms) {
     // Put the transceiver into receive mode.
-    receive();
+    set_receive_mode();
     // Wait until data is avaiable, up to timeout_ms milliseconds.
     if (wait_fragment_available(timeout_ms)) {
       // A fragment is available. Read it into the provided buffer.

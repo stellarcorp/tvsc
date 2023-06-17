@@ -97,6 +97,10 @@ class PacketSink final {
  */
 template <typename PacketT, size_t NUM_PACKETS>
 class PacketTxQueue final {
+ public:
+  static constexpr size_t NUM_PACKETS_VALUE{NUM_PACKETS};
+  static constexpr size_t queue_size() { return NUM_PACKETS; }
+
  private:
   using DataAvailableCallback = std::function<void(PacketTxQueue&)>;
 

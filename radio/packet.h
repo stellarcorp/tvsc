@@ -40,13 +40,13 @@ enum class Protocol : uint8_t {
 template <size_t MAX_PAYLOAD_SIZE>
 class PacketT final {
  private:
-  Protocol protocol_{};
-  uint8_t sender_id_{};
-  uint8_t destination_id_{};
-  uint16_t sequence_number_{};
-  uint8_t fragment_index_{};
+  Protocol protocol_{Protocol::INET};
+  uint8_t sender_id_{0};
+  uint8_t destination_id_{0};
+  uint16_t sequence_number_{0};
+  uint8_t fragment_index_{0};
   bool is_last_fragment_{true};
-  size_t payload_length_{};
+  size_t payload_length_{0};
   tvsc::buffer::Buffer<uint8_t, MAX_PAYLOAD_SIZE> payload_{};
 
  public:

@@ -63,7 +63,7 @@ int main() {
   std::vector<tvsc_radio_Packet> send_queue{packet_queue};
 
   while (true) {
-    rf69.receive();
+    rf69.set_receive_mode();
 
     tvsc::radio::Fragment<tvsc::radio::RF69HCW::max_mtu()> fragment{};
 
@@ -130,7 +130,7 @@ int main() {
         // Switch back to RX mode ASAP. Helps avoid dropped packets.
         // Switching into TX mode from RX mode, sending a packet, and switching back to
         // RX mode takes 50-150ms, so these TX ops can get expensive.
-        rf69.receive();
+        rf69.set_receive_mode();
       }
     }
 

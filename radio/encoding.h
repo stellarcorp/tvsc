@@ -89,7 +89,7 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
       // copy.
       size_t fragment_payload_size_copy{fragment_payload_size};
       for (uint8_t i = 0; i < Packet::payload_size_bytes_required(); ++i) {
-        LOG(INFO) << "tvsc::radio::decode() -- Packet::payload_size_bytes_required(): "
+        LOG(INFO) << "tvsc::radio::encode() -- Packet::payload_size_bytes_required(): "
                   << static_cast<int>(Packet::payload_size_bytes_required())
                   << ", i: " << static_cast<int>(i)
                   << ", fragment_payload_size_copy: " << fragment_payload_size_copy;
@@ -181,6 +181,7 @@ bool decode(const Fragment<MTU>& fragment, PacketT<PACKET_MAX_PAYLOAD_SIZE>& pac
 template <size_t PACKET_MAX_PAYLOAD_SIZE, typename IteratorT>
 bool assemble(IteratorT fragments_begin, IteratorT fragments_end,
               PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet) {
+  DLOG(INFO) << "tvsc::radio::assemble()";
   bool found_last_fragment{false};
   size_t fragment_index{0};
   while (!found_last_fragment) {
@@ -188,6 +189,8 @@ bool assemble(IteratorT fragments_begin, IteratorT fragments_end,
     for (auto iter = fragments_begin; iter != fragments_end; ++iter) {
       const PacketT<PACKET_MAX_PAYLOAD_SIZE>& fragment{*iter};
       if (fragment.fragment_index() == fragment_index) {
+        DLOG(INFO) << "tvsc::radio::assemble() -- extracting data from fragment_index: "
+                   << fragment_index;
         packet.set_protocol(fragment.protocol());
         packet.set_sender_id(fragment.sender_id());
         packet.set_destination_id(fragment.destination_id());
@@ -210,7 +213,9 @@ bool assemble(IteratorT fragments_begin, IteratorT fragments_end,
     if (found_fragment_with_index) {
       ++fragment_index;
     } else {
-      // Error. Don't have all of the fragments to assemble the full packet.
+      // Don't have all of the fragments to assemble the full packet.
+      DLOG(WARNING) << "tvsc::radio::assemble() -- No fragment with fragment_index: "
+                    << fragment_index;
       return false;
     }
   }

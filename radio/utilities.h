@@ -14,8 +14,7 @@
 #include "radio/fragment.h"
 #include "radio/packet.pb.h"
 #include "radio/radio.pb.h"
-#include "radio/rf69hcw.h"
-#include "random/random.h"
+#include "radio/transceiver.h"
 
 namespace tvsc::radio {
 
@@ -29,21 +28,24 @@ inline void print_id(const tvsc_radio_RadioIdentification& id) {
   tvsc::hal::output::println("}");
 }
 
-inline bool recv(RF69HCW& rf69, Fragment<RF69HCW::max_mtu()>& fragment) {
-  return rf69.receive_fragment(fragment, 1000);
+template <size_t MTU>
+bool recv(HalfDuplexTransceiver<MTU>& transceiver, Fragment<MTU>& fragment) {
+  return transceiver.receive_fragment(fragment, 1000);
 }
 
-inline bool send(RF69HCW& rf69, const Fragment<RF69HCW::max_mtu()>& msg) {
+template <size_t MTU>
+bool send(HalfDuplexTransceiver<MTU>& transceiver, const Fragment<MTU>& msg) {
   bool result;
-  result = rf69.transmit_fragment(msg, 250);
+  result = transceiver.transmit_fragment(msg, 250);
   if (result) {
-    result = rf69.wait_fragment_transmitted(250);
+    result = transceiver.wait_fragment_transmitted(250);
   }
 
   return result;
 }
 
-inline void encode_packet(const tvsc_radio_Packet& packet, Fragment<RF69HCW::max_mtu()>& fragment) {
+template <size_t MTU>
+void encode_packet(const tvsc_radio_Packet& packet, Fragment<MTU>& fragment) {
   pb_ostream_t ostream =
       pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(fragment.data.data()), fragment.capacity());
   bool status =
@@ -54,8 +56,9 @@ inline void encode_packet(const tvsc_radio_Packet& packet, Fragment<RF69HCW::max
   fragment.length = ostream.bytes_written;
 }
 
-inline void encode_packet(uint32_t protocol, uint32_t sequence_number, uint32_t id,
-                          const std::string& message, Fragment<RF69HCW::max_mtu()>& fragment) {
+template <size_t MTU>
+void encode_packet(uint32_t protocol, uint32_t sequence_number, uint32_t id,
+                   const std::string& message, Fragment<MTU>& fragment) {
   tvsc_radio_Packet packet{};
   packet.protocol = protocol;
   packet.sequence_number = sequence_number;
@@ -69,7 +72,8 @@ inline void encode_packet(uint32_t protocol, uint32_t sequence_number, uint32_t 
   encode_packet(packet, fragment);
 }
 
-inline bool decode_packet(const Fragment<RF69HCW::max_mtu()>& fragment, tvsc_radio_Packet& packet) {
+template <size_t MTU>
+bool decode_packet(const Fragment<MTU>& fragment, tvsc_radio_Packet& packet) {
   pb_istream_t istream = pb_istream_from_buffer(
       reinterpret_cast<const uint8_t*>(fragment.data.data()), fragment.length);
 

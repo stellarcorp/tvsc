@@ -24,8 +24,19 @@ cc_library(
         ":radio_nano_cc_proto",
         "//base",
         "//buffer",
+        "//hal/output",
         "//hash",
         "//random",
+    ],
+)
+
+cc_library(
+    name = "mock_transceiver",
+    testonly = True,
+    hdrs = ["mock_transceiver.h"],
+    deps = [
+        ":radio",
+        "//hal/time",
     ],
 )
 
@@ -37,6 +48,7 @@ cc_library(
     hdrs = [
         "rf69hcw.h",
         "rf69hcw_configuration.h",
+        "utilities.h",
     ],
     target_compatible_with = select({
         "//platforms:wiring_pi_gpio": [
@@ -73,20 +85,6 @@ cc_library(
             ],
         },
     ),
-)
-
-cc_library(
-    name = "utilities",
-    srcs = [],
-    hdrs = ["utilities.h"],
-    deps = [
-        ":radio",
-        ":radio_nano_cc_proto",
-        ":rf69hcw",
-        "//hal/output",
-        "//hal/time",
-        "//random",
-    ],
 )
 
 cc_library(
@@ -160,7 +158,6 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
-        ":utilities",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
@@ -207,7 +204,6 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
-        ":utilities",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
@@ -254,7 +250,6 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
-        ":utilities",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
@@ -301,7 +296,6 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
-        ":utilities",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
@@ -348,7 +342,6 @@ cc_binary(
     deps = [
         ":radio",
         ":rf69hcw",
-        ":utilities",
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
@@ -530,6 +523,17 @@ cc_test(
     name = "encoding_test",
     srcs = ["encoding_test.cc"],
     deps = [
+        ":radio",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "transceiver_monitor_test",
+    srcs = ["transceiver_monitor_test.cc"],
+    deps = [
+        ":mock_transceiver",
         ":radio",
         "//third_party/glog",
         "//third_party/gtest",
