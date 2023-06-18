@@ -33,12 +33,12 @@ class TransceiverMonitor final {
   std::atomic<bool> cancel_requested_{false};
 
   struct RadioStatistics final {
-    uint32_t packet_rx_count{};
-    uint32_t packet_tx_count{};
-    uint32_t dropped_packet_count{};
-    uint32_t tx_failure_count{};
-    uint64_t last_tx_time{};
-    uint64_t last_statistics_publish_time{};
+    uint32_t packet_rx_count{0};
+    uint32_t packet_tx_count{0};
+    uint32_t dropped_packet_count{0};
+    uint32_t tx_failure_count{0};
+    uint64_t last_tx_time{0};
+    uint64_t last_statistics_publish_time{0};
   };
   RadioStatistics statistics_{};
   uint32_t start_time_ms_{};
@@ -89,10 +89,7 @@ class TransceiverMonitor final {
     is_running_ = true;
     start_time_ms_ = tvsc::hal::time::time_millis();
     while (!cancel_requested_) {
-      const uint64_t iteration_start_ms{tvsc::hal::time::time_millis()};
       iterate();
-      DLOG(INFO) << "Iteration required " << (tvsc::hal::time::time_millis() - iteration_start_ms)
-                 << "ms";
     }
     DLOG(INFO) << "TransceiverMonitor::start() -- cancel_requested_ is true";
     is_running_ = false;
@@ -104,8 +101,6 @@ class TransceiverMonitor final {
   }
 
   void iterate() {
-    DLOG(INFO) << "TransceiverMonitor::iterate()";
-
     // Stay in receive mode as much as possible to avoid missing fragments.
     radio_->set_receive_mode();
 
@@ -137,6 +132,7 @@ class TransceiverMonitor final {
 
           for (size_t i = 0; i < fragments.num_fragments; ++i) {
             success = success && radio_->transmit_fragment(fragments.buffers[i], TX_TIMEOUT_MS);
+            success = success && radio_->wait_fragment_transmitted(TX_TIMEOUT_MS);
           }
           if (success) {
             // This packet was transmitted successfully, so we can remove it from the queue.
@@ -174,8 +170,6 @@ class TransceiverMonitor final {
       tvsc::hal::output::print(" packets/sec");
       tvsc::hal::output::println();
     }
-
-    DLOG(INFO) << "TransceiverMonitor::iterate() -- iteration complete.";
   }
 };
 
