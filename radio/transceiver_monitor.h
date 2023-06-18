@@ -67,7 +67,9 @@ class TransceiverMonitor final {
         tx_queue_(&tx_queue),
         tx_queue_sink_(tx_queue_->create_sink()),
         rx_queue_(&rx_queue),
-        notify_fn_(std::move(notify_fn)) {}
+        notify_fn_(std::move(notify_fn)) {
+    radio_->reset();
+  }
 
   ~TransceiverMonitor() {
     DLOG(INFO) << "TransceiverMonitor::~TransceiverMonitor()";
