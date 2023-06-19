@@ -39,6 +39,16 @@ cc_library(
 )
 
 cc_library(
+    name = "no_output",
+    srcs = [
+        "no_output.cc",
+    ],
+    deps = [
+        ":output_headers",
+    ],
+)
+
+cc_library(
     name = "std_cpp_output",
     srcs = [
         "std_cpp_output.cc",
