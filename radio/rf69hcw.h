@@ -353,10 +353,24 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
   static uint8_t next_interrupt_index_;
 
   void handle_interrupt() {
+    tvsc::hal::output::println("RF69HCW::handle_interrupt()");
     // TODO(james): Do we need to handle any interrupts from RF69HCW_REG_27_IRQFLAGS1?
-    uint8_t irq_flags = spi_->read(RF69HCW_REG_28_IRQFLAGS2);
+    uint8_t irq_flags1 = spi_->read(RF69HCW_REG_27_IRQFLAGS1);
+    uint8_t irq_flags2 = spi_->read(RF69HCW_REG_28_IRQFLAGS2);
+    tvsc::hal::output::print("irq_flags1: ");
+    tvsc::hal::output::println(static_cast<uint32_t>(irq_flags1));
+    tvsc::hal::output::print("irq_flags2: ");
+    tvsc::hal::output::println(static_cast<uint32_t>(irq_flags2));
+    tvsc::hal::output::print("RF69HCW_IRQFLAGS2_PAYLOADREADY: ");
+    tvsc::hal::output::println(static_cast<uint32_t>(RF69HCW_IRQFLAGS2_PAYLOADREADY));
+    tvsc::hal::output::print("RF69HCW_IRQFLAGS2_PACKETSENT: ");
+    tvsc::hal::output::println(static_cast<uint32_t>(RF69HCW_IRQFLAGS2_PACKETSENT));
 
-    if (op_mode_ == OperationalMode::TX && (irq_flags & RF69HCW_IRQFLAGS2_PACKETSENT)) {
+    tvsc::hal::output::print("irq_flags2 & RF69HCW_IRQFLAGS2_PACKETSENT: ");
+    tvsc::hal::output::println(static_cast<uint32_t>(irq_flags2 & RF69HCW_IRQFLAGS2_PACKETSENT));
+
+    if (op_mode_ == OperationalMode::TX && (irq_flags2 & RF69HCW_IRQFLAGS2_PACKETSENT)) {
+      tvsc::hal::output::println("RF69HCW::handle_interrupt() -- packet sent");
       // A message has been fully transmitted.
       // Clear the FIFO and move the operational mode away from TX.
       // Note that wait_packet_sent() and derivatives use the operational mode to know if the packet
@@ -370,13 +384,14 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     // The datasheet indicates that CRCOK would be the appropriate flag to check for, but it gets
     // set before decryption. Instead, we check for PAYLOADREADY which gets set after decryption.
     // This check also guarantees that we have a valid CRC.
-    if (op_mode_ == OperationalMode::RX && (irq_flags & RF69HCW_IRQFLAGS2_PAYLOADREADY)) {
+    if (op_mode_ == OperationalMode::RX && (irq_flags2 & RF69HCW_IRQFLAGS2_PAYLOADREADY)) {
+      tvsc::hal::output::println("RF69HCW::handle_interrupt() -- packet received");
       set_mode_standby();
 
       // Transfer the data in the FIFO to our buffer.
       read_fifo();
     }
-    // if (op_mode_ == OperationalMode::RX && (irq_flags & RF69HCW_IRQFLAGS2_CRCOK)) {
+    // if (op_mode_ == OperationalMode::RX && (irq_flags2 & RF69HCW_IRQFLAGS2_CRCOK)) {
     //   set_mode_standby();
 
     //   // Transfer the data in the FIFO to our buffer.
@@ -386,6 +401,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
 
   void set_mode_rx() {
     if (op_mode_ != OperationalMode::RX) {
+      tvsc::hal::output::println("RF69HCW::set_mode_rx()");
       if (power_ >= 18) {
         // If we are using the high power boost, we must turn it off to receive.
         spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
@@ -399,6 +415,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
 
   void set_mode_standby() {
     if (op_mode_ != OperationalMode::STANDBY) {
+      tvsc::hal::output::println("RF69HCW::set_mode_standby()");
       if (power_ >= 18) {
         // If we are using the high power boost, we must turn it off to receive.
         // It's unclear if we need to turn it off to enter standby mode, but since we are likely
@@ -415,6 +432,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
 
   void set_mode_tx() {
     if (op_mode_ != OperationalMode::TX) {
+      tvsc::hal::output::println("RF69HCW::set_mode_tx()");
       if (power_ >= 18) {
         // Turn on the high power boost.
         // TODO(james): Determine if we need to turn off over current protection (OCP) to activate
@@ -578,8 +596,17 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
 
   bool transmit_fragment(const Fragment<MAX_MTU_VALUE>& fragment, uint16_t timeout_ms) override {
     if (fragment.length > mtu()) {
+      tvsc::hal::output::print("fragment.length larger than MTU: ");
+      tvsc::hal::output::println(fragment.length);
       return false;
     }
+    if (fragment.length == 0) {
+      tvsc::hal::output::println("fragment.length is zero.");
+      return false;
+    }
+
+    tvsc::hal::output::println("Transmitting fragment: ");
+    tvsc::hal::output::println(to_string(fragment));
 
     // Ensure that we aren't interrupting an ongoing transmission.
     wait_fragment_transmitted(timeout_ms);
