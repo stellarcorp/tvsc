@@ -1,8 +1,8 @@
 cc_library(
     name = "client",
     hdrs = [
-        "client.h",
         "chat_streamer.h",
+        "client.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
@@ -37,6 +37,7 @@ cc_binary(
     visibility = ["//visibility:public"],
     deps = [
         ":client",
+        "//base",
         "//discovery:resolve",
         "//service/chat/common",
         "//third_party/gflags",
@@ -51,6 +52,7 @@ cc_binary(
     visibility = ["//visibility:public"],
     deps = [
         ":client",
+        "//base",
         "//discovery:resolve",
         "//service/chat/common",
         "//third_party/gflags",

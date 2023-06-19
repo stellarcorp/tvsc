@@ -1,4 +1,5 @@
 #include "App.h"
+#include "base/initializer.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 #include "http/static_file_server.h"
@@ -7,8 +8,7 @@ DEFINE_int32(port, 8080, "Port to listen on.");
 DEFINE_string(doc_root, ".", "Location of static files.");
 
 int main(int argc, char* argv[]) {
-  google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
+  tvsc::initialize(&argc, &argv);
 
   uWS::App app{};
 

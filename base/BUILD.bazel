@@ -1,5 +1,12 @@
 cc_library(
     name = "base",
+    srcs = select({
+        "@platforms//os:none": [
+        ],
+        "//conditions:default": [
+            "initializer.cc",
+        ],
+    }),
     hdrs =
         select({
             "@platforms//os:none": [
@@ -7,6 +14,7 @@ cc_library(
             ],
             "//conditions:default": [
                 "except_with_glog.h",
+                "initializer.h",
             ],
         }) + [
             "except.h",
@@ -26,6 +34,7 @@ cc_library(
         ],
         "//conditions:default": [
             "//third_party/glog",
+            "//third_party/gflags",
         ],
     }),
 )

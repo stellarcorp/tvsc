@@ -20,6 +20,7 @@ cc_binary(
     visibility = ["//visibility:public"],
     deps = [
         ":server",
+        "//base",
         "//service/hello/common",
         "//service/utility",
         "//third_party/gflags",

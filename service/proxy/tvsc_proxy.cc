@@ -1,6 +1,7 @@
 #include <filesystem>
 
 #include "App.h"
+#include "base/initializer.h"
 #include "discovery/service_resolver.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
@@ -21,8 +22,7 @@ DEFINE_string(doc_root, "service/proxy/doc_root/", "Location of static files.");
 constexpr bool SSL{false};
 
 int main(int argc, char* argv[]) {
-  google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
+  tvsc::initialize(&argc, &argv);
 
   DLOG(INFO) << "CWD: " << std::filesystem::current_path().native();
 

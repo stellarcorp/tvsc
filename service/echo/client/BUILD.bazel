@@ -32,7 +32,8 @@ cc_binary(
     srcs = ["echo_client.cc"],
     visibility = ["//visibility:public"],
     deps = [
-        "client",
+        ":client",
+        "//base",
         "//discovery:resolve",
         "//service/echo/common",
         "//third_party/gflags",

@@ -37,6 +37,7 @@ cc_binary(
     visibility = ["//visibility:public"],
     deps = [
         ":client",
+        "//base",
         "//discovery:resolve",
         "//service/datetime/common",
         "//third_party/gflags",

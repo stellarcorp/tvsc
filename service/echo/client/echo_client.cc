@@ -2,9 +2,8 @@
 #include <memory>
 #include <string>
 
+#include "base/initializer.h"
 #include "discovery/service_resolver.h"
-#include "gflags/gflags.h"
-#include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "service/echo/client/client.h"
 #include "service/echo/common/echo.grpc.pb.h"
@@ -29,8 +28,7 @@ std::string echo_message(const std::string& msg) {
 DEFINE_string(msg, "I am an echo!", "Message to echo. Defaults to 'I am an echo!'.");
 
 int main(int argc, char** argv) {
-  google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
+  tvsc::initialize(&argc, &argv);
 
   tvsc::discovery::register_mdns_grpc_resolver();
 

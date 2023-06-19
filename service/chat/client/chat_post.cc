@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 
+#include "base/initializer.h"
 #include "discovery/service_resolver.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
@@ -33,9 +34,7 @@ grpc::Status send_message(const std::string& message_text, const std::string& se
 }  // namespace tvsc::service::chat
 
 int main(int argc, char** argv) {
-  google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-
+  tvsc::initialize(&argc, &argv);
   tvsc::discovery::register_mdns_grpc_resolver();
 
   auto status = tvsc::service::chat::send_message(FLAGS_message, FLAGS_sender);

@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 
+#include "base/initializer.h"
 #include "discovery/service_resolver.h"
-#include "gflags/gflags.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "service/chat/client/client.h"
@@ -28,9 +28,7 @@ void listen() {
 }  // namespace tvsc::service::chat
 
 int main(int argc, char** argv) {
-  google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-
+  tvsc::initialize(&argc, &argv);
   tvsc::discovery::register_mdns_grpc_resolver();
 
   tvsc::service::chat::listen();
