@@ -449,8 +449,8 @@ inline std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> standar
   configuration.insert(
       {tvsc_radio_Function_FREQUENCY_DEVIATION, as_discrete_value<float>(freq_dev)});
 
-  // configuration.insert({tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
-  //                       tvsc::radio::as_discrete_value<float>(-50.f)});
+  configuration.insert({tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
+                        tvsc::radio::as_discrete_value<float>(-50.f)});
 
   // Note that the CAD threshold should be lower than the RX threshold, not higher. There are
   // signals that are being transmitted that are too weak for us to properly receive and decode.
