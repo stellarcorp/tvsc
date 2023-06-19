@@ -20,7 +20,7 @@ class TransceiverMonitor final {
   // the environment.
   static constexpr size_t TX_ELEMENTS_AVAILABLE_THRESHOLD{4};
   static constexpr size_t TX_TIME_THRESHOLD_MS{50};
-  static constexpr uint16_t TX_TIMEOUT_MS{50};
+  static constexpr uint16_t TX_TIMEOUT_MS{200};
 
   HalfDuplexTransceiver<MTU>* radio_;
 
@@ -103,28 +103,33 @@ class TransceiverMonitor final {
   }
 
   void iterate() {
+    bool did_something{false};
     // Stay in receive mode as much as possible to avoid missing fragments.
     radio_->set_receive_mode();
 
     // Receive a fragment, if one is available.
     if (radio_->has_fragment_available()) {
-      DLOG(INFO) << "TransceiverMonitor::iterate() -- radio has RX fragment available.";
+      LOG(INFO) << "TransceiverMonitor::iterate() -- radio has RX fragment available.";
       Fragment<HalfDuplexTransceiver<MTU>::max_mtu()> fragment{};
       radio_->read_received_fragment(fragment);
       rx_queue_->add_fragment(fragment);
-      DLOG(INFO) << "TransceiverMonitor::iterate() -- fragment added to RX queue.";
+      LOG(INFO) << "TransceiverMonitor::iterate() -- fragment added to RX queue.";
+
+      did_something = true;
     }
 
     if (rx_queue_->has_complete_packets()) {
-      DLOG(INFO) << "TransceiverMonitor::iterate() -- radio has complete RX packet available.";
+      LOG(INFO) << "TransceiverMonitor::iterate() -- radio has complete RX packet available.";
       notify_fn_(rx_queue_->consume_packet());
+
+      did_something = true;
     }
 
     // Transmit any packets we have outstanding, if we decide we should transmit.
     if (!tx_queue_->empty()) {
-      DLOG(INFO) << "TransceiverMonitor::iterate() -- tx_queue has packets available.";
+      LOG(INFO) << "TransceiverMonitor::iterate() -- tx_queue has packets available.";
       if (should_transmit()) {
-        DLOG(INFO) << "TransceiverMonitor::iterate() -- transmitting.";
+        LOG(INFO) << "TransceiverMonitor::iterate() -- transmitting.";
         bool success{true};
         while (success && !tx_queue_->empty()) {
           const PacketT packet{tx_queue_sink_.peek()};
@@ -133,44 +138,59 @@ class TransceiverMonitor final {
           encode(packet, fragments);
 
           for (size_t i = 0; i < fragments.num_fragments; ++i) {
+            LOG(INFO) << "TransceiverMonitor::iterate() -- transmit_fragment().";
             success = success && radio_->transmit_fragment(fragments.buffers[i], TX_TIMEOUT_MS);
+            if (success) {
+              LOG(INFO) << "TransceiverMonitor::iterate() -- transmit_fragment() -- success.";
+            } else {
+              LOG(INFO) << "TransceiverMonitor::iterate() -- transmit_fragment() -- failed.";
+            }
+            LOG(INFO) << "TransceiverMonitor::iterate() -- wait_fragment_transmitted().";
             success = success && radio_->wait_fragment_transmitted(TX_TIMEOUT_MS);
+            if (success) {
+              LOG(INFO)
+                  << "TransceiverMonitor::iterate() -- wait_fragment_transmitted() -- success.";
+            } else {
+              LOG(INFO)
+                  << "TransceiverMonitor::iterate() -- wait_fragment_transmitted() -- failed.";
+            }
           }
           if (success) {
             // This packet was transmitted successfully, so we can remove it from the queue.
+            LOG(INFO)
+                << "TransceiverMonitor::iterate() -- transmit successful. Popping off of TX queue.";
             tx_queue_sink_.pop();
             statistics_.last_tx_time = tvsc::hal::time::time_millis();
+          } else {
+            LOG(INFO) << "TransceiverMonitor::iterate() -- transmit failed.";
           }
         }
         // Switch back to receive mode while we do other operations so that we don't miss fragments.
+        LOG(INFO) << "TransceiverMonitor::iterate() -- switching back to receive mode.";
         radio_->set_receive_mode();
+
+        did_something = true;
       }
     }
 
     // Publish our statistics, if it is time.
     if (should_publish_statistics()) {
-      DLOG(INFO) << "TransceiverMonitor::iterate() -- publishing statistics.";
       statistics_.last_statistics_publish_time = tvsc::hal::time::time_millis();
 
-      tvsc::hal::output::print("packet_rx_count: ");
-      tvsc::hal::output::print(statistics_.packet_rx_count);
-      tvsc::hal::output::print(", packet_tx_count: ");
-      tvsc::hal::output::print(statistics_.packet_tx_count);
-      tvsc::hal::output::print(", tx_queue_->elements_available(): ");
-      tvsc::hal::output::print(tx_queue_->elements_available());
-      tvsc::hal::output::print(", rx_queue_->num_incomplete_fragments(): ");
-      tvsc::hal::output::print(rx_queue_->num_incomplete_fragments());
-      tvsc::hal::output::print(", rx_queue_->num_outstanding_complete_packets(): ");
-      tvsc::hal::output::print(rx_queue_->num_outstanding_complete_packets());
-      tvsc::hal::output::print(", dropped_packet_count: ");
-      tvsc::hal::output::print(statistics_.dropped_packet_count);
-      tvsc::hal::output::print(", tx_failure_count: ");
-      tvsc::hal::output::print(statistics_.tx_failure_count);
-      tvsc::hal::output::print(", throughput: ");
-      tvsc::hal::output::print(statistics_.packet_tx_count * 1000.f /
-                               (tvsc::hal::time::time_millis() - start_time_ms_));
-      tvsc::hal::output::print(" packets/sec");
-      tvsc::hal::output::println();
+      LOG(INFO) << "packet_rx_count: " << statistics_.packet_rx_count
+                << ", packet_tx_count: " << statistics_.packet_tx_count
+                << ", tx_queue_->elements_available(): " << tx_queue_->elements_available()
+                << ", rx_queue_->num_incomplete_fragments(): "
+                << rx_queue_->num_incomplete_fragments()
+                << ", rx_queue_->num_outstanding_complete_packets(): "
+                << rx_queue_->num_outstanding_complete_packets()
+                << ", dropped_packet_count: " << statistics_.dropped_packet_count
+                << ", tx_failure_count: " << statistics_.tx_failure_count
+                << ", throughput: " << statistics_.packet_tx_count * 1000.f << " packets/sec";
+    }
+
+    if (!did_something) {
+      tvsc::hal::time::delay_ms(1);
     }
   }
 };
