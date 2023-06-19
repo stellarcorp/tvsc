@@ -8,7 +8,7 @@ cc_library(
             ":teensyduino_output",
         ],
         "//conditions:default": [
-            ":std_cpp_output",
+            ":glog_output",
         ],
     }),
 )
@@ -52,5 +52,23 @@ cc_library(
     }),
     deps = [
         ":output_headers",
+    ],
+)
+
+cc_library(
+    name = "glog_output",
+    srcs = [
+        "glog_output.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:teensyduino_gpio": [
+            "@platforms//:incompatible",
+        ],
+        "//conditions:default": [
+        ],
+    }),
+    deps = [
+        ":output_headers",
+        "//third_party/glog",
     ],
 )
