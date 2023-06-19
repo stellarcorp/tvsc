@@ -6,6 +6,9 @@ cc_library(
         "ring_buffer.h",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//base",
+    ],
 )
 
 cc_test(

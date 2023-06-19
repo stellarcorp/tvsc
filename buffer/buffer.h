@@ -8,6 +8,8 @@
 #include <stdexcept>
 #include <string>
 
+#include "base/except.h"
+
 namespace tvsc::buffer {
 
 /**
@@ -36,8 +38,8 @@ class BufferT final {
   void validate_index(size_t index) const {
     if (index < 0 || index >= NUM_ELEMENTS) {
       using std::to_string;
-      throw std::out_of_range("Invalid index " + to_string(index) +
-                              " (NUM_ELEMENTS: " + to_string(NUM_ELEMENTS));
+      except<std::out_of_range>("Invalid index " + to_string(index) +
+                                " (NUM_ELEMENTS: " + to_string(NUM_ELEMENTS));
     }
   }
 
@@ -176,8 +178,8 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
   void validate_index(size_t index) const {
     if (index < 0 || index >= NUM_ELEMENTS) {
       using std::to_string;
-      throw std::out_of_range("Invalid index " + to_string(index) +
-                              " (NUM_ELEMENTS: " + to_string(NUM_ELEMENTS) + ")");
+      except<std::out_of_range>("Invalid index " + to_string(index) +
+                                " (NUM_ELEMENTS: " + to_string(NUM_ELEMENTS) + ")");
     }
   }
 
@@ -209,8 +211,8 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
     validate_index(offset + count - 1);
     if (dest.max_size() < count) {
       using std::to_string;
-      throw std::overflow_error("dest has insufficient space (" + to_string(count) + " vs " +
-                                to_string(dest.max_size()) + ")");
+      except<std::overflow_error>("dest has insufficient space (" + to_string(count) + " vs " +
+                                  to_string(dest.max_size()) + ")");
     }
 
     std::memcpy(dest.data(), elements_ + offset, count * sizeof(ElementT));
@@ -232,8 +234,8 @@ class BufferT<ElementT, NUM_ELEMENTS, true> final {
     validate_index(offset + count - 1);
     if (src.max_size() < count) {
       using std::to_string;
-      throw std::overflow_error("src has insufficient space (" + to_string(count) + " vs " +
-                                to_string(src.max_size()) + ")");
+      except<std::overflow_error>("src has insufficient space (" + to_string(count) + " vs " +
+                                  to_string(src.max_size()) + ")");
     }
     std::memcpy(elements_ + offset, src.data(), count * sizeof(ElementT));
   }
