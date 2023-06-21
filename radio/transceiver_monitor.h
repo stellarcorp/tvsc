@@ -55,7 +55,9 @@ class TransceiverMonitor final {
   }
 
   bool should_publish_statistics() const {
-    return tvsc::hal::time::time_millis() - statistics_.last_statistics_publish_time > 1000;
+    uint64_t time_since_last_publish_ms =
+        tvsc::hal::time::time_millis() - statistics_.last_statistics_publish_time;
+    return time_since_last_publish_ms > 5000;
   }
 
  public:
@@ -108,7 +110,9 @@ class TransceiverMonitor final {
     radio_->set_receive_mode();
 
     // Receive a fragment, if one is available.
-    if (radio_->has_fragment_available()) {
+    // if (radio_->has_fragment_available()) {
+    if (radio_->wait_fragment_available(50)) {
+      LOG(WARNING) << "TransceiverMonitor::iterate() -- radio has RX fragment available.";
       LOG(INFO) << "TransceiverMonitor::iterate() -- radio has RX fragment available.";
       Fragment<HalfDuplexTransceiver<MTU>::max_mtu()> fragment{};
       radio_->read_received_fragment(fragment);
@@ -146,7 +150,10 @@ class TransceiverMonitor final {
               LOG(INFO) << "TransceiverMonitor::iterate() -- transmit_fragment() -- failed.";
             }
             LOG(INFO) << "TransceiverMonitor::iterate() -- wait_fragment_transmitted().";
-            success = success && radio_->wait_fragment_transmitted(TX_TIMEOUT_MS);
+            // success = success && radio_->wait_fragment_transmitted(TX_TIMEOUT_MS);
+            // TODO(james): We aren't reliably getting the interrupt that says the packet was
+            // transmitted. Ignoring the return value here for the time being.
+            radio_->wait_fragment_transmitted(TX_TIMEOUT_MS);
             if (success) {
               LOG(INFO)
                   << "TransceiverMonitor::iterate() -- wait_fragment_transmitted() -- success.";
@@ -157,15 +164,16 @@ class TransceiverMonitor final {
           }
           if (success) {
             // This packet was transmitted successfully, so we can remove it from the queue.
-            LOG(INFO)
-                << "TransceiverMonitor::iterate() -- transmit successful. Popping off of TX queue.";
+            LOG(INFO) << "TransceiverMonitor::iterate() -- transmit successful. Popping off of "
+                         "TX queue.";
             tx_queue_sink_.pop();
             statistics_.last_tx_time = tvsc::hal::time::time_millis();
           } else {
             LOG(INFO) << "TransceiverMonitor::iterate() -- transmit failed.";
           }
         }
-        // Switch back to receive mode while we do other operations so that we don't miss fragments.
+        // Switch back to receive mode while we do other operations so that we don't miss
+        // fragments.
         LOG(INFO) << "TransceiverMonitor::iterate() -- switching back to receive mode.";
         radio_->set_receive_mode();
 
@@ -189,6 +197,8 @@ class TransceiverMonitor final {
                 << ", throughput: " << statistics_.packet_tx_count * 1000.f << " packets/sec";
     }
 
+    // Pause if we did nothing this iteration. This help avoid spiking a CPU core to 100% which
+    // might impede other processes or threads.
     if (!did_something) {
       tvsc::hal::time::delay_ms(1);
     }
