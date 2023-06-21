@@ -38,7 +38,18 @@ bool send(HalfDuplexTransceiver<MTU>& transceiver, const Fragment<MTU>& msg) {
   bool result;
   result = transceiver.transmit_fragment(msg, 250);
   if (result) {
-    result = transceiver.wait_fragment_transmitted(250);
+    // Note that we ignore the return value here. The PACKETSENT interrupt is not triggered. That
+    // means that we have to wait and assume the packet got transmitted rather than actually
+    // knowing.
+    // TODO(james): Fix the interrupts in RF69HCW so that we can use this return value.
+    const bool wait_succeeded{transceiver.wait_fragment_transmitted(250)};
+    if (!wait_succeeded) {
+      tvsc::hal::output::println(
+          "utilities.h send() -- wait_fragment_transmitted() timed out. Courageously (stupidly) "
+          "ignoring.");
+    }
+  } else {
+    tvsc::hal::output::println("transmit_fragment() failed.");
   }
 
   return result;
