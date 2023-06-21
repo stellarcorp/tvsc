@@ -417,7 +417,7 @@ inline std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> standar
   // Seems to be used only during TX. The receiver watches for the preamble to stop, but ignores
   // this particular setting.
   configuration.insert(
-      {tvsc_radio_Function_PREAMBLE_LENGTH, tvsc::radio::as_discrete_value<uint16_t>(0x08)});
+      {tvsc_radio_Function_PREAMBLE_LENGTH, tvsc::radio::as_discrete_value<uint16_t>(0x10)});
 
   // Successful values:
   // 8
@@ -427,10 +427,10 @@ inline std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> standar
   // 1 -- intermittent
   // The transmitter and receiver must agree both on length and content of the sync words.
   configuration.insert(
-      {tvsc_radio_Function_SYNC_WORDS_LENGTH, tvsc::radio::as_discrete_value<uint8_t>(2)});
+      {tvsc_radio_Function_SYNC_WORDS_LENGTH, tvsc::radio::as_discrete_value<uint8_t>(8)});
 
   configuration.insert({tvsc_radio_Function_MODULATION_SCHEME,
-                        tvsc::radio::as_discrete_value(tvsc_radio_ModulationTechnique_GFSK)});
+                        tvsc::radio::as_discrete_value(tvsc_radio_ModulationTechnique_FSK)});
 
   // WHITENING seems to perform better at high bit rates & high duty cycles.
   // MANCHESTER_ORIGINAL performs well, but results in dropped packets with high bit rates and duty
@@ -438,7 +438,7 @@ inline std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> standar
   configuration.insert({tvsc_radio_Function_LINE_CODING,
                         tvsc::radio::as_discrete_value(tvsc_radio_LineCoding_WHITENING)});
 
-  const float bit_rate{125000.f};
+  const float bit_rate{12500.f};
   const float freq_dev = std::min(500000.f - bit_rate / 2.f, 1.4f * bit_rate);
 
   configuration.insert(
@@ -450,7 +450,7 @@ inline std::unordered_map<tvsc_radio_Function, tvsc_radio_DiscreteValue> standar
       {tvsc_radio_Function_FREQUENCY_DEVIATION, as_discrete_value<float>(freq_dev)});
 
   configuration.insert({tvsc_radio_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
-                        tvsc::radio::as_discrete_value<float>(-50.f)});
+                        tvsc::radio::as_discrete_value<float>(-95.f)});
 
   // Note that the CAD threshold should be lower than the RX threshold, not higher. There are
   // signals that are being transmitted that are too weak for us to properly receive and decode.
