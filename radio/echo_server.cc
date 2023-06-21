@@ -6,7 +6,8 @@
 #include "hal/time/time.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
-#include "radio/packet.pb.h"
+#include "radio/encoding.h"
+#include "radio/packet.h"
 #include "radio/radio_configuration.h"
 #include "radio/rf69hcw.h"
 #include "radio/rf69hcw_configuration.h"
@@ -52,44 +53,47 @@ int main() {
     tvsc::radio::Fragment<tvsc::radio::RF69HCW::max_mtu()> fragment{};
 
     if (tvsc::radio::recv(rf69, fragment)) {
-      tvsc_radio_Packet packet{};
-      if (tvsc::radio::decode_packet(fragment, packet)) {
-        if (packet.sender != configuration.id()) {
+      tvsc::radio::Packet packet{};
+      if (tvsc::radio::decode(fragment, packet)) {
+        if (packet.sender_id() != configuration.id()) {
           ++total_packet_count;
 
-          if (packet.sequence_number != previous_sequence_number + 1 &&
+          if (packet.sequence_number() != previous_sequence_number + 1 &&
               previous_sequence_number != 0) {
             ++dropped_packet_count;
             tvsc::hal::output::print("Dropped packets. packet.sequence_number: ");
-            tvsc::hal::output::print(packet.sequence_number);
+            tvsc::hal::output::print(packet.sequence_number());
             tvsc::hal::output::print(", previous_sequence_number: ");
             tvsc::hal::output::print(previous_sequence_number);
             tvsc::hal::output::println();
           }
 
-          previous_sequence_number = packet.sequence_number;
+          previous_sequence_number = packet.sequence_number();
 
           tvsc::hal::output::print("From sender: ");
-          tvsc::hal::output::print(packet.sender);
+          tvsc::hal::output::print(packet.sender_id());
           tvsc::hal::output::print(", sequence: ");
-          tvsc::hal::output::print(packet.sequence_number);
-          tvsc::hal::output::print(" -- ");
-          tvsc::hal::output::println(reinterpret_cast<char*>(packet.payload.bytes));
+          tvsc::hal::output::print(packet.sequence_number());
+          tvsc::hal::output::print(", payload_length: ");
+          tvsc::hal::output::println(packet.payload_length());
 
           // Mark ourselves as the sender now.
-          packet.sender = configuration.id();
+          packet.set_sender_id(configuration.id());
 
-          tvsc::radio::encode_packet(packet, fragment);
+          tvsc::radio::EncodedPacket<tvsc::radio::RF69HCW::max_mtu(), 1> fragments{};
+          tvsc::radio::encode(packet, fragments);
 
-          tvsc::hal::time::delay_ms(250);
+          if (fragments.num_fragments > 0) {
+            tvsc::hal::time::delay_ms(1000);
 
-          // Note that switching into TX mode and sending a packet takes between 50-150ms.
-          if (tvsc::radio::send(rf69, fragment)) {
-            ++send_success_count;
-          } else {
-	    tvsc::hal::output::print("RSSI: ");
-	    tvsc::hal::output::println(rf69.read_rssi_dbm());
-            ++send_failure_count;
+            // Note that switching into TX mode and sending a packet takes between 50-150ms.
+            if (tvsc::radio::send(rf69, fragments.buffers[0])) {
+              tvsc::hal::output::println("Packet sent.");
+              ++send_success_count;
+            } else {
+              tvsc::hal::output::println("Transmit failed.");
+              ++send_failure_count;
+            }
           }
         }
       }

@@ -6,8 +6,9 @@
 #include "hal/time/time.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
+#include "radio/encoding.h"
 #include "radio/fragment.h"
-#include "radio/packet.pb.h"
+#include "radio/packet.h"
 #include "radio/radio_configuration.h"
 #include "radio/rf69hcw.h"
 #include "radio/rf69hcw_configuration.h"
@@ -54,24 +55,31 @@ int main() {
   uint32_t sequence_number{};
 
   while (true) {
-    tvsc::radio::Fragment<tvsc::radio::RF69HCW::max_mtu()> fragment{};
+    static constexpr unsigned char MESSAGE[] = "Hello, world!";
+    tvsc::radio::Packet packet{};
+    packet.set_protocol(tvsc::radio::Protocol::TVSC_CONTROL);
+    packet.set_sequence_number(++sequence_number);
+    packet.set_sender_id(configuration.id());
+    packet.payload().write_array(0, sizeof(MESSAGE), MESSAGE);
+    packet.set_payload_length(sizeof(MESSAGE));
+    tvsc::radio::EncodedPacket<tvsc::radio::RF69HCW::max_mtu(), 1> fragment{};
 
-    tvsc::radio::encode_packet(1, ++sequence_number, configuration.id(), "Hello, world!", fragment);
+    tvsc::radio::encode(packet, fragment);
 
-    if (tvsc::radio::send(rf69, fragment)) {
+    if (tvsc::radio::send(rf69, fragment.buffers[0])) {
       tvsc::hal::output::println("Sent.");
       tvsc::hal::output::print("Board id: ");
       tvsc::radio::print_id(configuration.identification());
       tvsc::hal::output::println();
 
     } else {
-      tvsc::hal::output::print("send() failed. RSSI: ");
-      tvsc::hal::output::println(rf69.read_rssi_dbm());
+      tvsc::hal::output::println("send() failed.");
 
       // Resend the "same" packet.
       --sequence_number;
     }
 
+    rf69.set_standby_mode();
     tvsc::hal::time::delay_ms(1000);
   }
 
