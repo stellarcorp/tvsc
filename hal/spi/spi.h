@@ -252,20 +252,20 @@ class SpiPeripheral {
    * address mask. The next byte written will be count, and subsequent writes will transfer data
    * from buffer to the FIFO.
    *
-   * Returns the number of bytes actually written.
+   * Returns true on success.
    */
-  uint8_t fifo_write(uint8_t address, const uint8_t* buffer, uint8_t count) {
-    uint8_t status{};
+  bool fifo_write(uint8_t address, const uint8_t* buffer, uint8_t count) {
     SpiTransaction transaction{bus_->begin_transaction(peripheral_select_pin_)};
 
-    status = bus_->transfer(address | write_address_mask_);
-
+    // TODO(james): Investigate what these transfers should return and use them to drive the return
+    // value.
+    bus_->transfer(address | write_address_mask_);
     bus_->transfer(count);
     while (count--) {
       bus_->transfer(*buffer++);
     }
 
-    return status;
+    return true;
   }
 };
 
