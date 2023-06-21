@@ -63,10 +63,6 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
     current_fragment = &fragments.buffers[fragment_index];
     bytes_written = 0;
 
-    LOG(INFO) << "tvsc::radio::encode() -- fragment_index: " << static_cast<int>(fragment_index)
-              << ", MTU: " << MTU << ", MAX_FRAGMENTS_PER_PACKET: " << MAX_FRAGMENTS_PER_PACKET
-              << ", remaining_payload: " << remaining_payload;
-
     // These fields are included in every fragment.
     current_fragment->data[bytes_written++] =
         static_cast<std::underlying_type_t<Protocol>>(packet.protocol());
@@ -76,8 +72,6 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
         static_cast<uint8_t>((packet.sequence_number() >> 8) & 0xff);
     current_fragment->data[bytes_written++] = static_cast<uint8_t>(packet.sequence_number() & 0xff);
     current_fragment->data[bytes_written++] = fragment_index;
-    LOG(INFO) << "tvsc::radio::encode() -- After header encode, current_fragment: "
-              << to_string(*current_fragment);
 
     if (bytes_written < MTU && remaining_payload > 0) {
       // Now we can add the payload.
@@ -89,10 +83,6 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
       // copy.
       size_t fragment_payload_size_copy{fragment_payload_size};
       for (uint8_t i = 0; i < Packet::payload_size_bytes_required(); ++i) {
-        LOG(INFO) << "tvsc::radio::encode() -- Packet::payload_size_bytes_required(): "
-                  << static_cast<int>(Packet::payload_size_bytes_required())
-                  << ", i: " << static_cast<int>(i)
-                  << ", fragment_payload_size_copy: " << fragment_payload_size_copy;
         // Needs to be in network byte order.
         current_fragment->data[bytes_written + Packet::payload_size_bytes_required() - i - 1] =
             fragment_payload_size_copy & 0xff;
@@ -126,13 +116,10 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
 template <size_t MTU, size_t PACKET_MAX_PAYLOAD_SIZE>
 bool decode(const Fragment<MTU>& fragment, PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet) {
   // TODO(james): Add assertions on expected invariants.
-  LOG(INFO) << "tvsc::radio::decode()";
   using std::to_string;
   size_t bytes_read{0};
   size_t payload_bytes_read{0};
 
-  LOG(INFO) << "tvsc::radio::decode() -- fragment_length: " << fragment.length;
-  LOG(INFO) << "tvsc::radio::decode() -- Decoding header.";
   // Header.
   packet.set_protocol(static_cast<Protocol>(fragment.data[bytes_read++]));
   packet.set_sender_id(fragment.data[bytes_read++]);
@@ -143,34 +130,23 @@ bool decode(const Fragment<MTU>& fragment, PacketT<PACKET_MAX_PAYLOAD_SIZE>& pac
 
   packet.set_fragment_index(fragment.data[bytes_read++]);
 
-  LOG(INFO) << "tvsc::radio::decode() -- After header decode, packet: " << to_string(packet)
-            << ", fragment.length: " << fragment.length << ", bytes_read: " << bytes_read
-            << ", packet: " << to_string(packet);
-
   // Fragments without a payload won't even have a payload size. In that case, we are done.
   if (bytes_read < fragment.length) {
-    LOG(INFO) << "tvsc::radio::decode() -- Decoding payload size.";
-    LOG(INFO) << "tvsc::radio::decode() -- Packet::payload_size_bytes_required(): "
-              << static_cast<int>(Packet::payload_size_bytes_required());
     size_t payload_size{0};
     for (uint8_t i = 0; i < Packet::payload_size_bytes_required(); ++i) {
       payload_size = (payload_size << 8) | fragment.data[bytes_read + i];
     }
-    LOG(INFO) << "tvsc::radio::decode() -- payload_size: " << payload_size;
+
     bytes_read += Packet::payload_size_bytes_required();
     packet.set_payload_length(payload_size);
 
     // Payload handling.
-    LOG(INFO) << "tvsc::radio::decode() -- Decoding payload.";
-    LOG(INFO) << "tvsc::radio::decode() -- payload_size: " << payload_size
-              << ", fragment.length: " << fragment.length << ", bytes_read: " << bytes_read;
     if (payload_size > 0) {
       packet.payload().write_array(0, payload_size, fragment.data.data() + bytes_read);
       payload_bytes_read += payload_size;
     }
   }
 
-  LOG(INFO) << "tvsc::radio::decode() -- Returning.";
   return true;
 }
 
@@ -181,7 +157,6 @@ bool decode(const Fragment<MTU>& fragment, PacketT<PACKET_MAX_PAYLOAD_SIZE>& pac
 template <size_t PACKET_MAX_PAYLOAD_SIZE, typename IteratorT>
 bool assemble(IteratorT fragments_begin, IteratorT fragments_end,
               PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet) {
-  DLOG(INFO) << "tvsc::radio::assemble()";
   bool found_last_fragment{false};
   size_t fragment_index{0};
   while (!found_last_fragment) {
@@ -189,8 +164,6 @@ bool assemble(IteratorT fragments_begin, IteratorT fragments_end,
     for (auto iter = fragments_begin; iter != fragments_end; ++iter) {
       const PacketT<PACKET_MAX_PAYLOAD_SIZE>& fragment{*iter};
       if (fragment.fragment_index() == fragment_index) {
-        DLOG(INFO) << "tvsc::radio::assemble() -- extracting data from fragment_index: "
-                   << fragment_index;
         packet.set_protocol(fragment.protocol());
         packet.set_sender_id(fragment.sender_id());
         packet.set_destination_id(fragment.destination_id());
@@ -214,8 +187,6 @@ bool assemble(IteratorT fragments_begin, IteratorT fragments_end,
       ++fragment_index;
     } else {
       // Don't have all of the fragments to assemble the full packet.
-      DLOG(WARNING) << "tvsc::radio::assemble() -- No fragment with fragment_index: "
-                    << fragment_index;
       return false;
     }
   }
