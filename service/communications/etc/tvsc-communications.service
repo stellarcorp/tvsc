@@ -4,7 +4,7 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-ExecStart=/usr/bin/tvsc-communications-service
+ExecStart=/usr/bin/tvsc-communications-service --logbuflevel=-1 --logbufsecs=2
 Type=simple
 KillMode=mixed
 Restart=on-failure
