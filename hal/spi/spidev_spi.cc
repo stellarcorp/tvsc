@@ -51,7 +51,7 @@ SpiBus::SpiBus(void* device_name) : spi_(reinterpret_cast<void*>(new BusState())
     except<std::runtime_error>("Failed to bit justification (MSB or LSB).");
   }
 
-  uint32_t speed{2'000'000};  // Speed of transfers in Hz.
+  uint32_t speed{4'000'000};  // Speed of transfers in Hz.
   status = ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
   if (status == -1) {
     except<std::runtime_error>("Failed to set transfer speed.");

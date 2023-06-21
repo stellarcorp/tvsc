@@ -38,7 +38,7 @@ void SpiBus::using_interrupt(uint8_t pin) {
 
 SpiTransaction SpiBus::begin_transaction(uint8_t peripheral_select_pin) {
   // TODO(james): Change the API to allow these settings to be different for each peripheral.
-  static const SPISettings SETTINGS{12'000'000, MSBFIRST, SPI_MODE0};
+  static const SPISettings SETTINGS{4'000'000, MSBFIRST, SPI_MODE0};
   ATOMIC_BLOCK_START;
   as_spi(spi_)->beginTransaction(SETTINGS);
 
