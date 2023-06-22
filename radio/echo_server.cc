@@ -84,7 +84,7 @@ int main() {
           tvsc::radio::encode(packet, fragments);
 
           if (fragments.num_fragments > 0) {
-            tvsc::hal::time::delay_ms(1000);
+            tvsc::hal::time::delay_ms(25);
 
             // Note that switching into TX mode and sending a packet takes between 50-150ms.
             if (tvsc::radio::send(rf69, fragments.buffers[0])) {
