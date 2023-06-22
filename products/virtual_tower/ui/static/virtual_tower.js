@@ -412,8 +412,6 @@ function InitializeModule() {
 
         CreateTransmitSocket();
         CreateReceiveStream();
-
-        AddSampleMessageData();
       });
     });
   }
