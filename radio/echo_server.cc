@@ -14,6 +14,7 @@
 #include "radio/settings.h"
 #include "radio/settings.pb.h"
 #include "radio/single_radio_pin_mapping.h"
+#include "radio/telemetry.h"
 #include "radio/utilities.h"
 #include "random/random.h"
 
@@ -39,28 +40,26 @@ int main() {
   configuration.change_values(tvsc::radio::default_configuration<tvsc::radio::RF69HCW>());
   configuration.commit_changes();
 
-  // Start time in milliseconds.
-  uint64_t start = tvsc::hal::time::time_millis();
+  tvsc::radio::Telemetry telemetry{};
 
-  uint32_t total_packet_count{};
-  uint32_t dropped_packet_count{};
-  uint32_t send_success_count{};
-  uint32_t send_failure_count{};
   uint32_t previous_sequence_number{};
-  uint64_t last_print_time{};
+  uint64_t last_telemetry_report_time{};
+  uint16_t next_telemetry_metric_to_report{0};
+  uint16_t next_telemetry_sequence_number{0};
 
   while (true) {
     tvsc::radio::Fragment<tvsc::radio::RF69HCW::max_mtu()> fragment{};
+    tvsc::radio::Packet packet{};
+    tvsc::radio::EncodedPacket<tvsc::radio::RF69HCW::max_mtu(), 1> fragments{};
 
     if (tvsc::radio::recv(rf69, fragment)) {
-      tvsc::radio::Packet packet{};
       if (tvsc::radio::decode(fragment, packet)) {
         if (packet.sender_id() != configuration.id()) {
-          ++total_packet_count;
+          telemetry.increment_packets_received();
 
           if (packet.sequence_number() != previous_sequence_number + 1 &&
               previous_sequence_number != 0) {
-            ++dropped_packet_count;
+            telemetry.increment_packets_dropped();
             tvsc::hal::output::print("Dropped packets. packet.sequence_number: ");
             tvsc::hal::output::print(packet.sequence_number());
             tvsc::hal::output::print(", previous_sequence_number: ");
@@ -80,37 +79,72 @@ int main() {
           // Mark ourselves as the sender now.
           packet.set_sender_id(configuration.id());
 
-          tvsc::radio::EncodedPacket<tvsc::radio::RF69HCW::max_mtu(), 1> fragments{};
           tvsc::radio::encode(packet, fragments);
 
-          if (fragments.num_fragments > 0) {
-            tvsc::hal::time::delay_ms(25);
-
+          if (fragments.num_fragments == 1) {
             // Note that switching into TX mode and sending a packet takes between 50-150ms.
             if (tvsc::radio::send(rf69, fragments.buffers[0])) {
               tvsc::hal::output::println("Packet sent.");
-              ++send_success_count;
+              telemetry.increment_packets_transmitted();
             } else {
               tvsc::hal::output::println("Transmit failed.");
-              ++send_failure_count;
+              telemetry.increment_transmit_errors();
             }
+          } else if (fragments.num_fragments > 1) {
+            tvsc::hal::output::println(
+                "Packet required multiple fragments. Dropping. (Echo received packet.)");
+          } else {
+            tvsc::hal::output::println(
+                "Packet required zero fragments. Dropping. (Echo received packet.)");
           }
         }
       }
     }
 
-    if (tvsc::hal::time::time_millis() - last_print_time > 1000) {
-      last_print_time = tvsc::hal::time::time_millis();
+    if (tvsc::hal::time::time_millis() - last_telemetry_report_time > 5000) {
+      last_telemetry_report_time = tvsc::hal::time::time_millis();
 
-      tvsc::hal::output::print("dropped_packet_count: ");
-      tvsc::hal::output::print(dropped_packet_count);
-      tvsc::hal::output::print(", total_packet_count: ");
-      tvsc::hal::output::print(total_packet_count);
-      tvsc::hal::output::print(", throughput: ");
-      tvsc::hal::output::print(total_packet_count * 1000.f /
-                               (tvsc::hal::time::time_millis() - start));
-      tvsc::hal::output::print(" packets/sec");
-      tvsc::hal::output::println();
+      tvsc::hal::output::println("Generating telemetry report");
+      const tvsc_radio_TelemetryReport& report{telemetry.generate_telemetry_report()};
+      if (report.events_count > 0) {
+        if (next_telemetry_metric_to_report >= report.events_count) {
+          next_telemetry_metric_to_report = 0;
+        }
+
+        const tvsc_radio_TelemetryEvent& event{report.events[next_telemetry_metric_to_report++]};
+        packet.set_protocol(tvsc::radio::Protocol::TVSC_TELEMETRY);
+        packet.set_sender_id(configuration.id());
+        packet.set_sequence_number(next_telemetry_sequence_number++);
+
+        pb_ostream_t ostream = pb_ostream_from_buffer(
+            reinterpret_cast<uint8_t*>(packet.payload().data()), packet.capacity());
+        bool status = pb_encode(
+            &ostream, nanopb::MessageDescriptor<tvsc_radio_TelemetryEvent>::fields(), &event);
+        if (status) {
+          packet.set_payload_length(ostream.bytes_written);
+
+          tvsc::radio::encode(packet, fragments);
+
+          if (fragments.num_fragments == 1) {
+            if (tvsc::radio::send(rf69, fragments.buffers[0])) {
+              tvsc::hal::output::println("Packet sent.");
+              telemetry.increment_packets_transmitted();
+            } else {
+              tvsc::hal::output::println("Transmit failed.");
+              telemetry.increment_transmit_errors();
+            }
+          } else if (fragments.num_fragments > 1) {
+            tvsc::hal::output::println(
+                "Packet required multiple fragments. Dropping. (Telemetry.)");
+          } else {
+            tvsc::hal::output::println("Packet required zero fragments. Dropping. (Telemetry.)");
+          }
+
+        } else {
+          // Log telemetry encoding issue.
+          tvsc::hal::output::println("Could not encode telemetry packet");
+        }
+      }
     }
   }
 
