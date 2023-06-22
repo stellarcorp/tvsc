@@ -35,6 +35,9 @@ enum class Protocol : uint8_t {
   // The values below here all use values that should not conflict with those found in
   // /etc/protocols on most Unix-based systems.
   TVSC_CONTROL = 176,  // 0xb0
+
+  // TODO(james): Rethink whether telemetry should be its own protocol.
+  TVSC_TELEMETRY,
 };
 
 template <size_t MAX_PAYLOAD_SIZE>
@@ -77,6 +80,8 @@ class PacketT final {
         payload_(payload) {}
 
   static constexpr size_t max_payload_size() { return MAX_PAYLOAD_SIZE; }
+  constexpr size_t capacity() const { return max_payload_size(); }
+
   static constexpr uint8_t payload_size_bits_required() {
     return internal::bit_width(MAX_PAYLOAD_SIZE);
   }
