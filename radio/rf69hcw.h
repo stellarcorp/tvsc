@@ -318,6 +318,15 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
   uint8_t interrupt_pin_;
   uint8_t reset_pin_;
 
+  void print_interrupt_registers() {
+    uint8_t irq_flags1 = spi_->read(RF69HCW_REG_27_IRQFLAGS1);
+    uint8_t irq_flags2 = spi_->read(RF69HCW_REG_28_IRQFLAGS2);
+    tvsc::hal::output::print("RF69HCW::print_interrupt_register() -- irq_flags1: ");
+    tvsc::hal::output::println(static_cast<uint32_t>(irq_flags1));
+    tvsc::hal::output::print("RF69HCW::print_interrupt_register() -- irq_flags2: ");
+    tvsc::hal::output::println(static_cast<uint32_t>(irq_flags2));
+  }
+
   void set_op_mode(uint8_t mode) {
     uint8_t opmode = spi_->read(RF69HCW_REG_01_OPMODE);
 
@@ -326,12 +335,23 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     spi_->write(RF69HCW_REG_01_OPMODE, opmode);
 
     // Block until the RF module is ready.
-    while (!(spi_->read(RF69HCW_REG_27_IRQFLAGS1) & RF69HCW_IRQFLAGS1_MODEREADY)) {
-      // Do nothing.
+    uint8_t irq_flags;
+    bool in_mode{false};
+    do {
       // Note: this works, but it feels weird polling on an IRQ register.
       // Also, adding a YIELD here, instead of just looping as fast as possible, causes spurious
       // failures.
-    }
+      irq_flags = spi_->read(RF69HCW_REG_27_IRQFLAGS1);
+      // if (mode == RF69HCW_OPMODE_MODE_RX) {
+      //   in_mode = ((irq_flags & RF69HCW_IRQFLAGS1_MODEREADY) != 0) &&
+      //             ((irq_flags & RF69HCW_IRQFLAGS1_RXREADY) != 0);
+      // } else if (mode == RF69HCW_OPMODE_MODE_TX) {
+      //   in_mode = ((irq_flags & RF69HCW_IRQFLAGS1_MODEREADY) != 0) &&
+      //             ((irq_flags & RF69HCW_IRQFLAGS1_TXREADY) != 0);
+      // } else {
+      in_mode = ((irq_flags & RF69HCW_IRQFLAGS1_MODEREADY) != 0);
+      // }
+    } while (!in_mode);
   }
 
   /**
@@ -353,55 +373,33 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
   static uint8_t next_interrupt_index_;
 
   void handle_interrupt() {
-    tvsc::hal::output::println("RF69HCW::handle_interrupt()");
-    // TODO(james): Do we need to handle any interrupts from RF69HCW_REG_27_IRQFLAGS1?
-    uint8_t irq_flags1 = spi_->read(RF69HCW_REG_27_IRQFLAGS1);
     uint8_t irq_flags2 = spi_->read(RF69HCW_REG_28_IRQFLAGS2);
-    tvsc::hal::output::print("irq_flags1: ");
-    tvsc::hal::output::println(static_cast<uint32_t>(irq_flags1));
-    tvsc::hal::output::print("irq_flags2: ");
-    tvsc::hal::output::println(static_cast<uint32_t>(irq_flags2));
-    tvsc::hal::output::print("RF69HCW_IRQFLAGS2_PAYLOADREADY: ");
-    tvsc::hal::output::println(static_cast<uint32_t>(RF69HCW_IRQFLAGS2_PAYLOADREADY));
-    tvsc::hal::output::print("RF69HCW_IRQFLAGS2_PACKETSENT: ");
-    tvsc::hal::output::println(static_cast<uint32_t>(RF69HCW_IRQFLAGS2_PACKETSENT));
 
-    tvsc::hal::output::print("irq_flags2 & RF69HCW_IRQFLAGS2_PACKETSENT: ");
-    tvsc::hal::output::println(static_cast<uint32_t>(irq_flags2 & RF69HCW_IRQFLAGS2_PACKETSENT));
+    // print_interrupt_registers();
 
-    if (op_mode_ == OperationalMode::TX && (irq_flags2 & RF69HCW_IRQFLAGS2_PACKETSENT)) {
-      tvsc::hal::output::println("RF69HCW::handle_interrupt() -- packet sent");
+    if (op_mode_ == OperationalMode::TX && ((irq_flags2 & RF69HCW_IRQFLAGS2_PACKETSENT) != 0)) {
+      // tvsc::hal::output::println("RF69HCW::handle_interrupt() -- packet sent");
       // A message has been fully transmitted.
       // Clear the FIFO and move the operational mode away from TX.
-      // Note that wait_packet_sent() and derivatives use the operational mode to know if the packet
-      // has been sent.
-      // TODO(james): Is there a more efficient way to clear this FIFO? This turns off the
-      // amplifiers and blocks until the device is "ready" in its new operational mode.
-      // TODO(james): Is there a more efficient way to signal the packet has been sent?
+      // Note that wait_fragment_transmitted() and derivatives use the operational mode to know if
+      // the packet has been sent.
       set_mode_standby();
     }
 
     // The datasheet indicates that CRCOK would be the appropriate flag to check for, but it gets
     // set before decryption. Instead, we check for PAYLOADREADY which gets set after decryption.
     // This check also guarantees that we have a valid CRC.
-    if (op_mode_ == OperationalMode::RX && (irq_flags2 & RF69HCW_IRQFLAGS2_PAYLOADREADY)) {
+    if (op_mode_ == OperationalMode::RX && ((irq_flags2 & RF69HCW_IRQFLAGS2_PAYLOADREADY) != 0)) {
       tvsc::hal::output::println("RF69HCW::handle_interrupt() -- packet received");
       set_mode_standby();
 
       // Transfer the data in the FIFO to our buffer.
       read_fifo();
     }
-    // if (op_mode_ == OperationalMode::RX && (irq_flags2 & RF69HCW_IRQFLAGS2_CRCOK)) {
-    //   set_mode_standby();
-
-    //   // Transfer the data in the FIFO to our buffer.
-    //   read_fifo();
-    // }
   }
 
   void set_mode_rx() {
     if (op_mode_ != OperationalMode::RX) {
-      tvsc::hal::output::println("RF69HCW::set_mode_rx()");
       if (power_ >= 18) {
         // If we are using the high power boost, we must turn it off to receive.
         spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
@@ -415,7 +413,6 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
 
   void set_mode_standby() {
     if (op_mode_ != OperationalMode::STANDBY) {
-      tvsc::hal::output::println("RF69HCW::set_mode_standby()");
       if (power_ >= 18) {
         // If we are using the high power boost, we must turn it off to receive.
         // It's unclear if we need to turn it off to enter standby mode, but since we are likely
@@ -432,7 +429,6 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
 
   void set_mode_tx() {
     if (op_mode_ != OperationalMode::TX) {
-      tvsc::hal::output::println("RF69HCW::set_mode_tx()");
       if (power_ >= 18) {
         // Turn on the high power boost.
         // TODO(james): Determine if we need to turn off over current protection (OCP) to activate
@@ -493,35 +489,39 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     // TODO(james): Include this information in telemetry via a periodic check (not a cached value)
     // and in device identification. This check will provide a good way to determine if a wire has
     // come loose.
-    uint8_t device_type = spi_->read(RF69HCW_REG_10_VERSION);
-    if (device_type == 00 || device_type == 0xff) {
-      except<std::runtime_error>("Could not read radio device type.");
-    }
+    uint8_t device_type{};
+    do {
+      tvsc::hal::time::delay_ms(1000);
+      device_type = spi_->read(RF69HCW_REG_10_VERSION);
+      // except<std::runtime_error>("Could not read radio device type.");
+    } while (device_type == 00 || device_type == 0xff);
+
     tvsc::hal::output::print("Device type: ");
     tvsc::hal::output::println(device_type);
 
+    // Clear out the opmode register to remove any spurious settings and then switch to standby
+    // mode.
+    // spi_->write(RF69HCW_REG_01_OPMODE, 0x00);
+    // tvsc::hal::time::delay_ms(10);
     set_mode_standby();
 
-    // Ramp the amplifiers up and down as quickly as possible. This should result in 10us ramps.
-    // spi_->write(RF69HCW_REG_12_PARAMP, 0x0f);
-
-    spi_->write(RF69HCW_REG_3C_FIFOTHRESH, RF69HCW_FIFOTHRESH_TXSTARTCONDITION_NOTEMPTY | 0x02);
-
-    spi_->write(RF69HCW_REG_6F_TESTDAGC, RF69HCW_TESTDAGC_CONTINUOUSDAGC_IMPROVED_LOWBETAOFF);
-
-    // spi_->write(RF69HCW_REG_37_PACKETCONFIG1,
-    //           RF69HCW_PACKETCONFIG1_CRC_ON | RF69HCW_PACKETCONFIG1_PACKETFORMAT_VARIABLE);
-
-    // spi_->write(RF69HCW_REG_3D_PACKETCONFIG2, (0x0100 & RF69HCW_PACKETCONFIG2_INTERPACKETRXDELAY)
-    // |
-    //                                             RF69HCW_PACKETCONFIG2_AUTORXRESTARTON);
+    // Specify time to ramp up and down the amplifiers. Note that the PARAMP must match the
+    // INTERPACKETRXDELAY.
+    spi_->write(RF69HCW_REG_12_PARAMP, 0x09);
+    spi_->write(RF69HCW_REG_3D_PACKETCONFIG2,
+                ((0x09 << 4) & RF69HCW_PACKETCONFIG2_INTERPACKETRXDELAY));
 
     // Reset the power amplifiers.
     spi_->write(RF69HCW_REG_5A_TESTPA1, RF69HCW_TESTPA1_NORMAL);
     spi_->write(RF69HCW_REG_5C_TESTPA2, RF69HCW_TESTPA2_NORMAL);
 
+    spi_->write(RF69HCW_REG_3C_FIFOTHRESH, RF69HCW_FIFOTHRESH_TXSTARTCONDITION_NOTEMPTY | 0x02);
+
+    spi_->write(RF69HCW_REG_6F_TESTDAGC, RF69HCW_TESTDAGC_CONTINUOUSDAGC_IMPROVED_LOWBETAOFF);
+
     spi_->write(RF69HCW_REG_37_PACKETCONFIG1, RF69HCW_PACKETCONFIG1_PACKETFORMAT_VARIABLE |
                                                   RF69HCW_PACKETCONFIG1_CRC_ON |
+                                                  RF69HCW_PACKETCONFIG1_DCFREE_WHITENING |
                                                   RF69HCW_PACKETCONFIG1_ADDRESSFILTERING_NONE);
 
     set_sync_words_length(8);
@@ -565,13 +565,17 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
 
   bool wait_fragment_available(uint16_t timeout_ms) const override {
     if (has_fragment_available()) {
+      // tvsc::hal::output::println(
+      //     "RF69HCW::wait_fragment_available() -- has_fragment_available() true first check");
       return true;
     }
 
-    static constexpr uint16_t poll_delay_ms{1};
+    static constexpr uint16_t poll_delay_ms{0};
     auto start = tvsc::hal::time::time_millis();
     while ((tvsc::hal::time::time_millis() - start) < timeout_ms) {
       if (has_fragment_available()) {
+        // tvsc::hal::output::println(
+        //     "RF69HCW::wait_fragment_available() -- has_fragment_available() true");
         return true;
       }
       if (poll_delay_ms > 0) {
@@ -595,6 +599,9 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
   }
 
   bool transmit_fragment(const Fragment<MAX_MTU_VALUE>& fragment, uint16_t timeout_ms) override {
+    // tvsc::hal::output::print("RF69HCW::transmit_fragment() -- timeout_ms: ");
+    // tvsc::hal::output::println(timeout_ms);
+
     if (fragment.length > mtu()) {
       tvsc::hal::output::print("fragment.length larger than MTU: ");
       tvsc::hal::output::println(fragment.length);
@@ -605,23 +612,37 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
       return false;
     }
 
-    tvsc::hal::output::println("Transmitting fragment: ");
-    tvsc::hal::output::println(to_string(fragment));
-
     // Ensure that we aren't interrupting an ongoing transmission.
-    wait_fragment_transmitted(timeout_ms);
+    if (!wait_fragment_transmitted(timeout_ms)) {
+      return false;
+    }
 
     // Ensure that we don't start receiving a message while we are pushing data into the FIFO.
     set_standby_mode();
 
+    // tvsc::hal::output::print("frequency: ");
+    // tvsc::hal::output::println(get_frequency_hz());
+    // tvsc::hal::output::print("preamble_length: ");
+    // tvsc::hal::output::println(static_cast<uint16_t>(get_preamble_length()));
+    // tvsc::hal::output::print("sync_words_length: ");
+    // tvsc::hal::output::println(static_cast<uint16_t>(get_sync_words_length()));
+    // tvsc::hal::output::print("bitrate: ");
+    // tvsc::hal::output::println(get_bit_rate());
+    // tvsc::hal::output::print("frequency_deviation: ");
+    // tvsc::hal::output::println(get_frequency_deviation_hz());
+
     // Don't transmit if we detect another radio transmitting on the same channel.
-    if (!wait_channel_activity_clear(timeout_ms)) {
-      tvsc::hal::output::println("Can't send. Channel activity detected.");
+    // if (!wait_channel_activity_clear(timeout_ms)) {
+    //   tvsc::hal::output::println("Can't send. Channel activity detected.");
+    //   return false;
+    // }
+
+    bool fifo_write_status{
+        spi_->fifo_write(RF69HCW_REG_00_FIFO, fragment.data.data(), fragment.length)};
+    if (!fifo_write_status) {
+      tvsc::hal::output::println("transmit_fragment() -- fifo write failure.");
       return false;
     }
-
-    tvsc::hal::output::println("Moving fragment to fifo");
-    spi_->fifo_write(RF69HCW_REG_00_FIFO, fragment.data.data(), fragment.length);
 
     // Start the transmitter.
     set_mode_tx();
@@ -629,8 +650,8 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
   }
 
   bool wait_fragment_transmitted(uint16_t timeout_ms) override {
-    auto start = tvsc::hal::time::time_millis();
-    while ((tvsc::hal::time::time_millis() - start) < timeout_ms) {
+    const uint64_t start = tvsc::hal::time::time_millis();
+    while ((tvsc::hal::time::time_millis() - start) < static_cast<uint64_t>(timeout_ms)) {
       // We gate the determination that a packet has been sent on the transition to any non-TX
       // operational mode. This could probably be more efficient, since it means that we send
       // multiple SPI messages toggling the operational mode and turn off amplifiers after every
@@ -640,6 +661,10 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
       }
       YIELD;
     }
+
+    tvsc::hal::output::print("RF69HCW::wait_fragment_transmitted() -- timed out. elapsed time (ms): ");
+    tvsc::hal::output::println(tvsc::hal::time::time_millis() - start);
+
     return false;
   }
 
