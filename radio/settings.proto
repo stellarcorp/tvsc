@@ -69,10 +69,11 @@ enum Measurement {
   PACKETS_TX = 5;
 
   // Dropped packets are the number of packets whose sequence numbers were skipped. We currently
-  // don't distinguish between out-of-sequence packets and skipped packets. 
+  // don't distinguish between out-of-sequence packets and skipped packets.
   DROPPED_PACKETS = 6;
 
-  // Number of packets that we attempted to transmit but did not get a success result from the transceiver.
+  // Number of packets that we attempted to transmit but did not get a success result from the
+  // transceiver.
   TX_ERRORS = 7;
 
   // Current size of the TX queue. This is a count of the number of packets waiting to be sent.
@@ -98,7 +99,7 @@ message TelemetryEvent {
 }
 
 message TelemetryReport {
-  repeated TelemetryEvent events = 1;
+  repeated TelemetryEvent events = 1 [(nanopb).max_count = 20];
 }
 
 /**
