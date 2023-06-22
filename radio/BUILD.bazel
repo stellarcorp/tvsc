@@ -7,6 +7,7 @@ cc_library(
     name = "radio",
     srcs = [
         "packet.cc",
+	"telemetry.cc",
     ],
     hdrs = [
         "encoding.h",
@@ -16,6 +17,7 @@ cc_library(
         "packet_queue.h",
         "radio_configuration.h",
         "settings.h",
+	"telemetry.h",
         "transceiver.h",
         "transceiver_monitor.h",
     ],

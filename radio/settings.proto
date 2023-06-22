@@ -56,14 +56,26 @@ enum Function {
 enum Measurement {
   // The current time on the device.
   TIME = 0;
+
   // Current observed RSSI in dBm.
   RSSI_DBM = 2;
+
   // Current power consumption in Watts.
   POWER_W = 3;
+
+  // Count of packets received successfully.
   PACKETS_RX = 4;
+  // Count of packets transmitted successfully.
   PACKETS_TX = 5;
+
+  // Dropped packets are the number of packets whose sequence numbers were skipped. We currently
+  // don't distinguish between out-of-sequence packets and skipped packets. 
   DROPPED_PACKETS = 6;
+
+  // Number of packets that we attempted to transmit but did not get a success result from the transceiver.
   TX_ERRORS = 7;
+
+  // Current size of the TX queue. This is a count of the number of packets waiting to be sent.
   TX_QUEUE_SIZE = 8;
 }
 
@@ -72,8 +84,7 @@ message TelemetryEvent {
    * Time  of the event in milliseconds since the epoch of the clock on the device. Note that this
    * clock may or may not be monotonically increasing, and in particular, it may overflow between
    * measurements. To maintain some basic time synchronization, devices should periodically issue
-   * TIME measurements with the current value of the clock. These events should be published with a
-   * predictable (preferably zero) delay.
+   * TIME measurements with the current value of the clock.
    */
   uint32 time_ms = 1;
   /**
@@ -84,6 +95,10 @@ message TelemetryEvent {
    * The measured value.
    */
   DiscreteValue measurement = 3;
+}
+
+message TelemetryReport {
+  repeated TelemetryEvent events = 1;
 }
 
 /**
