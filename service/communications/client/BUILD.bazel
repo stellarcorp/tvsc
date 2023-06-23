@@ -3,6 +3,7 @@ cc_library(
     hdrs = [
         "client.h",
         "rx_streamer.h",
+        "telemetry_streamer.h",
     ],
     visibility = ["//visibility:public"],
     deps = [

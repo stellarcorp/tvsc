@@ -3,6 +3,7 @@
 
 #include "discovery/service_types.h"
 #include "grpcpp/grpcpp.h"
+#include "radio/proto/settings.pb.h"
 #include "service/communications/common/communications.grpc.pb.h"
 
 namespace tvsc::service::communications {
@@ -23,6 +24,17 @@ class CommunicationsClient {
   void receive(grpc::ClientContext* context, grpc::ClientReadReactor<Message>* reactor) {
     EmptyMessage request{};
     stub_->async()->receive(context, &request, reactor);
+  }
+
+  std::unique_ptr<grpc::ClientReaderInterface<tvsc::radio::proto::TelemetryEvent>> monitor(
+      grpc::ClientContext* context) {
+    return stub_->monitor(context, EmptyMessage{});
+  }
+
+  void monitor(grpc::ClientContext* context,
+               grpc::ClientReadReactor<tvsc::radio::proto::TelemetryEvent>* reactor) {
+    EmptyMessage request{};
+    stub_->async()->monitor(context, &request, reactor);
   }
 
   grpc::Status transmit(const std::string& message, SuccessResult* reply) {
