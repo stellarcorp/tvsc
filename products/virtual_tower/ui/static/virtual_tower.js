@@ -4,6 +4,7 @@ let transmit_rpc = null;
 
 // Objects storing WebSocketStreams instances for various streams.
 let datetime_stream = null;
+let monitor_stream = null;
 let receive_stream = null;
 
 /**
@@ -281,6 +282,56 @@ function CreateTransmitSocket() {
   });
 }
 
+function RenderTelemetryEvent(msg) {
+  let container_id = '#telemetry-container-' + msg.domain;
+  let container = $(container_id);
+  if ($(container_id).length === 0) {
+    container = $('<div class="telemetry-domain">');
+    let level2 = $('<div class="telemetry-domain-detail">');
+    level2.attr('id', container_id);
+    container.append(level2)
+  }
+
+  let level1 = $('<div class="telemetry-event">');
+  let level2 = $('<div class="telemetry-event-detail">');
+  let timestamp_element = $('<span class="telemetry-timestamp">').text(msg.timeMs);
+  let value_element = $('<span class="telemetry-value">');
+
+  if (msg.measurement.hasOwnProperty('int64Value')) {
+    value_element.text(msg.measurement.int64Value);
+  } else if (msg.measurement.hasOwnProperty('int32Value')) {
+    value_element.text(msg.measurement.int32Value);
+  } else if (msg.measurement.hasOwnProperty('floatValue')) {
+    value_element.text(msg.measurement.floatValue);
+  }
+
+  level2.append(timestamp_element, value_element);
+  level1.append(level2);
+
+  container.append(level1);
+
+  if ($(container_id).length === 0) {
+    $('#telemetry-container').append(container);
+  }
+}
+
+function CreateMonitorStream() {
+  monitor_stream = new WebSocketStream(
+      BuildWebSocketUrl('communications', 'monitor'),  //
+      'tvsc.service.communications.EmptyMessage',      //
+      'tvsc.radio.proto.TelemetryEvent');
+
+  monitor_stream.on_receive(function(reply) {
+    RenderTelemetryEvent(reply);
+  });
+
+  monitor_stream.on_error(function(evt) {
+    RenderTelemetryEvent('<telemetry error>');
+  });
+
+  monitor_stream.start();
+}
+
 function RenderReceivedMessage(msg) {
   let level1 = $('<div class="outgoing-chats">');
   let level2 = $('<div class="outgoing-msg">');
@@ -372,46 +423,56 @@ function AddSampleMessageData() {
 }
 
 function InitializeModule() {
-  DisplayCommunications();
-
   if (!('WebSocket' in window)) {
     // The browser doesn't support WebSocket.
     alert('WebSocket NOT supported by your Browser!');
   } else {
-    LoadScript('/static/protobuf-7.2.2.js', function() {
-      protobuf.load('/static/datetime.proto').then(function(root) {
-        Protos.add_proto(
-            'tvsc.service.datetime.DatetimeRequest',
-            root.lookupType('tvsc.service.datetime.DatetimeRequest'));
-        Protos.add_proto(
-            'tvsc.service.datetime.DatetimeReply',
-            root.lookupType('tvsc.service.datetime.DatetimeReply'));
+    LoadScript('/static/jquery-3.6.0.slim.min.js', function() {
+      DisplayTelemetry();
 
-        CreateDatetimeStream();
-      });
+      LoadScript('/static/protobuf-7.2.2.js', function() {
+        protobuf.load('/static/datetime.proto').then(function(root) {
+          Protos.add_proto(
+              'tvsc.service.datetime.DatetimeRequest',
+              root.lookupType('tvsc.service.datetime.DatetimeRequest'));
+          Protos.add_proto(
+              'tvsc.service.datetime.DatetimeReply',
+              root.lookupType('tvsc.service.datetime.DatetimeReply'));
 
-      protobuf.load('/static/echo.proto').then(function(root) {
-        Protos.add_proto(
-            'tvsc.service.echo.EchoRequest', root.lookupType('tvsc.service.echo.EchoRequest'));
-        Protos.add_proto(
-            'tvsc.service.echo.EchoReply', root.lookupType('tvsc.service.echo.EchoReply'));
+          CreateDatetimeStream();
+        });
 
-        CreateEchoSocket();
-      });
+        protobuf.load('/static/echo.proto').then(function(root) {
+          Protos.add_proto(
+              'tvsc.service.echo.EchoRequest', root.lookupType('tvsc.service.echo.EchoRequest'));
+          Protos.add_proto(
+              'tvsc.service.echo.EchoReply', root.lookupType('tvsc.service.echo.EchoReply'));
 
-      protobuf.load('/static/communications.proto').then(function(root) {
-        Protos.add_proto(
-            'tvsc.service.communications.EmptyMessage',
-            root.lookupType('tvsc.service.communications.EmptyMessage'));
-        Protos.add_proto(
-            'tvsc.service.communications.Message',
-            root.lookupType('tvsc.service.communications.Message'));
-        Protos.add_proto(
-            'tvsc.service.communications.SuccessResult',
-            root.lookupType('tvsc.service.communications.SuccessResult'));
+          CreateEchoSocket();
+        });
 
-        CreateTransmitSocket();
-        CreateReceiveStream();
+        protobuf.load('/static/radio/proto/settings.proto').then(function(root) {
+          Protos.add_proto(
+              'tvsc.radio.proto.TelemetryEvent',
+              root.lookupType('tvsc.radio.proto.TelemetryEvent'));
+
+
+          protobuf.load('/static/communications.proto').then(function(root) {
+            Protos.add_proto(
+                'tvsc.service.communications.EmptyMessage',
+                root.lookupType('tvsc.service.communications.EmptyMessage'));
+            Protos.add_proto(
+                'tvsc.service.communications.Message',
+                root.lookupType('tvsc.service.communications.Message'));
+            Protos.add_proto(
+                'tvsc.service.communications.SuccessResult',
+                root.lookupType('tvsc.service.communications.SuccessResult'));
+
+            CreateTransmitSocket();
+            CreateMonitorStream();
+            CreateReceiveStream();
+          });
+        });
       });
     });
   }

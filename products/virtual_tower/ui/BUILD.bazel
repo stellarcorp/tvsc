@@ -21,12 +21,20 @@ copy_file(
     allow_symlink = True,
 )
 
+copy_file(
+    name = "radio_settings_proto_file",
+    src = "//radio/proto:settings_proto_file",
+    out = "static/radio/proto/settings.proto",
+    allow_symlink = True,
+)
+
 filegroup(
     name = "ui",
     srcs = glob(["static/**/*"]) + [
         ":communications_proto_file",
         ":datetime_proto_file",
         ":echo_proto_file",
+        ":radio_settings_proto_file",
     ],
     visibility = ["//visibility:public"],
 )
