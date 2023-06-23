@@ -64,7 +64,7 @@ CommunicationsServiceImpl::CommunicationsServiceImpl() {
 
 void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& packet) {
   LOG(WARNING) << "CommunicationsServerImpl::post_received_packet()";
-  {
+  if (packet.protocol() == tvsc::radio::Protocol::INET) {
     Message message{};
     message.ParseFromString(std::string(packet.payload().as_string_view(packet.payload_length())));
 
@@ -76,15 +76,26 @@ void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& 
       LOG(WARNING) << "CommunicationsServerImpl::post_received_packet() -- posting to writer queue";
       writer_queue.second.push_back(message);
     }
+
+    LOG(WARNING) << "CommunicationsServerImpl::post_received_packet() -- Received INET packet. "
+                    "Notifying writers";
+    cv_.notify_all();
+  } else if (packet.protocol() == tvsc::radio::Protocol::TVSC_TELEMETRY) {
+    Message message{};
+    message.ParseFromString(std::string(packet.payload().as_string_view(packet.payload_length())));
+    LOG(INFO) << "CommunicationsServerImpl::post_received_packet() -- Telemetry:\n"
+              << message.DebugString();
   }
-  LOG(WARNING) << "CommunicationsServerImpl::post_received_packet() -- notifying writers";
-  cv_.notify_all();
 }
 
 grpc::Status CommunicationsServiceImpl::transmit(grpc::ServerContext* context,
                                                  const Message* request, SuccessResult* reply) {
   LOG(WARNING) << "CommunicationsServiceImpl::transmit() -- message: " << request->message();
   tvsc::radio::Packet packet{};
+  packet.set_protocol(tvsc::radio::Protocol::INET);
+  packet.set_sender_id(configuration_->id());
+  // packet.set_sequence_number(?);
+
   request->SerializeToArray(packet.payload().data(), packet.payload().size());
   packet.set_payload_length(request->ByteSizeLong());
   tx_queue_.push_normal(packet);
