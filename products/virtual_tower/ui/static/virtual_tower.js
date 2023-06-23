@@ -283,15 +283,6 @@ function CreateTransmitSocket() {
 }
 
 function RenderTelemetryEvent(msg) {
-  let container_id = '#telemetry-container-' + msg.domain;
-  let container = $(container_id);
-  if ($(container_id).length === 0) {
-    container = $('<div class="telemetry-domain">');
-    let level2 = $('<div class="telemetry-domain-detail">');
-    level2.attr('id', container_id);
-    container.append(level2)
-  }
-
   let level1 = $('<div class="telemetry-event">');
   let level2 = $('<div class="telemetry-event-detail">');
   let timestamp_element = $('<span class="telemetry-timestamp">').text(msg.timeMs);
@@ -303,16 +294,15 @@ function RenderTelemetryEvent(msg) {
     value_element.text(msg.measurement.int32Value);
   } else if (msg.measurement.hasOwnProperty('floatValue')) {
     value_element.text(msg.measurement.floatValue);
+  } else {
+    value_element.text(0);
   }
 
   level2.append(timestamp_element, value_element);
   level1.append(level2);
 
-  container.append(level1);
-
-  if ($(container_id).length === 0) {
-    $('#telemetry-container').append(container);
-  }
+  let container_id = '#telemetry-container-' + msg.domain;
+  $(container_id).append(level1);
 }
 
 function CreateMonitorStream() {
