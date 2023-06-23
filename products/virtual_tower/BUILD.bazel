@@ -5,6 +5,7 @@ load("//platforms:platform.bzl", "arch_name")
 load("//service:version.bzl", "tarball_name", "version_string")
 
 PACKAGE_NAME = "tvsc-virtual-tower"
+
 MOCK_RADIO_PACKAGE_NAME = "tvsc-virtual-tower-with-mock-radio"
 
 pkg_files(
@@ -17,6 +18,20 @@ pkg_files(
         mode = "0644",
     ),
     prefix = "usr/share/tvsc/virtual_tower/ui/static",
+    visibility = ["//visibility:public"],
+)
+
+# TODO(james): Remove this redundancy. The pkg_files() rule puts every file in the srcs directly under the prefix directory, squashing the directory structure. Need a way to list files for the pkg_tar() rules below that maintains the directory structure.
+pkg_files(
+    name = "radio_proto_ui_files",
+    testonly = True,
+    srcs = [
+        "//products/virtual_tower/ui",
+    ],
+    attributes = pkg_attributes(
+        mode = "0644",
+    ),
+    prefix = "usr/share/tvsc/virtual_tower/ui/static/radio/proto",
     visibility = ["//visibility:public"],
 )
 
@@ -36,6 +51,7 @@ pkg_tar(
     name = "tarball",
     testonly = True,
     srcs = [
+        ":radio_proto_ui_files",
         ":systemd_files",
         ":ui_files",
         "//service/communications:binaries",
@@ -55,6 +71,7 @@ pkg_tar(
     name = "mock_radio_tarball",
     testonly = True,
     srcs = [
+        ":radio_proto_ui_files",
         ":systemd_files",
         ":ui_files",
         "//service/communications:mock_binaries",
@@ -116,7 +133,21 @@ sh_binary(
     name = "run_virtual_tower",
     srcs = ["run_virtual_tower.sh"],
     data = [
+        "//products/virtual_tower/ui",
         "//service/communications/server:tvsc-communications-service",
+        "//service/datetime/server:datetime_server",
+        "//service/echo/server:echo_server",
+        "//service/hello/server:hello_server",
+        "//service/proxy:tvsc_proxy",
+    ],
+)
+
+sh_binary(
+    name = "run_mock_radio_virtual_tower",
+    srcs = ["run_mock_radio_virtual_tower.sh"],
+    data = [
+        "//products/virtual_tower/ui",
+        "//service/communications/server:mock-radio-communications-service",
         "//service/datetime/server:datetime_server",
         "//service/echo/server:echo_server",
         "//service/hello/server:hello_server",
