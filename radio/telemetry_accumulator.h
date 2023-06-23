@@ -2,7 +2,7 @@
 
 namespace tvsc::radio {
 
-class Telemetry final {
+class TelemetryAccumulator final {
  private:
   tvsc_radio_TelemetryReport report_{};
 
@@ -20,7 +20,7 @@ class Telemetry final {
   }
 
  public:
-  Telemetry();
+  TelemetryAccumulator();
 
   void increment_packets_received();
   void increment_packets_transmitted();

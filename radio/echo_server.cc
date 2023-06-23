@@ -14,7 +14,7 @@
 #include "radio/settings.h"
 #include "radio/settings.nanopb.pb.h"
 #include "radio/single_radio_pin_mapping.h"
-#include "radio/telemetry.h"
+#include "radio/telemetry_accumulator.h"
 #include "radio/utilities.h"
 #include "random/random.h"
 
@@ -40,7 +40,7 @@ int main() {
   configuration.change_values(tvsc::radio::default_configuration<tvsc::radio::RF69HCW>());
   configuration.commit_changes();
 
-  tvsc::radio::Telemetry telemetry{};
+  tvsc::radio::TelemetryAccumulator telemetry{};
 
   uint32_t previous_sequence_number{};
   uint64_t last_telemetry_report_time{};
