@@ -384,21 +384,6 @@ hex(
 )
 
 cc_test(
-    name = "rf69hcw_configuration_test",
-    srcs = [
-        "rf69hcw_configuration_test.cc",
-    ],
-    tags = ["manual"],
-    deps = [
-        ":radio",
-        ":rf69hcw",
-        "//radio/nanopb_proto:radio_cc_proto",
-        "//radio/nanopb_proto:settings_cc_proto",
-        "//third_party/gtest",
-    ],
-)
-
-cc_test(
     name = "settings_test",
     srcs = [
         "settings_test.cc",
