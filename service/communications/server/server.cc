@@ -14,6 +14,7 @@
 #include "hal/spi/spi.h"
 #include "hal/time/time.h"
 #include "radio/packet.h"
+#include "radio/proto/settings.pb.h"
 #include "radio/radio_configuration.h"
 #include "radio/rf69hcw.h"
 #include "radio/rf69hcw_configuration.h"
@@ -69,22 +70,38 @@ void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& 
     message.ParseFromString(std::string(packet.payload().as_string_view(packet.payload_length())));
 
     std::lock_guard<std::mutex> l(mu_);
-    for (auto& writer_queue : writer_queues_) {
+    for (auto& writer_queue : receive_writer_queues_) {
       // TODO(james): Make this more efficient. This approach just copies the message to the queue
       // for every writer. Better would be to share a single instance of the message across all of
       // the writers.
-      LOG(WARNING) << "CommunicationsServerImpl::post_received_packet() -- posting to writer queue";
+      LOG(WARNING)
+          << "CommunicationsServerImpl::post_received_packet() -- posting to receive writer queue";
       writer_queue.second.push_back(message);
     }
 
     LOG(WARNING) << "CommunicationsServerImpl::post_received_packet() -- Received INET packet. "
                     "Notifying writers";
-    cv_.notify_all();
+    receive_message_available_.notify_all();
   } else if (packet.protocol() == tvsc::radio::Protocol::TVSC_TELEMETRY) {
-    Message message{};
-    message.ParseFromString(std::string(packet.payload().as_string_view(packet.payload_length())));
+    tvsc::radio::proto::TelemetryEvent event{};
+    event.ParseFromString(std::string(packet.payload().as_string_view(packet.payload_length())));
     LOG(INFO) << "CommunicationsServerImpl::post_received_packet() -- Telemetry:\n"
-              << message.DebugString();
+              << event.DebugString();
+
+    std::lock_guard<std::mutex> l(mu_);
+    for (auto& writer_queue : monitor_writer_queues_) {
+      // TODO(james): Make this more efficient. This approach just copies the message to the queue
+      // for every writer. Better would be to share a single instance of the message across all of
+      // the writers.
+      LOG(WARNING)
+          << "CommunicationsServerImpl::post_received_packet() -- posting to monitor writer queue";
+      writer_queue.second.push_back(event);
+    }
+
+    LOG(WARNING)
+        << "CommunicationsServerImpl::post_received_packet() -- Received telemetry packet. "
+           "Notifying writers";
+    monitor_event_available_.notify_all();
   }
 }
 
@@ -109,15 +126,16 @@ grpc::Status CommunicationsServiceImpl::receive(grpc::ServerContext* context,
   using namespace std::literals::chrono_literals;
   LOG(WARNING) << "CommunicationsServiceImpl::receive()";
   std::unique_lock<std::mutex> l(mu_);
-  writer_queues_.emplace(writer, std::vector<Message>{});
+  receive_writer_queues_.emplace(writer, std::vector<Message>{});
 
   while (!context->IsCancelled()) {
-    if (cv_.wait_for(l, 20ms, [context] { return context->IsCancelled(); })) {
+    if (receive_message_available_.wait_for(l, 20ms,
+                                            [context] { return context->IsCancelled(); })) {
       LOG(WARNING) << "CommunicationsServiceImpl::receive() -- context->IsCancelled()";
       break;
     }
 
-    auto& queue{writer_queues_.at(writer)};
+    auto& queue{receive_writer_queues_.at(writer)};
     for (const auto& msg : queue) {
       LOG(WARNING) << "CommunicationsServiceImpl::receive() -- writing message.";
       writer->Write(msg);
@@ -127,9 +145,40 @@ grpc::Status CommunicationsServiceImpl::receive(grpc::ServerContext* context,
   LOG(WARNING) << "CommunicationsServiceImpl::receive() -- context->IsCancelled(): "
                << (context->IsCancelled() ? "true" : "false");
 
-  writer_queues_.erase(writer);
+  receive_writer_queues_.erase(writer);
 
   LOG(WARNING) << "CommunicationsServiceImpl::receive() -- exiting.";
+  // Client-side cancelling of the stream is expected, so we return OK instead of CANCELLED.
+  return grpc::Status::OK;
+}
+
+grpc::Status CommunicationsServiceImpl::monitor(
+    grpc::ServerContext* context, const EmptyMessage* /*request*/,
+    grpc::ServerWriter<tvsc::radio::proto::TelemetryEvent>* writer) {
+  using namespace std::literals::chrono_literals;
+  LOG(WARNING) << "CommunicationsServiceImpl::monitor()";
+  std::unique_lock<std::mutex> l(mu_);
+  monitor_writer_queues_.emplace(writer, std::vector<tvsc::radio::proto::TelemetryEvent>{});
+
+  while (!context->IsCancelled()) {
+    if (monitor_event_available_.wait_for(l, 20ms, [context] { return context->IsCancelled(); })) {
+      LOG(WARNING) << "CommunicationsServiceImpl::monitor() -- context->IsCancelled()";
+      break;
+    }
+
+    auto& queue{monitor_writer_queues_.at(writer)};
+    for (const auto& msg : queue) {
+      LOG(WARNING) << "CommunicationsServiceImpl::monitor() -- writing event.";
+      writer->Write(msg);
+    }
+    queue.clear();
+  }
+  LOG(WARNING) << "CommunicationsServiceImpl::monitor() -- context->IsCancelled(): "
+               << (context->IsCancelled() ? "true" : "false");
+
+  monitor_writer_queues_.erase(writer);
+
+  LOG(WARNING) << "CommunicationsServiceImpl::monitor() -- exiting.";
   // Client-side cancelling of the stream is expected, so we return OK instead of CANCELLED.
   return grpc::Status::OK;
 }

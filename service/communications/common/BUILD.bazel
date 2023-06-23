@@ -20,6 +20,9 @@ filegroup(
 proto_library(
     name = "communications_proto",
     srcs = ["communications.proto"],
+    deps = [
+        "//radio/proto:settings_proto",
+    ],
 )
 
 cc_proto_library(

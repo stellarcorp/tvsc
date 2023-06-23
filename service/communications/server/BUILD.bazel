@@ -11,6 +11,7 @@ cc_library(
         "//hal/spi",
         "//radio",
         "//radio:rf69hcw",
+        "//radio/proto:settings_cc_proto",
         "//random",
         "//service/communications/common",
         "//service/utility",
@@ -44,6 +45,7 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
+        "//radio/proto:settings_cc_proto",
         "//random",
         "//service/communications/common",
         "//service/utility",

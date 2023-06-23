@@ -10,6 +10,7 @@
 #include "hal/spi/spi.h"
 #include "radio/packet.h"
 #include "radio/packet_queue.h"
+#include "radio/proto/settings.pb.h"
 #include "radio/radio_configuration.h"
 #include "radio/rf69hcw.h"
 #include "radio/rf69hcw_configuration.h"
@@ -28,9 +29,13 @@ class CommunicationsServiceImpl final : public CommunicationsService::Service {
   static constexpr size_t MAX_FRAGMENTS_PER_PACKET{8};
 
   std::mutex mu_{};
-  std::condition_variable cv_{};
+  std::condition_variable receive_message_available_{};
+  std::condition_variable monitor_event_available_{};
 
-  std::map<grpc::ServerWriter<Message>*, std::vector<Message>> writer_queues_{};
+  std::map<grpc::ServerWriter<Message>*, std::vector<Message>> receive_writer_queues_{};
+  std::map<grpc::ServerWriter<tvsc::radio::proto::TelemetryEvent>*,
+           std::vector<tvsc::radio::proto::TelemetryEvent>>
+      monitor_writer_queues_{};
 
   std::unique_ptr<tvsc::hal::spi::SpiBus> bus_{};
   std::unique_ptr<tvsc::hal::spi::SpiPeripheral> spi_peripheral_{};
@@ -57,6 +62,9 @@ class CommunicationsServiceImpl final : public CommunicationsService::Service {
 
   grpc::Status receive(grpc::ServerContext* context, const EmptyMessage* request,
                        grpc::ServerWriter<Message>* writer) override;
+
+  grpc::Status monitor(grpc::ServerContext* context, const EmptyMessage* request,
+                       grpc::ServerWriter<tvsc::radio::proto::TelemetryEvent>* writer) override;
 };
 
 }  // namespace tvsc::service::communications
