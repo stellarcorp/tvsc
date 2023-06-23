@@ -171,11 +171,6 @@ message RadioSettings {
   Settings settings = 2;
 }
 
-message RadioTelemetryEvent {
-  RadioIdentification identification = 1;
-  TelemetryEvent event = 2;
-}
-
 message Radios {
   repeated Radio radios = 1 [(nanopb).max_count = 4];
 }
