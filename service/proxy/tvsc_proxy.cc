@@ -1,4 +1,5 @@
 #include <filesystem>
+#include <stdexcept>
 
 #include "App.h"
 #include "base/initializer.h"
@@ -9,6 +10,7 @@
 #include "pubsub/publication_service.h"
 #include "pubsub/web_socket_topic.h"
 #include "service/communications/client/rx_streamer.h"
+#include "service/communications/client/telemetry_streamer.h"
 #include "service/communications/client/web_socket_rpc_client.h"
 #include "service/datetime/client/datetime_streamer.h"
 #include "service/datetime/client/web_socket_rpc_client.h"
@@ -17,14 +19,21 @@
 #include "service/hello/client/web_socket_rpc_client.h"
 
 DEFINE_int32(port, 50050, "Port to listen on.");
-DEFINE_string(doc_root, "service/proxy/doc_root/", "Location of static files.");
+DEFINE_string(doc_root, "", "Location of static files.");
 
 constexpr bool SSL{false};
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
+  if (FLAGS_doc_root.empty()) {
+    throw std::invalid_argument(
+        "FLAGS_doc_root is empty. Please set the --doc_root argument to the location of the UI "
+        "files.");
+  }
+
   DLOG(INFO) << "CWD: " << std::filesystem::current_path().native();
+  DLOG(INFO) << "FLAGS_doc_root: " << FLAGS_doc_root;
 
   tvsc::discovery::register_mdns_grpc_resolver();
 
@@ -61,6 +70,16 @@ int main(int argc, char* argv[]) {
       radio_rx_topic, std::make_unique<tvsc::service::communications::RxStreamer>()};
   // TODO(james): Add capability to start this stream on request.
   radio_rx_publisher.start();
+
+  // Publish the stream of telemetry.
+  tvsc::pubsub::WebSocketTopic<tvsc::radio::proto::TelemetryEvent, SSL, 1> telemetry_topic{
+      tvsc::service::communications::TelemetryStreamer::TOPIC_NAME, app};
+  telemetry_topic.register_publishing_handler(*uWS::Loop::get());
+
+  tvsc::pubsub::PublicationService<tvsc::radio::proto::TelemetryEvent> telemetry_publisher{
+      telemetry_topic, std::make_unique<tvsc::service::communications::TelemetryStreamer>()};
+  // TODO(james): Add capability to start this stream on request.
+  telemetry_publisher.start();
 
   app.listen(FLAGS_port,
              [](auto* listen_socket) {

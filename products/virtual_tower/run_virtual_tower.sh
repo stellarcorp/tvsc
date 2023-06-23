@@ -10,7 +10,7 @@ service/communications/server/tvsc-communications-service --alsologtostderr &
 
 sleep 2
 
-service/proxy/tvsc_proxy --alsologtostderr &
+service/proxy/tvsc_proxy --alsologtostderr --doc_root=products/virtual_tower/ui &
 
 while (true)
 do
