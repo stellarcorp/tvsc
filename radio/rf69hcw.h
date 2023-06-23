@@ -769,18 +769,18 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
 
   int8_t get_power_dbm() const { return power_; }
 
-  void set_modulation_scheme(tvsc_radio_ModulationTechnique modulation) {
+  void set_modulation_scheme(tvsc_radio_nano_ModulationTechnique modulation) {
     uint8_t register_value{RF69HCW_DATAMODUL_DATAMODE_PACKET};
     switch (modulation) {
-      case tvsc_radio_ModulationTechnique_OOK:
+      case tvsc_radio_nano_ModulationTechnique_OOK:
         register_value |=
             RF69HCW_DATAMODUL_MODULATIONTYPE_OOK | RF69HCW_DATAMODUL_MODULATIONSHAPING_OOK_NONE;
         break;
-      case tvsc_radio_ModulationTechnique_FSK:
+      case tvsc_radio_nano_ModulationTechnique_FSK:
         register_value |=
             RF69HCW_DATAMODUL_MODULATIONTYPE_FSK | RF69HCW_DATAMODUL_MODULATIONSHAPING_FSK_NONE;
         break;
-      case tvsc_radio_ModulationTechnique_GFSK:
+      case tvsc_radio_nano_ModulationTechnique_GFSK:
         register_value |=
             RF69HCW_DATAMODUL_MODULATIONTYPE_FSK | RF69HCW_DATAMODUL_MODULATIONSHAPING_FSK_BT1_0;
         break;
@@ -790,33 +790,33 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     spi_->write(RF69HCW_REG_02_DATAMODUL, register_value);
   }
 
-  tvsc_radio_ModulationTechnique get_modulation_scheme() {
+  tvsc_radio_nano_ModulationTechnique get_modulation_scheme() {
     uint8_t register_value = spi_->read(RF69HCW_REG_02_DATAMODUL);
 
     if (register_value & RF69HCW_DATAMODUL_MODULATIONTYPE_FSK) {
       if (register_value & RF69HCW_DATAMODUL_MODULATIONSHAPING_FSK_BT1_0) {
-        return tvsc_radio_ModulationTechnique_GFSK;
+        return tvsc_radio_nano_ModulationTechnique_GFSK;
       } else {
-        return tvsc_radio_ModulationTechnique_FSK;
+        return tvsc_radio_nano_ModulationTechnique_FSK;
       }
     } else if (register_value & RF69HCW_DATAMODUL_MODULATIONTYPE_OOK) {
-      return tvsc_radio_ModulationTechnique_OOK;
+      return tvsc_radio_nano_ModulationTechnique_OOK;
     } else {
       except<std::domain_error>("Unknown modulation technique");
     }
   }
 
-  void set_line_coding(tvsc_radio_LineCoding coding) {
+  void set_line_coding(tvsc_radio_nano_LineCoding coding) {
     uint8_t register_value = spi_->read(RF69HCW_REG_37_PACKETCONFIG1);
     register_value &= ~RF69HCW_PACKETCONFIG1_DCFREE;
     switch (coding) {
-      case tvsc_radio_LineCoding_NONE:
+      case tvsc_radio_nano_LineCoding_NONE:
         register_value |= RF69HCW_PACKETCONFIG1_DCFREE_NONE;
         break;
-      case tvsc_radio_LineCoding_WHITENING:
+      case tvsc_radio_nano_LineCoding_WHITENING:
         register_value |= RF69HCW_PACKETCONFIG1_DCFREE_WHITENING;
         break;
-      case tvsc_radio_LineCoding_MANCHESTER_ORIGINAL:
+      case tvsc_radio_nano_LineCoding_MANCHESTER_ORIGINAL:
         register_value |= RF69HCW_PACKETCONFIG1_DCFREE_MANCHESTER;
         break;
       default:
@@ -825,15 +825,15 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     spi_->write(RF69HCW_REG_37_PACKETCONFIG1, register_value);
   }
 
-  tvsc_radio_LineCoding get_line_coding() {
+  tvsc_radio_nano_LineCoding get_line_coding() {
     uint8_t register_value = spi_->read(RF69HCW_REG_37_PACKETCONFIG1);
 
     if (register_value & RF69HCW_PACKETCONFIG1_DCFREE_MANCHESTER) {
-      return tvsc_radio_LineCoding_MANCHESTER_ORIGINAL;
+      return tvsc_radio_nano_LineCoding_MANCHESTER_ORIGINAL;
     } else if (register_value & RF69HCW_PACKETCONFIG1_DCFREE_WHITENING) {
-      return tvsc_radio_LineCoding_WHITENING;
+      return tvsc_radio_nano_LineCoding_WHITENING;
     } else {
-      return tvsc_radio_LineCoding_NONE;
+      return tvsc_radio_nano_LineCoding_NONE;
     }
   }
 

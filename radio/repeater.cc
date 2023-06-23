@@ -59,8 +59,8 @@ int main() {
   statistics.last_tx_time = start;
   statistics.last_print_time = start;
 
-  std::vector<tvsc_radio_Packet> packet_queue{};
-  std::vector<tvsc_radio_Packet> send_queue{packet_queue};
+  std::vector<tvsc_radio_nano_Packet> packet_queue{};
+  std::vector<tvsc_radio_nano_Packet> send_queue{packet_queue};
 
   while (true) {
     rf69.set_receive_mode();
@@ -69,7 +69,7 @@ int main() {
 
     if (rf69.has_fragment_available()) {
       if (tvsc::radio::recv(rf69, fragment)) {
-        tvsc_radio_Packet packet{};
+        tvsc_radio_nano_Packet packet{};
         if (tvsc::radio::decode_packet(fragment, packet)) {
           if (packet.sender != configuration.id()) {
             ++statistics.packet_rx_count;

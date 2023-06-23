@@ -53,7 +53,7 @@ int main() {
 
     if (tvsc::radio::recv(rf69, fragment)) {
       ++total_packet_count;
-      tvsc_radio_Packet packet{};
+      tvsc_radio_nano_Packet packet{};
       if (tvsc::radio::decode_packet(fragment, packet)) {
         if (packet.sequence_number != previous_sequence_number + 1 &&
             previous_sequence_number != 0) {

@@ -18,7 +18,7 @@
 
 namespace tvsc::radio {
 
-inline void print_id(const tvsc_radio_RadioIdentification& id) {
+inline void print_id(const tvsc_radio_nano_RadioIdentification& id) {
   tvsc::hal::output::print("{");
   tvsc::hal::output::print(id.expanded_id);
   tvsc::hal::output::print(", ");
@@ -56,11 +56,11 @@ bool send(HalfDuplexTransceiver<MTU>& transceiver, const Fragment<MTU>& msg) {
 }
 
 template <size_t MTU>
-void encode_packet(const tvsc_radio_Packet& packet, Fragment<MTU>& fragment) {
+void encode_packet(const tvsc_radio_nano_Packet& packet, Fragment<MTU>& fragment) {
   pb_ostream_t ostream =
       pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(fragment.data.data()), fragment.capacity());
   bool status =
-      pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_Packet>::fields(), &packet);
+      pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_nano_Packet>::fields(), &packet);
   if (!status) {
     tvsc::except<std::runtime_error>("Could not encode packet for message");
   }
@@ -70,7 +70,7 @@ void encode_packet(const tvsc_radio_Packet& packet, Fragment<MTU>& fragment) {
 template <size_t MTU>
 void encode_packet(uint32_t protocol, uint32_t sequence_number, uint32_t id,
                    const std::string& message, Fragment<MTU>& fragment) {
-  tvsc_radio_Packet packet{};
+  tvsc_radio_nano_Packet packet{};
   packet.protocol = protocol;
   packet.sequence_number = sequence_number;
   packet.sender = id;
@@ -84,12 +84,12 @@ void encode_packet(uint32_t protocol, uint32_t sequence_number, uint32_t id,
 }
 
 template <size_t MTU>
-bool decode_packet(const Fragment<MTU>& fragment, tvsc_radio_Packet& packet) {
+bool decode_packet(const Fragment<MTU>& fragment, tvsc_radio_nano_Packet& packet) {
   pb_istream_t istream = pb_istream_from_buffer(
       reinterpret_cast<const uint8_t*>(fragment.data.data()), fragment.length);
 
   bool status =
-      pb_decode(&istream, nanopb::MessageDescriptor<tvsc_radio_Packet>::fields(), &packet);
+      pb_decode(&istream, nanopb::MessageDescriptor<tvsc_radio_nano_Packet>::fields(), &packet);
   if (!status) {
     tvsc::hal::output::println("Could not decode packet");
     return false;

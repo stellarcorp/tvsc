@@ -3,7 +3,7 @@ syntax = "proto3";
 import "radio/settings.nanopb.proto";
 import "nanopb.proto";
 
-package tvsc.radio;
+package tvsc.radio.nano;
 
 /**
  * Identification of a radio. Note that the current idea is for this message to be transmitted

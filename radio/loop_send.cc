@@ -58,7 +58,7 @@ int main() {
         pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(identification_message.data()),
                                identification_message.capacity());
     bool status =
-        pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_RadioIdentification>::fields(),
+        pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_nano_RadioIdentification>::fields(),
                   &configuration.identification());
     if (!status) {
       tvsc::except<std::runtime_error>("Could not encode message");

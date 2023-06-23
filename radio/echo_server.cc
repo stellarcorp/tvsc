@@ -105,13 +105,13 @@ int main() {
       last_telemetry_report_time = tvsc::hal::time::time_millis();
 
       tvsc::hal::output::println("Generating telemetry report");
-      const tvsc_radio_TelemetryReport& report{telemetry.generate_telemetry_report()};
+      const tvsc_radio_nano_TelemetryReport& report{telemetry.generate_telemetry_report()};
       if (report.events_count > 0) {
         if (next_telemetry_metric_to_report >= report.events_count) {
           next_telemetry_metric_to_report = 0;
         }
 
-        const tvsc_radio_TelemetryEvent& event{report.events[next_telemetry_metric_to_report++]};
+        const tvsc_radio_nano_TelemetryEvent& event{report.events[next_telemetry_metric_to_report++]};
         packet.set_protocol(tvsc::radio::Protocol::TVSC_TELEMETRY);
         packet.set_sender_id(configuration.id());
         packet.set_sequence_number(next_telemetry_sequence_number++);
@@ -119,7 +119,7 @@ int main() {
         pb_ostream_t ostream = pb_ostream_from_buffer(
             reinterpret_cast<uint8_t*>(packet.payload().data()), packet.capacity());
         bool status = pb_encode(
-            &ostream, nanopb::MessageDescriptor<tvsc_radio_TelemetryEvent>::fields(), &event);
+            &ostream, nanopb::MessageDescriptor<tvsc_radio_nano_TelemetryEvent>::fields(), &event);
         if (status) {
           packet.set_payload_length(ostream.bytes_written);
 
