@@ -5,8 +5,8 @@
 
 #include "base/units.h"
 #include "gmock/gmock.h"
-#include "radio/radio.nanopb.pb.h"
-#include "radio/settings.nanopb.pb.h"
+#include "radio/nanopb_proto/radio.pb.h"
+#include "radio/nanopb_proto/settings.pb.h"
 
 namespace tvsc::radio {
 
@@ -91,7 +91,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapability) {
 
 TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityInclusiveInclusive) {
   const auto& allowed_values{int32_range(
-      0, 65535, tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE)};
+      0, 65535,
+      tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE)};
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(0)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535)));
@@ -101,7 +102,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityInclusiveIn
 
 TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityInclusiveExclusive) {
   const auto& allowed_values{int32_range(
-      0, 65535, tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_INCLUSIVE_EXCLUSIVE)};
+      0, 65535,
+      tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_INCLUSIVE_EXCLUSIVE)};
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(0)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23)));
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(65535)));
@@ -111,7 +113,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityInclusiveEx
 
 TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityExclusiveInclusive) {
   const auto& allowed_values{int32_range(
-      0, 65535, tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_EXCLUSIVE_INCLUSIVE)};
+      0, 65535,
+      tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_EXCLUSIVE_INCLUSIVE)};
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(0)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535)));
@@ -121,7 +124,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityExclusiveIn
 
 TEST(RadioSettingsTest, CanIdentifyValidInt32ValuesInRangedCapabilityExclusiveExclusive) {
   const auto& allowed_values{int32_range(
-      0, 65535, tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_EXCLUSIVE_EXCLUSIVE)};
+      0, 65535,
+      tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_EXCLUSIVE_EXCLUSIVE)};
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(0)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23)));
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(65535)));
@@ -155,7 +159,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapability) {
 
 TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityInclusiveInclusive) {
   const auto& allowed_values{int64_range(
-      0, (1L << 40), tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE)};
+      0, (1L << 40),
+      tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE)};
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(0L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535L)));
@@ -167,7 +172,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityInclusiveIn
 
 TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityInclusiveExclusive) {
   const auto& allowed_values{int64_range(
-      0, (1L << 40), tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_INCLUSIVE_EXCLUSIVE)};
+      0, (1L << 40),
+      tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_INCLUSIVE_EXCLUSIVE)};
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(0L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535L)));
@@ -179,7 +185,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityInclusiveEx
 
 TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityExclusiveInclusive) {
   const auto& allowed_values{int64_range(
-      0, (1L << 40), tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_EXCLUSIVE_INCLUSIVE)};
+      0, (1L << 40),
+      tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_EXCLUSIVE_INCLUSIVE)};
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(0L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535L)));
@@ -191,7 +198,8 @@ TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityExclusiveIn
 
 TEST(RadioSettingsTest, CanIdentifyValidInt64ValuesInRangedCapabilityExclusiveExclusive) {
   const auto& allowed_values{int64_range(
-      0, (1L << 40), tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_EXCLUSIVE_EXCLUSIVE)};
+      0, (1L << 40),
+      tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_EXCLUSIVE_EXCLUSIVE)};
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(0L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23L)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535L)));
@@ -214,7 +222,8 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapability) {
 
 TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityInclusiveInclusive) {
   const auto& allowed_values{float_range(
-      0.f, 1e7f, tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE)};
+      0.f, 1e7f,
+      tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE)};
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(0.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
@@ -226,7 +235,8 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityInclusiveIn
 
 TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityInclusiveExclusive) {
   const auto& allowed_values{float_range(
-      0.f, 1e7f, tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_INCLUSIVE_EXCLUSIVE)};
+      0.f, 1e7f,
+      tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_INCLUSIVE_EXCLUSIVE)};
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(0.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
@@ -238,7 +248,8 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityInclusiveEx
 
 TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityExclusiveInclusive) {
   const auto& allowed_values{float_range(
-      0.f, 1e7f, tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_EXCLUSIVE_INCLUSIVE)};
+      0.f, 1e7f,
+      tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_EXCLUSIVE_INCLUSIVE)};
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(0.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
@@ -250,7 +261,8 @@ TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityExclusiveIn
 
 TEST(RadioSettingsTest, CanIdentifyValidFloatValuesInRangedCapabilityExclusiveExclusive) {
   const auto& allowed_values{float_range(
-      0.f, 1e7f, tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_EXCLUSIVE_EXCLUSIVE)};
+      0.f, 1e7f,
+      tvsc_radio_nano_RangeInclusivity::tvsc_radio_nano_RangeInclusivity_EXCLUSIVE_EXCLUSIVE)};
   EXPECT_FALSE(is_valid_setting(allowed_values, as_discrete_value(0.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(23.f)));
   EXPECT_TRUE(is_valid_setting(allowed_values, as_discrete_value(65535.f)));
@@ -270,19 +282,24 @@ TEST(RadioSettingsTest, CanIdentifyValidEnumerationValuesInEnumeratedCapability)
   })};
   EXPECT_TRUE(is_valid_setting(
       allowed_values,
-      as_discrete_value(tvsc_radio_nano_ModulationTechnique::tvsc_radio_nano_ModulationTechnique_OOK)));
+      as_discrete_value(
+          tvsc_radio_nano_ModulationTechnique::tvsc_radio_nano_ModulationTechnique_OOK)));
   EXPECT_TRUE(is_valid_setting(
       allowed_values,
-      as_discrete_value(tvsc_radio_nano_ModulationTechnique::tvsc_radio_nano_ModulationTechnique_MSK)));
+      as_discrete_value(
+          tvsc_radio_nano_ModulationTechnique::tvsc_radio_nano_ModulationTechnique_MSK)));
   EXPECT_TRUE(is_valid_setting(
       allowed_values,
-      as_discrete_value(tvsc_radio_nano_ModulationTechnique::tvsc_radio_nano_ModulationTechnique_GFSK)));
+      as_discrete_value(
+          tvsc_radio_nano_ModulationTechnique::tvsc_radio_nano_ModulationTechnique_GFSK)));
   EXPECT_FALSE(is_valid_setting(
       allowed_values,
-      as_discrete_value(tvsc_radio_nano_ModulationTechnique::tvsc_radio_nano_ModulationTechnique_QPSK)));
+      as_discrete_value(
+          tvsc_radio_nano_ModulationTechnique::tvsc_radio_nano_ModulationTechnique_QPSK)));
   EXPECT_FALSE(is_valid_setting(
       allowed_values,
-      as_discrete_value(tvsc_radio_nano_ModulationTechnique::tvsc_radio_nano_ModulationTechnique_DSSS)));
+      as_discrete_value(
+          tvsc_radio_nano_ModulationTechnique::tvsc_radio_nano_ModulationTechnique_DSSS)));
 }
 
 }  // namespace tvsc::radio

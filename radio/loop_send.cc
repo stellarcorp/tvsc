@@ -6,11 +6,11 @@
 #include "hal/time/time.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
-#include "radio/packet.nanopb.pb.h"
+#include "radio/nanopb_proto/packet.pb.h"
+#include "radio/nanopb_proto/settings.pb.h"
 #include "radio/radio_configuration.h"
 #include "radio/rf69hcw_configuration.h"
 #include "radio/settings.h"
-#include "radio/settings.nanopb.pb.h"
 #include "radio/single_radio_pin_mapping.h"
 #include "radio/utilities.h"
 #include "random/random.h"
@@ -57,9 +57,9 @@ int main() {
     pb_ostream_t ostream =
         pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(identification_message.data()),
                                identification_message.capacity());
-    bool status =
-        pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_nano_RadioIdentification>::fields(),
-                  &configuration.identification());
+    bool status = pb_encode(
+        &ostream, nanopb::MessageDescriptor<tvsc_radio_nano_RadioIdentification>::fields(),
+        &configuration.identification());
     if (!status) {
       tvsc::except<std::runtime_error>("Could not encode message");
     }

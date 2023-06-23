@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "base/except.h"
-#include "radio/settings.nanopb.pb.h"
+#include "radio/nanopb_proto/settings.pb.h"
 
 namespace tvsc::radio {
 

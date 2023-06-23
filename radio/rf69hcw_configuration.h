@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "base/units.h"
-#include "radio/radio.nanopb.pb.h"
+#include "radio/nanopb_proto/radio.pb.h"
 #include "radio/radio_configuration.h"
 #include "radio/rf69hcw.h"
 
@@ -75,7 +75,8 @@ generate_capabilities_map<RF69HCW>() {
   capabilities.insert(
       {tvsc_radio_nano_Function_MODULATION_SCHEME,
        enumerated({tvsc_radio_nano_ModulationTechnique_OOK, tvsc_radio_nano_ModulationTechnique_FSK,
-                   tvsc_radio_nano_ModulationTechnique_MSK, tvsc_radio_nano_ModulationTechnique_GFSK,
+                   tvsc_radio_nano_ModulationTechnique_MSK,
+                   tvsc_radio_nano_ModulationTechnique_GFSK,
                    tvsc_radio_nano_ModulationTechnique_GMSK})});
 
   capabilities.insert({tvsc_radio_nano_Function_TX_POWER_DBM, int32_range(-2, 20)});
@@ -183,7 +184,8 @@ inline void get_bit_rate(RF69HCW& driver, tvsc_radio_nano_DiscreteValue& value) 
   value.value.float_value = driver.get_bit_rate();
 }
 
-inline void set_frequency_deviation_hz(RF69HCW& driver, const tvsc_radio_nano_DiscreteValue& value) {
+inline void set_frequency_deviation_hz(RF69HCW& driver,
+                                       const tvsc_radio_nano_DiscreteValue& value) {
   float deviation{as<float>(value)};
   driver.set_frequency_deviation_hz(deviation);
 }
@@ -211,14 +213,15 @@ inline void set_channel_activity_threshold_dbm(RF69HCW& driver,
   driver.set_channel_activity_threshold_dbm(threshold_dbm);
 }
 
-inline void get_channel_activity_threshold_dbm(RF69HCW& driver, tvsc_radio_nano_DiscreteValue& value) {
+inline void get_channel_activity_threshold_dbm(RF69HCW& driver,
+                                               tvsc_radio_nano_DiscreteValue& value) {
   value.which_value = 2;
   value.value.float_value = driver.get_channel_activity_threshold_dbm();
 }
 
 template <>
 inline tvsc_radio_nano_DiscreteValue read_setting<RF69HCW>(RF69HCW& driver,
-                                                      tvsc_radio_nano_Function function) {
+                                                           tvsc_radio_nano_Function function) {
   tvsc_radio_nano_DiscreteValue value{};
   switch (function) {
     case tvsc_radio_nano_Function_CARRIER_FREQUENCY_HZ: {
@@ -379,14 +382,16 @@ high_throughput_configuration() {
   configuration.insert({tvsc_radio_nano_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM,
                         tvsc::radio::as_discrete_value<float>(-50.f)});
 
-  configuration.insert({tvsc_radio_nano_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
-                        // Initialize these thresholds to the same value.
-                        configuration.at(tvsc_radio_nano_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM)});
+  configuration.insert(
+      {tvsc_radio_nano_Function_CHANNEL_ACTIVITY_THRESHOLD_DBM,
+       // Initialize these thresholds to the same value.
+       configuration.at(tvsc_radio_nano_Function_RECEIVE_SENSITIVITY_THRESHOLD_DBM)});
 
   return configuration;
 }
 
-inline std::unordered_map<tvsc_radio_nano_Function, tvsc_radio_nano_DiscreteValue> standard_configuration() {
+inline std::unordered_map<tvsc_radio_nano_Function, tvsc_radio_nano_DiscreteValue>
+standard_configuration() {
   std::unordered_map<tvsc_radio_nano_Function, tvsc_radio_nano_DiscreteValue> configuration{};
   configuration.max_load_factor(1.f);
   configuration.reserve(16);

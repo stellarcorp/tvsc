@@ -7,12 +7,12 @@
 #include "pb_decode.h"
 #include "pb_encode.h"
 #include "radio/encoding.h"
+#include "radio/nanopb_proto/settings.pb.h"
 #include "radio/packet.h"
 #include "radio/radio_configuration.h"
 #include "radio/rf69hcw.h"
 #include "radio/rf69hcw_configuration.h"
 #include "radio/settings.h"
-#include "radio/settings.nanopb.pb.h"
 #include "radio/single_radio_pin_mapping.h"
 #include "radio/telemetry_accumulator.h"
 #include "radio/utilities.h"
@@ -111,7 +111,8 @@ int main() {
           next_telemetry_metric_to_report = 0;
         }
 
-        const tvsc_radio_nano_TelemetryEvent& event{report.events[next_telemetry_metric_to_report++]};
+        const tvsc_radio_nano_TelemetryEvent& event{
+            report.events[next_telemetry_metric_to_report++]};
         packet.set_protocol(tvsc::radio::Protocol::TVSC_TELEMETRY);
         packet.set_sender_id(configuration.id());
         packet.set_sequence_number(next_telemetry_sequence_number++);

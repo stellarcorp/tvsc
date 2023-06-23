@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+//import "radio/nanopb_proto/settings.proto";
+
 package tvsc.service.communications;
 
 service CommunicationsService {

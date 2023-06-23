@@ -12,8 +12,8 @@
 #include "pb_decode.h"
 #include "pb_encode.h"
 #include "radio/fragment.h"
-#include "radio/packet.nanopb.pb.h"
-#include "radio/radio.nanopb.pb.h"
+#include "radio/nanopb_proto/packet.pb.h"
+#include "radio/nanopb_proto/radio.pb.h"
 #include "radio/transceiver.h"
 
 namespace tvsc::radio {

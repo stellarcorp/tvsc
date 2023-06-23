@@ -21,9 +21,9 @@
 #include <unordered_map>
 #include <vector>
 
-#include "radio/radio.nanopb.pb.h"
+#include "radio/nanopb_proto/radio.pb.h"
+#include "radio/nanopb_proto/settings.pb.h"
 #include "radio/settings.h"
-#include "radio/settings.nanopb.pb.h"
 #include "random/random.h"
 
 namespace tvsc::radio {
@@ -59,9 +59,9 @@ void write_setting(DriverT& driver, tvsc_radio_nano_Function function,
  * driver to set them using whatever approach is needed.
  */
 template <typename DriverT>
-void write_settings(
-    DriverT& driver,
-    const std::unordered_map<tvsc_radio_nano_Function, tvsc_radio_nano_DiscreteValue>& pending_settings) {
+void write_settings(DriverT& driver,
+                    const std::unordered_map<tvsc_radio_nano_Function,
+                                             tvsc_radio_nano_DiscreteValue>& pending_settings) {
   for (const auto& entry : pending_settings) {
     write_setting<DriverT>(driver, entry.first, entry.second);
   }
@@ -87,7 +87,8 @@ class RadioConfiguration final {
   const std::unordered_map<tvsc_radio_nano_Function, tvsc_radio_nano_Value> capabilities_;
   tvsc_radio_nano_RadioIdentification identification_{};
 
-  std::unordered_map<tvsc_radio_nano_Function, tvsc_radio_nano_DiscreteValue> pending_settings_changes_{};
+  std::unordered_map<tvsc_radio_nano_Function, tvsc_radio_nano_DiscreteValue>
+      pending_settings_changes_{};
 
   static tvsc_radio_nano_RadioIdentification generate_identification(std::string_view name) {
     tvsc_radio_nano_RadioIdentification identification{};

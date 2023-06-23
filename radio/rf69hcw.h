@@ -12,7 +12,7 @@
 #include "hal/spi/spi.h"
 #include "hal/time/time.h"
 #include "radio/fragment.h"
-#include "radio/radio.nanopb.pb.h"
+#include "radio/nanopb_proto/radio.pb.h"
 #include "radio/transceiver.h"
 #include "random/random.h"
 
