@@ -120,7 +120,7 @@ inline void set_frequency_hz(RF69HCW& driver, const tvsc_radio_nano_DiscreteValu
 }
 
 inline void get_frequency_hz(RF69HCW& driver, tvsc_radio_nano_DiscreteValue& value) {
-  value.which_value = 2;
+  value.which_value = tvsc_radio_nano_DiscreteValue_float_value_tag;
   value.value.float_value = driver.get_frequency_hz();
 }
 
@@ -130,7 +130,7 @@ inline void set_preamble_length(RF69HCW& driver, const tvsc_radio_nano_DiscreteV
 }
 
 inline void get_preamble_length(RF69HCW& driver, tvsc_radio_nano_DiscreteValue& value) {
-  value.which_value = 0;
+  value.which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
   value.value.int32_value = driver.get_preamble_length();
 }
 
@@ -140,7 +140,7 @@ inline void set_sync_words_length(RF69HCW& driver, const tvsc_radio_nano_Discret
 }
 
 inline void get_sync_words_length(RF69HCW& driver, tvsc_radio_nano_DiscreteValue& value) {
-  value.which_value = 0;
+  value.which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
   value.value.int32_value = driver.get_sync_words_length();
 }
 
@@ -150,7 +150,7 @@ inline void set_power_dbm(RF69HCW& driver, const tvsc_radio_nano_DiscreteValue& 
 }
 
 inline void get_power_dbm(RF69HCW& driver, tvsc_radio_nano_DiscreteValue& value) {
-  value.which_value = 0;
+  value.which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
   value.value.int32_value = driver.get_power_dbm();
 }
 
@@ -160,7 +160,7 @@ inline void set_modulation_scheme(RF69HCW& driver, const tvsc_radio_nano_Discret
 }
 
 inline void get_modulation_scheme(RF69HCW& driver, tvsc_radio_nano_DiscreteValue& value) {
-  value.which_value = 0;
+  value.which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
   value.value.int32_value = driver.get_modulation_scheme();
 }
 
@@ -170,7 +170,7 @@ inline void set_line_coding(RF69HCW& driver, const tvsc_radio_nano_DiscreteValue
 }
 
 inline void get_line_coding(RF69HCW& driver, tvsc_radio_nano_DiscreteValue& value) {
-  value.which_value = 0;
+  value.which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
   value.value.int32_value = driver.get_line_coding();
 }
 
@@ -180,7 +180,7 @@ inline void set_bit_rate(RF69HCW& driver, const tvsc_radio_nano_DiscreteValue& v
 }
 
 inline void get_bit_rate(RF69HCW& driver, tvsc_radio_nano_DiscreteValue& value) {
-  value.which_value = 2;
+  value.which_value = tvsc_radio_nano_DiscreteValue_float_value_tag;
   value.value.float_value = driver.get_bit_rate();
 }
 
@@ -191,7 +191,7 @@ inline void set_frequency_deviation_hz(RF69HCW& driver,
 }
 
 inline void get_frequency_deviation_hz(RF69HCW& driver, tvsc_radio_nano_DiscreteValue& value) {
-  value.which_value = 2;
+  value.which_value = tvsc_radio_nano_DiscreteValue_float_value_tag;
   value.value.float_value = driver.get_frequency_deviation_hz();
 }
 
@@ -203,7 +203,7 @@ inline void set_receive_sensitivity_threshold_dbm(RF69HCW& driver,
 
 inline void get_receive_sensitivity_threshold_dbm(RF69HCW& driver,
                                                   tvsc_radio_nano_DiscreteValue& value) {
-  value.which_value = 1;
+  value.which_value = tvsc_radio_nano_DiscreteValue_float_value_tag;
   value.value.float_value = driver.get_receive_sensitivity_threshold_dbm();
 }
 
@@ -215,7 +215,7 @@ inline void set_channel_activity_threshold_dbm(RF69HCW& driver,
 
 inline void get_channel_activity_threshold_dbm(RF69HCW& driver,
                                                tvsc_radio_nano_DiscreteValue& value) {
-  value.which_value = 2;
+  value.which_value = tvsc_radio_nano_DiscreteValue_float_value_tag;
   value.value.float_value = driver.get_channel_activity_threshold_dbm();
 }
 

@@ -15,12 +15,12 @@ namespace tvsc::radio {
  * Generate a Value that is a range of float values from a to b. The value of the inclusivity
  * parameter dictates which of the endpoints is included.
  */
-inline tvsc_radio_nano_Value float_range(
-    float a, float b,
-    tvsc_radio_nano_RangeInclusivity inclusivity = tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE) {
+inline tvsc_radio_nano_Value float_range(float a, float b,
+                                         tvsc_radio_nano_RangeInclusivity inclusivity =
+                                             tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE) {
   tvsc_radio_nano_Value result{};
   result.ranged_count = 1;
-  result.ranged[0].which_value = 2;
+  result.ranged[0].which_value = tvsc_radio_nano_RangedValue_float_range_tag;
   result.ranged[0].value.float_range = {a, b, inclusivity};
   return result;
 }
@@ -29,12 +29,12 @@ inline tvsc_radio_nano_Value float_range(
  * Generate a Value that is a range of 32-bit integer values from a to b. The value of the
  * inclusivity parameter dictates which of the endpoints is included.
  */
-inline tvsc_radio_nano_Value int32_range(
-    int32_t a, int32_t b,
-    tvsc_radio_nano_RangeInclusivity inclusivity = tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE) {
+inline tvsc_radio_nano_Value int32_range(int32_t a, int32_t b,
+                                         tvsc_radio_nano_RangeInclusivity inclusivity =
+                                             tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE) {
   tvsc_radio_nano_Value result{};
   result.ranged_count = 1;
-  result.ranged[0].which_value = 0;
+  result.ranged[0].which_value = tvsc_radio_nano_RangedValue_int32_range_tag;
   result.ranged[0].value.int32_range = {a, b, inclusivity};
   return result;
 }
@@ -43,12 +43,12 @@ inline tvsc_radio_nano_Value int32_range(
  * Generate a Value that is a range of 64-bit integer values from a to b. The value of the
  * inclusivity parameter dictates which of the endpoints is included.
  */
-inline tvsc_radio_nano_Value int64_range(
-    int64_t a, int64_t b,
-    tvsc_radio_nano_RangeInclusivity inclusivity = tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE) {
+inline tvsc_radio_nano_Value int64_range(int64_t a, int64_t b,
+                                         tvsc_radio_nano_RangeInclusivity inclusivity =
+                                             tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE) {
   tvsc_radio_nano_Value result{};
   result.ranged_count = 1;
-  result.ranged[0].which_value = 1;
+  result.ranged[0].which_value = tvsc_radio_nano_RangedValue_int64_range_tag;
   result.ranged[0].value.int64_range = {a, b, inclusivity};
   return result;
 }
@@ -64,7 +64,7 @@ inline tvsc_radio_nano_Value enumerated(std::initializer_list<T> values) {
 
   int i{};
   for (const auto value : values) {
-    result.discrete[i].which_value = 0;
+    result.discrete[i].which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
     result.discrete[i].value.int32_value = value;
     ++i;
   }
@@ -80,7 +80,7 @@ inline tvsc_radio_nano_Value enumerated<int32_t>(std::initializer_list<int32_t> 
 
   int i{};
   for (const auto value : values) {
-    result.discrete[i].which_value = 0;
+    result.discrete[i].which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
     result.discrete[i].value.int32_value = value;
     ++i;
   }
@@ -96,7 +96,7 @@ inline tvsc_radio_nano_Value enumerated<int64_t>(std::initializer_list<int64_t> 
 
   int i{};
   for (const auto value : values) {
-    result.discrete[i].which_value = 1;
+    result.discrete[i].which_value = tvsc_radio_nano_DiscreteValue_int64_value_tag;
     result.discrete[i].value.int64_value = value;
     ++i;
   }
@@ -112,7 +112,7 @@ inline tvsc_radio_nano_Value enumerated<float>(std::initializer_list<float> valu
 
   int i{};
   for (const auto value : values) {
-    result.discrete[i].which_value = 2;
+    result.discrete[i].which_value = tvsc_radio_nano_DiscreteValue_float_value_tag;
     result.discrete[i].value.float_value = value;
     ++i;
   }
@@ -132,7 +132,7 @@ inline T as(const tvsc_radio_nano_DiscreteValue& value) {
 
 template <>
 inline int8_t as<int8_t>(const tvsc_radio_nano_DiscreteValue& value) {
-  if (value.which_value == 0) {
+  if (value.which_value == tvsc_radio_nano_DiscreteValue_int32_value_tag) {
     return value.value.int32_value;
   } else {
     except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (int8_t)");
@@ -141,7 +141,7 @@ inline int8_t as<int8_t>(const tvsc_radio_nano_DiscreteValue& value) {
 
 template <>
 inline int16_t as<int16_t>(const tvsc_radio_nano_DiscreteValue& value) {
-  if (value.which_value == 0) {
+  if (value.which_value == tvsc_radio_nano_DiscreteValue_int32_value_tag) {
     return value.value.int32_value;
   } else {
     except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (int16_t)");
@@ -150,7 +150,7 @@ inline int16_t as<int16_t>(const tvsc_radio_nano_DiscreteValue& value) {
 
 template <>
 inline int32_t as<int32_t>(const tvsc_radio_nano_DiscreteValue& value) {
-  if (value.which_value == 0) {
+  if (value.which_value == tvsc_radio_nano_DiscreteValue_int32_value_tag) {
     return value.value.int32_value;
   } else {
     except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (int32_t)");
@@ -159,7 +159,7 @@ inline int32_t as<int32_t>(const tvsc_radio_nano_DiscreteValue& value) {
 
 template <>
 inline int64_t as<int64_t>(const tvsc_radio_nano_DiscreteValue& value) {
-  if (value.which_value == 1) {
+  if (value.which_value == tvsc_radio_nano_DiscreteValue_int64_value_tag) {
     return value.value.int64_value;
   } else {
     except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (int64_t)");
@@ -168,7 +168,7 @@ inline int64_t as<int64_t>(const tvsc_radio_nano_DiscreteValue& value) {
 
 template <>
 inline uint8_t as<uint8_t>(const tvsc_radio_nano_DiscreteValue& value) {
-  if (value.which_value == 0) {
+  if (value.which_value == tvsc_radio_nano_DiscreteValue_int32_value_tag) {
     return value.value.int32_value;
   } else {
     except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (uint8_t)");
@@ -177,7 +177,7 @@ inline uint8_t as<uint8_t>(const tvsc_radio_nano_DiscreteValue& value) {
 
 template <>
 inline uint16_t as<uint16_t>(const tvsc_radio_nano_DiscreteValue& value) {
-  if (value.which_value == 0) {
+  if (value.which_value == tvsc_radio_nano_DiscreteValue_int32_value_tag) {
     return value.value.int32_value;
   } else {
     except<std::domain_error>(
@@ -187,7 +187,7 @@ inline uint16_t as<uint16_t>(const tvsc_radio_nano_DiscreteValue& value) {
 
 template <>
 inline uint32_t as<uint32_t>(const tvsc_radio_nano_DiscreteValue& value) {
-  if (value.which_value == 0) {
+  if (value.which_value == tvsc_radio_nano_DiscreteValue_int32_value_tag) {
     return value.value.int32_value;
   } else {
     except<std::domain_error>(
@@ -197,7 +197,7 @@ inline uint32_t as<uint32_t>(const tvsc_radio_nano_DiscreteValue& value) {
 
 template <>
 inline uint64_t as<uint64_t>(const tvsc_radio_nano_DiscreteValue& value) {
-  if (value.which_value == 1) {
+  if (value.which_value == tvsc_radio_nano_DiscreteValue_int64_value_tag) {
     return value.value.int64_value;
   } else {
     except<std::domain_error>(
@@ -207,7 +207,7 @@ inline uint64_t as<uint64_t>(const tvsc_radio_nano_DiscreteValue& value) {
 
 template <>
 inline float as<float>(const tvsc_radio_nano_DiscreteValue& value) {
-  if (value.which_value == 2) {
+  if (value.which_value == tvsc_radio_nano_DiscreteValue_float_value_tag) {
     return value.value.float_value;
   } else {
     except<std::domain_error>("Attempt to translate DiscreteValue to inappropriate type (float)");
@@ -221,7 +221,7 @@ template <typename T>
 inline tvsc_radio_nano_DiscreteValue as_discrete_value(T value) {
   tvsc_radio_nano_DiscreteValue discrete{};
   auto v{static_cast<typename std::underlying_type<T>::type>(value)};
-  discrete.which_value = 0;
+  discrete.which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
   discrete.value.int32_value = v;
   return discrete;
 }
@@ -229,7 +229,7 @@ inline tvsc_radio_nano_DiscreteValue as_discrete_value(T value) {
 template <>
 inline tvsc_radio_nano_DiscreteValue as_discrete_value<int8_t>(int8_t value) {
   tvsc_radio_nano_DiscreteValue discrete{};
-  discrete.which_value = 0;
+  discrete.which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
   discrete.value.int32_value = value;
   return discrete;
 }
@@ -237,7 +237,7 @@ inline tvsc_radio_nano_DiscreteValue as_discrete_value<int8_t>(int8_t value) {
 template <>
 inline tvsc_radio_nano_DiscreteValue as_discrete_value<int16_t>(int16_t value) {
   tvsc_radio_nano_DiscreteValue discrete{};
-  discrete.which_value = 0;
+  discrete.which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
   discrete.value.int32_value = value;
   return discrete;
 }
@@ -245,7 +245,7 @@ inline tvsc_radio_nano_DiscreteValue as_discrete_value<int16_t>(int16_t value) {
 template <>
 inline tvsc_radio_nano_DiscreteValue as_discrete_value<int32_t>(int32_t value) {
   tvsc_radio_nano_DiscreteValue discrete{};
-  discrete.which_value = 0;
+  discrete.which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
   discrete.value.int32_value = value;
   return discrete;
 }
@@ -253,7 +253,7 @@ inline tvsc_radio_nano_DiscreteValue as_discrete_value<int32_t>(int32_t value) {
 template <>
 inline tvsc_radio_nano_DiscreteValue as_discrete_value<int64_t>(int64_t value) {
   tvsc_radio_nano_DiscreteValue discrete{};
-  discrete.which_value = 1;
+  discrete.which_value = tvsc_radio_nano_DiscreteValue_int64_value_tag;
   discrete.value.int64_value = value;
   return discrete;
 }
@@ -261,7 +261,7 @@ inline tvsc_radio_nano_DiscreteValue as_discrete_value<int64_t>(int64_t value) {
 template <>
 inline tvsc_radio_nano_DiscreteValue as_discrete_value<uint8_t>(uint8_t value) {
   tvsc_radio_nano_DiscreteValue discrete{};
-  discrete.which_value = 0;
+  discrete.which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
   discrete.value.int32_value = value;
   return discrete;
 }
@@ -269,7 +269,7 @@ inline tvsc_radio_nano_DiscreteValue as_discrete_value<uint8_t>(uint8_t value) {
 template <>
 inline tvsc_radio_nano_DiscreteValue as_discrete_value<uint16_t>(uint16_t value) {
   tvsc_radio_nano_DiscreteValue discrete{};
-  discrete.which_value = 0;
+  discrete.which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
   discrete.value.int32_value = value;
   return discrete;
 }
@@ -277,7 +277,7 @@ inline tvsc_radio_nano_DiscreteValue as_discrete_value<uint16_t>(uint16_t value)
 template <>
 inline tvsc_radio_nano_DiscreteValue as_discrete_value<uint32_t>(uint32_t value) {
   tvsc_radio_nano_DiscreteValue discrete{};
-  discrete.which_value = 0;
+  discrete.which_value = tvsc_radio_nano_DiscreteValue_int32_value_tag;
   discrete.value.int32_value = value;
   return discrete;
 }
@@ -285,7 +285,7 @@ inline tvsc_radio_nano_DiscreteValue as_discrete_value<uint32_t>(uint32_t value)
 template <>
 inline tvsc_radio_nano_DiscreteValue as_discrete_value<uint64_t>(uint64_t value) {
   tvsc_radio_nano_DiscreteValue discrete{};
-  discrete.which_value = 1;
+  discrete.which_value = tvsc_radio_nano_DiscreteValue_int64_value_tag;
   discrete.value.int64_value = value;
   return discrete;
 }
@@ -293,7 +293,7 @@ inline tvsc_radio_nano_DiscreteValue as_discrete_value<uint64_t>(uint64_t value)
 template <>
 inline tvsc_radio_nano_DiscreteValue as_discrete_value<float>(float value) {
   tvsc_radio_nano_DiscreteValue discrete{};
-  discrete.which_value = 2;
+  discrete.which_value = tvsc_radio_nano_DiscreteValue_float_value_tag;
   discrete.value.float_value = value;
   return discrete;
 }
@@ -309,11 +309,11 @@ inline tvsc_radio_nano_DiscreteValue as_discrete_value<float>(float value) {
 inline bool are_equivalent(const tvsc_radio_nano_DiscreteValue& lhs,
                            const tvsc_radio_nano_DiscreteValue& rhs) {
   if (lhs.which_value == rhs.which_value) {
-    if (lhs.which_value == 0) {
+    if (lhs.which_value == tvsc_radio_nano_DiscreteValue_int32_value_tag) {
       return lhs.value.int32_value == rhs.value.int32_value;
-    } else if (lhs.which_value == 1) {
+    } else if (lhs.which_value == tvsc_radio_nano_DiscreteValue_int64_value_tag) {
       return lhs.value.int64_value == rhs.value.int64_value;
-    } else if (lhs.which_value == 2) {
+    } else if (lhs.which_value == tvsc_radio_nano_DiscreteValue_float_value_tag) {
       return lhs.value.float_value == rhs.value.float_value;
     }
   }
@@ -328,8 +328,8 @@ inline bool are_equivalent(const tvsc_radio_nano_DiscreteValue& lhs,
  */
 inline bool range_contains(const tvsc_radio_nano_RangedValue& range,
                            const tvsc_radio_nano_DiscreteValue& value) {
-  if (value.which_value == 0) {
-    if (range.which_value == 0) {
+  if (value.which_value == tvsc_radio_nano_DiscreteValue_int32_value_tag) {
+    if (range.which_value == tvsc_radio_nano_RangedValue_int32_range_tag) {
       const auto& typed_range = range.value.int32_range;
       switch (typed_range.inclusive) {
         case tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE:
@@ -348,8 +348,8 @@ inline bool range_contains(const tvsc_radio_nano_RangedValue& range,
     } else {
       return false;
     }
-  } else if (value.which_value == 1) {
-    if (range.which_value == 1) {
+  } else if (value.which_value == tvsc_radio_nano_DiscreteValue_int64_value_tag) {
+    if (range.which_value == tvsc_radio_nano_RangedValue_int64_range_tag) {
       const auto& typed_range = range.value.int64_range;
       switch (typed_range.inclusive) {
         case tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE:
@@ -368,8 +368,8 @@ inline bool range_contains(const tvsc_radio_nano_RangedValue& range,
     } else {
       return false;
     }
-  } else if (value.which_value == 2) {
-    if (range.which_value == 2) {
+  } else if (value.which_value == tvsc_radio_nano_DiscreteValue_float_value_tag) {
+    if (range.which_value == tvsc_radio_nano_RangedValue_float_range_tag) {
       const auto& typed_range = range.value.float_range;
       switch (typed_range.inclusive) {
         case tvsc_radio_nano_RangeInclusivity_INCLUSIVE_INCLUSIVE:
