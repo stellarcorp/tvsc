@@ -380,13 +380,13 @@ hex(
 
 filegroup(
     name = "packet_proto_file",
-    srcs = ["packet.proto"],
+    srcs = ["packet.nanopb.proto"],
     visibility = ["//visibility:public"],
 )
 
 proto_library(
     name = "packet_proto",
-    srcs = ["packet.proto"],
+    srcs = ["packet.nanopb.proto"],
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_nanopb_nanopb//:nanopb_proto",
@@ -395,13 +395,13 @@ proto_library(
 
 filegroup(
     name = "settings_proto_file",
-    srcs = ["settings.proto"],
+    srcs = ["settings.nanopb.proto"],
     visibility = ["//visibility:public"],
 )
 
 proto_library(
     name = "settings_proto",
-    srcs = ["settings.proto"],
+    srcs = ["settings.nanopb.proto"],
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_nanopb_nanopb//:nanopb_proto",
@@ -410,13 +410,13 @@ proto_library(
 
 filegroup(
     name = "radio_proto_file",
-    srcs = ["radio.proto"],
+    srcs = ["radio.nanopb.proto"],
     visibility = ["//visibility:public"],
 )
 
 proto_library(
     name = "radio_proto",
-    srcs = ["radio.proto"],
+    srcs = ["radio.nanopb.proto"],
     visibility = ["//visibility:public"],
     deps = [
         ":settings_proto",

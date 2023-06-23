@@ -21,9 +21,9 @@
 #include <unordered_map>
 #include <vector>
 
-#include "radio/radio.pb.h"
+#include "radio/radio.nanopb.pb.h"
 #include "radio/settings.h"
-#include "radio/settings.pb.h"
+#include "radio/settings.nanopb.pb.h"
 #include "random/random.h"
 
 namespace tvsc::radio {

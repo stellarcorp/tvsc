@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "radio/settings.proto";
+import "radio/settings.nanopb.proto";
 import "nanopb.proto";
 
 package tvsc.radio;

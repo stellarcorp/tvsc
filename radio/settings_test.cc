@@ -5,8 +5,8 @@
 
 #include "base/units.h"
 #include "gmock/gmock.h"
-#include "radio/radio.pb.h"
-#include "radio/settings.pb.h"
+#include "radio/radio.nanopb.pb.h"
+#include "radio/settings.nanopb.pb.h"
 
 namespace tvsc::radio {
 

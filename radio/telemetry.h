@@ -1,4 +1,4 @@
-#include "radio/settings.pb.h"
+#include "radio/settings.nanopb.pb.h"
 
 namespace tvsc::radio {
 

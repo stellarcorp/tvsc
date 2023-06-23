@@ -12,7 +12,7 @@
 #include "radio/rf69hcw.h"
 #include "radio/rf69hcw_configuration.h"
 #include "radio/settings.h"
-#include "radio/settings.pb.h"
+#include "radio/settings.nanopb.pb.h"
 #include "radio/single_radio_pin_mapping.h"
 #include "radio/telemetry.h"
 #include "radio/utilities.h"

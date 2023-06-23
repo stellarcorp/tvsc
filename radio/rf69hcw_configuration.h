@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "base/units.h"
-#include "radio/radio.pb.h"
+#include "radio/radio.nanopb.pb.h"
 #include "radio/radio_configuration.h"
 #include "radio/rf69hcw.h"
 
