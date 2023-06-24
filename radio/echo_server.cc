@@ -101,7 +101,7 @@ int main() {
       }
     }
 
-    if (tvsc::hal::time::time_millis() - last_telemetry_report_time > 5000) {
+    if (tvsc::hal::time::time_millis() - last_telemetry_report_time > 1500) {
       last_telemetry_report_time = tvsc::hal::time::time_millis();
 
       tvsc::hal::output::println("Generating telemetry report");
