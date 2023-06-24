@@ -14,6 +14,12 @@ let receive_stream = null;
 let telemetry_data = {};
 let charts = {};
 
+// How to graph each of the telemetry domains.
+// We want to render the time domain (domain 0) with the time on the Y-axis and just a straight
+// increment on the X-axis. This will help visualize time overflows, reboots, etc.
+const yonly_telemetry_domains = [0];
+const xy_telemetry_domains = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
 /**
  * The protobuf library generates TypedArrays, but the web socket API uses buffers. Here we
  * transform from the encoded protobuf to the buffer that is needed to transmit the data.
@@ -290,8 +296,6 @@ function CreateTransmitSocket() {
 }
 
 function ConfigureTelemetryCharts() {
-  const yonly_telemetry_domains = [0];
-  const xy_telemetry_domains = [2, 3, 4, 5, 6, 7, 8];
   for (let i in xy_telemetry_domains) {
     let domain = xy_telemetry_domains[i];
     let container_id = '#telemetry-container-' + domain;
@@ -319,11 +323,6 @@ function ConfigureTelemetryCharts() {
 }
 
 function RenderTelemetryEvent(msg) {
-  // We want to render the time domain (domain 0) with the time on the Y-axis and just a straight
-  // increment on the X-axis. This will help visualize time overflows, reboots, etc.
-  const yonly_telemetry_domains = [0];
-  const xy_telemetry_domains = [2, 3, 4, 5, 6, 7, 8];
-
   let chart = charts[msg.domain];
   let data = telemetry_data[msg.domain];
 
