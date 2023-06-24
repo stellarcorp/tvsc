@@ -102,6 +102,8 @@ int main() {
     }
 
     if (tvsc::hal::time::time_millis() - last_telemetry_report_time > 1500) {
+      telemetry.set_rssi_dbm(rf69.read_rssi_dbm());
+
       last_telemetry_report_time = tvsc::hal::time::time_millis();
 
       tvsc::hal::output::println("Generating telemetry report");
