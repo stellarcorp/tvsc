@@ -7,6 +7,13 @@ let datetime_stream = null;
 let monitor_stream = null;
 let receive_stream = null;
 
+// Telemetry data and charts of that data. These are a map from the event domain to the telemetry
+// data or the c3 chart object. The telemetry data is an array of two arrays. The first array has
+// the first element of 'x'; this array contains the x-axis data values. The second array has the
+// first element of 'data'; this array contains the y-axis data values.
+let telemetry_data = {};
+let charts = {};
+
 /**
  * The protobuf library generates TypedArrays, but the web socket API uses buffers. Here we
  * transform from the encoded protobuf to the buffer that is needed to transmit the data.
@@ -282,27 +289,61 @@ function CreateTransmitSocket() {
   });
 }
 
-function RenderTelemetryEvent(msg) {
-  let level1 = $('<div class="telemetry-event">');
-  let level2 = $('<div class="telemetry-event-detail">');
-  let timestamp_element = $('<span class="telemetry-timestamp">').text(msg.timeMs);
-  let value_element = $('<span class="telemetry-value">');
+function ConfigureTelemetryCharts() {
+  const yonly_telemetry_domains = [0];
+  const xy_telemetry_domains = [2, 3, 4, 5, 6, 7, 8];
+  for (let i in xy_telemetry_domains) {
+    let domain = xy_telemetry_domains[i];
+    let container_id = '#telemetry-container-' + domain;
+    telemetry_data[domain] = [['x'], ['data']];
+    let chart = c3.generate({
+      bindto: container_id,
+      data: {x: 'x', columns: telemetry_data[domain]},
+      axis: {x: {label: {text: 'Time (ms)'}}},
+      legend: {hide: true},
+    });
+    charts[domain] = chart;
+  }
+  for (let i in yonly_telemetry_domains) {
+    let domain = yonly_telemetry_domains[i];
+    let container_id = '#telemetry-container-' + domain;
+    telemetry_data[domain] = [['data']];
+    let chart = c3.generate({
+      bindto: container_id,
+      data: {columns: telemetry_data[domain], type: 'bar'},
+      axis: {x: {label: {text: 'Index'}}},
+      legend: {hide: true},
+    });
+    charts[domain] = chart;
+  }
+}
 
-  if (msg.measurement.hasOwnProperty('int64Value')) {
-    value_element.text(msg.measurement.int64Value);
-  } else if (msg.measurement.hasOwnProperty('int32Value')) {
-    value_element.text(msg.measurement.int32Value);
+function RenderTelemetryEvent(msg) {
+  // We want to render the time domain (domain 0) with the time on the Y-axis and just a straight
+  // increment on the X-axis. This will help visualize time overflows, reboots, etc.
+  const yonly_telemetry_domains = [0];
+  const xy_telemetry_domains = [2, 3, 4, 5, 6, 7, 8];
+
+  let chart = charts[msg.domain];
+  let data = telemetry_data[msg.domain];
+
+  let value = 0;
+  if (msg.measurement.hasOwnProperty('int32Value')) {
+    value = msg.measurement.int32Value;
+  } else if (msg.measurement.hasOwnProperty('int64Value')) {
+    value = msg.measurement.int64Value;
   } else if (msg.measurement.hasOwnProperty('floatValue')) {
-    value_element.text(msg.measurement.floatValue);
-  } else {
-    value_element.text(0);
+    value = msg.measurement.floatValue;
   }
 
-  level2.append(timestamp_element, value_element);
-  level1.append(level2);
-
-  let container_id = '#telemetry-container-' + msg.domain;
-  $(container_id).append(level1);
+  if (yonly_telemetry_domains.includes(msg.domain)) {
+    data[0].push(value);
+    chart.load({columns: data});
+  } else if (xy_telemetry_domains.includes(msg.domain)) {
+    data[0].push(msg.timeMs);
+    data[1].push(value);
+    chart.load({columns: data});
+  }
 }
 
 function CreateMonitorStream() {
@@ -461,6 +502,8 @@ function InitializeModule() {
             CreateTransmitSocket();
             CreateMonitorStream();
             CreateReceiveStream();
+
+            ConfigureTelemetryCharts();
           });
         });
       });
