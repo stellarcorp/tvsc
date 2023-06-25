@@ -42,7 +42,7 @@ class PacketSink final {
    * processing, don't call pop().
    *
    * The packet queue implements a form of fair queuing. The algorithm to choose which packet to
-   * send is implemented in the peek() call.
+   * send is implemented in the packet queue's peek() call.
    */
   const PacketT& peek() {
     last_peek_ = packet_queue_->peek();
