@@ -94,7 +94,7 @@ class RadioActivities final {
     }
   }
 
-  void maybe_receive_fragment(uint64_t current_time) {
+  void maybe_receive_fragment(uint64_t /*current_time*/) {
     // Clear the fragment buffer.
     fragment.length = 0;
 
@@ -140,7 +140,7 @@ class RadioActivities final {
     }
   }
 
-  void maybe_transmit_fragment(uint64_t current_time) {
+  void maybe_transmit_fragment(uint64_t /*current_time*/) {
     if (have_packet_to_transmit_) {
       encode(packet, fragments);
 
@@ -150,7 +150,7 @@ class RadioActivities final {
           tvsc::hal::output::println("Packet sent.");
           telemetry.increment_packets_transmitted();
           telemetry.set_transmit_queue_size(0);
-	  have_packet_to_transmit_ = false;
+          have_packet_to_transmit_ = false;
         } else {
           tvsc::hal::output::println("Transmit failed.");
           telemetry.increment_transmit_errors();
