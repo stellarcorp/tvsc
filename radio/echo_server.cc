@@ -63,7 +63,7 @@ class RadioActivities final {
   }
 
   void maybe_transmit_telemetry(uint64_t current_time) {
-    if (current_time - last_telemetry_report_time_ > 100 && !have_packet_to_transmit_) {
+    if (current_time - last_telemetry_report_time_ > 250 && !have_packet_to_transmit_) {
       last_telemetry_report_time_ = current_time;
 
       const tvsc_radio_nano_TelemetryReport& report{telemetry_.generate_telemetry_report()};
