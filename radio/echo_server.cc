@@ -27,65 +27,65 @@ class RadioActivities final {
   using FragmentT = Fragment<RadioT::max_mtu()>;
   using EncodedPacketsT = EncodedPacket<RadioT::max_mtu(), 1>;
 
-  const uint8_t RF69_RST{SingleRadioPinMapping::reset_pin()};
-  const uint8_t RF69_CS{SingleRadioPinMapping::chip_select_pin()};
-  const uint8_t RF69_DIO0{SingleRadioPinMapping::interrupt_pin()};
+  const uint8_t RADIO_RESET_PIN{SingleRadioPinMapping::reset_pin()};
+  const uint8_t RADIO_CHIP_SELECT_PIN{SingleRadioPinMapping::chip_select_pin()};
+  const uint8_t RADIO_INTERRUPT_PIN{SingleRadioPinMapping::interrupt_pin()};
 
-  tvsc::hal::spi::SpiBus bus{tvsc::hal::spi::get_default_spi_bus()};
-  tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
-  RadioT rf69{spi_peripheral, RF69_DIO0, RF69_RST};
+  tvsc::hal::spi::SpiBus bus_{tvsc::hal::spi::get_default_spi_bus()};
+  tvsc::hal::spi::SpiPeripheral spi_peripheral_{bus_, RADIO_CHIP_SELECT_PIN, 0x80};
+  RadioT radio_{spi_peripheral_, RADIO_INTERRUPT_PIN, RADIO_RESET_PIN};
 
-  RadioConfiguration<RadioT> configuration{rf69, SingleRadioPinMapping::board_name()};
+  RadioConfiguration<RadioT> configuration_{radio_, SingleRadioPinMapping::board_name()};
 
-  TelemetryAccumulator telemetry{};
+  TelemetryAccumulator telemetry_{};
 
   // We only support a single packet waiting to be transmitted. That packet may only contain a
   // single fragment.
   // TODO(james): Relax these constraints by using the PacketTxQueue.
-  FragmentT fragment{};
-  PacketT packet{};
-  EncodedPacketsT fragments{};
+  FragmentT fragment_{};
+  PacketT packet_{};
+  EncodedPacketsT fragments_{};
   bool have_packet_to_transmit_{false};
 
-  uint32_t previous_sequence_number{};
-  uint16_t next_telemetry_metric_to_report{0};
-  uint16_t next_telemetry_sequence_number{0};
+  uint32_t previous_sequence_number_{};
+  uint16_t next_telemetry_metric_to_report_{0};
+  uint16_t next_telemetry_sequence_number_{0};
 
-  uint64_t last_telemetry_report_time{};
-  uint64_t last_rssi_measurement_time{};
+  uint64_t last_telemetry_report_time_{};
+  uint64_t last_rssi_measurement_time_{};
 
   void maybe_measure_rssi(uint64_t current_time) {
-    if (current_time - last_rssi_measurement_time > 2000) {
-      telemetry.set_rssi_dbm(rf69.read_rssi_dbm());
-      last_rssi_measurement_time = current_time;
+    if (current_time - last_rssi_measurement_time_ > 2000) {
+      last_rssi_measurement_time_ = current_time;
+      telemetry_.set_rssi_dbm(radio_.read_rssi_dbm());
     }
   }
 
   void maybe_transmit_telemetry(uint64_t current_time) {
-    if (current_time - last_telemetry_report_time > 150 && !have_packet_to_transmit_) {
-      last_telemetry_report_time = current_time;
+    if (current_time - last_telemetry_report_time_ > 150 && !have_packet_to_transmit_) {
+      last_telemetry_report_time_ = current_time;
 
       tvsc::hal::output::println("Generating telemetry report");
-      const tvsc_radio_nano_TelemetryReport& report{telemetry.generate_telemetry_report()};
+      const tvsc_radio_nano_TelemetryReport& report{telemetry_.generate_telemetry_report()};
       if (report.events_count > 0) {
-        if (next_telemetry_metric_to_report >= report.events_count) {
-          next_telemetry_metric_to_report = 0;
+        if (next_telemetry_metric_to_report_ >= report.events_count) {
+          next_telemetry_metric_to_report_ = 0;
         }
 
         const tvsc_radio_nano_TelemetryEvent& event{
-            report.events[next_telemetry_metric_to_report++]};
+            report.events[next_telemetry_metric_to_report_++]};
 
         pb_ostream_t ostream = pb_ostream_from_buffer(
-            reinterpret_cast<uint8_t*>(packet.payload().data()), packet.capacity());
+            reinterpret_cast<uint8_t*>(packet_.payload().data()), packet_.capacity());
         if (pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_nano_TelemetryEvent>::fields(),
                       &event)) {
-          packet.set_payload_length(ostream.bytes_written);
-          packet.set_protocol(Protocol::TVSC_TELEMETRY);
-          packet.set_sender_id(configuration.id());
-          packet.set_sequence_number(next_telemetry_sequence_number++);
+          packet_.set_payload_length(ostream.bytes_written);
+          packet_.set_protocol(Protocol::TVSC_TELEMETRY);
+          packet_.set_sender_id(configuration_.id());
+          packet_.set_sequence_number(next_telemetry_sequence_number_++);
 
           have_packet_to_transmit_ = true;
-          telemetry.set_transmit_queue_size(1);
+          telemetry_.set_transmit_queue_size(1);
         } else {
           // Log telemetry encoding issue.
           tvsc::hal::output::println("Could not encode telemetry packet");
@@ -96,45 +96,45 @@ class RadioActivities final {
 
   void maybe_receive_fragment(uint64_t /*current_time*/) {
     // Clear the fragment buffer.
-    fragment.length = 0;
+    fragment_.length = 0;
 
     // See if the radio has any fragments to receive.
-    if (recv(rf69, fragment)) {
+    if (recv(radio_, fragment_)) {
       // If we have a fragment, check if we can decode it. Fragments that can't be decoded are just
       // ignored.
-      if (decode(fragment, packet)) {
+      if (decode(fragment_, packet_)) {
         // After we decode it, check if it is a fragment that we sent. Ignore our own fragments.
         // TODO(james): Determine if we actually need this check. For a half-duplex transceiver, it
         // is unlikely that we will receive our own transmissions, unless there is a repeater.
-        if (packet.sender_id() != configuration.id()) {
-          telemetry.increment_packets_received();
+        if (packet_.sender_id() != configuration_.id()) {
+          telemetry_.increment_packets_received();
 
-          if (packet.sequence_number() != previous_sequence_number + 1 &&
-              previous_sequence_number != 0) {
+          if (packet_.sequence_number() != previous_sequence_number_ + 1 &&
+              previous_sequence_number_ != 0) {
             // Detect if we have dropped any fragments/packets.
-            telemetry.increment_packets_dropped();
+            telemetry_.increment_packets_dropped();
             tvsc::hal::output::print("Dropped packets. packet.sequence_number: ");
-            tvsc::hal::output::print(packet.sequence_number());
+            tvsc::hal::output::print(packet_.sequence_number());
             tvsc::hal::output::print(", previous_sequence_number: ");
-            tvsc::hal::output::print(previous_sequence_number);
+            tvsc::hal::output::print(previous_sequence_number_);
             tvsc::hal::output::println();
           }
 
-          previous_sequence_number = packet.sequence_number();
+          previous_sequence_number_ = packet_.sequence_number();
 
           tvsc::hal::output::print("From sender: ");
-          tvsc::hal::output::print(packet.sender_id());
+          tvsc::hal::output::print(packet_.sender_id());
           tvsc::hal::output::print(", sequence: ");
-          tvsc::hal::output::print(packet.sequence_number());
+          tvsc::hal::output::print(packet_.sequence_number());
           tvsc::hal::output::print(", payload_length: ");
-          tvsc::hal::output::println(packet.payload_length());
+          tvsc::hal::output::println(packet_.payload_length());
 
           // Enqueue the same packet for transmission.
           // Mark ourselves as the sender now.
-          packet.set_sender_id(configuration.id());
+          packet_.set_sender_id(configuration_.id());
 
           have_packet_to_transmit_ = true;
-          telemetry.set_transmit_queue_size(1);
+          telemetry_.set_transmit_queue_size(1);
         }
       }
     }
@@ -142,20 +142,20 @@ class RadioActivities final {
 
   void maybe_transmit_fragment(uint64_t /*current_time*/) {
     if (have_packet_to_transmit_) {
-      encode(packet, fragments);
+      encode(packet_, fragments_);
 
-      if (fragments.num_fragments == 1) {
+      if (fragments_.num_fragments == 1) {
         // Note that switching into TX mode and sending a packet takes between 50-150ms.
-        if (send(rf69, fragments.buffers[0])) {
+        if (send(radio_, fragments_.buffers[0])) {
           tvsc::hal::output::println("Packet sent.");
-          telemetry.increment_packets_transmitted();
-          telemetry.set_transmit_queue_size(0);
+          telemetry_.increment_packets_transmitted();
+          telemetry_.set_transmit_queue_size(0);
           have_packet_to_transmit_ = false;
         } else {
           tvsc::hal::output::println("Transmit failed.");
-          telemetry.increment_transmit_errors();
+          telemetry_.increment_transmit_errors();
         }
-      } else if (fragments.num_fragments > 1) {
+      } else if (fragments_.num_fragments > 1) {
         tvsc::hal::output::println(
             "Packet required multiple fragments. Dropping. (Echo received packet.)");
       } else {
@@ -168,11 +168,11 @@ class RadioActivities final {
  public:
   RadioActivities() {
     tvsc::hal::output::println("Board id: ");
-    print_id(configuration.identification());
+    print_id(configuration_.identification());
     tvsc::hal::output::println();
 
-    configuration.change_values(default_configuration<RadioT>());
-    configuration.commit_changes();
+    configuration_.change_values(default_configuration<RadioT>());
+    configuration_.commit_changes();
   }
 
   void iterate() {
