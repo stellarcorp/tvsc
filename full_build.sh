@@ -10,7 +10,7 @@ for mode in fastbuild opt dbg
 do
     for sku in linux
     do
-	bazel test --compilation_mode "${mode}" --config="${sku}" //...
+	./bazelisk-linux-amd64 test --compilation_mode "${mode}" --config="${sku}" //...
     done
 done
 
@@ -18,6 +18,6 @@ for mode in fastbuild opt dbg
 do
     for sku in odroid_m1 teensy40 teensy41
     do
-	bazel build --compilation_mode "${mode}" --config="${sku}" //...
+	./bazelisk-linux-amd64 build --compilation_mode "${mode}" --config="${sku}" //...
     done
 done
