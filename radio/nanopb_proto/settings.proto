@@ -51,9 +51,9 @@ enum Function {
 }
 
 /**
- * Measurements that can be made on a radio for use in telemetry.
+ * Metrics that can be measured on a radio for use in telemetry.
  */
-enum Measurement {
+enum Metric {
   // The current time on the device.
   TIME = 0;
 
@@ -81,21 +81,23 @@ enum Measurement {
 }
 
 message TelemetryEvent {
+  uint32 device_id = 1;
+
   /**
    * Time  of the event in milliseconds since the epoch of the clock on the device. Note that this
    * clock may or may not be monotonically increasing, and in particular, it may overflow between
    * measurements. To maintain some basic time synchronization, devices should periodically issue
    * TIME measurements with the current value of the clock.
    */
-  uint32 time_ms = 1;
+  uint32 time_ms = 2;
   /**
    * What is being measured.
    */
-  Measurement domain = 2;
+  Metric metric = 3;
   /**
    * The measured value.
    */
-  DiscreteValue measurement = 3;
+  DiscreteValue measurement = 4;
 }
 
 message TelemetryReport {

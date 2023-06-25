@@ -7,12 +7,12 @@ class TelemetryAccumulator final {
   tvsc_radio_nano_TelemetryReport report_{};
 
   void update_time_measurement();
-  void update_owned_measurements();
+  void update_owned_metrics();
 
-  tvsc_radio_nano_TelemetryEvent* find_event(tvsc_radio_nano_Measurement domain) {
+  tvsc_radio_nano_TelemetryEvent* find_event(tvsc_radio_nano_Metric metric) {
     for (pb_size_t index = 0; index < report_.events_count; ++index) {
       tvsc_radio_nano_TelemetryEvent& event{report_.events[index]};
-      if (event.domain == domain) {
+      if (event.metric == metric) {
         return &event;
       }
     }
@@ -20,7 +20,7 @@ class TelemetryAccumulator final {
   }
 
  public:
-  TelemetryAccumulator();
+  TelemetryAccumulator(uint32_t device_id);
 
   void increment_packets_received();
   void increment_packets_transmitted();

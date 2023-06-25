@@ -37,7 +37,7 @@ class RadioActivities final {
 
   RadioConfiguration<RadioT> configuration_{radio_, SingleRadioPinMapping::board_name()};
 
-  TelemetryAccumulator telemetry_{};
+  TelemetryAccumulator telemetry_{configuration_.id()};
 
   // We only support a single packet waiting to be transmitted. That packet may only contain a
   // single fragment.
