@@ -94,3 +94,15 @@ cc_library(
         ":teensy4_core",
     ],
 )
+
+cc_library(
+    name = "eeprom",
+    target_compatible_with = [
+        "@platforms//os:none",
+        "@platforms//cpu:armv7e-mf",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":teensy4_core",
+    ],
+)

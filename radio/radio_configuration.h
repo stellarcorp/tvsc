@@ -111,6 +111,18 @@ class RadioConfiguration final {
     pending_settings_changes_.reserve(capabilities_.size());
   }
 
+  RadioConfiguration(DriverT& driver, const tvsc_radio_nano_RadioIdentification& identification)
+      : driver_(&driver),
+        capabilities_(generate_capabilities_map<DriverT>()),
+        identification_(identification) {
+    // We know the number of settings at compile time, and we know that number will not change.
+    // Because of this, we can reserve the exact number of buckets we need and use a load factor of
+    // 1 to save space. Also, since the number of elements is tiny, even if we "degrade" lookups to
+    // O(n) with this setup, we will still see good performance.
+    pending_settings_changes_.max_load_factor(1.f);
+    pending_settings_changes_.reserve(capabilities_.size());
+  }
+
   uint64_t expanded_id() const { return identification_.expanded_id(); }
 
   uint32_t id() const { return identification_.id; }

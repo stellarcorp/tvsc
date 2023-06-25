@@ -1,5 +1,6 @@
 #include <string>
 
+#include "hal/eeprom/eeprom.h"
 #include "hal/gpio/pins.h"
 #include "hal/output/output.h"
 #include "hal/spi/spi.h"
@@ -35,7 +36,7 @@ class RadioActivities final {
   tvsc::hal::spi::SpiPeripheral spi_peripheral_{bus_, RADIO_CHIP_SELECT_PIN, 0x80};
   RadioT radio_{spi_peripheral_, RADIO_INTERRUPT_PIN, RADIO_RESET_PIN};
 
-  RadioConfiguration<RadioT> configuration_{radio_, SingleRadioPinMapping::board_name()};
+  RadioConfiguration<RadioT> configuration_;
 
   TelemetryAccumulator telemetry_{configuration_.id()};
 
@@ -166,13 +167,21 @@ class RadioActivities final {
   }
 
  public:
-  RadioActivities() {
+  RadioActivities() : configuration_(radio_, SingleRadioPinMapping::board_name()) {
+    configuration_.change_values(default_configuration<RadioT>());
+    configuration_.commit_changes();
+  }
+
+  RadioActivities(const tvsc_radio_nano_RadioIdentification& identification)
+      : configuration_(radio_, identification) {
+    configuration_.change_values(default_configuration<RadioT>());
+    configuration_.commit_changes();
+  }
+
+  void print_configuration() const {
     tvsc::hal::output::println("Board id: ");
     print_id(configuration_.identification());
     tvsc::hal::output::println();
-
-    configuration_.change_values(default_configuration<RadioT>());
-    configuration_.commit_changes();
   }
 
   void iterate() {
@@ -191,9 +200,33 @@ int main() {
   tvsc::random::initialize_seed();
   tvsc::hal::gpio::initialize_gpio();
 
-  tvsc::radio::RadioActivities activities{};
-  while (true) {
-    activities.iterate();
+  static constexpr size_t RADIO_IDENTIFICATION_EEPROM_LOCATION{0};
+  tvsc_radio_nano_RadioIdentification identification{};
+
+  tvsc::hal::eeprom::Eeprom eeprom{};
+  bool has_saved_identification{!eeprom.is_empty(RADIO_IDENTIFICATION_EEPROM_LOCATION)};
+  if (has_saved_identification) {
+    eeprom.get(RADIO_IDENTIFICATION_EEPROM_LOCATION, identification);
+    tvsc::hal::output::println("Board identification initialized from EEPROM.");
+  }
+
+  if (!has_saved_identification) {
+    eeprom.put(RADIO_IDENTIFICATION_EEPROM_LOCATION, identification);
+    tvsc::hal::output::println("Board identification saved to EEPROM.");
+  }
+
+  if (has_saved_identification) {
+    tvsc::radio::RadioActivities activities{identification};
+    activities.print_configuration();
+    while (true) {
+      activities.iterate();
+    }
+  } else {
+    tvsc::radio::RadioActivities activities{};
+    activities.print_configuration();
+    while (true) {
+      activities.iterate();
+    }
   }
 
   return 0;

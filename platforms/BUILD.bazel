@@ -9,6 +9,7 @@ platform(
         ":std_cpp",
         ":no_gpio",
         ":no_spi",
+        ":no_eeprom",
         ":os_networking",
     ],
 )
@@ -23,6 +24,7 @@ platform(
         ":std_cpp",
         ":wiring_pi_gpio",
         ":spidev_spi",
+        ":no_eeprom",
         ":os_networking",
         ":odroid_m1_board",
     ],
@@ -37,6 +39,7 @@ platform(
         ":teensyduino_core",
         ":teensyduino_gpio",
         ":teensyduino_spi",
+        ":teensyduino_eeprom",
         ":no_networking",
         ":teensy40_board",
     ],
@@ -50,6 +53,7 @@ platform(
         ":teensyduino_core",
         ":teensyduino_gpio",
         ":teensyduino_spi",
+        ":teensyduino_eeprom",
         ":no_networking",
         ":teensy41_board",
     ],
@@ -106,6 +110,19 @@ constraint_value(
 constraint_value(
     name = "no_spi",
     constraint_setting = "spi",
+)
+
+# EEPROM support.
+constraint_setting(name = "eeprom")
+
+constraint_value(
+    name = "teensyduino_eeprom",
+    constraint_setting = "eeprom",
+)
+
+constraint_value(
+    name = "no_eeprom",
+    constraint_setting = "eeprom",
 )
 
 # Networking support, particularly TCP/IP.
