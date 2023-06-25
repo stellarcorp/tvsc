@@ -1,0 +1,46 @@
+load("//platforms:hex.bzl", "hex")
+
+cc_library(
+    name = "eeprom",
+    target_compatible_with = select({
+        "//conditions:default": [
+        ],
+        "//platforms:no_eeprom": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [":eeprom_header"] + select({
+        "//platforms:teensyduino_eeprom": [
+            ":teensyduino_eeprom",
+        ],
+    }),
+)
+
+cc_library(
+    name = "eeprom_header",
+    hdrs = [
+        "eeprom.h",
+    ],
+)
+
+cc_library(
+    name = "teensyduino_eeprom",
+    srcs = [
+        "teensyduino_eeprom.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:teensyduino_eeprom": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":eeprom_header",
+        "//hal/gpio",
+        "//hal/time",
+        "//third_party/arduino:core",
+        "//third_party/arduino:eeprom",
+    ],
+)

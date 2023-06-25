@@ -63,10 +63,9 @@ class RadioActivities final {
   }
 
   void maybe_transmit_telemetry(uint64_t current_time) {
-    if (current_time - last_telemetry_report_time_ > 150 && !have_packet_to_transmit_) {
+    if (current_time - last_telemetry_report_time_ > 100 && !have_packet_to_transmit_) {
       last_telemetry_report_time_ = current_time;
 
-      tvsc::hal::output::println("Generating telemetry report");
       const tvsc_radio_nano_TelemetryReport& report{telemetry_.generate_telemetry_report()};
       if (report.events_count > 0) {
         if (next_telemetry_metric_to_report_ >= report.events_count) {
@@ -100,7 +99,9 @@ class RadioActivities final {
     fragment_.length = 0;
 
     // See if the radio has any fragments to receive.
-    if (recv(radio_, fragment_)) {
+    if (radio_.has_fragment_available()) {
+      radio_.read_received_fragment(fragment_);
+
       // If we have a fragment, check if we can decode it. Fragments that can't be decoded are just
       // ignored.
       if (decode(fragment_, packet_)) {
@@ -148,7 +149,6 @@ class RadioActivities final {
       if (fragments_.num_fragments == 1) {
         // Note that switching into TX mode and sending a packet takes between 50-150ms.
         if (send(radio_, fragments_.buffers[0])) {
-          tvsc::hal::output::println("Packet sent.");
           telemetry_.increment_packets_transmitted();
           telemetry_.set_transmit_queue_size(0);
           have_packet_to_transmit_ = false;

@@ -378,7 +378,6 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     // print_interrupt_registers();
 
     if (op_mode_ == OperationalMode::TX && ((irq_flags2 & RF69HCW_IRQFLAGS2_PACKETSENT) != 0)) {
-      // tvsc::hal::output::println("RF69HCW::handle_interrupt() -- packet sent");
       // A message has been fully transmitted.
       // Clear the FIFO and move the operational mode away from TX.
       // Note that wait_fragment_transmitted() and derivatives use the operational mode to know if
@@ -390,7 +389,6 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     // set before decryption. Instead, we check for PAYLOADREADY which gets set after decryption.
     // This check also guarantees that we have a valid CRC.
     if (op_mode_ == OperationalMode::RX && ((irq_flags2 & RF69HCW_IRQFLAGS2_PAYLOADREADY) != 0)) {
-      tvsc::hal::output::println("RF69HCW::handle_interrupt() -- packet received");
       set_mode_standby();
 
       // Transfer the data in the FIFO to our buffer.
@@ -662,7 +660,8 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
       YIELD;
     }
 
-    tvsc::hal::output::print("RF69HCW::wait_fragment_transmitted() -- timed out. elapsed time (ms): ");
+    tvsc::hal::output::print(
+        "RF69HCW::wait_fragment_transmitted() -- timed out. elapsed time (ms): ");
     tvsc::hal::output::println(tvsc::hal::time::time_millis() - start);
 
     return false;

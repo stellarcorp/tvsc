@@ -92,7 +92,6 @@ class PacketAssembler final {
  public:
   template <size_t MTU>
   void add_fragment(const Fragment<MTU>& fragment) {
-    DLOG(INFO) << "PacketAssembler::add_fragment()";
     PacketT packet{};
     decode(fragment, packet);
     std::lock_guard lock{m_};
@@ -108,7 +107,6 @@ class PacketAssembler final {
   }
 
   void consume_packet(PacketT& output) {
-    DLOG(INFO) << "PacketAssembler::consume_packet()";
     std::lock_guard lock{m_};
     const auto first{complete_packets_.begin()};
     const uint64_t id{*first};

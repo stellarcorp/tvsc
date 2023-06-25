@@ -112,20 +112,15 @@ class TransceiverMonitor final {
     // Receive a fragment, if one is available.
     // if (radio_->has_fragment_available()) {
     if (radio_->wait_fragment_available(50)) {
-      LOG(WARNING) << "TransceiverMonitor::iterate() -- radio has RX fragment available.";
-      LOG(INFO) << "TransceiverMonitor::iterate() -- radio has RX fragment available.";
       Fragment<HalfDuplexTransceiver<MTU>::max_mtu()> fragment{};
       radio_->read_received_fragment(fragment);
       rx_queue_->add_fragment(fragment);
-      LOG(INFO) << "TransceiverMonitor::iterate() -- fragment added to RX queue.";
 
       did_something = true;
     }
 
     if (rx_queue_->has_complete_packets()) {
-      LOG(INFO) << "TransceiverMonitor::iterate() -- radio has complete RX packet available.";
       notify_fn_(rx_queue_->consume_packet());
-
       did_something = true;
     }
 

@@ -64,7 +64,6 @@ CommunicationsServiceImpl::CommunicationsServiceImpl() {
 }
 
 void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& packet) {
-  LOG(WARNING) << "CommunicationsServerImpl::post_received_packet()";
   if (packet.protocol() == tvsc::radio::Protocol::INET) {
     Message message{};
     message.ParseFromString(std::string(packet.payload().as_string_view(packet.payload_length())));
@@ -85,22 +84,15 @@ void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& 
   } else if (packet.protocol() == tvsc::radio::Protocol::TVSC_TELEMETRY) {
     tvsc::radio::proto::TelemetryEvent event{};
     event.ParseFromString(std::string(packet.payload().as_string_view(packet.payload_length())));
-    LOG(INFO) << "CommunicationsServerImpl::post_received_packet() -- Telemetry:\n"
-              << event.DebugString();
 
     std::lock_guard<std::mutex> l(mu_);
     for (auto& writer_queue : monitor_writer_queues_) {
       // TODO(james): Make this more efficient. This approach just copies the message to the queue
       // for every writer. Better would be to share a single instance of the message across all of
       // the writers.
-      LOG(WARNING)
-          << "CommunicationsServerImpl::post_received_packet() -- posting to monitor writer queue";
       writer_queue.second.push_back(event);
     }
 
-    LOG(WARNING)
-        << "CommunicationsServerImpl::post_received_packet() -- Received telemetry packet. "
-           "Notifying writers";
     monitor_event_available_.notify_all();
   }
 }
@@ -156,26 +148,20 @@ grpc::Status CommunicationsServiceImpl::monitor(
     grpc::ServerContext* context, const EmptyMessage* /*request*/,
     grpc::ServerWriter<tvsc::radio::proto::TelemetryEvent>* writer) {
   using namespace std::literals::chrono_literals;
-  LOG(WARNING) << "CommunicationsServiceImpl::monitor()";
   std::unique_lock<std::mutex> l(mu_);
   monitor_writer_queues_.emplace(writer, std::vector<tvsc::radio::proto::TelemetryEvent>{});
 
   while (!context->IsCancelled()) {
     if (monitor_event_available_.wait_for(l, 20ms, [context] { return context->IsCancelled(); })) {
-      LOG(WARNING) << "CommunicationsServiceImpl::monitor() -- context->IsCancelled()";
       break;
     }
 
     auto& queue{monitor_writer_queues_.at(writer)};
     for (const auto& msg : queue) {
-      LOG(WARNING) << "CommunicationsServiceImpl::monitor() -- writing event.";
       writer->Write(msg);
     }
     queue.clear();
   }
-  LOG(WARNING) << "CommunicationsServiceImpl::monitor() -- context->IsCancelled(): "
-               << (context->IsCancelled() ? "true" : "false");
-
   monitor_writer_queues_.erase(writer);
 
   LOG(WARNING) << "CommunicationsServiceImpl::monitor() -- exiting.";
