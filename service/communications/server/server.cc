@@ -23,6 +23,7 @@
 #include "random/random.h"
 #include "service/communications/common/communications.grpc.pb.h"
 #include "service/communications/common/communications.pb.h"
+#include "service/communications/server/shakespeare.h"
 
 namespace tvsc::service::communications {
 
@@ -167,6 +168,55 @@ grpc::Status CommunicationsServiceImpl::monitor(
   LOG(WARNING) << "CommunicationsServiceImpl::monitor() -- exiting.";
   // Client-side cancelling of the stream is expected, so we return OK instead of CANCELLED.
   return grpc::Status::OK;
+}
+
+grpc::Status CommunicationsServiceImpl::begin_sample_broadcast(grpc::ServerContext* context,
+                                                               const EmptyMessage* /*request*/,
+                                                               EmptyMessage* /*reply*/) {
+  LOG(INFO) << "CommunicationsServiceImpl::begin_sample_broadcast()";
+  if (!sample_broadcast_in_progress_) {
+    broadcast_cancel_requested_ = false;
+    sample_broadcast_task_ =
+        std::async(std::launch::async, &CommunicationsServiceImpl::broadcast_shakespeare, this);
+
+    sample_broadcast_in_progress_ = true;
+  }
+
+  return grpc::Status::OK;
+}
+
+grpc::Status CommunicationsServiceImpl::end_sample_broadcast(grpc::ServerContext* context,
+                                                             const EmptyMessage* /*request*/,
+                                                             EmptyMessage* /*reply*/) {
+  LOG(INFO) << "CommunicationsServiceImpl::end_sample_broadcast()";
+  if (sample_broadcast_in_progress_) {
+    broadcast_cancel_requested_ = true;
+  }
+
+  return grpc::Status::OK;
+}
+
+void CommunicationsServiceImpl::broadcast_shakespeare() {
+  Shakespeare shakespeare{};
+  while (!broadcast_cancel_requested_) {
+    tvsc::radio::Packet packet{};
+    packet.set_protocol(tvsc::radio::Protocol::INET);
+    packet.set_sender_id(configuration_->id());
+    // packet.set_sequence_number(?);
+
+    size_t fragment_capacity{rf69_->mtu() - tvsc::radio::Packet::header_size() -
+                             tvsc::radio::Packet::payload_size_bytes_required()};
+    LOG(INFO) << "CommunicationsServiceImpl::broadcast_shakespeare() -- fragment_capacity: "
+              << fragment_capacity;
+    size_t payload_length{shakespeare.get_next_line(packet.payload().data(), fragment_capacity)};
+    packet.set_payload_length(payload_length);
+    LOG(INFO) << "CommunicationsServiceImpl::broadcast_shakespeare() -- payload_length: "
+              << payload_length;
+
+    tx_queue_.push_normal(packet);
+
+    tvsc::hal::time::delay_ms(500);
+  }
 }
 
 }  // namespace tvsc::service::communications

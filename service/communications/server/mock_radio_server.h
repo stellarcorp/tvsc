@@ -33,6 +33,12 @@ class MockRadioCommunicationsService final : public CommunicationsService::Servi
 
   grpc::Status monitor(grpc::ServerContext* context, const EmptyMessage* request,
                        grpc::ServerWriter<tvsc::radio::proto::TelemetryEvent>* writer) override;
+
+  grpc::Status begin_sample_broadcast(grpc::ServerContext* context, const EmptyMessage* request,
+                                      EmptyMessage* reply) override;
+
+  grpc::Status end_sample_broadcast(grpc::ServerContext* context, const EmptyMessage* request,
+                                    EmptyMessage* reply) override;
 };
 
 }  // namespace tvsc::service::communications

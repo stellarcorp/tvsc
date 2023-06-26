@@ -41,6 +41,40 @@ void handle_transmit(uWS::WebSocket<SSL, true, CommunicationsClient> *ws,
 }
 
 template <bool SSL>
+void begin_sample_broadcast(uWS::WebSocket<SSL, true, CommunicationsClient> *ws,
+                            std::string_view /*request_text*/, uWS::OpCode /*op*/) {
+  LOG(INFO) << "communications::begin_sample_broadcast()";
+  CommunicationsClient *client = static_cast<CommunicationsClient *>(ws->getUserData());
+
+  grpc::Status status = client->begin_sample_broadcast();
+  if (status.ok()) {
+    ws->send("", uWS::OpCode::BINARY);
+  } else {
+    LOG(WARNING) << "RPC failed -- " << status.error_code() << ": " << status.error_message();
+    ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " +
+                 status.error_message(),
+             uWS::OpCode::TEXT);
+  }
+}
+
+template <bool SSL>
+void end_sample_broadcast(uWS::WebSocket<SSL, true, CommunicationsClient> *ws,
+                            std::string_view /*request_text*/, uWS::OpCode /*op*/) {
+  LOG(INFO) << "communications::end_sample_broadcast()";
+  CommunicationsClient *client = static_cast<CommunicationsClient *>(ws->getUserData());
+
+  grpc::Status status = client->end_sample_broadcast();
+  if (status.ok()) {
+    ws->send("", uWS::OpCode::BINARY);
+  } else {
+    LOG(WARNING) << "RPC failed -- " << status.error_code() << ": " << status.error_message();
+    ws->send(std::string{"RPC failed -- "} + to_string(status.error_code()) + ": " +
+                 status.error_message(),
+             uWS::OpCode::TEXT);
+  }
+}
+
+template <bool SSL>
 void subscribe_receive(uWS::WebSocket<SSL, true, int> *ws) {
   LOG(INFO) << "Web socket subscribing to " << RxStreamer::TOPIC_NAME;
   ws->subscribe(RxStreamer::TOPIC_NAME);
@@ -57,6 +91,16 @@ void create_web_socket_behaviors(const std::string &base_path, uWS::TemplatedApp
   app.ws(base_path + "/transmit",  //
          uWS::TemplatedApp<SSL>::WebSocketBehavior<CommunicationsClient>{
              .message = handle_transmit<SSL>,
+         });
+
+  app.ws(base_path + "/begin_sample_broadcast",  //
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<CommunicationsClient>{
+             .message = begin_sample_broadcast<SSL>,
+         });
+
+  app.ws(base_path + "/end_sample_broadcast",  //
+         uWS::TemplatedApp<SSL>::WebSocketBehavior<CommunicationsClient>{
+             .message = end_sample_broadcast<SSL>,
          });
 
   app.ws<int>(base_path + "/receive",  //

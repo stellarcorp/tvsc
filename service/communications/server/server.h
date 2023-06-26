@@ -54,6 +54,11 @@ class CommunicationsServiceImpl final : public CommunicationsService::Service {
 
   void reset_radio();
 
+  void broadcast_shakespeare();
+  std::future<void> sample_broadcast_task_{};
+  std::atomic<bool> sample_broadcast_in_progress_{false};
+  std::atomic<bool> broadcast_cancel_requested_{false};
+
  public:
   CommunicationsServiceImpl();
 
@@ -65,6 +70,12 @@ class CommunicationsServiceImpl final : public CommunicationsService::Service {
 
   grpc::Status monitor(grpc::ServerContext* context, const EmptyMessage* request,
                        grpc::ServerWriter<tvsc::radio::proto::TelemetryEvent>* writer) override;
+
+  grpc::Status begin_sample_broadcast(grpc::ServerContext* context, const EmptyMessage* request,
+                                      EmptyMessage* reply) override;
+
+  grpc::Status end_sample_broadcast(grpc::ServerContext* context, const EmptyMessage* request,
+                                    EmptyMessage* reply) override;
 };
 
 }  // namespace tvsc::service::communications

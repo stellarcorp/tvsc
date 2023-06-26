@@ -49,6 +49,18 @@ class CommunicationsClient {
     return stub_->transmit(&context, message, reply);
   }
 
+  grpc::Status begin_sample_broadcast() {
+    grpc::ClientContext context{};
+    EmptyMessage reply{};
+    return stub_->begin_sample_broadcast(&context, EmptyMessage{}, &reply);
+  }
+
+  grpc::Status end_sample_broadcast() {
+    grpc::ClientContext context{};
+    EmptyMessage reply{};
+    return stub_->end_sample_broadcast(&context, EmptyMessage{}, &reply);
+  }
+
  private:
   std::unique_ptr<CommunicationsService::Stub> stub_;
 };

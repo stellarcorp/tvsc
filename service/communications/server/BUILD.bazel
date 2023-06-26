@@ -2,9 +2,11 @@ cc_library(
     name = "server",
     srcs = [
         "server.cc",
+        "shakespeare.cc",
     ],
     hdrs = [
         "server.h",
+        "shakespeare.h",
     ],
     visibility = ["//visibility:public"],
     deps = [

@@ -8,6 +8,8 @@ service CommunicationsService {
   rpc transmit(Message) returns (SuccessResult);
   rpc receive(EmptyMessage) returns (stream Message);
   rpc monitor(EmptyMessage) returns (stream tvsc.radio.proto.TelemetryEvent);
+  rpc begin_sample_broadcast(EmptyMessage) returns (EmptyMessage);
+  rpc end_sample_broadcast(EmptyMessage) returns (EmptyMessage);
 }
 
 message EmptyMessage {}

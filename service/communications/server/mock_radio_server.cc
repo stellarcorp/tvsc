@@ -49,7 +49,8 @@ grpc::Status MockRadioCommunicationsService::receive(grpc::ServerContext* contex
   receive_writer_queues_.emplace(writer, std::vector<Message>{});
 
   while (!context->IsCancelled()) {
-    if (receive_message_available_.wait_for(l, 20ms, [context] { return context->IsCancelled(); })) {
+    if (receive_message_available_.wait_for(l, 20ms,
+                                            [context] { return context->IsCancelled(); })) {
       LOG(INFO) << "MockRadioCommunicationsService::receive() -- context->IsCancelled()";
       break;
     }
@@ -99,6 +100,18 @@ grpc::Status MockRadioCommunicationsService::monitor(
 
   LOG(INFO) << "MockRadioCommunicationsService::monitor() -- exiting.";
   // Client-side cancelling of the stream is expected, so we return OK instead of CANCELLED.
+  return grpc::Status::OK;
+}
+
+grpc::Status MockRadioCommunicationsService::begin_sample_broadcast(grpc::ServerContext* context,
+                                                                    const EmptyMessage* /*request*/,
+                                                                    EmptyMessage* /*reply*/) {
+  return grpc::Status::OK;
+}
+
+grpc::Status MockRadioCommunicationsService::end_sample_broadcast(grpc::ServerContext* context,
+                                                                  const EmptyMessage* /*request*/,
+                                                                  EmptyMessage* /*reply*/) {
   return grpc::Status::OK;
 }
 

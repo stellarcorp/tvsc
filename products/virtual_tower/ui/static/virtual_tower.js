@@ -1,6 +1,8 @@
 // Objects storing WebSocketRpc instances for various RPCs.
 let echo_rpc = null;
 let transmit_rpc = null;
+let begin_sample_broadcast_rpc = null;
+let end_sample_broadcast_rpc = null;
 
 // Objects storing WebSocketStreams instances for various streams.
 let datetime_stream = null;
@@ -295,6 +297,32 @@ function CreateTransmitSocket() {
   });
 }
 
+function CreateBeginSampleBroadcastSocket() {
+  begin_sample_broadcast_rpc = new WebSocketRpc(
+      BuildWebSocketUrl('communications', 'begin_sample_broadcast'),  //
+      'tvsc.service.communications.EmptyMessage',                     //
+      'tvsc.service.communications.EmptyMessage');
+
+  begin_sample_broadcast_rpc.on_receive(function(evt) {});
+
+  transmit_rpc.on_error(function(evt) {
+    console.log('Could not begin sample broadcast');
+  });
+}
+
+function CreateEndSampleBroadcastSocket() {
+  end_sample_broadcast_rpc = new WebSocketRpc(
+      BuildWebSocketUrl('communications', 'end_sample_broadcast'),  //
+      'tvsc.service.communications.EmptyMessage',                   //
+      'tvsc.service.communications.EmptyMessage');
+
+  end_sample_broadcast_rpc.on_receive(function(evt) {});
+
+  transmit_rpc.on_error(function(evt) {
+    console.log('Could not end sample broadcast');
+  });
+}
+
 function ConfigureTelemetryCharts() {
   for (let i in xy_telemetry_metrics) {
     let metric = xy_telemetry_metrics[i];
@@ -404,6 +432,15 @@ function CallTransmit(msg) {
   transmit_rpc.send(transmit_request);
 }
 
+function ToggleSampleDataBroadcast() {
+  let request = Protos.get_proto_factory('tvsc.service.communications.EmptyMessage').create({});
+  if ($('#sample_data_broadcast')[0].checked) {
+    begin_sample_broadcast_rpc.send(request);
+  } else {
+    end_sample_broadcast_rpc.send(request);
+  }
+}
+
 // This script gives a callback after a javascript file has been loaded. We use this to ensure
 // that dependencies are loaded before using them.
 function LoadScript(url, callback) {
@@ -499,6 +536,8 @@ function InitializeModule() {
                 root.lookupType('tvsc.service.communications.SuccessResult'));
 
             CreateTransmitSocket();
+            CreateBeginSampleBroadcastSocket();
+            CreateEndSampleBroadcastSocket();
             CreateMonitorStream();
             CreateReceiveStream();
 
