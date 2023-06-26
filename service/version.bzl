@@ -1,8 +1,8 @@
 load("//platforms:platform.bzl", "arch_name")
 
 VERSION_MAJOR = "0"
-VERSION_MINOR = "0"
-VERSION_PATCH = "7"
+VERSION_MINOR = "1"
+VERSION_PATCH = "0"
 VERSION_STRING = VERSION_MAJOR + "." + VERSION_MINOR + "." + VERSION_PATCH
 
 
