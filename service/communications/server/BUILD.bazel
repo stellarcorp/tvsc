@@ -10,6 +10,7 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
+        ":shakespeare",
         "//hal/spi",
         "//radio",
         "//radio:rf69hcw",
@@ -20,6 +21,17 @@ cc_library(
         "//third_party/glog",
         "//third_party/grpc",
     ],
+)
+
+cc_library(
+    name = "shakespeare",
+    srcs = [
+        "shakespeare.cc",
+    ],
+    hdrs = [
+        "shakespeare.h",
+    ],
+    visibility = ["//visibility:public"],
 )
 
 cc_binary(
@@ -68,5 +80,14 @@ cc_binary(
         "//third_party/gflags",
         "//third_party/glog",
         "//third_party/grpc",
+    ],
+)
+
+cc_test(
+    name = "shakespeare_test",
+    srcs = ["shakespeare_test.cc"],
+    deps = [
+        ":shakespeare",
+        "//third_party/gtest",
     ],
 )

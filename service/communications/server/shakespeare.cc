@@ -5,8 +5,7 @@
 namespace tvsc::service::communications {
 
 constexpr const char MIDSUMMERS_NIGHT_DREAM[] =
-    u8R"MIDSUMMER(
-A Midsummer Night's Dream
+    R"MIDSUMMER(A Midsummer Night's Dream
 by William Shakespeare
 
 Characters in the Play
@@ -3346,7 +3345,7 @@ ROBIN
 
 Shakespeare::Shakespeare() : full_text_(MIDSUMMERS_NIGHT_DREAM), position_(full_text_.begin()) {}
 
-size_t Shakespeare::get_next_line(unsigned char* dest, size_t capacity) {
+size_t Shakespeare::get_next_line(char* dest, size_t capacity) {
   auto newline_position{std::find(position_, full_text_.end(), '\n')};
   if (newline_position == full_text_.end()) {
     position_ = full_text_.begin();
@@ -3366,6 +3365,18 @@ size_t Shakespeare::get_next_line(unsigned char* dest, size_t capacity) {
   position_ = newline_position;
 
   return i;
+}
+
+size_t Shakespeare::line_count() {
+  if (line_count_ == std::numeric_limits<size_t>::max()) {
+    line_count_ = 0;
+    for (char c : full_text_) {
+      if (c == '\n') {
+        ++line_count_;
+      }
+    }
+  }
+  return line_count_;
 }
 
 }  // namespace tvsc::service::communications
