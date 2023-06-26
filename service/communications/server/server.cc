@@ -208,7 +208,8 @@ void CommunicationsServiceImpl::broadcast_shakespeare() {
                              tvsc::radio::Packet::payload_size_bytes_required()};
     LOG(INFO) << "CommunicationsServiceImpl::broadcast_shakespeare() -- fragment_capacity: "
               << fragment_capacity;
-    size_t payload_length{shakespeare.get_next_line(packet.payload().data(), fragment_capacity)};
+    size_t payload_length{shakespeare.get_next_line(
+        reinterpret_cast<char*>(packet.payload().data()), fragment_capacity)};
     packet.set_payload_length(payload_length);
     LOG(INFO) << "CommunicationsServiceImpl::broadcast_shakespeare() -- payload_length: "
               << payload_length;
