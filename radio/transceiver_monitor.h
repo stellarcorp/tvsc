@@ -44,12 +44,8 @@ class TransceiverMonitor final {
   uint32_t start_time_ms_{};
 
   bool should_transmit() const {
-    LOG(WARNING) << "TransceiverMonitor::should_transmit()";
     LOG(WARNING) << "TransceiverMonitor::should_transmit() -- tx_queue_->elements_available(): "
                  << tx_queue_->elements_available();
-    LOG(WARNING) << "TransceiverMonitor::should_transmit() -- tvsc::hal::time::time_millis() - "
-                    "statistics_.last_tx_time: "
-                 << (tvsc::hal::time::time_millis() - statistics_.last_tx_time);
     return tx_queue_->elements_available() > TX_ELEMENTS_AVAILABLE_THRESHOLD ||
            tvsc::hal::time::time_millis() - statistics_.last_tx_time > TX_TIME_THRESHOLD_MS;
   }
@@ -105,97 +101,67 @@ class TransceiverMonitor final {
   }
 
   void iterate() {
-    bool did_something{false};
     // Stay in receive mode as much as possible to avoid missing fragments.
     radio_->set_receive_mode();
 
     // Receive a fragment, if one is available.
-    // if (radio_->has_fragment_available()) {
-    if (radio_->wait_fragment_available(50)) {
+    if (radio_->has_fragment_available()) {
+      // if (radio_->wait_fragment_available(50)) {
       Fragment<HalfDuplexTransceiver<MTU>::max_mtu()> fragment{};
       radio_->read_received_fragment(fragment);
       rx_queue_->add_fragment(fragment);
-
-      did_something = true;
     }
 
     if (rx_queue_->has_complete_packets()) {
       notify_fn_(rx_queue_->consume_packet());
-      did_something = true;
     }
 
     // Transmit any packets we have outstanding, if we decide we should transmit.
     if (!tx_queue_->empty()) {
       LOG(INFO) << "TransceiverMonitor::iterate() -- tx_queue has packets available.";
       if (should_transmit()) {
-        LOG(INFO) << "TransceiverMonitor::iterate() -- transmitting.";
         bool success{true};
+        const uint64_t transmission_cycle_start_time{tvsc::hal::time::time_millis()};
         while (success && !tx_queue_->empty()) {
+          const uint64_t packet_transmission_start_time{tvsc::hal::time::time_millis()};
           const PacketT packet{tx_queue_sink_.peek()};
 
           EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET> fragments{};
           encode(packet, fragments);
 
           for (size_t i = 0; i < fragments.num_fragments; ++i) {
-            LOG(INFO) << "TransceiverMonitor::iterate() -- transmit_fragment().";
             success = success && radio_->transmit_fragment(fragments.buffers[i], TX_TIMEOUT_MS);
-            if (success) {
-              LOG(INFO) << "TransceiverMonitor::iterate() -- transmit_fragment() -- success.";
-            } else {
+            if (!success) {
               LOG(INFO) << "TransceiverMonitor::iterate() -- transmit_fragment() -- failed.";
             }
-            LOG(INFO) << "TransceiverMonitor::iterate() -- wait_fragment_transmitted().";
             // success = success && radio_->wait_fragment_transmitted(TX_TIMEOUT_MS);
             // TODO(james): We aren't reliably getting the interrupt that says the packet was
             // transmitted. Ignoring the return value here for the time being.
-            radio_->wait_fragment_transmitted(TX_TIMEOUT_MS);
-            if (success) {
-              LOG(INFO)
-                  << "TransceiverMonitor::iterate() -- wait_fragment_transmitted() -- success.";
-            } else {
+            success = success && radio_->wait_fragment_transmitted(TX_TIMEOUT_MS);
+            if (!success) {
               LOG(INFO)
                   << "TransceiverMonitor::iterate() -- wait_fragment_transmitted() -- failed.";
             }
           }
           if (success) {
             // This packet was transmitted successfully, so we can remove it from the queue.
-            LOG(INFO) << "TransceiverMonitor::iterate() -- transmit successful. Popping off of "
-                         "TX queue.";
             tx_queue_sink_.pop();
             statistics_.last_tx_time = tvsc::hal::time::time_millis();
+            LOG(INFO)
+                << "TransceiverMonitor::iterate() -- Transmit successful. Transmission time (ms): "
+                << (statistics_.last_tx_time - packet_transmission_start_time);
           } else {
             LOG(INFO) << "TransceiverMonitor::iterate() -- transmit failed.";
           }
         }
         // Switch back to receive mode while we do other operations so that we don't miss
         // fragments.
-        LOG(INFO) << "TransceiverMonitor::iterate() -- switching back to receive mode.";
         radio_->set_receive_mode();
 
-        did_something = true;
+        LOG(INFO) << "TransceiverMonitor::iterate() -- switched back to receive mode. Full "
+                     "transmission cycle time (ms): "
+                  << (tvsc::hal::time::time_millis() - transmission_cycle_start_time);
       }
-    }
-
-    // Publish our statistics, if it is time.
-    if (should_publish_statistics()) {
-      statistics_.last_statistics_publish_time = tvsc::hal::time::time_millis();
-
-      LOG(INFO) << "packet_rx_count: " << statistics_.packet_rx_count
-                << ", packet_tx_count: " << statistics_.packet_tx_count
-                << ", tx_queue_->elements_available(): " << tx_queue_->elements_available()
-                << ", rx_queue_->num_incomplete_fragments(): "
-                << rx_queue_->num_incomplete_fragments()
-                << ", rx_queue_->num_outstanding_complete_packets(): "
-                << rx_queue_->num_outstanding_complete_packets()
-                << ", dropped_packet_count: " << statistics_.dropped_packet_count
-                << ", tx_failure_count: " << statistics_.tx_failure_count
-                << ", throughput: " << statistics_.packet_tx_count * 1000.f << " packets/sec";
-    }
-
-    // Pause if we did nothing this iteration. This help avoid spiking a CPU core to 100% which
-    // might impede other processes or threads.
-    if (!did_something) {
-      tvsc::hal::time::delay_ms(1);
     }
   }
 };
