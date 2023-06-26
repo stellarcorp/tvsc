@@ -137,7 +137,12 @@ class RadioActivities final {
 
           have_packet_to_transmit_ = true;
           telemetry_.set_transmit_queue_size(1);
+        } else {
+          tvsc::hal::output::println(
+              "maybe_receive_fragment() -- Received a packet from ourselves?");
         }
+      } else {
+        tvsc::hal::output::println("maybe_receive_fragment() -- Couldn't decode packet.");
       }
     }
   }
@@ -187,10 +192,19 @@ class RadioActivities final {
   void iterate() {
     const uint64_t current_time{tvsc::hal::time::time_millis()};
 
+    radio_.set_receive_mode();
+
     maybe_receive_fragment(current_time);
+    radio_.set_receive_mode();
+
     maybe_transmit_fragment(current_time);
+    radio_.set_receive_mode();
+
     maybe_measure_rssi(current_time);
+    radio_.set_receive_mode();
+
     maybe_transmit_telemetry(current_time);
+    radio_.set_receive_mode();
   }
 };
 
