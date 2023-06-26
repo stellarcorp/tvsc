@@ -89,6 +89,11 @@ class PacketT final {
     return (payload_size_bits_required() + 7) / 8;
   }
 
+  static constexpr size_t header_size() {
+    return sizeof(Protocol) + sizeof(uint8_t) + sizeof(uint8_t) + sizeof(uint16_t) +
+      sizeof(uint8_t);
+  }
+
   Protocol protocol() const { return protocol_; }
   void set_protocol(Protocol protocol) { protocol_ = protocol; }
 
