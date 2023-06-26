@@ -397,6 +397,15 @@ cc_test(
 )
 
 cc_test(
+    name = "packet_test",
+    srcs = ["packet_test.cc"],
+    deps = [
+        ":radio",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
     name = "packet_queue_test",
     srcs = ["packet_queue_test.cc"],
     deps = [
