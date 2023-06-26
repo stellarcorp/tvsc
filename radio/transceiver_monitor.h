@@ -44,8 +44,6 @@ class TransceiverMonitor final {
   uint32_t start_time_ms_{};
 
   bool should_transmit() const {
-    LOG(WARNING) << "TransceiverMonitor::should_transmit() -- tx_queue_->elements_available(): "
-                 << tx_queue_->elements_available();
     return tx_queue_->elements_available() > TX_ELEMENTS_AVAILABLE_THRESHOLD ||
            tvsc::hal::time::time_millis() - statistics_.last_tx_time > TX_TIME_THRESHOLD_MS;
   }
@@ -118,7 +116,6 @@ class TransceiverMonitor final {
 
     // Transmit any packets we have outstanding, if we decide we should transmit.
     if (!tx_queue_->empty()) {
-      LOG(INFO) << "TransceiverMonitor::iterate() -- tx_queue has packets available.";
       if (should_transmit()) {
         bool success{true};
         const uint64_t transmission_cycle_start_time{tvsc::hal::time::time_millis()};
