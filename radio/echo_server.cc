@@ -16,7 +16,7 @@
 #include "radio/settings.h"
 #include "radio/single_radio_pin_mapping.h"
 #include "radio/telemetry_accumulator.h"
-#include "radio/utilities.h"
+#include "radio/transceiver_utilities.h"
 #include "random/random.h"
 
 namespace tvsc::radio {

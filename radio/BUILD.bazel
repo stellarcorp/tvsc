@@ -17,7 +17,7 @@ cc_library(
         "telemetry_accumulator.h",
         "transceiver.h",
         "transceiver_monitor.h",
-        "utilities.h",
+        "transceiver_utilities.h",
         "yield.h",
     ],
     visibility = ["//visibility:public"],

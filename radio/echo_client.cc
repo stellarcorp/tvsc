@@ -8,14 +8,14 @@
 #include "pb_encode.h"
 #include "radio/encoding.h"
 #include "radio/fragment.h"
+#include "radio/nanopb_proto/settings.pb.h"
 #include "radio/packet.h"
 #include "radio/radio_configuration.h"
 #include "radio/rf69hcw.h"
 #include "radio/rf69hcw_configuration.h"
 #include "radio/settings.h"
-#include "radio/nanopb_proto/settings.pb.h"
 #include "radio/single_radio_pin_mapping.h"
-#include "radio/utilities.h"
+#include "radio/transceiver_utilities.h"
 #include "random/random.h"
 
 /**
