@@ -8,65 +8,23 @@
 #include "grpcpp/grpcpp.h"
 #include "service/datetime/common/datetime.grpc.pb.h"
 #include "service/datetime/common/datetime.pb.h"
-#include "service/datetime/common/datetime_utils.h"
 
 namespace tvsc::service::datetime {
 
 using namespace std::literals::chrono_literals;
 
-template <typename Clock, typename Rep, typename Period>
-void sleep_while_checking_for_cancel(std::chrono::duration<Rep, Period> sleep_duration,
+template <typename Clock>
+void sleep_while_checking_for_cancel(std::chrono::nanoseconds sleep_duration,
                                      grpc::ServerContext& context) {
   const std::chrono::time_point<Clock> wakeup_time{Clock::now() + sleep_duration};
   // We change the meaning of the sleep_duration variable here to avoid allocating a new duration.
   // It used to mean the total amount of time for this method to sleep. Now it means the individual
   // interval to sleep between checking if the context has been cancelled.
-  sleep_duration = std::min(std::chrono::duration_cast<std::chrono::duration<Rep, Period>>(50ms),
-                            sleep_duration);
+  sleep_duration =
+      std::min(std::chrono::duration_cast<std::chrono::nanoseconds>(50ms), sleep_duration);
   while (!context.IsCancelled() && wakeup_time > Clock::now()) {
     std::this_thread::sleep_for(sleep_duration);
   }
-}
-
-std::chrono::nanoseconds default_period(TimeUnit requested_precision) {
-  switch (requested_precision) {
-    case TimeUnit::NANOSECOND:
-    case TimeUnit::MICROSECOND:
-      return 10ms;
-
-    case TimeUnit::MILLISECOND:
-    case TimeUnit::SECOND:
-      return 1s;
-
-    case TimeUnit::MINUTE:
-      return 5s;
-
-    case TimeUnit::HOUR:
-    case TimeUnit::DAY:
-    case TimeUnit::WEEK:
-    case TimeUnit::YEAR:
-    case TimeUnit::MONTH:
-      // Keep a heartbeat that can be detected at reasonable debugging scales. This is slow
-      // enough that it shouldn't be a meaningful load anyway.
-      return 10s;
-      break;
-
-    default:
-      LOG(WARNING) << "Unrecognized precision value in request. Attempting to choose a reasonable "
-                      "default value.";
-      // Since this is likely coming from a client request, it's possible the client is just at a
-      // different version of the proto than we are. Try to accomodate.
-      return 10s;
-  }
-}
-
-std::chrono::nanoseconds compute_period(const DatetimeRequest& request) {
-  if (request.period_count() == 0) {
-    // If the period is empty, use the default period for the requested precision.
-    return default_period(request.precision());
-  }
-
-  return as_duration(request.period_count(), request.period_unit());
 }
 
 grpc::Status DatetimeServiceImpl::get_datetime(grpc::ServerContext* context,
@@ -75,56 +33,8 @@ grpc::Status DatetimeServiceImpl::get_datetime(grpc::ServerContext* context,
   using Clock = std::chrono::system_clock;
 
   Clock::duration since_epoch = Clock::now().time_since_epoch();
-  reply->set_unit(request->precision());
-  switch (request->precision()) {
-    case TimeUnit::NANOSECOND:
-      reply->set_datetime(
-          std::chrono::duration_cast<std::chrono::nanoseconds>(since_epoch).count());
-      break;
-
-    case TimeUnit::MICROSECOND:
-      reply->set_datetime(
-          std::chrono::duration_cast<std::chrono::microseconds>(since_epoch).count());
-      break;
-
-    case TimeUnit::MILLISECOND:
-      reply->set_datetime(
-          std::chrono::duration_cast<std::chrono::milliseconds>(since_epoch).count());
-      break;
-
-    case TimeUnit::SECOND:
-      reply->set_datetime(std::chrono::duration_cast<std::chrono::seconds>(since_epoch).count());
-      break;
-
-    case TimeUnit::MINUTE:
-      reply->set_datetime(std::chrono::duration_cast<std::chrono::minutes>(since_epoch).count());
-      break;
-
-    case TimeUnit::HOUR:
-      reply->set_datetime(std::chrono::duration_cast<std::chrono::hours>(since_epoch).count());
-      break;
-
-    case TimeUnit::DAY:
-      reply->set_datetime(std::chrono::duration_cast<DayDuration>(since_epoch).count());
-      break;
-
-    case TimeUnit::WEEK:
-      reply->set_datetime(std::chrono::duration_cast<WeekDuration>(since_epoch).count());
-      break;
-
-    case TimeUnit::MONTH:
-      reply->set_datetime(std::chrono::duration_cast<MonthDuration>(since_epoch).count());
-      break;
-
-    case TimeUnit::YEAR:
-      reply->set_datetime(std::chrono::duration_cast<YearDuration>(since_epoch).count());
-      break;
-
-    default:
-      LOG(WARNING) << "Unrecognized precision value in request";
-      return grpc::Status{grpc::StatusCode::INVALID_ARGUMENT,
-                          "Unrecognized precision value in request"};
-  }
+  reply->set_datetime_ms(
+      std::chrono::duration_cast<std::chrono::milliseconds>(since_epoch).count());
 
   return grpc::Status::OK;
 }
@@ -134,7 +44,7 @@ grpc::Status DatetimeServiceImpl::stream_datetime(grpc::ServerContext* context,
                                                   grpc::ServerWriter<DatetimeReply>* writer) {
   using Clock = std::chrono::system_clock;
 
-  auto response_period = compute_period(*request);
+  auto response_period = std::chrono::duration_cast<std::chrono::nanoseconds>(25ms);
 
   DatetimeReply reply{};
   while (!context->IsCancelled()) {

@@ -20,22 +20,18 @@ class DatetimeClient {
     DLOG(INFO) << "DatetimeClient::DatetimeClient(std::string)";
   }
 
-  grpc::Status call(DatetimeReply* reply) { return call(TimeUnit::MILLISECOND, reply); }
-
-  grpc::Status call(TimeUnit precision, DatetimeReply* reply) {
+  grpc::Status call(DatetimeReply* reply) {
     grpc::ClientContext context{};
-    DatetimeRequest request{};
-    request.set_precision(precision);
-    return call(&context, request, reply);
+    return call(&context, reply);
   }
 
-  grpc::Status call(grpc::ClientContext* context, const DatetimeRequest& request,
-                    DatetimeReply* reply) {
+  grpc::Status call(grpc::ClientContext* context, DatetimeReply* reply) {
+    DatetimeRequest request{};
     return stub_->get_datetime(context, request, reply);
   }
 
-  std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream(
-      grpc::ClientContext* context, const DatetimeRequest& request) {
+  std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream(grpc::ClientContext* context) {
+    DatetimeRequest request{};
     return stub_->stream_datetime(context, request);
   }
 

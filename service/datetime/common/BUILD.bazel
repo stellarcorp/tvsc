@@ -4,12 +4,6 @@ load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
 cc_library(
     name = "common",
-    srcs = [
-        "datetime_utils.cc",
-    ],
-    hdrs = [
-        "datetime_utils.h",
-    ],
     visibility = ["//visibility:public"],
     deps = [
         ":datetime_cc_grpc",

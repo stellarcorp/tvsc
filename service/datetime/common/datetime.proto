@@ -7,41 +7,13 @@ service Datetime {
   rpc stream_datetime(DatetimeRequest) returns (stream DatetimeReply);
 }
 
-enum TimeUnit {
-  MILLISECOND = 0;
-  MICROSECOND = 1;
-  NANOSECOND = 2;
-  SECOND = 3;
-  MINUTE = 4;
-  HOUR = 5;
-  DAY = 6;
-  WEEK = 7;
-  MONTH = 8;
-  YEAR = 9;
-}
-
-message DatetimeRequest {
-  /**
-   * Precision that should be used to give the datetime in the reply.
-   */
-  TimeUnit precision = 1;
-
-  /**
-   * For streaming, how often should the datetime be published.
-   *
-   * Default period is roughly once per precision, with fewer responses for faster units
-   * (NANOSECOND, MICROSECOND, etc.) and more responses for slower units (DAY, MONTH, YEAR, etc).
-   */
-  uint32 period_count = 2;
-  TimeUnit period_unit = 3;
-}
+message DatetimeRequest {}
 
 message DatetimeReply {
   /**
-   * Current time in the given unit.
+   * Current time in milliseconds.
    *
-   * This is a duration computed wrt the epoch of the system clock.
+   * This is a duration computed wrt the epoch of the system clock of the server.
    */
-  int64 datetime = 1;
-  TimeUnit unit = 2;
+  int64 datetime_ms = 1;
 }

@@ -12,7 +12,6 @@
 #include "grpcpp/grpcpp.h"
 #include "service/datetime/client/client.h"
 #include "service/datetime/common/datetime.grpc.pb.h"
-#include "service/datetime/common/datetime_utils.h"
 
 DEFINE_bool(continuous_update, false,
             "Update the time continuously? If true, will stream the time from the server.");
@@ -20,8 +19,15 @@ DEFINE_bool(continuous_update, false,
 namespace tvsc::service::datetime {
 
 template <typename Clock>
+std::chrono::time_point<Clock> as_time_point(uint64_t time_since_epoch_ms) {
+  using namespace std::literals::chrono_literals;
+  std::chrono::milliseconds millis{time_since_epoch_ms * 1ms};
+  return std::chrono::time_point<Clock>{millis};
+}
+
+template <typename Clock>
 void print_time(const DatetimeReply& reply) {
-  std::chrono::time_point<Clock> some_time{as_time_point<Clock>(reply.datetime(), reply.unit())};
+  std::chrono::time_point<Clock> some_time{as_time_point<Clock>(reply.datetime_ms())};
   std::time_t as_time_t{std::chrono::system_clock::to_time_t(some_time)};
   std::cout << std::put_time(std::localtime(&as_time_t), "%F %T") << "\n";
 }
@@ -31,17 +37,11 @@ void get_and_print_time() {
 
   DatetimeClient client{};
   grpc::ClientContext context{};
-  DatetimeRequest request{};
   DatetimeReply reply{};
   grpc::Status status{};
 
-  request.set_precision(TimeUnit::MILLISECOND);
-
   if (FLAGS_continuous_update) {
-    request.set_period_count(10);
-    request.set_period_unit(TimeUnit::SECOND);
-    std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream{
-        client.stream(&context, request)};
+    std::unique_ptr<grpc::ClientReaderInterface<DatetimeReply>> stream{client.stream(&context)};
     bool success{true};
     while (success) {
       success = stream->Read(&reply);
@@ -51,7 +51,7 @@ void get_and_print_time() {
     }
     status = stream->Finish();
   } else {
-    status = client.call(&context, request, &reply);
+    status = client.call(&context, &reply);
     if (status.ok()) {
       print_time<Clock>(reply);
     }

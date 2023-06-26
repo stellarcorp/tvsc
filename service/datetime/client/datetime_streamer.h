@@ -15,13 +15,7 @@ namespace tvsc::service::datetime {
 class DatetimeStreamer final
     : public tvsc::pubsub::GrpcStreamer<Datetime, DatetimeRequest, DatetimeReply> {
  private:
-  static DatetimeRequest construct_default_request() {
-    DatetimeRequest request{};
-    request.set_precision(TimeUnit::MILLISECOND);
-    request.set_period_count(50);
-    request.set_period_unit(TimeUnit::MILLISECOND);
-    return request;
-  }
+  static DatetimeRequest construct_default_request() { return DatetimeRequest{}; }
 
  protected:
   void call_rpc_method(Datetime::StubInterface::async_interface& async_stub,

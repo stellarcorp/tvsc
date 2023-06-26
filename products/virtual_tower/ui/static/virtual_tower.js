@@ -248,7 +248,7 @@ function CreateDatetimeStream() {
       'tvsc.service.datetime.DatetimeReply');
   datetime_stream.on_receive(function(reply) {
     let current_date = new Date();
-    current_date.setTime(reply.datetime);
+    current_date.setTime(reply.datetime_ms);
     let date_text = current_date.toISOString();
     $('#datetime_reply').text(date_text);
   });
