@@ -21,6 +21,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "hal/output/output.h"
 #include "radio/nanopb_proto/radio.pb.h"
 #include "radio/nanopb_proto/settings.pb.h"
 #include "radio/settings.h"
@@ -73,6 +74,16 @@ void write_settings(DriverT& driver,
  */
 template <typename DriverT>
 std::unordered_map<tvsc_radio_nano_Function, tvsc_radio_nano_DiscreteValue> default_configuration();
+
+inline void print_id(const tvsc_radio_nano_RadioIdentification& id) {
+  tvsc::hal::output::print("{");
+  tvsc::hal::output::print(id.expanded_id);
+  tvsc::hal::output::print(", ");
+  tvsc::hal::output::print(id.id);
+  tvsc::hal::output::print(", ");
+  tvsc::hal::output::print(id.name);
+  tvsc::hal::output::println("}");
+}
 
 /**
  * This template defines an interface for configuring a radio. The specific radio type will be

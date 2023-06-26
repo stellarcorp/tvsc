@@ -1,6 +1,5 @@
 /**
- * Collection of utility functions for the various sample apps in this package. Not meant for
- * general purpose use.
+ * Collection of utility functions to assist in sending and receiving.
  */
 #pragma once
 
@@ -9,92 +8,98 @@
 
 #include "hal/output/output.h"
 #include "hal/time/time.h"
-#include "pb_decode.h"
-#include "pb_encode.h"
 #include "radio/fragment.h"
-#include "radio/nanopb_proto/packet.pb.h"
-#include "radio/nanopb_proto/radio.pb.h"
 #include "radio/transceiver.h"
+#include "radio/yield.h"
 
 namespace tvsc::radio {
 
-inline void print_id(const tvsc_radio_nano_RadioIdentification& id) {
-  tvsc::hal::output::print("{");
-  tvsc::hal::output::print(id.expanded_id);
-  tvsc::hal::output::print(", ");
-  tvsc::hal::output::print(id.id);
-  tvsc::hal::output::print(", ");
-  tvsc::hal::output::print(id.name);
-  tvsc::hal::output::println("}");
-}
-
 template <size_t MTU>
 bool recv(HalfDuplexTransceiver<MTU>& transceiver, Fragment<MTU>& fragment) {
-  return transceiver.receive_fragment(fragment, 1000);
+  return transceiver.receive_fragment(fragment, 100);
 }
 
-template <size_t MTU>
+template <size_t MTU, uint16_t TIMEOUT_MS = 50>
 bool send(HalfDuplexTransceiver<MTU>& transceiver, const Fragment<MTU>& msg) {
   bool result;
-  result = transceiver.transmit_fragment(msg, 250);
+
+  result = block_until_channel_activity_clear(transceiver, TIMEOUT_MS);
+  if (!result) {
+    tvsc::hal::output::println("utilities.h send() -- Failed due to channel activity.");
+    return false;
+  }
+
+  result = block_until_transmission_complete(transceiver, TIMEOUT_MS);
+  if (!result) {
+    tvsc::hal::output::println("utilities.h send() -- Failed due to ongoing transmission.");
+    return false;
+  }
+
+  result = transceiver.transmit_fragment(msg, TIMEOUT_MS);
   if (result) {
     // Note that we ignore the return value here. The PACKETSENT interrupt is not triggered. That
     // means that we have to wait and assume the packet got transmitted rather than actually
     // knowing.
     // TODO(james): Fix the interrupts in RF69HCW so that we can use this return value.
-    const bool wait_succeeded{transceiver.wait_fragment_transmitted(250)};
-    if (!wait_succeeded) {
+    result = block_until_transmission_complete(transceiver, TIMEOUT_MS);
+    if (!result) {
       tvsc::hal::output::println(
-          "utilities.h send() -- wait_fragment_transmitted() timed out. Courageously (stupidly) "
-          "ignoring.");
+          "utilities.h send() -- Failed due to block_until_transmission_complete() timeout.");
     }
   } else {
-    tvsc::hal::output::println("transmit_fragment() failed.");
+    tvsc::hal::output::println("utilities.h send() -- Failed in transmit_fragment().");
   }
 
   return result;
 }
 
-template <size_t MTU>
-void encode_packet(const tvsc_radio_nano_Packet& packet, Fragment<MTU>& fragment) {
-  pb_ostream_t ostream =
-      pb_ostream_from_buffer(reinterpret_cast<uint8_t*>(fragment.data.data()), fragment.capacity());
-  bool status =
-      pb_encode(&ostream, nanopb::MessageDescriptor<tvsc_radio_nano_Packet>::fields(), &packet);
-  if (!status) {
-    tvsc::except<std::runtime_error>("Could not encode packet for message");
+template <size_t MTU, uint16_t POLL_DELAY_MS = 1>
+bool block_until_fragment_available(HalfDuplexTransceiver<MTU>& transceiver, uint16_t timeout_ms) {
+  const uint64_t start_time{tvsc::hal::time::time_millis()};
+  while (!transceiver.has_fragment_available()) {
+    if (tvsc::hal::time::time_millis() - start_time > timeout_ms) {
+      return false;
+    }
+    if constexpr (POLL_DELAY_MS > 0) {
+      tvsc::hal::time::delay_ms(POLL_DELAY_MS);
+    } else {
+      YIELD;
+    }
   }
-  fragment.length = ostream.bytes_written;
+  return true;
 }
 
-template <size_t MTU>
-void encode_packet(uint32_t protocol, uint32_t sequence_number, uint32_t id,
-                   const std::string& message, Fragment<MTU>& fragment) {
-  tvsc_radio_nano_Packet packet{};
-  packet.protocol = protocol;
-  packet.sequence_number = sequence_number;
-  packet.sender = id;
-  packet.payload.size = std::min(
-      message.length(),
-      static_cast<std::string::size_type>(
-          fragment.capacity() - /* HACK -- This code should not be used in production. */ 10));
-  std::strncpy(reinterpret_cast<char*>(packet.payload.bytes), message.data(), packet.payload.size);
-
-  encode_packet(packet, fragment);
+template <size_t MTU, uint16_t POLL_DELAY_MS = 1>
+bool block_until_channel_activity_clear(HalfDuplexTransceiver<MTU>& transceiver,
+                                        uint16_t timeout_ms) {
+  const uint64_t start_time{tvsc::hal::time::time_millis()};
+  while (transceiver.channel_activity_detected()) {
+    if (tvsc::hal::time::time_millis() - start_time > timeout_ms) {
+      return false;
+    }
+    if constexpr (POLL_DELAY_MS > 0) {
+      tvsc::hal::time::delay_ms(POLL_DELAY_MS);
+    } else {
+      YIELD;
+    }
+  }
+  return true;
 }
 
-template <size_t MTU>
-bool decode_packet(const Fragment<MTU>& fragment, tvsc_radio_nano_Packet& packet) {
-  pb_istream_t istream = pb_istream_from_buffer(
-      reinterpret_cast<const uint8_t*>(fragment.data.data()), fragment.length);
-
-  bool status =
-      pb_decode(&istream, nanopb::MessageDescriptor<tvsc_radio_nano_Packet>::fields(), &packet);
-  if (!status) {
-    tvsc::hal::output::println("Could not decode packet");
-    return false;
+template <size_t MTU, uint16_t POLL_DELAY_MS = 1>
+bool block_until_transmission_complete(HalfDuplexTransceiver<MTU>& transceiver,
+                                       uint16_t timeout_ms) {
+  const uint64_t start_time{tvsc::hal::time::time_millis()};
+  while (transceiver.is_transmitting_fragment()) {
+    if (tvsc::hal::time::time_millis() - start_time > timeout_ms) {
+      return false;
+    }
+    if constexpr (POLL_DELAY_MS > 0) {
+      tvsc::hal::time::delay_ms(POLL_DELAY_MS);
+    } else {
+      YIELD;
+    }
   }
-
   return true;
 }
 

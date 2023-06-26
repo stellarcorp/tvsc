@@ -17,6 +17,8 @@ cc_library(
         "telemetry_accumulator.h",
         "transceiver.h",
         "transceiver_monitor.h",
+        "utilities.h",
+        "yield.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
@@ -48,7 +50,6 @@ cc_library(
     hdrs = [
         "rf69hcw.h",
         "rf69hcw_configuration.h",
-        "utilities.h",
     ],
     target_compatible_with = select({
         "//platforms:wiring_pi_gpio": [

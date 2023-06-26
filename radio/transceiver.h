@@ -52,7 +52,9 @@ class HalfDuplexTransceiver {
 
   /**
    * Put the transceiver in a standby mode. Standby means that it is not receiving or transmitting.
-   * This may be used to save power.
+   * This may be used to save power. It may also be used during the setup of a transmission to
+   * guarantee that the transceiver doesn't start receiving a fragment while it is preparing to
+   * transmit.
    *
    * This call should be idempotent.
    */
@@ -66,28 +68,21 @@ class HalfDuplexTransceiver {
   virtual void set_receive_mode() = 0;
 
   /**
+   * Getters for the current mode.
+   */
+  virtual bool in_standby_mode() const = 0;
+  virtual bool in_rx_mode() const = 0;
+
+  /**
+   * Note that there is no setter for TX mode. This mode is entered by initiating a transmission via
+   * transmit_fragment().
+   */
+  virtual bool in_tx_mode() const = 0;
+
+  /**
    * Flag to poll if the transceiver has rx data available to read.
    */
   virtual bool has_fragment_available() const = 0;
-
-  /**
-   * Block up to timeout_ms milliseconds for a fragment to be received.
-   */
-  virtual bool wait_fragment_available(uint16_t timeout_ms) const {
-    if (has_fragment_available()) {
-      return true;
-    }
-
-    static constexpr uint16_t poll_delay_ms{1};
-    auto start = tvsc::hal::time::time_millis();
-    while ((tvsc::hal::time::time_millis() - start) < timeout_ms) {
-      if (has_fragment_available()) {
-        return true;
-      }
-      tvsc::hal::time::delay_ms(poll_delay_ms);
-    }
-    return false;
-  }
 
   /**
    * Read a fragment that has already been received by the transceiver. After being read, the
@@ -105,35 +100,6 @@ class HalfDuplexTransceiver {
   virtual bool channel_activity_detected() = 0;
 
   /**
-   * Block up to timeout_ms milliseconds for channel activity to clear.
-   *
-   * Note that this method cannot be marked const, since it likely involves reading the RSSI level
-   * which will involve changing register values, disrupting any ongoing RX, etc.
-   */
-  virtual bool wait_channel_activity_clear(uint16_t timeout_ms) {
-    // Wait for the detected channel activity to finish.
-    // We use a random delay here to ensure that when we do try to transmit, we aren't immediately
-    // colliding with another transmitter. See
-    // https://en.wikipedia.org/wiki/Distributed_coordination_function for a more detailed
-    // explanation.
-    auto t = tvsc::hal::time::time_millis();
-    while (channel_activity_detected()) {
-      if (tvsc::hal::time::time_millis() - t > timeout_ms) {
-        return false;
-      }
-      tvsc::hal::time::delay_ms(tvsc::random::generate_random_value<uint16_t>(
-          static_cast<uint16_t>(1), std::min(static_cast<uint16_t>(25), timeout_ms)));
-    }
-
-    return true;
-  }
-
-  /**
-   * Block up to timeout_ms milliseconds for a fragment to be transmitted.
-   */
-  virtual bool wait_fragment_transmitted(uint16_t timeout_ms) = 0;
-
-  /**
    * Transmit a fragment.
    *
    * Returns true if the transmission was initiated, false if it could not start within the timeout.
@@ -142,21 +108,11 @@ class HalfDuplexTransceiver {
   virtual bool transmit_fragment(const Fragment<MTU>& fragment, uint16_t timeout_ms) = 0;
 
   /**
-   * Helper function to receive a fragment.
+   * Returns true if this transceiver is currently transmitting; false, otherwise.
    */
-  bool receive_fragment(Fragment<MTU>& fragment, uint16_t timeout_ms) {
-    // Put the transceiver into receive mode.
-    set_receive_mode();
-    // Wait until data is avaiable, up to timeout_ms milliseconds.
-    if (wait_fragment_available(timeout_ms)) {
-      // A fragment is available. Read it into the provided buffer.
-      read_received_fragment(fragment);
-      return true;
-    } else {
-      // No fragment was available within timeout_ms.
-      fragment.length = 0;
-      return false;
-    }
+  virtual bool is_transmitting_fragment() {
+    // By default, being in TX mode means that the transceiver is transmitting a fragment.
+    return in_tx_mode();
   }
 };
 

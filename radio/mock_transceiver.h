@@ -319,17 +319,17 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
     return count_corrupted_fragments_;
   }
 
-  bool in_standby_mode() const {
+  bool in_standby_mode() const override {
     const std::lock_guard<std::mutex> lock(mutex_);
     return current_mode_ == Mode::STANDBY;
   }
 
-  bool in_rx_mode() const {
+  bool in_rx_mode() const override {
     const std::lock_guard<std::mutex> lock(mutex_);
     return current_mode_ == Mode::RX;
   }
 
-  bool in_tx_mode() const {
+  bool in_tx_mode() const override {
     const std::lock_guard<std::mutex> lock(mutex_);
     return current_mode_ == Mode::TX;
   }
@@ -422,28 +422,9 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
     return false;
   }
 
-  /**
-   * Block up to timeout_ms milliseconds for a fragment to be transmitted.
-   *
-   * Returns true if we are clear to send; false if a fragment is still waiting to be sent.
-   */
-  bool wait_fragment_transmitted(uint16_t timeout_ms) override {
-    DLOG(INFO) << "MockTransceiver::wait_fragment_transmitted()";
+  bool is_transmitting_fragment() override {
     std::unique_lock<std::mutex> lock(mutex_);
-    uint32_t total_delay_ms{0};
-    while (have_fragment_for_tx_ && total_delay_ms < timeout_ms) {
-      DLOG(INFO)
-          << "MockTransceiver::wait_fragment_transmitted() -- have_fragment_for_tx_ is true.";
-      static constexpr uint16_t default_delay_ms{5};
-      lock.unlock();
-      const uint32_t amount_to_delay_ms{
-          std::min({timeout_ms, fragment_transmit_time_ms, default_delay_ms})};
-      total_delay_ms += amount_to_delay_ms;
-      tvsc::hal::time::delay_ms(amount_to_delay_ms);
-      lock.lock();
-    }
-    DLOG(INFO) << "MockTransceiver::wait_fragment_transmitted() -- exiting.";
-    return !have_fragment_for_tx_;
+    return have_fragment_for_tx_;
   }
 
   /**

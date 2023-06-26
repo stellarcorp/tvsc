@@ -10,6 +10,7 @@
 #include "radio/packet_assembler.h"
 #include "radio/packet_queue.h"
 #include "radio/transceiver.h"
+#include "radio/utilities.h"
 
 namespace tvsc::radio {
 
@@ -134,10 +135,10 @@ class TransceiverMonitor final {
             // success = success && radio_->wait_fragment_transmitted(TX_TIMEOUT_MS);
             // TODO(james): We aren't reliably getting the interrupt that says the packet was
             // transmitted. Ignoring the return value here for the time being.
-            success = success && radio_->wait_fragment_transmitted(TX_TIMEOUT_MS);
+            success = success && block_until_transmission_complete(*radio_, TX_TIMEOUT_MS);
             if (!success) {
-              LOG(INFO)
-                  << "TransceiverMonitor::iterate() -- wait_fragment_transmitted() -- failed.";
+              LOG(INFO) << "TransceiverMonitor::iterate() -- block_until_transmission_complete() "
+                           "-- failed.";
             }
           }
           if (success) {

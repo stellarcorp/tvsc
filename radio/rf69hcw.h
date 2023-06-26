@@ -14,13 +14,10 @@
 #include "radio/fragment.h"
 #include "radio/nanopb_proto/radio.pb.h"
 #include "radio/transceiver.h"
+#include "radio/yield.h"
 #include "random/random.h"
 
 namespace tvsc::radio {
-
-#ifndef YIELD
-#define YIELD
-#endif
 
 #ifndef ATOMIC_BLOCK_START
 #define ATOMIC_BLOCK_START
@@ -559,31 +556,35 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
   void set_receive_mode() override { set_mode_rx(); }
   void set_standby_mode() override { set_mode_standby(); }
 
+  bool in_standby_mode() const override { return op_mode_ == OperationalMode::STANDBY; }
+  bool in_rx_mode() const override { return op_mode_ == OperationalMode::RX; }
+  bool in_tx_mode() const override { return op_mode_ == OperationalMode::TX; }
+
   bool has_fragment_available() const override { return rx_buffer_.length > 0; }
 
-  bool wait_fragment_available(uint16_t timeout_ms) const override {
-    if (has_fragment_available()) {
-      // tvsc::hal::output::println(
-      //     "RF69HCW::wait_fragment_available() -- has_fragment_available() true first check");
-      return true;
-    }
+  // bool wait_fragment_available(uint16_t timeout_ms) const override {
+  //   if (has_fragment_available()) {
+  //     // tvsc::hal::output::println(
+  //     //     "RF69HCW::wait_fragment_available() -- has_fragment_available() true first check");
+  //     return true;
+  //   }
 
-    static constexpr uint16_t poll_delay_ms{0};
-    auto start = tvsc::hal::time::time_millis();
-    while ((tvsc::hal::time::time_millis() - start) < timeout_ms) {
-      if (has_fragment_available()) {
-        // tvsc::hal::output::println(
-        //     "RF69HCW::wait_fragment_available() -- has_fragment_available() true");
-        return true;
-      }
-      if (poll_delay_ms > 0) {
-        tvsc::hal::time::delay_ms(poll_delay_ms);
-      } else {
-        YIELD;
-      }
-    }
-    return false;
-  }
+  //   static constexpr uint16_t poll_delay_ms{0};
+  //   auto start = tvsc::hal::time::time_millis();
+  //   while ((tvsc::hal::time::time_millis() - start) < timeout_ms) {
+  //     if (has_fragment_available()) {
+  //       // tvsc::hal::output::println(
+  //       //     "RF69HCW::wait_fragment_available() -- has_fragment_available() true");
+  //       return true;
+  //     }
+  //     if (poll_delay_ms > 0) {
+  //       tvsc::hal::time::delay_ms(poll_delay_ms);
+  //     } else {
+  //       YIELD;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   void read_received_fragment(Fragment<MAX_MTU_VALUE>& fragment) override {
     ATOMIC_BLOCK_START;
@@ -597,9 +598,6 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
   }
 
   bool transmit_fragment(const Fragment<MAX_MTU_VALUE>& fragment, uint16_t timeout_ms) override {
-    // tvsc::hal::output::print("RF69HCW::transmit_fragment() -- timeout_ms: ");
-    // tvsc::hal::output::println(timeout_ms);
-
     if (fragment.length > mtu()) {
       tvsc::hal::output::print("fragment.length larger than MTU: ");
       tvsc::hal::output::println(fragment.length);
@@ -611,29 +609,12 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     }
 
     // Ensure that we aren't interrupting an ongoing transmission.
-    if (!wait_fragment_transmitted(timeout_ms)) {
+    if (is_transmitting_fragment()) {
       return false;
     }
 
     // Ensure that we don't start receiving a message while we are pushing data into the FIFO.
     set_standby_mode();
-
-    // tvsc::hal::output::print("frequency: ");
-    // tvsc::hal::output::println(get_frequency_hz());
-    // tvsc::hal::output::print("preamble_length: ");
-    // tvsc::hal::output::println(static_cast<uint16_t>(get_preamble_length()));
-    // tvsc::hal::output::print("sync_words_length: ");
-    // tvsc::hal::output::println(static_cast<uint16_t>(get_sync_words_length()));
-    // tvsc::hal::output::print("bitrate: ");
-    // tvsc::hal::output::println(get_bit_rate());
-    // tvsc::hal::output::print("frequency_deviation: ");
-    // tvsc::hal::output::println(get_frequency_deviation_hz());
-
-    // Don't transmit if we detect another radio transmitting on the same channel.
-    // if (!wait_channel_activity_clear(timeout_ms)) {
-    //   tvsc::hal::output::println("Can't send. Channel activity detected.");
-    //   return false;
-    // }
 
     bool fifo_write_status{
         spi_->fifo_write(RF69HCW_REG_00_FIFO, fragment.data.data(), fragment.length)};
@@ -647,25 +628,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     return true;
   }
 
-  bool wait_fragment_transmitted(uint16_t timeout_ms) override {
-    const uint64_t start = tvsc::hal::time::time_millis();
-    while ((tvsc::hal::time::time_millis() - start) < static_cast<uint64_t>(timeout_ms)) {
-      // We gate the determination that a packet has been sent on the transition to any non-TX
-      // operational mode. This could probably be more efficient, since it means that we send
-      // multiple SPI messages toggling the operational mode and turn off amplifiers after every
-      // packet is sent.
-      if (op_mode_ != OperationalMode::TX) {
-        return true;
-      }
-      YIELD;
-    }
-
-    tvsc::hal::output::print(
-        "RF69HCW::wait_fragment_transmitted() -- timed out. elapsed time (ms): ");
-    tvsc::hal::output::println(tvsc::hal::time::time_millis() - start);
-
-    return false;
-  }
+  // Configuration getters and setters.
 
   void set_receive_sensitivity_threshold_dbm(float threshold_dbm) {
     const uint8_t value = static_cast<uint8_t>(threshold_dbm * -2);
