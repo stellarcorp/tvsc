@@ -50,7 +50,7 @@ TEST_F(TransceiverMonitorTest, CanReceiveSinglePacket) {
                 [this](const Packet& packet) { this->packet_ready(packet); }};
 
     auto result{std::async(std::launch::async, [&monitor] {
-      tvsc::hal::time::delay_ms(100);
+      tvsc::hal::time::delay_ms(150);
       DLOG(INFO) << "Stopping transceiver monitor....";
       monitor.cancel();
     })};
@@ -97,7 +97,7 @@ TEST_F(TransceiverMonitorTest, CanReceiveSmallNumberOfPackets) {
                 [this](const Packet& packet) { this->packet_ready(packet); }};
 
     auto result{std::async(std::launch::async, [&monitor] {
-      tvsc::hal::time::delay_ms(200);
+      tvsc::hal::time::delay_ms(250);
       DLOG(INFO) << "Stopping transceiver monitor....";
       monitor.cancel();
     })};
@@ -195,7 +195,7 @@ TEST_F(TransceiverMonitorTest, CanTransmitSinglePacket) {
       DLOG(INFO) << "TX queue set up with " << tx_queue.elements_available() << " packets.";
 
       // Give the transceiver time to send the packets.
-      tvsc::hal::time::delay_ms(100);
+      tvsc::hal::time::delay_ms(150);
       DLOG(INFO) << "Stopping transceiver monitor....";
       monitor.cancel();
     })};
@@ -248,7 +248,7 @@ TEST_F(TransceiverMonitorTest, CanTransmitSmallNumberOfPackets) {
       DLOG(INFO) << "TX queue set up with " << tx_queue.elements_available() << " packets.";
 
       // Give the transceiver time to send the packets.
-      tvsc::hal::time::delay_ms(250);
+      tvsc::hal::time::delay_ms(350);
       DLOG(INFO) << "Stopping transceiver monitor....";
       monitor.cancel();
     })};
@@ -301,7 +301,7 @@ TEST_F(TransceiverMonitorTest, CanTransmitPackets) {
       DLOG(INFO) << "TX queue set up with " << tx_queue.elements_available() << " packets.";
 
       // Give the transceiver time to send the packets.
-      tvsc::hal::time::delay_ms(250);
+      tvsc::hal::time::delay_ms(350);
       DLOG(INFO) << "Stopping transceiver monitor....";
       monitor.cancel();
     })};
