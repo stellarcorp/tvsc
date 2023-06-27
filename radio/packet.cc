@@ -13,6 +13,9 @@ std::string to_string(Protocol protocol) {
     case Protocol::TVSC_CONTROL:
       result.append("TVSC_CONTROL");
       break;
+    case Protocol::TVSC_TELEMETRY:
+      result.append("TVSC_TELEMETRY");
+      break;
   }
   return result;
 }
