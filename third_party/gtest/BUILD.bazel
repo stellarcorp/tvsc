@@ -17,6 +17,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":gtest_without_main",
+        "//base",
         "//testing",
         "//third_party/gflags",
         "//third_party/glog",
