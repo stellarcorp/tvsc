@@ -17,6 +17,7 @@ cc_library(
                 "initializer.h",
             ],
         }) + [
+            "bits.h",
             "except.h",
             "units.h",
         ],
@@ -37,6 +38,17 @@ cc_library(
             "//third_party/gflags",
         ],
     }),
+)
+
+cc_test(
+    name = "bits_test",
+    srcs = [
+        "bits_test.cc",
+    ],
+    deps = [
+        ":base",
+        "//third_party/gtest",
+    ],
 )
 
 cc_test(

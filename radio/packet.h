@@ -4,30 +4,13 @@
 #include <cstdint>
 #include <string>
 
-#if __has_cpp_attribute(__cpp_lib_int_pow2)
-#include <bit>
-#endif
-
+#include "base/bits.h"
 #include "base/except.h"
 #include "buffer/buffer.h"
 #include "hash/hash_combine.h"
 #include "hash/integer_hash.h"
 
 namespace tvsc::radio {
-
-namespace internal {
-
-#if __has_cpp_attribute(__cpp_lib_int_pow2)
-inline constexpr size_t number_of_bits(size_t x) noexcept { return std::bit_width(x); }
-#else
-inline constexpr size_t number_of_bits(size_t x) noexcept {
-  return x < 2 ? x : 1 + number_of_bits(x >> 1);
-}
-#endif
-
-inline constexpr uint8_t bit_width(size_t x) { return static_cast<uint8_t>(number_of_bits(x)); }
-
-}  // namespace internal
 
 enum class Protocol : uint8_t {
   INET,  // Any forwarded "Internet" traffic. Note that this includes INET, INET6, ICMP, and other
@@ -83,7 +66,7 @@ class PacketT final {
   constexpr size_t capacity() const { return max_payload_size(); }
 
   static constexpr uint8_t payload_size_bits_required() {
-    return internal::bit_width(MAX_PAYLOAD_SIZE);
+    return tvsc::bit_width(MAX_PAYLOAD_SIZE);
   }
   static constexpr uint8_t payload_size_bytes_required() {
     return (payload_size_bits_required() + 7) / 8;
@@ -91,7 +74,7 @@ class PacketT final {
 
   static constexpr size_t header_size() {
     return sizeof(Protocol) + sizeof(uint8_t) + sizeof(uint8_t) + sizeof(uint16_t) +
-      sizeof(uint8_t);
+           sizeof(uint8_t);
   }
 
   Protocol protocol() const { return protocol_; }
