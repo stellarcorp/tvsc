@@ -293,3 +293,13 @@ cc_test(
         "//third_party/gtest",
     ],
 )
+
+cc_test(
+    name = "telemetry_accumulator_test",
+    srcs = ["telemetry_accumulator_test.cc"],
+    deps = [
+        ":radio",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)

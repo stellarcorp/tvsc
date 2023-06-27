@@ -7,7 +7,7 @@
 namespace tvsc::radio {
 
 void TelemetryAccumulator::update_time_measurement() {
-  tvsc_radio_nano_TelemetryEvent& event{*find_event(tvsc_radio_nano_Metric_TIME)};
+  tvsc_radio_nano_TelemetryEvent& event{*find_event(report_, tvsc_radio_nano_Metric_TIME)};
   event.time_ms = tvsc::hal::time::time_millis();
   event.measurement = tvsc::radio::as_discrete_value<uint32_t>(event.time_ms);
 }
@@ -108,37 +108,37 @@ TelemetryAccumulator::TelemetryAccumulator(uint32_t device_id) {
 }
 
 void TelemetryAccumulator::increment_packets_received() {
-  tvsc_radio_nano_TelemetryEvent& event{*find_event(tvsc_radio_nano_Metric_PACKETS_RX)};
+  tvsc_radio_nano_TelemetryEvent& event{*find_event(report_, tvsc_radio_nano_Metric_PACKETS_RX)};
   event.time_ms = tvsc::hal::time::time_millis();
   event.measurement = tvsc::radio::as_discrete_value<uint32_t>(as<uint32_t>(event.measurement) + 1);
 }
 
 void TelemetryAccumulator::increment_packets_transmitted() {
-  tvsc_radio_nano_TelemetryEvent& event{*find_event(tvsc_radio_nano_Metric_PACKETS_TX)};
+  tvsc_radio_nano_TelemetryEvent& event{*find_event(report_, tvsc_radio_nano_Metric_PACKETS_TX)};
   event.time_ms = tvsc::hal::time::time_millis();
   event.measurement = tvsc::radio::as_discrete_value<uint32_t>(as<uint32_t>(event.measurement) + 1);
 }
 
 void TelemetryAccumulator::increment_packets_dropped() {
-  tvsc_radio_nano_TelemetryEvent& event{*find_event(tvsc_radio_nano_Metric_DROPPED_PACKETS)};
+  tvsc_radio_nano_TelemetryEvent& event{*find_event(report_, tvsc_radio_nano_Metric_DROPPED_PACKETS)};
   event.time_ms = tvsc::hal::time::time_millis();
   event.measurement = tvsc::radio::as_discrete_value<uint32_t>(as<uint32_t>(event.measurement) + 1);
 }
 
 void TelemetryAccumulator::increment_transmit_errors() {
-  tvsc_radio_nano_TelemetryEvent& event{*find_event(tvsc_radio_nano_Metric_TX_ERRORS)};
+  tvsc_radio_nano_TelemetryEvent& event{*find_event(report_, tvsc_radio_nano_Metric_TX_ERRORS)};
   event.time_ms = tvsc::hal::time::time_millis();
   event.measurement = tvsc::radio::as_discrete_value<uint32_t>(as<uint32_t>(event.measurement) + 1);
 }
 
 void TelemetryAccumulator::set_rssi_dbm(float rssi_dbm) {
-  tvsc_radio_nano_TelemetryEvent& event{*find_event(tvsc_radio_nano_Metric_RSSI_DBM)};
+  tvsc_radio_nano_TelemetryEvent& event{*find_event(report_, tvsc_radio_nano_Metric_RSSI_DBM)};
   event.time_ms = tvsc::hal::time::time_millis();
   event.measurement = tvsc::radio::as_discrete_value(rssi_dbm);
 }
 
 void TelemetryAccumulator::set_transmit_queue_size(uint32_t size) {
-  tvsc_radio_nano_TelemetryEvent& event{*find_event(tvsc_radio_nano_Metric_TX_QUEUE_SIZE)};
+  tvsc_radio_nano_TelemetryEvent& event{*find_event(report_, tvsc_radio_nano_Metric_TX_QUEUE_SIZE)};
   event.time_ms = tvsc::hal::time::time_millis();
   event.measurement = tvsc::radio::as_discrete_value<uint32_t>(size);
 }
@@ -147,7 +147,7 @@ void TelemetryAccumulator::set_transmit_queue_size(uint32_t size) {
  * Set the power currently being consumed in Watts.
  */
 void TelemetryAccumulator::set_power_usage_w(float power_w) {
-  tvsc_radio_nano_TelemetryEvent& event{*find_event(tvsc_radio_nano_Metric_POWER_W)};
+  tvsc_radio_nano_TelemetryEvent& event{*find_event(report_, tvsc_radio_nano_Metric_POWER_W)};
   event.time_ms = tvsc::hal::time::time_millis();
   event.measurement = tvsc::radio::as_discrete_value(power_w);
 }
