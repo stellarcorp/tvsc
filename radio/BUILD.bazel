@@ -277,6 +277,7 @@ cc_test(
     srcs = ["encoding_test.cc"],
     deps = [
         ":radio",
+        "//base",
         "//third_party/glog",
         "//third_party/gtest",
     ],

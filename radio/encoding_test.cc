@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "base/except.h"
 #include "gmock/gmock.h"
 #include "radio/packet.h"
 #include "radio/packet_assembler.h"
@@ -27,7 +28,9 @@ template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
 Packet roundtrip(const Packet& in) {
   using std::to_string;
   EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET> fragments{};
-  encode(in, fragments);
+  if (!encode(in, fragments)) {
+    except<std::runtime_error>("Code not encode packet into fragments");
+  }
 
   LOG(INFO) << "encoded packet: " << to_string(fragments) << "\n";
 
@@ -329,6 +332,54 @@ TEST(EncodingTest, CanEncodeTinyPacketWithPayloadLargerThanMtu) {
     packet.payload()[i] = static_cast<uint8_t>(i & 0xff);
   }
   EXPECT_TRUE(roundtrip_gives_same_packet_tiny_sizes(packet));
+}
+
+TEST(EncodeTest, CanDetectErrantPacketLength) {
+  Packet packet{};
+  packet.set_protocol(Protocol::TVSC_CONTROL);
+  packet.set_sender_id(42);
+  packet.set_destination_id(101);
+  packet.set_sequence_number(15000);
+  static constexpr size_t PAYLOAD_LENGTH{10};
+  for (size_t i = 0; i < PAYLOAD_LENGTH; ++i) {
+    packet.payload()[i] = static_cast<uint8_t>(i & 0xff);
+  }
+  packet.set_payload_length(Packet::max_payload_size() + 1);
+
+  EncodedPacket<Packet::max_payload_size(), 10 /* Max fragments per packet*/> fragments{};
+  bool success = encode(packet, fragments);
+
+  EXPECT_FALSE(success);
+}
+
+TEST(EncodeTest, CanDetectPacketTooLargeForEncodingParameters) {
+  Packet packet{};
+  packet.set_protocol(Protocol::TVSC_CONTROL);
+  packet.set_sender_id(42);
+  packet.set_destination_id(101);
+  packet.set_sequence_number(15000);
+  static constexpr size_t PAYLOAD_LENGTH{500};
+  for (size_t i = 0; i < PAYLOAD_LENGTH; ++i) {
+    packet.payload()[i] = static_cast<uint8_t>(i & 0xff);
+  }
+  packet.set_payload_length(PAYLOAD_LENGTH);
+
+  // Note that the fragments are not large enough to hold the entire packet.
+  EncodedPacket<50 /* MTU for fragments */, 5 /* Max fragments per packet*/> fragments{};
+  bool success = encode(packet, fragments);
+
+  EXPECT_FALSE(success);
+}
+
+TEST(DecodeTest, CanDetectErrantPacketLength) {
+  constexpr size_t MTU{50};
+  Fragment<MTU> fragment{};
+  fragment.length = MTU + 1;
+
+  Packet packet{};
+  bool success = decode(fragment, packet);
+
+  EXPECT_FALSE(success);
 }
 
 }  // namespace tvsc::radio

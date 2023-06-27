@@ -17,7 +17,13 @@ struct Fragment final {
   size_t length{};
   tvsc::buffer::Buffer<uint8_t, MTU> data{};
 
-  constexpr size_t capacity() { return MTU; }
+  constexpr size_t capacity() const { return MTU; }
+
+  /**
+   * Validate the fragment as much as possible. Currently, this just means checking the length is
+   * less than or equal to the MTU.
+   */
+  bool is_valid() const { return length <= MTU; }
 };
 
 template <size_t MTU>

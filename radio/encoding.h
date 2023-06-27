@@ -40,10 +40,12 @@ std::string to_string(const EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& encode
  * Encode is a generic operation to translate a single packet structure into transmittable
  * fragments. The identity of each fragment, as well as an indicator for the number of fragments,
  * should be encoded directly into the Fragment data.
+ *
+ * Returns true if packet could be encoded into fragments; false, otherwise.
  */
 template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET,
           size_t PACKET_MAX_PAYLOAD_SIZE = DEFAULT_PACKET_MAX_PAYLOAD_SIZE>
-void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
+bool encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
             EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments) {
   static_assert(MAX_FRAGMENTS_PER_PACKET < 128,
                 "MAX_FRAGMENTS_PER_PACKET is too large. We only reserve 7 bits for this value (8 "
@@ -51,6 +53,10 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
   static_assert(std::is_same<uint8_t, std::underlying_type_t<Protocol>>::value,
                 "We expect the Protocol to be representable in a single octet. If the underlying "
                 "type for that enum is larger than that, this function must be updated.");
+
+  if (!packet.is_valid()) {
+    return false;
+  }
 
   uint8_t fragment_index{0};
   size_t bytes_written{0};
@@ -104,6 +110,9 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
   }
 
   fragments.num_fragments = fragment_index;
+  if (have_more_to_encode) {
+    return false;
+  }
 
   // Set the continuation bit on all fragments except the last to indicate there are more fragments
   // to come.
@@ -111,14 +120,25 @@ void encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
     current_fragment = &fragments.buffers[i];
     current_fragment->data[5] = current_fragment->data[5] | 0x80;
   }
+
+  return true;
 }
 
+/**
+ * Decode a fragment into a Packet.
+ *
+ * Returns true if it was possible to decode the fragment; false, otherwise.
+ */
 template <size_t MTU, size_t PACKET_MAX_PAYLOAD_SIZE>
 bool decode(const Fragment<MTU>& fragment, PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet) {
   // TODO(james): Add assertions on expected invariants.
   using std::to_string;
   size_t bytes_read{0};
   size_t payload_bytes_read{0};
+
+  if (!fragment.is_valid()) {
+    return false;
+  }
 
   // Header.
   packet.set_protocol(static_cast<Protocol>(fragment.data[bytes_read++]));

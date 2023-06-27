@@ -77,6 +77,14 @@ class PacketT final {
            sizeof(uint8_t);
   }
 
+  /**
+   * Check that the Packet as current configured is valid.
+   */
+  bool is_valid() const {
+    // All we can do is check that the payload length is appropriate for MAX_PAYLOAD_SIZE.
+    return payload_length_ <= MAX_PAYLOAD_SIZE;
+  }
+
   Protocol protocol() const { return protocol_; }
   void set_protocol(Protocol protocol) { protocol_ = protocol; }
 
@@ -116,15 +124,7 @@ class PacketT final {
   void set_is_last_fragment(bool is_last_fragment) { is_last_fragment_ = is_last_fragment; }
 
   size_t payload_length() const { return payload_length_; }
-  void set_payload_length(size_t payload_length) {
-    if (payload_length > MAX_PAYLOAD_SIZE) {
-      using std::to_string;
-      except<std::domain_error>(
-          "Payload is larger than MAX_PAYLOAD_SIZE. payload_length: " + to_string(payload_length) +
-          " (MAX_PAYLOAD_SIZE: " + to_string(MAX_PAYLOAD_SIZE) + ")");
-    }
-    payload_length_ = payload_length;
-  }
+  void set_payload_length(size_t payload_length) { payload_length_ = payload_length; }
 
   const tvsc::buffer::Buffer<uint8_t, MAX_PAYLOAD_SIZE>& payload() const { return payload_; }
   tvsc::buffer::Buffer<uint8_t, MAX_PAYLOAD_SIZE>& payload() { return payload_; }
