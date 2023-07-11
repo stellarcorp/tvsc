@@ -91,14 +91,24 @@ class PacketAssembler final {
 
  public:
   template <size_t MTU>
-  void add_fragment(const Fragment<MTU>& fragment) {
+  bool add_fragment(const Fragment<MTU>& fragment) {
+    tvsc::hal::output::println("PacketAssembler::add_fragment() 1");
     PacketT packet{};
-    decode(fragment, packet);
+    tvsc::hal::output::println("PacketAssembler::add_fragment() 2");
+    if (!decode(fragment, packet)) {
+      return false;
+    }
+    tvsc::hal::output::println("PacketAssembler::add_fragment() 3");
     std::lock_guard lock{m_};
+    tvsc::hal::output::println("PacketAssembler::add_fragment() 4");
     incoming_.insert({packet.header_hash(), std::move(packet)});
+    tvsc::hal::output::println("PacketAssembler::add_fragment() 5");
     if (packet.is_last_fragment()) {
+      tvsc::hal::output::println("PacketAssembler::add_fragment() 6");
       complete_packets_.insert(packet.header_hash());
     }
+    tvsc::hal::output::println("PacketAssembler::add_fragment() 7");
+    return true;
   }
 
   bool has_complete_packets() const {
@@ -107,6 +117,7 @@ class PacketAssembler final {
   }
 
   void consume_packet(PacketT& output) {
+    tvsc::hal::output::println("PacketAssembler::consume_packet(PacketT&)");
     std::lock_guard lock{m_};
     const auto first{complete_packets_.begin()};
     const uint64_t id{*first};
@@ -117,6 +128,7 @@ class PacketAssembler final {
   }
 
   PacketT consume_packet() {
+    tvsc::hal::output::println("PacketAssembler::consume_packet()");
     PacketT output{};
     consume_packet(output);
     return output;
