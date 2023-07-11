@@ -374,7 +374,7 @@ TEST(EncodeTest, CanDetectPacketTooLargeForEncodingParameters) {
 TEST(DecodeTest, CanDetectErrantPacketLength) {
   constexpr size_t MTU{50};
   Fragment<MTU> fragment{};
-  fragment.length = MTU + 1;
+  fragment.set_payload_size(Fragment<MTU>::max_payload_size() + 1);
 
   Packet packet{};
   bool success = decode(fragment, packet);
