@@ -14,24 +14,32 @@
 
 namespace tvsc::radio {
 
-template <size_t MTU>
+template <size_t MTU, uint16_t TIMEOUT_MS = 150>
 bool recv(HalfDuplexTransceiver<MTU>& transceiver, Fragment<MTU>& fragment) {
-  return transceiver.receive_fragment(fragment, 100);
+  bool result = block_until_fragment_available(transceiver, TIMEOUT_MS);
+  if (result) {
+    transceiver.read_received_fragment(fragment);
+  } else {
+    tvsc::hal::output::println(
+        "transceiver_utilities.h recv() -- Receive timed out. No fragments available.");
+  }
+  return result;
 }
 
-template <size_t MTU, uint16_t TIMEOUT_MS = 50>
+template <size_t MTU, uint16_t TIMEOUT_MS = 150>
 bool send(HalfDuplexTransceiver<MTU>& transceiver, const Fragment<MTU>& msg) {
   bool result;
 
   result = block_until_channel_activity_clear(transceiver, TIMEOUT_MS);
   if (!result) {
-    tvsc::hal::output::println("utilities.h send() -- Failed due to channel activity.");
+    tvsc::hal::output::println("transceiver_utilities.h send() -- Failed due to channel activity.");
     return false;
   }
 
   result = block_until_transmission_complete(transceiver, TIMEOUT_MS);
   if (!result) {
-    tvsc::hal::output::println("utilities.h send() -- Failed due to ongoing transmission.");
+    tvsc::hal::output::println(
+        "transceiver_utilities.h send() -- Failed due to ongoing transmission.");
     return false;
   }
 
@@ -44,10 +52,11 @@ bool send(HalfDuplexTransceiver<MTU>& transceiver, const Fragment<MTU>& msg) {
     result = block_until_transmission_complete(transceiver, TIMEOUT_MS);
     if (!result) {
       tvsc::hal::output::println(
-          "utilities.h send() -- Failed due to block_until_transmission_complete() timeout.");
+          "transceiver_utilities.h send() -- Failed due to block_until_transmission_complete() "
+          "timeout.");
     }
   } else {
-    tvsc::hal::output::println("utilities.h send() -- Failed in transmit_fragment().");
+    tvsc::hal::output::println("transceiver_utilities.h send() -- Failed in transmit_fragment().");
   }
 
   return result;
