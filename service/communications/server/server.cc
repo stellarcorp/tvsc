@@ -86,6 +86,9 @@ void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& 
     tvsc::radio::proto::TelemetryEvent event{};
     event.ParseFromString(std::string(packet.payload().as_string_view(packet.payload_length())));
 
+    LOG(WARNING) << "CommunicationsServerImpl::post_received_packet() -- Received telemetry packet. "
+                    "Notifying writers";
+
     std::lock_guard<std::mutex> l(mu_);
     for (auto& writer_queue : monitor_writer_queues_) {
       // TODO(james): Make this more efficient. This approach just copies the message to the queue
@@ -117,14 +120,12 @@ grpc::Status CommunicationsServiceImpl::receive(grpc::ServerContext* context,
                                                 const EmptyMessage* /*request*/,
                                                 grpc::ServerWriter<Message>* writer) {
   using namespace std::literals::chrono_literals;
-  LOG(WARNING) << "CommunicationsServiceImpl::receive()";
   std::unique_lock<std::mutex> l(mu_);
   receive_writer_queues_.emplace(writer, std::vector<Message>{});
 
   while (!context->IsCancelled()) {
     if (receive_message_available_.wait_for(l, 20ms,
                                             [context] { return context->IsCancelled(); })) {
-      LOG(WARNING) << "CommunicationsServiceImpl::receive() -- context->IsCancelled()";
       break;
     }
 
@@ -135,7 +136,7 @@ grpc::Status CommunicationsServiceImpl::receive(grpc::ServerContext* context,
     }
     queue.clear();
   }
-  LOG(WARNING) << "CommunicationsServiceImpl::receive() -- context->IsCancelled(): "
+  LOG(WARNING) << "CommunicationsServiceImpl::receive() -- exiting receive(). context->IsCancelled(): "
                << (context->IsCancelled() ? "true" : "false");
 
   receive_writer_queues_.erase(writer);
@@ -197,6 +198,8 @@ grpc::Status CommunicationsServiceImpl::end_sample_broadcast(grpc::ServerContext
 }
 
 void CommunicationsServiceImpl::broadcast_shakespeare() {
+  LOG(INFO) << "CommunicationsServiceImpl::broadcast_shakespeare() -- Thread starting.";
+  char buffer[tvsc::radio::Packet::max_payload_size()];
   Shakespeare shakespeare{};
   while (!broadcast_cancel_requested_) {
     tvsc::radio::Packet packet{};
@@ -208,16 +211,19 @@ void CommunicationsServiceImpl::broadcast_shakespeare() {
                              tvsc::radio::Packet::payload_size_bytes_required()};
     LOG(INFO) << "CommunicationsServiceImpl::broadcast_shakespeare() -- fragment_capacity: "
               << fragment_capacity;
-    size_t payload_length{shakespeare.get_next_line(
-        reinterpret_cast<char*>(packet.payload().data()), fragment_capacity)};
-    packet.set_payload_length(payload_length);
-    LOG(INFO) << "CommunicationsServiceImpl::broadcast_shakespeare() -- payload_length: "
-              << payload_length;
+    size_t line_length{shakespeare.get_next_line(buffer, tvsc::radio::Packet::max_payload_size())};
+    Message message{};
+    message.set_message(buffer, line_length);
+    message.SerializeToArray(packet.payload().data(), tvsc::radio::Packet::max_payload_size());
+    packet.set_payload_length(message.ByteSizeLong());
+    LOG(INFO) << "CommunicationsServiceImpl::broadcast_shakespeare() -- line_length: "
+              << line_length;
 
     tx_queue_.push_normal(packet);
 
-    tvsc::hal::time::delay_ms(500);
+    tvsc::hal::time::delay_ms(1500);
   }
+  LOG(INFO) << "CommunicationsServiceImpl::broadcast_shakespeare() -- Thread finishing.";
 }
 
 }  // namespace tvsc::service::communications
