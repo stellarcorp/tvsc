@@ -305,6 +305,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
   tvsc::hal::spi::SpiPeripheral* spi_;
 
   Fragment<MAX_MTU_VALUE> rx_buffer_{};
+  bool rx_buffer_valid_{false};
 
   int8_t power_;
   OperationalMode op_mode_{OperationalMode::STANDBY};
@@ -355,7 +356,13 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
    * Read the received data from the FIFO into the RX buffer in this class.
    */
   void read_fifo() {
-    rx_buffer_.length = spi_->fifo_read(RF69HCW_REG_00_FIFO, rx_buffer_.data.data(), max_mtu());
+    const size_t bytes_read =
+        spi_->fifo_read(RF69HCW_REG_00_FIFO, rx_buffer_.data.data(), max_mtu());
+    if (bytes_read == rx_buffer_.total_length()) {
+      rx_buffer_valid_ = true;
+    } else {
+      rx_buffer_valid_ = false;
+    }
   }
 
   // Interrupt vectoring.
@@ -560,7 +567,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
   bool in_rx_mode() const override { return op_mode_ == OperationalMode::RX; }
   bool in_tx_mode() const override { return op_mode_ == OperationalMode::TX; }
 
-  bool has_fragment_available() const override { return rx_buffer_.length > 0; }
+  bool has_fragment_available() const override { return rx_buffer_valid_; }
 
   // bool wait_fragment_available(uint16_t timeout_ms) const override {
   //   if (has_fragment_available()) {
@@ -589,7 +596,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
   void read_received_fragment(Fragment<MAX_MTU_VALUE>& fragment) override {
     ATOMIC_BLOCK_START;
     fragment = rx_buffer_;
-    rx_buffer_.length = 0;
+    rx_buffer_valid_ = false;
     ATOMIC_BLOCK_END;
   }
 
@@ -598,18 +605,27 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
   }
 
   bool transmit_fragment(const Fragment<MAX_MTU_VALUE>& fragment, uint16_t timeout_ms) override {
-    if (fragment.length > mtu()) {
+    if (fragment.total_length() > mtu()) {
       tvsc::hal::output::print("fragment.length larger than MTU: ");
-      tvsc::hal::output::println(fragment.length);
+      tvsc::hal::output::println(fragment.total_length());
       return false;
     }
-    if (fragment.length == 0) {
+    if (fragment.total_length() == 0) {
       tvsc::hal::output::println("fragment.length is zero.");
       return false;
     }
 
     // Ensure that we aren't interrupting an ongoing transmission.
     if (is_transmitting_fragment()) {
+      tvsc::hal::output::println("transmit_fragment() -- already in tx_mode.");
+      return false;
+    }
+
+    if (has_fragment_available()) {
+      tvsc::hal::output::println(
+          "Attempting to transmit when a fragment is available to be received.");
+      tvsc::hal::output::print("rx_buffer_: ");
+      tvsc::hal::output::println(to_string(rx_buffer_));
       return false;
     }
 
@@ -617,7 +633,7 @@ class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the 
     set_standby_mode();
 
     bool fifo_write_status{
-        spi_->fifo_write(RF69HCW_REG_00_FIFO, fragment.data.data(), fragment.length)};
+        spi_->fifo_write(RF69HCW_REG_00_FIFO, fragment.data.data(), fragment.total_length())};
     if (!fifo_write_status) {
       tvsc::hal::output::println("transmit_fragment() -- fifo write failure.");
       return false;

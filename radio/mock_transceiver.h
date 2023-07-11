@@ -53,6 +53,7 @@ class TransceiverInterrupter final {
           DLOG(INFO) << "TransceiverInterrupter::possibly_receive_fragments() -- fragment: "
                      << to_string(transceiver_->rx_fragments_.front());
           transceiver_->buffered_fragment_ = transceiver_->rx_fragments_.front();
+          transceiver_->have_fragment_from_rx_ = true;
         } else {
           lock.lock();
           DLOG(INFO) << "TransceiverInterrupter::possibly_receive_fragments() -- transceiver not "
@@ -88,7 +89,6 @@ class TransceiverInterrupter final {
           ++transceiver_->count_corrupted_fragments_;
         }
 
-        transceiver_->buffered_fragment_.length = 0;
         transceiver_->have_fragment_for_tx_ = false;
 
         // Need to switch out of TX mode, reload the buffer, and then back into TX mode to transmit
@@ -245,6 +245,7 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
   // switching modes can drop/corrupt fragments.
   Fragment<MTU> buffered_fragment_{};
 
+  bool have_fragment_from_rx_{false};
   bool have_fragment_for_tx_{false};
 
   std::unique_ptr<internal::TransceiverInterrupter<MTU>> interrupter_{};
@@ -347,7 +348,8 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
   void reset() override {
     {
       const std::lock_guard<std::mutex> lock(mutex_);
-      buffered_fragment_.length = 0;
+      buffered_fragment_.clear();
+      have_fragment_from_rx_ = false;
     }
     stop_interrupts();
     set_standby_mode();
@@ -396,7 +398,7 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
    */
   bool has_fragment_available() const override {
     const std::lock_guard<std::mutex> lock(mutex_);
-    return buffered_fragment_.length > 0;
+    return have_fragment_from_rx_;
   }
 
   /**
@@ -406,7 +408,7 @@ class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
   void read_received_fragment(Fragment<MTU>& fragment) override {
     const std::lock_guard<std::mutex> lock(mutex_);
     fragment = buffered_fragment_;
-    buffered_fragment_.length = 0;
+    have_fragment_from_rx_ = false;
   }
 
   /**
