@@ -14,7 +14,8 @@ namespace tvsc::radio {
  * Fragments should not include information from multiple packets.
  */
 template <size_t MTU>
-struct Fragment final {
+class Fragment final {
+ public:
   static constexpr uint8_t payload_size_bytes_required() {
     if constexpr (MTU - PAYLOAD_OFFSET < (1 << 8)) {
       return 1;
@@ -31,6 +32,7 @@ struct Fragment final {
     }
   }
 
+ private:
   static constexpr size_t HEADER_OFFSET{0};
   static constexpr size_t PROTOCOL_OFFSET{HEADER_OFFSET};
   static constexpr size_t PROTOCOL_SIZE{1};
@@ -47,7 +49,6 @@ struct Fragment final {
 
   static constexpr size_t PAYLOAD_OFFSET{HEADER_OFFSET + HEADER_SIZE};
   static constexpr size_t PAYLOAD_SIZE_OFFSET{PAYLOAD_OFFSET};
-  static constexpr size_t PAYLOAD_DATA_OFFSET{PAYLOAD_SIZE_OFFSET + payload_size_bytes_required()};
 
   static_assert(PAYLOAD_OFFSET == SEQUENCE_NUMBER_OFFSET + SEQUENCE_NUMBER_SIZE,
                 "Error in Fragment field offsets or sizes.");
@@ -55,6 +56,9 @@ struct Fragment final {
                 "MTU is too small to support any payload. Need at least space for the header plus "
                 "one size byte plus one payload byte.");
 
+ public:
+  // TODO(james): Make these two fields private.
+  static constexpr size_t PAYLOAD_DATA_OFFSET{PAYLOAD_SIZE_OFFSET + payload_size_bytes_required()};
   tvsc::buffer::Buffer<uint8_t, MTU> data{};
 
   static constexpr size_t mtu() { return MTU; }
