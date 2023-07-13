@@ -9,34 +9,34 @@
 namespace tvsc::radio {
 
 /**
- * API managing the transactional states of a half-duplex transceiver.
+ * API managing the transactional states of a half-duplex radio.
  *
- * Configuration of the transceiver, frequency to use, modulation, etc. is handled by the
+ * Configuration of the radio, frequency to use, modulation, etc. is handled by the
  * RadioConfiguration class and is outside the scope of this API. The RadioConfiguration is based on
  * protocol buffers with templated functions for each radio module. It is expected that the radio
  * modules themselves will have direct getters and setters and the configuration functions will be
  * specialized to call those getters and setters.
  */
 template <size_t MTU>
-class HalfDuplexTransceiver {
+class HalfDuplexRadio {
  public:
   static constexpr size_t MAX_MTU_VALUE{MTU};
   static constexpr size_t max_mtu() { return MTU; }
 
-  virtual ~HalfDuplexTransceiver() = default;
+  virtual ~HalfDuplexRadio() = default;
 
   /**
-   * The current MTU of the transceiver. By default, this is the compile-time constant MTU. But, it
+   * The current MTU of the radio. By default, this is the compile-time constant MTU. But, it
    * is possible to make this value configurable to allow different MTUs in different scenarios.
    */
   virtual size_t mtu() const { return max_mtu(); }
 
   /**
-   * Reset the transceiver back to a default state and in standby mode. This may include a hardware
+   * Reset the radio back to a default state and in standby mode. This may include a hardware
    * reset, such as powering down the module and powering it back on again, toggling an enable or
    * reset line, etc.
    *
-   * The constructor for the transceiver should put it in the same default state. This is easily
+   * The constructor for the radio should put it in the same default state. This is easily
    * accomplished by calling reset() at the end of the constructor.
    *
    * This call should be idempotent.
@@ -46,14 +46,14 @@ class HalfDuplexTransceiver {
   /**
    * Read the RSSI (Received Signal Strength Indicator) in dBm. Note that making this reading may
    * interrupt any ongoing rx or tx operation and will likely involve changing register values on
-   * the transceiver.
+   * the radio.
    */
   virtual float read_rssi_dbm() = 0;
 
   /**
-   * Put the transceiver in a standby mode. Standby means that it is not receiving or transmitting.
+   * Put the radio in a standby mode. Standby means that it is not receiving or transmitting.
    * This may be used to save power. It may also be used during the setup of a transmission to
-   * guarantee that the transceiver doesn't start receiving a fragment while it is preparing to
+   * guarantee that the radio doesn't start receiving a fragment while it is preparing to
    * transmit.
    *
    * This call should be idempotent.
@@ -61,7 +61,7 @@ class HalfDuplexTransceiver {
   virtual void set_standby_mode() = 0;
 
   /**
-   * Configure the transceiver to receive data.
+   * Configure the radio to receive data.
    *
    * This call should be idempotent.
    */
@@ -80,19 +80,19 @@ class HalfDuplexTransceiver {
   virtual bool in_tx_mode() const = 0;
 
   /**
-   * Flag to poll if the transceiver has rx data available to read.
+   * Flag to poll if the radio has rx data available to read.
    */
   virtual bool has_fragment_available() const = 0;
 
   /**
-   * Read a fragment that has already been received by the transceiver. After being read, the
-   * transceiver will discard the fragment.
+   * Read a fragment that has already been received by the radio. After being read, the
+   * radio will discard the fragment.
    */
   virtual void read_received_fragment(Fragment<MTU>& fragment) = 0;
 
   /**
-   * Flag to poll if the transceiver is detecting channel activity. Before transmitting, the
-   * transceiver should wait until this activity has cleared.
+   * Flag to poll if the radio is detecting channel activity. Before transmitting, the
+   * radio should wait until this activity has cleared.
    *
    * Note that this method cannot be marked const, since it likely involves reading the RSSI level
    * which will involve changing register values, disrupting any ongoing RX, etc.
@@ -108,10 +108,10 @@ class HalfDuplexTransceiver {
   virtual bool transmit_fragment(const Fragment<MTU>& fragment, uint16_t timeout_ms) = 0;
 
   /**
-   * Returns true if this transceiver is currently transmitting; false, otherwise.
+   * Returns true if this radio is currently transmitting; false, otherwise.
    */
   virtual bool is_transmitting_fragment() {
-    // By default, being in TX mode means that the transceiver is transmitting a fragment.
+    // By default, being in TX mode means that the radio is transmitting a fragment.
     return in_tx_mode();
   }
 };

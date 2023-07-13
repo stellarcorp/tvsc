@@ -16,10 +16,10 @@
 #include "radio/packet.h"
 #include "radio/proto/settings.pb.h"
 #include "radio/radio_configuration.h"
+#include "radio/radio_module.h"
 #include "radio/rf69hcw.h"
 #include "radio/rf69hcw_configuration.h"
 #include "radio/single_radio_pin_mapping.h"
-#include "radio/transceiver.h"
 #include "random/random.h"
 #include "service/communications/common/communications.grpc.pb.h"
 #include "service/communications/common/communications.pb.h"
@@ -86,8 +86,9 @@ void CommunicationsServiceImpl::post_received_packet(const tvsc::radio::Packet& 
     tvsc::radio::proto::TelemetryEvent event{};
     event.ParseFromString(std::string(packet.payload().as_string_view(packet.payload_length())));
 
-    LOG(WARNING) << "CommunicationsServerImpl::post_received_packet() -- Received telemetry packet. "
-                    "Notifying writers";
+    LOG(WARNING)
+        << "CommunicationsServerImpl::post_received_packet() -- Received telemetry packet. "
+           "Notifying writers";
 
     std::lock_guard<std::mutex> l(mu_);
     for (auto& writer_queue : monitor_writer_queues_) {
@@ -136,8 +137,9 @@ grpc::Status CommunicationsServiceImpl::receive(grpc::ServerContext* context,
     }
     queue.clear();
   }
-  LOG(WARNING) << "CommunicationsServiceImpl::receive() -- exiting receive(). context->IsCancelled(): "
-               << (context->IsCancelled() ? "true" : "false");
+  LOG(WARNING)
+      << "CommunicationsServiceImpl::receive() -- exiting receive(). context->IsCancelled(): "
+      << (context->IsCancelled() ? "true" : "false");
 
   receive_writer_queues_.erase(writer);
 

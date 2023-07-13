@@ -9,13 +9,13 @@
 #include "hal/output/output.h"
 #include "hal/time/time.h"
 #include "radio/fragment.h"
-#include "radio/transceiver.h"
+#include "radio/radio_module.h"
 #include "radio/yield.h"
 
 namespace tvsc::radio {
 
 template <size_t MTU, uint16_t TIMEOUT_MS = 150>
-bool recv(HalfDuplexTransceiver<MTU>& transceiver, Fragment<MTU>& fragment) {
+bool recv(HalfDuplexRadio<MTU>& transceiver, Fragment<MTU>& fragment) {
   bool result = block_until_fragment_available(transceiver, TIMEOUT_MS);
   if (result) {
     transceiver.read_received_fragment(fragment);
@@ -27,7 +27,7 @@ bool recv(HalfDuplexTransceiver<MTU>& transceiver, Fragment<MTU>& fragment) {
 }
 
 template <size_t MTU, uint16_t TIMEOUT_MS = 150>
-bool send(HalfDuplexTransceiver<MTU>& transceiver, const Fragment<MTU>& msg) {
+bool send(HalfDuplexRadio<MTU>& transceiver, const Fragment<MTU>& msg) {
   bool result;
 
   result = block_until_channel_activity_clear(transceiver, TIMEOUT_MS);
@@ -63,7 +63,7 @@ bool send(HalfDuplexTransceiver<MTU>& transceiver, const Fragment<MTU>& msg) {
 }
 
 template <size_t MTU, uint16_t POLL_DELAY_MS = 1>
-bool block_until_fragment_available(HalfDuplexTransceiver<MTU>& transceiver, uint16_t timeout_ms) {
+bool block_until_fragment_available(HalfDuplexRadio<MTU>& transceiver, uint16_t timeout_ms) {
   const uint64_t start_time{tvsc::hal::time::time_millis()};
   while (!transceiver.has_fragment_available()) {
     if (tvsc::hal::time::time_millis() - start_time > timeout_ms) {
@@ -79,7 +79,7 @@ bool block_until_fragment_available(HalfDuplexTransceiver<MTU>& transceiver, uin
 }
 
 template <size_t MTU, uint16_t POLL_DELAY_MS = 1>
-bool block_until_channel_activity_clear(HalfDuplexTransceiver<MTU>& transceiver,
+bool block_until_channel_activity_clear(HalfDuplexRadio<MTU>& transceiver,
                                         uint16_t timeout_ms) {
   const uint64_t start_time{tvsc::hal::time::time_millis()};
   while (transceiver.channel_activity_detected()) {
@@ -96,7 +96,7 @@ bool block_until_channel_activity_clear(HalfDuplexTransceiver<MTU>& transceiver,
 }
 
 template <size_t MTU, uint16_t POLL_DELAY_MS = 1>
-bool block_until_transmission_complete(HalfDuplexTransceiver<MTU>& transceiver,
+bool block_until_transmission_complete(HalfDuplexRadio<MTU>& transceiver,
                                        uint16_t timeout_ms) {
   const uint64_t start_time{tvsc::hal::time::time_millis()};
   while (transceiver.is_transmitting_fragment()) {

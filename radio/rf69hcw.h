@@ -13,7 +13,7 @@
 #include "hal/time/time.h"
 #include "radio/fragment.h"
 #include "radio/nanopb_proto/radio.pb.h"
-#include "radio/transceiver.h"
+#include "radio/radio_module.h"
 #include "radio/yield.h"
 #include "random/random.h"
 
@@ -24,9 +24,9 @@ namespace tvsc::radio {
 #define ATOMIC_BLOCK_END
 #endif
 
-class RF69HCW final : public HalfDuplexTransceiver</* Hardware MTU. This is the FIFO size of 66
+class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO size of 66
                                                       bytes minus one byte for the message size. */
-                                                   65> {
+                                             65> {
  public:
   enum class OperationalMode {
     STANDBY,

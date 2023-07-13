@@ -8,7 +8,7 @@
 #include "radio/packet.h"
 #include "radio/packet_assembler.h"
 #include "radio/packet_queue.h"
-#include "radio/transceiver.h"
+#include "radio/radio_module.h"
 
 namespace tvsc::radio {
 

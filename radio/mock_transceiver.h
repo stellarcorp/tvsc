@@ -8,7 +8,7 @@
 
 #include "glog/logging.h"
 #include "hal/time/time.h"
-#include "radio/transceiver.h"
+#include "radio/radio_module.h"
 
 namespace tvsc::radio {
 
@@ -192,7 +192,7 @@ class TransceiverInterrupter final {
 }  // namespace internal
 
 template <size_t MTU>
-class MockTransceiverT final : public HalfDuplexTransceiver<MTU> {
+class MockTransceiverT final : public HalfDuplexRadio<MTU> {
  private:
   // Amount of time in milliseconds in between fragment receptions. This simulates a time delay
   // between the reception of the various fragments. The transceiver will receive a fragment as long

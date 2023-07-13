@@ -9,7 +9,7 @@
 #include "hal/time/time.h"
 #include "radio/packet_assembler.h"
 #include "radio/packet_queue.h"
-#include "radio/transceiver.h"
+#include "radio/radio_module.h"
 #include "radio/transceiver_utilities.h"
 
 namespace tvsc::radio {
@@ -25,7 +25,7 @@ class TransceiverMonitor final {
   static constexpr uint16_t RX_TIMEOUT_MS{25};
   static constexpr uint16_t TX_TIMEOUT_MS{25};
 
-  HalfDuplexTransceiver<MTU>* radio_;
+  HalfDuplexRadio<MTU>* radio_;
 
   PacketTxQueue<PacketT, MAX_TX_QUEUE_SIZE>* tx_queue_;
   PacketSink<PacketT, MAX_TX_QUEUE_SIZE> tx_queue_sink_;
@@ -58,7 +58,7 @@ class TransceiverMonitor final {
   }
 
  public:
-  TransceiverMonitor(HalfDuplexTransceiver<MTU>& radio,
+  TransceiverMonitor(HalfDuplexRadio<MTU>& radio,
                      PacketTxQueue<PacketT, MAX_TX_QUEUE_SIZE>& tx_queue,
                      PacketAssembler<PacketT>& rx_queue,
                      std::function<void(const Packet& packet)> notify_fn)
@@ -107,7 +107,7 @@ class TransceiverMonitor final {
 
     // Receive a fragment, if one is available.
     if (block_until_fragment_available(*radio_, RX_TIMEOUT_MS)) {
-      Fragment<HalfDuplexTransceiver<MTU>::max_mtu()> fragment{};
+      Fragment<HalfDuplexRadio<MTU>::max_mtu()> fragment{};
       radio_->read_received_fragment(fragment);
       LOG(INFO) << "TransceiverMonitor::iterate() -- adding fragment to RX queue...";
       if (rx_queue_->add_fragment(fragment)) {
