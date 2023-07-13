@@ -21,7 +21,9 @@ class TransceiverMonitor final {
   // the environment.
   static constexpr size_t TX_ELEMENTS_AVAILABLE_THRESHOLD{4};
   static constexpr size_t TX_TIME_THRESHOLD_MS{50};
-  static constexpr uint16_t TX_TIMEOUT_MS{200};
+
+  static constexpr uint16_t RX_TIMEOUT_MS{25};
+  static constexpr uint16_t TX_TIMEOUT_MS{25};
 
   HalfDuplexTransceiver<MTU>* radio_;
 
@@ -104,15 +106,22 @@ class TransceiverMonitor final {
     radio_->set_receive_mode();
 
     // Receive a fragment, if one is available.
-    if (radio_->has_fragment_available()) {
-      // if (radio_->wait_fragment_available(50)) {
+    if (block_until_fragment_available(*radio_, RX_TIMEOUT_MS)) {
       Fragment<HalfDuplexTransceiver<MTU>::max_mtu()> fragment{};
       radio_->read_received_fragment(fragment);
-      rx_queue_->add_fragment(fragment);
+      LOG(INFO) << "TransceiverMonitor::iterate() -- adding fragment to RX queue...";
+      if (rx_queue_->add_fragment(fragment)) {
+        LOG(INFO) << "TransceiverMonitor::iterate() -- fragment added to RX queue.";
+      } else {
+        LOG(INFO) << "TransceiverMonitor::iterate() -- error decoding fragment. Could not add to "
+                     "RX queue.";
+      }
     }
 
     if (rx_queue_->has_complete_packets()) {
+      LOG(INFO) << "TransceiverMonitor::iterate() -- notifying about complete packet...";
       notify_fn_(rx_queue_->consume_packet());
+      LOG(INFO) << "TransceiverMonitor::iterate() -- notification done.";
     }
 
     // Transmit any packets we have outstanding, if we decide we should transmit.
@@ -131,14 +140,13 @@ class TransceiverMonitor final {
             success = success && radio_->transmit_fragment(fragments.buffers[i], TX_TIMEOUT_MS);
             if (!success) {
               LOG(INFO) << "TransceiverMonitor::iterate() -- transmit_fragment() -- failed.";
-            }
-            // success = success && radio_->wait_fragment_transmitted(TX_TIMEOUT_MS);
-            // TODO(james): We aren't reliably getting the interrupt that says the packet was
-            // transmitted. Ignoring the return value here for the time being.
-            success = success && block_until_transmission_complete(*radio_, TX_TIMEOUT_MS);
-            if (!success) {
-              LOG(INFO) << "TransceiverMonitor::iterate() -- block_until_transmission_complete() "
-                           "-- failed.";
+            } else {
+              // success = success && block_until_transmission_complete(*radio_, TX_TIMEOUT_MS);
+              block_until_transmission_complete(*radio_, TX_TIMEOUT_MS);
+              if (!success) {
+                LOG(INFO) << "TransceiverMonitor::iterate() -- block_until_transmission_complete() "
+                             "-- timed out.";
+              }
             }
           }
           if (success) {
