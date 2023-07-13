@@ -22,7 +22,7 @@
 namespace tvsc::radio {
 
 template <typename RadioT, typename PacketT, size_t MAX_FRAGMENTS_PER_PACKET>
-class Transceiver final {
+class TdmaTransceiver final {
  private:
   using FragmentT = Fragment<RadioT::max_mtu()>;
   using EncodedPacketsT = EncodedPacket<RadioT::max_mtu(), MAX_FRAGMENTS_PER_PACKET>;
@@ -176,12 +176,12 @@ class Transceiver final {
   }
 
  public:
-  Transceiver() : configuration_(radio_, SingleRadioPinMapping::board_name()) {
+  TdmaTransceiver() : configuration_(radio_, SingleRadioPinMapping::board_name()) {
     configuration_.change_values(default_configuration<RadioT>());
     configuration_.commit_changes();
   }
 
-  Transceiver(const tvsc_radio_nano_RadioIdentification& identification)
+  TdmaTransceiver(const tvsc_radio_nano_RadioIdentification& identification)
       : configuration_(radio_, identification) {
     configuration_.change_values(default_configuration<RadioT>());
     configuration_.commit_changes();
@@ -193,7 +193,7 @@ class Transceiver final {
     tvsc::hal::output::println();
   }
 
-  void process() {
+  void iterate() {
     const uint64_t current_time{tvsc::hal::time::time_millis()};
 
     radio_.set_receive_mode();
