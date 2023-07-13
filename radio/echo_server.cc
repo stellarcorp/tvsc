@@ -5,9 +5,9 @@
 #include "hal/output/output.h"
 #include "radio/nanopb_proto/settings.pb.h"
 #include "radio/packet.h"
-#include "radio/radio.h"
 #include "radio/rf69hcw.h"
 #include "radio/rf69hcw_configuration.h"
+#include "radio/transceiver.h"
 #include "random/random.h"
 
 int main() {
@@ -30,14 +30,16 @@ int main() {
   }
 
   if (has_saved_identification) {
-    tvsc::radio::Radio<tvsc::radio::RF69HCW, tvsc::radio::Packet, 10 /* MAX_FRAGMENTS_PER_PACKET*/>
+    tvsc::radio::Transceiver<tvsc::radio::RF69HCW, tvsc::radio::Packet,
+                             10 /* MAX_FRAGMENTS_PER_PACKET*/>
         radio{identification};
     radio.print_configuration();
     while (true) {
       radio.process();
     }
   } else {
-    tvsc::radio::Radio<tvsc::radio::RF69HCW, tvsc::radio::Packet, 10 /* MAX_FRAGMENTS_PER_PACKET*/>
+    tvsc::radio::Transceiver<tvsc::radio::RF69HCW, tvsc::radio::Packet,
+                             10 /* MAX_FRAGMENTS_PER_PACKET*/>
         radio{};
     radio.print_configuration();
     while (true) {

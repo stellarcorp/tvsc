@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "gtest/gtest.h"
-#include "radio/mock_transceiver.h"
+#include "radio/mock_radio.h"
 #include "radio/packet.h"
 #include "radio/packet_assembler.h"
 #include "radio/packet_queue.h"
@@ -35,17 +35,16 @@ class TransceiverMonitorTest : public ::testing::Test {
 
 TEST_F(TransceiverMonitorTest, CanReceiveSinglePacket) {
   static constexpr int NUM_PACKETS{1};
-  MockTransceiver transceiver{};
+  MockRadio transceiver{};
   for (int i = 0; i < NUM_PACKETS; ++i) {
-    transceiver.add_rx_fragment(create_fragment<MockTransceiver::max_mtu()>(i));
+    transceiver.add_rx_fragment(create_fragment<MockRadio::max_mtu()>(i));
   }
 
   {
     PacketTxQueue<Packet, 1> tx_queue{};
     PacketAssembler<Packet> rx_queue{};
 
-    TransceiverMonitor<Packet, MockTransceiver::max_mtu(), PacketTxQueue<Packet, 1>::queue_size(),
-                       10>
+    TransceiverMonitor<Packet, MockRadio::max_mtu(), PacketTxQueue<Packet, 1>::queue_size(), 10>
         monitor{transceiver, tx_queue, rx_queue,
                 [this](const Packet& packet) { this->packet_ready(packet); }};
 
@@ -82,17 +81,16 @@ TEST_F(TransceiverMonitorTest, CanReceiveSinglePacket) {
 
 TEST_F(TransceiverMonitorTest, CanReceiveSmallNumberOfPackets) {
   static constexpr int NUM_PACKETS{3};
-  MockTransceiver transceiver{};
+  MockRadio transceiver{};
   for (int i = 0; i < NUM_PACKETS; ++i) {
-    transceiver.add_rx_fragment(create_fragment<MockTransceiver::max_mtu()>(i));
+    transceiver.add_rx_fragment(create_fragment<MockRadio::max_mtu()>(i));
   }
 
   {
     PacketTxQueue<Packet, 1> tx_queue{};
     PacketAssembler<Packet> rx_queue{};
 
-    TransceiverMonitor<Packet, MockTransceiver::max_mtu(), PacketTxQueue<Packet, 1>::queue_size(),
-                       10>
+    TransceiverMonitor<Packet, MockRadio::max_mtu(), PacketTxQueue<Packet, 1>::queue_size(), 10>
         monitor{transceiver, tx_queue, rx_queue,
                 [this](const Packet& packet) { this->packet_ready(packet); }};
 
@@ -129,17 +127,16 @@ TEST_F(TransceiverMonitorTest, CanReceiveSmallNumberOfPackets) {
 
 TEST_F(TransceiverMonitorTest, CanReceivePackets) {
   static constexpr int NUM_PACKETS{25};
-  MockTransceiver transceiver{};
+  MockRadio transceiver{};
   for (int i = 0; i < NUM_PACKETS; ++i) {
-    transceiver.add_rx_fragment(create_fragment<MockTransceiver::max_mtu()>(i));
+    transceiver.add_rx_fragment(create_fragment<MockRadio::max_mtu()>(i));
   }
 
   {
     PacketTxQueue<Packet, 1> tx_queue{};
     PacketAssembler<Packet> rx_queue{};
 
-    TransceiverMonitor<Packet, MockTransceiver::max_mtu(), PacketTxQueue<Packet, 1>::queue_size(),
-                       10>
+    TransceiverMonitor<Packet, MockRadio::max_mtu(), PacketTxQueue<Packet, 1>::queue_size(), 10>
         monitor{transceiver, tx_queue, rx_queue,
                 [this](const Packet& packet) { this->packet_ready(packet); }};
 
@@ -176,13 +173,13 @@ TEST_F(TransceiverMonitorTest, CanReceivePackets) {
 
 TEST_F(TransceiverMonitorTest, CanTransmitSinglePacket) {
   static constexpr size_t NUM_PACKETS{1};
-  MockTransceiver transceiver{};
+  MockRadio transceiver{};
 
   {
     PacketTxQueue<Packet, NUM_PACKETS> tx_queue{};
     PacketAssembler<Packet> rx_queue{};
 
-    TransceiverMonitor<Packet, MockTransceiver::max_mtu(),
+    TransceiverMonitor<Packet, MockRadio::max_mtu(),
                        PacketTxQueue<Packet, NUM_PACKETS>::queue_size(), 10>
         monitor{transceiver, tx_queue, rx_queue,
                 [this](const Packet& packet) { this->packet_ready(packet); }};
@@ -229,13 +226,13 @@ TEST_F(TransceiverMonitorTest, CanTransmitSinglePacket) {
 
 TEST_F(TransceiverMonitorTest, CanTransmitSmallNumberOfPackets) {
   static constexpr size_t NUM_PACKETS{3};
-  MockTransceiver transceiver{};
+  MockRadio transceiver{};
 
   {
     PacketTxQueue<Packet, NUM_PACKETS> tx_queue{};
     PacketAssembler<Packet> rx_queue{};
 
-    TransceiverMonitor<Packet, MockTransceiver::max_mtu(),
+    TransceiverMonitor<Packet, MockRadio::max_mtu(),
                        PacketTxQueue<Packet, NUM_PACKETS>::queue_size(), 10>
         monitor{transceiver, tx_queue, rx_queue,
                 [this](const Packet& packet) { this->packet_ready(packet); }};
@@ -282,13 +279,13 @@ TEST_F(TransceiverMonitorTest, CanTransmitSmallNumberOfPackets) {
 
 TEST_F(TransceiverMonitorTest, CanTransmitPackets) {
   static constexpr size_t NUM_PACKETS{25};
-  MockTransceiver transceiver{};
+  MockRadio transceiver{};
 
   {
     PacketTxQueue<Packet, NUM_PACKETS> tx_queue{};
     PacketAssembler<Packet> rx_queue{};
 
-    TransceiverMonitor<Packet, MockTransceiver::max_mtu(),
+    TransceiverMonitor<Packet, MockRadio::max_mtu(),
                        PacketTxQueue<Packet, NUM_PACKETS>::queue_size(), 10>
         monitor{transceiver, tx_queue, rx_queue,
                 [this](const Packet& packet) { this->packet_ready(packet); }};

@@ -11,18 +11,18 @@
 #include "radio/nanopb_proto/settings.pb.h"
 #include "radio/packet.h"
 #include "radio/radio_configuration.h"
+#include "radio/radio_utilities.h"
 #include "radio/rf69hcw.h"
 #include "radio/rf69hcw_configuration.h"
 #include "radio/settings.h"
 #include "radio/single_radio_pin_mapping.h"
 #include "radio/telemetry_accumulator.h"
-#include "radio/transceiver_utilities.h"
 #include "random/random.h"
 
 namespace tvsc::radio {
 
 template <typename RadioT, typename PacketT, size_t MAX_FRAGMENTS_PER_PACKET>
-class Radio final {
+class Transceiver final {
  private:
   using FragmentT = Fragment<RadioT::max_mtu()>;
   using EncodedPacketsT = EncodedPacket<RadioT::max_mtu(), MAX_FRAGMENTS_PER_PACKET>;
@@ -176,12 +176,12 @@ class Radio final {
   }
 
  public:
-  Radio() : configuration_(radio_, SingleRadioPinMapping::board_name()) {
+  Transceiver() : configuration_(radio_, SingleRadioPinMapping::board_name()) {
     configuration_.change_values(default_configuration<RadioT>());
     configuration_.commit_changes();
   }
 
-  Radio(const tvsc_radio_nano_RadioIdentification& identification)
+  Transceiver(const tvsc_radio_nano_RadioIdentification& identification)
       : configuration_(radio_, identification) {
     configuration_.change_values(default_configuration<RadioT>());
     configuration_.commit_changes();
