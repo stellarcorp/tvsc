@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string>
 
+#include "base/bits.h"
 #include "buffer/buffer.h"
 #include "radio/packet.h"
 
@@ -17,13 +18,13 @@ template <size_t MTU>
 class Fragment final {
  public:
   static constexpr uint8_t payload_size_bytes_required() {
-    if constexpr (MTU - PAYLOAD_OFFSET < (1 << 8)) {
+    if constexpr (bit_width(MTU - PAYLOAD_OFFSET) < 8) {
       return 1;
-    } else if constexpr (MTU - PAYLOAD_OFFSET < (1UL << 16)) {
+    } else if constexpr (bit_width(MTU - PAYLOAD_OFFSET) < 16) {
       return 2;
-    } else if constexpr (MTU - PAYLOAD_OFFSET < (1UL << 24)) {
+    } else if constexpr (bit_width(MTU - PAYLOAD_OFFSET) < 24) {
       return 3;
-    } else if constexpr (MTU - PAYLOAD_OFFSET < (1UL << 32)) {
+    } else if constexpr (bit_width(MTU - PAYLOAD_OFFSET) < 32) {
       return 4;
     } else {
       // If we have more than a 32-bit int of payload size, we can optimize payload computations for
