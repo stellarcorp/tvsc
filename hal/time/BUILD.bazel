@@ -2,6 +2,12 @@ load("//platforms:hex.bzl", "hex")
 
 cc_library(
     name = "time",
+    srcs = [
+        "clock.cc",
+    ],
+    hdrs = [
+        "clock.h",
+    ],
     visibility = ["//visibility:public"],
     deps = [":time_headers"] + select({
         "//platforms:teensyduino_gpio": [
@@ -52,5 +58,20 @@ cc_library(
     }),
     deps = [
         ":time_headers",
+    ],
+)
+
+cc_library(
+    name = "mock_clock",
+    testonly = True,
+    srcs = [
+        "mock_clock.cc",
+    ],
+    hdrs = [
+        "mock_clock.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":time",
     ],
 )
