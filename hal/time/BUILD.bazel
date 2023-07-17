@@ -75,3 +75,14 @@ cc_library(
         ":time",
     ],
 )
+
+cc_test(
+    name = "mock_clock_test",
+    srcs = [
+        "mock_clock_test.cc",
+    ],
+    deps = [
+        ":mock_clock",
+        "//third_party/gtest",
+    ],
+)
