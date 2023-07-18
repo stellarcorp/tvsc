@@ -10,4 +10,36 @@ TEST(MockClockTest, ReturnsSetTime) {
   EXPECT_EQ(42, clock.current_time_millis());
 }
 
+TEST(MockClockTest, SleepMsUpdatesCurrentTime) {
+  tvsc::hal::time::MockClock clock{};
+  clock.set_current_time_millis(42);
+  ASSERT_EQ(42, clock.current_time_millis());
+  clock.sleep_ms(8);
+  EXPECT_EQ(50, clock.current_time_millis());
+}
+
+TEST(MockClockTest, SleepUsUpdatesCurrentTime) {
+  tvsc::hal::time::MockClock clock{};
+  clock.set_current_time_millis(42);
+  ASSERT_EQ(42, clock.current_time_millis());
+  clock.sleep_us(8000);
+  EXPECT_EQ(50, clock.current_time_millis());
+}
+
+TEST(MockClockTest, SleepUsUpdatesCurrentTimeWithRoundOff) {
+  tvsc::hal::time::MockClock clock{};
+  clock.set_current_time_millis(42);
+  ASSERT_EQ(42, clock.current_time_millis());
+  clock.sleep_us(8124);
+  EXPECT_EQ(50, clock.current_time_millis());
+}
+
+  TEST(MockClockTest, SleepUsUnder1MsUpdatesTo1Ms) {
+  tvsc::hal::time::MockClock clock{};
+  clock.set_current_time_millis(42);
+  ASSERT_EQ(42, clock.current_time_millis());
+  clock.sleep_us(1);
+  EXPECT_EQ(43, clock.current_time_millis());
+}
+
 }  // namespace tvsc::hal::time
