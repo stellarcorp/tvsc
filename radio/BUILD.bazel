@@ -256,6 +256,16 @@ cc_test(
 )
 
 cc_test(
+    name = "mock_radio_test",
+    srcs = ["mock_radio_test.cc"],
+    deps = [
+        ":mock_radio",
+        "//hal/time:mock_clock",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
     name = "packet_test",
     srcs = ["packet_test.cc"],
     deps = [
@@ -280,17 +290,6 @@ cc_test(
     deps = [
         ":radio",
         "//base",
-        "//third_party/glog",
-        "//third_party/gtest",
-    ],
-)
-
-cc_test(
-    name = "transceiver_monitor_test",
-    srcs = ["transceiver_monitor_test.cc"],
-    deps = [
-        ":mock_radio",
-        ":radio",
         "//third_party/glog",
         "//third_party/gtest",
     ],
