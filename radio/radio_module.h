@@ -51,6 +51,11 @@ class HalfDuplexRadio {
   virtual float read_rssi_dbm() = 0;
 
   /**
+   * How long, in milliseconds, it takes to measure the RSSI using this radio.
+   */
+  virtual uint16_t rssi_measurement_time_ms() = 0;
+
+  /**
    * Put the radio in a standby mode. Standby means that it is not receiving or transmitting.
    * This may be used to save power. It may also be used during the setup of a transmission to
    * guarantee that the radio doesn't start receiving a fragment while it is preparing to

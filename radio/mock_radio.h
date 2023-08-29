@@ -15,13 +15,15 @@ namespace tvsc::radio {
 
 template <size_t MTU>
 class MockRadioT final : public HalfDuplexRadio<MTU> {
- public:
+ private:
   // Amount of time in milliseconds required to transmit a fragment, including ramping up and down
   // the amplifiers, DSP operations and DAC timing. The radio must stay continuously in TX
   // mode during this time.
   static constexpr uint16_t FRAGMENT_TRANSMIT_TIME_MS{2};
 
- private:
+  // Amount of time in milliseconds required to measure the current RSSI level.
+  static constexpr uint16_t RSSI_MEASUREMENT_TIME_MS{5};
+
   mutable std::mutex mutex_{};
 
   tvsc::hal::time::Clock* clock_{&tvsc::hal::time::default_clock()};
@@ -205,6 +207,8 @@ class MockRadioT final : public HalfDuplexRadio<MTU> {
     // different scenarios.
     return -85.f;
   }
+
+  uint16_t rssi_measurement_time_ms() const override { return RSSI_MEASUREMENT_TIME_MS; }
 
   /**
    * Put the radio in a standby mode. Standby means that it is not receiving or transmitting.
