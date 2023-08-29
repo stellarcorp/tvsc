@@ -45,11 +45,39 @@ bool send(HalfDuplexRadio<MTU>& transceiver, const Fragment<MTU>& msg) {
 
   result = transceiver.transmit_fragment(msg, TIMEOUT_MS);
   if (result) {
-    // Note that we ignore the return value here. The PACKETSENT interrupt is not triggered. That
-    // means that we have to wait and assume the packet got transmitted rather than actually
-    // knowing.
-    // TODO(james): Fix the interrupts in RF69HCW so that we can use this return value.
     result = block_until_transmission_complete(transceiver, TIMEOUT_MS);
+    if (!result) {
+      tvsc::hal::output::println(
+          "transceiver_utilities.h send() -- Failed due to block_until_transmission_complete() "
+          "timeout.");
+    }
+  } else {
+    tvsc::hal::output::println("transceiver_utilities.h send() -- Failed in transmit_fragment().");
+  }
+
+  return result;
+}
+
+template <size_t MTU>
+bool send(HalfDuplexRadio<MTU>& transceiver, const Fragment<MTU>& msg, uint16_t timeout_ms) {
+  bool result;
+
+  result = block_until_channel_activity_clear(transceiver, timeout_ms);
+  if (!result) {
+    tvsc::hal::output::println("transceiver_utilities.h send() -- Failed due to channel activity.");
+    return false;
+  }
+
+  result = block_until_transmission_complete(transceiver, timeout_ms);
+  if (!result) {
+    tvsc::hal::output::println(
+        "transceiver_utilities.h send() -- Failed due to ongoing transmission.");
+    return false;
+  }
+
+  result = transceiver.transmit_fragment(msg, timeout_ms);
+  if (result) {
+    result = block_until_transmission_complete(transceiver, timeout_ms);
     if (!result) {
       tvsc::hal::output::println(
           "transceiver_utilities.h send() -- Failed due to block_until_transmission_complete() "
