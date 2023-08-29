@@ -53,7 +53,7 @@ class HalfDuplexRadio {
   /**
    * How long, in milliseconds, it takes to measure the RSSI using this radio.
    */
-  virtual uint16_t rssi_measurement_time_ms() = 0;
+  virtual uint16_t rssi_measurement_time_ms() const = 0;
 
   /**
    * Put the radio in a standby mode. Standby means that it is not receiving or transmitting.
