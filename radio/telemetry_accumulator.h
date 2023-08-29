@@ -1,3 +1,5 @@
+#pragma once
+
 #include "radio/nanopb_proto/settings.pb.h"
 
 namespace tvsc::radio {
