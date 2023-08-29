@@ -151,8 +151,8 @@ TEST(MockRadioTest, CanTransmitFragment) {
   fragment.set_sender_id(1);
 
   clock.set_current_time_millis(1);
-  EXPECT_TRUE(radio.transmit_fragment(fragment, RadioT::FRAGMENT_TRANSMIT_TIME_MS));
-  clock.set_current_time_millis(clock.current_time_millis() + RadioT::FRAGMENT_TRANSMIT_TIME_MS);
+  EXPECT_TRUE(radio.transmit_fragment(fragment, radio.fragment_transmit_time_ms()));
+  clock.set_current_time_millis(clock.current_time_millis() + radio.fragment_transmit_time_ms());
 
   EXPECT_EQ(1, radio.sent_fragments().size());
   for (const Fragment<RadioT::max_mtu()>& sent_fragment : radio.sent_fragments()) {
@@ -171,16 +171,16 @@ TEST(MockRadioTest, TransmittingFragmentWhileTransmittingOtherFragmentCorrupts) 
   fragment.set_sender_id(1);
 
   clock.set_current_time_millis(1);
-  ASSERT_TRUE(radio.transmit_fragment(fragment, RadioT::FRAGMENT_TRANSMIT_TIME_MS));
+  ASSERT_TRUE(radio.transmit_fragment(fragment, radio.fragment_transmit_time_ms()));
 
   // Start the second transmission too early.
-  clock.set_current_time_millis(clock.current_time_millis() + RadioT::FRAGMENT_TRANSMIT_TIME_MS -
+  clock.set_current_time_millis(clock.current_time_millis() + radio.fragment_transmit_time_ms() -
                                 1);
   fragment.set_sender_id(2);
-  ASSERT_TRUE(radio.transmit_fragment(fragment, RadioT::FRAGMENT_TRANSMIT_TIME_MS));
+  ASSERT_TRUE(radio.transmit_fragment(fragment, radio.fragment_transmit_time_ms()));
 
   // Allow the second transmission to finish.
-  clock.set_current_time_millis(clock.current_time_millis() + RadioT::FRAGMENT_TRANSMIT_TIME_MS);
+  clock.set_current_time_millis(clock.current_time_millis() + radio.fragment_transmit_time_ms());
 
   EXPECT_EQ(1, radio.sent_fragments().size());
   EXPECT_EQ(1, radio.count_corrupted_fragments());

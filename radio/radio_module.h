@@ -51,9 +51,16 @@ class HalfDuplexRadio {
   virtual float read_rssi_dbm() = 0;
 
   /**
-   * How long, in milliseconds, it takes to measure the RSSI using this radio.
+   * How long, in milliseconds, it takes to measure the RSSI using this radio. This value should be
+   * an upperbound as it is likely to be used as a value for timeouts.
    */
   virtual uint16_t rssi_measurement_time_ms() const = 0;
+
+  /**
+   * How long, in milliseconds, it takes to transmit a fragment with the current settings. This
+   * value should be an upperbound as it is likely to be used as a value for timeouts.
+   */
+  virtual uint16_t fragment_transmit_time_ms() const = 0;
 
   /**
    * Put the radio in a standby mode. Standby means that it is not receiving or transmitting.

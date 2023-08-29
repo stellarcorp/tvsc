@@ -210,6 +210,8 @@ class MockRadioT final : public HalfDuplexRadio<MTU> {
 
   uint16_t rssi_measurement_time_ms() const override { return RSSI_MEASUREMENT_TIME_MS; }
 
+  uint16_t fragment_transmit_time_ms() const override { return FRAGMENT_TRANSMIT_TIME_MS; }
+
   /**
    * Put the radio in a standby mode. Standby means that it is not receiving or transmitting.
    * This may be used to save power.

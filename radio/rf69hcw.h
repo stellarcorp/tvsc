@@ -301,6 +301,7 @@ class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO s
   static constexpr uint8_t SYNC_WORDS[] = "SR90tvsc";
 
   static constexpr uint16_t RSSI_MEASUREMENT_TIME_MS{5};
+  static constexpr uint16_t FRAGMENT_TRANSMIT_TIME_MS{2};
 
   // static constexpr uint8_t RX_BUFFER_LENGTH{max_mtu()};
 
@@ -563,6 +564,7 @@ class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO s
   }
 
   uint16_t rssi_measurement_time_ms() const override { return RSSI_MEASUREMENT_TIME_MS; }
+  uint16_t fragment_transmit_time_ms() const override { return FRAGMENT_TRANSMIT_TIME_MS; }
 
   void set_receive_mode() override { set_mode_rx(); }
   void set_standby_mode() override { set_mode_standby(); }
