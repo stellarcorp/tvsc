@@ -3,12 +3,92 @@
 #include <stdexcept>
 
 #include "buffer/ring_buffer.h"
+#include "radio/encoding.h"
+#include "radio/fragment.h"
 #include "random/random.h"
 
 namespace tvsc::radio {
 
 template <typename PacketT, size_t NUM_PACKETS>
 class PacketTxQueue;
+
+template <typename PacketT>
+struct PeekResponse {
+  const PacketT* packet{nullptr};
+  const void* queue{nullptr};
+};
+
+template <typename PacketT, size_t NUM_PACKETS, size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
+class FragmentSink final {
+ public:
+  using PacketTxQueueT = PacketTxQueue<PacketT, NUM_PACKETS>;
+
+  using DataAvailableCallback = std::function<void(PacketTxQueueT&)>;
+
+ private:
+  PacketTxQueueT* packet_queue_{nullptr};
+  PeekResponse<PacketT> last_peek_{};
+
+  size_t current_fragment_index_{0};
+  EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET> fragments_{};
+
+  FragmentSink(PacketTxQueueT& queue) : packet_queue_(&queue) {}
+
+  friend PacketTxQueueT;
+
+ public:
+  static constexpr size_t mtu() { return MTU; }
+
+  PacketTxQueueT& packet_queue() { return *packet_queue_; }
+
+  bool has_more_fragments() { return current_fragment_index_ < fragments_.num_fragments; }
+
+  const Fragment<MTU>& fragment() { return fragments_.buffers[current_fragment_index_]; }
+
+  void next_fragment() { ++current_fragment_index_; }
+
+  /**
+   * Grab a packet from the packet queue and encode it into fragments.
+   *
+   * The expected idiom here is to encode_next_packet() the current packet, attempt to process it,
+   * and if the packet's fragments are processed successfully, then call pop() to remove the packet.
+   * If there is an error in the processing, don't call pop().
+   *
+   * The packet queue implements a form of fair queuing. The algorithm to choose which packet to
+   * send is implemented in the packet queue's peek() call.
+   */
+  bool encode_next_packet() {
+    last_peek_ = packet_queue_->peek();
+    if (last_peek_.queue != nullptr) {
+      return encode(*last_peek_.packet, fragments_);
+    } else {
+      throw std::logic_error("No packet available in FragmentSink::encode_next_packet()");
+    }
+  }
+
+  /**
+   * Removes a packet from the packet queue, dropping it completely. This is typically done after
+   * the packet is peek'd from the queue and is processed successfully.
+   */
+  void pop_packet() {
+    packet_queue_->pop(last_peek_);
+    last_peek_.packet = nullptr;
+    last_peek_.queue = nullptr;
+    fragments_.num_fragments = 0;
+    current_fragment_index_ = 0;
+  }
+
+  bool empty() const { return packet_queue_->empty(); }
+
+  void set_data_available_callback(DataAvailableCallback callback) {
+    if (callback) {
+      packet_queue_->set_data_available_callback(
+          [this, callback](PacketTxQueueT& queue) { callback(*this); });
+    } else {
+      packet_queue_->set_data_available_callback(std::function<void(PacketTxQueueT&)>{});
+    }
+  }
+};
 
 template <typename PacketT, size_t NUM_PACKETS>
 class PacketSink final {
@@ -18,13 +98,8 @@ class PacketSink final {
   using DataAvailableCallback = std::function<void(PacketTxQueueT&)>;
 
  private:
-  struct PeekResponse {
-    const PacketT* packet{nullptr};
-    const void* queue{nullptr};
-  };
-
   PacketTxQueueT* packet_queue_{nullptr};
-  PeekResponse last_peek_{};
+  PeekResponse<PacketT> last_peek_{};
 
   PacketSink(PacketTxQueueT& queue) : packet_queue_(&queue) {}
 
@@ -145,46 +220,58 @@ class PacketTxQueue final {
   RingBufferT normal_priority_{};
   RingBufferT low_priority_{};
 
-  typename PacketSink<PacketT, NUM_PACKETS>::PeekResponse peek() const {
-    typename PacketSink<PacketT, NUM_PACKETS>::PeekResponse result{};
-    bool packet_selected{false};
-    if (!immediate_priority_.empty()) {
-      packet_selected = immediate_priority_.peek(&result.packet);
-      if (packet_selected) {
-        result.queue = const_cast<void*>(reinterpret_cast<const void*>(&immediate_priority_));
+  PeekResponse<PacketT> peek() const {
+    PeekResponse<PacketT> result{};
+    if (!empty()) {
+      bool packet_selected{false};
+      if (!immediate_priority_.empty()) {
+        packet_selected = immediate_priority_.peek(&result.packet);
+        if (packet_selected) {
+          result.queue = const_cast<void*>(reinterpret_cast<const void*>(&immediate_priority_));
+        }
       }
-    }
-    if (!packet_selected) {
+
       WeightT random_value = tvsc::random::generate_random_value<WeightT>(0, WEIGHT_TOTAL);
-      if (!packet_selected && select_control_priority_queue(&random_value)) {
-        packet_selected = control_priority_.peek(&result.packet);
-        if (packet_selected) {
-          result.queue = const_cast<void*>(reinterpret_cast<const void*>(&control_priority_));
-        } else {
-          // No packets at this priority. Try the next lower priority packets.
-          random_value = NORMAL_PRIORITY_WEIGHT - 1;
+      while (!packet_selected) {
+        if (!packet_selected && select_control_priority_queue(&random_value)) {
+          packet_selected = control_priority_.peek(&result.packet);
+          if (packet_selected) {
+            result.queue = const_cast<void*>(reinterpret_cast<const void*>(&control_priority_));
+          } else {
+            // No packets at this priority. Try the next lower priority packets.
+            random_value = NORMAL_PRIORITY_WEIGHT - 1;
+          }
         }
-      }
-      if (!packet_selected && select_normal_priority_queue(&random_value)) {
-        packet_selected = normal_priority_.peek(&result.packet);
-        if (packet_selected) {
-          result.queue = const_cast<void*>(reinterpret_cast<const void*>(&normal_priority_));
-        } else {
-          // No packets at this priority. Try the next lower priority packets.
-          random_value = LOW_PRIORITY_WEIGHT - 1;
+        if (!packet_selected && select_normal_priority_queue(&random_value)) {
+          packet_selected = normal_priority_.peek(&result.packet);
+          if (packet_selected) {
+            result.queue = const_cast<void*>(reinterpret_cast<const void*>(&normal_priority_));
+          } else {
+            // No packets at this priority. Try the next lower priority packets.
+            random_value = LOW_PRIORITY_WEIGHT - 1;
+          }
         }
-      }
-      if (!packet_selected && select_low_priority_queue(&random_value)) {
-        packet_selected = low_priority_.peek(&result.packet);
-        if (packet_selected) {
-          result.queue = const_cast<void*>(reinterpret_cast<const void*>(&low_priority_));
+        if (!packet_selected && select_low_priority_queue(&random_value)) {
+          packet_selected = low_priority_.peek(&result.packet);
+          if (packet_selected) {
+            result.queue = const_cast<void*>(reinterpret_cast<const void*>(&low_priority_));
+          } else {
+            // Go back to the top and try each queue in order. Note that this guarantees a packet
+            // will be selected at the expense of changing the probabilities on the individual
+            // queues. The normal queue gets a lower probability of being chosen with this scheme.
+            // If we wanted to equalize the probabilities, we can choose a new random value on each
+            // cycle through, but that could require getting many random values. This approach was
+            // chosen to avoid generating many random values; other approaches are definitely
+            // possible, but practically, this approach seems reasonable.
+            random_value = CONTROL_PRIORITY_WEIGHT - 1;
+          }
         }
       }
     }
     return result;
   }
 
-  void pop(const typename PacketSink<PacketT, NUM_PACKETS>::PeekResponse& previous_peek) {
+  void pop(const PeekResponse<PacketT>& previous_peek) {
     if (previous_peek.queue == &immediate_priority_) {
       immediate_priority_.pop();
     } else if (previous_peek.queue == &control_priority_) {
@@ -197,8 +284,6 @@ class PacketTxQueue final {
       throw std::logic_error("This should not happen.");
     }
   }
-
-  friend class PacketSink<PacketT, NUM_PACKETS>;
 
   void set_data_available_callback(DataAvailableCallback callback) {
     if (callback) {
@@ -219,12 +304,18 @@ class PacketTxQueue final {
     }
   }
 
+  template <typename AnyPacketT, size_t ANY_NUM_PACKETS, size_t MTU,
+            size_t MAX_FRAGMENTS_PER_PACKET>
+  friend class FragmentSink;
+
+  friend class PacketSink<PacketT, NUM_PACKETS>;
+
  public:
-  void push_immediate(const PacketT& packet) { immediate_priority_.supply(packet); }
+  void push_immediate_priority(const PacketT& packet) { immediate_priority_.supply(packet); }
 
-  void push_control(const PacketT& packet) { control_priority_.supply(packet); }
+  void push_control_priority(const PacketT& packet) { control_priority_.supply(packet); }
 
-  void push_normal(const PacketT& packet) { normal_priority_.supply(packet); }
+  void push_normal_priority(const PacketT& packet) { normal_priority_.supply(packet); }
 
   void push_low_priority(const PacketT& packet) { low_priority_.supply(packet); }
 
@@ -239,6 +330,11 @@ class PacketTxQueue final {
   }
 
   PacketSink<PacketT, NUM_PACKETS> create_sink() { return PacketSink<PacketT, NUM_PACKETS>{*this}; }
+
+  template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
+  FragmentSink<PacketT, NUM_PACKETS, MTU, MAX_FRAGMENTS_PER_PACKET> create_fragment_sink() {
+    return FragmentSink<PacketT, NUM_PACKETS, MTU, MAX_FRAGMENTS_PER_PACKET>{*this};
+  }
 };
 
 }  // namespace tvsc::radio
