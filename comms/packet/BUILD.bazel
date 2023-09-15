@@ -1,5 +1,3 @@
-load("//platforms:hex.bzl", "hex")
-
 cc_library(
     name = "packet",
     hdrs = [
@@ -25,6 +23,7 @@ cc_test(
     srcs = ["packet_test.cc"],
     deps = [
         ":packet",
+        "//comms/radio",
         "//third_party/gtest",
     ],
 )
@@ -34,6 +33,7 @@ cc_test(
     srcs = ["packet_queue_test.cc"],
     deps = [
         ":packet",
+        "//comms/radio",
         "//third_party/glog",
         "//third_party/gtest",
     ],
