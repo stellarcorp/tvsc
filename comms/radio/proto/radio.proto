@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-import "radio/proto/settings.proto";
+import "comms/radio/proto/settings.proto";
 
-package tvsc.radio.proto;
+package tvsc.comms.radio.proto;
 
 /**
  * Identification of a radio. Note that the current idea is for this message to be transmitted

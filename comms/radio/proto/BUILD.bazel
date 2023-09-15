@@ -3,25 +3,6 @@ load("@rules_cc//cc:defs.bzl", "cc_proto_library")
 load("//platforms:hex.bzl", "hex")
 
 filegroup(
-    name = "packet_proto_file",
-    srcs = ["packet.proto"],
-    visibility = ["//visibility:public"],
-)
-
-proto_library(
-    name = "packet_proto",
-    srcs = ["packet.proto"],
-    target_compatible_with = select({
-        "@platforms//os:none": [
-            "@platforms//:incompatible",
-        ],
-        "//conditions:default": [
-        ],
-    }),
-    visibility = ["//visibility:public"],
-)
-
-filegroup(
     name = "settings_proto_file",
     srcs = ["settings.proto"],
     visibility = ["//visibility:public"],
@@ -59,21 +40,6 @@ proto_library(
     visibility = ["//visibility:public"],
     deps = [
         ":settings_proto",
-    ],
-)
-
-cc_proto_library(
-    name = "packet_cc_proto",
-    target_compatible_with = select({
-        "@platforms//os:none": [
-            "@platforms//:incompatible",
-        ],
-        "//conditions:default": [
-        ],
-    }),
-    visibility = ["//visibility:public"],
-    deps = [
-        ":packet_proto",
     ],
 )
 
