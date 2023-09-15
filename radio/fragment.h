@@ -53,7 +53,7 @@ class Fragment final {
 
   static_assert(PAYLOAD_OFFSET == SEQUENCE_NUMBER_OFFSET + SEQUENCE_NUMBER_SIZE,
                 "Error in Fragment field offsets or sizes.");
-  static_assert(PAYLOAD_OFFSET + 2 < MTU,
+  static_assert(PAYLOAD_OFFSET + 2 <= MTU,
                 "MTU is too small to support any payload. Need at least space for the header plus "
                 "one size byte plus one payload byte.");
 
@@ -63,8 +63,9 @@ class Fragment final {
   tvsc::buffer::Buffer<uint8_t, MTU> data{};
 
   static constexpr size_t mtu() { return MTU; }
+  static constexpr size_t header_size() { return HEADER_SIZE; }
   static constexpr size_t max_payload_size() {
-    return MTU - HEADER_SIZE - payload_size_bytes_required();
+    return mtu() - header_size() - payload_size_bytes_required();
   }
 
   /**
