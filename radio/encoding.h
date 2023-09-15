@@ -44,10 +44,8 @@ std::string to_string(const EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& encode
  *
  * Returns true if packet could be encoded into fragments; false, otherwise.
  */
-template <size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET,
-          size_t PACKET_MAX_PAYLOAD_SIZE = DEFAULT_PACKET_MAX_PAYLOAD_SIZE>
-bool encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
-            EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments) {
+template <typename PacketT, size_t MTU, size_t MAX_FRAGMENTS_PER_PACKET>
+bool encode(const PacketT& packet, EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>& fragments) {
   static_assert(MAX_FRAGMENTS_PER_PACKET < 128,
                 "MAX_FRAGMENTS_PER_PACKET is too large. We only reserve 7 bits for this value (8 "
                 "bits including continuation bit).");
@@ -79,8 +77,6 @@ bool encode(const PacketT<PACKET_MAX_PAYLOAD_SIZE>& packet,
       // Now we can add the payload.
       const size_t fragment_payload_size =
           std::min(remaining_payload, Fragment<MTU>::max_payload_size());
-      tvsc::hal::output::print("encode() -- fragment_payload_size: ");
-      tvsc::hal::output::println(fragment_payload_size);
 
       current_fragment->set_payload_size(fragment_payload_size);
 
