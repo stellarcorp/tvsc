@@ -2,9 +2,9 @@
 
 #include <string>
 
+#include "comms/radio/proto/settings.pb.h"
 #include "grpcpp/support/client_callback.h"
 #include "pubsub/streamer.h"
-#include "radio/proto/settings.pb.h"
 #include "service/communications/common/communications.grpc.pb.h"
 #include "service/communications/common/communications.pb.h"
 
@@ -15,12 +15,12 @@ namespace tvsc::service::communications {
  */
 class TelemetryStreamer final
     : public tvsc::pubsub::GrpcStreamer<CommunicationsService, EmptyMessage,
-                                        tvsc::radio::proto::TelemetryEvent> {
+                                        tvsc::comms::radio::proto::TelemetryEvent> {
  protected:
   void call_rpc_method(
       CommunicationsService::StubInterface::async_interface& async_stub,
       grpc::ClientContext& context, const EmptyMessage& request,
-      grpc::ClientReadReactor<tvsc::radio::proto::TelemetryEvent>& reactor) override {
+      grpc::ClientReadReactor<tvsc::comms::radio::proto::TelemetryEvent>& reactor) override {
     async_stub.monitor(&context, &request, &reactor);
   }
 

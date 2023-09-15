@@ -21,7 +21,7 @@ proto_library(
     name = "communications_proto",
     srcs = ["communications.proto"],
     deps = [
-        "//radio/proto:settings_proto",
+        "//comms/radio/proto:settings_proto",
     ],
 )
 

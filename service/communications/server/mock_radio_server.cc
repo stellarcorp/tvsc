@@ -9,6 +9,7 @@
 #include <memory>
 #include <thread>
 
+#include "comms/radio/proto/settings.pb.h"
 #include "glog/logging.h"
 #include "grpcpp/grpcpp.h"
 #include "random/random.h"
@@ -74,11 +75,11 @@ grpc::Status MockRadioCommunicationsService::receive(grpc::ServerContext* contex
 
 grpc::Status MockRadioCommunicationsService::monitor(
     grpc::ServerContext* context, const EmptyMessage* /*request*/,
-    grpc::ServerWriter<tvsc::radio::proto::TelemetryEvent>* writer) {
+    grpc::ServerWriter<tvsc::comms::radio::proto::TelemetryEvent>* writer) {
   using namespace std::literals::chrono_literals;
   LOG(INFO) << "MockRadioCommunicationsService::monitor()";
   std::unique_lock<std::mutex> l(mu_);
-  monitor_writer_queues_.emplace(writer, std::vector<tvsc::radio::proto::TelemetryEvent>{});
+  monitor_writer_queues_.emplace(writer, std::vector<tvsc::comms::radio::proto::TelemetryEvent>{});
 
   while (!context->IsCancelled()) {
     if (monitor_event_available_.wait_for(l, 20ms, [context] { return context->IsCancelled(); })) {

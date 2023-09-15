@@ -23,7 +23,7 @@ copy_file(
 
 copy_file(
     name = "radio_settings_proto_file",
-    src = "//radio/proto:settings_proto_file",
+    src = "//comms/radio/proto:settings_proto_file",
     out = "static/radio/proto/settings.proto",
     allow_symlink = True,
 )

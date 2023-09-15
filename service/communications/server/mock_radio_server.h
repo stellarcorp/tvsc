@@ -6,8 +6,8 @@
 #include <memory>
 #include <mutex>
 
+#include "comms/radio/proto/settings.pb.h"
 #include "grpcpp/grpcpp.h"
-#include "radio/proto/settings.pb.h"
 #include "service/communications/common/communications.grpc.pb.h"
 #include "service/communications/common/communications.pb.h"
 
@@ -20,8 +20,8 @@ class MockRadioCommunicationsService final : public CommunicationsService::Servi
   std::condition_variable monitor_event_available_{};
 
   std::map<grpc::ServerWriter<Message>*, std::vector<Message>> receive_writer_queues_{};
-  std::map<grpc::ServerWriter<tvsc::radio::proto::TelemetryEvent>*,
-           std::vector<tvsc::radio::proto::TelemetryEvent>>
+  std::map<grpc::ServerWriter<tvsc::comms::radio::proto::TelemetryEvent>*,
+           std::vector<tvsc::comms::radio::proto::TelemetryEvent>>
       monitor_writer_queues_{};
 
  public:
@@ -31,8 +31,9 @@ class MockRadioCommunicationsService final : public CommunicationsService::Servi
   grpc::Status receive(grpc::ServerContext* context, const EmptyMessage* request,
                        grpc::ServerWriter<Message>* writer) override;
 
-  grpc::Status monitor(grpc::ServerContext* context, const EmptyMessage* request,
-                       grpc::ServerWriter<tvsc::radio::proto::TelemetryEvent>* writer) override;
+  grpc::Status monitor(
+      grpc::ServerContext* context, const EmptyMessage* request,
+      grpc::ServerWriter<tvsc::comms::radio::proto::TelemetryEvent>* writer) override;
 
   grpc::Status begin_sample_broadcast(grpc::ServerContext* context, const EmptyMessage* request,
                                       EmptyMessage* reply) override;

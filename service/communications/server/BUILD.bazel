@@ -11,10 +11,11 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":shakespeare",
+        "//comms/packet",
+        "//comms/radio",
+        "//comms/radio:rf69hcw",
+        "//comms/radio/proto:settings_cc_proto",
         "//hal/spi",
-        "//radio",
-        "//radio:rf69hcw",
-        "//radio/proto:settings_cc_proto",
         "//random",
         "//service/communications/common",
         "//service/utility",
@@ -59,7 +60,7 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//radio/proto:settings_cc_proto",
+        "//comms/radio/proto:settings_cc_proto",
         "//random",
         "//service/communications/common",
         "//service/utility",

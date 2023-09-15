@@ -3,6 +3,7 @@
 
 #include "App.h"
 #include "base/initializer.h"
+#include "comms/radio/proto/settings.pb.h"
 #include "discovery/service_resolver.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
@@ -72,11 +73,11 @@ int main(int argc, char* argv[]) {
   radio_rx_publisher.start();
 
   // Publish the stream of telemetry.
-  tvsc::pubsub::WebSocketTopic<tvsc::radio::proto::TelemetryEvent, SSL, 1> telemetry_topic{
+  tvsc::pubsub::WebSocketTopic<tvsc::comms::radio::proto::TelemetryEvent, SSL, 1> telemetry_topic{
       tvsc::service::communications::TelemetryStreamer::TOPIC_NAME, app};
   telemetry_topic.register_publishing_handler(*uWS::Loop::get());
 
-  tvsc::pubsub::PublicationService<tvsc::radio::proto::TelemetryEvent> telemetry_publisher{
+  tvsc::pubsub::PublicationService<tvsc::comms::radio::proto::TelemetryEvent> telemetry_publisher{
       telemetry_topic, std::make_unique<tvsc::service::communications::TelemetryStreamer>()};
   // TODO(james): Add capability to start this stream on request.
   telemetry_publisher.start();
