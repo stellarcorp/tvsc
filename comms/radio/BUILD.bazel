@@ -1,0 +1,261 @@
+load("//platforms:hex.bzl", "hex")
+
+cc_library(
+    name = "radio",
+    srcs = [
+        "protocol.cc",
+        "telemetry_accumulator.cc",
+    ],
+    hdrs = [
+        "fragment.h",
+        "half_duplex_radio.h",
+        "protocol.h",
+        "radio_configuration.h",
+        "radio_utilities.h",
+        "settings.h",
+        "telemetry_accumulator.h",
+        "transceiver.h",
+        "yield.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//base",
+        "//buffer",
+        "//comms/radio/nanopb_proto:radio_nano_cc_proto",
+        "//hal/output",
+        "//hal/time",
+        "//hash",
+        "//random",
+    ],
+)
+
+cc_library(
+    name = "mock_radio",
+    testonly = True,
+    hdrs = ["mock_radio.h"],
+    deps = [
+        ":radio",
+        "//hal/time",
+    ],
+)
+
+cc_library(
+    name = "rf69hcw",
+    srcs = [
+        "rf69hcw.cc",
+    ],
+    hdrs = [
+        "rf69hcw.h",
+        "rf69hcw_configuration.h",
+    ],
+    target_compatible_with = select({
+        "//platforms:wiring_pi_gpio": [
+        ],
+        "//platforms:teensyduino_gpio": [
+        ],
+        "//platforms:no_gpio": [
+            "@platforms//:incompatible",
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":radio",
+        "//comms/radio/nanopb_proto:radio_nano_cc_proto",
+        "//base",
+        "//hal/gpio",
+        "//hal/output",
+        "//hal/spi",
+        "//hal/time",
+        "//random",
+    ] + select(
+        {
+            "//platforms:teensy40_board": [
+                ":single_radio_pin_mapping_teensy40_default",
+            ],
+            "//platforms:teensy41_board": [
+                ":single_radio_pin_mapping_teensy41_default",
+            ],
+            "//platforms:odroid_m1_board": [
+                ":single_radio_pin_mapping_odroid_m1_default",
+            ],
+        },
+    ),
+)
+
+cc_library(
+    name = "single_radio_pin_mapping",
+    hdrs = [
+        "single_radio_pin_mapping.h",
+    ],
+)
+
+cc_library(
+    name = "single_radio_pin_mapping_teensy40_default",
+    srcs = [
+        "single_radio_pin_mapping_teensy40_default.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:teensy40_board": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":single_radio_pin_mapping",
+    ],
+)
+
+cc_library(
+    name = "single_radio_pin_mapping_teensy41_default",
+    srcs = [
+        "single_radio_pin_mapping_teensy41_default.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:teensy41_board": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":single_radio_pin_mapping",
+    ],
+)
+
+cc_library(
+    name = "single_radio_pin_mapping_odroid_m1_default",
+    srcs = [
+        "single_radio_pin_mapping_odroid_m1_default.cc",
+    ],
+    target_compatible_with = select({
+        "//platforms:odroid_m1_board": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":single_radio_pin_mapping",
+    ],
+)
+
+cc_binary(
+    name = "echo_client",
+    srcs = ["echo_client.cc"],
+    target_compatible_with = select({
+        "//platforms:no_gpio": [
+            "@platforms//:incompatible",
+        ],
+        "//conditions:default": [
+        ],
+    }),
+    deps = [
+        ":radio",
+        ":rf69hcw",
+        "//hal/gpio",
+        "//hal/output",
+        "//hal/spi",
+        "//hal/time",
+        "//random",
+        "@com_github_nanopb_nanopb//:nanopb",
+    ] + select(
+        {
+            "//platforms:teensy40_board": [
+                ":single_radio_pin_mapping_teensy40_default",
+            ],
+            "//platforms:teensy41_board": [
+                ":single_radio_pin_mapping_teensy41_default",
+            ],
+            "//platforms:odroid_m1_board": [
+                ":single_radio_pin_mapping_odroid_m1_default",
+            ],
+        },
+    ),
+)
+
+hex(
+    name = "echo_client_hex",
+    src = ":echo_client",
+    out = "echo_client.hex",
+    target_compatible_with = select({
+        "@platforms//os:none": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+)
+
+cc_binary(
+    name = "echo_server",
+    srcs = ["echo_server.cc"],
+    target_compatible_with = select({
+        "//platforms:no_gpio": [
+            "@platforms//:incompatible",
+        ],
+        "//conditions:default": [
+        ],
+    }),
+    deps = [
+        ":radio",
+        ":rf69hcw",
+        "//hal/eeprom",
+        "//hal/gpio",
+        "//hal/output",
+        "//hal/spi",
+        "//hal/time",
+        "//random",
+        "@com_github_nanopb_nanopb//:nanopb",
+    ] + select(
+        {
+            "//platforms:teensy40_board": [
+                ":single_radio_pin_mapping_teensy40_default",
+            ],
+            "//platforms:teensy41_board": [
+                ":single_radio_pin_mapping_teensy41_default",
+            ],
+            "//platforms:odroid_m1_board": [
+                ":single_radio_pin_mapping_odroid_m1_default",
+            ],
+        },
+    ),
+)
+
+hex(
+    name = "echo_server_hex",
+    src = ":echo_server",
+    out = "echo_server.hex",
+    target_compatible_with = select({
+        "@platforms//os:none": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+)
+
+cc_test(
+    name = "settings_test",
+    srcs = [
+        "settings_test.cc",
+    ],
+    deps = [
+        ":radio",
+        "//base",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "mock_radio_test",
+    srcs = ["mock_radio_test.cc"],
+    deps = [
+        ":mock_radio",
+        "//hal/time:mock_clock",
+        "//third_party/gtest",
+    ],
+)

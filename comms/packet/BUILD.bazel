@@ -1,0 +1,52 @@
+load("//platforms:hex.bzl", "hex")
+
+cc_library(
+    name = "packet",
+    hdrs = [
+        "encoding.h",
+        "packet.h",
+        "packet_assembler.h",
+        "packet_queue.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//base",
+        "//buffer",
+        "//comms/radio",
+        "//hal/output",
+        "//hal/time",
+        "//hash",
+        "//random",
+    ],
+)
+
+cc_test(
+    name = "packet_test",
+    srcs = ["packet_test.cc"],
+    deps = [
+        ":packet",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "packet_queue_test",
+    srcs = ["packet_queue_test.cc"],
+    deps = [
+        ":packet",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "encoding_test",
+    srcs = ["encoding_test.cc"],
+    deps = [
+        ":packet",
+        "//base",
+        "//comms/radio",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
