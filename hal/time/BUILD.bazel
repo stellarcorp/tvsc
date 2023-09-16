@@ -4,9 +4,11 @@ cc_library(
     name = "time",
     srcs = [
         "clock.cc",
+        "remote_clock.cc",
     ],
     hdrs = [
         "clock.h",
+        "remote_clock.h",
     ],
     visibility = ["//visibility:public"],
     deps = [":time_headers"] + select({
@@ -83,6 +85,18 @@ cc_test(
     ],
     deps = [
         ":mock_clock",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "remote_clock_test",
+    srcs = [
+        "remote_clock_test.cc",
+    ],
+    deps = [
+        ":mock_clock",
+        ":time",
         "//third_party/gtest",
     ],
 )
