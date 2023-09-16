@@ -62,9 +62,9 @@ void FrameBuilder::add_blackout_slot(uint32_t duration_us) {
 }
 
 void FrameBuilder::consolidate_frame_size() {
-  frame_.frame_size_us = 0;
+  frame_.frame_duration_us = 0;
   for (const TimeSlot& slot : frame_.time_slots) {
-    frame_.frame_size_us += slot.duration_us;
+    frame_.frame_duration_us += slot.duration_us;
   }
 }
 
@@ -77,13 +77,13 @@ Frame FrameBuilder::build() {
 }
 
 Frame FrameBuilder::create_default_node_frame() {
-  FrameBuilder frame{0};
+  FrameBuilder frame{};
   frame.add_time_skew_slot(100'000 /* The exact duration here does not matter, as long as it is long enough to complete a fragment transmission. */);
   return frame.build();
 }
 
 Frame FrameBuilder::create_default_base_station_frame(uint64_t base_station_id) {
-  FrameBuilder frame{0};
+  FrameBuilder frame{};
   frame.set_base_station_id(base_station_id);
 
   // Allow the base station to transmit.

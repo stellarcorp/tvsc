@@ -12,7 +12,8 @@
 namespace tvsc::comms::tdma {
 
 /**
- * Schedule containing all of the time slots for activity in a TDMA cell.
+ * Schedule controlling the activity of nodes in a TDMA cell according to the current time of the
+ * cell.
  */
 class TdmaSchedule final {
  private:
@@ -55,15 +56,7 @@ class TdmaSchedule final {
 
   bool is_base_station() const { return id_ == frame_.base_station_id; }
 
-  bool is_associated(uint64_t id) const {
-    for (const TimeSlot& slot : frame_.time_slots) {
-      if (slot.role == TimeSlot::Role::NODE_TX && slot.slot_owner_id == id) {
-        return true;
-      }
-    }
-    return false;
-  }
-
+  bool is_associated(uint64_t id) const;
   bool is_associated() const { return is_associated(id_); }
 
   uint64_t cell_time_us() const { return cell_clock_.current_time_micros(); }
@@ -72,42 +65,19 @@ class TdmaSchedule final {
     cell_clock_.mark_remote_time_micros(current_cell_time_us);
   }
 
-  bool can_transmit() const {
-    const TimeSlot& slot{current_time_slot()};
-    switch (slot.role) {
-      case TimeSlot::Role::BLACKOUT:
-        return false;
-      case TimeSlot::Role::NODE_TX:
-        return slot.slot_owner_id == id_;
-      case TimeSlot::Role::ASSOCIATION:
-        return !is_associated() && !is_base_station();
-      case TimeSlot::Role::TIME_SKEW_ALLOWANCE:
-        return false;
-    }
-  }
+  bool can_transmit() const;
+  bool should_receive() const;
 
-  bool should_receive() const {
-    const TimeSlot& slot{current_time_slot()};
-    switch (slot.role) {
-      case TimeSlot::Role::BLACKOUT:
-        return false;
-      case TimeSlot::Role::NODE_TX:
-        return slot.slot_owner_id != id_;
-      case TimeSlot::Role::ASSOCIATION:
-        return is_base_station();
-      case TimeSlot::Role::TIME_SKEW_ALLOWANCE:
-        return true;
-    }
+  uint32_t frame_offset_us() const {
+    return time_after_frame_start_us() % frame_.frame_duration_us;
   }
-
-  uint32_t frame_offset_us() const { return time_after_frame_start_us() % frame_.frame_size_us; }
 
   uint32_t time_slot_offset_us() const {
     const TimeSlot& slot{current_time_slot()};
     return frame_offset_us() - slot.start_us;
   }
 
-  uint32_t frame_duration_us() const { return frame_.frame_size_us; }
+  uint32_t frame_duration_us() const { return frame_.frame_duration_us; }
 
   uint32_t time_slot_duration_us() const {
     const TimeSlot& slot{current_time_slot()};

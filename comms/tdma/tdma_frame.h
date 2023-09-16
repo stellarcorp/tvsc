@@ -10,20 +10,21 @@ namespace tvsc::comms::tdma {
  */
 struct TimeSlot final {
   enum class Role : uint8_t {
-    // No transmission should occur. This allows nodes to measure background noise levels and
-    // perform other processing that might prevent them from receiving (or transmitting) signals.
-    BLACKOUT,
-    // A particular node may transmit. All other nodes should be listening.
-    NODE_TX,
-    // An association time slot allows for unassociated nodes to announce themselves. Those nodes
-    // will later be assigned NODE_TX time slot during which they can transmit.
-    ASSOCIATION,
     // The time skew allowance time slots allow for a small amount of error in the time measured by
     // the clocks in the cell. During this period, all nodes should be receiving, but no node should
     // transmit. The expectation here is that a node may begin or finish transmitting during this
     // period if its clocks are slightly skewed compared to other nodes in the cell. This provides a
     // form of immunity to clock skew and related errors.
     TIME_SKEW_ALLOWANCE,
+    // A particular node may transmit. All other nodes should be listening.
+    NODE_TX,
+    // An association time slot allows for unassociated nodes to announce themselves. Those nodes
+    // will later be assigned NODE_TX time slot during which they can transmit.
+    ASSOCIATION,
+    // Blackout of all transmissions; no transmission should occur. This allows nodes to measure
+    // background noise levels and perform other processing that might prevent them from receiving
+    // (or transmitting) signals.
+    BLACKOUT,
   };
 
   uint32_t start_us{};
@@ -51,19 +52,26 @@ struct Frame final {
   uint64_t frame_start_time_us{};
 
   /**
-   * Size of a frame in microseconds.
+   * Duration of the frame in microseconds.
    */
-  uint32_t frame_size_us{};
+  uint32_t frame_duration_us{};
 
+  /**
+   * All of the time slots in the frame to indicate which nodes may transmit and which must be
+   * receiving. The slots may have different durations.
+   */
   std::vector<TimeSlot> time_slots{};
 
+  /**
+   * Id of the base station of the cell, since some rules in the TDMA schedule are different for
+   * base stations and nodes.
+   */
   uint64_t base_station_id;
 };
 
 /**
  * Frame construction and configuration functions.
  */
-
 class FrameBuilder final {
  private:
   Frame frame_{};
@@ -71,7 +79,7 @@ class FrameBuilder final {
   void consolidate_frame_size();
 
  public:
-  FrameBuilder(uint64_t frame_start_time_us);
+  FrameBuilder(uint64_t frame_start_time_us = 0);
 
   void set_base_station_id(uint64_t id);
   void add_time_skew_slot(uint32_t duration_us);
