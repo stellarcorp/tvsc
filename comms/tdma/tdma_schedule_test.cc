@@ -10,22 +10,31 @@ constexpr uint64_t BASE_STATION_ID{1};
 constexpr uint64_t LOCAL_ID{2};
 constexpr uint64_t OTHER_NODE_ID{3};
 
-TEST(TdmaScheduleTest, PreventsTransmissionsUntilFrameDescriptionReceived) {
+TEST(TdmaScheduleTest, DefaultFramePreventsTransmissions) {
   tvsc::hal::time::MockClock clock{};
   TdmaSchedule schedule{clock};
   EXPECT_FALSE(schedule.can_transmit());
 }
 
-TEST(TdmaScheduleTest, RequiresReceptionUntilFrameDescriptionReceived) {
+TEST(TdmaScheduleTest, DefaultFrameRequiresReception) {
   tvsc::hal::time::MockClock clock{};
   TdmaSchedule schedule{clock};
   EXPECT_TRUE(schedule.should_receive());
 }
 
-TEST(TdmaScheduleTest, NoSlotBoundaryDurationUntilFrameDescriptionReceived) {
+TEST(TdmaScheduleTest, BaseStationFrameAllowsBaseStationToTransmit) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock};
-  EXPECT_EQ(0, schedule.time_slot_duration_remaining_us());
+  TdmaSchedule schedule{clock, BASE_STATION_ID};
+
+  schedule.set_frame(FrameBuilder::create_default_base_station_frame(BASE_STATION_ID));
+
+  clock.set_current_time_micros(0);
+  EXPECT_EQ(TimeSlot::Role::NODE_TX, schedule.time_slot_role());
+
+  EXPECT_TRUE(schedule.is_base_station());
+  EXPECT_TRUE(schedule.is_associated());
+  EXPECT_TRUE(schedule.can_transmit());
+  EXPECT_FALSE(schedule.should_receive());
 }
 
 TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlotTrivial) {

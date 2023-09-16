@@ -16,7 +16,8 @@ namespace tvsc::comms::tdma {
  */
 class TdmaSchedule final {
  private:
-  Frame frame_{};
+  Frame frame_{FrameBuilder::create_default_node_frame()};
+
   // Clock to approximate the time as measured by the clock on the base station. That clock
   // represents the definitive time for the cell.
   mutable tvsc::hal::time::RemoteClock cell_clock_;
@@ -31,14 +32,13 @@ class TdmaSchedule final {
     return difference;
   }
 
-  const TimeSlot* current_time_slot() const {
+  const TimeSlot& current_time_slot() const {
     const uint32_t offset_us{frame_offset_us()};
     for (const TimeSlot& slot : frame_.time_slots) {
       if (slot.start_us <= offset_us && slot.start_us + slot.duration_us > offset_us) {
-        return &slot;
+        return slot;
       }
     }
-    return nullptr;
   }
 
  public:
@@ -73,103 +73,45 @@ class TdmaSchedule final {
   }
 
   bool can_transmit() const {
-    const TimeSlot* slot{current_time_slot()};
-    if (slot != nullptr) {
-      switch (slot->role) {
-        case TimeSlot::Role::BLACKOUT:
-          return false;
-          break;
-        case TimeSlot::Role::NODE_TX:
-          return slot->slot_owner_id == id_;
-          break;
-        case TimeSlot::Role::ASSOCIATION:
-          return !is_associated() && !is_base_station();
-          break;
-        case TimeSlot::Role::TIME_SKEW_ALLOWANCE:
-          return false;
-          break;
-      }
-    } else {
-      switch (frame_.default_role) {
-        case TimeSlot::Role::BLACKOUT:
-        case TimeSlot::Role::TIME_SKEW_ALLOWANCE:
-          return false;
-
-        default:
-          except<std::logic_error>("Invalid role to be used as a default role in a TDMA frame");
-	  return false;
-      }
+    const TimeSlot& slot{current_time_slot()};
+    switch (slot.role) {
+      case TimeSlot::Role::BLACKOUT:
+        return false;
+      case TimeSlot::Role::NODE_TX:
+        return slot.slot_owner_id == id_;
+      case TimeSlot::Role::ASSOCIATION:
+        return !is_associated() && !is_base_station();
+      case TimeSlot::Role::TIME_SKEW_ALLOWANCE:
+        return false;
     }
   }
 
   bool should_receive() const {
-    const TimeSlot* slot{current_time_slot()};
-    if (slot != nullptr) {
-      switch (slot->role) {
-        case TimeSlot::Role::BLACKOUT:
-          return false;
-          break;
-        case TimeSlot::Role::NODE_TX:
-          return slot->slot_owner_id != id_;
-          break;
-        case TimeSlot::Role::ASSOCIATION:
-          return is_base_station();
-          break;
-        case TimeSlot::Role::TIME_SKEW_ALLOWANCE:
-          return true;
-          break;
-      }
-    } else {
-      switch (frame_.default_role) {
-        case TimeSlot::Role::BLACKOUT:
-          return false;
-
-        case TimeSlot::Role::TIME_SKEW_ALLOWANCE:
-          return true;
-
-        default:
-          except<std::logic_error>("Invalid role to be used as a default role in a TDMA frame");
-          return true;
-      }
+    const TimeSlot& slot{current_time_slot()};
+    switch (slot.role) {
+      case TimeSlot::Role::BLACKOUT:
+        return false;
+      case TimeSlot::Role::NODE_TX:
+        return slot.slot_owner_id != id_;
+      case TimeSlot::Role::ASSOCIATION:
+        return is_base_station();
+      case TimeSlot::Role::TIME_SKEW_ALLOWANCE:
+        return true;
     }
   }
 
-  uint32_t frame_offset_us() const {
-    if (frame_.frame_size_us > 0) {
-      return time_after_frame_start_us() % frame_.frame_size_us;
-    } else {
-      return 0;
-    }
-  }
+  uint32_t frame_offset_us() const { return time_after_frame_start_us() % frame_.frame_size_us; }
 
   uint32_t time_slot_offset_us() const {
-    const TimeSlot* slot{current_time_slot()};
-    if (slot != nullptr) {
-      return frame_offset_us() - slot->start_us;
-    } else {
-      if (!frame_.time_slots.empty()) {
-        const TimeSlot& last_slot{frame_.time_slots.back()};
-        return frame_offset_us() - (last_slot.start_us + last_slot.duration_us);
-      } else {
-        return 0;
-      }
-    }
+    const TimeSlot& slot{current_time_slot()};
+    return frame_offset_us() - slot.start_us;
   }
 
   uint32_t frame_duration_us() const { return frame_.frame_size_us; }
 
   uint32_t time_slot_duration_us() const {
-    const TimeSlot* slot{current_time_slot()};
-    if (slot != nullptr) {
-      return slot->duration_us;
-    } else {
-      if (!frame_.time_slots.empty()) {
-        const TimeSlot& last_slot{frame_.time_slots.back()};
-        return frame_.frame_size_us - (last_slot.start_us + last_slot.duration_us);
-      } else {
-        return 0;
-      }
-    }
+    const TimeSlot& slot{current_time_slot()};
+    return slot.duration_us;
   }
 
   uint32_t frame_duration_remaining_us() const { return frame_duration_us() - frame_offset_us(); }
@@ -179,21 +121,13 @@ class TdmaSchedule final {
   }
 
   TimeSlot::Role time_slot_role() const {
-    const TimeSlot* slot{current_time_slot()};
-    if (slot != nullptr) {
-      return slot->role;
-    } else {
-      return frame_.default_role;
-    }
+    const TimeSlot& slot{current_time_slot()};
+    return slot.role;
   }
 
   uint64_t time_slot_owner() const {
-    const TimeSlot* slot{current_time_slot()};
-    if (slot != nullptr) {
-      return slot->slot_owner_id;
-    } else {
-      return 0;
-    }
+    const TimeSlot& slot{current_time_slot()};
+    return slot.slot_owner_id;
   }
 
   void set_frame(const Frame& frame) { frame_ = frame; }

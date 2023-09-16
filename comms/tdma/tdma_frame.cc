@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "base/except.h"
+
 namespace tvsc::comms::tdma {
 
 FrameBuilder::FrameBuilder(uint64_t frame_start_time_us) {
@@ -67,8 +69,36 @@ void FrameBuilder::consolidate_frame_size() {
 }
 
 Frame FrameBuilder::build() {
+  if (frame_.time_slots.empty()) {
+    except<std::logic_error>("Cannot create frame without time slots");
+  }
   consolidate_frame_size();
   return std::move(frame_);
+}
+
+Frame FrameBuilder::create_default_node_frame() {
+  FrameBuilder frame{0};
+  frame.add_time_skew_slot(100'000 /* The exact duration here does not matter, as long as it is long enough to complete a fragment transmission. */);
+  return frame.build();
+}
+
+Frame FrameBuilder::create_default_base_station_frame(uint64_t base_station_id) {
+  FrameBuilder frame{0};
+  frame.set_base_station_id(base_station_id);
+
+  // Allow the base station to transmit.
+  frame.add_node_tx_slot(100'000, base_station_id);
+
+  // Provide for time skew.
+  frame.add_time_skew_slot(10'000);
+
+  // Provide for node association broadcasts.
+  frame.add_association_slot(100'000);
+
+  // Provide for time skew.
+  frame.add_time_skew_slot(10'000);
+
+  return frame.build();
 }
 
 }  // namespace tvsc::comms::tdma

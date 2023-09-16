@@ -57,14 +57,6 @@ struct Frame final {
 
   std::vector<TimeSlot> time_slots{};
 
-  /**
-   * The role of any time that is not explicitly accounted for in a frame. This gives the default
-   * behavior of the local radio when there aren't explicit instructions on how the time slot should
-   * be managed. This default should probably be set at compile time, but all frame announcements
-   * from the base station should likely include explicit entries for all of the time slots.
-   */
-  TimeSlot::Role default_role{TimeSlot::Role::TIME_SKEW_ALLOWANCE};
-
   uint64_t base_station_id;
 };
 
@@ -81,13 +73,25 @@ class FrameBuilder final {
  public:
   FrameBuilder(uint64_t frame_start_time_us);
 
-  void set_base_station_id(uint64_t);
+  void set_base_station_id(uint64_t id);
   void add_time_skew_slot(uint32_t duration_us);
   void add_node_tx_slot(uint32_t duration_us, uint64_t owner_id);
   void add_association_slot(uint32_t duration_us);
   void add_blackout_slot(uint32_t duration_us);
 
   Frame build();
+
+  /**
+   * Create a default frame for a node. This frame will put the node in a mode to listen for frame
+   * announcements.
+   */
+  static Frame create_default_node_frame();
+
+  /**
+   * Create a default frame for a base station. This frame will establish time for the base station
+   * to broadcast frame announcements and listen for association requests.
+   */
+  static Frame create_default_base_station_frame(uint64_t base_station_id);
 };
 
 }  // namespace tvsc::comms::tdma
