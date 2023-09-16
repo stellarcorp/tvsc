@@ -1,0 +1,29 @@
+cc_library(
+    name = "tdma",
+    srcs = [
+        "tdma_frame.cc",
+    ],
+    hdrs = [
+        "tdma_frame.h",
+        "tdma_schedule.h",
+        "tdma_transceiver.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//base",
+        "//comms/packet",
+        "//comms/radio",
+        "//hal/output",
+        "//hal/time",
+    ],
+)
+
+cc_test(
+    name = "tdma_schedule_test",
+    srcs = ["tdma_schedule_test.cc"],
+    deps = [
+        ":tdma",
+        "//hal/time:mock_clock",
+        "//third_party/gtest",
+    ],
+)
