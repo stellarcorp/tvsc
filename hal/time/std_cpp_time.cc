@@ -19,4 +19,10 @@ uint64_t time_millis() {
       .count();
 }
 
+uint64_t time_micros() {
+  return std::chrono::duration_cast<std::chrono::microseconds>(
+             std::chrono::steady_clock::now().time_since_epoch())
+      .count();
+}
+
 }  // namespace tvsc::hal::time

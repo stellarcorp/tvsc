@@ -11,4 +11,6 @@ void delay_us(uint32_t microseconds) { delayMicroseconds(microseconds); }
 
 uint64_t time_millis() { return millis(); }
 
+uint64_t time_micros() { return micros(); }
+
 }  // namespace tvsc::hal::time
