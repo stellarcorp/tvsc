@@ -35,6 +35,13 @@ struct TimeSlot final {
    * Id of the node that can transmit during this slot, if any.
    */
   uint64_t slot_owner_id{};
+
+  bool operator==(const TimeSlot& rhs) const {
+    return start_us == rhs.start_us &&        //
+           duration_us == rhs.duration_us &&  //
+           role == rhs.role &&                //
+           slot_owner_id == rhs.slot_owner_id;
+  }
 };
 
 /**
@@ -67,7 +74,16 @@ struct Frame final {
    * base stations and nodes.
    */
   uint64_t base_station_id;
+
+  bool operator==(const Frame& rhs) const {
+    return frame_start_time_us == rhs.frame_start_time_us &&  //
+           frame_duration_us == rhs.frame_duration_us &&      //
+           time_slots == rhs.time_slots &&                    //
+           base_station_id == rhs.base_station_id;
+  }
 };
+
+void pack_frame_times(Frame& frame);
 
 /**
  * Frame construction and configuration functions.
@@ -76,12 +92,11 @@ class FrameBuilder final {
  private:
   Frame frame_{};
 
-  void consolidate_frame_size();
-
  public:
   FrameBuilder(uint64_t frame_start_time_us = 0);
 
   void set_base_station_id(uint64_t id);
+
   void add_time_skew_slot(uint32_t duration_us);
   void add_node_tx_slot(uint32_t duration_us, uint64_t owner_id);
   void add_association_slot(uint32_t duration_us);
