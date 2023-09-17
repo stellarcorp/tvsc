@@ -1,0 +1,21 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+
+proto_library(
+    name = "tdma_frame_proto",
+    srcs = ["tdma_frame.proto"],
+)
+
+cc_proto_library(
+    name = "tdma_frame_cc_proto",
+    target_compatible_with = select({
+        "@platforms//os:none": [
+            "@platforms//:incompatible",
+        ],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":tdma_frame_proto",
+    ],
+)
