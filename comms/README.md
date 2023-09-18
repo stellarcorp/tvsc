@@ -4,6 +4,6 @@ This package contains the core communications modules. It covers low-level radio
 
 ## Subpackages
 
-* [[Radio] (./radio)] for controlling low-level radio modules.
+* [radio] (./radio) for controlling low-level radio modules.
 * [[./packet]] for packet queuing and processing, including disassociation into transmittable fragments.
 * [[./tdma]] for an implementation of [TDMA](https://en.wikipedia.org/wiki/Time-division_multiple_access) 
