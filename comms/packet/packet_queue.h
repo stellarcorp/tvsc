@@ -68,6 +68,8 @@ class FragmentSink final {
     }
   }
 
+  bool have_packet() const { return last_peek_.queue != nullptr; }
+
   /**
    * Removes a packet from the packet queue, dropping it completely. This is typically done after
    * the packet is peek'd from the queue and is processed successfully.
