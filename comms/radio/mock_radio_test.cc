@@ -1,8 +1,8 @@
 #include "comms/radio/mock_radio.h"
 
+#include "comms/radio/fragment.h"
 #include "gtest/gtest.h"
 #include "hal/time/mock_clock.h"
-#include "comms/radio/fragment.h"
 
 namespace tvsc::comms::radio {
 
@@ -60,7 +60,7 @@ TEST(MockRadioTest, CanReceiveFragmentMultipleFragments) {
   radio.set_receive_mode();
   clock.set_current_time_millis(1);
 
-  ASSERT_TRUE(radio.has_fragment_available());
+  EXPECT_TRUE(radio.has_fragment_available());
 
   Fragment<RadioT::max_mtu()> received_fragment{};
   radio.read_received_fragment(received_fragment);
@@ -70,10 +70,17 @@ TEST(MockRadioTest, CanReceiveFragmentMultipleFragments) {
 
   clock.set_current_time_millis(2);
 
+  EXPECT_TRUE(radio.has_fragment_available());
+
   radio.read_received_fragment(received_fragment);
 
   EXPECT_EQ(Protocol::TVSC_CONTROL, received_fragment.protocol());
   EXPECT_EQ(2, received_fragment.sender_id());
+
+  clock.set_current_time_millis(3);
+
+  // No more fragments.
+  EXPECT_FALSE(radio.has_fragment_available());
 }
 
 TEST(MockRadioTest, LeavingReceiveModeBeforeFragmentReceiptDropsFragment) {
