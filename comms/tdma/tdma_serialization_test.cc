@@ -53,7 +53,7 @@ TEST(FrameSerializationTest, CanRoundTripFrameWithOneTimeSlot) {
 
   FrameBuilder builder{7};
   builder.set_base_station_id(0xabcddcba);
-  builder.add_time_skew_slot(1000);
+  builder.add_guard_interval(1000);
 
   const Frame in{builder.build()};
 
@@ -78,7 +78,7 @@ TEST(FrameSerializationTest, CanRoundTripFrameWithTwoTimeSlots) {
   FrameBuilder builder{7};
   builder.set_base_station_id(0xabcd);
   builder.add_node_tx_slot(1000, 0xfed);
-  builder.add_time_skew_slot(1000);
+  builder.add_guard_interval(1000);
 
   const Frame in{builder.build()};
 
@@ -103,11 +103,11 @@ TEST(FrameSerializationTest, CanRoundTripFrameWithManyTimeSlots) {
   FrameBuilder builder{7};
   builder.set_base_station_id(0xabcd);
   builder.add_node_tx_slot(1000, 0xabcd);
-  builder.add_time_skew_slot(1000);
+  builder.add_guard_interval(1000);
   builder.add_node_tx_slot(1000, 0xfed);
-  builder.add_time_skew_slot(1000);
+  builder.add_guard_interval(1000);
   builder.add_association_slot(1000);
-  builder.add_time_skew_slot(1000);
+  builder.add_guard_interval(1000);
   builder.add_blackout_slot(1000);
 
   const Frame in{builder.build()};

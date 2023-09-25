@@ -20,7 +20,7 @@ bool TdmaSchedule::can_transmit() const {
       return slot.slot_owner_id == id_;
     case TimeSlot::Role::ASSOCIATION:
       return !is_associated() && !is_base_station();
-    case TimeSlot::Role::TIME_SKEW_ALLOWANCE:
+    case TimeSlot::Role::GUARD_INTERVAL:
       return false;
   }
 }
@@ -34,7 +34,7 @@ bool TdmaSchedule::should_receive() const {
       return slot.slot_owner_id != id_;
     case TimeSlot::Role::ASSOCIATION:
       return is_base_station();
-    case TimeSlot::Role::TIME_SKEW_ALLOWANCE:
+    case TimeSlot::Role::GUARD_INTERVAL:
       return true;
   }
 }

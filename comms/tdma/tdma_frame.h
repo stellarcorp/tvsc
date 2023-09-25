@@ -10,12 +10,12 @@ namespace tvsc::comms::tdma {
  */
 struct TimeSlot final {
   enum class Role : uint8_t {
-    // The time skew allowance time slots allow for a small amount of error in the time measured by
+    // The guard interval time slots allow for a small amount of error in the time measured by
     // the clocks in the cell. During this period, all nodes should be receiving, but no node should
     // transmit. The expectation here is that a node may begin or finish transmitting during this
     // period if its clocks are slightly skewed compared to other nodes in the cell. This provides a
     // form of immunity to clock skew and related errors.
-    TIME_SKEW_ALLOWANCE,
+    GUARD_INTERVAL,
     // A particular node may transmit. All other nodes should be listening.
     NODE_TX,
     // An association time slot allows for unassociated nodes to announce themselves. Those nodes
@@ -97,7 +97,7 @@ class FrameBuilder final {
 
   void set_base_station_id(uint64_t id);
 
-  void add_time_skew_slot(uint32_t duration_us);
+  void add_guard_interval(uint32_t duration_us);
   void add_node_tx_slot(uint32_t duration_us, uint64_t owner_id);
   void add_association_slot(uint32_t duration_us);
   void add_blackout_slot(uint32_t duration_us);

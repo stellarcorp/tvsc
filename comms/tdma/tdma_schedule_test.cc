@@ -44,14 +44,14 @@ TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlotTrivial) {
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
     FrameBuilder frame(schedule.cell_time_us());
-    frame.add_time_skew_slot(SLOT_DURATION_US);
+    frame.add_guard_interval(SLOT_DURATION_US);
     schedule.set_frame(frame.build());
   }
 
   // Put us at the start of the time slot.
   clock.set_current_time_micros(0);
 
-  EXPECT_EQ(TimeSlot::Role::TIME_SKEW_ALLOWANCE, schedule.time_slot_role());
+  EXPECT_EQ(TimeSlot::Role::GUARD_INTERVAL, schedule.time_slot_role());
 }
 
 TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlot) {
@@ -62,11 +62,11 @@ TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlot) {
   {
     FrameBuilder frame{schedule.cell_time_us()};
     frame.add_node_tx_slot(SLOT_DURATION_US, BASE_STATION_ID);
-    frame.add_time_skew_slot(SLOT_DURATION_US);
+    frame.add_guard_interval(SLOT_DURATION_US);
     frame.add_node_tx_slot(SLOT_DURATION_US, LOCAL_ID);
-    frame.add_time_skew_slot(SLOT_DURATION_US);
+    frame.add_guard_interval(SLOT_DURATION_US);
     frame.add_association_slot(SLOT_DURATION_US);
-    frame.add_time_skew_slot(SLOT_DURATION_US);
+    frame.add_guard_interval(SLOT_DURATION_US);
 
     schedule.set_frame(frame.build());
   }
@@ -79,7 +79,7 @@ TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlot) {
 
   // Middle of next time slot.
   clock.increment_current_time_micros(SLOT_DURATION_US);
-  EXPECT_EQ(TimeSlot::Role::TIME_SKEW_ALLOWANCE, schedule.time_slot_role());
+  EXPECT_EQ(TimeSlot::Role::GUARD_INTERVAL, schedule.time_slot_role());
 
   // Middle of next time slot.
   clock.increment_current_time_micros(SLOT_DURATION_US);
@@ -87,7 +87,7 @@ TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlot) {
 
   // Middle of next time slot.
   clock.increment_current_time_micros(SLOT_DURATION_US);
-  EXPECT_EQ(TimeSlot::Role::TIME_SKEW_ALLOWANCE, schedule.time_slot_role());
+  EXPECT_EQ(TimeSlot::Role::GUARD_INTERVAL, schedule.time_slot_role());
 
   // Middle of next time slot.
   clock.increment_current_time_micros(SLOT_DURATION_US);
@@ -95,7 +95,7 @@ TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlot) {
 
   // Middle of next time slot.
   clock.increment_current_time_micros(SLOT_DURATION_US);
-  EXPECT_EQ(TimeSlot::Role::TIME_SKEW_ALLOWANCE, schedule.time_slot_role());
+  EXPECT_EQ(TimeSlot::Role::GUARD_INTERVAL, schedule.time_slot_role());
 }
 
 TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlotEdges) {
@@ -106,11 +106,11 @@ TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlotEdges) {
   {
     FrameBuilder frame{schedule.cell_time_us()};
     frame.add_node_tx_slot(SLOT_DURATION_US, BASE_STATION_ID);
-    frame.add_time_skew_slot(SLOT_DURATION_US);
+    frame.add_guard_interval(SLOT_DURATION_US);
     frame.add_node_tx_slot(SLOT_DURATION_US, LOCAL_ID);
-    frame.add_time_skew_slot(SLOT_DURATION_US);
+    frame.add_guard_interval(SLOT_DURATION_US);
     frame.add_association_slot(SLOT_DURATION_US);
-    frame.add_time_skew_slot(SLOT_DURATION_US);
+    frame.add_guard_interval(SLOT_DURATION_US);
 
     schedule.set_frame(frame.build());
   }
@@ -122,7 +122,7 @@ TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlotEdges) {
 
   // Start of next time slot.
   clock.increment_current_time_micros(SLOT_DURATION_US);
-  EXPECT_EQ(TimeSlot::Role::TIME_SKEW_ALLOWANCE, schedule.time_slot_role());
+  EXPECT_EQ(TimeSlot::Role::GUARD_INTERVAL, schedule.time_slot_role());
 
   // Start of next time slot.
   clock.increment_current_time_micros(SLOT_DURATION_US);
@@ -130,7 +130,7 @@ TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlotEdges) {
 
   // Start of next time slot.
   clock.increment_current_time_micros(SLOT_DURATION_US);
-  EXPECT_EQ(TimeSlot::Role::TIME_SKEW_ALLOWANCE, schedule.time_slot_role());
+  EXPECT_EQ(TimeSlot::Role::GUARD_INTERVAL, schedule.time_slot_role());
 
   // Start of next time slot.
   clock.increment_current_time_micros(SLOT_DURATION_US);
@@ -138,7 +138,7 @@ TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlotEdges) {
 
   // Start of next time slot.
   clock.increment_current_time_micros(SLOT_DURATION_US);
-  EXPECT_EQ(TimeSlot::Role::TIME_SKEW_ALLOWANCE, schedule.time_slot_role());
+  EXPECT_EQ(TimeSlot::Role::GUARD_INTERVAL, schedule.time_slot_role());
 }
 
 TEST(TdmaScheduleBehaviorTest, PreventsTransmissionDuringBlackoutSlot) {
@@ -320,7 +320,7 @@ TEST(TdmaScheduleBehaviorTest, PreventsTransmissionDuringTimeSkewAllowanceSlot) 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
     FrameBuilder frame{schedule.cell_time_us()};
-    frame.add_time_skew_slot(SLOT_DURATION_US);
+    frame.add_guard_interval(SLOT_DURATION_US);
     schedule.set_frame(frame.build());
   }
 
@@ -334,7 +334,7 @@ TEST(TdmaScheduleBehaviorTest, RequiresReceptionDuringTimeSkewAllowanceSlot) {
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
     FrameBuilder frame{schedule.cell_time_us()};
-    frame.add_time_skew_slot(SLOT_DURATION_US);
+    frame.add_guard_interval(SLOT_DURATION_US);
     schedule.set_frame(frame.build());
   }
 

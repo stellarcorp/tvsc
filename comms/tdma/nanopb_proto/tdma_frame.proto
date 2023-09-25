@@ -6,7 +6,7 @@ package tvsc.comms.tdma.nano;
 
 message TimeSlot {
   enum Role {
-    TIME_SKEW_ALLOWANCE = 0;
+    GUARD_INTERVAL = 0;
     NODE_TX = 1;
     ASSOCIATION = 2;
     BLACKOUT = 3;
