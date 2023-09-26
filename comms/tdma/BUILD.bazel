@@ -111,3 +111,14 @@ cc_test(
         "//third_party/gtest",
     ],
 )
+
+cc_test(
+    name = "tdma_transceiver_test",
+    srcs = ["tdma_transceiver_test.cc"],
+    deps = [
+        ":tdma",
+        "//comms/radio:mock_radio",
+        "//hal/time:mock_clock",
+        "//third_party/gtest",
+    ],
+)
