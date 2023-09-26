@@ -1,8 +1,8 @@
 #include <cstdint>
 
+#include "comms/tdma/frame_serialization.h"
 #include "comms/tdma/proto/tdma_frame.pb.h"
 #include "comms/tdma/tdma_frame.h"
-#include "comms/tdma/tdma_serialization.h"
 
 namespace tvsc::comms::tdma {
 

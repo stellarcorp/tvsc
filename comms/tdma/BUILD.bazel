@@ -12,8 +12,8 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
+        ":frame_serialization",
         ":tdma_frame",
-        ":tdma_serialization",
         "//base",
         "//comms/packet",
         "//comms/radio",
@@ -24,14 +24,14 @@ cc_library(
 )
 
 cc_library(
-    name = "tdma_serialization",
+    name = "frame_serialization",
     visibility = ["//visibility:public"],
-    deps = [":tdma_serialization_headers"] + select({
+    deps = [":frame_serialization_headers"] + select({
         "@platforms//os:none": [
-            ":tdma_serialization_nanopb",
+            ":frame_serialization_nanopb",
         ],
         "//conditions:default": [
-            ":tdma_serialization_proto",
+            ":frame_serialization_proto",
         ],
     }),
 )
@@ -50,9 +50,9 @@ cc_library(
 )
 
 cc_library(
-    name = "tdma_serialization_headers",
+    name = "frame_serialization_headers",
     hdrs = [
-        "tdma_serialization.h",
+        "frame_serialization.h",
     ],
     deps = [
         ":tdma_frame",
@@ -60,9 +60,9 @@ cc_library(
 )
 
 cc_library(
-    name = "tdma_serialization_proto",
+    name = "frame_serialization_proto",
     srcs = [
-        "tdma_serialization_proto.cc",
+        "frame_serialization_proto.cc",
     ],
     target_compatible_with = select({
         "@platforms//os:none": [
@@ -71,15 +71,15 @@ cc_library(
         "//conditions:default": [],
     }),
     deps = [
-        ":tdma_serialization_headers",
+        ":frame_serialization_headers",
         "//comms/tdma/proto:tdma_frame_cc_proto",
     ],
 )
 
 cc_library(
-    name = "tdma_serialization_nanopb",
+    name = "frame_serialization_nanopb",
     srcs = [
-        "tdma_serialization_nanopb.cc",
+        "frame_serialization_nanopb.cc",
     ],
     target_compatible_with = select({
         "@platforms//os:none": [],
@@ -88,7 +88,7 @@ cc_library(
         ],
     }),
     deps = [
-        ":tdma_serialization_headers",
+        ":frame_serialization_headers",
         "//comms/tdma/nanopb_proto:tdma_frame_nano_cc_proto",
     ],
 )
@@ -104,10 +104,10 @@ cc_test(
 )
 
 cc_test(
-    name = "tdma_serialization_test",
-    srcs = ["tdma_serialization_test.cc"],
+    name = "frame_serialization_test",
+    srcs = ["frame_serialization_test.cc"],
     deps = [
-        ":tdma_serialization",
+        ":frame_serialization",
         "//third_party/gtest",
     ],
 )

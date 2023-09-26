@@ -1,8 +1,8 @@
 #include <cstdint>
 
+#include "comms/tdma/frame_serialization.h"
 #include "comms/tdma/nanopb_proto/tdma_frame.pb.h"
 #include "comms/tdma/tdma_frame.h"
-#include "comms/tdma/tdma_serialization.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
 
