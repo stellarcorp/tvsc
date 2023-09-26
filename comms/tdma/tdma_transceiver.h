@@ -35,8 +35,10 @@ class TdmaTransceiverT final {
 
   void maybe_measure_rssi(uint64_t current_time_us) {
     if (current_time_us - last_rssi_measurement_time_us_ > RSSI_MEASUREMENT_INTERVAL_US) {
-      last_rssi_measurement_time_us_ = current_time_us;
-      telemetry_->set_rssi_dbm(radio_->read_rssi_dbm());
+      if (schedule_.time_slot_duration_remaining_us() > radio_->rssi_measurement_time_us()) {
+        last_rssi_measurement_time_us_ = current_time_us;
+        telemetry_->set_rssi_dbm(radio_->read_rssi_dbm());
+      }
     }
   }
 
@@ -116,7 +118,8 @@ class TdmaTransceiverT final {
     }
 
     // We have fragments to transmit.
-    if (fragment_sink_.has_more_fragments()) {
+    if (fragment_sink_.has_more_fragments() &&  //
+        schedule_.time_slot_duration_remaining_us() > radio_->fragment_transmit_time_us()) {
       const FragmentT& fragment = fragment_sink_.fragment();
 
       bool result;
@@ -143,9 +146,10 @@ class TdmaTransceiverT final {
   }
 
   RadioT* radio_;
-  TdmaSchedule* schedule_;
   TelemetryT* telemetry_;
   ClockT* clock_;
+
+  TdmaSchedule schedule_{*clock_};
 
   PacketQueueT packet_queue_{};
   FragmentSinkT fragment_sink_{packet_queue_};
@@ -165,16 +169,16 @@ class TdmaTransceiverT final {
   bool have_fragment_in_transmission_{false};
 
  public:
-  TdmaTransceiverT(RadioT& radio, TdmaSchedule& schedule, TelemetryT& telemetry, ClockT& clock)
-      : radio_(&radio), schedule_(&schedule), telemetry_(&telemetry), clock_(&clock) {}
+  TdmaTransceiverT(RadioT& radio, TelemetryT& telemetry, ClockT& clock)
+      : radio_(&radio), telemetry_(&telemetry), clock_(&clock) {}
 
   void iterate() {
     const uint64_t current_time_us{clock_->current_time_micros()};
 
-    if (schedule_->should_receive()) {
+    if (schedule_.should_receive()) {
       radio_->set_receive_mode();
       process_rx(current_time_us);
-    } else if (schedule_->can_transmit()) {
+    } else if (schedule_.can_transmit()) {
       process_tx(current_time_us);
 
       // Nothing to transmit, or couldn't transmit.
@@ -196,6 +200,9 @@ class TdmaTransceiverT final {
     telemetry_->set_transmit_queue_size(packet_queue_.size());
   }
 
+  void set_frame(const Frame& frame) { schedule_.set_frame(frame); }
+  void set_id(uint64_t id) { schedule_.set_id(id); }
+
   void push_immediate_priority(const PacketT& packet) {
     packet_queue_.push_immediate_priority(packet);
   }
@@ -209,6 +216,8 @@ class TdmaTransceiverT final {
   size_t transmit_queue_size() const { return packet_queue_.size(); }
 
   void add_router(PacketRouterT& router) { routers_.emplace_back(&router); }
+
+  const TdmaSchedule& schedule() const { return schedule_; }
 };
 
 }  // namespace tvsc::comms::tdma

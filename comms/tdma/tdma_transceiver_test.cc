@@ -32,9 +32,8 @@ class PacketSniffer final : public tvsc::comms::route::PacketRouter<PacketT> {
 TEST(TdmaTransceiverTest, DoesNothingWithoutPackets) {
   MockClock clock{};
   tvsc::comms::radio::MockRadio radio{clock};
-  TdmaSchedule schedule{clock, ID};
   tvsc::comms::radio::TelemetryAccumulator telemetry{ID};
-  TdmaTransceiver transceiver{radio, schedule, telemetry, clock};
+  TdmaTransceiver transceiver{radio, telemetry, clock};
   PacketSniffer packet_sniffer{};
   transceiver.add_router(packet_sniffer);
 
@@ -50,9 +49,10 @@ TEST(TdmaTransceiverTest, DoesNothingWithoutPackets) {
 TEST(TdmaTransceiverTest, NodeCanReceiveSinglePacket) {
   MockClock clock{};
   tvsc::comms::radio::MockRadio radio{clock};
-  TdmaSchedule schedule{clock, ID};
   tvsc::comms::radio::TelemetryAccumulator telemetry{ID};
-  TdmaTransceiver transceiver{radio, schedule, telemetry, clock};
+  TdmaTransceiver transceiver{radio, telemetry, clock};
+  transceiver.set_id(ID);
+
   PacketSniffer packet_sniffer{};
   transceiver.add_router(packet_sniffer);
 
@@ -81,24 +81,26 @@ TEST(TdmaTransceiverTest, NodeCanReceiveSinglePacket) {
 TEST(TdmaTransceiverTest, NodeCanSendSinglePacket) {
   MockClock clock{};
   tvsc::comms::radio::MockRadio radio{clock};
-  TdmaSchedule schedule{clock, ID};
   tvsc::comms::radio::TelemetryAccumulator telemetry{ID};
-  TdmaTransceiver transceiver{radio, schedule, telemetry, clock};
+  TdmaTransceiver transceiver{radio, telemetry, clock};
+  transceiver.set_id(ID);
+
   PacketSniffer packet_sniffer{};
   transceiver.add_router(packet_sniffer);
 
-  schedule.set_frame(FrameBuilder::create_default_base_station_frame(ID));
+  transceiver.set_frame(FrameBuilder::create_default_base_station_frame(ID));
 
   PacketT packet{};
   packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
   packet.set_sender_id(1);
   transceiver.push_control_priority(packet);
 
-  ASSERT_EQ(TimeSlot::Role::NODE_TX, schedule.time_slot_role());
-  ASSERT_EQ(ID, schedule.id());
-  ASSERT_EQ(ID, schedule.time_slot_owner());
-  ASSERT_TRUE(schedule.can_transmit());
-  ASSERT_GE(schedule.time_slot_duration_remaining_us(), radio.fragment_transmit_time_us());
+  ASSERT_EQ(TimeSlot::Role::NODE_TX, transceiver.schedule().time_slot_role());
+  ASSERT_EQ(ID, transceiver.schedule().id());
+  ASSERT_EQ(ID, transceiver.schedule().time_slot_owner());
+  ASSERT_TRUE(transceiver.schedule().can_transmit());
+  ASSERT_GE(transceiver.schedule().time_slot_duration_remaining_us(),
+            radio.fragment_transmit_time_us());
 
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   EXPECT_FALSE(radio.in_tx_mode());
@@ -106,9 +108,9 @@ TEST(TdmaTransceiverTest, NodeCanSendSinglePacket) {
   // This should initiate the transmission.
   transceiver.iterate();
 
-  ASSERT_EQ(TimeSlot::Role::NODE_TX, schedule.time_slot_role());
-  ASSERT_EQ(ID, schedule.time_slot_owner());
-  ASSERT_TRUE(schedule.can_transmit());
+  ASSERT_EQ(TimeSlot::Role::NODE_TX, transceiver.schedule().time_slot_role());
+  ASSERT_EQ(ID, transceiver.schedule().time_slot_owner());
+  ASSERT_TRUE(transceiver.schedule().can_transmit());
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   EXPECT_TRUE(radio.in_tx_mode());
 
@@ -116,8 +118,8 @@ TEST(TdmaTransceiverTest, NodeCanSendSinglePacket) {
   clock.increment_current_time_micros(radio.fragment_transmit_time_us() / 2);
   transceiver.iterate();
 
-  ASSERT_EQ(TimeSlot::Role::NODE_TX, schedule.time_slot_role());
-  ASSERT_EQ(ID, schedule.time_slot_owner());
+  ASSERT_EQ(TimeSlot::Role::NODE_TX, transceiver.schedule().time_slot_role());
+  ASSERT_EQ(ID, transceiver.schedule().time_slot_owner());
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   EXPECT_TRUE(radio.in_tx_mode());
 
