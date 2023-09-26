@@ -2,8 +2,8 @@
 
 #include <cstdint>
 
-#include "hal/time/time.h"
 #include "comms/radio/fragment.h"
+#include "hal/time/time.h"
 #include "random/random.h"
 
 namespace tvsc::comms::radio {
@@ -51,16 +51,16 @@ class HalfDuplexRadio {
   virtual float read_rssi_dbm() = 0;
 
   /**
-   * How long, in milliseconds, it takes to measure the RSSI using this radio. This value should be
+   * How long, in microseconds, it takes to measure the RSSI using this radio. This value should be
    * an upperbound as it is likely to be used as a value for timeouts.
    */
-  virtual uint16_t rssi_measurement_time_ms() const = 0;
+  virtual uint16_t rssi_measurement_time_us() const = 0;
 
   /**
-   * How long, in milliseconds, it takes to transmit a fragment with the current settings. This
+   * How long, in microseconds, it takes to transmit a fragment with the current settings. This
    * value should be an upperbound as it is likely to be used as a value for timeouts.
    */
-  virtual uint16_t fragment_transmit_time_ms() const = 0;
+  virtual uint16_t fragment_transmit_time_us() const = 0;
 
   /**
    * Put the radio in a standby mode. Standby means that it is not receiving or transmitting.
@@ -112,12 +112,12 @@ class HalfDuplexRadio {
   virtual bool channel_activity_detected() = 0;
 
   /**
-   * Transmit a fragment.
+   * Transmit a fragment. This interrupts and corrupts any current transmission.
    *
-   * Returns true if the transmission was initiated, false if it could not start within the timeout.
+   * Returns true if the transmission was initiated, false if it could not be initiated.
    * True does not guarantee that it was received.
    */
-  virtual bool transmit_fragment(const Fragment<MTU>& fragment, uint16_t timeout_ms) = 0;
+  virtual bool transmit_fragment(const Fragment<MTU>& fragment) = 0;
 
   /**
    * Returns true if this radio is currently transmitting; false, otherwise.

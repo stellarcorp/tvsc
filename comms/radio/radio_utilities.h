@@ -43,7 +43,7 @@ bool send(HalfDuplexRadio<MTU>& transceiver, const Fragment<MTU>& msg) {
     return false;
   }
 
-  result = transceiver.transmit_fragment(msg, TIMEOUT_MS);
+  result = transceiver.transmit_fragment(msg);
   if (result) {
     result = block_until_transmission_complete(transceiver, TIMEOUT_MS);
     if (!result) {
@@ -75,7 +75,7 @@ bool send(HalfDuplexRadio<MTU>& transceiver, const Fragment<MTU>& msg, uint16_t 
     return false;
   }
 
-  result = transceiver.transmit_fragment(msg, timeout_ms);
+  result = transceiver.transmit_fragment(msg);
   if (result) {
     result = block_until_transmission_complete(transceiver, timeout_ms);
     if (!result) {

@@ -17,7 +17,7 @@ TEST(MockRadioTest, FragmentsAvailableAtDesignatedTime) {
   radio.add_rx_fragment(1, fragment);
 
   radio.set_receive_mode();
-  clock.set_current_time_millis(1);
+  clock.set_current_time_micros(1);
 
   EXPECT_TRUE(radio.has_fragment_available());
 }
@@ -33,7 +33,7 @@ TEST(MockRadioTest, CanReceiveFragment) {
   radio.add_rx_fragment(1, fragment);
 
   radio.set_receive_mode();
-  clock.set_current_time_millis(1);
+  clock.set_current_time_micros(1);
 
   ASSERT_TRUE(radio.has_fragment_available());
 
@@ -58,7 +58,7 @@ TEST(MockRadioTest, CanReceiveFragmentMultipleFragments) {
   radio.add_rx_fragment(2, fragment);
 
   radio.set_receive_mode();
-  clock.set_current_time_millis(1);
+  clock.set_current_time_micros(1);
 
   EXPECT_TRUE(radio.has_fragment_available());
 
@@ -68,7 +68,7 @@ TEST(MockRadioTest, CanReceiveFragmentMultipleFragments) {
   EXPECT_EQ(Protocol::TVSC_CONTROL, received_fragment.protocol());
   EXPECT_EQ(1, received_fragment.sender_id());
 
-  clock.set_current_time_millis(2);
+  clock.set_current_time_micros(2);
 
   EXPECT_TRUE(radio.has_fragment_available());
 
@@ -77,7 +77,7 @@ TEST(MockRadioTest, CanReceiveFragmentMultipleFragments) {
   EXPECT_EQ(Protocol::TVSC_CONTROL, received_fragment.protocol());
   EXPECT_EQ(2, received_fragment.sender_id());
 
-  clock.set_current_time_millis(3);
+  clock.set_current_time_micros(3);
 
   // No more fragments.
   EXPECT_FALSE(radio.has_fragment_available());
@@ -97,7 +97,7 @@ TEST(MockRadioTest, LeavingReceiveModeBeforeFragmentReceiptDropsFragment) {
   radio.add_rx_fragment(2, fragment);
 
   radio.set_receive_mode();
-  clock.set_current_time_millis(1);
+  clock.set_current_time_micros(1);
 
   ASSERT_TRUE(radio.has_fragment_available());
 
@@ -108,7 +108,7 @@ TEST(MockRadioTest, LeavingReceiveModeBeforeFragmentReceiptDropsFragment) {
   ASSERT_EQ(1, received_fragment.sender_id());
 
   radio.set_standby_mode();
-  clock.set_current_time_millis(2);
+  clock.set_current_time_micros(2);
 
   EXPECT_FALSE(radio.has_fragment_available());
   EXPECT_EQ(1, radio.count_dropped_fragments());
@@ -129,7 +129,7 @@ TEST(MockRadioTest,
   radio.add_rx_fragment(2, fragment);
 
   radio.set_receive_mode();
-  clock.set_current_time_millis(1);
+  clock.set_current_time_micros(1);
 
   ASSERT_TRUE(radio.has_fragment_available());
 
@@ -140,7 +140,7 @@ TEST(MockRadioTest,
   ASSERT_EQ(1, received_fragment.sender_id());
 
   radio.set_standby_mode();
-  clock.set_current_time_millis(2);
+  clock.set_current_time_micros(2);
   radio.set_receive_mode();
 
   EXPECT_FALSE(radio.has_fragment_available());
@@ -156,9 +156,9 @@ TEST(MockRadioTest, CanTransmitFragment) {
   fragment.set_protocol(Protocol::TVSC_CONTROL);
   fragment.set_sender_id(1);
 
-  clock.set_current_time_millis(1);
-  EXPECT_TRUE(radio.transmit_fragment(fragment, radio.fragment_transmit_time_ms()));
-  clock.set_current_time_millis(clock.current_time_millis() + radio.fragment_transmit_time_ms());
+  clock.set_current_time_micros(1);
+  EXPECT_TRUE(radio.transmit_fragment(fragment));
+  clock.set_current_time_micros(clock.current_time_micros() + radio.fragment_transmit_time_us());
 
   EXPECT_EQ(1, radio.sent_fragments().size());
   for (const Fragment<RadioT::max_mtu()>& sent_fragment : radio.sent_fragments()) {
@@ -176,17 +176,17 @@ TEST(MockRadioTest, TransmittingFragmentWhileTransmittingOtherFragmentCorrupts) 
   fragment.set_protocol(Protocol::TVSC_CONTROL);
   fragment.set_sender_id(1);
 
-  clock.set_current_time_millis(1);
-  ASSERT_TRUE(radio.transmit_fragment(fragment, radio.fragment_transmit_time_ms()));
+  clock.set_current_time_micros(1);
+  ASSERT_TRUE(radio.transmit_fragment(fragment));
 
   // Start the second transmission too early.
-  clock.set_current_time_millis(clock.current_time_millis() + radio.fragment_transmit_time_ms() -
+  clock.set_current_time_micros(clock.current_time_micros() + radio.fragment_transmit_time_us() -
                                 1);
   fragment.set_sender_id(2);
-  ASSERT_TRUE(radio.transmit_fragment(fragment, radio.fragment_transmit_time_ms()));
+  ASSERT_TRUE(radio.transmit_fragment(fragment));
 
   // Allow the second transmission to finish.
-  clock.set_current_time_millis(clock.current_time_millis() + radio.fragment_transmit_time_ms());
+  clock.set_current_time_micros(clock.current_time_micros() + radio.fragment_transmit_time_us());
 
   EXPECT_EQ(1, radio.sent_fragments().size());
   EXPECT_EQ(1, radio.count_corrupted_fragments());
