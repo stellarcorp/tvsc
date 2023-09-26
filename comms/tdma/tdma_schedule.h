@@ -15,7 +15,7 @@ namespace tvsc::comms::tdma {
  * Schedule controlling the activity of nodes in a TDMA cell according to the current time of the
  * cell.
  */
-class TdmaSchedule final {
+class Schedule final {
  private:
   Frame frame_{FrameBuilder::create_default_node_frame()};
 
@@ -43,9 +43,8 @@ class TdmaSchedule final {
   }
 
  public:
-  TdmaSchedule(tvsc::hal::time::Clock& local_clock) : cell_clock_(local_clock) {}
-  TdmaSchedule(tvsc::hal::time::Clock& local_clock, uint64_t id)
-      : cell_clock_(local_clock), id_(id) {}
+  Schedule(tvsc::hal::time::Clock& local_clock) : cell_clock_(local_clock) {}
+  Schedule(tvsc::hal::time::Clock& local_clock, uint64_t id) : cell_clock_(local_clock), id_(id) {}
 
   /**
    * Get/set the id of the radio we use to receive and transmit. Time slots with this id refer to

@@ -2,7 +2,7 @@
 
 namespace tvsc::comms::tdma {
 
-bool TdmaSchedule::is_associated(uint64_t id) const {
+bool Schedule::is_associated(uint64_t id) const {
   for (const TimeSlot& slot : frame_.time_slots) {
     if (slot.role == TimeSlot::Role::NODE_TX && slot.slot_owner_id == id) {
       return true;
@@ -11,7 +11,7 @@ bool TdmaSchedule::is_associated(uint64_t id) const {
   return false;
 }
 
-bool TdmaSchedule::can_transmit() const {
+bool Schedule::can_transmit() const {
   const TimeSlot& slot{current_time_slot()};
   switch (slot.role) {
     case TimeSlot::Role::BLACKOUT:
@@ -25,7 +25,7 @@ bool TdmaSchedule::can_transmit() const {
   }
 }
 
-bool TdmaSchedule::should_receive() const {
+bool Schedule::should_receive() const {
   const TimeSlot& slot{current_time_slot()};
   switch (slot.role) {
     case TimeSlot::Role::BLACKOUT:

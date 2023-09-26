@@ -53,8 +53,8 @@ struct TimeSlot final {
 struct Frame final {
   /**
    * When this frame began or will begin. This time is measured from the perspective of the clock on
-   * the base station, the clock of reference for the cell. The TdmaSchedule class manages
-   * approximating the current time at that remote clock.
+   * the base station, the clock of reference for the cell. The Schedule class manages approximating
+   * the current time at that remote clock.
    */
   uint64_t frame_start_time_us{};
 

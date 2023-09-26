@@ -149,7 +149,7 @@ class TdmaTransceiverT final {
   TelemetryT* telemetry_;
   ClockT* clock_;
 
-  TdmaSchedule schedule_{*clock_};
+  Schedule schedule_{*clock_};
 
   PacketQueueT packet_queue_{};
   FragmentSinkT fragment_sink_{packet_queue_};
@@ -217,7 +217,7 @@ class TdmaTransceiverT final {
 
   void add_router(PacketRouterT& router) { routers_.emplace_back(&router); }
 
-  const TdmaSchedule& schedule() const { return schedule_; }
+  const Schedule& schedule() const { return schedule_; }
 };
 
 }  // namespace tvsc::comms::tdma

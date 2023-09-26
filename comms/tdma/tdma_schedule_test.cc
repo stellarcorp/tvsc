@@ -10,21 +10,21 @@ constexpr uint64_t BASE_STATION_ID{1};
 constexpr uint64_t LOCAL_ID{2};
 constexpr uint64_t OTHER_NODE_ID{3};
 
-TEST(TdmaScheduleTest, DefaultFramePreventsTransmissions) {
+TEST(ScheduleTest, DefaultFramePreventsTransmissions) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock};
+  Schedule schedule{clock};
   EXPECT_FALSE(schedule.can_transmit());
 }
 
-TEST(TdmaScheduleTest, DefaultFrameRequiresReception) {
+TEST(ScheduleTest, DefaultFrameRequiresReception) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock};
+  Schedule schedule{clock};
   EXPECT_TRUE(schedule.should_receive());
 }
 
-TEST(TdmaScheduleTest, BaseStationFrameAllowsBaseStationToTransmit) {
+TEST(ScheduleTest, BaseStationFrameAllowsBaseStationToTransmit) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, BASE_STATION_ID};
+  Schedule schedule{clock, BASE_STATION_ID};
 
   schedule.set_frame(FrameBuilder::create_default_base_station_frame(BASE_STATION_ID));
 
@@ -37,9 +37,9 @@ TEST(TdmaScheduleTest, BaseStationFrameAllowsBaseStationToTransmit) {
   EXPECT_FALSE(schedule.should_receive());
 }
 
-TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlotTrivial) {
+TEST(ScheduleTest, CanDetermineCurrentTimeSlotTrivial) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -54,9 +54,9 @@ TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlotTrivial) {
   EXPECT_EQ(TimeSlot::Role::GUARD_INTERVAL, schedule.time_slot_role());
 }
 
-TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlot) {
+TEST(ScheduleTest, CanDetermineCurrentTimeSlot) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -98,9 +98,9 @@ TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlot) {
   EXPECT_EQ(TimeSlot::Role::GUARD_INTERVAL, schedule.time_slot_role());
 }
 
-TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlotEdges) {
+TEST(ScheduleTest, CanDetermineCurrentTimeSlotEdges) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -141,9 +141,9 @@ TEST(TdmaScheduleTest, CanDetermineCurrentTimeSlotEdges) {
   EXPECT_EQ(TimeSlot::Role::GUARD_INTERVAL, schedule.time_slot_role());
 }
 
-TEST(TdmaScheduleBehaviorTest, PreventsTransmissionDuringBlackoutSlot) {
+TEST(ScheduleBehaviorTest, PreventsTransmissionDuringBlackoutSlot) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -155,9 +155,9 @@ TEST(TdmaScheduleBehaviorTest, PreventsTransmissionDuringBlackoutSlot) {
   EXPECT_FALSE(schedule.can_transmit());
 }
 
-TEST(TdmaScheduleBehaviorTest, DoesNotRequireReceptionDuringBlackoutSlot) {
+TEST(ScheduleBehaviorTest, DoesNotRequireReceptionDuringBlackoutSlot) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -169,9 +169,9 @@ TEST(TdmaScheduleBehaviorTest, DoesNotRequireReceptionDuringBlackoutSlot) {
   EXPECT_FALSE(schedule.should_receive());
 }
 
-TEST(TdmaScheduleBehaviorTest, PreventsTransmissionDuringNodeTxSlotWhenNotOwner) {
+TEST(ScheduleBehaviorTest, PreventsTransmissionDuringNodeTxSlotWhenNotOwner) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -183,9 +183,9 @@ TEST(TdmaScheduleBehaviorTest, PreventsTransmissionDuringNodeTxSlotWhenNotOwner)
   EXPECT_FALSE(schedule.can_transmit());
 }
 
-TEST(TdmaScheduleBehaviorTest, RequiresReceptionDuringNodeTxSlotWhenNotOwner) {
+TEST(ScheduleBehaviorTest, RequiresReceptionDuringNodeTxSlotWhenNotOwner) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -197,9 +197,9 @@ TEST(TdmaScheduleBehaviorTest, RequiresReceptionDuringNodeTxSlotWhenNotOwner) {
   EXPECT_TRUE(schedule.should_receive());
 }
 
-TEST(TdmaScheduleBehaviorTest, AllowsTransmissionDuringNodeTxSlotWhenOwner) {
+TEST(ScheduleBehaviorTest, AllowsTransmissionDuringNodeTxSlotWhenOwner) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -211,9 +211,9 @@ TEST(TdmaScheduleBehaviorTest, AllowsTransmissionDuringNodeTxSlotWhenOwner) {
   EXPECT_TRUE(schedule.can_transmit());
 }
 
-TEST(TdmaScheduleBehaviorTest, DoesNotRequireReceptionDuringNodeTxSlotWhenOwner) {
+TEST(ScheduleBehaviorTest, DoesNotRequireReceptionDuringNodeTxSlotWhenOwner) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -225,9 +225,9 @@ TEST(TdmaScheduleBehaviorTest, DoesNotRequireReceptionDuringNodeTxSlotWhenOwner)
   EXPECT_FALSE(schedule.should_receive());
 }
 
-TEST(TdmaScheduleBehaviorTest, PreventsTransmissionDuringAssociationSlotWhenAssociated) {
+TEST(ScheduleBehaviorTest, PreventsTransmissionDuringAssociationSlotWhenAssociated) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -243,9 +243,9 @@ TEST(TdmaScheduleBehaviorTest, PreventsTransmissionDuringAssociationSlotWhenAsso
   EXPECT_FALSE(schedule.can_transmit());
 }
 
-TEST(TdmaScheduleBehaviorTest, PreventsTransmissionDuringAssociationSlotWhenBaseStation) {
+TEST(ScheduleBehaviorTest, PreventsTransmissionDuringAssociationSlotWhenBaseStation) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, BASE_STATION_ID};
+  Schedule schedule{clock, BASE_STATION_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -261,9 +261,9 @@ TEST(TdmaScheduleBehaviorTest, PreventsTransmissionDuringAssociationSlotWhenBase
   EXPECT_FALSE(schedule.can_transmit());
 }
 
-TEST(TdmaScheduleBehaviorTest, AllowsTransmissionDuringAssociationSlotWhenNotAssociated) {
+TEST(ScheduleBehaviorTest, AllowsTransmissionDuringAssociationSlotWhenNotAssociated) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -279,9 +279,9 @@ TEST(TdmaScheduleBehaviorTest, AllowsTransmissionDuringAssociationSlotWhenNotAss
   EXPECT_TRUE(schedule.can_transmit());
 }
 
-TEST(TdmaScheduleBehaviorTest, DoesNotRequireReceptionDuringAssociationSlotIfNotBaseStation) {
+TEST(ScheduleBehaviorTest, DoesNotRequireReceptionDuringAssociationSlotIfNotBaseStation) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -296,9 +296,9 @@ TEST(TdmaScheduleBehaviorTest, DoesNotRequireReceptionDuringAssociationSlotIfNot
   EXPECT_FALSE(schedule.should_receive());
 }
 
-TEST(TdmaScheduleBehaviorTest, RequiresReceptionDuringAssociationSlotIfBaseStation) {
+TEST(ScheduleBehaviorTest, RequiresReceptionDuringAssociationSlotIfBaseStation) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, BASE_STATION_ID};
+  Schedule schedule{clock, BASE_STATION_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -313,9 +313,9 @@ TEST(TdmaScheduleBehaviorTest, RequiresReceptionDuringAssociationSlotIfBaseStati
   EXPECT_TRUE(schedule.should_receive());
 }
 
-TEST(TdmaScheduleBehaviorTest, PreventsTransmissionDuringTimeSkewAllowanceSlot) {
+TEST(ScheduleBehaviorTest, PreventsTransmissionDuringTimeSkewAllowanceSlot) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
@@ -327,9 +327,9 @@ TEST(TdmaScheduleBehaviorTest, PreventsTransmissionDuringTimeSkewAllowanceSlot) 
   EXPECT_FALSE(schedule.can_transmit());
 }
 
-TEST(TdmaScheduleBehaviorTest, RequiresReceptionDuringTimeSkewAllowanceSlot) {
+TEST(ScheduleBehaviorTest, RequiresReceptionDuringTimeSkewAllowanceSlot) {
   tvsc::hal::time::MockClock clock{};
-  TdmaSchedule schedule{clock, LOCAL_ID};
+  Schedule schedule{clock, LOCAL_ID};
 
   constexpr uint32_t SLOT_DURATION_US{1000};
   {
