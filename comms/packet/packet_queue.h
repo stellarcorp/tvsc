@@ -26,18 +26,18 @@ class FragmentSink final {
   using DataAvailableCallback = std::function<void(PacketTxQueueT&)>;
 
  private:
-  PacketTxQueueT* packet_queue_{nullptr};
+  PacketTxQueueT* packet_queue_;
   PeekResponse<PacketT> last_peek_{};
 
   size_t current_fragment_index_{0};
   EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET> fragments_{};
 
-  FragmentSink(PacketTxQueueT& queue) : packet_queue_(&queue) {}
-
   friend PacketTxQueueT;
 
  public:
   static constexpr size_t mtu() { return MTU; }
+
+  FragmentSink(PacketTxQueueT& queue) : packet_queue_(&queue) {}
 
   PacketTxQueueT& packet_queue() { return *packet_queue_; }
 
@@ -105,11 +105,11 @@ class PacketSink final {
   PacketTxQueueT* packet_queue_{nullptr};
   PeekResponse<PacketT> last_peek_{};
 
-  PacketSink(PacketTxQueueT& queue) : packet_queue_(&queue) {}
-
   friend PacketTxQueueT;
 
  public:
+  PacketSink(PacketTxQueueT& queue) : packet_queue_(&queue) {}
+
   PacketTxQueueT& packet_queue() { return *packet_queue_; }
 
   /**
@@ -332,6 +332,7 @@ class PacketTxQueue final {
     return immediate_priority_.elements_available() + control_priority_.elements_available() +
            normal_priority_.elements_available() + low_priority_.elements_available();
   }
+  size_t size() const { return elements_available(); }
 
   PacketSink<PacketT, NUM_PACKETS> create_sink() { return PacketSink<PacketT, NUM_PACKETS>{*this}; }
 
