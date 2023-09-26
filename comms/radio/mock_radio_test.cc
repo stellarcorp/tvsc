@@ -108,7 +108,7 @@ TEST(MockRadioTest, LeavingReceiveModeBeforeFragmentReceiptDropsFragment) {
   ASSERT_EQ(1, received_fragment.sender_id());
 
   radio.set_standby_mode();
-  clock.set_current_time_micros(2);
+  clock.set_current_time_micros(3);
 
   EXPECT_FALSE(radio.has_fragment_available());
   EXPECT_EQ(1, radio.count_dropped_fragments());
@@ -140,7 +140,8 @@ TEST(MockRadioTest,
   ASSERT_EQ(1, received_fragment.sender_id());
 
   radio.set_standby_mode();
-  clock.set_current_time_micros(2);
+
+  clock.set_current_time_micros(3);
   radio.set_receive_mode();
 
   EXPECT_FALSE(radio.has_fragment_available());
@@ -165,6 +166,25 @@ TEST(MockRadioTest, CanTransmitFragment) {
     EXPECT_EQ(Protocol::TVSC_CONTROL, sent_fragment.protocol());
     EXPECT_EQ(1, sent_fragment.sender_id());
   }
+}
+
+TEST(MockRadioTest, SwitchesToStandbyModeAfterTransmittingFragment) {
+  using RadioT = SmallBufferMockRadio;
+  tvsc::hal::time::MockClock clock{};
+  RadioT radio{clock};
+
+  Fragment<RadioT::max_mtu()> fragment{};
+  fragment.set_protocol(Protocol::TVSC_CONTROL);
+  fragment.set_sender_id(1);
+
+  clock.set_current_time_micros(1);
+  ASSERT_TRUE(radio.transmit_fragment(fragment));
+  EXPECT_TRUE(radio.in_tx_mode());
+
+  clock.increment_current_time_micros(radio.fragment_transmit_time_us());
+
+  ASSERT_EQ(1, radio.sent_fragments().size());
+  EXPECT_TRUE(radio.in_standby_mode());
 }
 
 TEST(MockRadioTest, TransmittingFragmentWhileTransmittingOtherFragmentCorrupts) {

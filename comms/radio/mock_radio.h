@@ -1,20 +1,19 @@
 #pragma once
 
-#include <atomic>
 #include <limits>
 #include <map>
-#include <mutex>
 #include <stdexcept>
 #include <vector>
 
 #include "comms/radio/half_duplex_radio.h"
 #include "hal/output/output.h"
 #include "hal/time/clock.h"
+#include "hal/time/mock_clock.h"
 
 namespace tvsc::comms::radio {
 
 template <size_t MTU>
-class MockRadioT final : public HalfDuplexRadio<MTU> {
+class MockRadioT final : public HalfDuplexRadio<MTU>, tvsc::hal::time::Clockable {
  private:
   // Amount of time in microseconds required to transmit a fragment, including ramping up and down
   // the amplifiers, DSP operations and DAC timing. The radio must stay continuously in TX
@@ -23,10 +22,6 @@ class MockRadioT final : public HalfDuplexRadio<MTU> {
 
   // Amount of time in microseconds required to measure the current RSSI level.
   static constexpr uint16_t RSSI_MEASUREMENT_TIME_US{500};
-
-  mutable std::mutex mutex_{};
-
-  tvsc::hal::time::Clock* clock_;
 
   // Timestamp of the last time a fragment was received. This should just increment in
   // fragment_receive_interval_us increments and is used to figure out when the next fragment should
@@ -72,111 +67,93 @@ class MockRadioT final : public HalfDuplexRadio<MTU> {
 
   mutable bool have_fragment_for_tx_{false};
 
-  void handle_fragment_transmit() const {
-    if (in_tx_mode()) {
-      const std::lock_guard<std::mutex> lock(mutex_);
-      if (have_fragment_for_tx_) {
-        if (clock_->current_time_micros() - last_switch_to_tx_mode_us_ >=
-            FRAGMENT_TRANSMIT_TIME_US) {
-          sent_fragments_.push_back(buffered_fragment_);
-        } else {
-          ++count_corrupted_fragments_;
+  /**
+   * Drop any fragments that were received, but we weren't in a mode to receive them.
+   */
+  void process_reception(uint64_t current_time_us) const {
+    if (current_mode_ != Mode::RX) {
+      if (!rx_fragments_.empty()) {
+        auto current_fragment = rx_fragments_.begin();
+        size_t received_fragments{0};
+        for (auto current = rx_fragments_.begin();
+             current->first < current_time_us && current != rx_fragments_.end(); ++current) {
+          current_fragment = current;
+          ++received_fragments;
+        }
+
+        if (received_fragments > 0) {
+          count_dropped_fragments_ += received_fragments;
+          rx_fragments_.erase(rx_fragments_.begin(), ++current_fragment);
         }
       }
     }
-    const std::lock_guard<std::mutex> lock(mutex_);
-    have_fragment_for_tx_ = false;
-    buffered_fragment_.clear();
-    last_switch_to_tx_mode_us_ = 0;
   }
 
-  void drop_unread_received_fragments() const {
-    const std::lock_guard<std::mutex> lock(mutex_);
-    if (!rx_fragments_.empty()) {
-      const uint64_t current_time_us{clock_->current_time_micros()};
-      auto current_fragment = rx_fragments_.begin();
-      size_t received_fragments{0};
-      for (auto current = rx_fragments_.begin();
-           current->first <= current_time_us && current != rx_fragments_.end(); ++current) {
-        current_fragment = current;
-        ++received_fragments;
-      }
+  void process_ongoing_transmission(uint64_t current_time_us) {
+    if (have_fragment_for_tx_) {
+      if (current_time_us - last_switch_to_tx_mode_us_ >= FRAGMENT_TRANSMIT_TIME_US &&  //
+          current_mode_ == Mode::TX) {
+        sent_fragments_.push_back(buffered_fragment_);
 
-      if (received_fragments > 0) {
-        count_dropped_fragments_ += received_fragments - 1;
-        rx_fragments_.erase(rx_fragments_.begin(), current_fragment);
+        have_fragment_for_tx_ = false;
+        buffered_fragment_.clear();
+        last_switch_to_tx_mode_us_ = 0;
+
+        current_mode_ = Mode::STANDBY;
+      } else if (current_mode_ != Mode::TX) {
+        ++count_corrupted_fragments_;
+
+        have_fragment_for_tx_ = false;
+        buffered_fragment_.clear();
+        last_switch_to_tx_mode_us_ = 0;
       }
     }
   }
 
-  void drop_unreceived_fragments() const {
-    const std::lock_guard<std::mutex> lock(mutex_);
-    if (!rx_fragments_.empty()) {
-      const uint64_t current_time_us{clock_->current_time_micros()};
-      auto current_fragment = rx_fragments_.begin();
-      size_t received_fragments{0};
-      for (auto current = rx_fragments_.begin();
-           current->first <= current_time_us && current != rx_fragments_.end(); ++current) {
-        current_fragment = current;
-        ++received_fragments;
-      }
+  void update(uint64_t current_time_us) override {
+    process_reception(current_time_us);
+    process_ongoing_transmission(current_time_us);
+  }
 
-      if (received_fragments > 0) {
-        count_dropped_fragments_ += received_fragments;
-        rx_fragments_.erase(rx_fragments_.begin(), ++current_fragment);
-      }
-    }
+  /**
+   * Configure the radio to transmit data.
+   *
+   * This call should be idempotent.
+   */
+  void set_tx_mode() {
+    current_mode_ = Mode::TX;
+
+    const uint64_t current_time_us{clock_->current_time_micros()};
+    last_switch_to_tx_mode_us_ = current_time_us;
+    update(current_time_us);
   }
 
  public:
-  MockRadioT(tvsc::hal::time::Clock& clock) : clock_(&clock) {}
+  MockRadioT(tvsc::hal::time::MockClock& clock) : Clockable(clock) {}
 
   /**
    * Add a fragment to be received. This method helps configure the mock radio state.
    */
   void add_rx_fragment(uint64_t rx_timestamp_us, const Fragment<MTU>& fragment) {
-    const std::lock_guard<std::mutex> lock(mutex_);
     rx_fragments_.insert({rx_timestamp_us, fragment});
   }
 
-  size_t remaining_rx_fragment_count() const {
-    const std::lock_guard<std::mutex> lock(mutex_);
-    return rx_fragments_.size();
-  }
+  size_t remaining_rx_fragment_count() const { return rx_fragments_.size(); }
 
   /**
    * Get collection of fragments that were transmitted successfully.
    */
-  const std::vector<Fragment<MTU>>& sent_fragments() const {
-    handle_fragment_transmit();
-    const std::lock_guard<std::mutex> lock(mutex_);
-    return sent_fragments_;
-  }
+  const std::vector<Fragment<MTU>>& sent_fragments() const { return sent_fragments_; }
 
-  size_t count_dropped_fragments() const {
-    const std::lock_guard<std::mutex> lock(mutex_);
-    return count_dropped_fragments_;
-  }
+  size_t count_dropped_fragments() const { return count_dropped_fragments_; }
 
-  size_t count_corrupted_fragments() const {
-    const std::lock_guard<std::mutex> lock(mutex_);
-    return count_corrupted_fragments_;
-  }
+  size_t count_corrupted_fragments() const { return count_corrupted_fragments_; }
 
-  bool in_standby_mode() const override {
-    const std::lock_guard<std::mutex> lock(mutex_);
-    return current_mode_ == Mode::STANDBY;
-  }
+  bool in_standby_mode() const override { return current_mode_ == Mode::STANDBY; }
 
-  bool in_rx_mode() const override {
-    const std::lock_guard<std::mutex> lock(mutex_);
-    return current_mode_ == Mode::RX;
-  }
+  bool in_rx_mode() const override { return current_mode_ == Mode::RX; }
 
-  bool in_tx_mode() const override {
-    const std::lock_guard<std::mutex> lock(mutex_);
-    return current_mode_ == Mode::TX;
-  }
+  bool in_tx_mode() const override { return current_mode_ == Mode::TX; }
 
   /**
    * Reset the radio back to a default state and in standby mode. This may include a hardware
@@ -189,10 +166,7 @@ class MockRadioT final : public HalfDuplexRadio<MTU> {
    * This call should be idempotent.
    */
   void reset() override {
-    {
-      const std::lock_guard<std::mutex> lock(mutex_);
-      buffered_fragment_.clear();
-    }
+    buffered_fragment_.clear();
     set_standby_mode();
   }
 
@@ -202,6 +176,7 @@ class MockRadioT final : public HalfDuplexRadio<MTU> {
    * the radio.
    */
   float read_rssi_dbm() override {
+    set_standby_mode();
     // Return a benign value for now. Consider adding logic to set different RSSI levels for mocking
     // different scenarios.
     return -85.f;
@@ -218,11 +193,8 @@ class MockRadioT final : public HalfDuplexRadio<MTU> {
    * This call should be idempotent.
    */
   void set_standby_mode() override {
-    if (!in_standby_mode()) {
-      handle_fragment_transmit();
-      const std::lock_guard<std::mutex> lock(mutex_);
-      current_mode_ = Mode::STANDBY;
-    }
+    current_mode_ = Mode::STANDBY;
+    update(clock_->current_time_micros());
   }
 
   /**
@@ -231,24 +203,14 @@ class MockRadioT final : public HalfDuplexRadio<MTU> {
    * This call should be idempotent.
    */
   void set_receive_mode() override {
-    if (!in_rx_mode()) {
-      handle_fragment_transmit();
-      drop_unreceived_fragments();
-      const std::lock_guard<std::mutex> lock(mutex_);
-      current_mode_ = Mode::RX;
-    }
+    current_mode_ = Mode::RX;
+    update(clock_->current_time_micros());
   }
 
   /**
    * Flag to poll if the radio has rx data available to read.
    */
   bool has_fragment_available() const override {
-    if (in_rx_mode()) {
-      drop_unread_received_fragments();
-    } else {
-      drop_unreceived_fragments();
-    }
-    const std::lock_guard<std::mutex> lock(mutex_);
     if (!rx_fragments_.empty()) {
       const uint64_t current_time_us{clock_->current_time_micros()};
       const auto& begin{rx_fragments_.begin()};
@@ -262,13 +224,6 @@ class MockRadioT final : public HalfDuplexRadio<MTU> {
    * radio will discard the fragment.
    */
   void read_received_fragment(Fragment<MTU>& fragment) override {
-    if (in_rx_mode()) {
-      drop_unread_received_fragments();
-    } else {
-      drop_unreceived_fragments();
-    }
-
-    const std::lock_guard<std::mutex> lock(mutex_);
     if (!rx_fragments_.empty()) {
       const uint64_t current_time_us{clock_->current_time_micros()};
       auto chosen_entry = rx_fragments_.begin();
@@ -291,7 +246,7 @@ class MockRadioT final : public HalfDuplexRadio<MTU> {
 
   /**
    * Flag to poll if the radio is detecting channel activity. Before transmitting, the
-   * radio should wait until this activity has cleared.
+   * user of the radio should wait until this activity has cleared.
    *
    * Note that this method cannot be marked const, since it likely involves reading the RSSI level
    * which will involve changing register values, disrupting any ongoing RX, etc.
@@ -302,10 +257,7 @@ class MockRadioT final : public HalfDuplexRadio<MTU> {
     return false;
   }
 
-  bool is_transmitting_fragment() override {
-    std::unique_lock<std::mutex> lock(mutex_);
-    return have_fragment_for_tx_;
-  }
+  bool is_transmitting_fragment() override { return have_fragment_for_tx_; }
 
   bool transmit_fragment(const Fragment<MTU>& fragment) override {
     if (fragment.total_length() == 0) {
@@ -315,11 +267,10 @@ class MockRadioT final : public HalfDuplexRadio<MTU> {
 
     set_standby_mode();
 
-    const std::lock_guard<std::mutex> lock(mutex_);
     buffered_fragment_ = fragment;
     have_fragment_for_tx_ = true;
-    current_mode_ = Mode::TX;
-    last_switch_to_tx_mode_us_ = clock_->current_time_micros();
+    set_tx_mode();
+
     return true;
   }
 };
