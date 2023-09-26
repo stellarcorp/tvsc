@@ -8,7 +8,8 @@
 #include "comms/radio/half_duplex_radio.h"
 #include "comms/radio/telemetry_accumulator.h"
 #include "comms/route/packet_router.h"
-#include "comms/tdma/tdma_schedule.h"
+#include "comms/tdma/schedule.h"
+#include "comms/tdma/tdma_frame.h"
 #include "hal/time/clock.h"
 
 namespace tvsc::comms::tdma {

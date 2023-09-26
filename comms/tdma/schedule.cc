@@ -1,4 +1,4 @@
-#include "comms/tdma/tdma_schedule.h"
+#include "comms/tdma/schedule.h"
 
 namespace tvsc::comms::tdma {
 

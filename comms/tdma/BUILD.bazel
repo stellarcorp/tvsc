@@ -4,10 +4,10 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 cc_library(
     name = "tdma",
     srcs = [
-        "tdma_schedule.cc",
+        "schedule.cc",
     ],
     hdrs = [
-        "tdma_schedule.h",
+        "schedule.h",
         "tdma_transceiver.h",
     ],
     visibility = ["//visibility:public"],
@@ -94,8 +94,8 @@ cc_library(
 )
 
 cc_test(
-    name = "tdma_schedule_test",
-    srcs = ["tdma_schedule_test.cc"],
+    name = "schedule_test",
+    srcs = ["schedule_test.cc"],
     deps = [
         ":tdma",
         "//hal/time:mock_clock",

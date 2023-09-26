@@ -1,4 +1,4 @@
-#include "comms/tdma/tdma_schedule.h"
+#include "comms/tdma/schedule.h"
 
 #include "comms/tdma/tdma_frame.h"
 #include "gtest/gtest.h"
