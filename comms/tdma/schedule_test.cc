@@ -1,6 +1,6 @@
 #include "comms/tdma/schedule.h"
 
-#include "comms/tdma/tdma_frame.h"
+#include "comms/tdma/frame.h"
 #include "gtest/gtest.h"
 #include "hal/time/mock_clock.h"
 

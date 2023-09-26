@@ -12,8 +12,8 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
+        ":frame",
         ":frame_serialization",
-        ":tdma_frame",
         "//base",
         "//comms/packet",
         "//comms/radio",
@@ -37,12 +37,12 @@ cc_library(
 )
 
 cc_library(
-    name = "tdma_frame",
+    name = "frame",
     srcs = [
-        "tdma_frame.cc",
+        "frame.cc",
     ],
     hdrs = [
-        "tdma_frame.h",
+        "frame.h",
     ],
     deps = [
         "//base",
@@ -55,7 +55,7 @@ cc_library(
         "frame_serialization.h",
     ],
     deps = [
-        ":tdma_frame",
+        ":frame",
     ],
 )
 
@@ -72,7 +72,7 @@ cc_library(
     }),
     deps = [
         ":frame_serialization_headers",
-        "//comms/tdma/proto:tdma_frame_cc_proto",
+        "//comms/tdma/proto:frame_cc_proto",
     ],
 )
 
@@ -89,7 +89,7 @@ cc_library(
     }),
     deps = [
         ":frame_serialization_headers",
-        "//comms/tdma/nanopb_proto:tdma_frame_nano_cc_proto",
+        "//comms/tdma/nanopb_proto:frame_nano_cc_proto",
     ],
 )
 

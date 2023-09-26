@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "base/except.h"
-#include "comms/tdma/tdma_frame.h"
+#include "comms/tdma/frame.h"
 #include "hal/time/clock.h"
 #include "hal/time/remote_clock.h"
 

@@ -1,4 +1,4 @@
-#include "comms/tdma/tdma_frame.h"
+#include "comms/tdma/frame.h"
 
 #include <cstdint>
 

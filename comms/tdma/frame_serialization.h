@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "comms/tdma/tdma_frame.h"
+#include "comms/tdma/frame.h"
 
 namespace tvsc::comms::tdma {
 
