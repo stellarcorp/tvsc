@@ -75,20 +75,24 @@ class TdmaTransceiverT final {
     }
   }
 
-  void process_tx(uint64_t current_time_us) {
+  /**
+   * Process any going transmission, returning true if the radio is available to move forward to the
+   * next transmission.
+   */
+  bool process_ongoing_tx(uint64_t current_time_us) {
     // Return if there are any issues keeping us from transmitting.
     if (radio_->is_transmitting_fragment()) {
       if (current_time_us - fragment_tx_initiated_us_ < TX_TIMEOUT_US) {
         tvsc::hal::output::println(
             "TdmaTransceiver::process_tx() -- Pausing until existing TX complete.");
-        return;
+        return false;
       } else {
-        // Abandon transmission and try again.
+        // We have exceeded our timeout. Abandon the transmission and try again.
         radio_->set_standby_mode();
         have_fragment_in_transmission_ = false;
         telemetry_->increment_transmit_errors();
         tvsc::hal::output::println("TdmaTransceiver::process_tx() -- TX timed out.");
-        return;
+        return true;
       }
     }
 
@@ -99,15 +103,6 @@ class TdmaTransceiverT final {
       telemetry_->increment_fragments_transmitted();
     }
 
-    if (radio_->channel_activity_detected()) {
-      // Should not happen in TDMA, but...
-      tvsc::hal::output::println(
-          "TdmaTransceiver::process_tx() -- Pausing due to channel activity.");
-      return;
-    }
-
-    // We are ready to transmit.
-
     // Load the next fragment to transmit, if any.
     if (!fragment_sink_.has_more_fragments()) {
       if (fragment_sink_.have_packet()) {
@@ -117,6 +112,22 @@ class TdmaTransceiverT final {
         fragment_sink_.encode_next_packet();
       }
     }
+
+    if (radio_->channel_activity_detected()) {
+      // Should not happen in TDMA, but...
+      tvsc::hal::output::println(
+          "TdmaTransceiver::process_tx() -- Pausing due to channel activity.");
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * Transmit the next fragment, if any. Assumes that the radio is ready to transmit.
+   */
+  void process_tx(uint64_t current_time_us) {
+    // We are ready to transmit.
 
     // We have fragments to transmit.
     if (fragment_sink_.has_more_fragments() &&  //
@@ -176,15 +187,24 @@ class TdmaTransceiverT final {
   void iterate() {
     const uint64_t current_time_us{clock_->current_time_micros()};
 
+    // This clears out any previous transmission, if required.
+    const bool radio_clear_to_transmit{process_ongoing_tx(current_time_us)};
+
     if (schedule_.should_receive()) {
+      // TODO(james): This doesn't trigger telemetry or logging if the current TX gets interrupted.
+      // Should not happen, since we aren't supposed to start a TX if it will go into the next time
+      // slot.
       radio_->set_receive_mode();
       process_rx(current_time_us);
     } else if (schedule_.can_transmit()) {
-      process_tx(current_time_us);
+      if (radio_clear_to_transmit) {
+        process_tx(current_time_us);
+      }
 
-      // Nothing to transmit, or couldn't transmit.
+      // Nothing to transmit, or we couldn't transmit.
       if (!radio_->is_transmitting_fragment()) {
-        // Since we own the time slot, this RSSI measurement should be background noise.
+        // Since we own the time slot, this RSSI measurement should be background noise, but it
+        // might include other activity that doesn't abide the TDMA frame.
         maybe_measure_rssi(current_time_us);
       }
     } else {
