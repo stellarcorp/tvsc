@@ -23,6 +23,7 @@ do
 done
 
 ./bazelisk-linux-amd64 coverage --compilation_mode opt //...
-genhtml --output coverage "$(bazel info output_path)/_coverage/_coverage_report.dat"
+genhtml --output coverage "$(./bazelisk-linux-amd64 info output_path)/_coverage/_coverage_report.dat"
 
+# Reset the cache for the optimized mode build on the local system.
 ./bazelisk-linux-amd64 test --compilation_mode opt //...
