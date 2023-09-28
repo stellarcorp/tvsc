@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cstdint>
+#include <stdexcept>
 #include <string>
 
 #include "base/bits.h"
@@ -116,7 +117,13 @@ class PacketT final {
   void set_is_last_fragment(bool is_last_fragment) { is_last_fragment_ = is_last_fragment; }
 
   size_t payload_length() const { return payload_length_; }
-  void set_payload_length(size_t payload_length) { payload_length_ = payload_length; }
+  void set_payload_length(size_t payload_length) {
+    if (payload_length > MAX_PAYLOAD_SIZE) {
+      except<std::length_error>(
+          "Attempt to set payload length greater than MAX_PAYLOAD_SIZE in PacketT.");
+    }
+    payload_length_ = payload_length;
+  }
 
   const tvsc::buffer::Buffer<uint8_t, MAX_PAYLOAD_SIZE>& payload() const { return payload_; }
   tvsc::buffer::Buffer<uint8_t, MAX_PAYLOAD_SIZE>& payload() { return payload_; }
