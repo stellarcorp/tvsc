@@ -10,8 +10,8 @@ std::string to_string(Protocol protocol) {
     case Protocol::INET:
       result.append("INET");
       break;
-    case Protocol::TVSC_CONTROL:
-      result.append("TVSC_CONTROL");
+    case Protocol::TVSC_TDMA_CONTROL:
+      result.append("TVSC_TDMA_CONTROL");
       break;
     case Protocol::TVSC_TELEMETRY:
       result.append("TVSC_TELEMETRY");

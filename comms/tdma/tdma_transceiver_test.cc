@@ -22,7 +22,7 @@ static constexpr uint32_t OTHER_ID{5678};
 
 PacketT build_packet(
     uint8_t sender_id = 1,
-    tvsc::comms::radio::Protocol protocol = tvsc::comms::radio::Protocol::TVSC_CONTROL,
+    tvsc::comms::radio::Protocol protocol = tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL,
     size_t payload_size = 0) {
   PacketT packet{};
   packet.set_protocol(protocol);
@@ -136,7 +136,7 @@ TEST_F(TdmaTransceiverTest, CanReceiveSinglePacket) {
   use_rx_only_frame();
 
   FragmentT fragment{};
-  fragment.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  fragment.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   fragment.set_sender_id(1);
   // At 10us, this fragment will be available.
   radio.add_rx_fragment(10, fragment);

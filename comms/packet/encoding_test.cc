@@ -146,13 +146,13 @@ constexpr size_t LARGE_FRAGMENT_MAXIMUM{127};
 
 TEST(EncodingTest, CanEncodeTrivialNormalPacket) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   EXPECT_TRUE(roundtrip_gives_same_packet_normal_sizes(packet));
 }
 
 TEST(EncodingTest, CanEncodeNormalPacketWithoutPayload) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);
@@ -166,7 +166,7 @@ TEST(EncodingTest, CanEncodeNormalPacketWithoutPayloadTrivialHeaders) {
 
 TEST(EncodingTest, CanEncodeNormalPacket) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);
@@ -180,7 +180,7 @@ TEST(EncodingTest, CanEncodeNormalPacket) {
 
 TEST(EncodingTest, CanEncodeNormalPacketWithPayloadLargerThanMtu) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);
@@ -194,13 +194,13 @@ TEST(EncodingTest, CanEncodeNormalPacketWithPayloadLargerThanMtu) {
 
 TEST(EncodingTest, CanEncodeTrivialLargePacket) {
   PacketT<LARGE_PACKET_MAX_PAYLOAD_SIZE> packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   EXPECT_TRUE(roundtrip_gives_same_packet_large_sizes(packet));
 }
 
 TEST(EncodingTest, CanEncodeLargePacketWithoutPayload) {
   PacketT<LARGE_PACKET_MAX_PAYLOAD_SIZE> packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);
@@ -214,7 +214,7 @@ TEST(EncodingTest, CanEncodeLargePacketWithoutPayloadTrivialHeaders) {
 
 TEST(EncodingTest, CanEncodeLargePacket) {
   PacketT<LARGE_PACKET_MAX_PAYLOAD_SIZE> packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);
@@ -228,7 +228,7 @@ TEST(EncodingTest, CanEncodeLargePacket) {
 
 TEST(EncodingTest, CanEncodeLargePacketWithPayloadLargerThanMtu) {
   PacketT<LARGE_PACKET_MAX_PAYLOAD_SIZE> packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);
@@ -242,13 +242,13 @@ TEST(EncodingTest, CanEncodeLargePacketWithPayloadLargerThanMtu) {
 
 TEST(EncodingTest, CanEncodeTrivialSmallPacket) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   EXPECT_TRUE(roundtrip_gives_same_packet_small_sizes(packet));
 }
 
 TEST(EncodingTest, CanEncodeSmallPacketWithoutPayload) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);
@@ -262,7 +262,7 @@ TEST(EncodingTest, CanEncodeSmallPacketWithoutPayloadTrivialHeaders) {
 
 TEST(EncodingTest, CanEncodeSmallPacket) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);
@@ -276,7 +276,7 @@ TEST(EncodingTest, CanEncodeSmallPacket) {
 
 TEST(EncodingTest, CanEncodeSmallPacketWithPayloadLargerThanMtu) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);
@@ -290,13 +290,13 @@ TEST(EncodingTest, CanEncodeSmallPacketWithPayloadLargerThanMtu) {
 
 TEST(EncodingTest, CanEncodeTrivialTinyPacket) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   EXPECT_TRUE(roundtrip_gives_same_packet_tiny_sizes(packet));
 }
 
 TEST(EncodingTest, CanEncodeTinyPacketWithoutPayload) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);
@@ -310,7 +310,7 @@ TEST(EncodingTest, CanEncodeTinyPacketWithoutPayloadTrivialHeaders) {
 
 TEST(EncodingTest, CanEncodeTinyPacket) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);
@@ -324,7 +324,7 @@ TEST(EncodingTest, CanEncodeTinyPacket) {
 
 TEST(EncodingTest, CanEncodeTinyPacketWithPayloadLargerThanMtu) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);
@@ -338,7 +338,7 @@ TEST(EncodingTest, CanEncodeTinyPacketWithPayloadLargerThanMtu) {
 
 TEST(EncodeTest, CanDetectPacketTooLargeForEncodingParameters) {
   Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
   packet.set_destination_id(101);
   packet.set_sequence_number(15000);

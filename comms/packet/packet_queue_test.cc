@@ -16,7 +16,7 @@ TEST(PacketTxQueueTest, CanAddPacket) {
   PacketTxQueue<TypicalPacketT, 128> queue{};
 
   TypicalPacketT packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
 
   queue.push_normal_priority(packet);
@@ -29,7 +29,7 @@ TEST(PacketTxQueueTest, ReturnsSingleImmediatePacket) {
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
 
   queue.push_immediate_priority(packet);
@@ -43,7 +43,7 @@ TEST(PacketTxQueueTest, ReturnsSingleControlPacket) {
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
 
   queue.push_control_priority(packet);
@@ -57,7 +57,7 @@ TEST(PacketTxQueueTest, ReturnsSingleNormalPacket) {
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
 
   queue.push_normal_priority(packet);
@@ -71,7 +71,7 @@ TEST(PacketTxQueueTest, ReturnsSingleLowPacket) {
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
 
   queue.push_low_priority(packet);
@@ -85,19 +85,19 @@ TEST(PacketTxQueueTest, ReturnsImmediatePacketEvenIfOtherPacketsAvailable) {
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT immediate_packet{};
-  immediate_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  immediate_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   immediate_packet.set_sender_id(42);
 
   TypicalPacketT control_packet{};
-  control_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  control_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   control_packet.set_sender_id(43);
 
   TypicalPacketT normal_packet{};
-  normal_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  normal_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   normal_packet.set_sender_id(44);
 
   TypicalPacketT low_packet{};
-  low_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  low_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   low_packet.set_sender_id(45);
 
   queue.push_immediate_priority(immediate_packet);
@@ -114,15 +114,15 @@ TEST(PacketTxQueueTest, ReturnsPacketWhenImmediateNotAvailable) {
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT control_packet{};
-  control_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  control_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   control_packet.set_sender_id(43);
 
   TypicalPacketT normal_packet{};
-  normal_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  normal_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   normal_packet.set_sender_id(44);
 
   TypicalPacketT low_packet{};
-  low_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  low_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   low_packet.set_sender_id(45);
 
   queue.push_control_priority(control_packet);
@@ -139,11 +139,11 @@ TEST(PacketTxQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingControl) {
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT normal_packet{};
-  normal_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  normal_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   normal_packet.set_sender_id(44);
 
   TypicalPacketT low_packet{};
-  low_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  low_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   low_packet.set_sender_id(45);
 
   queue.push_normal_priority(normal_packet);
@@ -159,11 +159,11 @@ TEST(PacketTxQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingNormal) {
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT control_packet{};
-  control_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  control_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   control_packet.set_sender_id(43);
 
   TypicalPacketT low_packet{};
-  low_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  low_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   low_packet.set_sender_id(45);
 
   queue.push_control_priority(control_packet);
@@ -179,11 +179,11 @@ TEST(PacketTxQueueTest, ReturnsPacketWhenImmediateNotAvailableMissingLow) {
   PacketSink<TypicalPacketT, 128> sink{queue.create_sink()};
 
   TypicalPacketT control_packet{};
-  control_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  control_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   control_packet.set_sender_id(43);
 
   TypicalPacketT normal_packet{};
-  normal_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  normal_packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   normal_packet.set_sender_id(44);
 
   queue.push_control_priority(control_packet);
@@ -210,7 +210,7 @@ TEST(FragmentSinkTest, GivesSingleFragmentFromSmallPacket) {
       queue.create_fragment_sink<sizeof(TypicalPacketT), 8>()};
 
   TypicalPacketT packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
 
   queue.push_immediate_priority(packet);
@@ -236,7 +236,7 @@ TEST(FragmentSinkTest, DesiredIterationMethodWorks) {
       queue.create_fragment_sink<sizeof(TypicalPacketT), 8>()};
 
   TypicalPacketT packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
 
   queue.push_immediate_priority(packet);
@@ -263,7 +263,7 @@ TEST(FragmentSinkTest, HandlesTwoPackets) {
       queue.create_fragment_sink<sizeof(TypicalPacketT), 8>()};
 
   TypicalPacketT packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
   packet.set_sender_id(42);
 
   queue.push_immediate_priority(packet);
@@ -295,7 +295,7 @@ TEST(FragmentSinkTest, HandlesManyPackets) {
   static constexpr int NUM_PACKETS{32};
   for (int i = 0; i < NUM_PACKETS; ++i) {
     TypicalPacketT packet{};
-    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
     packet.set_sender_id(42 + i);
 
     queue.push_normal_priority(packet);
@@ -337,7 +337,7 @@ TEST(FragmentSinkTest, HandlesPacketsRequiringTwoFragments) {
   static constexpr int NUM_PACKETS{1};
   for (int i = 0; i < NUM_PACKETS; ++i) {
     TypicalPacketT packet{};
-    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
     packet.set_sender_id(42 + i);
 
     packet.set_payload_length(PAYLOAD_SIZE);
@@ -380,7 +380,7 @@ TEST(FragmentSinkTest, HandlesPacketsRequiringThreeFragments) {
   static constexpr int NUM_PACKETS{1};
   for (int i = 0; i < NUM_PACKETS; ++i) {
     TypicalPacketT packet{};
-    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
     packet.set_sender_id(42 + i);
 
     packet.set_payload_length(PAYLOAD_SIZE);
@@ -422,7 +422,7 @@ TEST(FragmentSinkTest, HandlesPacketsRequiringManyFragments) {
   static constexpr int NUM_PACKETS{1};
   for (int i = 0; i < NUM_PACKETS; ++i) {
     JumboPacketT packet{};
-    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
     packet.set_sender_id(42 + i);
 
     packet.set_payload_length(PAYLOAD_SIZE);
@@ -475,7 +475,7 @@ TEST(FragmentSinkTest, ManyMultifragmentPackets) {
 
   for (size_t i = 0; i < NUM_PACKETS_PER_QUEUE; ++i) {
     JumboPacketT packet{};
-    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
     packet.set_sender_id(static_cast<uint8_t>(i));
 
     packet.set_payload_length(PAYLOAD_SIZE);
@@ -532,7 +532,7 @@ TEST(FragmentSinkTest, NearExtremes) {
 
   for (size_t i = 0; i < NUM_PACKETS_PER_QUEUE; ++i) {
     JumboPacketT packet{};
-    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
     packet.set_sender_id(static_cast<uint8_t>(i));
 
     packet.set_payload_length(PAYLOAD_SIZE);
@@ -592,7 +592,7 @@ TEST(FragmentSinkTest, AtExtremes) {
 
   for (size_t i = 0; i < NUM_PACKETS_PER_QUEUE; ++i) {
     JumboPacketT packet{};
-    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+    packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
     packet.set_sender_id(static_cast<uint8_t>(i));
 
     packet.set_payload_length(PAYLOAD_SIZE);

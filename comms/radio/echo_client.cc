@@ -58,7 +58,7 @@ int main() {
   while (true) {
     static constexpr char MESSAGE[] = "Hello, world!";
     FragmentT fragment{};
-    fragment.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
+    fragment.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
     fragment.set_sequence_number(++sequence_number);
     fragment.set_sender_id(configuration.id());
     strncpy(reinterpret_cast<char*>(fragment.payload_start()), MESSAGE, sizeof(MESSAGE));

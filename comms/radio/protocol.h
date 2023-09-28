@@ -10,7 +10,8 @@ enum class Protocol : uint8_t {
          // protocols, not just inet.
   // The values below here all use values that should not conflict with those found in
   // /etc/protocols on most Unix-based systems.
-  TVSC_CONTROL = 176,  // 0xb0
+  TVSC_TDMA_CONTROL = 176,  // 0xb0
+  TVSC_ILMP_CONTROL,
 
   // TODO(james): Rethink whether telemetry should be its own protocol.
   TVSC_TELEMETRY,
