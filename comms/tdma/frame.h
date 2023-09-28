@@ -16,7 +16,8 @@ struct TimeSlot final {
     // period if its clocks are slightly skewed compared to other nodes in the cell. This provides a
     // form of immunity to clock skew and related errors.
     GUARD_INTERVAL,
-    // A particular node may transmit. All other nodes should be listening.
+    // A particular node may transmit. All other nodes *may* listen, or may ignore, depending on the
+    // cell topology.
     NODE_TX,
     // An association time slot allows for unassociated nodes to announce themselves. Those nodes
     // will later be assigned NODE_TX time slot during which they can transmit.

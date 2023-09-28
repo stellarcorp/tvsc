@@ -65,7 +65,13 @@ Frame FrameBuilder::build() {
 
 Frame FrameBuilder::create_default_node_frame() {
   FrameBuilder frame{};
-  frame.add_guard_interval(100'000 /* The exact duration here does not matter, as long as it is long enough to complete a fragment transmission. */);
+  // We use a guard interval here, because at this point, we have no information about the current
+  // time in the cell. We can't use a node TX slot, since we don't necessarily know the cell
+  // topology (star, with the base station bridging between nodes, or as a direct connect cell where
+  // all nodes can hear each other. The exact duration here does not matter, as long as it is long
+  // enough for the base station to complete a fragment transmission, but not so long that it keeps
+  // us from joining the cell soon after we receive a frame announcement.
+  frame.add_guard_interval(100'000);
   return frame.build();
 }
 
