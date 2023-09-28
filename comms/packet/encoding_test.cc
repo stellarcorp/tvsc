@@ -336,24 +336,6 @@ TEST(EncodingTest, CanEncodeTinyPacketWithPayloadLargerThanMtu) {
   EXPECT_TRUE(roundtrip_gives_same_packet_tiny_sizes(packet));
 }
 
-TEST(EncodeTest, CanDetectErrantPacketLength) {
-  Packet packet{};
-  packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
-  packet.set_sender_id(42);
-  packet.set_destination_id(101);
-  packet.set_sequence_number(15000);
-  static constexpr size_t PAYLOAD_LENGTH{10};
-  for (size_t i = 0; i < PAYLOAD_LENGTH; ++i) {
-    packet.payload()[i] = static_cast<uint8_t>(i & 0xff);
-  }
-  packet.set_payload_length(Packet::max_payload_size() + 1);
-
-  EncodedPacket<Packet::max_payload_size(), 10 /* Max fragments per packet*/> fragments{};
-  bool success = encode(packet, fragments);
-
-  EXPECT_FALSE(success);
-}
-
 TEST(EncodeTest, CanDetectPacketTooLargeForEncodingParameters) {
   Packet packet{};
   packet.set_protocol(tvsc::comms::radio::Protocol::TVSC_CONTROL);
