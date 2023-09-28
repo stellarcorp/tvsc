@@ -173,6 +173,7 @@ TEST_F(TdmaTransceiverTest, CanTxSinglePacket) {
   transceiver.iterate();
 
   ASSERT_TRUE(allowed_to_transmit());
+  ASSERT_TRUE(have_time_to_transmit());
 
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   EXPECT_TRUE(radio.in_tx_mode());
@@ -329,9 +330,6 @@ TEST_F(TdmaTransceiverTest, CanTxPacketsRequiringTwoFragments) {
 
   for (size_t packet_index = 0; packet_index < NUM_PACKETS; ++packet_index) {
     for (size_t fragment_index = 0; fragment_index < NUM_FRAGMENTS_PER_PACKET; ++fragment_index) {
-      std::cout << "packet_index: " << packet_index << "\n";
-      std::cout << "fragment_index: " << fragment_index << "\n";
-
       ASSERT_TRUE(allowed_to_transmit());
       ASSERT_TRUE(have_time_to_transmit());
 
@@ -391,9 +389,6 @@ TEST_F(TdmaTransceiverTest, CanTxPacketsRequiringMultipleFragments) {
 
   for (size_t packet_index = 0; packet_index < NUM_PACKETS; ++packet_index) {
     for (size_t fragment_index = 0; fragment_index < NUM_FRAGMENTS_PER_PACKET; ++fragment_index) {
-      std::cout << "packet_index: " << packet_index << "\n";
-      std::cout << "fragment_index: " << fragment_index << "\n";
-
       ASSERT_TRUE(allowed_to_transmit());
       ASSERT_TRUE(have_time_to_transmit());
 
@@ -453,9 +448,6 @@ TEST_F(TdmaTransceiverTest, CanTxManyPacketsRequiringMultipleFragments) {
 
   for (size_t packet_index = 0; packet_index < NUM_PACKETS; ++packet_index) {
     for (size_t fragment_index = 0; fragment_index < NUM_FRAGMENTS_PER_PACKET; ++fragment_index) {
-      std::cout << "packet_index: " << packet_index << "\n";
-      std::cout << "fragment_index: " << fragment_index << "\n";
-
       ASSERT_TRUE(allowed_to_transmit());
       ASSERT_TRUE(have_time_to_transmit());
 
@@ -493,17 +485,12 @@ TEST_F(TdmaTransceiverTest, CanTxManyPacketsRequiringMultipleFragments) {
 TEST_F(TdmaTransceiverTest, CanTxSinglePacketAtEndOfTxTimeSlot) {
   use_tx_rx_frame();
 
-  ASSERT_EQ(TimeSlot::Role::NODE_TX, transceiver.schedule().time_slot_role());
-  ASSERT_EQ(OUR_ID, transceiver.schedule().id());
-  ASSERT_EQ(OUR_ID, transceiver.schedule().time_slot_owner());
-  ASSERT_TRUE(transceiver.schedule().can_transmit());
-  ASSERT_GE(transceiver.schedule().time_slot_duration_remaining_us(),
-            radio.fragment_transmit_time_us());
+  ASSERT_TRUE(allowed_to_transmit());
+  ASSERT_TRUE(have_time_to_transmit());
 
   clock.increment_current_time_micros(transceiver.schedule().time_slot_duration_remaining_us() -
                                       radio.fragment_transmit_time_us() - 1);
-  ASSERT_GE(transceiver.schedule().time_slot_duration_remaining_us(),
-            radio.fragment_transmit_time_us());
+  ASSERT_TRUE(have_time_to_transmit());
 
   const PacketT packet{build_packet()};
   transceiver.push_control_priority(packet);
@@ -515,9 +502,9 @@ TEST_F(TdmaTransceiverTest, CanTxSinglePacketAtEndOfTxTimeSlot) {
   // This should initiate the transmission.
   transceiver.iterate();
 
-  ASSERT_EQ(TimeSlot::Role::NODE_TX, transceiver.schedule().time_slot_role());
-  ASSERT_EQ(OUR_ID, transceiver.schedule().time_slot_owner());
-  ASSERT_TRUE(transceiver.schedule().can_transmit());
+  ASSERT_TRUE(allowed_to_transmit());
+  ASSERT_TRUE(have_time_to_transmit());
+
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   EXPECT_TRUE(radio.in_tx_mode());
 
@@ -525,8 +512,8 @@ TEST_F(TdmaTransceiverTest, CanTxSinglePacketAtEndOfTxTimeSlot) {
   clock.increment_current_time_micros(radio.fragment_transmit_time_us() / 2);
   transceiver.iterate();
 
-  ASSERT_EQ(TimeSlot::Role::NODE_TX, transceiver.schedule().time_slot_role());
-  ASSERT_EQ(OUR_ID, transceiver.schedule().time_slot_owner());
+  ASSERT_TRUE(allowed_to_transmit());
+
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   EXPECT_TRUE(radio.in_tx_mode());
 
@@ -544,19 +531,14 @@ TEST_F(TdmaTransceiverTest, CanTxSinglePacketAtEndOfTxTimeSlot) {
 TEST_F(TdmaTransceiverTest, WontTxSinglePacketWithoutSufficientTime) {
   use_tx_rx_frame();
 
-  ASSERT_EQ(TimeSlot::Role::NODE_TX, transceiver.schedule().time_slot_role());
-  ASSERT_EQ(OUR_ID, transceiver.schedule().id());
-  ASSERT_EQ(OUR_ID, transceiver.schedule().time_slot_owner());
-  ASSERT_TRUE(transceiver.schedule().can_transmit());
-  ASSERT_GE(transceiver.schedule().time_slot_duration_remaining_us(),
-            radio.fragment_transmit_time_us());
+  ASSERT_TRUE(allowed_to_transmit());
+  ASSERT_TRUE(have_time_to_transmit());
 
   clock.increment_current_time_micros(transceiver.schedule().time_slot_duration_remaining_us() -
                                       radio.fragment_transmit_time_us() + 1);
 
   // There isn't enough time to TX in this time slot.
-  ASSERT_LT(transceiver.schedule().time_slot_duration_remaining_us(),
-            radio.fragment_transmit_time_us());
+  ASSERT_FALSE(have_time_to_transmit());
 
   transceiver.push_control_priority(build_packet());
 
@@ -568,9 +550,7 @@ TEST_F(TdmaTransceiverTest, WontTxSinglePacketWithoutSufficientTime) {
   transceiver.iterate();
 
   // This node is allowed to transmit.
-  ASSERT_EQ(TimeSlot::Role::NODE_TX, transceiver.schedule().time_slot_role());
-  ASSERT_EQ(OUR_ID, transceiver.schedule().time_slot_owner());
-  ASSERT_TRUE(transceiver.schedule().can_transmit());
+  ASSERT_TRUE(allowed_to_transmit());
 
   // There are packets to transmit.
   ASSERT_EQ(1, transceiver.transmit_queue_size());
@@ -582,12 +562,8 @@ TEST_F(TdmaTransceiverTest, WontTxSinglePacketWithoutSufficientTime) {
 TEST_F(TdmaTransceiverTest, SingleFragmentPacketDequeuedAfterTransmitPastEndOfTimeSlot) {
   use_tx_rx_frame();
 
-  ASSERT_EQ(TimeSlot::Role::NODE_TX, transceiver.schedule().time_slot_role());
-  ASSERT_EQ(OUR_ID, transceiver.schedule().id());
-  ASSERT_EQ(OUR_ID, transceiver.schedule().time_slot_owner());
-  ASSERT_TRUE(transceiver.schedule().can_transmit());
-  ASSERT_GE(transceiver.schedule().time_slot_duration_remaining_us(),
-            radio.fragment_transmit_time_us());
+  ASSERT_TRUE(allowed_to_transmit());
+  ASSERT_TRUE(have_time_to_transmit());
 
   clock.increment_current_time_micros(transceiver.schedule().time_slot_duration_remaining_us() -
                                       radio.fragment_transmit_time_us() - 1);
@@ -596,14 +572,16 @@ TEST_F(TdmaTransceiverTest, SingleFragmentPacketDequeuedAfterTransmitPastEndOfTi
 
   transceiver.push_control_priority(build_packet());
 
-  ASSERT_TRUE(transceiver.schedule().can_transmit());
+  ASSERT_TRUE(allowed_to_transmit());
+
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   ASSERT_FALSE(radio.in_tx_mode());
 
   // This should initiate the transmission.
   transceiver.iterate();
 
-  ASSERT_TRUE(transceiver.schedule().can_transmit());
+  ASSERT_TRUE(allowed_to_transmit());
+
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   ASSERT_TRUE(radio.in_tx_mode());
 
@@ -611,7 +589,8 @@ TEST_F(TdmaTransceiverTest, SingleFragmentPacketDequeuedAfterTransmitPastEndOfTi
   clock.increment_current_time_micros(radio.fragment_transmit_time_us() / 2);
   transceiver.iterate();
 
-  ASSERT_TRUE(transceiver.schedule().can_transmit());
+  ASSERT_TRUE(allowed_to_transmit());
+
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   ASSERT_TRUE(radio.in_tx_mode());
 
@@ -621,7 +600,7 @@ TEST_F(TdmaTransceiverTest, SingleFragmentPacketDequeuedAfterTransmitPastEndOfTi
   clock.increment_current_time_micros(radio.fragment_transmit_time_us());
   transceiver.iterate();
 
-  ASSERT_FALSE(transceiver.schedule().can_transmit());
+  ASSERT_FALSE(allowed_to_transmit());
   ASSERT_FALSE(radio.in_tx_mode());
 
   EXPECT_EQ(0, transceiver.transmit_queue_size());
@@ -632,12 +611,12 @@ TEST_F(TdmaTransceiverTest, WontTransmitInRxSlot) {
 
   transceiver.push_control_priority(build_packet());
 
-  ASSERT_FALSE(transceiver.schedule().can_transmit());
+  ASSERT_FALSE(allowed_to_transmit());
 
   // We verify that we would still have time to TX, if we owned the time slot.
   ASSERT_GE(transceiver.schedule().time_slot_duration_remaining_us(),
             radio.fragment_transmit_time_us());
-  // Here we verify that the time slot is going to expire during the test.
+  // Here we verify that the time slot is not going to expire during the test.
   ASSERT_GE(transceiver.schedule().time_slot_duration_remaining_us(),
             2 * radio.fragment_transmit_time_us());
 
@@ -647,7 +626,8 @@ TEST_F(TdmaTransceiverTest, WontTransmitInRxSlot) {
   // This should move us to RX mode.
   transceiver.iterate();
 
-  ASSERT_FALSE(transceiver.schedule().can_transmit());
+  ASSERT_FALSE(allowed_to_transmit());
+
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   EXPECT_TRUE(radio.in_rx_mode());
 
@@ -655,7 +635,8 @@ TEST_F(TdmaTransceiverTest, WontTransmitInRxSlot) {
   clock.increment_current_time_micros(radio.fragment_transmit_time_us() / 2);
   transceiver.iterate();
 
-  ASSERT_FALSE(transceiver.schedule().can_transmit());
+  ASSERT_FALSE(allowed_to_transmit());
+
   EXPECT_EQ(1, transceiver.transmit_queue_size());
   EXPECT_TRUE(radio.in_rx_mode());
 
@@ -673,14 +654,7 @@ TEST_F(TdmaTransceiverTest, WillTransmitAfterTxSlotBegins) {
   const PacketT packet{build_packet()};
   transceiver.push_control_priority(packet);
 
-  ASSERT_FALSE(transceiver.schedule().can_transmit());
-
-  // We verify that we would still have time to TX, if we owned the time slot.
-  ASSERT_GE(transceiver.schedule().time_slot_duration_remaining_us(),
-            radio.fragment_transmit_time_us());
-  // Here we verify that the time slot is going to expire during the test.
-  ASSERT_GE(transceiver.schedule().time_slot_duration_remaining_us(),
-            2 * radio.fragment_transmit_time_us());
+  ASSERT_FALSE(allowed_to_transmit());
 
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   EXPECT_FALSE(radio.in_tx_mode());
@@ -700,9 +674,9 @@ TEST_F(TdmaTransceiverTest, WillTransmitAfterTxSlotBegins) {
   // This should initiate the transmission.
   transceiver.iterate();
 
-  ASSERT_EQ(TimeSlot::Role::NODE_TX, transceiver.schedule().time_slot_role());
-  ASSERT_EQ(OUR_ID, transceiver.schedule().time_slot_owner());
-  ASSERT_TRUE(transceiver.schedule().can_transmit());
+  ASSERT_TRUE(allowed_to_transmit());
+  ASSERT_TRUE(have_time_to_transmit());
+
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   EXPECT_TRUE(radio.in_tx_mode());
 
@@ -710,8 +684,8 @@ TEST_F(TdmaTransceiverTest, WillTransmitAfterTxSlotBegins) {
   clock.increment_current_time_micros(radio.fragment_transmit_time_us() / 2);
   transceiver.iterate();
 
-  ASSERT_EQ(TimeSlot::Role::NODE_TX, transceiver.schedule().time_slot_role());
-  ASSERT_EQ(OUR_ID, transceiver.schedule().time_slot_owner());
+  ASSERT_TRUE(allowed_to_transmit());
+
   ASSERT_EQ(1, transceiver.transmit_queue_size());
   EXPECT_TRUE(radio.in_tx_mode());
 
