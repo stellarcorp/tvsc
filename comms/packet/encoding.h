@@ -55,6 +55,7 @@ bool encode(const PacketT& packet, EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>&
                 "type for that enum is larger than that, this function must be updated.");
 
   if (!packet.is_valid()) {
+    tvsc::hal::output::println("encode() -- Encoding failed. Packet invalid.");
     return false;
   }
 
@@ -95,6 +96,7 @@ bool encode(const PacketT& packet, EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>&
 
   fragments.num_fragments = fragment_index;
   if (have_more_to_encode) {
+    tvsc::hal::output::println("encode() -- Encoding failed.");
     return false;
   }
 
@@ -106,6 +108,7 @@ bool encode(const PacketT& packet, EncodedPacket<MTU, MAX_FRAGMENTS_PER_PACKET>&
   }
   fragments.buffers[fragments.num_fragments - 1].clear_continuation_flag();
 
+  tvsc::hal::output::println("encode() -- Encoding successful.");
   return true;
 }
 
