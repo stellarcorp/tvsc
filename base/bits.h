@@ -2,8 +2,10 @@
 
 #include <cstdint>
 
-#if __has_cpp_attribute(__cpp_lib_int_pow2)
-#include <bit>
+#ifdef __has_include
+#  if __has_include(<bit>)
+#    include <bit>
+#  endif
 #endif
 
 namespace tvsc {
@@ -12,7 +14,7 @@ namespace internal {
 
 // If possible, we want to use the std method for computing the bit width, but it is only available
 // in C++20.
-#if __has_cpp_attribute(__cpp_lib_int_pow2)
+#if __cpp_lib_int_pow2 >= 202002L
 inline constexpr std::size_t number_of_bits(std::size_t x) noexcept { return std::bit_width(x); }
 #else
 inline constexpr std::size_t number_of_bits(std::size_t x) noexcept {
