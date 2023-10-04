@@ -1,6 +1,8 @@
 #include <iostream>
 
+#include "configuration/allowed_values.h"
 #include "configuration/system_definition.h"
+#include "configuration/utility.h"
 #include "gtest/gtest.h"
 
 namespace tvsc::configuration {
@@ -201,15 +203,6 @@ TEST(SettingsUsabilityTest, CanFindSubsystemsRecursively) {
           },
       },
   };
-
-  std::cout << "satellite: " << to_string(satellite) << "\n";
-
-#if __cplusplus >= 202000
-  static_assert(satellite.search_subsystems("2.2")->identifier() ==
-                as_int(CommunicationsSubsystems::TRANSCEIVER));
-  static_assert(satellite.search_subsystems("2.2.0")->identifier() ==
-                as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO));
-#endif
 
   EXPECT_EQ(as_int(CommunicationsSubsystems::TRANSCEIVER),
             satellite.search_subsystems("2.2")->identifier());
