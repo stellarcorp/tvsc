@@ -96,14 +96,13 @@ TEST(SettingsUsabilityTest, CanTestAllowedValueForFunction) {
 
 TEST(SettingsUsabilityTest, CanFindFunctionInComponentById) {
 #if __cplusplus >= 202000
-  static_assert(*radio_1.search(RadioSettings::MODULATION_SCHEME).second == modulation_scheme);
-  static_assert(*radio_1.search(RadioSettings::LINE_CODING).second == line_coding);
+  static_assert(*radio_1.search(RadioSettings::MODULATION_SCHEME) == modulation_scheme);
+  static_assert(*radio_1.search(RadioSettings::LINE_CODING) == line_coding);
 #endif
 
-  EXPECT_EQ(modulation_scheme, *radio_1.search(as_int(RadioSettings::MODULATION_SCHEME)).second);
-  EXPECT_EQ(line_coding, *radio_1.search(as_int(RadioSettings::LINE_CODING)).second);
-  EXPECT_FALSE(radio_1.search(as_int(RadioSettings::TX_POWER)).first);
-  EXPECT_EQ(nullptr, radio_1.search(as_int(RadioSettings::TX_POWER)).second);
+  EXPECT_EQ(modulation_scheme, *radio_1.search(as_int(RadioSettings::MODULATION_SCHEME)));
+  EXPECT_EQ(line_coding, *radio_1.search(as_int(RadioSettings::LINE_CODING)));
+  EXPECT_EQ(nullptr, radio_1.search(as_int(RadioSettings::TX_POWER)));
 }
 
 TEST(SettingsUsabilityTest, CanFindComponentsInSystem) {
@@ -113,10 +112,10 @@ TEST(SettingsUsabilityTest, CanFindComponentsInSystem) {
   };
 
 #if __cplusplus >= 202000
-  static_assert(*trivial_transceiver_system.search_components(RADIO_1).second == radio_1);
+  static_assert(*trivial_transceiver_system.search_components(RADIO_1) == radio_1);
 #endif
 
-  EXPECT_EQ(radio_1, *trivial_transceiver_system.search_components(RADIO_1).second);
+  EXPECT_EQ(radio_1, *trivial_transceiver_system.search_components(RADIO_1));
 }
 
 TEST(SettingsUsabilityTest, CanFindSubsystemsInSystem) {
@@ -130,13 +129,13 @@ TEST(SettingsUsabilityTest, CanFindSubsystemsInSystem) {
 #if __cplusplus >= 202000
   static_assert(
       full_transceiver_system.search_subsystems(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO))
-          .second->identifier() == as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO));
+          ->identifier() == as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO));
 #endif
 
   EXPECT_EQ(
       as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
       full_transceiver_system.search_subsystems(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO))
-          .second->identifier());
+          ->identifier());
 }
 
 TEST(SettingsUsabilityTest, CanDefineComplexSystems) {
@@ -160,20 +159,62 @@ TEST(SettingsUsabilityTest, CanDefineComplexSystems) {
   };
 
 #if __cplusplus >= 202000
-  static_assert(satellite.search_subsystems(as_int(Systems::NAVIGATION)).second->identifier() ==
+  static_assert(satellite.search_subsystems(as_int(Systems::NAVIGATION))->identifier() ==
                 as_int(Systems::NAVIGATION));
-  static_assert(satellite.search_subsystems(as_int(Systems::POWER)).second->identifier() ==
+  static_assert(satellite.search_subsystems(as_int(Systems::POWER))->identifier() ==
                 as_int(Systems::POWER));
-  static_assert(satellite.search_subsystems(as_int(Systems::COMMUNICATIONS)).second->identifier() ==
+  static_assert(satellite.search_subsystems(as_int(Systems::COMMUNICATIONS))->identifier() ==
                 as_int(Systems::COMMUNICATIONS));
 #endif
 
   EXPECT_EQ(as_int(Systems::NAVIGATION),
-            satellite.search_subsystems(as_int(Systems::NAVIGATION)).second->identifier());
+            satellite.search_subsystems(as_int(Systems::NAVIGATION))->identifier());
   EXPECT_EQ(as_int(Systems::POWER),
-            satellite.search_subsystems(as_int(Systems::POWER)).second->identifier());
+            satellite.search_subsystems(as_int(Systems::POWER))->identifier());
   EXPECT_EQ(as_int(Systems::COMMUNICATIONS),
-            satellite.search_subsystems(as_int(Systems::COMMUNICATIONS)).second->identifier());
+            satellite.search_subsystems(as_int(Systems::COMMUNICATIONS))->identifier());
+}
+
+TEST(SettingsUsabilityTest, CanFindSubsystemsRecursively) {
+  static constexpr SystemId SATELLITE_ID{42};
+  static CONSTEXPR_SETTINGS System satellite{
+      SATELLITE_ID,
+      {
+          System{as_int(Systems::NAVIGATION)},
+          System{as_int(Systems::POWER)},
+          System{
+              as_int(Systems::COMMUNICATIONS),
+              {
+                  System{
+                      as_int(CommunicationsSubsystems::TRANSCEIVER),
+                      {
+                          System{
+                              as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
+                              {radio_1},
+                          },
+                          System{as_int(TransceiverSubsystems::OSCILLATOR)},
+                      },
+                  },
+              },
+          },
+      },
+  };
+
+#if __cplusplus >= 202000
+  static_assert(satellite.search_subsystems("2.2")->identifier() ==
+                as_int(CommunicationsSubsystems::TRANSCEIVER));
+  static_assert(satellite.search_subsystems("2.2.0")->identifier() ==
+                as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO));
+#endif
+
+  EXPECT_EQ(as_int(CommunicationsSubsystems::TRANSCEIVER),
+            satellite.search_subsystems("2.2")->identifier());
+
+  EXPECT_EQ(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
+            satellite.search_subsystems("2.2.0")->identifier());
+
+  EXPECT_EQ(as_int(TransceiverSubsystems::OSCILLATOR),
+            satellite.search_subsystems("2.2.5")->identifier());
 }
 
 }  // namespace tvsc::configuration

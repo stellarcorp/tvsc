@@ -1,9 +1,10 @@
 #pragma once
 
 #include <algorithm>
+#include <charconv>
 #include <initializer_list>
+#include <string_view>
 #include <type_traits>
-#include <utility>
 #include <variant>
 #include <vector>
 
@@ -172,12 +173,12 @@ class Component final {
     return std::binary_search(functions_.begin(), functions_.end(), function_id);
   }
 
-  CONSTEXPR_SETTINGS std::pair<bool, const Function*> search(FunctionId function_id) const {
+  CONSTEXPR_SETTINGS const Function* search(FunctionId function_id) const {
     auto iter{std::lower_bound(functions_.begin(), functions_.end(), function_id)};
     if (iter == functions_.end() || iter->identifier() != function_id) {
-      return {false, nullptr};
+      return nullptr;
     } else {
-      return {true, &(*iter)};
+      return &(*iter);
     }
   }
 };
@@ -222,12 +223,45 @@ class System final {
     return std::binary_search(subsystems_.begin(), subsystems_.end(), subsystem_id);
   }
 
-  CONSTEXPR_SETTINGS std::pair<bool, const System*> search_subsystems(SystemId subsystem_id) const {
+  CONSTEXPR_SETTINGS const System* search_subsystems(SystemId subsystem_id) const {
     auto iter{std::lower_bound(subsystems_.begin(), subsystems_.end(), subsystem_id)};
     if (iter == subsystems_.end() || iter->identifier() != subsystem_id) {
-      return {false, nullptr};
+      return nullptr;
     } else {
-      return {true, &(*iter)};
+      return &(*iter);
+    }
+  }
+
+  const System* search_subsystems(std::string_view subsystem_id) const {
+    SystemId local_id{};
+    bool need_recurse{true};
+
+    // Parse out the first number for the subsystem id.
+    size_t dot_position{subsystem_id.find_first_of('.')};
+    if (dot_position == std::string_view::npos) {
+      // No more dots. We have the last number in the address.
+      dot_position = subsystem_id.size();
+      need_recurse = false;
+    }
+
+    auto [next_char, ec] =
+        std::from_chars(subsystem_id.data(), subsystem_id.data() + dot_position, local_id);
+    if (ec != std::errc()) {
+      return nullptr;
+    }
+
+    auto iter{std::lower_bound(subsystems_.begin(), subsystems_.end(), local_id)};
+    if (iter == subsystems_.end()) {
+      return nullptr;
+    } else if (iter->identifier() != local_id) {
+      return nullptr;
+    } else {
+      if (need_recurse) {
+        return iter->search_subsystems(
+            std::string_view{next_char + 1, subsystem_id.size() - dot_position - 1});
+      } else {
+        return &(*iter);
+      }
     }
   }
 
@@ -237,13 +271,12 @@ class System final {
     return std::binary_search(components_.begin(), components_.end(), component_id);
   }
 
-  CONSTEXPR_SETTINGS std::pair<bool, const Component*> search_components(
-      ComponentId component_id) const {
+  CONSTEXPR_SETTINGS const Component* search_components(ComponentId component_id) const {
     auto iter{std::lower_bound(components_.begin(), components_.end(), component_id)};
     if (iter == components_.end() || iter->identifier() != component_id) {
-      return {false, nullptr};
+      return nullptr;
     } else {
-      return {true, &(*iter)};
+      return &(*iter);
     }
   }
 };

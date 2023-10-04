@@ -4,6 +4,8 @@ cc_library(
         "system_definition.h",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+    ],
 )
 
 cc_test(
