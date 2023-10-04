@@ -1,4 +1,5 @@
 #include "configuration/allowed_values.h"
+
 #include "configuration/utility.h"
 #include "gtest/gtest.h"
 
@@ -12,7 +13,8 @@ enum class ModulationScheme {
 };
 
 TEST(SettingsUsabilityTest, CanTestAllowedValue) {
-  static CONSTEXPR_SETTINGS AllowedValues modulation_scheme_values{ModulationScheme::FSK, ModulationScheme::OOK};
+  static CONSTEXPR_SETTINGS AllowedValues modulation_scheme_values{ModulationScheme::FSK,
+                                                                   ModulationScheme::OOK};
 #if __cplusplus >= 202000
   // We expect to be able to check if particular values are allowed at compile time in C++20 and
   // later.

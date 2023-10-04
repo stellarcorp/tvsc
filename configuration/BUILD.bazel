@@ -1,12 +1,12 @@
 cc_library(
     name = "configuration",
     srcs = [
-        # "system_definition.cc",
+        "system_definition.cc",
     ],
     hdrs = [
         "allowed_values.h",
-	"system_definition.h",
-	"utility.h",
+        "system_definition.h",
+        "utility.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
