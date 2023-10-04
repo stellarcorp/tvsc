@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <charconv>
 #include <initializer_list>
+#include <string>
 #include <string_view>
 #include <type_traits>
 #include <variant>
@@ -280,5 +281,10 @@ class System final {
     }
   }
 };
+
+std::string to_string(const AllowedValues& values);
+std::string to_string(const Function& function);
+std::string to_string(const Component& component);
+std::string to_string(const System& system);
 
 }  // namespace tvsc::configuration

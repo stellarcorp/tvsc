@@ -1,5 +1,8 @@
 cc_library(
     name = "configuration",
+    srcs = [
+        "system_definition.cc",
+    ],
     hdrs = [
         "system_definition.h",
     ],

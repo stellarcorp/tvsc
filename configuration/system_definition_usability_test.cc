@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "configuration/system_definition.h"
 #include "gtest/gtest.h"
 
@@ -199,6 +201,8 @@ TEST(SettingsUsabilityTest, CanFindSubsystemsRecursively) {
           },
       },
   };
+
+  std::cout << "satellite: " << to_string(satellite) << "\n";
 
 #if __cplusplus >= 202000
   static_assert(satellite.search_subsystems("2.2")->identifier() ==
