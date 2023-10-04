@@ -1,0 +1,16 @@
+cc_library(
+    name = "configuration",
+    hdrs = [
+        "system_definition.h",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_test(
+    name = "system_definition_usability_test",
+    srcs = ["system_definition_usability_test.cc"],
+    deps = [
+        ":configuration",
+        "//third_party/gtest",
+    ],
+)
