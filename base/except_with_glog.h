@@ -52,6 +52,7 @@ template <typename ExceptionT>
   }
 }
 
+template <typename ExceptionT>
 [[noreturn]] inline void except(
     const char* const msg, const std::error_code& ec,
     const std::source_location& location = std::source_location::current()) {
