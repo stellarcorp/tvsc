@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <initializer_list>
+#include <string>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -139,5 +140,45 @@ class AllowedValues final {
   constexpr const std::vector<DiscreteValueT>& enumerated_values() const { return enumerated_; }
   constexpr const std::vector<RangedValueT>& ranged_values() const { return ranged_; }
 };
+
+std::string to_string(const AllowedValues& values);
+std::string to_string(const AllowedValues::RangedValueT& value);
+std::string to_string(const AllowedValues::DiscreteValueT& value);
+
+template <typename T>
+inline std::string to_string(const ValueRange<T>& value) {
+  using std::to_string;
+  std::string result{};
+  result.append("[")
+      .append(to_string(value.first))
+      .append(", ")
+      .append(to_string(value.second))
+      .append("]");
+  return result;
+}
+
+template <>
+inline std::string to_string(const ValueRange<float>& value) {
+  using std::to_string;
+  std::string result{};
+  result.append("[")
+      .append(to_string(value.first))
+      .append(", ")
+      .append(to_string(value.second))
+      .append(")");
+  return result;
+}
+
+template <>
+inline std::string to_string(const ValueRange<double>& value) {
+  using std::to_string;
+  std::string result{};
+  result.append("[")
+      .append(to_string(value.first))
+      .append(", ")
+      .append(to_string(value.second))
+      .append(")");
+  return result;
+}
 
 }  // namespace tvsc::configuration

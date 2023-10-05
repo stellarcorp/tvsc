@@ -182,7 +182,6 @@ class System final {
   }
 };
 
-std::string to_string(const AllowedValues& values);
 std::string to_string(const Function& function);
 std::string to_string(const Component& component);
 std::string to_string(const System& system);

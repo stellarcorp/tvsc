@@ -1,6 +1,7 @@
 cc_library(
     name = "configuration",
     srcs = [
+        "allowed_values.cc",
         "system_definition.cc",
     ],
     hdrs = [

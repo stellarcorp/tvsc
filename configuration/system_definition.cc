@@ -5,36 +5,6 @@
 
 namespace tvsc::configuration {
 
-std::string to_string(const AllowedValues::DiscreteValueT& value) {
-  using std::to_string;
-  std::string result{};
-  if (const int32_t* v = std::get_if<int32_t>(&value)) {
-    result.append(to_string(*v));
-  } else if (const int64_t* v = std::get_if<int64_t>(&value)) {
-    result.append(to_string(*v));
-  } else if (const float* v = std::get_if<float>(&value)) {
-    result.append(to_string(*v));
-  } else if (const double* v = std::get_if<double>(&value)) {
-    result.append(to_string(*v));
-  }
-  return result;
-}
-
-std::string to_string(const AllowedValues& values) {
-  std::string result{};
-  result.append("{");
-  bool need_comma = false;
-  for (const auto& value : values.enumerated_values()) {
-    if (need_comma) {
-      result.append(", ");
-    }
-    result.append(to_string(value));
-    need_comma = true;
-  }
-  result.append("}");
-  return result;
-}
-
 std::string to_string(const Function& function) {
   using std::to_string;
   std::string result{};
