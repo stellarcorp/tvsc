@@ -5,7 +5,7 @@
 
 namespace tvsc::configuration {
 
-std::string to_string(const AllowedValues::DiscreteValueT& value) {
+std::string to_string(const DiscreteValue& value) {
   using std::to_string;
   std::string result{};
   if (const int32_t* v = std::get_if<int32_t>(&value)) {
@@ -20,7 +20,7 @@ std::string to_string(const AllowedValues::DiscreteValueT& value) {
   return result;
 }
 
-std::string to_string(const AllowedValues::RangedValueT& value) {
+std::string to_string(const RangedValue& value) {
   std::string result{};
   if (const auto* v = std::get_if<ValueRange<int32_t>>(&value)) {
     result.append(to_string(*v));

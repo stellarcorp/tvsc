@@ -14,15 +14,15 @@ namespace tvsc::configuration {
 template <typename T>
 using ValueRange = std::pair<T, T>;
 
+using DiscreteValue = std::variant<int32_t, int64_t, float, double>;
+using RangedValue =
+    std::variant<ValueRange<int32_t>, ValueRange<int64_t>, ValueRange<float>, ValueRange<double>>;
+
 class AllowedValues final {
  public:
-  using DiscreteValueT = std::variant<int32_t, int64_t, float, double>;
-  using RangedValueT =
-      std::variant<ValueRange<int32_t>, ValueRange<int64_t>, ValueRange<float>, ValueRange<double>>;
-
  private:
-  std::vector<DiscreteValueT> enumerated_;
-  std::vector<RangedValueT> ranged_;
+  std::vector<DiscreteValue> enumerated_;
+  std::vector<RangedValue> ranged_;
 
  public:
   AllowedValues() : enumerated_(), ranged_() {}
@@ -137,13 +137,13 @@ class AllowedValues final {
     return false;
   }
 
-  constexpr const std::vector<DiscreteValueT>& enumerated_values() const { return enumerated_; }
-  constexpr const std::vector<RangedValueT>& ranged_values() const { return ranged_; }
+  constexpr const std::vector<DiscreteValue>& enumerated_values() const { return enumerated_; }
+  constexpr const std::vector<RangedValue>& ranged_values() const { return ranged_; }
 };
 
 std::string to_string(const AllowedValues& values);
-std::string to_string(const AllowedValues::RangedValueT& value);
-std::string to_string(const AllowedValues::DiscreteValueT& value);
+std::string to_string(const RangedValue& value);
+std::string to_string(const DiscreteValue& value);
 
 template <typename T>
 inline std::string to_string(const ValueRange<T>& value) {
