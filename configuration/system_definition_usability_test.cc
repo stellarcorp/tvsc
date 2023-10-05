@@ -73,13 +73,16 @@ constexpr T as_constant(T value) {
 // static constexpr auto allowed_modulation_schemes = {};
 
 Function modulation_scheme{as_int(RadioSettings::MODULATION_SCHEME),
+                           "modulation_scheme",
                            {ModulationScheme::FSK, ModulationScheme::OOK}};
 
 Function line_coding{as_int(RadioSettings::LINE_CODING),
+                     "line_coding",
                      {LineCoding::NRZ_L, LineCoding::MANCHESTER_802_3}};
 
 static constexpr ComponentId RADIO_1{1};
 static Component radio_1{RADIO_1,
+                         "radio_1",
                          {
                              modulation_scheme,
                              line_coding,
@@ -100,6 +103,7 @@ TEST(SettingsUsabilityTest, CanFindFunctionInComponentById) {
 TEST(SettingsUsabilityTest, CanFindComponentsInSystem) {
   static System trivial_transceiver_system{
       as_int(CommunicationsSubsystems::TRANSCEIVER),
+      "transceiver",
       {radio_1},
   };
 
@@ -109,8 +113,9 @@ TEST(SettingsUsabilityTest, CanFindComponentsInSystem) {
 TEST(SettingsUsabilityTest, CanFindSubsystemsInSystem) {
   static System full_transceiver_system{
       as_int(CommunicationsSubsystems::TRANSCEIVER),
+      "transceiver",
       {
-          {as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO), {radio_1}},
+          {as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO), "half_duplex_radio", {radio_1}},
       },
   };
 
@@ -124,16 +129,24 @@ TEST(SettingsUsabilityTest, CanDefineComplexSystems) {
   static constexpr SystemId SATELLITE_ID{42};
   static System satellite{
       SATELLITE_ID,
+      "satellite_42",
       {
-          {as_int(Systems::NAVIGATION)},
-          {as_int(Systems::POWER)},
-          {
+          System{as_int(Systems::NAVIGATION), "nav"},
+          System{as_int(Systems::POWER), "power"},
+          System{
               as_int(Systems::COMMUNICATIONS),
+              "comms",
               {
-                  as_int(CommunicationsSubsystems::TRANSCEIVER),
-                  {
-                      as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
-                      {radio_1},
+                  System{
+                      as_int(CommunicationsSubsystems::TRANSCEIVER),
+                      "transceiver",
+                      {
+                          System{
+                              as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
+                              "half_duplex_radio",
+                              {radio_1},
+                          },
+                      },
                   },
               },
           },
@@ -152,20 +165,24 @@ TEST(SettingsUsabilityTest, CanFindSubsystemsRecursively) {
   static constexpr SystemId SATELLITE_ID{42};
   static System satellite{
       SATELLITE_ID,
+      "satellite_42",
       {
-          System{as_int(Systems::NAVIGATION)},
-          System{as_int(Systems::POWER)},
+          System{as_int(Systems::NAVIGATION), "nav"},
+          System{as_int(Systems::POWER), "power"},
           System{
               as_int(Systems::COMMUNICATIONS),
+              "comms",
               {
                   System{
                       as_int(CommunicationsSubsystems::TRANSCEIVER),
+                      "transceiver",
                       {
                           System{
                               as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
+                              "half_duplex_radio",
                               {radio_1},
                           },
-                          System{as_int(TransceiverSubsystems::OSCILLATOR)},
+                          System{as_int(TransceiverSubsystems::OSCILLATOR), "oscillator"},
                       },
                   },
               },
@@ -181,6 +198,38 @@ TEST(SettingsUsabilityTest, CanFindSubsystemsRecursively) {
 
   EXPECT_EQ(as_int(TransceiverSubsystems::OSCILLATOR),
             satellite.search_subsystems("2.2.5")->identifier());
+}
+
+TEST(SEttingsUsabilityTest, CanGenerateString) {
+  static constexpr SystemId SATELLITE_ID{42};
+  static System satellite{
+      SATELLITE_ID,
+      "satellite_42",
+      {
+          System{as_int(Systems::NAVIGATION), "nav"},
+          System{as_int(Systems::POWER), "power"},
+          System{
+              as_int(Systems::COMMUNICATIONS),
+              "comms",
+              {
+                  System{
+                      as_int(CommunicationsSubsystems::TRANSCEIVER),
+                      "transceiver",
+                      {
+                          System{
+                              as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
+                              "half_duplex_radio",
+                              {radio_1},
+                          },
+                          System{as_int(TransceiverSubsystems::OSCILLATOR), "oscillator"},
+                      },
+                  },
+              },
+          },
+      },
+  };
+
+  EXPECT_FALSE(to_string(satellite).empty());
 }
 
 }  // namespace tvsc::configuration

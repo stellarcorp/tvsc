@@ -17,16 +17,17 @@ namespace tvsc::configuration {
 class Function final {
  private:
   FunctionId function_id_;
-
+  std::string_view name_;
   AllowedValues allowed_values_;
 
  public:
   template <typename ValueT>
-  Function(FunctionId function_id, std::initializer_list<ValueT> allowed_values)
-      : function_id_(function_id), allowed_values_(allowed_values) {}
+  Function(FunctionId function_id, std::string_view name,
+           std::initializer_list<ValueT> allowed_values)
+      : function_id_(function_id), name_(name), allowed_values_(allowed_values) {}
 
-  Function(FunctionId function_id, AllowedValues allowed_values)
-      : function_id_(function_id), allowed_values_(allowed_values) {}
+  Function(FunctionId function_id, std::string_view name, AllowedValues allowed_values)
+      : function_id_(function_id), name_(name), allowed_values_(allowed_values) {}
 
   Function(const Function& rhs) = default;
   Function(Function&& rhs) = default;
@@ -59,12 +60,13 @@ class Function final {
 class Component final {
  private:
   ComponentId component_id_;
+  std::string_view name_;
   std::vector<Function> functions_;
 
  public:
-  Component(ComponentId component_id, std::initializer_list<Function> functions)
-      : component_id_(component_id), functions_(functions.begin(), functions.end()) {
-    // Note that std::sort() is starting in C++20.
+  Component(ComponentId component_id, std::string_view name,
+            std::initializer_list<Function> functions)
+      : component_id_(component_id), name_(name), functions_(functions.begin(), functions.end()) {
     std::sort(functions_.begin(), functions_.end());
   }
 
@@ -90,25 +92,27 @@ class Component final {
 class System final {
  private:
   SystemId system_;
+  std::string_view name_;
   std::vector<System> subsystems_{};
   std::vector<Component> components_{};
 
  public:
-  System(SystemId system) : system_(system) {}
+  System(SystemId system, std::string_view name) : system_(system), name_(name) {}
 
-  System(SystemId system, std::initializer_list<System> subsystems)
-      : system_(system), subsystems_(subsystems.begin(), subsystems.end()) {
+  System(SystemId system, std::string_view name, std::initializer_list<System> subsystems)
+      : system_(system), name_(name), subsystems_(subsystems.begin(), subsystems.end()) {
     std::sort(subsystems_.begin(), subsystems_.end());
   }
 
-  System(SystemId system, std::initializer_list<Component> components)
-      : system_(system), components_(components.begin(), components.end()) {
+  System(SystemId system, std::string_view name, std::initializer_list<Component> components)
+      : system_(system), name_(name), components_(components.begin(), components.end()) {
     std::sort(components_.begin(), components_.end());
   }
 
-  System(SystemId system, std::initializer_list<System> subsystems,
+  System(SystemId system, std::string_view name, std::initializer_list<System> subsystems,
          std::initializer_list<Component> components)
       : system_(system),
+        name_(name),
         subsystems_(subsystems.begin(), subsystems.end()),
         components_(components.begin(), components.end()) {
     std::sort(subsystems_.begin(), subsystems_.end());
