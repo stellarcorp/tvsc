@@ -5,7 +5,7 @@
 
 namespace tvsc::configuration {
 
-std::string to_string(const AllowedValues::StoredT& value) {
+std::string to_string(const AllowedValues::DiscreteValueT& value) {
   using std::to_string;
   std::string result{};
   if (const int32_t* v = std::get_if<int32_t>(&value)) {

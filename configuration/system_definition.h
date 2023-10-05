@@ -22,10 +22,10 @@ class Function final {
 
  public:
   template <typename ValueT>
-  CONSTEXPR_SETTINGS Function(FunctionId function_id, std::initializer_list<ValueT> allowed_values)
+  Function(FunctionId function_id, std::initializer_list<ValueT> allowed_values)
       : function_id_(function_id), allowed_values_(allowed_values) {}
 
-  CONSTEXPR_SETTINGS Function(FunctionId function_id, AllowedValues allowed_values)
+  Function(FunctionId function_id, AllowedValues allowed_values)
       : function_id_(function_id), allowed_values_(allowed_values) {}
 
   Function(const Function& rhs) = default;
@@ -39,21 +39,21 @@ class Function final {
    *
    * Also, functions are ordered for faster lookup. These methods define that ordering.
    */
-  constexpr operator FunctionId() const { return identifier(); }
+  operator FunctionId() const { return identifier(); }
 
-  constexpr bool operator<(const Function& rhs) const { return identifier() < rhs.identifier(); }
-  constexpr bool operator==(const Function& rhs) const { return identifier() == rhs.identifier(); }
+  bool operator<(const Function& rhs) const { return identifier() < rhs.identifier(); }
+  bool operator==(const Function& rhs) const { return identifier() == rhs.identifier(); }
 
-  constexpr FunctionId function_id() const { return function_id_; }
+  FunctionId function_id() const { return function_id_; }
 
-  constexpr FunctionId identifier() const { return function_id(); }
+  FunctionId identifier() const { return function_id(); }
 
   template <typename ValueT>
-  CONSTEXPR_SETTINGS bool is_allowed(const ValueT& value) const {
+  bool is_allowed(const ValueT& value) const {
     return allowed_values_.is_allowed(value);
   }
 
-  constexpr const AllowedValues& allowed_values() const { return allowed_values_; }
+  const AllowedValues& allowed_values() const { return allowed_values_; }
 };
 
 class Component final {
@@ -62,22 +62,22 @@ class Component final {
   std::vector<Function> functions_;
 
  public:
-  CONSTEXPR_SETTINGS Component(ComponentId component_id, std::initializer_list<Function> functions)
+  Component(ComponentId component_id, std::initializer_list<Function> functions)
       : component_id_(component_id), functions_(functions.begin(), functions.end()) {
-    // Note that std::sort() is constexpr starting in C++20.
+    // Note that std::sort() is starting in C++20.
     std::sort(functions_.begin(), functions_.end());
   }
 
-  constexpr operator ComponentId() const { return identifier(); }
-  constexpr ComponentId identifier() const { return component_id_; }
+  operator ComponentId() const { return identifier(); }
+  ComponentId identifier() const { return component_id_; }
 
-  CONSTEXPR_SETTINGS const std::vector<Function>& functions() const { return functions_; }
+  const std::vector<Function>& functions() const { return functions_; }
 
-  CONSTEXPR_SETTINGS bool has_function(FunctionId function_id) const {
+  bool has_function(FunctionId function_id) const {
     return std::binary_search(functions_.begin(), functions_.end(), function_id);
   }
 
-  CONSTEXPR_SETTINGS const Function* search(FunctionId function_id) const {
+  const Function* search(FunctionId function_id) const {
     auto iter{std::lower_bound(functions_.begin(), functions_.end(), function_id)};
     if (iter == functions_.end() || iter->identifier() != function_id) {
       return nullptr;
@@ -94,40 +94,37 @@ class System final {
   std::vector<Component> components_{};
 
  public:
-  CONSTEXPR_SETTINGS System(SystemId system) : system_(system) {}
+  System(SystemId system) : system_(system) {}
 
-  CONSTEXPR_SETTINGS System(SystemId system, std::initializer_list<System> subsystems)
+  System(SystemId system, std::initializer_list<System> subsystems)
       : system_(system), subsystems_(subsystems.begin(), subsystems.end()) {
-    // Note that std::sort() is constexpr starting in C++20.
     std::sort(subsystems_.begin(), subsystems_.end());
   }
 
-  CONSTEXPR_SETTINGS System(SystemId system, std::initializer_list<Component> components)
+  System(SystemId system, std::initializer_list<Component> components)
       : system_(system), components_(components.begin(), components.end()) {
-    // Note that std::sort() is constexpr starting in C++20.
     std::sort(components_.begin(), components_.end());
   }
 
-  CONSTEXPR_SETTINGS System(SystemId system, std::initializer_list<System> subsystems,
-                            std::initializer_list<Component> components)
+  System(SystemId system, std::initializer_list<System> subsystems,
+         std::initializer_list<Component> components)
       : system_(system),
         subsystems_(subsystems.begin(), subsystems.end()),
         components_(components.begin(), components.end()) {
-    // Note that std::sort() is constexpr starting in C++20.
     std::sort(subsystems_.begin(), subsystems_.end());
     std::sort(components_.begin(), components_.end());
   }
 
-  constexpr operator SystemId() const { return identifier(); }
-  constexpr SystemId identifier() const { return system_; }
+  operator SystemId() const { return identifier(); }
+  SystemId identifier() const { return system_; }
 
-  CONSTEXPR_SETTINGS const std::vector<System>& subsystems() const { return subsystems_; }
+  const std::vector<System>& subsystems() const { return subsystems_; }
 
-  CONSTEXPR_SETTINGS bool has_subsystem(SystemId subsystem_id) const {
+  bool has_subsystem(SystemId subsystem_id) const {
     return std::binary_search(subsystems_.begin(), subsystems_.end(), subsystem_id);
   }
 
-  CONSTEXPR_SETTINGS const System* search_subsystems(SystemId subsystem_id) const {
+  const System* search_subsystems(SystemId subsystem_id) const {
     auto iter{std::lower_bound(subsystems_.begin(), subsystems_.end(), subsystem_id)};
     if (iter == subsystems_.end() || iter->identifier() != subsystem_id) {
       return nullptr;
@@ -169,13 +166,13 @@ class System final {
     }
   }
 
-  CONSTEXPR_SETTINGS const std::vector<Component>& components() const { return components_; }
+  const std::vector<Component>& components() const { return components_; }
 
-  CONSTEXPR_SETTINGS bool has_component(ComponentId component_id) const {
+  bool has_component(ComponentId component_id) const {
     return std::binary_search(components_.begin(), components_.end(), component_id);
   }
 
-  CONSTEXPR_SETTINGS const Component* search_components(ComponentId component_id) const {
+  const Component* search_components(ComponentId component_id) const {
     auto iter{std::lower_bound(components_.begin(), components_.end(), component_id)};
     if (iter == components_.end() || iter->identifier() != component_id) {
       return nullptr;

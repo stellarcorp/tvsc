@@ -79,62 +79,40 @@ Function line_coding{as_int(RadioSettings::LINE_CODING),
                      {LineCoding::NRZ_L, LineCoding::MANCHESTER_802_3}};
 
 static constexpr ComponentId RADIO_1{1};
-static CONSTEXPR_SETTINGS Component radio_1{RADIO_1,
-                                            {
-                                                modulation_scheme,
-                                                line_coding,
-                                            }};
+static Component radio_1{RADIO_1,
+                         {
+                             modulation_scheme,
+                             line_coding,
+                         }};
 
 TEST(SettingsUsabilityTest, CanTestAllowedValueForFunction) {
-#if __cplusplus >= 202000
-  // We expect to be able to check if particular values are allowed at compile time in C++20 and
-  // later.
-  static_assert(modulation_scheme.is_allowed(ModulationScheme::OOK));
-  static_assert(modulation_scheme.is_allowed(ModulationScheme::FSK));
-#endif
-
   EXPECT_TRUE(modulation_scheme.is_allowed(ModulationScheme::OOK));
   EXPECT_TRUE(modulation_scheme.is_allowed(ModulationScheme::FSK));
   EXPECT_FALSE(modulation_scheme.is_allowed(ModulationScheme::LORA));
 }
 
 TEST(SettingsUsabilityTest, CanFindFunctionInComponentById) {
-#if __cplusplus >= 202000
-  static_assert(*radio_1.search(RadioSettings::MODULATION_SCHEME) == modulation_scheme);
-  static_assert(*radio_1.search(RadioSettings::LINE_CODING) == line_coding);
-#endif
-
   EXPECT_EQ(modulation_scheme, *radio_1.search(as_int(RadioSettings::MODULATION_SCHEME)));
   EXPECT_EQ(line_coding, *radio_1.search(as_int(RadioSettings::LINE_CODING)));
   EXPECT_EQ(nullptr, radio_1.search(as_int(RadioSettings::TX_POWER)));
 }
 
 TEST(SettingsUsabilityTest, CanFindComponentsInSystem) {
-  static CONSTEXPR_SETTINGS System trivial_transceiver_system{
+  static System trivial_transceiver_system{
       as_int(CommunicationsSubsystems::TRANSCEIVER),
       {radio_1},
   };
-
-#if __cplusplus >= 202000
-  static_assert(*trivial_transceiver_system.search_components(RADIO_1) == radio_1);
-#endif
 
   EXPECT_EQ(radio_1, *trivial_transceiver_system.search_components(RADIO_1));
 }
 
 TEST(SettingsUsabilityTest, CanFindSubsystemsInSystem) {
-  static CONSTEXPR_SETTINGS System full_transceiver_system{
+  static System full_transceiver_system{
       as_int(CommunicationsSubsystems::TRANSCEIVER),
       {
           {as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO), {radio_1}},
       },
   };
-
-#if __cplusplus >= 202000
-  static_assert(
-      full_transceiver_system.search_subsystems(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO))
-          ->identifier() == as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO));
-#endif
 
   EXPECT_EQ(
       as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
@@ -144,7 +122,7 @@ TEST(SettingsUsabilityTest, CanFindSubsystemsInSystem) {
 
 TEST(SettingsUsabilityTest, CanDefineComplexSystems) {
   static constexpr SystemId SATELLITE_ID{42};
-  static CONSTEXPR_SETTINGS System satellite{
+  static System satellite{
       SATELLITE_ID,
       {
           {as_int(Systems::NAVIGATION)},
@@ -162,15 +140,6 @@ TEST(SettingsUsabilityTest, CanDefineComplexSystems) {
       },
   };
 
-#if __cplusplus >= 202000
-  static_assert(satellite.search_subsystems(as_int(Systems::NAVIGATION))->identifier() ==
-                as_int(Systems::NAVIGATION));
-  static_assert(satellite.search_subsystems(as_int(Systems::POWER))->identifier() ==
-                as_int(Systems::POWER));
-  static_assert(satellite.search_subsystems(as_int(Systems::COMMUNICATIONS))->identifier() ==
-                as_int(Systems::COMMUNICATIONS));
-#endif
-
   EXPECT_EQ(as_int(Systems::NAVIGATION),
             satellite.search_subsystems(as_int(Systems::NAVIGATION))->identifier());
   EXPECT_EQ(as_int(Systems::POWER),
@@ -181,7 +150,7 @@ TEST(SettingsUsabilityTest, CanDefineComplexSystems) {
 
 TEST(SettingsUsabilityTest, CanFindSubsystemsRecursively) {
   static constexpr SystemId SATELLITE_ID{42};
-  static CONSTEXPR_SETTINGS System satellite{
+  static System satellite{
       SATELLITE_ID,
       {
           System{as_int(Systems::NAVIGATION)},
