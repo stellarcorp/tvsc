@@ -3,6 +3,8 @@
 #include <string>
 #include <variant>
 
+#include "configuration/types.h"
+
 namespace tvsc::configuration {
 
 std::string to_string(const DiscreteValue& value) {

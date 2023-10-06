@@ -1,235 +1,81 @@
 #include <iostream>
 
 #include "configuration/allowed_values.h"
+#include "configuration/fake_systems.h"
 #include "configuration/system_definition.h"
-#include "configuration/utility.h"
+#include "configuration/types.h"
 #include "gtest/gtest.h"
 
 namespace tvsc::configuration {
 
-enum class Systems : SystemId {
-  NAVIGATION,
-  POWER,
-  COMMUNICATIONS,
-};
-
-enum class CommunicationsSubsystems : SystemId {
-  LINK_MANAGEMENT,
-  MULTIPLE_ACCESS,
-  TRANSCEIVER,
-};
-
-enum class TransceiverSubsystems : SystemId {
-  HALF_DUPLEX_RADIO,
-  SIMPLEX_TX_RADIO,
-  SIMPLEX_RX_RADIO,
-  DUPLEX_RADIO,
-  LOW_NOISE_AMPLIFIER,
-  OSCILLATOR,
-};
-
-enum class RadioSettings : FunctionId {
-  MODULATION_SCHEME,
-  LINE_CODING,
-  TX_POWER,
-};
-
-enum class ModulationScheme {
-  CW,
-  OOK,
-  FSK,
-  LORA,
-};
-
-enum class LineCoding {
-  NONE,
-
-  WHITENING,
-
-  // This list primarily comes from:
-  // https://en.wikipedia.org/wiki/Line_code#Transmission_and_storage
-  NRZ_L,
-  NRZ_M,
-  NRZ_S,
-  RZ,
-  BIPHASE_L,
-  BIPHASE_M,
-  BIPHASE_S,
-
-  // Manchester encoding and differential Manchester encoding both have multiple implementations.
-  MANCHESTER_ORIGINAL,
-  MANCHESTER_802_3,
-
-  DIFFERENTIAL_MANCHESTER,
-
-  BIPOLAR,
-};
-
-template <typename T>
-constexpr T as_constant(T value) {
-  return value;
-}
-
-// static constexpr auto allowed_modulation_schemes = {};
-
-Function modulation_scheme{as_int(RadioSettings::MODULATION_SCHEME),
-                           "modulation_scheme",
-                           {ModulationScheme::FSK, ModulationScheme::OOK}};
-
-Function line_coding{as_int(RadioSettings::LINE_CODING),
-                     "line_coding",
-                     {LineCoding::NRZ_L, LineCoding::MANCHESTER_802_3}};
-
-static constexpr ComponentId RADIO_1{1};
-static Component radio_1{RADIO_1,
-                         "radio_1",
-                         {
-                             modulation_scheme,
-                             line_coding,
-                         }};
-
-TEST(SettingsUsabilityTest, CanTestAllowedValueForFunction) {
+TEST(SystemDefinitionUsabilityTest, CanTestAllowedValueForFunction) {
   EXPECT_TRUE(modulation_scheme.is_allowed(ModulationScheme::OOK));
   EXPECT_TRUE(modulation_scheme.is_allowed(ModulationScheme::FSK));
   EXPECT_FALSE(modulation_scheme.is_allowed(ModulationScheme::LORA));
 }
 
-TEST(SettingsUsabilityTest, CanFindFunctionInComponentById) {
-  EXPECT_EQ(modulation_scheme, *radio_1.search(as_int(RadioSettings::MODULATION_SCHEME)));
-  EXPECT_EQ(line_coding, *radio_1.search(as_int(RadioSettings::LINE_CODING)));
-  EXPECT_EQ(nullptr, radio_1.search(as_int(RadioSettings::TX_POWER)));
+TEST(SystemDefinitionUsabilityTest, CanFindFunctionInSystemById) {
+  EXPECT_EQ(modulation_scheme, *radio_1.search_functions(as_int(RadioSettings::MODULATION_SCHEME)));
+  EXPECT_EQ(line_coding, *radio_1.search_functions(as_int(RadioSettings::LINE_CODING)));
+  EXPECT_EQ(nullptr, radio_1.search_functions(as_int(RadioSettings::TX_POWER)));
 }
 
-TEST(SettingsUsabilityTest, CanFindComponentsInSystem) {
-  static System trivial_transceiver_system{
-      as_int(CommunicationsSubsystems::TRANSCEIVER),
-      "transceiver",
-      {radio_1},
-  };
-
-  EXPECT_EQ(radio_1, *trivial_transceiver_system.search_components(RADIO_1));
+TEST(SystemDefinitionUsabilityTest, CanFindSystemsInSystemSimple) {
+  EXPECT_EQ(radio_1, *transceiver_system.search_subsystems(
+                         as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1)));
 }
 
-TEST(SettingsUsabilityTest, CanFindSubsystemsInSystem) {
-  static System full_transceiver_system{
-      as_int(CommunicationsSubsystems::TRANSCEIVER),
-      "transceiver",
-      {
-          {as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO), "half_duplex_radio", {radio_1}},
-      },
-  };
+TEST(SystemDefinitionUsabilityTest, CanFindSystemsInSystem) {
+  ASSERT_NE(nullptr, advanced_transceiver_system.search_subsystems(
+                         as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1)))
+      << to_string(advanced_transceiver_system);
+  EXPECT_EQ(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
+            advanced_transceiver_system
+                .search_subsystems(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1))
+                ->id());
 
+  ASSERT_NE(nullptr, advanced_transceiver_system.search_subsystems(
+                         as_int(TransceiverSubsystems::OSCILLATOR)))
+      << to_string(advanced_transceiver_system);
   EXPECT_EQ(
-      as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
-      full_transceiver_system.search_subsystems(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO))
-          ->identifier());
+      as_int(TransceiverSubsystems::OSCILLATOR),
+      advanced_transceiver_system.search_subsystems(as_int(TransceiverSubsystems::OSCILLATOR))
+          ->id());
 }
 
-TEST(SettingsUsabilityTest, CanDefineComplexSystems) {
-  static constexpr SystemId SATELLITE_ID{42};
-  static System satellite{
-      SATELLITE_ID,
-      "satellite_42",
-      {
-          System{as_int(Systems::NAVIGATION), "nav"},
-          System{as_int(Systems::POWER), "power"},
-          System{
-              as_int(Systems::COMMUNICATIONS),
-              "comms",
-              {
-                  System{
-                      as_int(CommunicationsSubsystems::TRANSCEIVER),
-                      "transceiver",
-                      {
-                          System{
-                              as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
-                              "half_duplex_radio",
-                              {radio_1},
-                          },
-                      },
-                  },
-              },
-          },
-      },
-  };
-
+TEST(SystemDefinitionUsabilityTest, CanDefineComplexSystems) {
   EXPECT_EQ(as_int(Systems::NAVIGATION),
-            satellite.search_subsystems(as_int(Systems::NAVIGATION))->identifier());
-  EXPECT_EQ(as_int(Systems::POWER),
-            satellite.search_subsystems(as_int(Systems::POWER))->identifier());
+            satellite_42.search_subsystems(as_int(Systems::NAVIGATION))->id());
+  EXPECT_EQ(as_int(Systems::POWER), satellite_42.search_subsystems(as_int(Systems::POWER))->id());
   EXPECT_EQ(as_int(Systems::COMMUNICATIONS),
-            satellite.search_subsystems(as_int(Systems::COMMUNICATIONS))->identifier());
+            satellite_42.search_subsystems(as_int(Systems::COMMUNICATIONS))->id());
 }
 
-TEST(SettingsUsabilityTest, CanFindSubsystemsRecursively) {
-  static constexpr SystemId SATELLITE_ID{42};
-  static System satellite{
-      SATELLITE_ID,
-      "satellite_42",
-      {
-          System{as_int(Systems::NAVIGATION), "nav"},
-          System{as_int(Systems::POWER), "power"},
-          System{
-              as_int(Systems::COMMUNICATIONS),
-              "comms",
-              {
-                  System{
-                      as_int(CommunicationsSubsystems::TRANSCEIVER),
-                      "transceiver",
-                      {
-                          System{
-                              as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
-                              "half_duplex_radio",
-                              {radio_1},
-                          },
-                          System{as_int(TransceiverSubsystems::OSCILLATOR), "oscillator"},
-                      },
-                  },
-              },
-          },
-      },
-  };
+TEST(SystemDefinitionUsabilityTest, CanFindSubsystemsRecursively) {
+  ASSERT_NE(nullptr, satellite_42.search_subsystems("2"));
+  EXPECT_EQ(as_int(Systems::COMMUNICATIONS), satellite_42.search_subsystems("2")->id());
 
+  ASSERT_NE(nullptr, satellite_42.search_subsystems("2.2"));
   EXPECT_EQ(as_int(CommunicationsSubsystems::TRANSCEIVER),
-            satellite.search_subsystems("2.2")->identifier());
-
-  EXPECT_EQ(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
-            satellite.search_subsystems("2.2.0")->identifier());
-
-  EXPECT_EQ(as_int(TransceiverSubsystems::OSCILLATOR),
-            satellite.search_subsystems("2.2.5")->identifier());
+            satellite_42.search_subsystems("2.2")->id());
 }
 
-TEST(SEttingsUsabilityTest, CanGenerateString) {
-  static constexpr SystemId SATELLITE_ID{42};
-  static System satellite{
-      SATELLITE_ID,
-      "satellite_42",
-      {
-          System{as_int(Systems::NAVIGATION), "nav"},
-          System{as_int(Systems::POWER), "power"},
-          System{
-              as_int(Systems::COMMUNICATIONS),
-              "comms",
-              {
-                  System{
-                      as_int(CommunicationsSubsystems::TRANSCEIVER),
-                      "transceiver",
-                      {
-                          System{
-                              as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO),
-                              "half_duplex_radio",
-                              {radio_1},
-                          },
-                          System{as_int(TransceiverSubsystems::OSCILLATOR), "oscillator"},
-                      },
-                  },
-              },
-          },
-      },
-  };
+TEST(SystemDefinitionUsabilityTest, CanFindSystemsRecursively) {
+  ASSERT_NE(nullptr, satellite_42.search_subsystems("2.2.0"));
+  EXPECT_EQ(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
+            satellite_42.search_subsystems("2.2.0")->id());
 
-  EXPECT_FALSE(to_string(satellite).empty());
+  ASSERT_NE(nullptr, satellite_42.search_subsystems("2.2.1"));
+  EXPECT_EQ(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2),
+            satellite_42.search_subsystems("2.2.1")->id());
+
+  ASSERT_NE(nullptr, satellite_42.search_subsystems("2.2.2"));
+  EXPECT_EQ(as_int(TransceiverSubsystems::OSCILLATOR),
+            satellite_42.search_subsystems("2.2.2")->id());
+}
+
+TEST(SystemDefinitionUsabilityTest, CanGenerateString) {
+  EXPECT_FALSE(to_string(satellite_42).empty());
 }
 
 }  // namespace tvsc::configuration

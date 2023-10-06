@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "configuration/allowed_values.h"
-#include "configuration/utility.h"
+#include "configuration/types.h"
 
 namespace tvsc::configuration {
 
@@ -34,20 +34,8 @@ class Function final {
   Function& operator=(const Function& rhs) = default;
   Function& operator=(Function&& rhs) = default;
 
-  /**
-   * Functions are identified by their function_id. These methods
-   * define that identification scheme.
-   *
-   * Also, functions are ordered for faster lookup. These methods define that ordering.
-   */
-  operator FunctionId() const { return identifier(); }
-
-  bool operator<(const Function& rhs) const { return identifier() < rhs.identifier(); }
-  bool operator==(const Function& rhs) const { return identifier() == rhs.identifier(); }
-
-  FunctionId function_id() const { return function_id_; }
-
-  FunctionId identifier() const { return function_id(); }
+  operator FunctionId() const { return id(); }
+  FunctionId id() const { return function_id_; }
 
   template <typename ValueT>
   bool is_allowed(const ValueT& value) const {
@@ -57,44 +45,12 @@ class Function final {
   const AllowedValues& allowed_values() const { return allowed_values_; }
 };
 
-class Component final {
- private:
-  ComponentId component_id_;
-  std::string_view name_;
-  std::vector<Function> functions_;
-
- public:
-  Component(ComponentId component_id, std::string_view name,
-            std::initializer_list<Function> functions)
-      : component_id_(component_id), name_(name), functions_(functions.begin(), functions.end()) {
-    std::sort(functions_.begin(), functions_.end());
-  }
-
-  operator ComponentId() const { return identifier(); }
-  ComponentId identifier() const { return component_id_; }
-
-  const std::vector<Function>& functions() const { return functions_; }
-
-  bool has_function(FunctionId function_id) const {
-    return std::binary_search(functions_.begin(), functions_.end(), function_id);
-  }
-
-  const Function* search(FunctionId function_id) const {
-    auto iter{std::lower_bound(functions_.begin(), functions_.end(), function_id)};
-    if (iter == functions_.end() || iter->identifier() != function_id) {
-      return nullptr;
-    } else {
-      return &(*iter);
-    }
-  }
-};
-
 class System final {
  private:
   SystemId system_;
   std::string_view name_;
   std::vector<System> subsystems_{};
-  std::vector<Component> components_{};
+  std::vector<Function> functions_;
 
  public:
   System(SystemId system, std::string_view name) : system_(system), name_(name) {}
@@ -104,23 +60,23 @@ class System final {
     std::sort(subsystems_.begin(), subsystems_.end());
   }
 
-  System(SystemId system, std::string_view name, std::initializer_list<Component> components)
-      : system_(system), name_(name), components_(components.begin(), components.end()) {
-    std::sort(components_.begin(), components_.end());
+  System(SystemId system, std::string_view name, std::initializer_list<Function> functions)
+      : system_(system), name_(name), functions_(functions.begin(), functions.end()) {
+    std::sort(functions_.begin(), functions_.end());
   }
 
   System(SystemId system, std::string_view name, std::initializer_list<System> subsystems,
-         std::initializer_list<Component> components)
+         std::initializer_list<Function> functions)
       : system_(system),
         name_(name),
         subsystems_(subsystems.begin(), subsystems.end()),
-        components_(components.begin(), components.end()) {
+        functions_(functions.begin(), functions.end()) {
     std::sort(subsystems_.begin(), subsystems_.end());
-    std::sort(components_.begin(), components_.end());
+    std::sort(functions_.begin(), functions_.end());
   }
 
-  operator SystemId() const { return identifier(); }
-  SystemId identifier() const { return system_; }
+  operator SystemId() const { return id(); }
+  SystemId id() const { return system_; }
 
   const std::vector<System>& subsystems() const { return subsystems_; }
 
@@ -130,7 +86,7 @@ class System final {
 
   const System* search_subsystems(SystemId subsystem_id) const {
     auto iter{std::lower_bound(subsystems_.begin(), subsystems_.end(), subsystem_id)};
-    if (iter == subsystems_.end() || iter->identifier() != subsystem_id) {
+    if (iter == subsystems_.end() || iter->id() != subsystem_id) {
       return nullptr;
     } else {
       return &(*iter);
@@ -158,7 +114,7 @@ class System final {
     auto iter{std::lower_bound(subsystems_.begin(), subsystems_.end(), local_id)};
     if (iter == subsystems_.end()) {
       return nullptr;
-    } else if (iter->identifier() != local_id) {
+    } else if (iter->id() != local_id) {
       return nullptr;
     } else {
       if (need_recurse) {
@@ -170,15 +126,15 @@ class System final {
     }
   }
 
-  const std::vector<Component>& components() const { return components_; }
+  const std::vector<Function>& functions() const { return functions_; }
 
-  bool has_component(ComponentId component_id) const {
-    return std::binary_search(components_.begin(), components_.end(), component_id);
+  bool has_function(FunctionId function_id) const {
+    return std::binary_search(functions_.begin(), functions_.end(), function_id);
   }
 
-  const Component* search_components(ComponentId component_id) const {
-    auto iter{std::lower_bound(components_.begin(), components_.end(), component_id)};
-    if (iter == components_.end() || iter->identifier() != component_id) {
+  const Function* search_functions(FunctionId function_id) const {
+    auto iter{std::lower_bound(functions_.begin(), functions_.end(), function_id)};
+    if (iter == functions_.end() || iter->id() != function_id) {
       return nullptr;
     } else {
       return &(*iter);
@@ -187,7 +143,6 @@ class System final {
 };
 
 std::string to_string(const Function& function);
-std::string to_string(const Component& component);
 std::string to_string(const System& system);
 
 }  // namespace tvsc::configuration

@@ -1,16 +1,10 @@
 #include "configuration/allowed_values.h"
 
-#include "configuration/utility.h"
+#include "configuration/fake_systems.h"
+#include "configuration/types.h"
 #include "gtest/gtest.h"
 
 namespace tvsc::configuration {
-
-enum class ModulationScheme {
-  CW,
-  OOK,
-  FSK,
-  LORA,
-};
 
 TEST(SettingsUsabilityTest, CanTestAllowedDiscreteValue) {
   static AllowedValues modulation_scheme_values{ModulationScheme::FSK, ModulationScheme::OOK};

@@ -1,22 +1,14 @@
 #pragma once
 
-#include <algorithm>
 #include <initializer_list>
 #include <string>
 #include <utility>
 #include <variant>
 #include <vector>
 
-#include "configuration/utility.h"
+#include "configuration/types.h"
 
 namespace tvsc::configuration {
-
-template <typename T>
-using ValueRange = std::pair<T, T>;
-
-using DiscreteValue = std::variant<int32_t, int64_t, float, double>;
-using RangedValue =
-    std::variant<ValueRange<int32_t>, ValueRange<int64_t>, ValueRange<float>, ValueRange<double>>;
 
 class AllowedValues final {
  public:

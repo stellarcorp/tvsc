@@ -2,15 +2,36 @@ cc_library(
     name = "configuration",
     srcs = [
         "allowed_values.cc",
+        "configuration.cc",
         "system_definition.cc",
     ],
     hdrs = [
         "allowed_values.h",
+        "configuration.h",
         "system_definition.h",
-        "utility.h",
+        "types.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
+        "//string",
+    ],
+)
+
+cc_library(
+    name = "fake_configuration",
+    testonly = True,
+    hdrs = [
+        "fake_systems.h",
+    ],
+)
+
+cc_test(
+    name = "configuration_usability_test",
+    srcs = ["configuration_usability_test.cc"],
+    deps = [
+        ":configuration",
+        ":fake_configuration",
+        "//third_party/gtest",
     ],
 )
 
@@ -19,6 +40,7 @@ cc_test(
     srcs = ["system_definition_usability_test.cc"],
     deps = [
         ":configuration",
+        ":fake_configuration",
         "//third_party/gtest",
     ],
 )
@@ -28,6 +50,7 @@ cc_test(
     srcs = ["allowed_values_test.cc"],
     deps = [
         ":configuration",
+        ":fake_configuration",
         "//third_party/gtest",
     ],
 )
