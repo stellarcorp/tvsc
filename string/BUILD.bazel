@@ -1,0 +1,7 @@
+cc_library(
+    name = "string",
+    hdrs = [
+        "strings.h",
+    ],
+    visibility = ["//visibility:public"],
+)
