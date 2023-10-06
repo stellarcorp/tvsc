@@ -4,6 +4,7 @@ cc_library(
         "allowed_values.cc",
         "configuration.cc",
         "system_definition.cc",
+        "types.cc",
     ],
     hdrs = [
         "allowed_values.h",

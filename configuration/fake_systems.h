@@ -71,6 +71,7 @@ static Function line_coding{as_int(RadioSettings::LINE_CODING),
 
 static System radio_1{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
                       "radio_1",
+                      {},
                       {
                           modulation_scheme,
                           line_coding,
@@ -78,6 +79,7 @@ static System radio_1{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
 
 static System radio_2{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2),
                       "radio_2",
+                      {},
                       {
                           modulation_scheme,
                           line_coding,
@@ -98,6 +100,7 @@ static System advanced_transceiver_system{
         System{
             as_int(TransceiverSubsystems::OSCILLATOR),
             "oscillator",
+            {},
             {
                 Function{
                     as_int(RadioSettings::OSCILLATOR_FREQUENCY),

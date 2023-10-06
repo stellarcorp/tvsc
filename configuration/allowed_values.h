@@ -2,6 +2,7 @@
 
 #include <initializer_list>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -29,6 +30,9 @@ class AllowedValues final {
       : enumerated_(allowed_values.begin(), allowed_values.end()), ranged_() {}
 
   AllowedValues(std::initializer_list<double> allowed_values)
+      : enumerated_(allowed_values.begin(), allowed_values.end()), ranged_() {}
+
+  AllowedValues(std::initializer_list<std::string_view> allowed_values)
       : enumerated_(allowed_values.begin(), allowed_values.end()), ranged_() {}
 
   AllowedValues(std::initializer_list<ValueRange<int32_t>> allowed_values)
@@ -116,6 +120,16 @@ class AllowedValues final {
     return false;
   }
 
+  bool is_allowed(std::string_view value) const {
+    for (const auto& v : enumerated_) {
+      if (std::get_if<std::string_view>(&v) != nullptr &&
+          *std::get_if<std::string_view>(&v) == value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   template <typename ValueT>
   bool is_allowed(ValueT value) const {
     static_assert(std::is_enum<ValueT>::value);
@@ -134,43 +148,5 @@ class AllowedValues final {
 };
 
 std::string to_string(const AllowedValues& values);
-std::string to_string(const RangedValue& value);
-std::string to_string(const DiscreteValue& value);
-
-template <typename T>
-inline std::string to_string(const ValueRange<T>& value) {
-  using std::to_string;
-  std::string result{};
-  result.append("[")
-      .append(to_string(value.first))
-      .append(", ")
-      .append(to_string(value.second))
-      .append("]");
-  return result;
-}
-
-template <>
-inline std::string to_string(const ValueRange<float>& value) {
-  using std::to_string;
-  std::string result{};
-  result.append("[")
-      .append(to_string(value.first))
-      .append(", ")
-      .append(to_string(value.second))
-      .append(")");
-  return result;
-}
-
-template <>
-inline std::string to_string(const ValueRange<double>& value) {
-  using std::to_string;
-  std::string result{};
-  result.append("[")
-      .append(to_string(value.first))
-      .append(", ")
-      .append(to_string(value.second))
-      .append(")");
-  return result;
-}
 
 }  // namespace tvsc::configuration

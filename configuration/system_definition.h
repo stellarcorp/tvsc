@@ -37,6 +37,8 @@ class Function final {
   operator FunctionId() const { return id(); }
   FunctionId id() const { return function_id_; }
 
+  std::string_view name() const { return name_; }
+
   template <typename ValueT>
   bool is_allowed(const ValueT& value) const {
     return allowed_values_.is_allowed(value);
@@ -45,11 +47,36 @@ class Function final {
   const AllowedValues& allowed_values() const { return allowed_values_; }
 };
 
+class Property final {
+ private:
+  PropertyId property_id_;
+  std::string_view name_;
+  DiscreteValue value_;
+
+ public:
+  template <typename ValueT>
+  Property(PropertyId property_id, std::string_view name, ValueT value)
+      : property_id_(property_id), name_(name), value_(value) {}
+
+  Property(const Property& rhs) = default;
+  Property(Property&& rhs) = default;
+  Property& operator=(const Property& rhs) = default;
+  Property& operator=(Property&& rhs) = default;
+
+  operator PropertyId() const { return id(); }
+  PropertyId id() const { return property_id_; }
+
+  std::string_view name() const { return name_; }
+
+  const DiscreteValue& value() const { return value_; }
+};
+
 class System final {
  private:
   SystemId system_;
   std::string_view name_;
   std::vector<System> subsystems_{};
+  std::vector<Property> properties_;
   std::vector<Function> functions_;
 
  public:
@@ -60,23 +87,32 @@ class System final {
     std::sort(subsystems_.begin(), subsystems_.end());
   }
 
-  System(SystemId system, std::string_view name, std::initializer_list<Function> functions)
-      : system_(system), name_(name), functions_(functions.begin(), functions.end()) {
+  System(SystemId system, std::string_view name, std::initializer_list<Property> properties,
+         std::initializer_list<Function> functions)
+      : system_(system),
+        name_(name),
+        properties_(properties.begin(), properties.end()),
+        functions_(functions.begin(), functions.end()) {
+    std::sort(properties_.begin(), properties_.end());
     std::sort(functions_.begin(), functions_.end());
   }
 
   System(SystemId system, std::string_view name, std::initializer_list<System> subsystems,
-         std::initializer_list<Function> functions)
+         std::initializer_list<Property> properties, std::initializer_list<Function> functions)
       : system_(system),
         name_(name),
         subsystems_(subsystems.begin(), subsystems.end()),
+        properties_(properties.begin(), properties.end()),
         functions_(functions.begin(), functions.end()) {
     std::sort(subsystems_.begin(), subsystems_.end());
+    std::sort(properties_.begin(), properties_.end());
     std::sort(functions_.begin(), functions_.end());
   }
 
   operator SystemId() const { return id(); }
   SystemId id() const { return system_; }
+
+  std::string_view name() const { return name_; }
 
   const std::vector<System>& subsystems() const { return subsystems_; }
 
@@ -126,6 +162,21 @@ class System final {
     }
   }
 
+  const std::vector<Property>& properties() const { return properties_; }
+
+  bool has_property(PropertyId property_id) const {
+    return std::binary_search(properties_.begin(), properties_.end(), property_id);
+  }
+
+  const Property* search_properties(PropertyId property_id) const {
+    auto iter{std::lower_bound(properties_.begin(), properties_.end(), property_id)};
+    if (iter == properties_.end() || iter->id() != property_id) {
+      return nullptr;
+    } else {
+      return &(*iter);
+    }
+  }
+
   const std::vector<Function>& functions() const { return functions_; }
 
   bool has_function(FunctionId function_id) const {
@@ -143,6 +194,7 @@ class System final {
 };
 
 std::string to_string(const Function& function);
+std::string to_string(const Property& property);
 std::string to_string(const System& system);
 
 }  // namespace tvsc::configuration
