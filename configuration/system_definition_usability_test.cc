@@ -74,6 +74,10 @@ TEST(SystemDefinitionUsabilityTest, CanFindSystemsRecursively) {
             satellite_42.search_subsystems("2.2.2")->id());
 }
 
+TEST(SystemDefinitionUsabilityTest, SearchNonexistentSubsystemGivesNullptr) {
+  EXPECT_EQ(nullptr, satellite_42.search_subsystems("2.2.3"));
+}
+
 TEST(SystemDefinitionUsabilityTest, CanGenerateString) {
   EXPECT_FALSE(to_string(satellite_42).empty());
 }
