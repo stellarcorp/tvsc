@@ -24,7 +24,7 @@ std::string to_string(const Property& property) {
   return result;
 }
 
-std::string to_string(const System& system) {
+std::string to_string(const SystemDefinition& system) {
   using std::to_string;
   std::string result{};
   result.append("{id: ").append(to_string(system.id())).append(", subsystems: {");

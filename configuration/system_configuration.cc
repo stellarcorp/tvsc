@@ -6,7 +6,7 @@
 
 namespace tvsc::configuration {
 
-bool is_valid_configuration(const System& system, const SystemConfiguration& configuration) {
+bool is_valid_configuration(const SystemDefinition& system, const SystemConfiguration& configuration) {
   for (const auto& setting : configuration.settings()) {
     const Function* function = system.get_function(setting.id());
     if (function == nullptr) {

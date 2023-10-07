@@ -15,7 +15,7 @@
 namespace tvsc::configuration {
 
 /**
- * Properties are read-only key-value pairs. In a System definition, they are used as configuration 
+ * Properties are read-only key-value pairs. In a SystemDefinition, they are used as configuration 
  * constants.
  */
 class Property final {
@@ -82,23 +82,23 @@ class Function final {
  * within the same system, and they do not need to be unique between the different types.
  * (Properties can share the same id as Functions, for example.)
  */
-class System final {
+class SystemDefinition final {
  private:
   SystemId system_;
   std::string_view name_;
-  std::vector<System> subsystems_{};
+  std::vector<SystemDefinition> subsystems_{};
   std::vector<Property> properties_{};
   std::vector<Function> functions_{};
 
  public:
-  System(SystemId system, std::string_view name) : system_(system), name_(name) {}
+  SystemDefinition(SystemId system, std::string_view name) : system_(system), name_(name) {}
 
-  System(SystemId system, std::string_view name, std::initializer_list<System> subsystems)
+  SystemDefinition(SystemId system, std::string_view name, std::initializer_list<SystemDefinition> subsystems)
       : system_(system), name_(name), subsystems_(subsystems.begin(), subsystems.end()) {
     std::sort(subsystems_.begin(), subsystems_.end());
   }
 
-  System(SystemId system, std::string_view name, std::initializer_list<Property> properties,
+  SystemDefinition(SystemId system, std::string_view name, std::initializer_list<Property> properties,
          std::initializer_list<Function> functions)
       : system_(system),
         name_(name),
@@ -108,7 +108,7 @@ class System final {
     std::sort(functions_.begin(), functions_.end());
   }
 
-  System(SystemId system, std::string_view name, std::initializer_list<System> subsystems,
+  SystemDefinition(SystemId system, std::string_view name, std::initializer_list<SystemDefinition> subsystems,
          std::initializer_list<Property> properties, std::initializer_list<Function> functions)
       : system_(system),
         name_(name),
@@ -125,13 +125,13 @@ class System final {
 
   std::string_view name() const { return name_; }
 
-  const std::vector<System>& subsystems() const { return subsystems_; }
+  const std::vector<SystemDefinition>& subsystems() const { return subsystems_; }
 
   bool has_subsystem(SystemId subsystem_id) const {
     return std::binary_search(subsystems_.begin(), subsystems_.end(), subsystem_id);
   }
 
-  const System* get_subsystem(SystemId subsystem_id) const {
+  const SystemDefinition* get_subsystem(SystemId subsystem_id) const {
     auto iter{std::lower_bound(subsystems_.begin(), subsystems_.end(), subsystem_id)};
     if (iter == subsystems_.end() || iter->id() != subsystem_id) {
       return nullptr;
@@ -140,7 +140,7 @@ class System final {
     }
   }
 
-  const System* search_subsystems(std::string_view subsystem_id) const {
+  const SystemDefinition* search_subsystems(std::string_view subsystem_id) const {
     SystemId local_id{};
     bool need_recurse{true};
 
@@ -206,6 +206,6 @@ class System final {
 
 std::string to_string(const Function& function);
 std::string to_string(const Property& property);
-std::string to_string(const System& system);
+std::string to_string(const SystemDefinition& system);
 
 }  // namespace tvsc::configuration

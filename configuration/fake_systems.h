@@ -75,7 +75,7 @@ static Function line_coding{as_int(RadioSettings::LINE_CODING),
                             "line_coding",
                             {LineCoding::NRZ_L, LineCoding::MANCHESTER_ORIGINAL}};
 
-static System radio_1{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
+static SystemDefinition radio_1{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
                       "radio_1",
                       {
 			Property{as_int(HalfDuplexRadioProperties::RESET_PIN), "reset_pin", 2},
@@ -86,7 +86,7 @@ static System radio_1{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
                           line_coding,
                       }};
 
-static System radio_2{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2),
+static SystemDefinition radio_2{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2),
                       "radio_2",
                       {
 			Property{as_int(HalfDuplexRadioProperties::RESET_PIN), "reset_pin", 6},
@@ -97,19 +97,19 @@ static System radio_2{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2),
                           line_coding,
                       }};
 
-static System transceiver_system{
+static SystemDefinition transceiver_system{
     as_int(CommunicationsSubsystems::TRANSCEIVER),
     "transceiver",
     {radio_1, radio_2},
 };
 
-static System advanced_transceiver_system{
+static SystemDefinition advanced_transceiver_system{
     as_int(CommunicationsSubsystems::TRANSCEIVER),
     "transceiver",
     {
         radio_1,
         radio_2,
-        System{
+        SystemDefinition{
             as_int(TransceiverSubsystems::OSCILLATOR),
             "oscillator",
             {},
@@ -127,13 +127,13 @@ static System advanced_transceiver_system{
 };
 
 static constexpr SystemId SATELLITE_ID{42};
-static System satellite_42{
+static SystemDefinition satellite_42{
     SATELLITE_ID,
     "satellite_42",
     {
-        System{as_int(Systems::NAVIGATION), "nav"},
-        System{as_int(Systems::POWER), "power"},
-        System{
+        SystemDefinition{as_int(Systems::NAVIGATION), "nav"},
+        SystemDefinition{as_int(Systems::POWER), "power"},
+        SystemDefinition{
             as_int(Systems::COMMUNICATIONS),
             "comms",
             {
