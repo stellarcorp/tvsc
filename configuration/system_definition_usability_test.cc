@@ -19,34 +19,34 @@ TEST(SystemDefinitionUsabilityTest, CanFindFunctionInSystemById) {
 }
 
 TEST(SystemDefinitionUsabilityTest, CanFindSystemsInSystemSimple) {
-  EXPECT_EQ(radio_1, *transceiver_system.search_subsystems(
+  EXPECT_EQ(radio_1, *transceiver_system.get_subsystem(
                          as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1)));
 }
 
 TEST(SystemDefinitionUsabilityTest, CanFindSystemsInSystem) {
-  ASSERT_NE(nullptr, advanced_transceiver_system.search_subsystems(
+  ASSERT_NE(nullptr, advanced_transceiver_system.get_subsystem(
                          as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1)))
       << to_string(advanced_transceiver_system);
   EXPECT_EQ(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
             advanced_transceiver_system
-                .search_subsystems(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1))
+                .get_subsystem(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1))
                 ->id());
 
-  ASSERT_NE(nullptr, advanced_transceiver_system.search_subsystems(
+  ASSERT_NE(nullptr, advanced_transceiver_system.get_subsystem(
                          as_int(TransceiverSubsystems::OSCILLATOR)))
       << to_string(advanced_transceiver_system);
   EXPECT_EQ(
       as_int(TransceiverSubsystems::OSCILLATOR),
-      advanced_transceiver_system.search_subsystems(as_int(TransceiverSubsystems::OSCILLATOR))
+      advanced_transceiver_system.get_subsystem(as_int(TransceiverSubsystems::OSCILLATOR))
           ->id());
 }
 
 TEST(SystemDefinitionUsabilityTest, CanDefineComplexSystems) {
   EXPECT_EQ(as_int(Systems::NAVIGATION),
-            satellite_42.search_subsystems(as_int(Systems::NAVIGATION))->id());
-  EXPECT_EQ(as_int(Systems::POWER), satellite_42.search_subsystems(as_int(Systems::POWER))->id());
+            satellite_42.get_subsystem(as_int(Systems::NAVIGATION))->id());
+  EXPECT_EQ(as_int(Systems::POWER), satellite_42.get_subsystem(as_int(Systems::POWER))->id());
   EXPECT_EQ(as_int(Systems::COMMUNICATIONS),
-            satellite_42.search_subsystems(as_int(Systems::COMMUNICATIONS))->id());
+            satellite_42.get_subsystem(as_int(Systems::COMMUNICATIONS))->id());
 }
 
 TEST(SystemDefinitionUsabilityTest, CanFindSubsystemsRecursively) {

@@ -14,6 +14,10 @@
 
 namespace tvsc::configuration {
 
+/**
+ * Properties are read-only key-value pairs. In a System definition, they are used as configuration 
+ * constants.
+ */
 class Property final {
  private:
   PropertyId property_id_;
@@ -33,6 +37,11 @@ class Property final {
   const DiscreteValue& value() const { return value_; }
 };
 
+/**
+ * Functions describe configurable capabilities of a system. They can be configured at runtime and
+ * are designed to be serializable, including serialized to storage and serialized across a network
+ * or radio link.
+ */
 class Function final {
  private:
   FunctionId function_id_;
@@ -56,6 +65,18 @@ class Function final {
   const AllowedValues& allowed_values() const { return allowed_values_; }
 };
 
+/**
+ * Definition of a system, including any read-only properties, configurable functions, and any
+ * subsystems.
+ *
+ * Systems are hierarchical. The subsystems are themselves Systems. This allows for systems to be
+ * combined and reused across multiple translation units, though this might make it more difficult
+ * to catch misconfigurations.
+ *
+ * Ids for properties, functions, and subsystems are all local. The values only need to be unique
+ * within the same system, and they do not need to be unique between the different types.
+ * (Properties can share the same id as Functions, for example.)
+ */
 class System final {
  private:
   SystemId system_;
@@ -105,7 +126,7 @@ class System final {
     return std::binary_search(subsystems_.begin(), subsystems_.end(), subsystem_id);
   }
 
-  const System* search_subsystems(SystemId subsystem_id) const {
+  const System* get_subsystem(SystemId subsystem_id) const {
     auto iter{std::lower_bound(subsystems_.begin(), subsystems_.end(), subsystem_id)};
     if (iter == subsystems_.end() || iter->id() != subsystem_id) {
       return nullptr;
