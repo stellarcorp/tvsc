@@ -13,9 +13,9 @@ TEST(SystemDefinitionUsabilityTest, CanTestAllowedValueForFunction) {
 }
 
 TEST(SystemDefinitionUsabilityTest, CanFindFunctionInSystemById) {
-  EXPECT_EQ(modulation_scheme, *radio_1.search_functions(as_int(RadioSettings::MODULATION_SCHEME)));
-  EXPECT_EQ(line_coding, *radio_1.search_functions(as_int(RadioSettings::LINE_CODING)));
-  EXPECT_EQ(nullptr, radio_1.search_functions(as_int(RadioSettings::TX_POWER)));
+  EXPECT_EQ(modulation_scheme, *radio_1.get_function(as_int(RadioSettings::MODULATION_SCHEME)));
+  EXPECT_EQ(line_coding, *radio_1.get_function(as_int(RadioSettings::LINE_CODING)));
+  EXPECT_EQ(nullptr, radio_1.get_function(as_int(RadioSettings::TX_POWER)));
 }
 
 TEST(SystemDefinitionUsabilityTest, CanFindSystemsInSystemSimple) {

@@ -153,7 +153,7 @@ class System final {
     return std::binary_search(properties_.begin(), properties_.end(), property_id);
   }
 
-  const Property* search_properties(PropertyId property_id) const {
+  const Property* get_property(PropertyId property_id) const {
     auto iter{std::lower_bound(properties_.begin(), properties_.end(), property_id)};
     if (iter == properties_.end() || iter->id() != property_id) {
       return nullptr;
@@ -168,7 +168,7 @@ class System final {
     return std::binary_search(functions_.begin(), functions_.end(), function_id);
   }
 
-  const Function* search_functions(FunctionId function_id) const {
+  const Function* get_function(FunctionId function_id) const {
     auto iter{std::lower_bound(functions_.begin(), functions_.end(), function_id)};
     if (iter == functions_.end() || iter->id() != function_id) {
       return nullptr;
