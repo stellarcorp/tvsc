@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "configuration/allowed_values.h"
 #include "configuration/configuration.h"
 #include "configuration/fake_systems.h"
@@ -82,6 +80,14 @@ static SystemConfiguration satellite_42_configuration_2{
 
     },
 };
+
+TEST(ConfigurationTest, CanDetectValidConfiguration) {
+  EXPECT_TRUE(is_valid_configuration(satellite_42, satellite_42_configuration_1));
+}
+
+TEST(ConfigurationTest, CanDetectInvalidConfiguration) {
+  EXPECT_FALSE(is_valid_configuration(satellite_42, satellite_42_configuration_2));
+}
 
 TEST(ConfigurationUsabilityTest, CanGenerateString) {
   EXPECT_FALSE(to_string(satellite_42_configuration_1).empty());

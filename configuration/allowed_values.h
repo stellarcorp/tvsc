@@ -81,6 +81,10 @@ class AllowedValues final {
     }
   }
 
+  bool is_allowed(const DiscreteValue& value) const {
+    return std::visit([this](auto&& arg) -> bool { return this->is_allowed(arg); }, value);
+  }
+
   bool is_allowed(int32_t value) const {
     for (const auto& v : enumerated_) {
       if (std::get_if<int32_t>(&v) != nullptr && *std::get_if<int32_t>(&v) == value) {

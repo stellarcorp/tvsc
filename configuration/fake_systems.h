@@ -73,7 +73,7 @@ static Function modulation_scheme{as_int(RadioSettings::MODULATION_SCHEME),
 
 static Function line_coding{as_int(RadioSettings::LINE_CODING),
                             "line_coding",
-                            {LineCoding::NRZ_L, LineCoding::MANCHESTER_802_3}};
+                            {LineCoding::NRZ_L, LineCoding::MANCHESTER_ORIGINAL}};
 
 static System radio_1{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
                       "radio_1",
