@@ -9,7 +9,7 @@ template <typename T>
 std::string to_string(const std::vector<T>& v) {
   std::string result{};
   bool need_comma{false};
-  for (const auto i : v) {
+  for (const auto& i : v) {
     if (need_comma) {
       result.append(", ");
     }
