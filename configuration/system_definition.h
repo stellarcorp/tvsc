@@ -40,7 +40,8 @@ class Property final {
 /**
  * Functions describe configurable capabilities of a system. They can be configured at runtime and
  * are designed to be serializable, including serialized to storage and serialized across a network
- * or radio link.
+ * or radio link. Functions include information about which values are allowed. They do include an
+ * actual value.
  */
 class Function final {
  private:
@@ -66,8 +67,12 @@ class Function final {
 };
 
 /**
- * Definition of a system, including any read-only properties, configurable functions, and any
- * subsystems.
+ * Logical definition of a system, including any read-only properties, configurable functions, and
+ * any subsystems in a hierarchy. The system definition does not necessarily reflect the literal
+ * construction of the system. The actual objects (drivers, etc.) that control these systems do not
+ * need to organized exactly as the instances of this class. The system definition represents the
+ * logical structure of the system as it might be described to knowledgeable engineers who are
+ * unfamiliar with the software.
  *
  * Systems are hierarchical. The subsystems are themselves Systems. This allows for systems to be
  * combined and reused across multiple translation units, though this might make it more difficult
