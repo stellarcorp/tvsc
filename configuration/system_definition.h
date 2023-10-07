@@ -14,6 +14,25 @@
 
 namespace tvsc::configuration {
 
+class Property final {
+ private:
+  PropertyId property_id_;
+  std::string_view name_;
+  DiscreteValue value_;
+
+ public:
+  template <typename ValueT>
+  Property(PropertyId property_id, std::string_view name, ValueT value)
+      : property_id_(property_id), name_(name), value_(value) {}
+
+  operator PropertyId() const { return id(); }
+  PropertyId id() const { return property_id_; }
+
+  std::string_view name() const { return name_; }
+
+  const DiscreteValue& value() const { return value_; }
+};
+
 class Function final {
  private:
   FunctionId function_id_;
@@ -21,18 +40,8 @@ class Function final {
   AllowedValues allowed_values_;
 
  public:
-  template <typename ValueT>
-  Function(FunctionId function_id, std::string_view name,
-           std::initializer_list<ValueT> allowed_values)
-      : function_id_(function_id), name_(name), allowed_values_(allowed_values) {}
-
   Function(FunctionId function_id, std::string_view name, AllowedValues allowed_values)
       : function_id_(function_id), name_(name), allowed_values_(allowed_values) {}
-
-  Function(const Function& rhs) = default;
-  Function(Function&& rhs) = default;
-  Function& operator=(const Function& rhs) = default;
-  Function& operator=(Function&& rhs) = default;
 
   operator FunctionId() const { return id(); }
   FunctionId id() const { return function_id_; }
@@ -47,37 +56,13 @@ class Function final {
   const AllowedValues& allowed_values() const { return allowed_values_; }
 };
 
-class Property final {
- private:
-  PropertyId property_id_;
-  std::string_view name_;
-  DiscreteValue value_;
-
- public:
-  template <typename ValueT>
-  Property(PropertyId property_id, std::string_view name, ValueT value)
-      : property_id_(property_id), name_(name), value_(value) {}
-
-  Property(const Property& rhs) = default;
-  Property(Property&& rhs) = default;
-  Property& operator=(const Property& rhs) = default;
-  Property& operator=(Property&& rhs) = default;
-
-  operator PropertyId() const { return id(); }
-  PropertyId id() const { return property_id_; }
-
-  std::string_view name() const { return name_; }
-
-  const DiscreteValue& value() const { return value_; }
-};
-
 class System final {
  private:
   SystemId system_;
   std::string_view name_;
   std::vector<System> subsystems_{};
-  std::vector<Property> properties_;
-  std::vector<Function> functions_;
+  std::vector<Property> properties_{};
+  std::vector<Function> functions_{};
 
  public:
   System(SystemId system, std::string_view name) : system_(system), name_(name) {}

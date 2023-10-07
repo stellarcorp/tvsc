@@ -61,9 +61,15 @@ enum class LineCoding {
   BIPOLAR,
 };
 
+enum class HalfDuplexRadioProperties : uint8_t {
+  RESET_PIN,
+  INTERRUPT_PIN,
+};
+
+static AllowedValues modulation_scheme_values{ModulationScheme::OOK, ModulationScheme::FSK};
 static Function modulation_scheme{as_int(RadioSettings::MODULATION_SCHEME),
                                   "modulation_scheme",
-                                  {ModulationScheme::FSK, ModulationScheme::OOK}};
+                                  modulation_scheme_values};
 
 static Function line_coding{as_int(RadioSettings::LINE_CODING),
                             "line_coding",
@@ -71,7 +77,10 @@ static Function line_coding{as_int(RadioSettings::LINE_CODING),
 
 static System radio_1{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
                       "radio_1",
-                      {},
+                      {
+			Property{as_int(HalfDuplexRadioProperties::RESET_PIN), "reset_pin", 2},
+			Property{as_int(HalfDuplexRadioProperties::INTERRUPT_PIN), "interrupt_pin", 14},
+		      },
                       {
                           modulation_scheme,
                           line_coding,
@@ -79,7 +88,10 @@ static System radio_1{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
 
 static System radio_2{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2),
                       "radio_2",
-                      {},
+                      {
+			Property{as_int(HalfDuplexRadioProperties::RESET_PIN), "reset_pin", 6},
+			Property{as_int(HalfDuplexRadioProperties::INTERRUPT_PIN), "interrupt_pin", 17},
+		      },
                       {
                           modulation_scheme,
                           line_coding,

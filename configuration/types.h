@@ -65,12 +65,12 @@ inline constexpr auto as_int(EnumType value) {
 }
 
 template <typename EnumType>
-inline constexpr auto as_int(EnumType* value) {
+inline constexpr auto as_int_ptr(EnumType* value) {
   return reinterpret_cast<std::underlying_type_t<EnumType>*>(value);
 }
 
 template <typename EnumType>
-inline constexpr auto as_int(const EnumType* value) {
+inline constexpr auto as_int_ptr(const EnumType* value) {
   return reinterpret_cast<const std::underlying_type_t<EnumType>*>(value);
 }
 

@@ -14,47 +14,72 @@ namespace tvsc::configuration {
 class AllowedValues final {
  public:
  private:
-  std::vector<DiscreteValue> enumerated_;
-  std::vector<RangedValue> ranged_;
+  std::vector<DiscreteValue> enumerated_{};
+  std::vector<RangedValue> ranged_{};
 
  public:
-  AllowedValues() : enumerated_(), ranged_() {}
+  AllowedValues(std::initializer_list<int32_t> allowed_values) {
+    for (auto v : allowed_values) {
+      enumerated_.emplace_back(v);
+    }
+  }
 
-  AllowedValues(std::initializer_list<int32_t> allowed_values)
-      : enumerated_(allowed_values.begin(), allowed_values.end()), ranged_() {}
 
-  AllowedValues(std::initializer_list<int64_t> allowed_values)
-      : enumerated_(allowed_values.begin(), allowed_values.end()), ranged_() {}
+  AllowedValues(std::initializer_list<int64_t> allowed_values) {
+    for (auto v : allowed_values) {
+      enumerated_.emplace_back(v);
+    }
+  }
 
-  AllowedValues(std::initializer_list<float> allowed_values)
-      : enumerated_(allowed_values.begin(), allowed_values.end()), ranged_() {}
+  AllowedValues(std::initializer_list<float> allowed_values) {
+    for (auto v : allowed_values) {
+      enumerated_.emplace_back(v);
+    }
+  }
 
-  AllowedValues(std::initializer_list<double> allowed_values)
-      : enumerated_(allowed_values.begin(), allowed_values.end()), ranged_() {}
+  AllowedValues(std::initializer_list<double> allowed_values) {
+    for (auto v : allowed_values) {
+      enumerated_.emplace_back(v);
+    }
+  }
 
-  AllowedValues(std::initializer_list<std::string_view> allowed_values)
-      : enumerated_(allowed_values.begin(), allowed_values.end()), ranged_() {}
+  AllowedValues(std::initializer_list<std::string_view> allowed_values) {
+    for (auto v : allowed_values) {
+      enumerated_.emplace_back(v);
+    }
+  }
 
-  AllowedValues(std::initializer_list<ValueRange<int32_t>> allowed_values)
-      : enumerated_(), ranged_(allowed_values.begin(), allowed_values.end()) {}
+  AllowedValues(std::initializer_list<ValueRange<int32_t>> allowed_values) {
+    for (const auto& v : allowed_values) {
+      ranged_.emplace_back(v);
+    }
+  }
 
-  AllowedValues(std::initializer_list<ValueRange<int64_t>> allowed_values)
-      : enumerated_(), ranged_(allowed_values.begin(), allowed_values.end()) {}
+  AllowedValues(std::initializer_list<ValueRange<int64_t>> allowed_values) {
+    for (const auto& v : allowed_values) {
+      ranged_.emplace_back(v);
+    }
+  }
 
-  AllowedValues(std::initializer_list<ValueRange<float>> allowed_values)
-      : enumerated_(), ranged_(allowed_values.begin(), allowed_values.end()) {}
+  AllowedValues(std::initializer_list<ValueRange<float>> allowed_values) {
+    for (const auto& v : allowed_values) {
+      ranged_.emplace_back(v);
+    }
+  }
 
-  AllowedValues(std::initializer_list<ValueRange<double>> allowed_values)
-      : enumerated_(), ranged_(allowed_values.begin(), allowed_values.end()) {}
+  AllowedValues(std::initializer_list<ValueRange<double>> allowed_values) {
+    for (const auto& v : allowed_values) {
+      ranged_.emplace_back(v);
+    }
+  }
 
   template <typename EnumT>
   AllowedValues(std::initializer_list<EnumT> allowed_values)
-      : enumerated_(as_int(allowed_values.begin()), as_int(allowed_values.end())), ranged_() {}
-
-  AllowedValues(const AllowedValues& rhs) = default;
-  AllowedValues(AllowedValues&& rhs) = default;
-  AllowedValues& operator=(const AllowedValues& rhs) = default;
-  AllowedValues& operator=(AllowedValues&& rhs) = default;
+      : enumerated_(), ranged_() {
+    for (auto v : allowed_values) {
+      enumerated_.emplace_back(as_int(v));
+    }
+  }
 
   bool is_allowed(int32_t value) const {
     for (const auto& v : enumerated_) {

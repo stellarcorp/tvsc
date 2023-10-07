@@ -47,6 +47,16 @@ cc_test(
 )
 
 cc_test(
+    name = "function_test",
+    srcs = ["function_test.cc"],
+    deps = [
+        ":configuration",
+        ":fake_configuration",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
     name = "allowed_values_test",
     srcs = ["allowed_values_test.cc"],
     deps = [
