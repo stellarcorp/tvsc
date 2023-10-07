@@ -22,7 +22,6 @@ class Setting final {
 
   const DiscreteValue& value() const { return value_; }
 };
-std::string to_string(const Setting& setting);
 
 class SystemConfiguration final {
  private:
@@ -61,6 +60,7 @@ class SystemConfiguration final {
 
 bool is_valid_configuration(const System& system, const SystemConfiguration& configuration);
 
+std::string to_string(const Setting& setting);
 std::string to_string(const SystemConfiguration& configuration);
 
 }  // namespace tvsc::configuration
