@@ -83,7 +83,7 @@ static SystemConfiguration satellite_42_configuration_2{
     },
 };
 
-TEST(SystemConfigurationUsabilityTest, CanGenerateString) {
+TEST(ConfigurationUsabilityTest, CanGenerateString) {
   EXPECT_FALSE(to_string(satellite_42_configuration_1).empty());
 }
 
