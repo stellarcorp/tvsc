@@ -1,5 +1,15 @@
 cc_library(
     name = "configuration",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":configuration_data_structures",
+        ":serialization",
+        "//string",
+    ],
+)
+
+cc_library(
+    name = "configuration_data_structures",
     srcs = [
         "allowed_values.cc",
         "system_configuration.cc",
@@ -12,9 +22,65 @@ cc_library(
         "system_definition.h",
         "types.h",
     ],
-    visibility = ["//visibility:public"],
     deps = [
         "//string",
+    ],
+)
+
+cc_library(
+    name = "serialization",
+    visibility = ["//visibility:public"],
+    deps = [":serialization_headers"] + select({
+        "@platforms//os:none": [
+            ":serialization_nanopb",
+        ],
+        "//conditions:default": [
+            ":serialization_proto",
+        ],
+    }),
+)
+
+cc_library(
+    name = "serialization_headers",
+    hdrs = [
+        "serialization.h",
+    ],
+    deps = [
+        ":configuration_data_structures",
+    ],
+)
+
+cc_library(
+    name = "serialization_proto",
+    srcs = [
+        "serialization_proto.cc",
+    ],
+    target_compatible_with = select({
+        "@platforms//os:none": [
+            "@platforms//:incompatible",
+        ],
+        "//conditions:default": [],
+    }),
+    deps = [
+        ":serialization_headers",
+        "//configuration/proto:configuration_cc_proto",
+    ],
+)
+
+cc_library(
+    name = "serialization_nanopb",
+    srcs = [
+        "serialization_nanopb.cc",
+    ],
+    target_compatible_with = select({
+        "@platforms//os:none": [],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
+    deps = [
+        ":serialization_headers",
+        "//configuration/nanopb_proto:configuration_nano_cc_proto",
     ],
 )
 
