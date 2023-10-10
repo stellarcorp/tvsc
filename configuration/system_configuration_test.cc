@@ -1,6 +1,7 @@
+#include "configuration/system_configuration.h"
+
 #include "configuration/allowed_values.h"
 #include "configuration/fake_systems.h"
-#include "configuration/system_configuration.h"
 #include "configuration/system_definition.h"
 #include "configuration/types.h"
 #include "gtest/gtest.h"

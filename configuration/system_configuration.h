@@ -58,7 +58,8 @@ class SystemConfiguration final {
   const std::vector<Setting>& settings() const { return settings_; }
 };
 
-bool is_valid_configuration(const SystemDefinition& system, const SystemConfiguration& configuration);
+bool is_valid_configuration(const SystemDefinition& system,
+                            const SystemConfiguration& configuration);
 
 std::string to_string(const Setting& setting);
 std::string to_string(const SystemConfiguration& configuration);

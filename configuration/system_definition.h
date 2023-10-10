@@ -15,7 +15,7 @@
 namespace tvsc::configuration {
 
 /**
- * Properties are read-only key-value pairs. In a SystemDefinition, they are used as configuration 
+ * Properties are read-only key-value pairs. In a SystemDefinition, they are used as configuration
  * constants.
  */
 class Property final {
@@ -93,13 +93,15 @@ class SystemDefinition final {
  public:
   SystemDefinition(SystemId system, std::string_view name) : system_(system), name_(name) {}
 
-  SystemDefinition(SystemId system, std::string_view name, std::initializer_list<SystemDefinition> subsystems)
+  SystemDefinition(SystemId system, std::string_view name,
+                   std::initializer_list<SystemDefinition> subsystems)
       : system_(system), name_(name), subsystems_(subsystems.begin(), subsystems.end()) {
     std::sort(subsystems_.begin(), subsystems_.end());
   }
 
-  SystemDefinition(SystemId system, std::string_view name, std::initializer_list<Property> properties,
-         std::initializer_list<Function> functions)
+  SystemDefinition(SystemId system, std::string_view name,
+                   std::initializer_list<Property> properties,
+                   std::initializer_list<Function> functions)
       : system_(system),
         name_(name),
         properties_(properties.begin(), properties.end()),
@@ -108,8 +110,10 @@ class SystemDefinition final {
     std::sort(functions_.begin(), functions_.end());
   }
 
-  SystemDefinition(SystemId system, std::string_view name, std::initializer_list<SystemDefinition> subsystems,
-         std::initializer_list<Property> properties, std::initializer_list<Function> functions)
+  SystemDefinition(SystemId system, std::string_view name,
+                   std::initializer_list<SystemDefinition> subsystems,
+                   std::initializer_list<Property> properties,
+                   std::initializer_list<Function> functions)
       : system_(system),
         name_(name),
         subsystems_(subsystems.begin(), subsystems.end()),

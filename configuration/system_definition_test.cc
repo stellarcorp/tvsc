@@ -1,6 +1,7 @@
+#include "configuration/system_definition.h"
+
 #include "configuration/allowed_values.h"
 #include "configuration/fake_systems.h"
-#include "configuration/system_definition.h"
 #include "configuration/types.h"
 #include "gtest/gtest.h"
 
@@ -19,26 +20,25 @@ TEST(SystemDefinitionUsabilityTest, CanFindFunctionInSystemById) {
 }
 
 TEST(SystemDefinitionUsabilityTest, CanFindSystemsInSystemSimple) {
-  EXPECT_EQ(radio_1, *transceiver_system.get_subsystem(
-                         as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1)));
+  EXPECT_EQ(radio_1,
+            *transceiver_system.get_subsystem(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1)));
 }
 
 TEST(SystemDefinitionUsabilityTest, CanFindSystemsInSystem) {
   ASSERT_NE(nullptr, advanced_transceiver_system.get_subsystem(
                          as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1)))
       << to_string(advanced_transceiver_system);
-  EXPECT_EQ(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
-            advanced_transceiver_system
-                .get_subsystem(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1))
-                ->id());
+  EXPECT_EQ(
+      as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
+      advanced_transceiver_system.get_subsystem(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1))
+          ->id());
 
-  ASSERT_NE(nullptr, advanced_transceiver_system.get_subsystem(
-                         as_int(TransceiverSubsystems::OSCILLATOR)))
+  ASSERT_NE(nullptr,
+            advanced_transceiver_system.get_subsystem(as_int(TransceiverSubsystems::OSCILLATOR)))
       << to_string(advanced_transceiver_system);
   EXPECT_EQ(
       as_int(TransceiverSubsystems::OSCILLATOR),
-      advanced_transceiver_system.get_subsystem(as_int(TransceiverSubsystems::OSCILLATOR))
-          ->id());
+      advanced_transceiver_system.get_subsystem(as_int(TransceiverSubsystems::OSCILLATOR))->id());
 }
 
 TEST(SystemDefinitionUsabilityTest, CanDefineComplexSystems) {

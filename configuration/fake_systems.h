@@ -67,35 +67,36 @@ enum class HalfDuplexRadioProperties : uint8_t {
 };
 
 static AllowedValues modulation_scheme_values{ModulationScheme::OOK, ModulationScheme::FSK};
-static Function modulation_scheme{as_int(RadioSettings::MODULATION_SCHEME),
-                                  "modulation_scheme",
+static Function modulation_scheme{as_int(RadioSettings::MODULATION_SCHEME), "modulation_scheme",
                                   modulation_scheme_values};
 
 static Function line_coding{as_int(RadioSettings::LINE_CODING),
                             "line_coding",
                             {LineCoding::NRZ_L, LineCoding::MANCHESTER_ORIGINAL}};
 
-static SystemDefinition radio_1{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
-                      "radio_1",
-                      {
-			Property{as_int(HalfDuplexRadioProperties::RESET_PIN), "reset_pin", 2},
-			Property{as_int(HalfDuplexRadioProperties::INTERRUPT_PIN), "interrupt_pin", 14},
-		      },
-                      {
-                          modulation_scheme,
-                          line_coding,
-                      }};
+static SystemDefinition radio_1{
+    as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
+    "radio_1",
+    {
+        Property{as_int(HalfDuplexRadioProperties::RESET_PIN), "reset_pin", 2},
+        Property{as_int(HalfDuplexRadioProperties::INTERRUPT_PIN), "interrupt_pin", 14},
+    },
+    {
+        modulation_scheme,
+        line_coding,
+    }};
 
-static SystemDefinition radio_2{as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2),
-                      "radio_2",
-                      {
-			Property{as_int(HalfDuplexRadioProperties::RESET_PIN), "reset_pin", 6},
-			Property{as_int(HalfDuplexRadioProperties::INTERRUPT_PIN), "interrupt_pin", 17},
-		      },
-                      {
-                          modulation_scheme,
-                          line_coding,
-                      }};
+static SystemDefinition radio_2{
+    as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2),
+    "radio_2",
+    {
+        Property{as_int(HalfDuplexRadioProperties::RESET_PIN), "reset_pin", 6},
+        Property{as_int(HalfDuplexRadioProperties::INTERRUPT_PIN), "interrupt_pin", 17},
+    },
+    {
+        modulation_scheme,
+        line_coding,
+    }};
 
 static SystemDefinition transceiver_system{
     as_int(CommunicationsSubsystems::TRANSCEIVER),

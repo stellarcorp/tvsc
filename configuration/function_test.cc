@@ -1,5 +1,5 @@
-#include "configuration/system_definition.h"
 #include "configuration/fake_systems.h"
+#include "configuration/system_definition.h"
 #include "gtest/gtest.h"
 
 namespace tvsc::configuration {

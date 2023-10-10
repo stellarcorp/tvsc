@@ -24,7 +24,6 @@ class AllowedValues final {
     }
   }
 
-
   AllowedValues(std::initializer_list<int64_t> allowed_values) {
     for (auto v : allowed_values) {
       enumerated_.emplace_back(v);
@@ -74,8 +73,7 @@ class AllowedValues final {
   }
 
   template <typename EnumT>
-  AllowedValues(std::initializer_list<EnumT> allowed_values)
-      : enumerated_(), ranged_() {
+  AllowedValues(std::initializer_list<EnumT> allowed_values) : enumerated_(), ranged_() {
     for (auto v : allowed_values) {
       enumerated_.emplace_back(as_int(v));
     }
