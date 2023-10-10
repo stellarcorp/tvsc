@@ -8,9 +8,8 @@
 namespace tvsc::configuration {
 
 std::string to_string(const Function& function) {
-  using std::to_string;
   std::string result{};
-  result.append("{ id: ").append(to_string(function.id()));
+  result.append("{ id: ").append(std::to_string(function.id()));
   result.append(", allowed_values: ").append(to_string(function.allowed_values()));
   result.append("}");
   return result;
@@ -18,7 +17,7 @@ std::string to_string(const Function& function) {
 
 std::string to_string(const Property& property) {
   std::string result{};
-  result.append("{ id: ").append(to_string(property.id()));
+  result.append("{ id: ").append(std::to_string(property.id()));
   result.append(", value: ").append(to_string(property.value()));
   result.append("}");
   return result;
@@ -27,7 +26,7 @@ std::string to_string(const Property& property) {
 std::string to_string(const SystemDefinition& system) {
   using std::to_string;
   std::string result{};
-  result.append("{id: ").append(to_string(system.id())).append(", subsystems: {");
+  result.append("{id: ").append(std::to_string(system.id())).append(", subsystems: {");
   for (const auto& subsystem : system.subsystems()) {
     result.append(to_string(subsystem));
     result.append("\n");
