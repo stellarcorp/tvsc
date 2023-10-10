@@ -2,5 +2,87 @@ syntax = "proto3";
 
 package tvsc.configuration.proto;
 
+/**
+ * Range of integer (32-bit) values.
+ */
+message Int32Range {
+  int32 min = 1;
+  int32 max = 2;
+}
+
+/**
+ * Range of integer (64-bit) values.
+ */
+message Int64Range {
+  int64 min = 1;
+  int64 max = 2;
+}
+
+/**
+ * Range of floating point values.
+ */
+message FloatRange {
+  float min = 1;
+  float max = 2;
+}
+
+/**
+ * General concept of a ranged value. This can be a range of ints, 32 bit or 64 bit, or a range of
+ * floats.
+ */
+message RangedValue {
+  oneof value {
+    Int32Range int32_range = 1;
+    Int64Range int64_range = 2;
+    FloatRange float_range = 3;
+  }
+}
+
+/**
+ * A single value. This could be an integer, 32 bit or 64 bit, or a single floating point value.
+ * This message type can be thought of as a contrast to the RangedValue type above, or it can be
+ * thought of as a specific value in a setting versus the possible values expressing a capability.
+ */
+message DiscreteValue {
+  oneof value {
+    int32 int32_value = 1;
+    int64 int64_value = 2;
+    float float_value = 3;
+  }
+}
+
+message AllowedValue {
+  repeated DiscreteValue enumerated = 1;
+  repeated RangedValue ranged = 2;
+}
+
+message Property {
+  int32 property_id = 1;
+  string name = 2;
+  DiscreteValue value = 3;
+}
+
+message Function {
+  int32 function_id = 1;
+  string name = 2;
+  repeated AllowedValue allowed_values = 3;
+}
+
 message SystemDefinition {
+  int32 system_id = 1;
+  string name = 2;
+  repeated Property properties = 3;
+  repeated Function functions = 4;
+  repeated SystemDefinition subsystems = 5;
+}
+
+message Setting {
+  int32 function_id = 1;
+  DiscreteValue value = 2;
+}
+
+message SystemConfiguration {
+  int32 system_id = 1;
+  repeated Setting settings = 2;
+  repeated SystemConfiguration subsystems = 3;
 }

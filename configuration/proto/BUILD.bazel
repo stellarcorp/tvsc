@@ -4,7 +4,6 @@ load("@rules_cc//cc:defs.bzl", "cc_proto_library")
 proto_library(
     name = "configuration_proto",
     srcs = [
-        "system_configuration.proto",
         "system_definition.proto",
     ],
 )
