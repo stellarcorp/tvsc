@@ -17,7 +17,7 @@ std::string to_string(const DiscreteValue& value) {
     result.append(to_string(*v));
   } else if (const double* v = std::get_if<double>(&value)) {
     result.append(to_string(*v));
-  } else if (const std::string_view* v = std::get_if<std::string_view>(&value)) {
+  } else if (const std::string* v = std::get_if<std::string>(&value)) {
     result.append(*v);
   }
   return result;

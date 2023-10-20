@@ -15,12 +15,15 @@ class Setting final {
   DiscreteValue value_;
 
  public:
+  Setting() = default;
   Setting(FunctionId id, const DiscreteValue& value) : id_(id), value_(value) {}
 
   operator FunctionId() const { return id(); }
   FunctionId id() const { return id_; }
+  void set_id(FunctionId id) { id_ = id; }
 
   const DiscreteValue& value() const { return value_; }
+  void set_value(const DiscreteValue& value) { value_ = value; }
 };
 
 class SystemConfiguration final {
@@ -30,6 +33,7 @@ class SystemConfiguration final {
   std::vector<Setting> settings_{};
 
  public:
+  SystemConfiguration() = default;
   SystemConfiguration(SystemId id) : id_(id) {}
 
   SystemConfiguration(SystemId id, std::initializer_list<SystemConfiguration> subsystems)
@@ -53,9 +57,13 @@ class SystemConfiguration final {
 
   operator SystemId() const { return id(); }
   SystemId id() const { return id_; }
+  void set_id(SystemId id) { id_ = id; }
 
   const std::vector<SystemConfiguration>& subsystems() const { return subsystems_; }
+  void add_subsystem(const SystemConfiguration& subsystem) { subsystems_.push_back(subsystem); }
+
   const std::vector<Setting>& settings() const { return settings_; }
+  void add_setting(const Setting& setting) { settings_.push_back(setting); }
 };
 
 bool is_valid_configuration(const SystemDefinition& system,

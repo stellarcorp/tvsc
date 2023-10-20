@@ -7,12 +7,12 @@
 
 namespace tvsc::configuration {
 
-bool encode(const SystemDefinition& defintion, char* buf, size_t& size) {}
+bool encode(const SystemDefinition& defintion, uint8_t* buf, size_t& size) {}
 
-bool decode(SystemDefinition& defintion, const char* buf, size_t size) {}
+bool decode(SystemDefinition& defintion, const uint8_t* buf, size_t size) {}
 
-bool encode(const SystemConfiguration& defintion, char* buf, size_t& size) {}
+bool encode(const SystemConfiguration& defintion, uint8_t* buf, size_t& size) {}
 
-bool decode(SystemConfiguration& defintion, const char* buf, size_t size) {}
+bool decode(SystemConfiguration& defintion, const uint8_t* buf, size_t size) {}
 
 }  // namespace tvsc::configuration

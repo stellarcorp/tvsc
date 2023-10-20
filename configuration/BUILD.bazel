@@ -131,3 +131,13 @@ cc_test(
         "//third_party/gtest",
     ],
 )
+
+cc_test(
+    name = "serialization_test",
+    srcs = ["serialization_test.cc"],
+    deps = [
+        ":configuration",
+        ":fake_configuration",
+        "//third_party/gtest",
+    ],
+)

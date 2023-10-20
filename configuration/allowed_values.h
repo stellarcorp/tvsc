@@ -18,6 +18,8 @@ class AllowedValues final {
   std::vector<RangedValue> ranged_{};
 
  public:
+  AllowedValues() = default;
+
   AllowedValues(std::initializer_list<int32_t> allowed_values) {
     for (auto v : allowed_values) {
       enumerated_.emplace_back(v);
@@ -44,7 +46,7 @@ class AllowedValues final {
 
   AllowedValues(std::initializer_list<std::string_view> allowed_values) {
     for (auto v : allowed_values) {
-      enumerated_.emplace_back(v);
+      enumerated_.emplace_back(std::string{v});
     }
   }
 
@@ -77,6 +79,15 @@ class AllowedValues final {
     for (auto v : allowed_values) {
       enumerated_.emplace_back(as_int(v));
     }
+  }
+
+  AllowedValues(const AllowedValues& rhs) = default;
+  AllowedValues(AllowedValues&& rhs) = default;
+  AllowedValues& operator=(const AllowedValues& rhs) = default;
+  AllowedValues& operator=(AllowedValues&& rhs) = default;
+
+  bool operator==(const AllowedValues& rhs) const {
+    return enumerated_ == rhs.enumerated_ && ranged_ == rhs.ranged_;
   }
 
   bool is_allowed(const DiscreteValue& value) const {
@@ -149,8 +160,16 @@ class AllowedValues final {
 
   bool is_allowed(std::string_view value) const {
     for (const auto& v : enumerated_) {
-      if (std::get_if<std::string_view>(&v) != nullptr &&
-          *std::get_if<std::string_view>(&v) == value) {
+      if (std::get_if<std::string>(&v) != nullptr && *std::get_if<std::string>(&v) == value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool is_allowed(const std::string& value) const {
+    for (const auto& v : enumerated_) {
+      if (std::get_if<std::string>(&v) != nullptr && *std::get_if<std::string>(&v) == value) {
         return true;
       }
     }
@@ -171,7 +190,10 @@ class AllowedValues final {
   }
 
   constexpr const std::vector<DiscreteValue>& enumerated_values() const { return enumerated_; }
+  void add_enumerated_value(const DiscreteValue& value) { enumerated_.push_back(value); }
+
   constexpr const std::vector<RangedValue>& ranged_values() const { return ranged_; }
+  void add_ranged_value(const RangedValue& value) { ranged_.push_back(value); }
 };
 
 std::string to_string(const AllowedValues& values);

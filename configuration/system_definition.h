@@ -20,21 +20,26 @@ namespace tvsc::configuration {
  */
 class Property final {
  private:
-  PropertyId property_id_;
-  std::string_view name_;
-  DiscreteValue value_;
+  PropertyId property_id_{};
+  std::string name_{};
+  DiscreteValue value_{};
 
  public:
+  Property() = default;
+
   template <typename ValueT>
   Property(PropertyId property_id, std::string_view name, ValueT value)
       : property_id_(property_id), name_(name), value_(value) {}
 
   operator PropertyId() const { return id(); }
   PropertyId id() const { return property_id_; }
+  void set_id(PropertyId id) { property_id_ = id; }
 
-  std::string_view name() const { return name_; }
+  const std::string& name() const { return name_; }
+  void set_name(std::string_view name) { name_ = name; }
 
   const DiscreteValue& value() const { return value_; }
+  void set_value(const DiscreteValue& value) { value_ = value; }
 };
 
 /**
@@ -45,18 +50,22 @@ class Property final {
  */
 class Function final {
  private:
-  FunctionId function_id_;
-  std::string_view name_;
-  AllowedValues allowed_values_;
+  FunctionId id_{};
+  std::string name_{};
+  AllowedValues allowed_values_{};
 
  public:
-  Function(FunctionId function_id, std::string_view name, AllowedValues allowed_values)
-      : function_id_(function_id), name_(name), allowed_values_(allowed_values) {}
+  Function() = default;
+
+  Function(FunctionId id, std::string_view name, AllowedValues allowed_values)
+      : id_(id), name_(name), allowed_values_(allowed_values) {}
 
   operator FunctionId() const { return id(); }
-  FunctionId id() const { return function_id_; }
+  FunctionId id() const { return id_; }
+  void set_id(FunctionId id) { id_ = id; }
 
-  std::string_view name() const { return name_; }
+  const std::string& name() const { return name_; }
+  void set_name(std::string_view name) { name_ = name; }
 
   template <typename ValueT>
   bool is_allowed(const ValueT& value) const {
@@ -64,6 +73,7 @@ class Function final {
   }
 
   const AllowedValues& allowed_values() const { return allowed_values_; }
+  void set_allowed_values(const AllowedValues& allowed_values) { allowed_values_ = allowed_values; }
 };
 
 /**
@@ -85,12 +95,13 @@ class Function final {
 class SystemDefinition final {
  private:
   SystemId system_;
-  std::string_view name_;
+  std::string name_;
   std::vector<SystemDefinition> subsystems_{};
   std::vector<Property> properties_{};
   std::vector<Function> functions_{};
 
  public:
+  SystemDefinition() = default;
   SystemDefinition(SystemId system, std::string_view name) : system_(system), name_(name) {}
 
   SystemDefinition(SystemId system, std::string_view name,
@@ -126,8 +137,10 @@ class SystemDefinition final {
 
   operator SystemId() const { return id(); }
   SystemId id() const { return system_; }
+  void set_id(SystemId id) { system_ = id; }
 
-  std::string_view name() const { return name_; }
+  const std::string& name() const { return name_; }
+  void set_name(std::string_view name) { name_ = name; }
 
   const std::vector<SystemDefinition>& subsystems() const { return subsystems_; }
 
@@ -143,6 +156,8 @@ class SystemDefinition final {
       return &(*iter);
     }
   }
+
+  void add_subsystem(const SystemDefinition& subsystem) { subsystems_.emplace_back(subsystem); }
 
   const SystemDefinition* search_subsystems(std::string_view subsystem_id) const {
     SystemId local_id{};
@@ -192,6 +207,8 @@ class SystemDefinition final {
     }
   }
 
+  void add_property(const Property& property) { properties_.emplace_back(property); }
+
   const std::vector<Function>& functions() const { return functions_; }
 
   bool has_function(FunctionId function_id) const {
@@ -206,6 +223,8 @@ class SystemDefinition final {
       return &(*iter);
     }
   }
+
+  void add_function(const Function& function) { functions_.emplace_back(function); }
 };
 
 std::string to_string(const Function& function);

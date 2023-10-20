@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <string>
-#include <string_view>
 #include <type_traits>
 #include <utility>
 #include <variant>
@@ -16,9 +15,14 @@ using FunctionId = uint8_t;
 template <typename T>
 using ValueRange = std::pair<T, T>;
 
-using DiscreteValue = std::variant<int32_t, int64_t, float, double, std::string_view>;
+using DiscreteValue = std::variant<int32_t, int64_t, float, double, std::string>;
 using RangedValue =
     std::variant<ValueRange<int32_t>, ValueRange<int64_t>, ValueRange<float>, ValueRange<double>>;
+
+template <typename T>
+inline bool holds_alternative(const RangedValue& in) {
+  return std::holds_alternative<std::pair<T, T>>(in);
+}
 
 std::string to_string(const RangedValue& value);
 std::string to_string(const DiscreteValue& value);

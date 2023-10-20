@@ -1,5 +1,6 @@
 #pragma once
 
+#include "configuration/system_configuration.h"
 #include "configuration/system_definition.h"
 #include "configuration/types.h"
 
@@ -141,6 +142,15 @@ static SystemDefinition satellite_42{
                 advanced_transceiver_system,
             },
         },
+    },
+};
+
+static SystemConfiguration satellite_42_config{
+    SATELLITE_ID,
+    {
+        SystemConfiguration{as_int(Systems::NAVIGATION)},
+        SystemConfiguration{as_int(Systems::POWER)},
+        SystemConfiguration{as_int(Systems::COMMUNICATIONS)},
     },
 };
 
