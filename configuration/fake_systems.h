@@ -21,7 +21,11 @@ enum class CommunicationsSubsystems : SystemId {
 enum class TransceiverSubsystems : SystemId {
   HALF_DUPLEX_RADIO_1,
   HALF_DUPLEX_RADIO_2,
-  OSCILLATOR,
+};
+
+enum class TransceiverSettings : SystemId {
+  TRANSCEIVER_NODE_ID,
+  TRANSCEIVER_EXTENDED_NODE_ID,
 };
 
 enum class RadioSettings : FunctionId {
@@ -75,6 +79,12 @@ static Function line_coding{as_int(RadioSettings::LINE_CODING),
                             "line_coding",
                             {LineCoding::NRZ_L, LineCoding::MANCHESTER_ORIGINAL}};
 
+static Function oscillator_frequency{as_int(RadioSettings::OSCILLATOR_FREQUENCY),
+                                     "oscillator_frequency",
+                                     {
+                                         ValueRange<float>{410'000'000.f, 495'000'000.f},
+                                     }};
+
 static SystemDefinition radio_1{
     as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
     "radio_1",
@@ -85,6 +95,7 @@ static SystemDefinition radio_1{
     {
         modulation_scheme,
         line_coding,
+        oscillator_frequency,
     }};
 
 static SystemDefinition radio_2{
@@ -97,33 +108,25 @@ static SystemDefinition radio_2{
     {
         modulation_scheme,
         line_coding,
+        oscillator_frequency,
     }};
 
 static SystemDefinition transceiver_system{
     as_int(CommunicationsSubsystems::TRANSCEIVER),
     "transceiver",
     {radio_1, radio_2},
-};
-
-static SystemDefinition advanced_transceiver_system{
-    as_int(CommunicationsSubsystems::TRANSCEIVER),
-    "transceiver",
     {
-        radio_1,
-        radio_2,
-        SystemDefinition{
-            as_int(TransceiverSubsystems::OSCILLATOR),
-            "oscillator",
-            {},
-            {
-                Function{
-                    as_int(RadioSettings::OSCILLATOR_FREQUENCY),
-                    "oscillator_frequency",
-                    {
-                        ValueRange<float>{410'000'000.f, 495'000'000.f},
-                    }  //
-                },
-            },
+        Property{
+            as_int(TransceiverSettings::TRANSCEIVER_EXTENDED_NODE_ID),
+            "transceiver_extended_node_id",
+            0xabcddcbaL,
+        },
+    },
+    {
+        Function{
+            as_int(TransceiverSettings::TRANSCEIVER_NODE_ID),
+            "transceiver_node_id",
+            AllowedValues{ValueRange<int32_t>{1, std::numeric_limits<uint8_t>::max() - 1}},
         },
     },
 };
@@ -139,18 +142,145 @@ static SystemDefinition satellite_42{
             as_int(Systems::COMMUNICATIONS),
             "comms",
             {
-                advanced_transceiver_system,
+                transceiver_system,
             },
         },
     },
 };
 
-static SystemConfiguration satellite_42_config{
+static SystemConfiguration radio_1_config1{
+    as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
+    {
+        Setting{as_int(RadioSettings::MODULATION_SCHEME),
+                DiscreteValue{as_int(ModulationScheme::FSK)}},
+        Setting{as_int(RadioSettings::LINE_CODING),
+                DiscreteValue{as_int(LineCoding::MANCHESTER_ORIGINAL)}},
+        Setting{as_int(RadioSettings::OSCILLATOR_FREQUENCY),
+                {
+                    DiscreteValue{410'000'000.f},
+                }},
+    },
+};
+
+static SystemConfiguration radio_2_config1{
+    as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
+    {
+        Setting{as_int(RadioSettings::MODULATION_SCHEME),
+                DiscreteValue{as_int(ModulationScheme::FSK)}},
+        Setting{as_int(RadioSettings::LINE_CODING),
+                DiscreteValue{as_int(LineCoding::MANCHESTER_ORIGINAL)}},
+        Setting{as_int(RadioSettings::OSCILLATOR_FREQUENCY),
+                {
+                    DiscreteValue{433'000'000.f},
+                }},
+    },
+};
+
+static SystemConfiguration satellite_42_configuration_1{
     SATELLITE_ID,
     {
         SystemConfiguration{as_int(Systems::NAVIGATION)},
         SystemConfiguration{as_int(Systems::POWER)},
-        SystemConfiguration{as_int(Systems::COMMUNICATIONS)},
+        SystemConfiguration{
+            as_int(Systems::COMMUNICATIONS),
+            {
+                SystemConfiguration{
+                    as_int(CommunicationsSubsystems::TRANSCEIVER),
+                    {
+                        SystemConfiguration{
+                            as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
+                            {
+                                Setting{as_int(RadioSettings::MODULATION_SCHEME),
+                                        as_int(ModulationScheme::FSK)},
+                                Setting{as_int(RadioSettings::LINE_CODING),
+                                        as_int(LineCoding::MANCHESTER_ORIGINAL)},
+                                Setting{as_int(RadioSettings::OSCILLATOR_FREQUENCY),
+                                        {
+                                            DiscreteValue{410'000'000.f},
+                                        }},
+                            },
+                        },
+                        SystemConfiguration{
+                            as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2),
+                            {
+                                Setting{as_int(RadioSettings::MODULATION_SCHEME),
+                                        as_int(ModulationScheme::FSK)},
+                                Setting{as_int(RadioSettings::LINE_CODING),
+                                        as_int(LineCoding::MANCHESTER_ORIGINAL)},
+                                Setting{as_int(RadioSettings::OSCILLATOR_FREQUENCY),
+                                        {
+                                            DiscreteValue{415'000'000.f},
+                                        }},
+                            },
+                        },
+                    },
+                },
+            },
+        },
+
+    },
+};
+
+static SystemConfiguration satellite_42_configuration_2{
+    SATELLITE_ID,
+    {
+        SystemConfiguration{as_int(Systems::NAVIGATION)},
+        SystemConfiguration{as_int(Systems::POWER)},
+        SystemConfiguration{
+            as_int(Systems::COMMUNICATIONS),
+            {
+                SystemConfiguration{
+                    as_int(CommunicationsSubsystems::TRANSCEIVER),
+                    {
+                        SystemConfiguration{
+                            as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
+                            {
+                                Setting{as_int(RadioSettings::MODULATION_SCHEME),
+                                        as_int(ModulationScheme::FSK)},
+                                Setting{as_int(RadioSettings::LINE_CODING),
+                                        as_int(LineCoding::WHITENING)},
+                            },
+                        },
+                        SystemConfiguration{
+                            as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2),
+                            {
+                                Setting{as_int(RadioSettings::MODULATION_SCHEME),
+                                        as_int(ModulationScheme::OOK)},
+                                Setting{as_int(RadioSettings::LINE_CODING),
+                                        as_int(LineCoding::NRZ_L)},
+                            },
+                        },
+                    },
+                },
+            },
+        },
+
+    },
+};
+
+static SystemConfiguration satellite_42_configuration_3{
+    SATELLITE_ID,
+    {
+        SystemConfiguration{as_int(Systems::NAVIGATION)},
+        SystemConfiguration{as_int(Systems::POWER)},
+        SystemConfiguration{
+            as_int(Systems::COMMUNICATIONS),
+            {
+                SystemConfiguration{
+                    as_int(CommunicationsSubsystems::TRANSCEIVER),
+                    {
+                        radio_1_config1,
+                        radio_2_config1,
+                    },
+                    {
+                        Setting{
+                            as_int(TransceiverSettings::TRANSCEIVER_NODE_ID),
+                            0xab,
+                        },
+                    },
+                },
+            },
+        },
     },
 };
 

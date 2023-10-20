@@ -520,7 +520,7 @@ TEST(SerializationTest, CanRoundTripSystemConfiguration) {
   uint8_t buffer[BUFFER_SIZE];
   size_t encoded_size{BUFFER_SIZE};
 
-  const SystemConfiguration& in{satellite_42};
+  const SystemConfiguration& in{satellite_42_configuration_3};
   ASSERT_TRUE(encode(in, buffer, encoded_size));
   ASSERT_LE(encoded_size, BUFFER_SIZE);
 

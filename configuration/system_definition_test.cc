@@ -25,20 +25,19 @@ TEST(SystemDefinitionUsabilityTest, CanFindSystemsInSystemSimple) {
 }
 
 TEST(SystemDefinitionUsabilityTest, CanFindSystemsInSystem) {
-  ASSERT_NE(nullptr, advanced_transceiver_system.get_subsystem(
-                         as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1)))
-      << to_string(advanced_transceiver_system);
+  ASSERT_NE(nullptr,
+            transceiver_system.get_subsystem(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1)))
+      << to_string(transceiver_system);
   EXPECT_EQ(
       as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1),
-      advanced_transceiver_system.get_subsystem(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1))
-          ->id());
+      transceiver_system.get_subsystem(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_1))->id());
 
   ASSERT_NE(nullptr,
-            advanced_transceiver_system.get_subsystem(as_int(TransceiverSubsystems::OSCILLATOR)))
-      << to_string(advanced_transceiver_system);
+            transceiver_system.get_subsystem(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2)))
+      << to_string(transceiver_system);
   EXPECT_EQ(
-      as_int(TransceiverSubsystems::OSCILLATOR),
-      advanced_transceiver_system.get_subsystem(as_int(TransceiverSubsystems::OSCILLATOR))->id());
+      as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2),
+      transceiver_system.get_subsystem(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2))->id());
 }
 
 TEST(SystemDefinitionUsabilityTest, CanDefineComplexSystems) {
@@ -66,10 +65,6 @@ TEST(SystemDefinitionUsabilityTest, CanFindSystemsRecursively) {
   ASSERT_NE(nullptr, satellite_42.search_subsystems("2.2.1"));
   EXPECT_EQ(as_int(TransceiverSubsystems::HALF_DUPLEX_RADIO_2),
             satellite_42.search_subsystems("2.2.1")->id());
-
-  ASSERT_NE(nullptr, satellite_42.search_subsystems("2.2.2"));
-  EXPECT_EQ(as_int(TransceiverSubsystems::OSCILLATOR),
-            satellite_42.search_subsystems("2.2.2")->id());
 }
 
 TEST(SystemDefinitionUsabilityTest, SearchNonexistentSubsystemGivesNullptr) {
