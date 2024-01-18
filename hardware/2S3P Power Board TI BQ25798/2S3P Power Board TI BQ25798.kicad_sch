@@ -196,6 +196,9 @@
     (property "Datasheet" "BQ25798RQMR" (at 119.38 58.42 0)
       (effects (font (size 1.27 1.27) italic) hide)
     )
+    (property "MPN" "C2876593" (at 119.38 58.42 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "2" (uuid 9a7c54cd-c0c8-4f93-abe7-1368b516821f))
     (pin "21" (uuid f7377098-0b66-434f-bc88-ae03598ba000))
     (pin "9" (uuid 708e76ed-1318-4079-ab5d-63df3a535120))
@@ -230,6 +233,23 @@
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d"
           (reference "U1") (unit 1)
         )
+      )
+    )
+  )
+
+  (sheet (at 245.11 16.51) (size 15.24 7.62) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 02e69889-bc38-4f69-8b86-c3d6a49f647e)
+    (property "Sheetname" "USB" (at 245.11 15.7984 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "usb.kicad_sch" (at 245.11 24.7146 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "2S3P Power Board TI BQ25798"
+        (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d" (page "2"))
       )
     )
   )
