@@ -184,7 +184,7 @@
   (symbol (lib_id "TI BQ25798:BQ25798RQMR") (at 119.38 58.42 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid dcb6850e-b2fa-41cf-999d-6ba45ac0183f)
-    (property "Reference" "U1" (at 142.24 48.26 0)
+    (property "Reference" "U201" (at 142.24 48.26 0)
       (effects (font (size 1.524 1.524)))
     )
     (property "Value" "BQ25798RQMR" (at 142.24 50.8 0)
@@ -231,7 +231,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d"
-          (reference "U1") (unit 1)
+          (reference "U201") (unit 1)
         )
       )
     )
