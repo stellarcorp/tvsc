@@ -1,0 +1,32 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid 5de0e7c1-40e7-41fd-bcb6-43faf32cc73d)
+
+  (paper "USLetter")
+
+  (lib_symbols
+  )
+
+
+  (global_label "USB_INT" (shape input) (at 59.69 44.45 0) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid 7e8b2fd1-15f9-4b62-946e-25a5f340f741)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 70.3557 44.45 0)
+      (effects (font (size 1.27 1.27)) (justify left) hide)
+    )
+  )
+  (global_label "POWER_SDA" (shape input) (at 67.31 33.02 180) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify right))
+    (uuid aeb03233-9027-4699-85b9-3e4ff71fa566)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 53.3182 33.02 0)
+      (effects (font (size 1.27 1.27)) (justify right) hide)
+    )
+  )
+  (global_label "POWER_SCL" (shape input) (at 52.07 53.34 180) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify right))
+    (uuid ddffde90-45c4-4e10-970f-c60fd6a05305)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 38.1387 53.34 0)
+      (effects (font (size 1.27 1.27)) (justify right) hide)
+    )
+  )
+)
