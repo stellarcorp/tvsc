@@ -479,6 +479,10 @@
     (stroke (width 0) (type default))
     (uuid 043a701d-96aa-4105-bcf9-c5a12487fbe4)
   )
+  (wire (pts (xy 115.57 132.08) (xy 119.38 132.08))
+    (stroke (width 0) (type default))
+    (uuid 05291ba2-463a-4cc1-9fa1-29cb3d69782d)
+  )
   (wire (pts (xy 38.1 66.04) (xy 49.53 66.04))
     (stroke (width 0) (type default))
     (uuid 11c9f335-ac25-4ff3-b3e8-548491006585)
@@ -1399,6 +1403,31 @@
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d"
           (reference "#PWR0104") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:GND") (at 115.57 132.08 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid f7058e6f-8b6c-471e-909c-4078b3dbad34)
+    (property "Reference" "#PWR0109" (at 115.57 138.43 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (at 115.57 137.16 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 115.57 132.08 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 115.57 132.08 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 01821c56-7f9f-4e17-abe4-ae10b20efd59))
+    (instances
+      (project "2S3P Power Board TI BQ25798"
+        (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d"
+          (reference "#PWR0109") (unit 1)
         )
       )
     )
