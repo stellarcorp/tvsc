@@ -1,0 +1,25 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid a8c5374e-3f5d-45c0-8cda-17566c18296c)
+
+  (paper "A4")
+
+  (lib_symbols
+  )
+
+
+  (global_label "BATTERY_P" (shape input) (at 163.83 62.23 0) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid b38830f5-fe31-4c8f-b508-91de36715d6b)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 176.8542 62.23 0)
+      (effects (font (size 1.27 1.27)) (justify left) hide)
+    )
+  )
+  (global_label "BATTERY_N" (shape input) (at 163.83 137.16 0) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid f5be4dd2-e058-4e85-b380-5bf697a7cc9c)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 176.9147 137.16 0)
+      (effects (font (size 1.27 1.27)) (justify left) hide)
+    )
+  )
+)
