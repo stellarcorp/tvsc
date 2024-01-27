@@ -197,14 +197,65 @@
         )
       )
     )
+    (symbol "power:VCC" (power) (pin_names (offset 0)) (in_bom yes) (on_board yes)
+      (property "Reference" "#PWR" (at 0 -3.81 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Value" "VCC" (at 0 3.81 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Footprint" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_keywords" "global power" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_description" "Power symbol creates a global label with name \"VCC\"" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "VCC_0_1"
+        (polyline
+          (pts
+            (xy -0.762 1.27)
+            (xy 0 2.54)
+          )
+          (stroke (width 0) (type default))
+          (fill (type none))
+        )
+        (polyline
+          (pts
+            (xy 0 0)
+            (xy 0 2.54)
+          )
+          (stroke (width 0) (type default))
+          (fill (type none))
+        )
+        (polyline
+          (pts
+            (xy 0 2.54)
+            (xy 0.762 1.27)
+          )
+          (stroke (width 0) (type default))
+          (fill (type none))
+        )
+      )
+      (symbol "VCC_1_1"
+        (pin power_in line (at 0 0 90) (length 0) hide
+          (name "VCC" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
   )
 
 
-  (no_connect (at 132.08 106.68) (uuid 9e98422c-ca2a-4735-a850-0ef35269e6e2))
   (no_connect (at 132.08 104.14) (uuid ff1ff6a7-e0f2-4f57-ba20-7e250043b340))
 
-  (text_box "NCs on pins 2 & 3 are for future expansion, likely including a 5V bus."
-    (at 71.12 100.33 0) (size 29.21 11.43)
+  (text_box "NCs are for future expansion, possibly including a 5V bus."
+    (at 83.82 99.06 0) (size 21.59 7.62)
     (stroke (width 0) (type default))
     (fill (type none))
     (effects (font (size 1.27 1.27)) (justify left top))
@@ -403,6 +454,31 @@
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
           (reference "#PWR0403") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:VCC") (at 132.08 106.68 90) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 620aa678-e394-4745-ab6a-ca8d3a56fe2a)
+    (property "Reference" "#PWR0409" (at 135.89 106.68 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "VCC" (at 128.27 106.68 90)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "" (at 132.08 106.68 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 132.08 106.68 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid bc1990b1-a516-4e6d-afb5-ffeb06644719))
+    (instances
+      (project "2S3P Power Board TI BQ25798"
+        (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
+          (reference "#PWR0409") (unit 1)
         )
       )
     )
