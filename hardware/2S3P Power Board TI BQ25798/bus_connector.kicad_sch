@@ -225,6 +225,58 @@
         )
       )
     )
+    (symbol "power:+5V" (power) (pin_names (offset 0)) (in_bom yes) (on_board yes)
+      (property "Reference" "#PWR" (at 0 -3.81 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Value" "+5V" (at 0 3.556 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Footprint" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_keywords" "global power" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_description" "Power symbol creates a global label with name \"+5V\"" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "+5V_0_1"
+        (polyline
+          (pts
+            (xy -0.762 1.27)
+            (xy 0 2.54)
+          )
+          (stroke (width 0) (type default))
+          (fill (type none))
+        )
+        (polyline
+          (pts
+            (xy 0 0)
+            (xy 0 2.54)
+          )
+          (stroke (width 0) (type default))
+          (fill (type none))
+        )
+        (polyline
+          (pts
+            (xy 0 2.54)
+            (xy 0.762 1.27)
+          )
+          (stroke (width 0) (type default))
+          (fill (type none))
+        )
+      )
+      (symbol "+5V_1_1"
+        (pin power_in line (at 0 0 90) (length 0) hide
+          (name "+5V" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
     (symbol "power:GND" (power) (pin_names (offset 0)) (in_bom yes) (on_board yes)
       (property "Reference" "#PWR" (at 0 -6.35 0)
         (effects (font (size 1.27 1.27)) hide)
@@ -320,17 +372,14 @@
   )
 
 
-  (no_connect (at 129.54 83.82) (uuid 644a637d-e140-4fca-85cb-cdb2e593ad4c))
-  (no_connect (at 130.81 115.57) (uuid a3021aa9-5348-445f-b6b6-b924428eff38))
-
-  (text_box "Interconnection to main board. Includes I2C signalling, interrupts, as well as power. NCs are for future expansion, possibly including a 5V bus."
-    (at 77.47 58.42 0) (size 31.75 12.7)
+  (text_box "Interconnection to main board. Includes I2C signalling, interrupts, as well as power."
+    (at 83.82 63.5 0) (size 20.32 15.24)
     (stroke (width 0) (type default))
     (fill (type none))
     (effects (font (size 1.27 1.27)) (justify left top))
     (uuid 1f7dd791-dd6e-4bd6-85c9-b28be058dd50)
   )
-  (text_box "Interconnection to comms board and other boards that do not share any signals with the power board. Note that this header has the same pin layout as the interconnect to the main board."
+  (text_box "Interconnection to comms board and other boards that do not share any signals with the power board. Note that this header has the same pin layout as the first pins of the interconnect to the main board."
     (at 167.64 107.95 0) (size 30.48 17.78)
     (stroke (width 0) (type default))
     (fill (type none))
@@ -508,6 +557,31 @@
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
           (reference "#PWR0403") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:+5V") (at 129.54 83.82 90) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 457faa39-e0ec-4908-bef0-2fa8f0aace76)
+    (property "Reference" "#PWR0416" (at 133.35 83.82 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (at 125.73 83.82 90)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "" (at 129.54 83.82 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 129.54 83.82 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid de460f4e-d20e-4765-9d11-905a0581cecd))
+    (instances
+      (project "2S3P Power Board TI BQ25798"
+        (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
+          (reference "#PWR0416") (unit 1)
         )
       )
     )
@@ -751,6 +825,56 @@
     )
   )
 
+  (symbol (lib_id "power:+5V") (at 130.81 115.57 90) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 9cdd8067-215a-412c-8738-003040394599)
+    (property "Reference" "#PWR0415" (at 134.62 115.57 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (at 127 115.57 90)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "" (at 130.81 115.57 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 130.81 115.57 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid a040a7bf-d711-4693-99b7-10de72e0e78e))
+    (instances
+      (project "2S3P Power Board TI BQ25798"
+        (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
+          (reference "#PWR0415") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:+5V") (at 129.54 71.12 90) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 9ec7d87a-771e-4448-a5e1-345c9e70bfbf)
+    (property "Reference" "#PWR0404" (at 133.35 71.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (at 125.73 71.12 90)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "" (at 129.54 71.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 129.54 71.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid d3004a57-6522-4afe-b873-20aeeb5709fe))
+    (instances
+      (project "2S3P Power Board TI BQ25798"
+        (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
+          (reference "#PWR0404") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "power:GND") (at 130.81 120.65 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a8563509-994e-4b25-8b09-dc8460a1656f)
@@ -771,31 +895,6 @@
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
           (reference "#PWR0411") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:+3.3V") (at 129.54 71.12 90) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid e28f9d46-fe50-417c-8553-1733610baf8b)
-    (property "Reference" "#PWR0404" (at 133.35 71.12 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+3.3V" (at 125.73 71.12 90)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Footprint" "" (at 129.54 71.12 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 129.54 71.12 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid db725be7-ee16-4f19-88d4-eaadd6bcb6f6))
-    (instances
-      (project "2S3P Power Board TI BQ25798"
-        (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0404") (unit 1)
         )
       )
     )
