@@ -1018,7 +1018,7 @@
   (symbol (lib_id "Device:D_Zener_Filled") (at 97.79 60.96 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0a077d07-5595-4674-bb0e-16756a3347a8)
-    (property "Reference" "D301" (at 100.33 59.69 90)
+    (property "Reference" "D401" (at 100.33 59.69 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "12V" (at 100.33 62.23 90)
@@ -1042,12 +1042,15 @@
     (property "Active" "Y" (at 97.79 60.96 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 97.79 60.96 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 684662f3-a0ca-47d3-9982-cde7a86c4929))
     (pin "2" (uuid 2d9ae258-2e58-4755-bdb4-d890d7457849))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "D301") (unit 1)
+          (reference "D401") (unit 1)
         )
       )
     )
@@ -1056,7 +1059,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 95.25 133.35 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0b51951d-e010-4d9f-8cdb-e88608c20cbd)
-    (property "Reference" "TP306" (at 97.79 128.778 0)
+    (property "Reference" "TP406" (at 97.79 128.778 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "White" (at 97.79 131.318 0)
@@ -1080,11 +1083,14 @@
     (property "Active" "Y" (at 95.25 133.35 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 95.25 133.35 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 391def2b-9d8a-40de-a5a4-30cea6816fc4))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "TP306") (unit 1)
+          (reference "TP406") (unit 1)
         )
       )
     )
@@ -1093,7 +1099,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 91.44 53.34 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0b8f1d8c-8e5c-4695-b581-9add28d700bf)
-    (property "Reference" "TP305" (at 93.98 48.768 0)
+    (property "Reference" "TP405" (at 93.98 48.768 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "White" (at 93.98 51.308 0)
@@ -1117,11 +1123,14 @@
     (property "Active" "Y" (at 91.44 53.34 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 91.44 53.34 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 6fd70905-5b73-4337-b0b1-8076ad6fe149))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "TP305") (unit 1)
+          (reference "TP405") (unit 1)
         )
       )
     )
@@ -1130,7 +1139,7 @@
   (symbol (lib_id "TI CSD17581Q3A:CSD17581Q3A") (at 119.38 114.3 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 10f69ff1-dea9-4442-b445-22bdb6098e50)
-    (property "Reference" "Q304" (at 139.7 104.14 0)
+    (property "Reference" "Q404" (at 139.7 104.14 0)
       (effects (font (size 1.524 1.524)))
     )
     (property "Value" "CSD17581Q3A" (at 139.7 106.68 0)
@@ -1160,6 +1169,9 @@
     (property "Active" "Y" (at 119.38 114.3 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 119.38 114.3 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "8" (uuid 07338e40-895d-4c74-b38e-a41c4ac350d2))
     (pin "5" (uuid 6bd57d0f-9614-4fe6-bdfd-2017b4266f77))
     (pin "7" (uuid 3400b09f-2112-4701-82c2-9c0df0e19b30))
@@ -1172,7 +1184,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "Q304") (unit 1)
+          (reference "Q404") (unit 1)
         )
       )
     )
@@ -1181,7 +1193,7 @@
   (symbol (lib_id "TI CSD17581Q3A:CSD17581Q3A") (at 53.34 34.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 1c21b01a-fea8-4ba2-a9ff-4cee6e5ee406)
-    (property "Reference" "Q301" (at 73.66 24.13 0)
+    (property "Reference" "Q401" (at 73.66 24.13 0)
       (effects (font (size 1.524 1.524)))
     )
     (property "Value" "CSD17581Q3A" (at 73.66 26.67 0)
@@ -1211,6 +1223,9 @@
     (property "Active" "Y" (at 53.34 34.29 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 53.34 34.29 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "7" (uuid 88a74a79-d4ee-4141-974e-09b53f26325d))
     (pin "6" (uuid 674accf8-9ce5-4a64-b87b-f0346969349b))
     (pin "1" (uuid 56ea3225-5986-421a-81aa-1a884b79d083))
@@ -1223,7 +1238,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "Q301") (unit 1)
+          (reference "Q401") (unit 1)
         )
       )
     )
@@ -1232,7 +1247,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 67.31 144.78 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 463a8e37-88be-40ee-8d29-7dd584c0d15e)
-    (property "Reference" "TP304" (at 69.85 140.208 0)
+    (property "Reference" "TP402" (at 69.85 140.208 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Red" (at 69.85 142.748 0)
@@ -1256,11 +1271,14 @@
     (property "Active" "Y" (at 67.31 144.78 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 67.31 144.78 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid e80522d3-0d01-4cfc-92ff-2fc5878bdc5a))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "TP304") (unit 1)
+          (reference "TP402") (unit 1)
         )
       )
     )
@@ -1269,7 +1287,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 83.82 158.75 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5483429e-640d-41c9-9a99-3d7c960cfbd6)
-    (property "Reference" "TP302" (at 86.36 154.178 0)
+    (property "Reference" "TP404" (at 86.36 154.178 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Black" (at 86.36 156.718 0)
@@ -1293,11 +1311,14 @@
     (property "Manufacturer Part Number" "5001" (at 83.82 158.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 83.82 158.75 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 387a97c0-aa21-4d04-bbfb-8200f97b7bb4))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "TP302") (unit 1)
+          (reference "TP404") (unit 1)
         )
       )
     )
@@ -1306,7 +1327,7 @@
   (symbol (lib_id "Device:C") (at 86.36 140.97 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 69753fd2-6a15-4799-bcff-865b45b9a554)
-    (property "Reference" "C302" (at 90.17 139.7 0)
+    (property "Reference" "C402" (at 90.17 139.7 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1n" (at 90.17 142.24 0)
@@ -1336,12 +1357,15 @@
     (property "Active" "Y" (at 86.36 140.97 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 86.36 140.97 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "2" (uuid 400a3cd6-97e0-4845-82fb-1be24a3cfd4e))
     (pin "1" (uuid f4aaf57d-0e7c-43e1-97f4-cec72621fab8))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "C302") (unit 1)
+          (reference "C402") (unit 1)
         )
       )
     )
@@ -1350,7 +1374,7 @@
   (symbol (lib_id "Device:D_Zener_Filled") (at 101.6 140.97 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7cb13697-c934-4a67-99d8-b776430068e5)
-    (property "Reference" "D302" (at 104.14 139.7 90)
+    (property "Reference" "D402" (at 104.14 139.7 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "12V" (at 104.14 142.24 90)
@@ -1374,12 +1398,15 @@
     (property "Active" "Y" (at 101.6 140.97 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 101.6 140.97 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid b706a80d-8dda-417c-ac53-7f31653f65a6))
     (pin "2" (uuid 799a4636-e46f-4dff-88d9-b34922c07db2))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "D302") (unit 1)
+          (reference "D402") (unit 1)
         )
       )
     )
@@ -1388,7 +1415,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 81.28 78.74 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 81273572-e06e-4445-b4b5-115a1bbab01a)
-    (property "Reference" "TP301" (at 83.82 74.168 0)
+    (property "Reference" "TP403" (at 83.82 74.168 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Black" (at 83.82 76.708 0)
@@ -1412,11 +1439,14 @@
     (property "Active" "Y" (at 81.28 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 81.28 78.74 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid c75a6e25-c171-4a0a-b9ab-ee505b5e62a3))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "TP301") (unit 1)
+          (reference "TP403") (unit 1)
         )
       )
     )
@@ -1425,7 +1455,7 @@
   (symbol (lib_id "TI CSD17581Q3A:CSD17581Q3A") (at 57.15 114.3 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a39fccec-2b43-4ca2-91a0-e2f678958a5e)
-    (property "Reference" "Q303" (at 77.47 104.14 0)
+    (property "Reference" "Q402" (at 77.47 104.14 0)
       (effects (font (size 1.524 1.524)))
     )
     (property "Value" "CSD17581Q3A" (at 77.47 106.68 0)
@@ -1455,6 +1485,9 @@
     (property "Active" "Y" (at 57.15 114.3 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 57.15 114.3 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "7" (uuid 98745707-6d0e-4c03-a186-8ca64a2c3fc8))
     (pin "6" (uuid 20761777-447f-4d17-9d25-7e9a89b9872f))
     (pin "1" (uuid 42403f54-df53-4ca8-86c8-e60a7840b3f6))
@@ -1467,7 +1500,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "Q303") (unit 1)
+          (reference "Q402") (unit 1)
         )
       )
     )
@@ -1476,7 +1509,7 @@
   (symbol (lib_id "Device:C") (at 82.55 60.96 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid ad7ca961-cdd6-4da7-8470-8ac0d99057c9)
-    (property "Reference" "C301" (at 86.36 59.69 0)
+    (property "Reference" "C401" (at 86.36 59.69 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1n" (at 86.36 62.23 0)
@@ -1506,12 +1539,15 @@
     (property "Active" "Y" (at 82.55 60.96 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 82.55 60.96 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "2" (uuid 902b705b-f4c4-4065-99be-d5d5f9f5d605))
     (pin "1" (uuid 953828cd-94a1-4a20-bd3d-9fe14f8ba3da))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "C301") (unit 1)
+          (reference "C401") (unit 1)
         )
       )
     )
@@ -1520,7 +1556,7 @@
   (symbol (lib_id "Device:R") (at 95.25 151.13 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bb3d92b8-f37c-438f-94b0-29ceef6171f2)
-    (property "Reference" "R302" (at 97.79 149.86 0)
+    (property "Reference" "R402" (at 97.79 149.86 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "294" (at 97.79 152.4 0)
@@ -1550,12 +1586,15 @@
     (property "Active" "" (at 95.25 151.13 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 95.25 151.13 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "2" (uuid ce7987e2-afa7-4171-b7f6-7f965b79db14))
     (pin "1" (uuid 1fac3ed6-aff1-49dd-9c27-5b47a8a62d09))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "R302") (unit 1)
+          (reference "R402") (unit 1)
         )
       )
     )
@@ -1564,7 +1603,7 @@
   (symbol (lib_id "TI CSD17581Q3A:CSD17581Q3A") (at 115.57 34.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c4cd1858-6b77-4f66-bd0b-71663683ccc1)
-    (property "Reference" "Q302" (at 135.89 24.13 0)
+    (property "Reference" "Q403" (at 135.89 24.13 0)
       (effects (font (size 1.524 1.524)))
     )
     (property "Value" "CSD17581Q3A" (at 135.89 26.67 0)
@@ -1594,6 +1633,9 @@
     (property "Active" "Y" (at 115.57 34.29 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 115.57 34.29 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "8" (uuid 8af9ecf2-8aed-49c3-83f3-f401f8da6412))
     (pin "5" (uuid 6e21bc39-ad10-44ff-93df-d6053352933a))
     (pin "7" (uuid 208f3c59-d49a-4ad1-8c16-513e6e9bd271))
@@ -1606,7 +1648,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "Q302") (unit 1)
+          (reference "Q403") (unit 1)
         )
       )
     )
@@ -1615,7 +1657,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 66.04 64.77 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c81e9907-6481-4bed-a7a7-9a04803dce50)
-    (property "Reference" "TP303" (at 68.58 60.198 0)
+    (property "Reference" "TP401" (at 68.58 60.198 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Red" (at 68.58 62.738 0)
@@ -1639,11 +1681,14 @@
     (property "Active" "Y" (at 66.04 64.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 66.04 64.77 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid f085c145-6ef7-4f6e-8ed2-13e0d50cacfc))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "TP303") (unit 1)
+          (reference "TP401") (unit 1)
         )
       )
     )
@@ -1652,7 +1697,7 @@
   (symbol (lib_id "Device:R") (at 91.44 71.12 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e8b60709-8b35-4a1e-8083-fdc1d2a843e4)
-    (property "Reference" "R301" (at 93.98 69.85 0)
+    (property "Reference" "R401" (at 93.98 69.85 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "294" (at 93.98 72.39 0)
@@ -1682,12 +1727,15 @@
     (property "Active" "" (at 91.44 71.12 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 91.44 71.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "2" (uuid f6b511b1-5587-49f9-99b6-31d832a01d72))
     (pin "1" (uuid a8e98a0c-224b-4636-885c-e05d53952c42))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/fbb23242-ae9a-4202-9135-ba97148afd32"
-          (reference "R301") (unit 1)
+          (reference "R401") (unit 1)
         )
       )
     )

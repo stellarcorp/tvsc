@@ -1713,7 +1713,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 199.39 114.3 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 08f3c746-1ebd-4118-b899-02bb7f781326)
-    (property "Reference" "TP204" (at 201.93 109.728 0)
+    (property "Reference" "TP306" (at 201.93 109.728 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Black" (at 201.93 112.268 0)
@@ -1737,11 +1737,14 @@
     (property "Manufacturer Part Number" "5001" (at 199.39 114.3 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 199.39 114.3 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 60b5a403-d08b-43dd-bd74-8f8b8b700be7))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/02e69889-bc38-4f69-8b86-c3d6a49f647e"
-          (reference "TP204") (unit 1)
+          (reference "TP306") (unit 1)
         )
       )
     )
@@ -1750,7 +1753,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 177.8 76.2 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0af4293f-4e48-446d-8536-72807e27b9ee)
-    (property "Reference" "TP205" (at 180.34 71.628 0)
+    (property "Reference" "TP301" (at 180.34 71.628 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Black" (at 180.34 74.168 0)
@@ -1774,11 +1777,14 @@
     (property "Manufacturer Part Number" "5001" (at 177.8 76.2 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 177.8 76.2 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid e5291aa9-e8e2-4dfe-bdac-1a682c7e5fdf))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/02e69889-bc38-4f69-8b86-c3d6a49f647e"
-          (reference "TP205") (unit 1)
+          (reference "TP301") (unit 1)
         )
       )
     )
@@ -1787,7 +1793,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 199.39 81.28 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0f7175bd-28ec-41e9-a6ed-074248805caa)
-    (property "Reference" "TP206" (at 201.93 76.708 0)
+    (property "Reference" "TP304" (at 201.93 76.708 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "White" (at 201.93 79.248 0)
@@ -1811,11 +1817,14 @@
     (property "Active" "Y" (at 199.39 81.28 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 199.39 81.28 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 71c95e0b-4d2e-410e-9e9b-09a9f2833906))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/02e69889-bc38-4f69-8b86-c3d6a49f647e"
-          (reference "TP206") (unit 1)
+          (reference "TP304") (unit 1)
         )
       )
     )
@@ -1824,7 +1833,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 177.8 86.36 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 195309ad-e61c-4092-8911-0659f93769a5)
-    (property "Reference" "TP202" (at 180.34 82.55 0)
+    (property "Reference" "TP302" (at 180.34 82.55 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Red" (at 180.34 85.09 0)
@@ -1848,11 +1857,14 @@
     (property "Active" "Y" (at 177.8 86.36 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 177.8 86.36 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 865560c4-2206-48ce-af7b-6331a5142b09))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/02e69889-bc38-4f69-8b86-c3d6a49f647e"
-          (reference "TP202") (unit 1)
+          (reference "TP302") (unit 1)
         )
       )
     )
@@ -1861,7 +1873,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 179.07 111.76 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 58ba9e3c-4971-4702-b05a-7ac363008ec7)
-    (property "Reference" "TP203" (at 181.61 107.188 0)
+    (property "Reference" "TP303" (at 181.61 107.188 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "White" (at 181.61 109.728 0)
@@ -1885,11 +1897,14 @@
     (property "Active" "Y" (at 179.07 111.76 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 179.07 111.76 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 665c362d-98c8-428c-91c4-eaaeb4b5993e))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/02e69889-bc38-4f69-8b86-c3d6a49f647e"
-          (reference "TP203") (unit 1)
+          (reference "TP303") (unit 1)
         )
       )
     )
@@ -1898,7 +1913,7 @@
   (symbol (lib_id "Amphenol 124018612112A:124018612112A") (at 144.78 124.46 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 6f4d6899-c7b7-4595-ac62-4cdc2222bb95)
-    (property "Reference" "J201" (at 135.89 58.42 0)
+    (property "Reference" "J301" (at 135.89 58.42 0)
       (effects (font (size 1.524 1.524)))
     )
     (property "Value" "USB" (at 135.89 60.96 0)
@@ -1923,6 +1938,9 @@
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Active" "Y" (at 144.78 124.46 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Purpose" "" (at 144.78 124.46 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "A6" (uuid 46f2d763-1c56-4445-9066-3db9b70cebaf))
@@ -1952,7 +1970,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/02e69889-bc38-4f69-8b86-c3d6a49f647e"
-          (reference "J201") (unit 1)
+          (reference "J301") (unit 1)
         )
       )
     )
@@ -1961,7 +1979,7 @@
   (symbol (lib_id "power:GND1") (at 207.01 93.98 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 8cf24e33-02bb-4b67-b9d7-6a54379ee766)
-    (property "Reference" "#PWR0210" (at 207.01 100.33 0)
+    (property "Reference" "#PWR0303" (at 207.01 100.33 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND1" (at 207.01 97.79 0)
@@ -1977,7 +1995,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/02e69889-bc38-4f69-8b86-c3d6a49f647e"
-          (reference "#PWR0210") (unit 1)
+          (reference "#PWR0303") (unit 1)
         )
       )
     )
@@ -1986,7 +2004,7 @@
   (symbol (lib_id "power:GND1") (at 163.83 66.04 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 8dbe133e-f0aa-4e02-aadd-9846934aea96)
-    (property "Reference" "#PWR0201" (at 163.83 72.39 0)
+    (property "Reference" "#PWR0301" (at 163.83 72.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND1" (at 163.83 69.85 0)
@@ -2002,7 +2020,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/02e69889-bc38-4f69-8b86-c3d6a49f647e"
-          (reference "#PWR0201") (unit 1)
+          (reference "#PWR0301") (unit 1)
         )
       )
     )
@@ -2011,7 +2029,7 @@
   (symbol (lib_id "power:GND1") (at 165.1 124.46 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 9d292a14-4ad0-4585-a3b7-268a6e09bdc3)
-    (property "Reference" "#PWR0202" (at 165.1 130.81 0)
+    (property "Reference" "#PWR0302" (at 165.1 130.81 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND1" (at 165.1 128.27 0)
@@ -2027,7 +2045,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/02e69889-bc38-4f69-8b86-c3d6a49f647e"
-          (reference "#PWR0202") (unit 1)
+          (reference "#PWR0302") (unit 1)
         )
       )
     )
@@ -2036,7 +2054,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 199.39 93.98 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e84ff3d6-a353-4a05-bdc5-3a01609a45dd)
-    (property "Reference" "TP201" (at 201.93 89.408 0)
+    (property "Reference" "TP305" (at 201.93 89.408 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Ring" (at 201.93 91.948 0)
@@ -2060,11 +2078,14 @@
     (property "Active" "Y" (at 199.39 93.98 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 199.39 93.98 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 89dd0765-2740-494c-afbf-1fc13fc8cf02))
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/02e69889-bc38-4f69-8b86-c3d6a49f647e"
-          (reference "TP201") (unit 1)
+          (reference "TP305") (unit 1)
         )
       )
     )

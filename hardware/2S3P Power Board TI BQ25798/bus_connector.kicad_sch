@@ -419,7 +419,7 @@
   (symbol (lib_id "Molex 504050-1291:504050-1291") (at 129.54 60.96 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0b3cb446-4796-4d24-95b7-46118f003eae)
-    (property "Reference" "J401" (at 142.24 53.34 0)
+    (property "Reference" "J701" (at 142.24 53.34 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "504050-1291" (at 142.24 55.88 0)
@@ -464,6 +464,9 @@
     (property "Active" "Y" (at 129.54 60.96 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 129.54 60.96 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "MP2" (uuid 4cef479c-0a5d-44df-87f0-e0014d5d3307))
     (pin "10" (uuid ba3f2bb8-0092-4229-9375-f939a7e1a00f))
     (pin "1" (uuid 9cf4ba95-1f2e-4946-a4c0-7af469bb9c2b))
@@ -481,7 +484,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "J401") (unit 1)
+          (reference "J701") (unit 1)
         )
       )
     )
@@ -490,7 +493,7 @@
   (symbol (lib_id "power:GND") (at 154.94 60.96 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 1f0a7029-979c-4478-af65-0d74d96daf1d)
-    (property "Reference" "#PWR0407" (at 161.29 60.96 0)
+    (property "Reference" "#PWR0715" (at 161.29 60.96 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 158.75 60.96 90)
@@ -506,7 +509,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0407") (unit 1)
+          (reference "#PWR0715") (unit 1)
         )
       )
     )
@@ -515,7 +518,7 @@
   (symbol (lib_id "power:GND") (at 154.94 63.5 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 226dcf8a-a4c6-4331-99c1-bb30117a9f7e)
-    (property "Reference" "#PWR0408" (at 161.29 63.5 0)
+    (property "Reference" "#PWR0716" (at 161.29 63.5 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 158.75 63.5 90)
@@ -531,7 +534,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0408") (unit 1)
+          (reference "#PWR0716") (unit 1)
         )
       )
     )
@@ -540,7 +543,7 @@
   (symbol (lib_id "power:GND") (at 129.54 68.58 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 380a93c9-8c21-41d4-a1ae-f98afd6d062f)
-    (property "Reference" "#PWR0403" (at 123.19 68.58 0)
+    (property "Reference" "#PWR0702" (at 123.19 68.58 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 125.73 68.58 90)
@@ -556,7 +559,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0403") (unit 1)
+          (reference "#PWR0702") (unit 1)
         )
       )
     )
@@ -565,7 +568,7 @@
   (symbol (lib_id "power:+5V") (at 129.54 83.82 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 457faa39-e0ec-4908-bef0-2fa8f0aace76)
-    (property "Reference" "#PWR0416" (at 133.35 83.82 0)
+    (property "Reference" "#PWR0706" (at 133.35 83.82 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 125.73 83.82 90)
@@ -581,7 +584,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0416") (unit 1)
+          (reference "#PWR0706") (unit 1)
         )
       )
     )
@@ -590,7 +593,7 @@
   (symbol (lib_id "power:VCC") (at 130.81 118.11 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 4c9456a8-0647-4c8a-88a0-697ad54796ad)
-    (property "Reference" "#PWR0410" (at 134.62 118.11 0)
+    (property "Reference" "#PWR0711" (at 134.62 118.11 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 127 118.11 90)
@@ -606,7 +609,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0410") (unit 1)
+          (reference "#PWR0711") (unit 1)
         )
       )
     )
@@ -615,7 +618,7 @@
   (symbol (lib_id "power:GND") (at 153.67 113.03 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 55ca4860-6ad9-42f2-ba70-020f366f1793)
-    (property "Reference" "#PWR0413" (at 160.02 113.03 0)
+    (property "Reference" "#PWR0713" (at 160.02 113.03 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 157.48 113.03 90)
@@ -631,7 +634,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0413") (unit 1)
+          (reference "#PWR0713") (unit 1)
         )
       )
     )
@@ -640,7 +643,7 @@
   (symbol (lib_id "power:VCC") (at 129.54 86.36 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 620aa678-e394-4745-ab6a-ca8d3a56fe2a)
-    (property "Reference" "#PWR0409" (at 133.35 86.36 0)
+    (property "Reference" "#PWR0707" (at 133.35 86.36 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 125.73 86.36 90)
@@ -656,7 +659,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0409") (unit 1)
+          (reference "#PWR0707") (unit 1)
         )
       )
     )
@@ -665,7 +668,7 @@
   (symbol (lib_id "Molex 504050-0491:504050-0491") (at 130.81 113.03 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 640dec26-00e5-4f9d-987e-d4fbc4ab377e)
-    (property "Reference" "J402" (at 142.24 105.41 0)
+    (property "Reference" "J702" (at 142.24 105.41 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "504050-0491" (at 142.24 107.95 0)
@@ -710,6 +713,9 @@
     (property "Manufacturer Part Number" "504050-0491" (at 130.81 113.03 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Purpose" "" (at 130.81 113.03 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "2" (uuid 7c2148c4-104b-4610-a914-266af4ca9564))
     (pin "MP1" (uuid 044e4777-b737-4f9a-9f1d-6879de36011f))
     (pin "4" (uuid 10b0c069-4b7e-4e29-bf98-f33a07271e36))
@@ -719,7 +725,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "J402") (unit 1)
+          (reference "J702") (unit 1)
         )
       )
     )
@@ -728,7 +734,7 @@
   (symbol (lib_id "power:GND") (at 129.54 76.2 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7a7c5b72-d5cf-4b6c-b28f-122d3bb1b4ec)
-    (property "Reference" "#PWR0401" (at 123.19 76.2 0)
+    (property "Reference" "#PWR0704" (at 123.19 76.2 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 125.73 76.2 90)
@@ -744,7 +750,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0401") (unit 1)
+          (reference "#PWR0704") (unit 1)
         )
       )
     )
@@ -753,7 +759,7 @@
   (symbol (lib_id "power:GND") (at 129.54 88.9 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 841998ab-08fe-452d-b4c7-d6ae9ad21e3d)
-    (property "Reference" "#PWR0406" (at 123.19 88.9 0)
+    (property "Reference" "#PWR0708" (at 123.19 88.9 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 125.73 88.9 90)
@@ -769,7 +775,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0406") (unit 1)
+          (reference "#PWR0708") (unit 1)
         )
       )
     )
@@ -778,7 +784,7 @@
   (symbol (lib_id "power:GND") (at 153.67 115.57 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8afea4cb-2b7e-4b80-ab06-79a1e1c19180)
-    (property "Reference" "#PWR0414" (at 160.02 115.57 0)
+    (property "Reference" "#PWR0714" (at 160.02 115.57 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 157.48 115.57 90)
@@ -794,7 +800,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0414") (unit 1)
+          (reference "#PWR0714") (unit 1)
         )
       )
     )
@@ -803,7 +809,7 @@
   (symbol (lib_id "power:+3.3V") (at 130.81 113.03 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8b0cb186-7b10-4bcf-a800-37d16f99e86a)
-    (property "Reference" "#PWR0412" (at 134.62 113.03 0)
+    (property "Reference" "#PWR0709" (at 134.62 113.03 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 127 113.03 90)
@@ -819,7 +825,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0412") (unit 1)
+          (reference "#PWR0709") (unit 1)
         )
       )
     )
@@ -828,7 +834,7 @@
   (symbol (lib_id "power:+5V") (at 130.81 115.57 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 9cdd8067-215a-412c-8738-003040394599)
-    (property "Reference" "#PWR0415" (at 134.62 115.57 0)
+    (property "Reference" "#PWR0710" (at 134.62 115.57 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 127 115.57 90)
@@ -844,7 +850,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0415") (unit 1)
+          (reference "#PWR0710") (unit 1)
         )
       )
     )
@@ -853,7 +859,7 @@
   (symbol (lib_id "power:+5V") (at 129.54 71.12 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 9ec7d87a-771e-4448-a5e1-345c9e70bfbf)
-    (property "Reference" "#PWR0404" (at 133.35 71.12 0)
+    (property "Reference" "#PWR0703" (at 133.35 71.12 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 125.73 71.12 90)
@@ -869,7 +875,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0404") (unit 1)
+          (reference "#PWR0703") (unit 1)
         )
       )
     )
@@ -878,7 +884,7 @@
   (symbol (lib_id "power:GND") (at 130.81 120.65 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a8563509-994e-4b25-8b09-dc8460a1656f)
-    (property "Reference" "#PWR0411" (at 124.46 120.65 0)
+    (property "Reference" "#PWR0712" (at 124.46 120.65 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 127 120.65 90)
@@ -894,7 +900,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0411") (unit 1)
+          (reference "#PWR0712") (unit 1)
         )
       )
     )
@@ -903,7 +909,7 @@
   (symbol (lib_id "power:+3.3V") (at 129.54 81.28 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f1919079-198e-46fd-8ee4-29b652f715c9)
-    (property "Reference" "#PWR0405" (at 133.35 81.28 0)
+    (property "Reference" "#PWR0705" (at 133.35 81.28 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 125.73 81.28 90)
@@ -919,7 +925,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0405") (unit 1)
+          (reference "#PWR0705") (unit 1)
         )
       )
     )
@@ -928,7 +934,7 @@
   (symbol (lib_id "power:+3.3V") (at 129.54 60.96 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f5c09a63-83d2-4c59-b679-c37ca827b5a5)
-    (property "Reference" "#PWR0402" (at 133.35 60.96 0)
+    (property "Reference" "#PWR0701" (at 133.35 60.96 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 125.73 60.96 90)
@@ -944,7 +950,7 @@
     (instances
       (project "2S3P Power Board TI BQ25798"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0402") (unit 1)
+          (reference "#PWR0701") (unit 1)
         )
       )
     )
