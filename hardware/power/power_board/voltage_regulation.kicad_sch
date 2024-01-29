@@ -742,7 +742,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 128.27 73.66 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 00fac608-bf22-47d0-8ec3-830c2e5dc85c)
-    (property "Reference" "TP601" (at 129.54 70.612 0)
+    (property "Reference" "TP501" (at 129.54 70.612 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Ring" (at 129.54 72.39 0)
@@ -771,9 +771,9 @@
     )
     (pin "1" (uuid 3a86dc11-4a56-4cc0-adbe-f27622d03298))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "TP601") (unit 1)
+          (reference "TP501") (unit 1)
         )
       )
     )
@@ -782,7 +782,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 128.27 115.57 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 0e4eabd8-7300-4f76-a55d-3333a95c8891)
-    (property "Reference" "TP602" (at 129.54 112.522 0)
+    (property "Reference" "TP502" (at 129.54 112.522 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Ring" (at 129.54 114.3 0)
@@ -811,9 +811,9 @@
     )
     (pin "1" (uuid cc2fed37-d771-4792-a97b-2097d8e5563f))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "TP602") (unit 1)
+          (reference "TP502") (unit 1)
         )
       )
     )
@@ -822,7 +822,7 @@
   (symbol (lib_id "Device:LED") (at 156.21 104.14 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 2d700dda-5c6d-4e3a-91b9-cfb6ee2205ca)
-    (property "Reference" "D602" (at 160.02 104.4575 90)
+    (property "Reference" "D502" (at 160.02 104.4575 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "Orange LED" (at 160.02 106.9975 90)
@@ -852,9 +852,9 @@
     (pin "1" (uuid bfa9fe26-f75e-4ffa-ac3e-451c2d07b7ac))
     (pin "2" (uuid e2e9c8bd-063d-42d2-93c5-e289cefbe132))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "D602") (unit 1)
+          (reference "D502") (unit 1)
         )
       )
     )
@@ -863,7 +863,7 @@
   (symbol (lib_id "Device:C") (at 138.43 64.77 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3928a865-654c-4ce7-82c6-84975f5c0e74)
-    (property "Reference" "C603" (at 142.24 63.5 0)
+    (property "Reference" "C503" (at 142.24 63.5 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "2.2u" (at 142.24 66.04 0)
@@ -896,9 +896,9 @@
     (pin "1" (uuid 2286a57f-f729-4b57-a1da-d4e6efe4f81f))
     (pin "2" (uuid 434f09d7-6999-492b-be10-21f45a562827))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "C603") (unit 1)
+          (reference "C503") (unit 1)
         )
       )
     )
@@ -907,7 +907,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 143.51 58.42 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3d829d67-f16b-4aa2-90cd-462250a3578f)
-    (property "Reference" "TP603" (at 146.05 53.848 0)
+    (property "Reference" "TP503" (at 146.05 53.848 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Red" (at 146.05 56.388 0)
@@ -936,9 +936,9 @@
     )
     (pin "1" (uuid bfcc0854-25de-4639-9d5d-c967e0d0cb18))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "TP603") (unit 1)
+          (reference "TP503") (unit 1)
         )
       )
     )
@@ -947,7 +947,7 @@
   (symbol (lib_id "power:+5V") (at 171.45 100.33 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5986a6c8-9bf2-4352-b9c3-f8fc9baabf71)
-    (property "Reference" "#PWR0606" (at 167.64 100.33 0)
+    (property "Reference" "#PWR0506" (at 167.64 100.33 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 175.26 100.33 90)
@@ -961,9 +961,9 @@
     )
     (pin "1" (uuid b8d9f98f-e3a6-4ccc-bcde-8f3e5474e1d1))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "#PWR0606") (unit 1)
+          (reference "#PWR0506") (unit 1)
         )
       )
     )
@@ -972,7 +972,7 @@
   (symbol (lib_id "power:GND") (at 125.73 73.66 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 69da212d-cea5-4d2b-88dc-4dd2a71a3cc1)
-    (property "Reference" "#PWR0603" (at 125.73 80.01 0)
+    (property "Reference" "#PWR0503" (at 125.73 80.01 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 125.73 78.74 0)
@@ -986,9 +986,9 @@
     )
     (pin "1" (uuid 08c5ced3-fa14-4209-98d2-a78583ec8367))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "#PWR0603") (unit 1)
+          (reference "#PWR0503") (unit 1)
         )
       )
     )
@@ -997,7 +997,7 @@
   (symbol (lib_id "power:VCC") (at 104.14 100.33 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 728fe161-2724-4844-877e-f0e4c872f1a2)
-    (property "Reference" "#PWR0602" (at 107.95 100.33 0)
+    (property "Reference" "#PWR0502" (at 107.95 100.33 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 100.33 100.33 90)
@@ -1011,9 +1011,9 @@
     )
     (pin "1" (uuid eaa1df55-6249-4a38-9652-09394d456938))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "#PWR0602") (unit 1)
+          (reference "#PWR0502") (unit 1)
         )
       )
     )
@@ -1022,7 +1022,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 143.51 100.33 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 78076ec9-f835-46bd-8ed6-dafd987f8807)
-    (property "Reference" "TP604" (at 146.05 95.758 0)
+    (property "Reference" "TP504" (at 146.05 95.758 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Red" (at 146.05 98.298 0)
@@ -1051,9 +1051,9 @@
     )
     (pin "1" (uuid e742c2f3-f2a4-4f7e-a3b0-f53128569a03))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "TP604") (unit 1)
+          (reference "TP504") (unit 1)
         )
       )
     )
@@ -1062,7 +1062,7 @@
   (symbol (lib_id "Device:C") (at 109.22 106.68 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 82b2929e-a273-4e45-ae96-bdf3c9f8da3c)
-    (property "Reference" "C602" (at 113.03 105.41 0)
+    (property "Reference" "C502" (at 113.03 105.41 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1u" (at 113.03 107.95 0)
@@ -1095,9 +1095,9 @@
     (pin "1" (uuid 76dac654-263b-48db-839c-7b84e308a73e))
     (pin "2" (uuid fc53acc9-91b6-4430-b467-306f032afc9f))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "C602") (unit 1)
+          (reference "C502") (unit 1)
         )
       )
     )
@@ -1106,7 +1106,7 @@
   (symbol (lib_id "Device:R") (at 156.21 69.85 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8b598efb-24eb-4cd9-8439-0ddca8f6ce1e)
-    (property "Reference" "R601" (at 158.75 68.58 0)
+    (property "Reference" "R501" (at 158.75 68.58 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "68" (at 158.75 71.12 0)
@@ -1136,9 +1136,9 @@
     (pin "1" (uuid 395c4672-51e5-43fd-a35a-b163747fc13d))
     (pin "2" (uuid 244800d9-302d-4b7f-8ac6-6a6af389c78c))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "R601") (unit 1)
+          (reference "R501") (unit 1)
         )
       )
     )
@@ -1147,7 +1147,7 @@
   (symbol (lib_id "power:+3.3V") (at 171.45 58.42 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a35e2042-6a5d-4842-a99d-421ced501d3d)
-    (property "Reference" "#PWR0605" (at 167.64 58.42 0)
+    (property "Reference" "#PWR0505" (at 167.64 58.42 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 175.26 58.42 90)
@@ -1161,9 +1161,9 @@
     )
     (pin "1" (uuid 8b53c569-e973-479f-b168-f2ceefd75b5e))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "#PWR0605") (unit 1)
+          (reference "#PWR0505") (unit 1)
         )
       )
     )
@@ -1172,7 +1172,7 @@
   (symbol (lib_id "Device:C") (at 109.22 64.77 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a4655b91-bd01-4e4f-9dde-cf5456b9f71d)
-    (property "Reference" "C601" (at 113.03 63.5 0)
+    (property "Reference" "C501" (at 113.03 63.5 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1u" (at 113.03 66.04 0)
@@ -1205,9 +1205,9 @@
     (pin "1" (uuid a9c189da-a4d3-407a-981c-0b80fefcbb6d))
     (pin "2" (uuid 1c2ab6a4-065e-436b-a990-eee213841346))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "C601") (unit 1)
+          (reference "C501") (unit 1)
         )
       )
     )
@@ -1216,7 +1216,7 @@
   (symbol (lib_id "Device:LED") (at 156.21 62.23 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a6ea66d6-8531-473f-b846-8955122168dd)
-    (property "Reference" "D601" (at 160.02 62.5475 90)
+    (property "Reference" "D501" (at 160.02 62.5475 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "Orange LED" (at 160.02 65.0875 90)
@@ -1246,9 +1246,9 @@
     (pin "1" (uuid 35cd9670-0152-41ef-86d5-75f8552e3c2d))
     (pin "2" (uuid 02aa0e1b-3ab6-49e5-94fc-72b04b7d24d6))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "D601") (unit 1)
+          (reference "D501") (unit 1)
         )
       )
     )
@@ -1257,7 +1257,7 @@
   (symbol (lib_id "Regulator_Linear:TLV76733DRVx") (at 125.73 60.96 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid b6f1b5a8-3ebc-4873-b38f-463324854103)
-    (property "Reference" "U601" (at 125.73 50.8 0)
+    (property "Reference" "U501" (at 125.73 50.8 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "TLV76733DRVx" (at 125.73 53.34 0)
@@ -1292,9 +1292,9 @@
     (pin "2" (uuid 08c6f059-02db-4119-bbcf-b430b5936729))
     (pin "1" (uuid 5d0bc651-0f66-495c-ba1b-db1b5bfc0480))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "U601") (unit 1)
+          (reference "U501") (unit 1)
         )
       )
     )
@@ -1303,7 +1303,7 @@
   (symbol (lib_id "Device:C") (at 138.43 106.68 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bf2e4df2-29a6-4aee-9832-209c31947312)
-    (property "Reference" "C604" (at 142.24 105.41 0)
+    (property "Reference" "C504" (at 142.24 105.41 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "2.2u" (at 142.24 107.95 0)
@@ -1336,9 +1336,9 @@
     (pin "1" (uuid 75823f90-92a6-4b4f-9bc9-183996c5056c))
     (pin "2" (uuid b1dd6011-2139-4741-87eb-8304b1b61dac))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "C604") (unit 1)
+          (reference "C504") (unit 1)
         )
       )
     )
@@ -1347,7 +1347,7 @@
   (symbol (lib_id "Regulator_Linear:TLV76750DRVx") (at 125.73 102.87 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c0b5af1f-69b4-4208-9fca-359ac97b238e)
-    (property "Reference" "U602" (at 125.73 92.71 0)
+    (property "Reference" "U502" (at 125.73 92.71 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "TLV76750DRVx" (at 125.73 95.25 0)
@@ -1382,9 +1382,9 @@
     (pin "5" (uuid d5552a60-dabb-44b7-a1ec-54d1ef3071db))
     (pin "1" (uuid f80d6b2e-c730-4d39-ad2d-50fc4c94aa9e))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "U602") (unit 1)
+          (reference "U502") (unit 1)
         )
       )
     )
@@ -1393,7 +1393,7 @@
   (symbol (lib_id "power:VCC") (at 104.14 58.42 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid dd83a000-23cb-4341-b78a-50abf98af3cb)
-    (property "Reference" "#PWR0601" (at 107.95 58.42 0)
+    (property "Reference" "#PWR0501" (at 107.95 58.42 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 100.33 58.42 90)
@@ -1407,9 +1407,9 @@
     )
     (pin "1" (uuid 1f61556d-4459-420d-a03b-3f9aee83b0a2))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "#PWR0601") (unit 1)
+          (reference "#PWR0501") (unit 1)
         )
       )
     )
@@ -1418,7 +1418,7 @@
   (symbol (lib_id "Device:R") (at 156.21 111.76 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f6e457e0-e8a7-4557-97b8-05b2f6fc1b9e)
-    (property "Reference" "R602" (at 158.75 110.49 0)
+    (property "Reference" "R502" (at 158.75 110.49 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "150" (at 158.75 113.03 0)
@@ -1448,9 +1448,9 @@
     (pin "1" (uuid 5d46686b-e7fe-4f4c-a108-1d82f33b8cd0))
     (pin "2" (uuid f8b7e362-7168-4713-abb6-f7f9397e2e63))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "R602") (unit 1)
+          (reference "R502") (unit 1)
         )
       )
     )
@@ -1459,7 +1459,7 @@
   (symbol (lib_id "power:GND") (at 125.73 115.57 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid fd4d43fc-108b-4227-ae25-b711879bc065)
-    (property "Reference" "#PWR0604" (at 125.73 121.92 0)
+    (property "Reference" "#PWR0504" (at 125.73 121.92 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 125.73 120.65 0)
@@ -1473,9 +1473,9 @@
     )
     (pin "1" (uuid 878cd8c2-b01c-4fe0-9264-25685fa744e8))
     (instances
-      (project "2S3P Power Board TI BQ25798"
+      (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/8db3683c-cea4-47e4-9629-920cdb131786"
-          (reference "#PWR0604") (unit 1)
+          (reference "#PWR0504") (unit 1)
         )
       )
     )
