@@ -1,13 +1,16 @@
 cc_library(
     name = "control",
     hdrs = [
+        "combined_parameters.h",
         "discrete_parameter.h",
         "parameter.h",
+        "parameters.h",
         "ranged_parameter.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
         "//base",
+        "//third_party/glog",
     ],
 )
 
@@ -16,7 +19,6 @@ cc_test(
     srcs = ["discrete_parameter_test.cc"],
     deps = [
         ":control",
-        "//third_party/glog",
         "//third_party/gtest",
     ],
 )
@@ -26,17 +28,15 @@ cc_test(
     srcs = ["ranged_parameter_test.cc"],
     deps = [
         ":control",
-        "//third_party/glog",
         "//third_party/gtest",
     ],
 )
 
 cc_test(
-    name = "combined_parameter_test",
-    srcs = ["combined_parameter_test.cc"],
+    name = "combined_parameters_test",
+    srcs = ["combined_parameters_test.cc"],
     deps = [
         ":control",
-        "//third_party/glog",
         "//third_party/gtest",
     ],
 )

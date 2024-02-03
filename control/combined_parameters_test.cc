@@ -1,7 +1,10 @@
+#include "control/combined_parameters.h"
+
 #include <memory>
 
 #include "control/discrete_parameter.h"
 #include "control/parameter.h"
+#include "control/parameters.h"
 #include "control/ranged_parameter.h"
 #include "gtest/gtest.h"
 
@@ -58,9 +61,9 @@ TEST(CombinedParameterTest, CanCombineCombinations) {
                                                          new DiscreteParameter<int>(6),
                                                          new RangedParameter<int>(7, 10))};
   std::unique_ptr<Parameter<int>> combined{
-      combine<int>(std::move(combined1), std::move(combined1))};
-  for (int i = 0; i <= 10; ++i) {
-    EXPECT_TRUE(combined->is_allowed(i));
+      combine<int>(std::move(combined1), std::move(combined2))};
+  for (int i = 1; i <= 10; ++i) {
+    EXPECT_TRUE(combined->is_allowed(i)) << "i: " << i;
   }
   EXPECT_FALSE(combined->is_allowed(0));
   EXPECT_FALSE(combined->is_allowed(11));
