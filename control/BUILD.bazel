@@ -1,0 +1,32 @@
+cc_library(
+    name = "control",
+    hdrs = [
+        "parameter.h",
+        "discrete_parameter.h",
+        "ranged_parameter.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//base",
+    ],
+)
+
+cc_test(
+    name = "discrete_parameter_test",
+    srcs = ["discrete_parameter_test.cc"],
+    deps = [
+        ":control",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "ranged_parameter_test",
+    srcs = ["ranged_parameter_test.cc"],
+    deps = [
+        ":control",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
