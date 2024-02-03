@@ -30,3 +30,13 @@ cc_test(
         "//third_party/gtest",
     ],
 )
+
+cc_test(
+    name = "combined_parameter_test",
+    srcs = ["combined_parameter_test.cc"],
+    deps = [
+        ":control",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
