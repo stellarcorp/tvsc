@@ -27,7 +27,7 @@ namespace tvsc::control {
     RangedParameter& operator = (RangedParameter&& rhs) { low_ = std::move(rhs.low_); high_ = std::move(rhs.high_); include_low_ = rhs.include_low_; include_high_ = rhs.include_high_; return *this; }
 
 
-    bool is_allowed(const T& value) const override { return value >= low_ && value <= high_; }
+    bool is_allowed(const T& value) const override { if (include_low_ && include_high_ ) {return value >= low_ && value <= high_; } else if (include_low_) { return value >= low_ && value < high_; } else if (include_high_) { return value > low_ && value <= high_;} else { return value > low_ && value < high_;} }
   };
   
 
