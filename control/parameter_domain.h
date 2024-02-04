@@ -4,14 +4,12 @@
 #include <memory>
 #include <vector>
 
-#include "glog/logging.h"
-
 namespace tvsc::control {
 
 template <typename T>
 class ParameterDomain {
  public:
-  virtual ~ParameterDomain() { LOG(INFO) << "ParameterDomain::~ParameterDomain()"; }
+  virtual ~ParameterDomain() = default;
   virtual bool is_allowed(const T& value) const = 0;
 };
 
