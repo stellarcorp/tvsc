@@ -30,16 +30,26 @@ class ExcludedParameterDomains final : public ParameterDomain<T> {
     return *this;
   }
 
-  bool is_allowed(const T& value) const override {
-    if (!parameter_domain_->is_allowed(value)) {
+  bool in_domain(const T& value) const override {
+    if (!parameter_domain_->in_domain(value)) {
       return false;
     }
     for (const auto& p : excluded_) {
-      if (p->is_allowed(value)) {
+      if (p->in_domain(value)) {
         return false;
       }
     }
     return true;
+  }
+
+  double size() const override {
+    double result{parameter_domain_->size()};
+    // Note that we purposefully double count overlaps in ranged parameter domains here. See the
+    // note in the CombinedParameterDomains class for a bit more insight.
+    for (const auto& p : excluded_) {
+      result -= p->size();
+    }
+    return result;
   }
 };
 

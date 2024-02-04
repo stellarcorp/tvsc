@@ -6,6 +6,30 @@
 
 namespace tvsc::control {
 
+namespace impl {
+
+template <typename T>
+double compute_size(T low, T high, bool include_low, bool include_high);
+
+template <>
+double compute_size<int>(int low, int high, bool include_low, bool include_high) {
+  double result{static_cast<double>(high - low + 1)};
+  if (!include_low) {
+    --result;
+  }
+  if (!include_high) {
+    --result;
+  }
+  return result;
+}
+
+template <>
+double compute_size<float>(float low, float high, bool include_low, bool include_high) {
+  return high - low;
+}
+
+}  // namespace impl
+
 template <typename T>
 class RangedParameterDomain final : public ParameterDomain<T> {
  private:
@@ -55,7 +79,7 @@ class RangedParameterDomain final : public ParameterDomain<T> {
     return *this;
   }
 
-  bool is_allowed(const T& value) const override {
+  bool in_domain(const T& value) const override {
     if (include_low_ && include_high_) {
       return value >= low_ && value <= high_;
     } else if (include_low_) {
@@ -65,6 +89,10 @@ class RangedParameterDomain final : public ParameterDomain<T> {
     } else {
       return value > low_ && value < high_;
     }
+  }
+
+  double size() const override {
+    return impl::compute_size(low_, high_, include_low_, include_high_);
   }
 };
 

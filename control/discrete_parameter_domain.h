@@ -37,7 +37,11 @@ class DiscreteParameterDomain final : public ParameterDomain<T> {
     return *this;
   }
 
-  bool is_allowed(const T& value) const override { return value_ == value; }
+  bool in_domain(const T& value) const override { return value_ == value; }
+
+  double size() const override {
+    return 1;
+  }
 };
 
 }  // namespace tvsc::control

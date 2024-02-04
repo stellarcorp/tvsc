@@ -27,13 +27,29 @@ class CombinedParameterDomains final : public ParameterDomain<T> {
     return *this;
   }
 
-  bool is_allowed(const T& value) const override {
+  bool in_domain(const T& value) const override {
     for (const auto& p : parameter_domains_) {
-      if (p->is_allowed(value)) {
+      if (p->in_domain(value)) {
         return true;
       }
     }
     return false;
+  }
+
+  double size() const override {
+    // We purposefully double count overlaps in combined ranged parameter domains. This is done for
+    // a number of reasons.
+    // 1. It's simpler than trying to consider how the ranges overlap. We could introduce
+    // functionality to merge / heal overlapping ranges, but so far, it is not needed, except for
+    // maybe in this size computation.
+    // 2. We assume, correctly or not, that the overlap is meaningful, or it would have been
+    // excluded before the ranges were created. Again, we could introduce a feature to merge
+    // overlapping ranges, if it becomes necessary.
+    double result{};
+    for (const auto& p : parameter_domains_) {
+      result += p->size();
+    }
+    return result;
   }
 };
 

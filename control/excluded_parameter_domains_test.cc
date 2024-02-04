@@ -14,12 +14,12 @@ TEST(ExcludedParameterDomainTest, CanDetectAllowedValues) {
   std::unique_ptr<ParameterDomain<int>> p1{new RangedParameterDomain<int>(1, 5)};
   std::unique_ptr<ParameterDomain<int>> p2{new DiscreteParameterDomain<int>(2)};
   std::unique_ptr<ParameterDomain<int>> combined{exclude<int>(std::move(p1), std::move(p2))};
-  EXPECT_TRUE(combined->is_allowed(1));
-  EXPECT_FALSE(combined->is_allowed(2));
-  EXPECT_TRUE(combined->is_allowed(3));
-  EXPECT_TRUE(combined->is_allowed(5));
-  EXPECT_FALSE(combined->is_allowed(0));
-  EXPECT_FALSE(combined->is_allowed(6));
+  EXPECT_TRUE(combined->in_domain(1));
+  EXPECT_FALSE(combined->in_domain(2));
+  EXPECT_TRUE(combined->in_domain(3));
+  EXPECT_TRUE(combined->in_domain(5));
+  EXPECT_FALSE(combined->in_domain(0));
+  EXPECT_FALSE(combined->in_domain(6));
 }
 
 TEST(ExcludedParameterDomainTest, CanUseRValues) {
@@ -27,13 +27,13 @@ TEST(ExcludedParameterDomainTest, CanUseRValues) {
       exclude<int>(std::make_unique<RangedParameterDomain<int>>(1, 5),
                    std::make_unique<DiscreteParameterDomain<int>>(2),
                    std::make_unique<DiscreteParameterDomain<int>>(4))};
-  EXPECT_TRUE(combined->is_allowed(1));
-  EXPECT_FALSE(combined->is_allowed(2));
-  EXPECT_TRUE(combined->is_allowed(3));
-  EXPECT_FALSE(combined->is_allowed(4));
-  EXPECT_TRUE(combined->is_allowed(5));
-  EXPECT_FALSE(combined->is_allowed(0));
-  EXPECT_FALSE(combined->is_allowed(6));
+  EXPECT_TRUE(combined->in_domain(1));
+  EXPECT_FALSE(combined->in_domain(2));
+  EXPECT_TRUE(combined->in_domain(3));
+  EXPECT_FALSE(combined->in_domain(4));
+  EXPECT_TRUE(combined->in_domain(5));
+  EXPECT_FALSE(combined->in_domain(0));
+  EXPECT_FALSE(combined->in_domain(6));
 }
 
 }  // namespace tvsc::control

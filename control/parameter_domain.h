@@ -10,7 +10,8 @@ template <typename T>
 class ParameterDomain {
  public:
   virtual ~ParameterDomain() = default;
-  virtual bool is_allowed(const T& value) const = 0;
+  virtual bool in_domain(const T& value) const = 0;
+  virtual double size() const = 0;
 };
 
 }  // namespace tvsc::control
