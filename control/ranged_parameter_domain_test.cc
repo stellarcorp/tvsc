@@ -1,4 +1,4 @@
-#include "control/ranged_parameter.h"
+#include "control/ranged_parameter_domain.h"
 
 #include "gtest/gtest.h"
 

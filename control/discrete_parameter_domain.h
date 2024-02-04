@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "control/parameter.h"
+#include "control/parameter_domain.h"
 
 namespace tvsc::control {
 

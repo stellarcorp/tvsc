@@ -1,11 +1,11 @@
-#include "control/excluded_parameters.h"
+#include "control/excluded_parameter_domains.h"
 
 #include <memory>
 
-#include "control/discrete_parameter.h"
-#include "control/parameter.h"
-#include "control/parameters.h"
-#include "control/ranged_parameter.h"
+#include "control/discrete_parameter_domain.h"
+#include "control/parameter_domain.h"
+#include "control/parameter_domains.h"
+#include "control/ranged_parameter_domain.h"
 #include "gtest/gtest.h"
 
 namespace tvsc::control {

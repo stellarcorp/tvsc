@@ -1,4 +1,4 @@
-#include "control/discrete_parameter.h"
+#include "control/discrete_parameter_domain.h"
 
 #include "gtest/gtest.h"
 
