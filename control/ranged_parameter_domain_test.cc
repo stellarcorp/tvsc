@@ -4,8 +4,8 @@
 
 namespace tvsc::control {
 
-TEST(RangedParameterTest, CanDetectAllowedValue) {
-  RangedParameter<int> p{1, 3};
+TEST(RangedParameterDomainTest, CanDetectAllowedValue) {
+  RangedParameterDomain<int> p{1, 3};
   EXPECT_TRUE(p.is_allowed(1));
   EXPECT_TRUE(p.is_allowed(2));
   EXPECT_TRUE(p.is_allowed(3));
@@ -13,8 +13,8 @@ TEST(RangedParameterTest, CanDetectAllowedValue) {
   EXPECT_FALSE(p.is_allowed(4));
 }
 
-TEST(RangedParameterTest, CanDetectAllowedValueWithHighExcluded) {
-  RangedParameter<int> p{1, 3, true, false};
+TEST(RangedParameterDomainTest, CanDetectAllowedValueWithHighExcluded) {
+  RangedParameterDomain<int> p{1, 3, true, false};
   EXPECT_TRUE(p.is_allowed(1));
   EXPECT_TRUE(p.is_allowed(2));
   EXPECT_FALSE(p.is_allowed(3));
@@ -22,8 +22,8 @@ TEST(RangedParameterTest, CanDetectAllowedValueWithHighExcluded) {
   EXPECT_FALSE(p.is_allowed(4));
 }
 
-TEST(RangedParameterTest, CanDetectAllowedValueWithLowExcluded) {
-  RangedParameter<int> p{1, 3, false, true};
+TEST(RangedParameterDomainTest, CanDetectAllowedValueWithLowExcluded) {
+  RangedParameterDomain<int> p{1, 3, false, true};
   EXPECT_FALSE(p.is_allowed(1));
   EXPECT_TRUE(p.is_allowed(2));
   EXPECT_TRUE(p.is_allowed(3));
@@ -31,8 +31,8 @@ TEST(RangedParameterTest, CanDetectAllowedValueWithLowExcluded) {
   EXPECT_FALSE(p.is_allowed(4));
 }
 
-TEST(RangedParameterTest, CanDetectAllowedValueExclusive) {
-  RangedParameter<int> p{1, 3, false, false};
+TEST(RangedParameterDomainTest, CanDetectAllowedValueExclusive) {
+  RangedParameterDomain<int> p{1, 3, false, false};
   EXPECT_FALSE(p.is_allowed(1));
   EXPECT_TRUE(p.is_allowed(2));
   EXPECT_FALSE(p.is_allowed(3));
@@ -40,9 +40,9 @@ TEST(RangedParameterTest, CanDetectAllowedValueExclusive) {
   EXPECT_FALSE(p.is_allowed(4));
 }
 
-TEST(RangedParameterTest, CanCopy) {
-  RangedParameter<int> p1{1, 3};
-  RangedParameter<int> p2{p1};
+TEST(RangedParameterDomainTest, CanCopy) {
+  RangedParameterDomain<int> p1{1, 3};
+  RangedParameterDomain<int> p2{p1};
   EXPECT_TRUE(p2.is_allowed(1));
   EXPECT_TRUE(p2.is_allowed(2));
   EXPECT_TRUE(p2.is_allowed(3));
@@ -50,18 +50,18 @@ TEST(RangedParameterTest, CanCopy) {
   EXPECT_FALSE(p2.is_allowed(4));
 }
 
-TEST(RangedParameterTest, CanMoveConstruct) {
-  RangedParameter<int> p1{-1, 1};
-  RangedParameter<int> p2{std::move(p1)};
+TEST(RangedParameterDomainTest, CanMoveConstruct) {
+  RangedParameterDomain<int> p1{-1, 1};
+  RangedParameterDomain<int> p2{std::move(p1)};
   EXPECT_TRUE(p2.is_allowed(-1));
   EXPECT_TRUE(p2.is_allowed(0));
   EXPECT_TRUE(p2.is_allowed(1));
   EXPECT_FALSE(p2.is_allowed(-2));
 }
 
-TEST(RangedParameterTest, CanAssign) {
-  RangedParameter<int> p1{1, 3};
-  RangedParameter<int> p2{0, 1};
+TEST(RangedParameterDomainTest, CanAssign) {
+  RangedParameterDomain<int> p1{1, 3};
+  RangedParameterDomain<int> p2{0, 1};
 
   p2 = p1;
 
@@ -69,9 +69,9 @@ TEST(RangedParameterTest, CanAssign) {
   EXPECT_FALSE(p2.is_allowed(0));
 }
 
-TEST(RangedParameterTest, CanMoveAssign) {
-  RangedParameter<int> p1{1, 3};
-  RangedParameter<int> p2{0, 1};
+TEST(RangedParameterDomainTest, CanMoveAssign) {
+  RangedParameterDomain<int> p1{1, 3};
+  RangedParameterDomain<int> p2{0, 1};
 
   p2 = std::move(p1);
 

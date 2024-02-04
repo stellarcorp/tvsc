@@ -10,29 +10,29 @@
 
 namespace tvsc::control {
 
-TEST(CombinedParameterTest, CanDetectAllowedValue) {
-  std::unique_ptr<Parameter<int>> p1{new DiscreteParameter<int>(1)};
-  std::unique_ptr<Parameter<int>> p2{new DiscreteParameter<int>(2)};
-  std::unique_ptr<Parameter<int>> combined{combine<int>(std::move(p1), std::move(p2))};
+TEST(CombinedParameterDomainTest, CanDetectAllowedValue) {
+  std::unique_ptr<ParameterDomain<int>> p1{new DiscreteParameterDomain<int>(1)};
+  std::unique_ptr<ParameterDomain<int>> p2{new DiscreteParameterDomain<int>(2)};
+  std::unique_ptr<ParameterDomain<int>> combined{combine<int>(std::move(p1), std::move(p2))};
   EXPECT_TRUE(combined->is_allowed(1));
   EXPECT_TRUE(combined->is_allowed(2));
   EXPECT_FALSE(combined->is_allowed(0));
   EXPECT_FALSE(combined->is_allowed(3));
 }
 
-TEST(CombinedParameterTest, CanUseRValues) {
-  std::unique_ptr<Parameter<int>> combined{
-      combine<int>(new DiscreteParameter<int>(1), new DiscreteParameter<int>(2))};
+TEST(CombinedParameterDomainTest, CanUseRValues) {
+  std::unique_ptr<ParameterDomain<int>> combined{
+      combine<int>(new DiscreteParameterDomain<int>(1), new DiscreteParameterDomain<int>(2))};
   EXPECT_TRUE(combined->is_allowed(1));
   EXPECT_TRUE(combined->is_allowed(2));
   EXPECT_FALSE(combined->is_allowed(0));
   EXPECT_FALSE(combined->is_allowed(3));
 }
 
-TEST(CombinedParameterTest, CanCombineSeveralParameters) {
-  std::unique_ptr<Parameter<int>> combined{
-      combine<int>(new DiscreteParameter<int>(1), new DiscreteParameter<int>(2),
-                   new DiscreteParameter<int>(3), new DiscreteParameter<int>(4))};
+TEST(CombinedParameterDomainTest, CanCombineSeveralParameterDomains) {
+  std::unique_ptr<ParameterDomain<int>> combined{
+      combine<int>(new DiscreteParameterDomain<int>(1), new DiscreteParameterDomain<int>(2),
+                   new DiscreteParameterDomain<int>(3), new DiscreteParameterDomain<int>(4))};
   EXPECT_TRUE(combined->is_allowed(1));
   EXPECT_TRUE(combined->is_allowed(2));
   EXPECT_TRUE(combined->is_allowed(3));
@@ -41,10 +41,10 @@ TEST(CombinedParameterTest, CanCombineSeveralParameters) {
   EXPECT_FALSE(combined->is_allowed(5));
 }
 
-TEST(CombinedParameterTest, CanCombineRangedAndDiscrete) {
-  std::unique_ptr<Parameter<int>> combined{combine<int>(new DiscreteParameter<int>(1),
-                                                        new DiscreteParameter<int>(2),
-                                                        new RangedParameter<int>(3, 4))};
+TEST(CombinedParameterDomainTest, CanCombineRangedAndDiscrete) {
+  std::unique_ptr<ParameterDomain<int>> combined{
+      combine<int>(new DiscreteParameterDomain<int>(1), new DiscreteParameterDomain<int>(2),
+                   new RangedParameterDomain<int>(3, 4))};
   EXPECT_TRUE(combined->is_allowed(1));
   EXPECT_TRUE(combined->is_allowed(2));
   EXPECT_TRUE(combined->is_allowed(3));
@@ -53,14 +53,14 @@ TEST(CombinedParameterTest, CanCombineRangedAndDiscrete) {
   EXPECT_FALSE(combined->is_allowed(5));
 }
 
-TEST(CombinedParameterTest, CanCombineCombinations) {
-  std::unique_ptr<Parameter<int>> combined1{combine<int>(new DiscreteParameter<int>(1),
-                                                         new DiscreteParameter<int>(2),
-                                                         new RangedParameter<int>(3, 4))};
-  std::unique_ptr<Parameter<int>> combined2{combine<int>(new DiscreteParameter<int>(5),
-                                                         new DiscreteParameter<int>(6),
-                                                         new RangedParameter<int>(7, 10))};
-  std::unique_ptr<Parameter<int>> combined{
+TEST(CombinedParameterDomainTest, CanCombineCombinations) {
+  std::unique_ptr<ParameterDomain<int>> combined1{
+      combine<int>(new DiscreteParameterDomain<int>(1), new DiscreteParameterDomain<int>(2),
+                   new RangedParameterDomain<int>(3, 4))};
+  std::unique_ptr<ParameterDomain<int>> combined2{
+      combine<int>(new DiscreteParameterDomain<int>(5), new DiscreteParameterDomain<int>(6),
+                   new RangedParameterDomain<int>(7, 10))};
+  std::unique_ptr<ParameterDomain<int>> combined{
       combine<int>(std::move(combined1), std::move(combined2))};
   for (int i = 1; i <= 10; ++i) {
     EXPECT_TRUE(combined->is_allowed(i)) << "i: " << i;

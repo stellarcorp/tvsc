@@ -9,9 +9,9 @@
 namespace tvsc::control {
 
 template <typename T>
-class Parameter {
+class ParameterDomain {
  public:
-  virtual ~Parameter() { LOG(INFO) << "Parameter::~Parameter()"; }
+  virtual ~ParameterDomain() { LOG(INFO) << "ParameterDomain::~ParameterDomain()"; }
   virtual bool is_allowed(const T& value) const = 0;
 };
 

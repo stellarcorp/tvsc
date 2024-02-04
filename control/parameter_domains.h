@@ -7,20 +7,20 @@
 namespace tvsc::control {
 
 template <typename T, typename... Args>
-std::unique_ptr<Parameter<T>> combine(Args... parameter_domains) {
-  std::vector<std::unique_ptr<Parameter<T>>> v{};
+std::unique_ptr<ParameterDomain<T>> combine(Args... parameter_domains) {
+  std::vector<std::unique_ptr<ParameterDomain<T>>> v{};
   v.reserve(sizeof...(Args));
   (v.emplace_back(std::forward<Args>(parameter_domains)), ...);
-  return std::unique_ptr<Parameter<T>>(new impl::CombinedParameters<T>(std::move(v)));
+  return std::unique_ptr<ParameterDomain<T>>(new impl::CombinedParameterDomains<T>(std::move(v)));
 }
 
   template <typename T, typename... Args>
-std::unique_ptr<Parameter<T>> exclude(std::unique_ptr<Parameter<T>>&& parameter_domain,
+std::unique_ptr<ParameterDomain<T>> exclude(std::unique_ptr<ParameterDomain<T>>&& parameter_domain,
                                       Args... excluded) {
-  std::vector<std::unique_ptr<Parameter<T>>> v{};
+  std::vector<std::unique_ptr<ParameterDomain<T>>> v{};
   v.reserve(sizeof...(Args));
   (v.emplace_back(std::forward<Args>(excluded)), ...);
-  return std::unique_ptr<Parameter<T>>(new impl::ExcludedParameters<T>(std::move(parameter_domain), std::move(v)));
+  return std::unique_ptr<ParameterDomain<T>>(new impl::ExcludedParameterDomains<T>(std::move(parameter_domain), std::move(v)));
   }
 
 }  // namespace tvsc::control

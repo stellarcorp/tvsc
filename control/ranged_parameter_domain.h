@@ -7,7 +7,7 @@
 namespace tvsc::control {
 
 template <typename T>
-class RangedParameter final : public Parameter<T> {
+class RangedParameterDomain final : public ParameterDomain<T> {
  private:
   T low_{};
   T high_{};
@@ -15,38 +15,39 @@ class RangedParameter final : public Parameter<T> {
   bool include_high_{true};
 
  public:
-  RangedParameter() = default;
-  RangedParameter(const RangedParameter& rhs)
+  RangedParameterDomain() = default;
+  RangedParameterDomain(const RangedParameterDomain& rhs)
       : low_(rhs.low_),
         high_(rhs.high_),
         include_low_(rhs.include_low_),
         include_high_(rhs.include_high_) {}
-  RangedParameter(RangedParameter&& rhs)
+  RangedParameterDomain(RangedParameterDomain&& rhs)
       : low_(std::move(rhs.low_)),
         high_(std::move(rhs.high_)),
         include_low_(rhs.include_low_),
         include_high_(rhs.include_high_) {}
 
-  RangedParameter(const T& low_value, const T& high_value, bool include_low = true,
-                  bool include_high = true)
+  RangedParameterDomain(const T& low_value, const T& high_value, bool include_low = true,
+                        bool include_high = true)
       : low_(low_value),
         high_(high_value),
         include_low_(include_low),
         include_high_(include_high) {}
-  RangedParameter(T&& low_value, T&& high_value, bool include_low = true, bool include_high = true)
+  RangedParameterDomain(T&& low_value, T&& high_value, bool include_low = true,
+                        bool include_high = true)
       : low_(std::move(low_value)),
         high_(std::move(high_value)),
         include_low_(include_low),
         include_high_(include_high) {}
 
-  RangedParameter& operator=(const RangedParameter& rhs) {
+  RangedParameterDomain& operator=(const RangedParameterDomain& rhs) {
     low_ = rhs.low_;
     high_ = rhs.high_;
     include_low_ = rhs.include_low_;
     include_high_ = rhs.include_high_;
     return *this;
   }
-  RangedParameter& operator=(RangedParameter&& rhs) {
+  RangedParameterDomain& operator=(RangedParameterDomain&& rhs) {
     low_ = std::move(rhs.low_);
     high_ = std::move(rhs.high_);
     include_low_ = rhs.include_low_;

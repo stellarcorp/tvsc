@@ -11,18 +11,20 @@ namespace tvsc::control {
 namespace impl {
 
 template <typename T>
-class ExcludedParameters final : public Parameter<T> {
+class ExcludedParameterDomains final : public ParameterDomain<T> {
  private:
-  const std::unique_ptr<Parameter<T>> parameter_domain_;
-  const std::vector<std::unique_ptr<Parameter<T>>> excluded_;
+  const std::unique_ptr<ParameterDomain<T>> parameter_domain_;
+  const std::vector<std::unique_ptr<ParameterDomain<T>>> excluded_;
 
  public:
-  ExcludedParameters(std::unique_ptr<Parameter<T>>&& parameter_domain, std::vector<std::unique_ptr<Parameter<T>>>&& excluded)
-    : parameter_domain_(std::move(parameter_domain)), excluded_(std::move(excluded)) {}
+  ExcludedParameterDomains(std::unique_ptr<ParameterDomain<T>>&& parameter_domain,
+                           std::vector<std::unique_ptr<ParameterDomain<T>>>&& excluded)
+      : parameter_domain_(std::move(parameter_domain)), excluded_(std::move(excluded)) {}
 
-  ExcludedParameters(ExcludedParameters&& rhs) : parameter_domain_(std::move(rhs.parameter_domain_)), excluded_(std::move(rhs.excluded_)) {}
+  ExcludedParameterDomains(ExcludedParameterDomains&& rhs)
+      : parameter_domain_(std::move(rhs.parameter_domain_)), excluded_(std::move(rhs.excluded_)) {}
 
-  ExcludedParameters& operator=(ExcludedParameters&& rhs) {
+  ExcludedParameterDomains& operator=(ExcludedParameterDomains&& rhs) {
     parameter_domain_ = std::move(rhs.parameter_domain_);
     excluded_ = std::move(rhs.excluded_);
     return *this;

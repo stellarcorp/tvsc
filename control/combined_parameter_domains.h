@@ -11,17 +11,18 @@ namespace tvsc::control {
 namespace impl {
 
 template <typename T>
-class CombinedParameters final : public Parameter<T> {
+class CombinedParameterDomains final : public ParameterDomain<T> {
  private:
-  const std::vector<std::unique_ptr<Parameter<T>>> parameter_domains_;
+  const std::vector<std::unique_ptr<ParameterDomain<T>>> parameter_domains_;
 
  public:
-  CombinedParameters(std::vector<std::unique_ptr<Parameter<T>>>&& parameter_domains)
+  CombinedParameterDomains(std::vector<std::unique_ptr<ParameterDomain<T>>>&& parameter_domains)
       : parameter_domains_(std::move(parameter_domains)) {}
 
-  CombinedParameters(CombinedParameters&& rhs) : parameter_domains_(std::move(rhs.parameter_domains_)) {}
+  CombinedParameterDomains(CombinedParameterDomains&& rhs)
+      : parameter_domains_(std::move(rhs.parameter_domains_)) {}
 
-  CombinedParameters& operator=(CombinedParameters&& rhs) {
+  CombinedParameterDomains& operator=(CombinedParameterDomains&& rhs) {
     parameter_domains_ = std::move(rhs.parameter_domains_);
     return *this;
   }
