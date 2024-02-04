@@ -3,6 +3,7 @@ cc_library(
     hdrs = [
         "combined_parameters.h",
         "discrete_parameter.h",
+        "excluded_parameters.h",
         "parameter.h",
         "parameters.h",
         "ranged_parameter.h",
@@ -35,6 +36,15 @@ cc_test(
 cc_test(
     name = "combined_parameters_test",
     srcs = ["combined_parameters_test.cc"],
+    deps = [
+        ":control",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "excluded_parameters_test",
+    srcs = ["excluded_parameters_test.cc"],
     deps = [
         ":control",
         "//third_party/gtest",
