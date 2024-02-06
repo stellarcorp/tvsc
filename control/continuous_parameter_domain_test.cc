@@ -35,7 +35,11 @@ TEST(ContinuousParameterDomainTest, CanDetectAllowedValuesInFloatRange) {
 }
 
 TEST(ContinuousParameterDomainTest, CanDetectAllowedValuesInFloatRangeWithExcludedEndPoints) {
-  auto domain = configure_continuous_domain<float>().with_range(1.f, 3.f).exclude_low().exclude_high().create();
+  auto domain = configure_continuous_domain<float>()
+                    .with_range(1.f, 3.f)
+                    .exclude_low()
+                    .exclude_high()
+                    .create();
   EXPECT_FALSE(domain->in_domain(1.f));
   EXPECT_TRUE(domain->in_domain(1.5f));
   EXPECT_TRUE(domain->in_domain(2.5f));
@@ -52,7 +56,8 @@ TEST(ContinuousParameterDomainTest, SizeOfIntegralRangeIsNumberPossibleValues) {
   EXPECT_EQ(2, domain->size());
   domain = configure_continuous_domain<int>().with_range(1, 3).exclude_high().create();
   EXPECT_EQ(2, domain->size());
-  domain = configure_continuous_domain<int>().with_range(1, 3).exclude_low().exclude_high().create();
+  domain =
+      configure_continuous_domain<int>().with_range(1, 3).exclude_low().exclude_high().create();
   EXPECT_EQ(1, domain->size());
 }
 
