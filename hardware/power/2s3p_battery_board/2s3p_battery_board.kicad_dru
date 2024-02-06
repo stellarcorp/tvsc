@@ -1,0 +1,5 @@
+(version 1)
+(rule exempt_from_courtyard_overlap
+(condition 
+    "A.Reference == 'U1' || B.Reference == 'U1' || A.Reference == 'U2' || B.Reference == 'U2' || A.Reference == 'U3' || B.Reference == 'U3' || A.Reference == 'U4' || B.Reference == 'U4' || A.Reference == 'U5' || B.Reference == 'U5' || A.Reference == 'U6' || B.Reference == 'U6'")
+(constraint courtyard_clearance (min -100mm)))
