@@ -566,6 +566,14 @@
       {
         "netclass": "Small Pad",
         "pattern": "/Charger/SYS"
+      },
+      {
+        "netclass": "Small Pad",
+        "pattern": "USB_VBUS"
+      },
+      {
+        "netclass": "Small Pad",
+        "pattern": "SOLAR_VBUS"
       }
     ]
   },
@@ -575,7 +583,7 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "power_board.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""

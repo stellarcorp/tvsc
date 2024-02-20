@@ -2864,7 +2864,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 182.88 71.12 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8b0aabbf-1940-47e1-b141-5b8c0a0cdff5)
-    (property "Reference" "TP2" (at 187.96 69.85 90)
+    (property "Reference" "TP216" (at 187.96 69.85 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "White" (at 187.96 72.39 90)
@@ -2895,7 +2895,7 @@
     (instances
       (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/72cce56a-875b-4a52-91b3-c422f3b3deee"
-          (reference "TP2") (unit 1)
+          (reference "TP216") (unit 1)
         )
       )
     )
@@ -3772,7 +3772,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 182.88 55.88 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e9031ab2-41ce-4d70-a658-fb2b839d48e8)
-    (property "Reference" "TP1" (at 187.96 54.61 90)
+    (property "Reference" "TP215" (at 187.96 54.61 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "White" (at 187.96 57.15 90)
@@ -3803,7 +3803,7 @@
     (instances
       (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/72cce56a-875b-4a52-91b3-c422f3b3deee"
-          (reference "TP1") (unit 1)
+          (reference "TP215") (unit 1)
         )
       )
     )
