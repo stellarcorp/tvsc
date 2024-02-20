@@ -841,24 +841,19 @@
     (uuid f1fd78f3-bb62-40d3-829e-a04d48e808d8)
   )
 
-  (text_box "These LEDs show that we have power and means that most everything on the power board is working correctly."
-    (at 185.42 77.47 0) (size 24.13 13.97)
+  (text_box "These LEDs show that we have power and means that most everything on the power board is working correctly.\n\nThey also illuminate any translucent logos on the chassis.\n\nThey also consume a large amount of power as designed."
+    (at 187.96 64.77 0) (size 24.13 31.75)
     (stroke (width 0) (type default))
     (fill (type none))
     (effects (font (size 1.27 1.27)) (justify left top))
     (uuid 1aab75c2-ce79-481c-bca7-b27cbfbe6f0f)
   )
-  (text_box "The exact voltage of VCC is unspecified. It is the voltage from the battery charge management IC. It is probably around 7V."
+  (text_box "The exact voltage of VCC is unspecified and varies over time. It is the voltage from the battery charge management IC. It is probably around 7V."
     (at 40.64 59.69 0) (size 34.29 11.43)
     (stroke (width 0) (type default))
     (fill (type none))
     (effects (font (size 1.27 1.27)) (justify left top))
     (uuid bdc13b2f-3df9-4f59-be36-ddeb5195a5f9)
-  )
-
-  (text "Change to white LEDs" (at 172.72 64.77 0)
-    (effects (font (size 1.27 1.27)) (justify left bottom))
-    (uuid 1f7e4302-5528-4ac1-a280-35aa21d19c8b)
   )
 
   (symbol (lib_id "Connector:TestPoint") (at 128.27 73.66 0) (unit 1)
