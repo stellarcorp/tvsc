@@ -314,9 +314,9 @@
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 97257f90-c880-4f7c-a4b2-6771cf79e4f9))
     (fp_line (start 3.15 1.6) (end -3.15 1.6)
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp f63a9dd1-9839-4cc0-ac1e-20b86649e26d))
-    (pad "1" smd roundrect (at -2.9625 0 90) (size 1.225 3.35) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.204082)
+    (pad "1" smd roundrect (at -2.9625 0 90) (size 1.225 3.35) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2040816327)
       (net 45 "/Charger/BAT") (pintype "passive") (tstamp 4c5f9127-accb-4858-aec2-49784433054e))
-    (pad "2" smd roundrect (at 2.9625 0 90) (size 1.225 3.35) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.204082)
+    (pad "2" smd roundrect (at 2.9625 0 90) (size 1.225 3.35) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2040816327)
       (net 29 "BATTERY_+") (pintype "passive") (tstamp 1b7ea76d-74a1-459e-acfb-5416c6d02288))
     (model "${KICAD6_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_2512_6332Metric.wrl"
       (offset (xyz 0 0 0))
@@ -3549,9 +3549,9 @@
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 6b408458-ccdb-4bc0-860a-c7ff3f6d673a))
     (fp_line (start 3.15 1.6) (end -3.15 1.6)
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 2fe581b0-0d7b-4616-9977-d22f35ed1088))
-    (pad "1" smd roundrect (at -2.9625 0 180) (size 1.225 3.35) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.204082)
+    (pad "1" smd roundrect (at -2.9625 0 180) (size 1.225 3.35) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2040816327)
       (net 44 "/Charger/SYS") (pintype "passive") (tstamp 5def9b6a-c262-4750-9349-48e32de92fb5))
-    (pad "2" smd roundrect (at 2.9625 0 180) (size 1.225 3.35) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.204082)
+    (pad "2" smd roundrect (at 2.9625 0 180) (size 1.225 3.35) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2040816327)
       (net 14 "VCC") (pintype "passive") (tstamp 78eb1c38-2523-4018-a82f-40f8584c60a1))
     (model "${KICAD6_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_2512_6332Metric.wrl"
       (offset (xyz 0 0 0))
@@ -4603,9 +4603,9 @@
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp cbe1791b-6f08-442e-bcf7-28020c300fb2))
     (fp_line (start 3.15 1.6) (end -3.15 1.6)
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp c7c1cb77-e70d-423e-ac76-858233fd9077))
-    (pad "1" smd roundrect (at -2.9625 0 180) (size 1.225 3.35) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.204082)
+    (pad "1" smd roundrect (at -2.9625 0 180) (size 1.225 3.35) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2040816327)
       (net 34 "VBUS") (pintype "passive") (tstamp 2b2bff91-9251-429b-a391-58f10898b5b3))
-    (pad "2" smd roundrect (at 2.9625 0 180) (size 1.225 3.35) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.204082)
+    (pad "2" smd roundrect (at 2.9625 0 180) (size 1.225 3.35) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2040816327)
       (net 4 "/Charger/VBUS_PIN") (pintype "passive") (tstamp e66e8ab9-124d-4b37-afca-0861cbf4b910))
     (model "${KICAD6_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_2512_6332Metric.wrl"
       (offset (xyz 0 0 0))
@@ -7212,7 +7212,6 @@
         (xy 91.525 60.55)
         (xy 91.525 59.85)
         (xy 92.15 59.85)
-        (xy 92.15 59.85)
       )
     )
     (filled_polygon
@@ -7776,7 +7775,6 @@
         (xy 130.5 97.05)
         (xy 151.8 97.05)
         (xy 151.8 93.2)
-        (xy 130.5 93.2)
       )
     )
     (filled_polygon
@@ -8262,7 +8260,6 @@
         (xy 111.6 95.1)
         (xy 114.3 95.1)
         (xy 114.3 91.25)
-        (xy 111.6 91.25)
       )
     )
     (filled_polygon
@@ -10674,7 +10671,6 @@
         (xy 102.9 60.55)
         (xy 98.375 60.55)
         (xy 98.375 59.85)
-        (xy 98.375 59.85)
       )
     )
     (filled_polygon
@@ -11900,7 +11896,6 @@
         (xy 111.5 80.05)
         (xy 112.9 80.05)
         (xy 112.9 78.2)
-        (xy 113.15 77.85)
         (xy 113.15 77.85)
       )
     )
@@ -34393,7 +34388,6 @@
         (xy 109.95 75.6)
         (xy 112.85 80.094559)
         (xy 112.85 82.15)
-        (xy 103.85 82.15)
         (xy 103.85 82.15)
       )
     )
