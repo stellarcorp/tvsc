@@ -481,6 +481,7 @@
   )
 
   (no_connect (at 115.57 67.31) (uuid 082e3d63-54bb-4fe5-8026-1fa363d95403))
+  (no_connect (at 115.57 64.77) (uuid 19472c31-215d-460d-8eee-edf94d4d1cf8))
   (no_connect (at 121.92 138.43) (uuid 4dab446e-5f5e-46b8-a070-ca1de8bee7c7))
   (no_connect (at 121.92 130.81) (uuid 92323df7-36ca-4634-9e4f-03cc02a634d1))
 
@@ -587,7 +588,7 @@
     (property "Value" "504050-1291" (at 128.27 49.53 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "" (at 137.16 149.53 0)
+    (property "Footprint" "footprints:5040501291" (at 137.16 149.53 0)
       (effects (font (size 1.27 1.27)) (justify left top) hide)
     )
     (property "Datasheet" "" (at 137.16 249.53 0)
@@ -927,31 +928,6 @@
     )
   )
 
-  (symbol (lib_id "power:+5V") (at 115.57 64.77 90) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid 9ec7d87a-771e-4448-a5e1-345c9e70bfbf)
-    (property "Reference" "#PWR0603" (at 119.38 64.77 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+5V" (at 111.76 64.77 90)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Footprint" "" (at 115.57 64.77 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 115.57 64.77 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid d3004a57-6522-4afe-b873-20aeeb5709fe))
-    (instances
-      (project "power_board"
-        (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/f5dda946-81da-4978-88f4-4ac2bc2b63d0"
-          (reference "#PWR0603") (unit 1)
-        )
-      )
-    )
-  )
-
   (symbol (lib_id "mounting:Mounting_Hole_M3_ISO_7380") (at 201.93 90.17 0) (unit 1)
     (in_bom no) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid b1148f0f-f0d8-403f-aae2-7d38ab04d394)
@@ -1061,7 +1037,7 @@
     (property "Value" "504050-1091" (at 133.35 115.57 0)
       (effects (font (size 1.524 1.524)))
     )
-    (property "Footprint" "" (at 140.97 215.57 0)
+    (property "Footprint" "footprints:504050-1091" (at 140.97 215.57 0)
       (effects (font (size 1.27 1.27)) (justify left top) hide)
     )
     (property "Datasheet" "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets_SAMA/78973205e9f4d17ddd54ea229574413e.pdf" (at 140.97 315.57 0)
