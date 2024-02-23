@@ -28,7 +28,7 @@
     (47 "F.CrtYd" user "F.Courtyard")
     (48 "B.Fab" user)
     (49 "F.Fab" user)
-    (50 "User.1" user)
+    (50 "User.1" user "JLCPCB.Manufacturing.Notes")
     (51 "User.2" user)
     (52 "User.3" user)
     (53 "User.4" user)
@@ -6519,6 +6519,10 @@
     (start 156 54) (end 240 88) (layer "Cmts.User") (tstamp de0071e2-77a8-4dce-bb21-c55bc98cf7b2)
       (effects (font (size 1.5 1.5) (thickness 0.3) bold) (justify left top))
     (stroke (width 0.2) (type solid))  )
+  (gr_text_box "JLCPCB Manufacturing Notes\n\nOrder selections:\nFR-4\n4 layer\n82.5x82.5mm\n1.6mm thickness\nPCB Color: Red (optional - used)\nFR-4 TG155\nOuter Copper Weight: 2oz\nInner Copper Weight: 2oz\nMin via hole size / diameter: 0.2 (0.3/0.35)\nBoard outline tolerance: +/- 0.2mm\nRemove order number: No (optional - used for version tracking internally)"
+    (start 15 13.15) (end 67.5 162.65) (layer "User.1") (tstamp 99ea9afc-bdd6-407d-8bed-84dd8df2e8ed)
+      (effects (font (size 1 1) (thickness 0.15)) (justify left top))
+    (stroke (width 0.15) (type solid))  )
 
   (segment (start 113.38 83.8) (end 113.75 83.8) (width 0.6) (layer "F.Cu") (net 1) (tstamp 01cace80-da92-4ba9-888a-29db69dae712))
   (segment (start 134.85 51.6) (end 134.5 51.25) (width 0.6) (layer "F.Cu") (net 1) (tstamp 0722ac89-766b-42bc-be71-2d21d6e8f127))
