@@ -1,2 +1,5 @@
 # Ignore any files in a production folder that have a date and timestamp at the end of the name, such as: 2s3p_battery_board/production/2s3p_battery_board_2024-02-29_22-34-15
 **/production/*_[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]_[0-9][0-9]-[0-9][0-9]-[0-9][0-9]
+
+# Ignore any footprint cache files
+**/fp-info-cache
