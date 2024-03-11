@@ -827,7 +827,7 @@
   (symbol (lib_id "Molex 430450612:430450612") (at 154.94 85.09 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 40c183f8-eff1-47b5-b01b-cf08a54464a6)
-    (property "Reference" "J1" (at 168.91 91.44 0)
+    (property "Reference" "J301" (at 168.91 91.44 0)
       (effects (font (size 1.524 1.524)) (justify left))
     )
     (property "Value" "Molex_430450612" (at 163.83 81.28 0)
@@ -863,7 +863,7 @@
     (instances
       (project "power_board"
         (path "/d7fbba2e-84c5-4e09-9d36-52dae726d12d/02e69889-bc38-4f69-8b86-c3d6a49f647e"
-          (reference "J1") (unit 1)
+          (reference "J301") (unit 1)
         )
       )
     )
