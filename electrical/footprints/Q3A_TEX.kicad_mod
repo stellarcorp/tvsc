@@ -165,7 +165,7 @@
     (chamfer_ratio 0.2) (chamfer top_right bottom_right) (tstamp b77d270e-9618-4289-8645-645af97c79ce))
   (pad "5" smd roundrect (at 1.537299 -0.974999) (size 0.634998 0.3048) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0)
     (chamfer_ratio 0.2) (chamfer top_right bottom_right) (tstamp 3c37c5d0-e72e-4865-99e1-6c78f8db9b7c))
-  (model "/home/james/git/tvsc/hardware/3dmodels/DNH0008A.stp"
+  (model "${KIPRJMOD}/../../3dmodels/DNH0008A.stp"
     (offset (xyz 0 0 0))
     (scale (xyz 1 1 1))
     (rotate (xyz 0 0 0))
