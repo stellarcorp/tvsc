@@ -4,4 +4,14 @@
 # Ignore any footprint cache files
 **/fp-info-cache
 
+# Ignore UI state files. These include things like the active layer in the PCB. It's not useful to track these in version control.
 **/*.kicad_prl
+
+# Ignore lock files.
+**/~*.kicad_*.lck
+
+# Ignore backups.
+**/*-backups/
+
+# Ignore auto save files.
+**/\#auto_saved_files\#
