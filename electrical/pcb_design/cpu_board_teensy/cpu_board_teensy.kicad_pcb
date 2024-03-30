@@ -90,6 +90,8 @@
     )
   )
 
+  (property "PCB_VERSION" "0.1")
+
   (net 0 "")
   (net 1 "GND")
   (net 2 "unconnected-(J1-Pad2)")
@@ -845,6 +847,26 @@
     (stroke (width 0.1) (type default)) (layer "Edge.Cuts") (tstamp ef0d441a-0d50-463e-abc7-38fee3788fd9))
   (gr_arc (start 102.928932 135.428932) (mid 102.54832 137.342345) (end 101.464466 138.964466)
     (stroke (width 0.1) (type default)) (layer "Edge.Cuts") (tstamp fa4b4d41-f3b3-40aa-803d-f7a553628237))
+  (gr_text "Orient >" (at 180.83 135.19) (layer "B.SilkS") (tstamp b7333919-1def-4433-a24f-56bff0434c95)
+    (effects (font (size 1.5 1.5) (thickness 0.3) bold) (justify right bottom))
+  )
+  (gr_text "Side B" (at 104.04 115.33) (layer "B.SilkS") (tstamp c93ed5c8-2dc8-4f8b-9ee9-6fa8d33baee0)
+    (effects (font (size 4 4) (thickness 0.75) bold) (justify right mirror))
+  )
+  (gr_text "Orient >" (at 180.85 135.21) (layer "F.SilkS") (tstamp d476fbe7-3218-462d-b0f4-0777b089fa97)
+    (effects (font (size 1.5 1.5) (thickness 0.3) bold) (justify right bottom))
+  )
+  (gr_text "Side A" (at 104.06 115.39) (layer "F.SilkS") (tstamp ec010730-dc16-4f58-8943-a33ed93a8f24)
+    (effects (font (size 4 4) (thickness 0.75) bold) (justify left))
+  )
+  (gr_text_box "Tennessee Valley Stellar Corporation\nCPU Board (Teensy edition) v${PCB_VERSION}\n"
+    (start 146.935 113.9) (end 176.935 119.59) (layer "F.SilkS") (tstamp 699ce433-0e9e-4d5a-95ba-0a71e9afa4f8)
+      (effects (font (size 1 1) (thickness 0.15)) (justify left top))
+    (stroke (width 0.15) (type solid))  )
+  (gr_text_box "Developed with the support of the Hacker Initiative"
+    (start 146.91 119.75) (end 176.91 124.25) (layer "F.SilkS") (tstamp b00f1802-7f69-487e-968d-6366e3bb7ba4)
+      (effects (font (size 1 1) (thickness 0.15)) (justify left top))
+    (stroke (width 0.15) (type solid))  )
 
   (segment (start 133.75 77.5) (end 133.75 79.3) (width 0.5) (layer "F.Cu") (net 1) (tstamp 2155edaa-7677-444d-b1b3-6a55a04b2e46))
   (segment (start 126.75 77.5) (end 126.75 79.8) (width 0.5) (layer "F.Cu") (net 1) (tstamp 4b1d9d62-ab41-4cb5-b84a-24cde8b2acde))
