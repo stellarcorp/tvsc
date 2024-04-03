@@ -1374,32 +1374,6 @@
         )
       )
     )
-    (symbol "TVSC:Mounting_Hole_M3_ISO_7380" (in_bom no) (on_board yes)
-      (property "Reference" "M" (at 0 0 0)
-        (effects (font (size 1.27 1.27)))
-      )
-      (property "Value" "M3" (at 0 0 0)
-        (effects (font (size 1.27 1.27)))
-      )
-      (property "Footprint" "MountingHole:MountingHole_3.2mm_M3_ISO7380_Pad_TopBottom" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "Datasheet" "" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (symbol "Mounting_Hole_M3_ISO_7380_0_1"
-        (circle (center 0 0) (radius 1.7961)
-          (stroke (width 0) (type default))
-          (fill (type none))
-        )
-      )
-      (symbol "Mounting_Hole_M3_ISO_7380_1_1"
-        (pin passive line (at 0 0 0) (length 2.54) hide
-          (name "Hole" (effects (font (size 1.27 1.27))))
-          (number "1" (effects (font (size 1.27 1.27))))
-        )
-      )
-    )
     (symbol "TVSC:STLINK_STDC14" (pin_names (offset 0.254)) (in_bom yes) (on_board yes)
       (property "Reference" "J" (at 0 12.7 0)
         (effects (font (size 1.524 1.524)))
@@ -2107,6 +2081,44 @@
         )
       )
     )
+    (symbol "TVSC:Standard_PCB" (in_bom no) (on_board yes)
+      (property "Reference" "PCB" (at 0 0 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Value" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Footprint" "footprints:Standard_PCB_Shape" (at 0 -8.89 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "Standard_PCB_0_1"
+        (rectangle (start -7.62 5.08) (end 7.62 -6.35)
+          (stroke (width 0) (type default))
+          (fill (type none))
+        )
+      )
+      (symbol "Standard_PCB_1_1"
+        (pin power_in line (at -10.16 3.81 0) (length 2.54)
+          (name "M1" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
+        )
+        (pin power_in line (at 10.16 3.81 180) (length 2.54)
+          (name "M2" (effects (font (size 1.27 1.27))))
+          (number "2" (effects (font (size 1.27 1.27))))
+        )
+        (pin power_in line (at 10.16 -5.08 180) (length 2.54)
+          (name "M3" (effects (font (size 1.27 1.27))))
+          (number "3" (effects (font (size 1.27 1.27))))
+        )
+        (pin power_in line (at -10.16 -5.08 0) (length 2.54)
+          (name "M4" (effects (font (size 1.27 1.27))))
+          (number "4" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
     (symbol "TVSC:USB_C_POWER" (in_bom yes) (on_board yes)
       (property "Reference" "J" (at 0 24.13 0)
         (effects (font (size 1.27 1.27)))
@@ -2489,14 +2501,14 @@
     )
   )
 
+  (junction (at 31.75 151.13) (diameter 0) (color 0 0 0 0)
+    (uuid 0272358d-ecf3-49cd-a4e3-c4cff9bae235)
+  )
   (junction (at 101.6 190.5) (diameter 0) (color 0 0 0 0)
     (uuid 12b44e25-da4e-4858-b4e9-c1e98b3491e6)
   )
   (junction (at 111.76 182.88) (diameter 0) (color 0 0 0 0)
     (uuid 15940ac7-3af3-4828-b700-fc4d276bbde9)
-  )
-  (junction (at 25.4 151.13) (diameter 0) (color 0 0 0 0)
-    (uuid 1e67a21b-6eab-49ab-837c-833211bffcb7)
   )
   (junction (at 208.28 20.32) (diameter 0) (color 0 0 0 0)
     (uuid 24f167ed-bd6f-4ddb-8cac-6252eb41ce76)
@@ -2537,8 +2549,8 @@
   (junction (at 121.92 182.88) (diameter 0) (color 0 0 0 0)
     (uuid 80000977-b979-4c46-a1f6-169f912f4a22)
   )
-  (junction (at 25.4 140.97) (diameter 0) (color 0 0 0 0)
-    (uuid 840c3dac-b887-4994-a481-4c985fbf37ba)
+  (junction (at 21.59 147.32) (diameter 0) (color 0 0 0 0)
+    (uuid 83c901c2-b84c-484b-a59a-9154f3077fe6)
   )
   (junction (at 44.45 104.14) (diameter 0) (color 0 0 0 0)
     (uuid 84c5b5d7-432a-4ae1-ad0e-476a2e93f959)
@@ -2567,9 +2579,6 @@
   (junction (at 102.87 76.2) (diameter 0) (color 0 0 0 0)
     (uuid c64097ce-e272-4d74-86fe-0b9b0c78c35a)
   )
-  (junction (at 25.4 146.05) (diameter 0) (color 0 0 0 0)
-    (uuid c8786782-f71d-4ded-8ee5-0ffb828b0b60)
-  )
   (junction (at 41.91 194.31) (diameter 0) (color 0 0 0 0)
     (uuid cf8c63c8-8c4c-403c-984b-e1c3379b3b89)
   )
@@ -2593,6 +2602,9 @@
   )
   (junction (at 44.45 106.68) (diameter 0) (color 0 0 0 0)
     (uuid f98e0a6f-93d3-4906-a44a-bb4e6ea9104b)
+  )
+  (junction (at 41.91 147.32) (diameter 0) (color 0 0 0 0)
+    (uuid fe9a63b1-fca4-44b1-8660-3ce04bba0c49)
   )
 
   (no_connect (at 205.74 20.32) (uuid 0269a42e-c7f2-4aa2-ad8d-e90f3a787fc4))
@@ -2639,6 +2651,10 @@
   (wire (pts (xy 213.36 114.3) (xy 210.82 114.3))
     (stroke (width 0) (type default))
     (uuid 0656b904-230b-4942-93b4-e274a7253da6)
+  )
+  (wire (pts (xy 21.59 151.13) (xy 21.59 147.32))
+    (stroke (width 0) (type default))
+    (uuid 078e7ab6-0250-4f04-acab-3b1dc66b9f56)
   )
   (wire (pts (xy 44.45 104.14) (xy 44.45 106.68))
     (stroke (width 0) (type default))
@@ -2752,13 +2768,13 @@
     (stroke (width 0) (type default))
     (uuid 37cd7a28-6e67-4905-9b62-37699a9986c3)
   )
-  (wire (pts (xy 25.4 135.89) (xy 25.4 140.97))
-    (stroke (width 0) (type default))
-    (uuid 3c12047f-c130-4aeb-8b3a-a3e6437fe47e)
-  )
   (wire (pts (xy 41.91 185.42) (xy 41.91 186.69))
     (stroke (width 0) (type default))
     (uuid 421b71ac-7ef2-4e33-9745-a4d6f0a3a7da)
+  )
+  (wire (pts (xy 41.91 151.13) (xy 31.75 151.13))
+    (stroke (width 0) (type default))
+    (uuid 49e41652-8889-444f-a6d2-c09b405d3857)
   )
   (wire (pts (xy 177.8 48.26) (xy 170.18 48.26))
     (stroke (width 0) (type default))
@@ -2771,6 +2787,10 @@
   (wire (pts (xy 29.21 83.82) (xy 31.75 83.82))
     (stroke (width 0) (type default))
     (uuid 4d732c4a-32cd-4509-a2e6-7580dc8ded52)
+  )
+  (wire (pts (xy 41.91 138.43) (xy 41.91 147.32))
+    (stroke (width 0) (type default))
+    (uuid 4d854b55-d18e-419c-9b8d-cb327e764cbf)
   )
   (wire (pts (xy 60.96 44.45) (xy 60.96 46.99))
     (stroke (width 0) (type default))
@@ -2800,10 +2820,6 @@
   (wire (pts (xy 21.59 33.02) (xy 34.29 33.02))
     (stroke (width 0) (type default))
     (uuid 57f7c609-a4eb-41b5-9488-6d2467c4b086)
-  )
-  (wire (pts (xy 25.4 146.05) (xy 25.4 151.13))
-    (stroke (width 0) (type default))
-    (uuid 5d163da8-a0dc-44f3-9cd8-f01f137801bc)
   )
   (wire (pts (xy 121.92 36.83) (xy 121.92 39.37))
     (stroke (width 0) (type default))
@@ -2873,10 +2889,6 @@
     (stroke (width 0) (type default))
     (uuid 77bdf1e2-759c-4236-8a95-1e6e2ac3e08b)
   )
-  (wire (pts (xy 25.4 140.97) (xy 25.4 146.05))
-    (stroke (width 0) (type default))
-    (uuid 783f6f2a-60c4-411f-83f1-3c97baf72e72)
-  )
   (polyline (pts (xy 16.51 19.05) (xy 16.51 54.61))
     (stroke (width 0) (type default))
     (uuid 819521a5-b2b0-4948-b39b-862c2f1944ed)
@@ -2911,6 +2923,10 @@
     (stroke (width 0) (type default))
     (uuid 900ae556-0a8a-428a-832f-450e834a80c6)
   )
+  (wire (pts (xy 31.75 151.13) (xy 21.59 151.13))
+    (stroke (width 0) (type default))
+    (uuid 90fbf407-b4ff-4d5c-abe2-30a28bbebce5)
+  )
   (wire (pts (xy 116.84 74.93) (xy 116.84 76.2))
     (stroke (width 0) (type default))
     (uuid 9306d449-5a32-418e-895d-e0acd6ad53ae)
@@ -2932,6 +2948,10 @@
     (stroke (width 0) (type default))
     (uuid 95fa7fa1-78c2-41e7-925a-e471274e8dda)
   )
+  (wire (pts (xy 31.75 152.4) (xy 31.75 151.13))
+    (stroke (width 0) (type default))
+    (uuid 99260b57-2dc8-4ddf-ba74-07d84bd528ae)
+  )
   (polyline (pts (xy 149.86 119.38) (xy 265.43 119.38))
     (stroke (width 0) (type default))
     (uuid 9a249b19-537b-4b37-972e-1d9ac2abad37)
@@ -2946,6 +2966,10 @@
     (uuid 9ad90fd5-243e-4916-9b3c-a55b6636d68e)
   )
 
+  (wire (pts (xy 41.91 147.32) (xy 41.91 151.13))
+    (stroke (width 0) (type default))
+    (uuid 9b5491a2-cda1-4ac6-9788-43a58ca86740)
+  )
   (wire (pts (xy 215.9 20.32) (xy 213.36 20.32))
     (stroke (width 0) (type default))
     (uuid 9d17c076-3231-4b0c-b939-a5dd31740929)
@@ -2953,10 +2977,6 @@
   (wire (pts (xy 102.87 83.82) (xy 114.3 83.82))
     (stroke (width 0) (type default))
     (uuid 9ff5065c-9ba7-43a0-8cea-48837a5721de)
-  )
-  (wire (pts (xy 25.4 151.13) (xy 25.4 153.67))
-    (stroke (width 0) (type default))
-    (uuid a0452197-1624-467e-a246-91187894e964)
   )
   (polyline (pts (xy 82.55 171.45) (xy 82.55 200.66))
     (stroke (width 0) (type default))
@@ -2983,6 +3003,10 @@
   (wire (pts (xy 21.59 46.99) (xy 41.91 46.99))
     (stroke (width 0) (type default))
     (uuid b2dc9107-8523-4d47-b942-3d922564bfe4)
+  )
+  (wire (pts (xy 21.59 138.43) (xy 21.59 147.32))
+    (stroke (width 0) (type default))
+    (uuid b2e2a1d3-294e-4fd0-9861-756aedb72341)
   )
   (wire (pts (xy 21.59 27.94) (xy 21.59 33.02))
     (stroke (width 0) (type default))
@@ -3122,7 +3146,11 @@
     (effects (font (size 2 2)) (justify left bottom))
     (uuid 37caee22-edbc-43e1-9588-eb92c0722e40)
   )
-  (text "Mounting Holes (M3)" (at 16.51 128.27 0)
+  (text "PCB mounting holes are grounded." (at 17.78 158.75 0)
+    (effects (font (size 0.75 0.75)) (justify left bottom))
+    (uuid 66b3d3c9-34a0-4f1b-85f1-ef0609f675b5)
+  )
+  (text "PCB" (at 16.51 128.27 0)
     (effects (font (size 2 2)) (justify left bottom))
     (uuid 753f0fea-9ad6-44c3-9575-e7769e60934b)
   )
@@ -3649,7 +3677,7 @@
   (symbol (lib_id "power:+3.3V") (at 128.27 113.03 270) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 027b99dd-a594-4b45-b444-b015b8d2db76)
-    (property "Reference" "#PWR027" (at 124.46 113.03 0)
+    (property "Reference" "#PWR024" (at 124.46 113.03 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 130.81 113.03 90)
@@ -3665,7 +3693,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR027") (unit 1)
+          (reference "#PWR024") (unit 1)
         )
       )
     )
@@ -3674,7 +3702,7 @@
   (symbol (lib_id "Regulator_Linear:AMS1117-3.3") (at 41.91 33.02 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0374d078-4b73-4d30-94a1-b829ac9e9652)
-    (property "Reference" "U2" (at 41.91 26.67 0)
+    (property "Reference" "U1" (at 41.91 26.67 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "AMS1117-3.3" (at 41.91 29.21 0)
@@ -3701,7 +3729,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "U2") (unit 1)
+          (reference "U1") (unit 1)
         )
       )
     )
@@ -3771,7 +3799,7 @@
   (symbol (lib_id "Device:R") (at 182.88 30.48 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 057111ff-0b3c-45b3-991f-708a6bcdeab3)
-    (property "Reference" "R1" (at 182.88 27.94 90)
+    (property "Reference" "R8" (at 182.88 27.94 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "10k" (at 182.88 33.02 90)
@@ -3797,7 +3825,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "R1") (unit 1)
+          (reference "R8") (unit 1)
         )
       )
     )
@@ -3831,7 +3859,7 @@
   (symbol (lib_id "Device:R") (at 31.75 78.74 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0a2f2acf-d8f0-41c8-9988-bae436655760)
-    (property "Reference" "R2" (at 34.29 77.47 0)
+    (property "Reference" "R1" (at 34.29 77.47 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1k5" (at 34.29 80.01 0)
@@ -3857,7 +3885,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "R2") (unit 1)
+          (reference "R1") (unit 1)
         )
       )
     )
@@ -3866,7 +3894,7 @@
   (symbol (lib_id "Device:R") (at 114.3 26.67 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0bef87a2-2739-4f3d-98fc-3bacfda20020)
-    (property "Reference" "R4" (at 116.84 25.4 0)
+    (property "Reference" "R3" (at 116.84 25.4 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1k5" (at 116.84 27.94 0)
@@ -3892,7 +3920,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "R4") (unit 1)
+          (reference "R3") (unit 1)
         )
       )
     )
@@ -3901,7 +3929,7 @@
   (symbol (lib_id "Device:C") (at 121.92 186.69 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0feda4c0-cc5c-4ab5-92ea-b90fecb9a709)
-    (property "Reference" "C4" (at 125.73 185.42 0)
+    (property "Reference" "C10" (at 125.73 185.42 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 125.73 187.96 0)
@@ -3927,7 +3955,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "C4") (unit 1)
+          (reference "C10") (unit 1)
         )
       )
     )
@@ -3936,7 +3964,7 @@
   (symbol (lib_id "power:VBUS") (at 21.59 27.94 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 168d8847-78e6-4c1e-9315-8be81c6f3c3f)
-    (property "Reference" "#PWR018" (at 21.59 31.75 0)
+    (property "Reference" "#PWR01" (at 21.59 31.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBUS" (at 21.59 24.13 0)
@@ -3952,7 +3980,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR018") (unit 1)
+          (reference "#PWR01") (unit 1)
         )
       )
     )
@@ -3961,7 +3989,7 @@
   (symbol (lib_id "power:+3.3V") (at 222.25 140.97 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 17b2baaa-dd00-4746-bb7d-97d7ccf805bc)
-    (property "Reference" "#PWR040" (at 226.06 140.97 0)
+    (property "Reference" "#PWR038" (at 226.06 140.97 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 215.9 140.97 90)
@@ -3977,7 +4005,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR040") (unit 1)
+          (reference "#PWR038") (unit 1)
         )
       )
     )
@@ -3986,7 +4014,7 @@
   (symbol (lib_id "power:+3.3V") (at 135.89 74.93 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 1836ca21-5b7a-4d0d-851d-02f3fc8d848e)
-    (property "Reference" "#PWR07" (at 135.89 78.74 0)
+    (property "Reference" "#PWR026" (at 135.89 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 135.89 71.12 0)
@@ -4002,7 +4030,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR07") (unit 1)
+          (reference "#PWR026") (unit 1)
         )
       )
     )
@@ -4011,7 +4039,7 @@
   (symbol (lib_id "Device:C") (at 50.8 190.5 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 190c667a-a802-43d5-b920-52ca40dfe349)
-    (property "Reference" "C11" (at 54.61 189.23 0)
+    (property "Reference" "C3" (at 54.61 189.23 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10p" (at 54.61 191.77 0)
@@ -4037,7 +4065,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "C11") (unit 1)
+          (reference "C3") (unit 1)
         )
       )
     )
@@ -4046,7 +4074,7 @@
   (symbol (lib_id "power:GND") (at 109.22 148.59 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 1c21e605-c076-4cfd-9468-09a844efde74)
-    (property "Reference" "#PWR026" (at 102.87 148.59 0)
+    (property "Reference" "#PWR020" (at 102.87 148.59 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 105.41 148.59 90)
@@ -4062,7 +4090,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR026") (unit 1)
+          (reference "#PWR020") (unit 1)
         )
       )
     )
@@ -4071,7 +4099,7 @@
   (symbol (lib_id "power:GND") (at 170.18 147.32 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 1eeb1f38-f263-4a67-b607-1139bfae33dc)
-    (property "Reference" "#PWR037" (at 163.83 147.32 0)
+    (property "Reference" "#PWR031" (at 163.83 147.32 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 165.1 147.32 0)
@@ -4087,7 +4115,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR037") (unit 1)
+          (reference "#PWR031") (unit 1)
         )
       )
     )
@@ -4096,7 +4124,7 @@
   (symbol (lib_id "power:GND") (at 210.82 114.3 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 2007857d-cf78-4dda-b649-bb06a0663195)
-    (property "Reference" "#PWR01" (at 210.82 120.65 0)
+    (property "Reference" "#PWR036" (at 210.82 120.65 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 210.82 119.38 0)
@@ -4112,7 +4140,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR01") (unit 1)
+          (reference "#PWR036") (unit 1)
         )
       )
     )
@@ -4156,7 +4184,7 @@
   (symbol (lib_id "power:GND") (at 77.47 104.14 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 236c2c19-2dd9-4767-8f4d-537ae5f6cca3)
-    (property "Reference" "#PWR047" (at 83.82 104.14 0)
+    (property "Reference" "#PWR014" (at 83.82 104.14 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 82.55 104.14 0)
@@ -4172,7 +4200,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR047") (unit 1)
+          (reference "#PWR014") (unit 1)
         )
       )
     )
@@ -4181,7 +4209,7 @@
   (symbol (lib_id "power:+3.3VA") (at 102.87 74.93 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 23c17509-5495-4a83-963c-b8cbad1f98fc)
-    (property "Reference" "#PWR012" (at 102.87 78.74 0)
+    (property "Reference" "#PWR018" (at 102.87 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3VA" (at 102.87 71.12 0)
@@ -4197,7 +4225,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR012") (unit 1)
+          (reference "#PWR018") (unit 1)
         )
       )
     )
@@ -4206,7 +4234,7 @@
   (symbol (lib_id "Device:C") (at 21.59 40.64 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 289a60d4-5491-4d5f-884b-75f038188973)
-    (property "Reference" "C12" (at 25.4 39.37 0)
+    (property "Reference" "C1" (at 25.4 39.37 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "22u" (at 25.4 41.91 0)
@@ -4232,7 +4260,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "C12") (unit 1)
+          (reference "C1") (unit 1)
         )
       )
     )
@@ -4241,7 +4269,7 @@
   (symbol (lib_id "power:GND") (at 88.9 194.31 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 298172cc-41df-4f15-985f-f3b9ebe058c0)
-    (property "Reference" "#PWR020" (at 88.9 200.66 0)
+    (property "Reference" "#PWR017" (at 88.9 200.66 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 88.9 199.39 0)
@@ -4257,7 +4285,35 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR020") (unit 1)
+          (reference "#PWR017") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "TVSC:Standard_PCB") (at 31.75 142.24 0) (unit 1)
+    (in_bom no) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 2a1df136-38a2-40fb-a2aa-a46d8b0ce5c6)
+    (property "Reference" "PCB1" (at 31.75 134.62 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "~" (at 31.75 142.24 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "footprints:Standard_PCB_Shape" (at 31.75 151.13 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 31.75 142.24 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "3" (uuid f5ae9036-559b-475e-b04a-e11be02b1980))
+    (pin "2" (uuid 3ff75c63-d771-4120-a29c-5586862c7d98))
+    (pin "1" (uuid d7420aea-091a-42ec-a2ee-7df78f882426))
+    (pin "4" (uuid cd386180-32ac-4d8b-b6a9-e4817697fd1d))
+    (instances
+      (project "STM32F4 CPU Board"
+        (path "/84601d14-3103-499d-b2b7-8addeec04193"
+          (reference "PCB1") (unit 1)
         )
       )
     )
@@ -4266,7 +4322,7 @@
   (symbol (lib_id "MCU_ST_STM32F4:STM32F405RGTx") (at 210.82 68.58 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 2b8aa4e7-0790-4f61-8652-0452824e2e66)
-    (property "Reference" "U1" (at 209.55 68.58 0)
+    (property "Reference" "U2" (at 209.55 68.58 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "STM32F405RGT6" (at 203.2 102.87 0)
@@ -4345,7 +4401,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "U1") (unit 1)
+          (reference "U2") (unit 1)
         )
       )
     )
@@ -4381,7 +4437,7 @@
   (symbol (lib_id "power:+3.3V") (at 125.73 36.83 270) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 336b1cb7-5cb2-4616-8a39-e93bcf91c9ea)
-    (property "Reference" "#PWR035" (at 121.92 36.83 0)
+    (property "Reference" "#PWR023" (at 121.92 36.83 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 128.27 36.83 90)
@@ -4397,7 +4453,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR035") (unit 1)
+          (reference "#PWR023") (unit 1)
         )
       )
     )
@@ -4406,7 +4462,7 @@
   (symbol (lib_id "power:GND") (at 177.8 34.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 3e42cad3-24bd-4346-a42c-6389e3dd2fb5)
-    (property "Reference" "#PWR09" (at 177.8 40.64 0)
+    (property "Reference" "#PWR034" (at 177.8 40.64 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 177.8 39.37 0)
@@ -4422,7 +4478,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR09") (unit 1)
+          (reference "#PWR034") (unit 1)
         )
       )
     )
@@ -4431,7 +4487,7 @@
   (symbol (lib_id "power:GND") (at 114.3 83.82 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 469fd3b6-ec52-4adf-9b5c-e1fbfa1f87c2)
-    (property "Reference" "#PWR04" (at 114.3 90.17 0)
+    (property "Reference" "#PWR021" (at 114.3 90.17 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 114.3 88.9 0)
@@ -4447,32 +4503,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR04") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "TVSC:Mounting_Hole_M3_ISO_7380") (at 25.4 135.89 0) (unit 1)
-    (in_bom no) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid 498fb2aa-9be1-482e-a0bb-8739e41241b3)
-    (property "Reference" "M1" (at 27.94 134.62 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Value" "M3" (at 27.94 137.16 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Footprint" "MountingHole:MountingHole_3.2mm_M3_ISO7380_Pad_TopBottom" (at 25.4 135.89 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 25.4 135.89 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 1e95b894-8b59-441d-8326-7c899d5190ea))
-    (instances
-      (project "STM32F4 CPU Board"
-        (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "M1") (unit 1)
+          (reference "#PWR021") (unit 1)
         )
       )
     )
@@ -4481,7 +4512,7 @@
   (symbol (lib_id "Device:LED") (at 181.61 48.26 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 4dab8ce4-5eae-476d-b4ef-501afcc346ed)
-    (property "Reference" "D2" (at 179.07 45.72 0)
+    (property "Reference" "D1" (at 179.07 45.72 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "DEBUG_LED1" (at 176.53 43.18 0)
@@ -4510,32 +4541,32 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "D2") (unit 1)
+          (reference "D1") (unit 1)
         )
       )
     )
   )
 
-  (symbol (lib_id "power:GND") (at 25.4 153.67 0) (unit 1)
+  (symbol (lib_id "power:GND") (at 31.75 152.4 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 51036720-f4e5-49fe-a77f-694f5ad16c9c)
-    (property "Reference" "#PWR036" (at 25.4 160.02 0)
+    (property "Reference" "#PWR04" (at 31.75 158.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "GND" (at 25.4 158.75 0)
+    (property "Value" "GND" (at 31.75 157.48 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Footprint" "" (at 25.4 153.67 0)
+    (property "Footprint" "" (at 31.75 152.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 25.4 153.67 0)
+    (property "Datasheet" "" (at 31.75 152.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid fadef354-5383-427a-91b9-03183c718074))
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR036") (unit 1)
+          (reference "#PWR04") (unit 1)
         )
       )
     )
@@ -4544,7 +4575,7 @@
   (symbol (lib_id "power:VBUS") (at 44.45 91.44 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 512c4098-e2c7-4583-a8e5-ee831f15b86d)
-    (property "Reference" "#PWR044" (at 48.26 91.44 0)
+    (property "Reference" "#PWR07" (at 48.26 91.44 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBUS" (at 40.64 91.44 0)
@@ -4560,7 +4591,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR044") (unit 1)
+          (reference "#PWR07") (unit 1)
         )
       )
     )
@@ -4569,7 +4600,7 @@
   (symbol (lib_id "power:VBUS") (at 77.47 96.52 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 57f8aada-9da6-4c59-a8f6-2e0271506f49)
-    (property "Reference" "#PWR042" (at 73.66 96.52 0)
+    (property "Reference" "#PWR013" (at 73.66 96.52 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBUS" (at 81.28 96.52 0)
@@ -4585,7 +4616,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR042") (unit 1)
+          (reference "#PWR013") (unit 1)
         )
       )
     )
@@ -4594,7 +4625,7 @@
   (symbol (lib_id "power:+3.3V") (at 170.18 142.24 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 61e9e86f-71d5-48a4-9b81-23ed6078c8ef)
-    (property "Reference" "#PWR015" (at 173.99 142.24 0)
+    (property "Reference" "#PWR029" (at 173.99 142.24 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 166.37 142.24 0)
@@ -4610,7 +4641,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR015") (unit 1)
+          (reference "#PWR029") (unit 1)
         )
       )
     )
@@ -4619,7 +4650,7 @@
   (symbol (lib_id "power:GND") (at 77.47 106.68 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 6667c71e-69ff-4c1d-9974-2b57ab13dd72)
-    (property "Reference" "#PWR046" (at 83.82 106.68 0)
+    (property "Reference" "#PWR015" (at 83.82 106.68 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 82.55 106.68 0)
@@ -4635,7 +4666,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR046") (unit 1)
+          (reference "#PWR015") (unit 1)
         )
       )
     )
@@ -4644,7 +4675,7 @@
   (symbol (lib_id "power:GND") (at 128.27 148.59 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 6765d83d-17cd-44a4-812c-52b23bdead50)
-    (property "Reference" "#PWR024" (at 134.62 148.59 0)
+    (property "Reference" "#PWR025" (at 134.62 148.59 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 132.08 148.59 90)
@@ -4660,7 +4691,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR024") (unit 1)
+          (reference "#PWR025") (unit 1)
         )
       )
     )
@@ -4669,7 +4700,7 @@
   (symbol (lib_id "Device:C") (at 101.6 186.69 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 6b9791e2-f494-4b8c-81aa-0899a48dde6a)
-    (property "Reference" "C2" (at 105.41 185.42 0)
+    (property "Reference" "C6" (at 105.41 185.42 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 105.41 187.96 0)
@@ -4695,7 +4726,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "C2") (unit 1)
+          (reference "C6") (unit 1)
         )
       )
     )
@@ -4704,7 +4735,7 @@
   (symbol (lib_id "Device:R") (at 166.37 48.26 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 6e2d72f8-2229-411f-ae2b-ac55bd11f044)
-    (property "Reference" "R9" (at 166.37 43.18 90)
+    (property "Reference" "R7" (at 166.37 43.18 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "1k5" (at 166.37 45.72 90)
@@ -4730,7 +4761,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "R9") (unit 1)
+          (reference "R7") (unit 1)
         )
       )
     )
@@ -4854,7 +4885,7 @@
   (symbol (lib_id "Device:C") (at 88.9 186.69 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8d30d33a-df2a-4368-b6c7-8192e5600635)
-    (property "Reference" "C1" (at 92.71 185.42 0)
+    (property "Reference" "C5" (at 92.71 185.42 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10u" (at 92.71 187.96 0)
@@ -4880,7 +4911,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "C1") (unit 1)
+          (reference "C5") (unit 1)
         )
       )
     )
@@ -4889,7 +4920,7 @@
   (symbol (lib_id "Device:C") (at 111.76 186.69 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8e683394-4d8f-469e-987e-b9c8c98c0579)
-    (property "Reference" "C3" (at 115.57 185.42 0)
+    (property "Reference" "C8" (at 115.57 185.42 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 115.57 187.96 0)
@@ -4915,7 +4946,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "C3") (unit 1)
+          (reference "C8") (unit 1)
         )
       )
     )
@@ -4924,7 +4955,7 @@
   (symbol (lib_id "power:VBUS") (at 77.47 83.82 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 943271c0-b8fb-49c6-b466-7b43fee2d2e5)
-    (property "Reference" "#PWR043" (at 73.66 83.82 0)
+    (property "Reference" "#PWR012" (at 73.66 83.82 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBUS" (at 81.28 83.82 0)
@@ -4940,7 +4971,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR043") (unit 1)
+          (reference "#PWR012") (unit 1)
         )
       )
     )
@@ -4976,7 +5007,7 @@
   (symbol (lib_id "power:GND") (at 135.89 83.82 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 9c4e9926-c84a-4152-b272-70ff55e4a440)
-    (property "Reference" "#PWR06" (at 135.89 90.17 0)
+    (property "Reference" "#PWR027" (at 135.89 90.17 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 135.89 88.9 0)
@@ -4992,7 +5023,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR06") (unit 1)
+          (reference "#PWR027") (unit 1)
         )
       )
     )
@@ -5049,7 +5080,7 @@
   (symbol (lib_id "power:GND") (at 170.18 152.4 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid a13cafdd-5209-4eac-bacd-bffc232909e5)
-    (property "Reference" "#PWR08" (at 163.83 152.4 0)
+    (property "Reference" "#PWR032" (at 163.83 152.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 165.1 152.4 0)
@@ -5065,7 +5096,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR08") (unit 1)
+          (reference "#PWR032") (unit 1)
         )
       )
     )
@@ -5074,7 +5105,7 @@
   (symbol (lib_id "Device:C") (at 135.89 80.01 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a1fc73d7-9b69-456f-8204-62de8f898852)
-    (property "Reference" "C8" (at 139.7 78.74 0)
+    (property "Reference" "C12" (at 139.7 78.74 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1u" (at 139.7 81.28 0)
@@ -5100,7 +5131,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "C8") (unit 1)
+          (reference "C12") (unit 1)
         )
       )
     )
@@ -5109,7 +5140,7 @@
   (symbol (lib_id "power:GND") (at 44.45 99.06 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid a6c7ed14-dd87-4d37-8b43-210e9b70288a)
-    (property "Reference" "#PWR049" (at 38.1 99.06 0)
+    (property "Reference" "#PWR08" (at 38.1 99.06 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 39.37 99.06 0)
@@ -5125,7 +5156,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR049") (unit 1)
+          (reference "#PWR08") (unit 1)
         )
       )
     )
@@ -5134,7 +5165,7 @@
   (symbol (lib_id "power:GND") (at 41.91 196.85 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid ab2cf953-7729-4871-b96b-1548f896bfb4)
-    (property "Reference" "#PWR011" (at 41.91 203.2 0)
+    (property "Reference" "#PWR05" (at 41.91 203.2 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 41.91 201.93 0)
@@ -5150,7 +5181,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR011") (unit 1)
+          (reference "#PWR05") (unit 1)
         )
       )
     )
@@ -5194,7 +5225,7 @@
   (symbol (lib_id "power:+3.3V") (at 60.96 27.94 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid b2489745-be58-4ea0-87c6-cd9119a4fdbe)
-    (property "Reference" "#PWR019" (at 60.96 31.75 0)
+    (property "Reference" "#PWR010" (at 60.96 31.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 60.96 24.13 0)
@@ -5210,7 +5241,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR019") (unit 1)
+          (reference "#PWR010") (unit 1)
         )
       )
     )
@@ -5219,7 +5250,7 @@
   (symbol (lib_id "Device:C") (at 60.96 40.64 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid b2650376-a786-434a-99af-30b0de03a2aa)
-    (property "Reference" "C13" (at 64.77 39.37 0)
+    (property "Reference" "C4" (at 64.77 39.37 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "22u" (at 64.77 41.91 0)
@@ -5245,7 +5276,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "C13") (unit 1)
+          (reference "C4") (unit 1)
         )
       )
     )
@@ -5301,7 +5332,7 @@
   (symbol (lib_id "power:GND") (at 161.29 48.26 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid bc0ad4a6-3cb9-40f9-aac8-c8f0b603b684)
-    (property "Reference" "#PWR023" (at 161.29 54.61 0)
+    (property "Reference" "#PWR028" (at 161.29 54.61 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 161.29 53.34 0)
@@ -5317,7 +5348,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR023") (unit 1)
+          (reference "#PWR028") (unit 1)
         )
       )
     )
@@ -5326,7 +5357,7 @@
   (symbol (lib_id "Device:R") (at 78.74 39.37 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bd008a51-00f7-4014-abdd-d9c4af9054b9)
-    (property "Reference" "R3" (at 81.28 38.1 0)
+    (property "Reference" "R2" (at 81.28 38.1 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1k5" (at 81.28 40.64 0)
@@ -5352,7 +5383,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "R3") (unit 1)
+          (reference "R2") (unit 1)
         )
       )
     )
@@ -5361,7 +5392,7 @@
   (symbol (lib_id "power:GND") (at 21.59 49.53 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid bed4f4cc-e2eb-4dc5-aa08-88bc05954a38)
-    (property "Reference" "#PWR017" (at 21.59 55.88 0)
+    (property "Reference" "#PWR02" (at 21.59 55.88 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 21.59 54.61 0)
@@ -5377,7 +5408,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR017") (unit 1)
+          (reference "#PWR02") (unit 1)
         )
       )
     )
@@ -5424,7 +5455,7 @@
   (symbol (lib_id "power:+3.3V") (at 31.75 73.66 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid c174abfd-abb8-406e-8775-db0e76dd0f74)
-    (property "Reference" "#PWR013" (at 31.75 77.47 0)
+    (property "Reference" "#PWR03" (at 31.75 77.47 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 31.75 69.85 0)
@@ -5440,32 +5471,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR013") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "TVSC:Mounting_Hole_M3_ISO_7380") (at 25.4 151.13 0) (unit 1)
-    (in_bom no) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid c6f39dac-ba3b-41af-97ce-537acb6789c6)
-    (property "Reference" "M4" (at 27.94 149.86 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Value" "M3" (at 27.94 152.4 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Footprint" "MountingHole:MountingHole_3.2mm_M3_ISO7380_Pad_TopBottom" (at 25.4 151.13 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 25.4 151.13 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 7722f54d-7d6c-4ca7-a7ec-12bd455fded5))
-    (instances
-      (project "STM32F4 CPU Board"
-        (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "M4") (unit 1)
+          (reference "#PWR03") (unit 1)
         )
       )
     )
@@ -5474,7 +5480,7 @@
   (symbol (lib_id "power:+3.3VA") (at 218.44 20.32 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid c7a70d28-bd39-4941-bfc4-09472fc08c7e)
-    (property "Reference" "#PWR05" (at 218.44 24.13 0)
+    (property "Reference" "#PWR037" (at 218.44 24.13 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3VA" (at 218.44 16.51 0)
@@ -5490,7 +5496,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR05") (unit 1)
+          (reference "#PWR037") (unit 1)
         )
       )
     )
@@ -5499,7 +5505,7 @@
   (symbol (lib_id "Device:R") (at 114.3 40.64 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid caa02cf3-b66f-493e-9e2c-c326a584c221)
-    (property "Reference" "R6" (at 116.84 39.37 0)
+    (property "Reference" "R4" (at 116.84 39.37 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1k5" (at 116.84 41.91 0)
@@ -5525,7 +5531,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "R6") (unit 1)
+          (reference "R4") (unit 1)
         )
       )
     )
@@ -5534,7 +5540,7 @@
   (symbol (lib_id "power:GND") (at 44.45 109.22 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid d080f59f-438f-4bb8-92d8-f7689ddc27e9)
-    (property "Reference" "#PWR045" (at 44.45 115.57 0)
+    (property "Reference" "#PWR09" (at 44.45 115.57 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 44.45 114.3 0)
@@ -5550,7 +5556,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR045") (unit 1)
+          (reference "#PWR09") (unit 1)
         )
       )
     )
@@ -5559,7 +5565,7 @@
   (symbol (lib_id "power:GND") (at 222.25 151.13 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid d0ac8ac0-cb7c-4a06-b358-ebbbd26d7041)
-    (property "Reference" "#PWR021" (at 215.9 151.13 0)
+    (property "Reference" "#PWR039" (at 215.9 151.13 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 217.17 151.13 0)
@@ -5575,7 +5581,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR021") (unit 1)
+          (reference "#PWR039") (unit 1)
         )
       )
     )
@@ -5584,7 +5590,7 @@
   (symbol (lib_id "power:+3.3V") (at 88.9 179.07 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid d2dc8bda-0e53-4507-9bbe-875e458f30b6)
-    (property "Reference" "#PWR03" (at 88.9 182.88 0)
+    (property "Reference" "#PWR016" (at 88.9 182.88 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 88.9 175.26 0)
@@ -5600,7 +5606,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR03") (unit 1)
+          (reference "#PWR016") (unit 1)
         )
       )
     )
@@ -5609,7 +5615,7 @@
   (symbol (lib_id "Device:C") (at 102.87 80.01 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d74a403a-e896-4611-b4f4-62b874a38ec2)
-    (property "Reference" "C6" (at 106.68 78.74 0)
+    (property "Reference" "C7" (at 106.68 78.74 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10n" (at 106.68 81.28 0)
@@ -5635,32 +5641,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "C6") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "TVSC:Mounting_Hole_M3_ISO_7380") (at 25.4 140.97 0) (unit 1)
-    (in_bom no) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid d7da5f84-70e8-400e-b86b-021f1a74e671)
-    (property "Reference" "M2" (at 27.94 139.7 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Value" "M3" (at 27.94 142.24 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Footprint" "MountingHole:MountingHole_3.2mm_M3_ISO7380_Pad_TopBottom" (at 25.4 140.97 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 25.4 140.97 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 62c96b84-6e79-46ac-8578-e65c088c23c9))
-    (instances
-      (project "STM32F4 CPU Board"
-        (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "M2") (unit 1)
+          (reference "C7") (unit 1)
         )
       )
     )
@@ -5669,7 +5650,7 @@
   (symbol (lib_id "Device:C") (at 133.35 186.69 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d8f6afb1-dbe9-4549-b639-5598a17445cd)
-    (property "Reference" "C5" (at 137.16 185.42 0)
+    (property "Reference" "C11" (at 137.16 185.42 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 137.16 187.96 0)
@@ -5695,7 +5676,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "C5") (unit 1)
+          (reference "C11") (unit 1)
         )
       )
     )
@@ -5704,7 +5685,7 @@
   (symbol (lib_id "Device:R") (at 121.92 43.18 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d9d1bee4-b48c-4d4b-95a7-b8a9835c96e2)
-    (property "Reference" "R7" (at 124.46 41.91 0)
+    (property "Reference" "R6" (at 124.46 41.91 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1k5" (at 124.46 44.45 0)
@@ -5730,7 +5711,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "R7") (unit 1)
+          (reference "R6") (unit 1)
         )
       )
     )
@@ -5739,7 +5720,7 @@
   (symbol (lib_id "power:+3.3V") (at 208.28 20.32 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid db4c27cb-1b0a-4496-95d0-80852fc2c857)
-    (property "Reference" "#PWR02" (at 208.28 24.13 0)
+    (property "Reference" "#PWR035" (at 208.28 24.13 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 208.28 16.51 0)
@@ -5755,7 +5736,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR02") (unit 1)
+          (reference "#PWR035") (unit 1)
         )
       )
     )
@@ -5764,7 +5745,7 @@
   (symbol (lib_id "power:+3.3V") (at 125.73 22.86 270) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid dce485e3-1a0b-49b3-955a-6f7a69d93534)
-    (property "Reference" "#PWR034" (at 121.92 22.86 0)
+    (property "Reference" "#PWR022" (at 121.92 22.86 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 128.27 22.86 90)
@@ -5780,7 +5761,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR034") (unit 1)
+          (reference "#PWR022") (unit 1)
         )
       )
     )
@@ -5789,7 +5770,7 @@
   (symbol (lib_id "power:GND") (at 77.47 76.2 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid e0e91d6e-2187-434e-a2b2-01dd51d708b4)
-    (property "Reference" "#PWR048" (at 83.82 76.2 0)
+    (property "Reference" "#PWR011" (at 83.82 76.2 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 82.55 76.2 0)
@@ -5805,7 +5786,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR048") (unit 1)
+          (reference "#PWR011") (unit 1)
         )
       )
     )
@@ -5814,7 +5795,7 @@
   (symbol (lib_id "power:+3.3V") (at 173.99 27.94 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid e105607a-6953-4a55-b39c-1b425192d55c)
-    (property "Reference" "#PWR010" (at 173.99 31.75 0)
+    (property "Reference" "#PWR033" (at 173.99 31.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 173.99 24.13 0)
@@ -5830,7 +5811,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR010") (unit 1)
+          (reference "#PWR033") (unit 1)
         )
       )
     )
@@ -5839,7 +5820,7 @@
   (symbol (lib_id "power:VBUS") (at 44.45 78.74 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid e3fafbea-fcad-4aa5-826f-5818e146d6c6)
-    (property "Reference" "#PWR014" (at 48.26 78.74 0)
+    (property "Reference" "#PWR06" (at 48.26 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBUS" (at 40.64 78.74 0)
@@ -5855,7 +5836,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR014") (unit 1)
+          (reference "#PWR06") (unit 1)
         )
       )
     )
@@ -5864,7 +5845,7 @@
   (symbol (lib_id "power:+3.3V") (at 109.22 113.03 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid ea7bb2c3-6cac-4aae-8e71-57112a7bbf89)
-    (property "Reference" "#PWR022" (at 113.03 113.03 0)
+    (property "Reference" "#PWR019" (at 113.03 113.03 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 106.68 113.03 90)
@@ -5880,7 +5861,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR022") (unit 1)
+          (reference "#PWR019") (unit 1)
         )
       )
     )
@@ -5889,7 +5870,7 @@
   (symbol (lib_id "power:GND") (at 170.18 144.78 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid eda7acf7-9faa-4e3f-9c46-f630d31af764)
-    (property "Reference" "#PWR016" (at 163.83 144.78 0)
+    (property "Reference" "#PWR030" (at 163.83 144.78 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 165.1 144.78 0)
@@ -5905,7 +5886,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "#PWR016") (unit 1)
+          (reference "#PWR030") (unit 1)
         )
       )
     )
@@ -5914,7 +5895,7 @@
   (symbol (lib_id "Device:C") (at 30.48 190.5 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f059fe4e-4707-4111-83b2-d8a11a4da6a5)
-    (property "Reference" "C10" (at 34.29 189.23 0)
+    (property "Reference" "C2" (at 34.29 189.23 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10p" (at 34.29 191.77 0)
@@ -5940,7 +5921,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "C10") (unit 1)
+          (reference "C2") (unit 1)
         )
       )
     )
@@ -5949,7 +5930,7 @@
   (symbol (lib_id "Device:C") (at 114.3 80.01 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid fd263e8d-4a26-4783-9bce-e465045f6415)
-    (property "Reference" "C7" (at 118.11 78.74 0)
+    (property "Reference" "C9" (at 118.11 78.74 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1u" (at 118.11 81.28 0)
@@ -5975,32 +5956,7 @@
     (instances
       (project "STM32F4 CPU Board"
         (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "C7") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "TVSC:Mounting_Hole_M3_ISO_7380") (at 25.4 146.05 0) (unit 1)
-    (in_bom no) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid fff2a9ad-d8f8-4769-93a5-b07a0438b423)
-    (property "Reference" "M3" (at 27.94 144.78 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Value" "M3" (at 27.94 147.32 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Footprint" "MountingHole:MountingHole_3.2mm_M3_ISO7380_Pad_TopBottom" (at 25.4 146.05 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 25.4 146.05 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 4e79ff9f-440c-47b1-beb3-f87d3f5db2ea))
-    (instances
-      (project "STM32F4 CPU Board"
-        (path "/84601d14-3103-499d-b2b7-8addeec04193"
-          (reference "M3") (unit 1)
+          (reference "C9") (unit 1)
         )
       )
     )
