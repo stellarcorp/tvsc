@@ -13,9 +13,9 @@ int main() {
 
   while (true) {
     tvsc::hal::gpio::write_pin(LED_PIN, tvsc::hal::gpio::DigitalValue::VALUE_HIGH);
-    tvsc::hal::time::delay_ms(200);
+    tvsc::hal::time::delay_ms(750);
     tvsc::hal::gpio::write_pin(LED_PIN, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
-    tvsc::hal::time::delay_ms(500);
+    tvsc::hal::time::delay_ms(1500);
   }
 
   return 0;
