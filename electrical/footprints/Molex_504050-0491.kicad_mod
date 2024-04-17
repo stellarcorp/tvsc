@@ -1,7 +1,6 @@
 (footprint "Molex_504050-0491" (version 20221018) (generator pcbnew)
   (layer "F.Cu")
-  (descr "504050-0491-1")
-  (tags "Connector")
+  (descr "4-pin Pico-Lock Header")
   (attr smd)
   (fp_text reference "J**" (at 0 0.245) (layer "F.SilkS")
       (effects (font (size 1.27 1.27) (thickness 0.254)))
@@ -89,8 +88,8 @@
   (pad "4" smd rect (at -2.25 3.04) (size 0.6 1) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp e9d166cc-c102-4e42-af66-9e9def86cde2))
   (pad "MP1" smd rect (at 4.855 -2.15) (size 1.25 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 099c865b-ce30-4d44-b89b-578cb3f68491))
   (pad "MP2" smd rect (at -4.855 -2.15) (size 1.25 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp d1f726c2-c37c-4bf7-8c19-12e93e6c0fbf))
-  (model "504050-0491.stp"
-    (offset (xyz 0 4.869999812 1.019999966))
+  (model "${KIPRJMOD}/../../3dmodels/Molex_504050-0491.step"
+    (offset (xyz 0 2 1))
     (scale (xyz 1 1 1))
     (rotate (xyz 0 0 0))
   )
