@@ -197,7 +197,7 @@
   (pad "42" thru_hole circle (at 8.89 2.54) (size 1.6 1.6) (drill 1.1) (layers "*.Cu" "*.Mask") (tstamp 2a2ee85f-41e4-4fe1-875d-d2cd92f33536))
   (pad "43" thru_hole circle (at 11.43 5.08) (size 1.6 1.6) (drill 1.1) (layers "*.Cu" "*.Mask") (tstamp 135e858e-8160-477a-a9be-4f11bf8247a3))
   (pad "44" thru_hole circle (at 8.89 5.08) (size 1.6 1.6) (drill 1.1) (layers "*.Cu" "*.Mask") (tstamp ef56778d-0e27-4fef-bb3d-da1790b23cb6))
-  (model "/home/james/git/tvsc/electrical/3dmodels/Teensy_40.step"
+  (model "${KIPRJMOD}/../../3dmodels/Teensy_40.step"
     (offset (xyz 33 9.5 -11))
     (scale (xyz 1 1 1))
     (rotate (xyz -90 0 0))
