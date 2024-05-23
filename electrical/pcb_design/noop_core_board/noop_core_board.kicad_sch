@@ -1,0 +1,58 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid 476cf7fd-4f82-4468-99c1-e027b17f5088)
+
+  (paper "USLetter")
+
+  (lib_symbols
+    (symbol "TVSC:Core_PCB" (in_bom no) (on_board yes)
+      (property "Reference" "PCB" (at 0 0 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Value" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Footprint" "footprints:Core_Board_PCB_Shape" (at 0 -8.89 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "Core_PCB_0_1"
+        (rectangle (start -7.62 5.08) (end 7.62 -6.35)
+          (stroke (width 0) (type default))
+          (fill (type none))
+        )
+      )
+    )
+  )
+
+
+  (symbol (lib_id "TVSC:Core_PCB") (at 250.19 24.13 0) (unit 1)
+    (in_bom no) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid e08228b7-b29a-4eeb-86f3-318c03863f63)
+    (property "Reference" "PCB1" (at 259.08 24.765 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Value" "~" (at 250.19 24.13 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "footprints:Core_Board_PCB_Shape" (at 250.19 33.02 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 250.19 24.13 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (instances
+      (project "noop_core_board"
+        (path "/476cf7fd-4f82-4468-99c1-e027b17f5088"
+          (reference "PCB1") (unit 1)
+        )
+      )
+    )
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)
