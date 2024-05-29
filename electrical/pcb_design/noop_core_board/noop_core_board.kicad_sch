@@ -601,31 +601,6 @@
     )
   )
 
-  (symbol (lib_id "power:+5V") (at 177.8 85.09 270) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid 85c73245-70f6-41ea-8801-05190f4c2b35)
-    (property "Reference" "#PWR011" (at 173.99 85.09 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+5V" (at 182.88 85.09 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 177.8 85.09 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 177.8 85.09 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 42944046-4966-4d2f-9749-2633780fa4ef))
-    (instances
-      (project "noop_core_board"
-        (path "/476cf7fd-4f82-4468-99c1-e027b17f5088"
-          (reference "#PWR011") (unit 1)
-        )
-      )
-    )
-  )
-
   (symbol (lib_id "power:GND") (at 144.78 64.77 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8e059d0c-bdc9-4c57-8200-8629a0cd74b7)
@@ -800,6 +775,31 @@
       (project "noop_core_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088"
           (reference "PCB1") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:GND") (at 177.8 85.09 90) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid e7d75330-f0ff-4e16-97c8-8acec815e6da)
+    (property "Reference" "#PWR011" (at 184.15 85.09 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (at 182.88 85.09 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 177.8 85.09 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 177.8 85.09 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 1d4e610d-7c07-4baa-9a25-a86d375b210d))
+    (instances
+      (project "noop_core_board"
+        (path "/476cf7fd-4f82-4468-99c1-e027b17f5088"
+          (reference "#PWR011") (unit 1)
         )
       )
     )
