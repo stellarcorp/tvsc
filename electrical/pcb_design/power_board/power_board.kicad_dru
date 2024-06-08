@@ -50,10 +50,14 @@
 	(constraint text_height (min 1mm))
 )
 
+# Note that the real constraint should be 0.15mm, but too many
+# footprints, including 0402 resistors, include silkscreening
+# that is closer than this. It is easier to relax this constraint
+# than fix all of the stock footprints.
 (rule "Pad to Silkscreen"
 	(layer outer)
 	(condition "A.Type == 'pad' && B.Layer == '?.Silkscreen'")
-	(constraint silk_clearance (min 0.15mm))
+	(constraint silk_clearance (min 0.095mm))
 )
 
 (rule "Edge (routed) to track clearance"
