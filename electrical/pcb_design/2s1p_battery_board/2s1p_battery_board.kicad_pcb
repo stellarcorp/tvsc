@@ -96,6 +96,8 @@
     )
   )
 
+  (property "PCB_VERSION" "0.4")
+
   (net 0 "")
   (net 1 "Net-(BT1-PadN)")
   (net 2 "BATT")
@@ -4283,6 +4285,15 @@
       )
     )
   )
+
+  (gr_text_box "Tennessee Valley Stellar Corporation\n2s1p Battery Board v${PCB_VERSION}\n"
+    (start 157.384041 62.728459) (end 173.68596 70.5275) (layer "B.SilkS") (tstamp 497b8a54-4b9d-4daa-9097-23d487ae0b99)
+      (effects (font (size 1 1) (thickness 0.15)) (justify left top mirror))
+    (stroke (width 0.15) (type solid))  )
+  (gr_text_box "Developed with the support of the Hacker Initiative"
+    (start 157.41 70.5275) (end 173.66 76.8525) (layer "B.SilkS") (tstamp f6418b11-fb50-4b4c-ad04-db32064c069b)
+      (effects (font (size 1 1) (thickness 0.15)) (justify left top mirror))
+    (stroke (width 0.15) (type solid))  )
 
   (segment (start 177.3991 77.8852) (end 177.3991 87.9334) (width 1) (layer "F.Cu") (net 2) (tstamp 032bf0ec-2c23-4d88-85a1-3fb2dcff5cce))
   (segment (start 180.5 64.9343) (end 177.1091 68.3252) (width 1) (layer "F.Cu") (net 2) (tstamp 05c198c8-3f8e-4600-a012-5edc320a5093))
