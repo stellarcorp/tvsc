@@ -307,7 +307,7 @@
       (net 1 "GND") (pinfunction "MP1") (pintype "passive") (tstamp 0946ebe4-c46b-447c-9065-ef34736e50ef))
     (pad "8" smd rect (at -8.8 4.025001 90) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask")
       (net 1 "GND") (pinfunction "MP2") (pintype "passive") (tstamp d44dad75-8c01-4ae7-afad-b52de2e9b048))
-    (model "/home/james/git/tvsc/electrical/3dmodels/Molex_5013310607.step"
+    (model "${KIPRJMOD}/../../3dmodels/Molex_5013310607.step"
       (offset (xyz -5.04 -7.215 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -461,7 +461,7 @@
       (net 1 "GND") (pinfunction "MP1") (pintype "passive") (tstamp 73a08783-b863-40d6-8e73-fc7898dfa571))
     (pad "8" smd rect (at -8.8 4.025001) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask")
       (net 1 "GND") (pinfunction "MP2") (pintype "passive") (tstamp ab6f3cb1-0d24-497a-8458-32d0a24f451c))
-    (model "/home/james/git/tvsc/electrical/3dmodels/Molex_5013310607.step"
+    (model "${KIPRJMOD}/../../3dmodels/Molex_5013310607.step"
       (offset (xyz -5.04 -7.215 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -657,7 +657,7 @@
       (net 1 "GND") (pinfunction "MP1") (pintype "passive") (tstamp a13f537c-9088-4ad9-bd95-10d827030d61))
     (pad "8" smd rect (at -8.8 4.025001 270) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask")
       (net 1 "GND") (pinfunction "MP2") (pintype "passive") (tstamp b58d62fb-d54d-454a-949d-99f03d413b00))
-    (model "/home/james/git/tvsc/electrical/3dmodels/Molex_5013310607.step"
+    (model "${KIPRJMOD}/../../3dmodels/Molex_5013310607.step"
       (offset (xyz -5.04 -7.215 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -758,7 +758,7 @@
       (net 1 "GND") (pinfunction "MP1") (pintype "passive") (tstamp d23bee63-b8f6-4085-a987-87c216446993))
     (pad "8" smd rect (at -8.8 4.025001 90) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask")
       (net 1 "GND") (pinfunction "MP2") (pintype "passive") (tstamp be27b4fa-27e8-41bf-8866-22dd670dbb5e))
-    (model "/home/james/git/tvsc/electrical/3dmodels/Molex_5013310607.step"
+    (model "${KIPRJMOD}/../../3dmodels/Molex_5013310607.step"
       (offset (xyz -5.04 -7.215 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -1086,7 +1086,7 @@
       (net 2 "+5V") (pinfunction "VIN") (pintype "power_in") (tstamp 57f7d3c6-d1af-4727-8351-5a584361c093))
     (pad "34" thru_hole circle (at -13.97 -5.08) (size 1.6 1.6) (drill 1.1) (layers "*.Cu" "*.Mask")
       (net 35 "unconnected-(U1-VUSB-Pad34)") (pinfunction "VUSB") (pintype "power_out+no_connect") (tstamp 7ed93abf-ae45-4b70-b29e-88ac3de0e082))
-    (model "/home/james/git/tvsc/electrical/3dmodels/Teensy_40.step"
+    (model "${KIPRJMOD}/../../3dmodels/Teensy_40.step"
       (offset (xyz 33 9.5 -11))
       (scale (xyz 1 1 1))
       (rotate (xyz -90 0 0))
@@ -1187,7 +1187,7 @@
       (net 1 "GND") (pinfunction "MP1") (pintype "passive") (tstamp 0c1a151e-0045-4e09-9eb1-eea8ca7ac69b))
     (pad "8" smd rect (at -8.8 4.025001 180) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask")
       (net 1 "GND") (pinfunction "MP2") (pintype "passive") (tstamp 25e0ebd5-1c18-42c7-a91e-fa7505a9744e))
-    (model "/home/james/git/tvsc/electrical/3dmodels/Molex_5013310607.step"
+    (model "${KIPRJMOD}/../../3dmodels/Molex_5013310607.step"
       (offset (xyz -5.04 -7.215 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -1288,7 +1288,7 @@
       (net 1 "GND") (pinfunction "MP1") (pintype "passive") (tstamp 622b5019-cd0c-4298-a09b-c1a7b8bf6b12))
     (pad "8" smd rect (at -8.8 4.025001 270) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask")
       (net 1 "GND") (pinfunction "MP2") (pintype "passive") (tstamp e8bf9c03-6d47-4f80-9181-15544260c601))
-    (model "/home/james/git/tvsc/electrical/3dmodels/Molex_5013310607.step"
+    (model "${KIPRJMOD}/../../3dmodels/Molex_5013310607.step"
       (offset (xyz -5.04 -7.215 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -1389,7 +1389,7 @@
       (net 1 "GND") (pinfunction "MP1") (pintype "passive") (tstamp 597bd7fb-599a-478d-9fe6-5ffd1092df05))
     (pad "8" smd rect (at -8.8 4.025001 90) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask")
       (net 1 "GND") (pinfunction "MP2") (pintype "passive") (tstamp e3218508-156f-4817-80de-9e3cc6e9823e))
-    (model "/home/james/git/tvsc/electrical/3dmodels/Molex_5013310607.step"
+    (model "${KIPRJMOD}/../../3dmodels/Molex_5013310607.step"
       (offset (xyz -5.04 -7.215 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))

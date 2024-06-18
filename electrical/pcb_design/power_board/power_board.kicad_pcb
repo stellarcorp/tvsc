@@ -1579,7 +1579,7 @@
       (net 8 "+3.3V") (pinfunction "+3.3V") (pintype "power_in") (solder_mask_margin 0.102) (tstamp 2730a72a-be2a-434b-831e-70ab6b0a6bf9))
     (pad "6" thru_hole circle (at 2.54 -2.4257) (size 1.6383 1.6383) (drill 1.0922) (layers "*.Cu" "*.Mask")
       (net 53 "BATT") (pinfunction "BATT") (pintype "passive") (solder_mask_margin 0.102) (tstamp c12a2ca9-bdb1-49f3-ab72-61a858aa39a6))
-    (model "/home/james/git/tvsc/electrical/3dmodels/TE_Connectivity_7-5530843-7.step"
+    (model "${KIPRJMOD}/../../3dmodels/TE_Connectivity_7-5530843-7.step"
       (offset (xyz 0 0 15.2))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 -180))
@@ -1644,7 +1644,7 @@
       (net 8 "+3.3V") (pinfunction "+3.3V") (pintype "power_in") (solder_mask_margin 0.102) (tstamp b175dd26-bea2-426e-9585-89698b3eb07d))
     (pad "6" thru_hole circle (at 2.54 -2.4257) (size 1.6383 1.6383) (drill 1.0922) (layers "*.Cu" "*.Mask")
       (net 53 "BATT") (pinfunction "BATT") (pintype "passive") (solder_mask_margin 0.102) (tstamp ae421862-ba10-4695-83d9-c9dab8f988a1))
-    (model "/home/james/git/tvsc/electrical/3dmodels/TE_Connectivity_7-5530843-7.step"
+    (model "${KIPRJMOD}/../../3dmodels/TE_Connectivity_7-5530843-7.step"
       (offset (xyz 0 0 15.2))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 -180))
@@ -2190,7 +2190,7 @@
       (net 8 "+3.3V") (pinfunction "+3.3V") (pintype "power_in") (solder_mask_margin 0.102) (tstamp bf8777cb-8ce6-4e0f-9098-489c4d3070f1))
     (pad "6" thru_hole circle (at 2.54 -2.4257) (size 1.6383 1.6383) (drill 1.0922) (layers "*.Cu" "*.Mask")
       (net 53 "BATT") (pinfunction "BATT") (pintype "passive") (solder_mask_margin 0.102) (tstamp d4718a0f-2e3e-44fb-81e6-9d0e7d06bb19))
-    (model "/home/james/git/tvsc/electrical/3dmodels/TE_Connectivity_7-5530843-7.step"
+    (model "${KIPRJMOD}/../../3dmodels/TE_Connectivity_7-5530843-7.step"
       (offset (xyz 0 0 15.2))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 -180))
@@ -2574,7 +2574,7 @@
       (net 8 "+3.3V") (pinfunction "+3.3V") (pintype "power_in") (solder_mask_margin 0.102) (tstamp 58da72c7-5eab-4a3e-b827-6c1b4935b44a))
     (pad "6" thru_hole circle (at 2.54 -2.4257) (size 1.6383 1.6383) (drill 1.0922) (layers "*.Cu" "*.Mask")
       (net 53 "BATT") (pinfunction "BATT") (pintype "passive") (solder_mask_margin 0.102) (tstamp 224e896e-df7c-4b71-9009-002fa32fd634))
-    (model "/home/james/git/tvsc/electrical/3dmodels/TE_Connectivity_7-5530843-7.step"
+    (model "${KIPRJMOD}/../../3dmodels/TE_Connectivity_7-5530843-7.step"
       (offset (xyz 0 0 15.2))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 -180))
@@ -3808,7 +3808,7 @@
       (net 1 "GND") (pinfunction "1") (pintype "passive") (tstamp 9c7fde36-0c00-44d7-af54-9f91c617919b))
     (pad "2" thru_hole circle (at 0 -2.999999 90) (size 1.52 1.52) (drill 1.02) (layers "*.Cu" "*.Mask")
       (net 14 "SOLAR_VBUS") (pinfunction "2") (pintype "passive") (tstamp ca84e26b-0173-4775-86b0-6030e8813ecc))
-    (model "/home/james/git/tvsc/electrical/3dmodels/Molex_430450212.step"
+    (model "${KIPRJMOD}/../../3dmodels/Molex_430450212.step"
       (offset (xyz 0 1.5 5))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -4137,7 +4137,7 @@
       (net 8 "+3.3V") (pinfunction "+3.3V") (pintype "power_in") (solder_mask_margin 0.102) (tstamp b32b92b9-cd53-4e91-aa3a-9065f45adc5a))
     (pad "6" thru_hole circle (at 2.54 -2.4257) (size 1.6383 1.6383) (drill 1.0922) (layers "*.Cu" "*.Mask")
       (net 53 "BATT") (pinfunction "BATT") (pintype "passive") (solder_mask_margin 0.102) (tstamp e2e45752-6bc5-438a-8412-c4371c6a25f7))
-    (model "/home/james/git/tvsc/electrical/3dmodels/TE_Connectivity_7-5530843-7.step"
+    (model "${KIPRJMOD}/../../3dmodels/TE_Connectivity_7-5530843-7.step"
       (offset (xyz 0 0 15.2))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 -180))
@@ -4552,7 +4552,7 @@
       (net 8 "+3.3V") (pinfunction "+3.3V") (pintype "power_in") (solder_mask_margin 0.102) (tstamp 0a949f3c-4fc7-42f9-9c82-5151656129ed))
     (pad "6" thru_hole circle (at 2.54 -2.4257) (size 1.6383 1.6383) (drill 1.0922) (layers "*.Cu" "*.Mask")
       (net 53 "BATT") (pinfunction "BATT") (pintype "passive") (solder_mask_margin 0.102) (tstamp 569eb541-a42a-4ff9-8653-b5d16486067f))
-    (model "/home/james/git/tvsc/electrical/3dmodels/TE_Connectivity_7-5530843-7.step"
+    (model "${KIPRJMOD}/../../3dmodels/TE_Connectivity_7-5530843-7.step"
       (offset (xyz 0 0 15.2))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 -180))
@@ -4617,7 +4617,7 @@
       (net 8 "+3.3V") (pinfunction "+3.3V") (pintype "power_in") (solder_mask_margin 0.102) (tstamp b786ccc6-0452-4666-b852-52f773c331fe))
     (pad "6" thru_hole circle (at 2.54 -2.4257) (size 1.6383 1.6383) (drill 1.0922) (layers "*.Cu" "*.Mask")
       (net 53 "BATT") (pinfunction "BATT") (pintype "passive") (solder_mask_margin 0.102) (tstamp 2de65b7c-36f9-4381-8c45-54ccd9a344c5))
-    (model "/home/james/git/tvsc/electrical/3dmodels/TE_Connectivity_7-5530843-7.step"
+    (model "${KIPRJMOD}/../../3dmodels/TE_Connectivity_7-5530843-7.step"
       (offset (xyz 0 0 15.2))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 -180))
@@ -5717,7 +5717,7 @@
       (net 8 "+3.3V") (pinfunction "+3.3V") (pintype "power_in") (solder_mask_margin 0.102) (tstamp 54fbafab-c8b3-4ae9-a8f0-b0f524663be8))
     (pad "6" thru_hole circle (at 2.54 -2.4257) (size 1.6383 1.6383) (drill 1.0922) (layers "*.Cu" "*.Mask")
       (net 53 "BATT") (pinfunction "BATT") (pintype "passive") (solder_mask_margin 0.102) (tstamp 4a1ed79b-3fdd-42f1-a812-8f2e9bc491cc))
-    (model "/home/james/git/tvsc/electrical/3dmodels/TE_Connectivity_7-5530843-7.step"
+    (model "${KIPRJMOD}/../../3dmodels/TE_Connectivity_7-5530843-7.step"
       (offset (xyz 0 0 15.2))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 -180))
@@ -6018,7 +6018,7 @@
       (net 28 "/Charger/SW1") (pinfunction "1") (pintype "passive") (tstamp bfbbd6cf-57a3-4411-8a99-5fc0f1da2680))
     (pad "2" smd rect (at 2.775 0) (size 1.85 3.4) (layers "F.Cu" "F.Paste" "F.Mask")
       (net 30 "/Charger/SW2") (pinfunction "2") (pintype "passive") (tstamp 73d1a68e-c373-4a1d-aa9f-76f054bdbf98))
-    (model "/home/james/git/tvsc/electrical/3dmodels/TDK_SPM6530T-1ROM120.step"
+    (model "${KIPRJMOD}/../../3dmodels/TDK_SPM6530T-1ROM120.step"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz -90 0 -90))
