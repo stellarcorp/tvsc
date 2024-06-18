@@ -44,10 +44,11 @@
 )
 
 # Minimum guaranteed legible text height is 1mm, but we allow smaller since it doesn't always need to be fully legible.
+# Also, minimum text thickness is 0.15mm, but we allow smaller for the same reason.
 (rule "Silkscreen text"
 	(layer "?.Silkscreen")
 	(condition "A.Type == 'Text' || A.Type == 'Text Box'")
-	(constraint text_thickness (min 0.15mm))
+	(constraint text_thickness (min 0.08mm))
 	(constraint text_height (min 0.7mm))
 )
 
