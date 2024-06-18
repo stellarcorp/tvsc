@@ -1562,8 +1562,8 @@
     (uuid 44f8336f-7302-468a-9d41-702b2382a32c)
   )
 
-  (text_box "The debug header is set up to provide power for all connected boards, but it only allows for debugging the STM32 on this board."
-    (at 40.64 180.34 0) (size 44.45 10.16)
+  (text_box "The debug header does not power this board directly. It generates simulated solar power that can be fed to the power board. This debug header otherwise acts like the normal TagConnect STLINK debug header."
+    (at 40.64 180.34 0) (size 44.45 12.7)
     (stroke (width 0) (type default))
     (fill (type none))
     (effects (font (size 1.27 1.27)) (justify left top))
@@ -1822,7 +1822,7 @@
           (reference "J17") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "J17") (unit 1)
         )
@@ -1854,6 +1854,9 @@
     (property "Manufacturer Part Number" "GCM155R71H104KE02J" (at 80.01 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Active" "Y" (at 80.01 115.57 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 9d004c46-577a-4a01-a29a-641c7ea53fed))
     (pin "2" (uuid 1aba80dd-3b6d-4220-b2fe-e7fefbca33f9))
     (instances
@@ -1862,7 +1865,7 @@
           (reference "C6") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "C6") (unit 1)
         )
@@ -1892,7 +1895,7 @@
           (reference "#PWR019") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR019") (unit 1)
         )
@@ -1924,6 +1927,9 @@
     (property "Manufacturer Part Number" "GRM188R61E106KA73D" (at 24.13 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Active" "Y" (at 24.13 115.57 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 835cd727-65d0-439d-acae-b4aa3aada263))
     (pin "2" (uuid 014eeab7-d572-4990-b566-902a6e87f637))
     (instances
@@ -1932,7 +1938,7 @@
           (reference "C1") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "C1") (unit 1)
         )
@@ -1962,7 +1968,7 @@
           (reference "#PWR012") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR012") (unit 1)
         )
@@ -2008,7 +2014,7 @@
           (reference "D1") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "D1") (unit 1)
         )
@@ -2040,6 +2046,9 @@
     (property "Manufacturer Part Number" "GCM155R71H104KE02J" (at 68.58 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Active" "Y" (at 68.58 115.57 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid d2af6845-ef6e-43fb-a3d8-a465961f8bef))
     (pin "2" (uuid b3c61733-d409-4fe4-bf29-801788809732))
     (instances
@@ -2048,7 +2057,7 @@
           (reference "C5") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "C5") (unit 1)
         )
@@ -2103,7 +2112,7 @@
           (reference "U2") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "U2") (unit 1)
         )
@@ -2133,7 +2142,7 @@
           (reference "#PWR013") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR013") (unit 1)
         )
@@ -2163,7 +2172,7 @@
           (reference "#PWR015") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR015") (unit 1)
         )
@@ -2193,7 +2202,7 @@
           (reference "#PWR04") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR04") (unit 1)
         )
@@ -2283,7 +2292,7 @@
           (reference "U4") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "U4") (unit 1)
         )
@@ -2313,7 +2322,7 @@
           (reference "#PWR016") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR016") (unit 1)
         )
@@ -2338,7 +2347,7 @@
     )
     (pin "1" (uuid 5fe12eeb-8e28-44a0-8d1a-8c8087d08b5f))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR02") (unit 1)
         )
@@ -2368,7 +2377,7 @@
           (reference "#PWR07") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR07") (unit 1)
         )
@@ -2398,7 +2407,7 @@
           (reference "#PWR05") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR05") (unit 1)
         )
@@ -2450,7 +2459,7 @@
           (reference "R3") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "R3") (unit 1)
         )
@@ -2482,6 +2491,9 @@
     (property "Manufacturer Part Number" "GCM155R71H104KE02J" (at 57.15 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Active" "Y" (at 57.15 115.57 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 7ae29517-46a0-4f59-9ab6-a95bc170b731))
     (pin "2" (uuid 8bb70616-ef60-4af3-be6b-3e71cc8bdefd))
     (instances
@@ -2490,7 +2502,7 @@
           (reference "C4") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "C4") (unit 1)
         )
@@ -2520,7 +2532,7 @@
           (reference "#PWR09") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR09") (unit 1)
         )
@@ -2550,7 +2562,7 @@
           (reference "#PWR06") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR06") (unit 1)
         )
@@ -2580,7 +2592,7 @@
           (reference "#PWR011") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR011") (unit 1)
         )
@@ -2623,7 +2635,7 @@
           (reference "R2") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "R2") (unit 1)
         )
@@ -2653,7 +2665,7 @@
           (reference "#PWR014") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR014") (unit 1)
         )
@@ -2685,6 +2697,9 @@
     (property "Manufacturer Part Number" "GCM155R71H104KE02J" (at 36.83 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Active" "Y" (at 36.83 115.57 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 9950eb6f-7e32-453c-b1b1-b5d37e68fcbd))
     (pin "2" (uuid 0a8cc53a-fb74-4ea9-bd28-1b1f15eb3afd))
     (instances
@@ -2693,7 +2708,7 @@
           (reference "C2") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "C2") (unit 1)
         )
@@ -2725,6 +2740,9 @@
     (property "Manufacturer Part Number" "GCM155R71H104KE02J" (at 46.99 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Active" "Y" (at 46.99 115.57 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "1" (uuid 2509a87f-08f6-49d9-b877-97cc00eebf9e))
     (pin "2" (uuid 85aa3a8a-6793-4a54-ab18-45c167c4b095))
     (instances
@@ -2733,7 +2751,7 @@
           (reference "C3") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "C3") (unit 1)
         )
@@ -2763,7 +2781,7 @@
           (reference "#PWR018") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR018") (unit 1)
         )
@@ -2793,7 +2811,7 @@
           (reference "#PWR017") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR017") (unit 1)
         )
@@ -2823,7 +2841,7 @@
           (reference "#PWR010") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "#PWR010") (unit 1)
         )
@@ -2878,7 +2896,7 @@
           (reference "U1") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "U1") (unit 1)
         )
@@ -2921,7 +2939,7 @@
           (reference "R1") (unit 1)
         )
       )
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/98846752-e261-47e4-8406-82cf49c3da7a"
           (reference "R1") (unit 1)
         )

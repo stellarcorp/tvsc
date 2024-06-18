@@ -579,8 +579,8 @@
     (uuid ff792f44-a19a-4de0-9d06-b7e3b398e38d)
   )
 
-  (text_box "Configurable voltage regulator. Conservatively able to generate voltages on [1V, 10.5V]."
-    (at 124.46 49.53 0) (size 24.13 11.43)
+  (text_box "Configurable voltage regulator. As configured, it is conservatively able to generate voltages on [1V, 10.5V]."
+    (at 102.87 48.26 0) (size 33.02 15.24)
     (stroke (width 0) (type default))
     (fill (type none))
     (effects (font (size 1.27 1.27)) (justify left top))
@@ -623,7 +623,7 @@
     (pin "1" (uuid dcf086a8-a4ab-47ac-ae12-9a90a54d27ab))
     (pin "2" (uuid 64d213e2-7f85-4b23-9ca9-ed5e25bdc214))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/bbe55d41-cea8-4755-b09e-ba7aff02ad8c"
           (reference "C8") (unit 1)
         )
@@ -655,10 +655,13 @@
     (property "Manufacturer Part Number" "RT0402BRD0736KL" (at 133.35 92.71 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Active" "Y" (at 133.35 92.71 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "2" (uuid ff582d37-974f-488b-8e96-6c0ba30eb6e4))
     (pin "1" (uuid 61897f24-cfe3-407c-93c5-369df7db8e84))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/bbe55d41-cea8-4755-b09e-ba7aff02ad8c"
           (reference "R6") (unit 1)
         )
@@ -683,7 +686,7 @@
     )
     (pin "1" (uuid 71482b9a-f93c-45d7-8d3f-cc3571bf89f5))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/bbe55d41-cea8-4755-b09e-ba7aff02ad8c"
           (reference "#PWR08") (unit 1)
         )
@@ -694,10 +697,10 @@
   (symbol (lib_id "JST B02B-XASK-1 (LF)(SN):B02B-XASK-1__LF__SN_") (at 172.72 73.66 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 6eb27a84-9166-4bc0-8f66-4585bb19b535)
-    (property "Reference" "J1" (at 189.23 86.36 0)
+    (property "Reference" "J1" (at 189.23 83.82 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Value" "Molex_430450212" (at 189.23 83.82 0)
+    (property "Value" "Molex_430450212" (at 189.23 81.28 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Footprint" "footprints:Molex_430450212" (at 189.23 168.58 0)
@@ -727,7 +730,7 @@
     (property "Arrow Price/Stock" "" (at 189.23 1068.58 0)
       (effects (font (size 1.27 1.27)) (justify left top) hide)
     )
-    (property "Purpose" "Mimic Solar Panels" (at 189.23 81.28 0)
+    (property "Purpose" "Simulated Solar Power" (at 187.96 68.58 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "MPN" "C293362" (at 172.72 73.66 0)
@@ -745,7 +748,7 @@
     (pin "2" (uuid 8e8a344d-4061-49bd-ad82-7d5f33327aad))
     (pin "1" (uuid 5aa554df-4cc9-411d-ab41-7478297ca852))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/bbe55d41-cea8-4755-b09e-ba7aff02ad8c"
           (reference "J1") (unit 1)
         )
@@ -780,11 +783,14 @@
     (property "Tolerance" "20%" (at 133.35 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Active" "Y" (at 133.35 85.09 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "2" (uuid 45e961aa-a5a7-474d-90f9-51aa9d5cde60))
     (pin "3" (uuid ca853911-8883-4f27-bc03-a7408d6bdcd7))
     (pin "1" (uuid 35e18931-b1ab-46c3-852e-083552a9fb15))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/bbe55d41-cea8-4755-b09e-ba7aff02ad8c"
           (reference "RV1") (unit 1)
         )
@@ -816,10 +822,13 @@
     (property "Manufacturer Part Number" "RT0402BRD0736KL" (at 133.35 77.47 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (property "Active" "Y" (at 133.35 77.47 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (pin "2" (uuid 624681bf-b0e7-4e56-bdbe-bd67db88a74c))
     (pin "1" (uuid 2fb66357-e1e1-4aa9-8648-ebd6d4194692))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/bbe55d41-cea8-4755-b09e-ba7aff02ad8c"
           (reference "R5") (unit 1)
         )
@@ -844,7 +853,7 @@
     )
     (pin "1" (uuid 68fc9466-02cf-48e4-bb95-9cc71c94d9bb))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/bbe55d41-cea8-4755-b09e-ba7aff02ad8c"
           (reference "#PWR021") (unit 1)
         )
@@ -890,7 +899,7 @@
     (pin "2" (uuid bc497ea9-cdf6-4c7b-97c6-eb9f1d618271))
     (pin "1" (uuid 82714ecc-338b-4f47-b4fc-6152565c0eea))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/bbe55d41-cea8-4755-b09e-ba7aff02ad8c"
           (reference "U5") (unit 1)
         )
@@ -931,7 +940,7 @@
     (pin "1" (uuid 5c9da66d-4a07-413c-8a9d-1ef3ba207f14))
     (pin "2" (uuid 1280bd08-7d71-42e0-be49-27addd9b7efe))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/bbe55d41-cea8-4755-b09e-ba7aff02ad8c"
           (reference "D2") (unit 1)
         )
@@ -975,7 +984,7 @@
     (pin "1" (uuid 6d4061d8-0166-46dd-b1b7-bef3422461e3))
     (pin "2" (uuid 8f6e6757-e32a-4fb2-a961-8f81149e631f))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/bbe55d41-cea8-4755-b09e-ba7aff02ad8c"
           (reference "C7") (unit 1)
         )
@@ -1016,7 +1025,7 @@
     (pin "1" (uuid b87805b6-3d69-4339-998d-3e944e39a101))
     (pin "2" (uuid a1f2b712-e967-442f-9542-936e4f5cf902))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088/bbe55d41-cea8-4755-b09e-ba7aff02ad8c"
           (reference "R4") (unit 1)
         )

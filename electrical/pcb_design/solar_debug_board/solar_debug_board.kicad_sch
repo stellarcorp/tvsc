@@ -348,7 +348,7 @@
     )
     (pin "1" (uuid 99a7ca9a-a086-4fa9-b540-ab6a42f60dfa))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088"
           (reference "#PWR03") (unit 1)
         )
@@ -373,7 +373,7 @@
     )
     (pin "1" (uuid 300f2de4-2d78-4ccf-b948-fb5ef568fa7c))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088"
           (reference "#PWR01") (unit 1)
         )
@@ -427,7 +427,7 @@
     (pin "10" (uuid e9189e29-d04f-4eec-94e1-ed03ec89b2a2))
     (pin "17" (uuid 250660ca-3729-41c9-9ede-dcdd00ef9d7e))
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088"
           (reference "PCB1") (unit 1)
         )
@@ -435,18 +435,18 @@
     )
   )
 
-  (sheet (at 226.06 36.83) (size 12.7 3.81) (fields_autoplaced)
+  (sheet (at 226.06 35.56) (size 12.7 3.81) (fields_autoplaced)
     (stroke (width 0.1524) (type solid))
     (fill (color 0 0 0 0.0000))
     (uuid 2e4e1305-0d59-484e-bdc1-6dadb685906a)
-    (property "Sheetname" "Backplane" (at 226.06 36.1184 0)
+    (property "Sheetname" "Backplane" (at 226.06 34.8484 0)
       (effects (font (size 1.27 1.27)) (justify left bottom))
     )
-    (property "Sheetfile" "backplane.kicad_sch" (at 226.06 41.2246 0)
+    (property "Sheetfile" "backplane.kicad_sch" (at 226.06 39.9546 0)
       (effects (font (size 1.27 1.27)) (justify left top))
     )
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088" (page "3"))
       )
     )
@@ -463,7 +463,7 @@
       (effects (font (size 1.27 1.27)) (justify left top))
     )
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088" (page "2"))
       )
     )
@@ -480,7 +480,7 @@
       (effects (font (size 1.27 1.27)) (justify left top))
     )
     (instances
-      (project "debug_core_board"
+      (project "solar_debug_board"
         (path "/476cf7fd-4f82-4468-99c1-e027b17f5088" (page "4"))
       )
     )
