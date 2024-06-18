@@ -121,7 +121,7 @@
     (property "Sheetname" "")
     (property "exclude_from_bom" "")
     (path "/e08228b7-b29a-4eeb-86f3-318c03863f63")
-    (attr smd)
+    (attr smd exclude_from_bom)
     (fp_text reference "PCB1" (at 0 -0.5 unlocked) (layer "F.SilkS")
         (effects (font (size 1 1) (thickness 0.1)) (justify right))
       (tstamp b19b1256-9475-4f2c-8228-de446b28fdc1)
