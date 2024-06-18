@@ -469,6 +469,23 @@
     )
   )
 
+  (sheet (at 226.06 45.72) (size 12.7 3.81) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid bbe55d41-cea8-4755-b09e-ba7aff02ad8c)
+    (property "Sheetname" "Solar Debug" (at 226.06 45.0084 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "solar_debug.kicad_sch" (at 226.06 50.1146 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "debug_core_board"
+        (path "/476cf7fd-4f82-4468-99c1-e027b17f5088" (page "4"))
+      )
+    )
+  )
+
   (sheet_instances
     (path "/" (page "1"))
   )
