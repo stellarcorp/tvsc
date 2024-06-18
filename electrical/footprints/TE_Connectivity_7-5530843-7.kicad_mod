@@ -49,7 +49,7 @@
     (solder_mask_margin 0.102) (tstamp 017eda9c-57c9-4eae-9014-f1af6bc85e1e))
   (pad "6" thru_hole circle (at 2.54 -2.4257) (size 1.6383 1.6383) (drill 1.0922) (layers "*.Cu" "*.Mask")
     (solder_mask_margin 0.102) (tstamp f779f35c-859c-4974-8284-42da29e137e8))
-  (model "/home/james/git/tvsc/electrical/3dmodels/TE_Connectivity_7-5530843-7.step"
+  (model "${KIPRJMOD}/../../3dmodels/TE_Connectivity_7-5530843-7.step"
     (offset (xyz 0 0 15.2))
     (scale (xyz 1 1 1))
     (rotate (xyz 0 0 -180))

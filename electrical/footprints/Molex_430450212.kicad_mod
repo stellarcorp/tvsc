@@ -70,7 +70,7 @@
   (pad "" np_thru_hole circle (at 2.999999 -3.94) (size 1.02 1.02) (drill 1.02) (layers "*.Cu" "*.Mask") (tstamp 37145d4d-8075-4272-bb8e-20027ba508ca))
   (pad "1" thru_hole rect (at 0 0) (size 1.52 1.52) (drill 1.02) (layers "*.Cu" "*.Mask") (tstamp bb191394-7f30-42ed-9059-01dc8312da90))
   (pad "2" thru_hole circle (at 0 -2.999999) (size 1.52 1.52) (drill 1.02) (layers "*.Cu" "*.Mask") (tstamp 98ca2941-f96b-444b-9ff4-fa24a52ba517))
-  (model "/home/james/git/tvsc/electrical/3dmodels/Molex_430450212.step"
+  (model "${KIPRJMOD}/../../3dmodels/Molex_430450212.step"
     (offset (xyz 0 1.5 5))
     (scale (xyz 1 1 1))
     (rotate (xyz 0 0 0))

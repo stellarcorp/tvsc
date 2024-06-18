@@ -41,7 +41,7 @@
     (stroke (width 0.2) (type solid)) (layer "F.Fab") (tstamp 02c4fb16-111e-4255-ad85-7e68072edc75))
   (pad "1" smd rect (at -2.775 0) (size 1.85 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp ff1e464e-47e7-44ee-a6eb-875d07f6ad28))
   (pad "2" smd rect (at 2.775 0) (size 1.85 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 282fce7d-095a-430e-a727-9911e84699d9))
-  (model "/home/james/git/tvsc/electrical/3dmodels/TDK_SPM6530T-1ROM120.step"
+  (model "${KIPRJMOD}/../../3dmodels/TDK_SPM6530T-1ROM120.step"
     (offset (xyz 0 0 0))
     (scale (xyz 1 1 1))
     (rotate (xyz -90 0 -90))
