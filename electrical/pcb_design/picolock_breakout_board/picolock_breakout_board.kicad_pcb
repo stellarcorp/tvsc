@@ -368,10 +368,14 @@
     (stroke (width 0.1) (type solid)) (fill solid) (layer "F.SilkS") (tstamp 44e7166e-6e1c-4aa5-96e9-ad971ca3b6ba))
   (gr_rect (start 123.51 125.37) (end 169.935 149.87)
     (stroke (width 0.05) (type default)) (fill none) (layer "Edge.Cuts") (tstamp 4ea09211-5b09-4911-9d93-52974ed438fa))
-  (gr_text_box "Tennessee Valley Stellar Corporation 10- & 12-pin Pico-Lock Breakout Board. Version ${PCB_VERSION}\n"
-    (start 151.01 139.495) (end 169.485 145.6575) (layer "F.SilkS") (tstamp a0257348-2f06-4fb7-ba2e-0492deabe411)
-      (effects (font (size 0.8 0.8) (thickness 0.15) bold) (justify left top))
-    (stroke (width 0.2) (type solid))  )
+  (gr_text_box "Developed with the support of the Hacker Initiative"
+    (start 153.0475 138.47) (end 169.3225 144.47) (layer "F.SilkS") (tstamp 15658d7f-651d-4e5c-b4f9-b56c8daf143f)
+      (effects (font (size 1 1) (thickness 0.15)) (justify left top))
+    (stroke (width 0.15) (type solid))  )
+  (gr_text_box "Tennessee Valley Stellar Corporation\nPico-Lock Breakout Board v${PCB_VERSION}\n"
+    (start 124.135 137.42) (end 141.161919 144.769041) (layer "F.SilkS") (tstamp c2e6800a-1f35-4f6e-9306-f461f6bf42e9)
+      (effects (font (size 1 1) (thickness 0.15)) (justify left top))
+    (stroke (width 0.15) (type solid))  )
 
   (segment (start 127.26 132.87) (end 127.26 144.92) (width 0.2) (layer "F.Cu") (net 1) (tstamp 506f6f77-3f88-4988-81db-1b2c4ebf39de))
   (segment (start 165.185 133.545) (end 165.165 133.525) (width 0.2) (layer "F.Cu") (net 1) (tstamp a3581513-5a1b-4cea-a6b0-488c2b90e34e))
