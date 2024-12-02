@@ -14,22 +14,6 @@ platform(
     ],
 )
 
-# Ground station platform. Relatively powerful SBC with a full OS and bus support for embedded
-# components.
-platform(
-    name = "odroid_m1",
-    constraint_values = [
-        "@platforms//cpu:arm64",
-        "@platforms//os:linux",
-        ":std_cpp",
-        ":wiring_pi_gpio",
-        ":spidev_spi",
-        ":no_eeprom",
-        ":os_networking",
-        ":odroid_m1_board",
-    ],
-)
-
 # Vehicle platforms. Powerful CPU without an OS, but with bus support for embedded components.
 platform(
     name = "teensy40",
@@ -149,10 +133,5 @@ constraint_value(
 
 constraint_value(
     name = "teensy41_board",
-    constraint_setting = "board_type",
-)
-
-constraint_value(
-    name = "odroid_m1_board",
     constraint_setting = "board_type",
 )

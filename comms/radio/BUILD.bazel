@@ -80,9 +80,6 @@ cc_library(
             "//platforms:teensy41_board": [
                 ":single_radio_pin_mapping_teensy41_default",
             ],
-            "//platforms:odroid_m1_board": [
-                ":single_radio_pin_mapping_odroid_m1_default",
-            ],
         },
     ),
 )
@@ -128,23 +125,6 @@ cc_library(
     ],
 )
 
-cc_library(
-    name = "single_radio_pin_mapping_odroid_m1_default",
-    srcs = [
-        "single_radio_pin_mapping_odroid_m1_default.cc",
-    ],
-    target_compatible_with = select({
-        "//platforms:odroid_m1_board": [
-        ],
-        "//conditions:default": [
-            "@platforms//:incompatible",
-        ],
-    }),
-    deps = [
-        ":single_radio_pin_mapping",
-    ],
-)
-
 cc_binary(
     name = "echo_client",
     srcs = ["echo_client.cc"],
@@ -171,9 +151,6 @@ cc_binary(
             ],
             "//platforms:teensy41_board": [
                 ":single_radio_pin_mapping_teensy41_default",
-            ],
-            "//platforms:odroid_m1_board": [
-                ":single_radio_pin_mapping_odroid_m1_default",
             ],
         },
     ),
@@ -219,9 +196,6 @@ cc_binary(
             ],
             "//platforms:teensy41_board": [
                 ":single_radio_pin_mapping_teensy41_default",
-            ],
-            "//platforms:odroid_m1_board": [
-                ":single_radio_pin_mapping_odroid_m1_default",
             ],
         },
     ),

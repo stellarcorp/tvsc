@@ -6,10 +6,6 @@ cc_library(
     }),
     visibility = ["//visibility:public"],
     deps = select({
-        "//platforms:odroid_m1_board": [
-            "@kr_or_linuxfactory_libwiringpi_dev//:lib",
-            "@kr_or_linuxfactory_libwiringpi//:lib",
-        ],
         "//conditions:default": [
             "@com_ubuntu_ports_libwiringpi_dev//:lib",
             "@com_ubuntu_ports_libwiringpi//:lib",

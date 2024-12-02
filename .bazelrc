@@ -13,10 +13,6 @@ build:c++2a --cxxopt -std=c++2a
 # Setting to enable platform builds.
 build:platform_build --incompatible_enable_cc_toolchain_resolution
 
-# Note: This configuration picks up the build:linux configurations as well.
-build:odroid_m1 --platforms=//platforms:odroid_m1
-build:odroid_m1 --cpu=arm64 --crosstool_top=//toolchain/arm64-debian-linux-gnu:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
-
 build:teensy40 --platforms=//platforms:teensy40
 build:teensy40 --cpu=armv7e-mf --crosstool_top=//toolchain/arm-none-eabi-gcc:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 

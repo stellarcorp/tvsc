@@ -30,16 +30,3 @@ From the top-level of the repo,
 You can guess what this should print. Any issues are likely due to missing or out-of-date compilers.
 
 Note: future examples will use `bazel` instead of one of the bazelisk executables. This is inline with examples from the [Bazel documentation](https://bazel.build/) and other online sources. Please continue to use bazelisk, even when the examples say `bazel`. You may find it useful to make an alias from `bazel` to the correct bazelisk executable.
-
-### Do a test build using one of the cross-compilers:
-```
-bazel build --config=odroid_m1 //service/hello:hello_world
-```
-
-This step should succeed, though it make take a while since it will download the ARM toolchain.
-
-This next step should fail, unless you are running on an ARM processor:
-
-```
-./bazel-bin/service/hello/hello_world
-```

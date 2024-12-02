@@ -90,9 +90,6 @@ cc_binary(
         "//platforms:teensy41_board": [
             ":blink_pin_mapping_teensy_default",
         ],
-        "//platforms:odroid_m1_board": [
-            ":blink_pin_mapping_odroid_default",
-        ],
         "//conditions:default": [],
     }),
 )
@@ -121,23 +118,6 @@ cc_library(
     deps = [
         ":blink_pin_mapping",
         "//third_party/arduino:core",
-    ],
-)
-
-cc_library(
-    name = "blink_pin_mapping_odroid_default",
-    srcs = [
-        "blink_pin_mapping_odroid_default.cc",
-    ],
-    target_compatible_with = select({
-        "//platforms:odroid_m1_board": [
-        ],
-        "//conditions:default": [
-            "@platforms//:incompatible",
-        ],
-    }),
-    deps = [
-        ":blink_pin_mapping",
     ],
 )
 
