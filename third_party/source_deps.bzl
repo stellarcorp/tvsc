@@ -80,14 +80,6 @@ def load_source_dependencies():
             strip_prefix = "glog-0.5.0",
         )
 
-    # Hack to work around gRPC's insistence on building boringssl from scratch when we have OpenSSL installed from the
-    # OS. Also, we had difficulties getting boringssl and Abseil, one of its dependencies, to compile on arm64.
-    if not native.existing_rule("boringssl"):
-        native.local_repository(
-            name = "boringssl",
-            path = "third_party/boringssl",
-        )
-
     if not native.existing_rule("zlib"):
         http_archive(
             name = "zlib",
