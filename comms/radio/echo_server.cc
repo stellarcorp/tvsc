@@ -1,7 +1,6 @@
 #include <string>
 
 #include "comms/radio/fragment_transceiver.h"
-#include "comms/radio/nanopb_proto/settings.pb.h"
 #include "comms/radio/rf69hcw.h"
 #include "comms/radio/rf69hcw_configuration.h"
 #include "hal/eeprom/eeprom.h"
@@ -14,7 +13,6 @@ int main() {
   tvsc::hal::gpio::initialize_gpio();
 
   static constexpr size_t RADIO_IDENTIFICATION_EEPROM_LOCATION{0};
-  tvsc_comms_radio_nano_RadioIdentification identification{};
 
   tvsc::hal::eeprom::Eeprom eeprom{};
   bool has_saved_identification{!eeprom.is_empty(RADIO_IDENTIFICATION_EEPROM_LOCATION)};

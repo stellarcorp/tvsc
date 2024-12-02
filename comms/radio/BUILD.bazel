@@ -2,26 +2,17 @@ load("//platforms:hex.bzl", "hex")
 
 cc_library(
     name = "radio",
-    srcs = [
-        "protocol.cc",
-        "telemetry_accumulator.cc",
-    ],
     hdrs = [
         "fragment.h",
         "fragment_transceiver.h",
         "half_duplex_radio.h",
-        "protocol.h",
-        "radio_configuration.h",
         "radio_utilities.h",
-        "settings.h",
-        "telemetry_accumulator.h",
         "yield.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
         "//base",
         "//buffer",
-        "//comms/radio/nanopb_proto:radio_nano_cc_proto",
         "//hal/output",
         "//hal/time",
         "//hash",
@@ -48,7 +39,6 @@ cc_library(
     ],
     hdrs = [
         "rf69hcw.h",
-        "rf69hcw_configuration.h",
     ],
     target_compatible_with = select({
         "//platforms:wiring_pi_gpio": [
@@ -65,7 +55,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":radio",
-        "//comms/radio/nanopb_proto:radio_nano_cc_proto",
         "//base",
         "//hal/gpio",
         "//hal/output",
@@ -143,7 +132,6 @@ cc_binary(
         "//hal/spi",
         "//hal/time",
         "//random",
-        "@com_github_nanopb_nanopb//:nanopb",
     ] + select(
         {
             "//platforms:teensy40_board": [
@@ -188,7 +176,6 @@ cc_binary(
         "//hal/spi",
         "//hal/time",
         "//random",
-        "@com_github_nanopb_nanopb//:nanopb",
     ] + select(
         {
             "//platforms:teensy40_board": [
@@ -212,18 +199,6 @@ hex(
             "@platforms//:incompatible",
         ],
     }),
-)
-
-cc_test(
-    name = "settings_test",
-    srcs = [
-        "settings_test.cc",
-    ],
-    deps = [
-        ":radio",
-        "//base",
-        "//third_party/gtest",
-    ],
 )
 
 cc_test(

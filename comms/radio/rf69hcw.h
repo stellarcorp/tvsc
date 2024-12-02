@@ -8,7 +8,6 @@
 #include "base/except.h"
 #include "comms/radio/fragment.h"
 #include "comms/radio/half_duplex_radio.h"
-#include "comms/radio/nanopb_proto/radio.pb.h"
 #include "comms/radio/yield.h"
 #include "hal/gpio/interrupts.h"
 #include "hal/gpio/pins.h"

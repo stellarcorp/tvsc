@@ -1,7 +1,6 @@
 #include <string>
 
 #include "comms/radio/fragment.h"
-#include "comms/radio/nanopb_proto/settings.pb.h"
 #include "comms/radio/radio_configuration.h"
 #include "comms/radio/radio_utilities.h"
 #include "comms/radio/rf69hcw.h"
