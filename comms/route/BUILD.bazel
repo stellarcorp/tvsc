@@ -1,7 +1,0 @@
-cc_library(
-    name = "route",
-    hdrs = [
-        "packet_router.h",
-    ],
-    visibility = ["//visibility:public"],
-)
