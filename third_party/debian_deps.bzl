@@ -149,62 +149,6 @@ def load_debian_dependencies():
         x86_64_sha256 = "22a952f48cdb59f1d0c476874facc62418eda5b4c30c5a23a17c28781b426c1b",
     )
 
-    # RTL-SDR
-    # TODO(james): Verify these packages are part of Debian 10.
-    tvsc_archive(
-        name = "org_debian_ftp_librtlsdr_dev",
-        libname = "librtlsdr_dev",
-        arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/r/rtl-sdr/librtlsdr-dev_0.6.0-3_arm64.deb",
-        ],
-        arm64_sha256 = "9788df9810e32fe750f0855324f87b8d0be13cebd2947f4cfc814213c226717d",
-        x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/r/rtl-sdr/librtlsdr-dev_0.6.0-3_amd64.deb",
-        ],
-        x86_64_sha256 = "b15aa87fc834bfc66f3369b3da1936c8d700fe8e0857104e28ebb3c74aba4a11",
-        deps = [
-            "@org_debian_ftp_libusb_dev//:lib",
-        ],
-    )
-
-    # SoapySDR
-    # TODO(james): Verify these packages are part of Debian 10.
-    tvsc_archive(
-        name = "org_debian_ftp_libsoapysdr_dev",
-        libname = "libsoapysdr_dev",
-        arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/s/soapysdr/libsoapysdr-dev_0.7.2-2_arm64.deb",
-        ],
-        arm64_sha256 = "e91c3ef6b0d49869290d3fed00849fcf0ddaa47f863a0f274b89bca66aeb279c",
-        x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/s/soapysdr/libsoapysdr-dev_0.7.2-2_amd64.deb",
-        ],
-        x86_64_sha256 = "e00c599336e25c7aa71092160c9cbb51664745cbabeb01bbabc3d01c78955786",
-        deps = [
-            "@org_debian_ftp_libsoapysdr//:lib",
-        ],
-    )
-
-    # TODO(james): Verify these packages are part of Debian 10.
-    tvsc_archive(
-        name = "org_debian_ftp_libsoapysdr",
-        libname = "libsoapysdr",
-        arm64_urls = [
-            "https://ftp.debian.org/debian/pool/main/s/soapysdr/libsoapysdr0.7_0.7.2-2_arm64.deb",
-        ],
-        arm64_library_paths = {
-            "libsoapysdr": "usr/lib/aarch64-linux-gnu/libSoapySDR.so.0.7",
-        },
-        arm64_sha256 = "a89a1429c051b8861e96a967d54314a4b52278a96de6c6a5162afaf1e4cf2cfe",
-        x86_64_urls = [
-            "https://ftp.debian.org/debian/pool/main/s/soapysdr/libsoapysdr0.7_0.7.2-2_amd64.deb",
-        ],
-        x86_64_library_paths = {
-            "libsoapysdr": "usr/lib/x86_64-linux-gnu/libSoapySDR.so.0.7",
-        },
-        x86_64_sha256 = "89a4161a374cba943e3023dfe9df1846d5ba4920011accec6c172b44b973b26a",
-    )
-
     tvsc_archive(
         name = "org_debian_ftp_libdbus",
         libname = "libdbus",
