@@ -99,16 +99,6 @@ def load_source_dependencies():
             build_file = "//third_party/zlib:zlib.BUILD",
         )
 
-    if "com_github_nanopb_nanopb" not in native.existing_rules():
-        http_archive(
-            name = "com_github_nanopb_nanopb",
-            sha256 = "e1d89b166367a3c42d42311bdc2ed57ff78f86aede9a66828516e45490d48c81",
-            strip_prefix = "nanopb-0.4.7",
-            urls = [
-                "https://github.com/nanopb/nanopb/archive/refs/tags/0.4.7.tar.gz",
-            ],
-        )
-
     if not native.existing_rule("com_github_grpc_grpc"):
         http_archive(
             name = "com_github_grpc_grpc",
