@@ -119,17 +119,6 @@ def load_source_dependencies():
             strip_prefix = "grpc-1.52.1",
         )
 
-    if not native.existing_rule("com_github_unetworking_usockets"):
-        http_archive(
-            name = "com_github_unetworking_usockets",
-            sha256 = "302f523448c9130bdd9802ca607578478172eb7f1713796c98284d4369924c23",
-            urls = [
-                "https://github.com/uNetworking/uSockets/archive/b950efd6b10f06dd3ecb5b692e5d415f48474647.tar.gz",
-            ],
-            build_file = "//third_party/usockets:usockets.BUILD",
-            strip_prefix = "uSockets-b950efd6b10f06dd3ecb5b692e5d415f48474647",
-        )
-
     if not native.existing_rule("com_github_bxparks_epoxy_duino"):
         http_archive(
             name = "com_github_bxparks_epoxy_duino",
