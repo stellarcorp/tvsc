@@ -130,18 +130,6 @@ def load_source_dependencies():
             strip_prefix = "uSockets-b950efd6b10f06dd3ecb5b692e5d415f48474647",
         )
 
-    if not native.existing_rule("com_github_unetworking_uwebsockets"):
-        http_archive(
-            name = "com_github_unetworking_uwebsockets",
-            sha256 = "cda266f7ed6abe67ef3cae6e223a580fe5091db9156c1f4123ee328ae21511c9",
-            urls = [
-                "https://github.com/uNetworking/uWebSockets/archive/refs/tags/v20.36.0.tar.gz",
-            ],
-            build_file = "//third_party/uwebsockets:uwebsockets.BUILD",
-            strip_prefix = "uWebSockets-20.36.0",
-            patches = ["//third_party/uwebsockets:Loop.h.patch"],
-        )
-
     if not native.existing_rule("com_github_bxparks_epoxy_duino"):
         http_archive(
             name = "com_github_bxparks_epoxy_duino",
