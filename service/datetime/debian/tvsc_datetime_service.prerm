@@ -1,9 +1,0 @@
-#!/bin/sh
-set -e
-
-if [ "$1" = "remove" ]; then
-    if [ -x "`which systemctl 2>/dev/null`" ]; then
-	systemctl stop tvsc-datetime.service
-	systemctl disable tvsc-datetime.service
-    fi
-fi
