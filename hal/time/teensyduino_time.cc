@@ -5,12 +5,12 @@
 
 namespace tvsc::hal::time {
 
-void delay_ms(uint32_t milliseconds) { delay(milliseconds); }
+void delay_ms(TimeType milliseconds) { delay(milliseconds); }
 
-void delay_us(uint32_t microseconds) { delayMicroseconds(microseconds); }
+void delay_us(TimeType microseconds) { delayMicroseconds(microseconds); }
 
-uint64_t time_millis() { return millis(); }
+TimeType time_millis() { return millis(); }
 
-uint64_t time_micros() { return micros(); }
+TimeType time_micros() { return micros(); }
 
 }  // namespace tvsc::hal::time

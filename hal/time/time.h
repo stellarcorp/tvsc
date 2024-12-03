@@ -6,11 +6,15 @@
 
 namespace tvsc::hal::time {
 
+// Type for representing times (usually a count of seconds, milliseconds, or microseconds) as
+// scalars.
+using TimeType = uint64_t;
+
 /**
  * Sleep this thread for the given duration.
  */
-void delay_ms(uint32_t milliseconds);
-void delay_us(uint32_t microseconds);
+void delay_ms(TimeType milliseconds);
+void delay_us(TimeType microseconds);
 
 /**
  * Current time in milliseconds. Note that this may be the number of milliseconds since the epoch,
@@ -18,7 +22,7 @@ void delay_us(uint32_t microseconds);
  * to be monotonically increasing up to an overflow condition. Most Arduino platforms overflow this
  * time after about 50 days. On systems where it is available, we use std::chrono::steady_clock.
  */
-uint64_t time_millis();
+TimeType time_millis();
 
 /**
  * Current time in milliseconds. Note that this may be the number of milliseconds since the epoch,
@@ -26,6 +30,6 @@ uint64_t time_millis();
  * to be monotonically increasing up to an overflow condition. Most Arduino platforms overflow this
  * time after about 50 days. On systems where it is available, we use std::chrono::steady_clock.
  */
-uint64_t time_micros();
+TimeType time_micros();
 
 }  // namespace tvsc::hal::time

@@ -37,13 +37,13 @@ class RemoteClock final : public Clock {
   /**
    * Mark the time as it would currently be measured by the remote clock.
    */
-  void mark_remote_time_micros(uint64_t remote_time_micros);
+  void mark_remote_time_micros(TimeType remote_time_micros);
 
-  uint64_t current_time_millis() override;
-  uint64_t current_time_micros() override;
+  TimeType current_time_millis() override;
+  TimeType current_time_micros() override;
 
-  void sleep_ms(uint32_t milliseconds) override;
-  void sleep_us(uint32_t microseconds) override;
+  void sleep_ms(TimeType milliseconds) override;
+  void sleep_us(TimeType microseconds) override;
 };
 
 }  // namespace tvsc::hal::time

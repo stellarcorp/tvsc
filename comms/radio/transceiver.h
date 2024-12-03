@@ -19,6 +19,9 @@ namespace tvsc::comms::radio {
 
 template <typename RadioT>
 class Transceiver final {
+ public:
+  using TimeType = tvsc::hal::time::TimeType;
+
  private:
   using FragmentType = Fragment<RadioT::max_mtu()>;
 
@@ -41,19 +44,19 @@ class Transceiver final {
   uint16_t next_telemetry_metric_to_report_{0};
   uint16_t next_telemetry_sequence_number_{0};
 
-  uint64_t last_telemetry_report_time_{};
-  uint64_t last_rssi_measurement_time_{};
+  TimeType last_telemetry_report_time_ms_{};
+  TimeType last_rssi_measurement_time_ms_{};
 
-  void maybe_measure_rssi(uint64_t current_time) {
-    if (current_time - last_rssi_measurement_time_ > 2000) {
-      last_rssi_measurement_time_ = current_time;
+  void maybe_measure_rssi(TimeType current_time_ms) {
+    if (current_time_ms - last_rssi_measurement_time_ms_ > 2000) {
+      last_rssi_measurement_time_ms_ = current_time_ms;
       telemetry_.set_rssi_dbm(radio_.read_rssi_dbm());
     }
   }
 
-  void maybe_transmit_telemetry(uint64_t current_time) {
-    // if (current_time - last_telemetry_report_time_ > 1250 && !have_fragment_to_transmit_) {
-    //   last_telemetry_report_time_ = current_time;
+  void maybe_transmit_telemetry(TimeType current_time_ms) {
+    // if (current_time_ms - last_telemetry_report_time_ms_ > 1250 && !have_fragment_to_transmit_) {
+    //   last_telemetry_report_time_ms_ = current_time_ms;
 
     //   const tvsc_comms_radio_nano_TelemetryReport&
     //   report{telemetry_.generate_telemetry_report()}; if (report.events_count > 0) {
@@ -86,7 +89,7 @@ class Transceiver final {
     // }
   }
 
-  void maybe_receive_fragment(uint64_t /*current_time*/) {
+  void maybe_receive_fragment(TimeType /*current_time_ms*/) {
     using std::to_string;
 
     // See if the radio has any fragments to receive.
@@ -131,7 +134,7 @@ class Transceiver final {
     }
   }
 
-  void maybe_transmit_fragment(uint64_t /*current_time*/) {
+  void maybe_transmit_fragment(TimeType /*current_time_ms*/) {
     if (have_fragment_to_transmit_) {
       // Note that switching into TX mode and sending a packet takes between 50-150ms.
       if (send(radio_, fragment_)) {
@@ -153,21 +156,12 @@ class Transceiver final {
     tvsc::hal::output::println(to_string(identification_));
   }
 
-  void iterate() {
-    const uint64_t current_time{tvsc::hal::time::time_millis()};
+  void iterate(TimeType current_time_ms) {
+    maybe_receive_fragment(current_time_ms);
+    maybe_transmit_fragment(current_time_ms);
+    maybe_measure_rssi(current_time_ms);
+    maybe_transmit_telemetry(current_time_ms);
 
-    radio_.set_receive_mode();
-
-    maybe_receive_fragment(current_time);
-    radio_.set_receive_mode();
-
-    maybe_transmit_fragment(current_time);
-    radio_.set_receive_mode();
-
-    maybe_measure_rssi(current_time);
-    radio_.set_receive_mode();
-
-    maybe_transmit_telemetry(current_time);
     radio_.set_receive_mode();
   }
 };

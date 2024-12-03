@@ -7,46 +7,50 @@
 namespace tvsc::comms::radio {
 
 TEST(MockRadioTest, FragmentsAvailableAtDesignatedTime) {
-  using RadioT = SmallBufferMockRadio;
+  using RadioType = SmallBufferMockRadio;
   tvsc::hal::time::MockClock clock{};
-  RadioT radio{clock};
+  RadioType radio{clock};
 
-  Fragment<RadioT::max_mtu()> fragment{};
+  Fragment<RadioType::max_mtu()> fragment{};
   fragment.set_sender_id(1);
   radio.add_rx_fragment(1, fragment);
 
   radio.set_receive_mode();
+
+  EXPECT_FALSE(radio.has_fragment_available());
+
   clock.set_current_time_micros(1);
 
   EXPECT_TRUE(radio.has_fragment_available());
 }
 
 TEST(MockRadioTest, CanReceiveFragment) {
-  using RadioT = SmallBufferMockRadio;
+  using RadioType = SmallBufferMockRadio;
   tvsc::hal::time::MockClock clock{};
-  RadioT radio{clock};
+  RadioType radio{clock};
 
-  Fragment<RadioT::max_mtu()> fragment{};
+  Fragment<RadioType::max_mtu()> fragment{};
   fragment.set_sender_id(1);
   radio.add_rx_fragment(1, fragment);
 
   radio.set_receive_mode();
-  clock.set_current_time_micros(1);
+  ASSERT_FALSE(radio.has_fragment_available());
 
+  clock.set_current_time_micros(1);
   ASSERT_TRUE(radio.has_fragment_available());
 
-  Fragment<RadioT::max_mtu()> received_fragment{};
+  Fragment<RadioType::max_mtu()> received_fragment{};
   radio.read_received_fragment(received_fragment);
 
   EXPECT_EQ(1, received_fragment.sender_id());
 }
 
 TEST(MockRadioTest, CanReceiveFragmentMultipleFragments) {
-  using RadioT = SmallBufferMockRadio;
+  using RadioType = SmallBufferMockRadio;
   tvsc::hal::time::MockClock clock{};
-  RadioT radio{clock};
+  RadioType radio{clock};
 
-  Fragment<RadioT::max_mtu()> fragment{};
+  Fragment<RadioType::max_mtu()> fragment{};
   fragment.set_sender_id(1);
   radio.add_rx_fragment(1, fragment);
 
@@ -58,7 +62,7 @@ TEST(MockRadioTest, CanReceiveFragmentMultipleFragments) {
 
   EXPECT_TRUE(radio.has_fragment_available());
 
-  Fragment<RadioT::max_mtu()> received_fragment{};
+  Fragment<RadioType::max_mtu()> received_fragment{};
   radio.read_received_fragment(received_fragment);
 
   EXPECT_EQ(1, received_fragment.sender_id());
@@ -78,11 +82,11 @@ TEST(MockRadioTest, CanReceiveFragmentMultipleFragments) {
 }
 
 TEST(MockRadioTest, LeavingReceiveModeBeforeFragmentReceiptDropsFragment) {
-  using RadioT = SmallBufferMockRadio;
+  using RadioType = SmallBufferMockRadio;
   tvsc::hal::time::MockClock clock{};
-  RadioT radio{clock};
+  RadioType radio{clock};
 
-  Fragment<RadioT::max_mtu()> fragment{};
+  Fragment<RadioType::max_mtu()> fragment{};
   fragment.set_sender_id(1);
   radio.add_rx_fragment(1, fragment);
 
@@ -94,7 +98,7 @@ TEST(MockRadioTest, LeavingReceiveModeBeforeFragmentReceiptDropsFragment) {
 
   ASSERT_TRUE(radio.has_fragment_available());
 
-  Fragment<RadioT::max_mtu()> received_fragment{};
+  Fragment<RadioType::max_mtu()> received_fragment{};
   radio.read_received_fragment(received_fragment);
 
   ASSERT_EQ(1, received_fragment.sender_id());
@@ -108,11 +112,11 @@ TEST(MockRadioTest, LeavingReceiveModeBeforeFragmentReceiptDropsFragment) {
 
 TEST(MockRadioTest,
      LeavingReceiveModeBeforeFragmentReceiptButReturningToReceiveModeStillDropsFragment) {
-  using RadioT = SmallBufferMockRadio;
+  using RadioType = SmallBufferMockRadio;
   tvsc::hal::time::MockClock clock{};
-  RadioT radio{clock};
+  RadioType radio{clock};
 
-  Fragment<RadioT::max_mtu()> fragment{};
+  Fragment<RadioType::max_mtu()> fragment{};
   fragment.set_sender_id(1);
   radio.add_rx_fragment(1, fragment);
 
@@ -124,7 +128,7 @@ TEST(MockRadioTest,
 
   ASSERT_TRUE(radio.has_fragment_available());
 
-  Fragment<RadioT::max_mtu()> received_fragment{};
+  Fragment<RadioType::max_mtu()> received_fragment{};
   radio.read_received_fragment(received_fragment);
 
   ASSERT_EQ(1, received_fragment.sender_id());
@@ -139,11 +143,11 @@ TEST(MockRadioTest,
 }
 
 TEST(MockRadioTest, CanTransmitFragment) {
-  using RadioT = SmallBufferMockRadio;
+  using RadioType = SmallBufferMockRadio;
   tvsc::hal::time::MockClock clock{};
-  RadioT radio{clock};
+  RadioType radio{clock};
 
-  Fragment<RadioT::max_mtu()> fragment{};
+  Fragment<RadioType::max_mtu()> fragment{};
   fragment.set_sender_id(1);
 
   clock.set_current_time_micros(1);
@@ -151,17 +155,17 @@ TEST(MockRadioTest, CanTransmitFragment) {
   clock.set_current_time_micros(clock.current_time_micros() + radio.fragment_transmit_time_us());
 
   EXPECT_EQ(1, radio.sent_fragments().size());
-  for (const Fragment<RadioT::max_mtu()>& sent_fragment : radio.sent_fragments()) {
+  for (const Fragment<RadioType::max_mtu()>& sent_fragment : radio.sent_fragments()) {
     EXPECT_EQ(1, sent_fragment.sender_id());
   }
 }
 
 TEST(MockRadioTest, SwitchesToStandbyModeAfterTransmittingFragment) {
-  using RadioT = SmallBufferMockRadio;
+  using RadioType = SmallBufferMockRadio;
   tvsc::hal::time::MockClock clock{};
-  RadioT radio{clock};
+  RadioType radio{clock};
 
-  Fragment<RadioT::max_mtu()> fragment{};
+  Fragment<RadioType::max_mtu()> fragment{};
   fragment.set_sender_id(1);
 
   clock.set_current_time_micros(1);
@@ -175,11 +179,11 @@ TEST(MockRadioTest, SwitchesToStandbyModeAfterTransmittingFragment) {
 }
 
 TEST(MockRadioTest, TransmittingFragmentWhileTransmittingOtherFragmentCorrupts) {
-  using RadioT = SmallBufferMockRadio;
+  using RadioType = SmallBufferMockRadio;
   tvsc::hal::time::MockClock clock{};
-  RadioT radio{clock};
+  RadioType radio{clock};
 
-  Fragment<RadioT::max_mtu()> fragment{};
+  Fragment<RadioType::max_mtu()> fragment{};
   fragment.set_sender_id(1);
 
   clock.set_current_time_micros(1);
@@ -197,7 +201,7 @@ TEST(MockRadioTest, TransmittingFragmentWhileTransmittingOtherFragmentCorrupts) 
   EXPECT_EQ(1, radio.sent_fragments().size());
   EXPECT_EQ(1, radio.count_corrupted_fragments());
 
-  for (const Fragment<RadioT::max_mtu()>& sent_fragment : radio.sent_fragments()) {
+  for (const Fragment<RadioType::max_mtu()>& sent_fragment : radio.sent_fragments()) {
     EXPECT_EQ(2, sent_fragment.sender_id());
   }
 }

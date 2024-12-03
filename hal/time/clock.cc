@@ -6,11 +6,11 @@
 
 namespace tvsc::hal::time {
 
-uint64_t Clock::current_time_millis() { return time_millis(); }
-uint64_t Clock::current_time_micros() { return time_micros(); }
+TimeType Clock::current_time_millis() { return time_millis(); }
+TimeType Clock::current_time_micros() { return time_micros(); }
 
-void Clock::sleep_ms(uint32_t t) { delay_ms(t); }
-void Clock::sleep_us(uint32_t t) { delay_us(t); }
+void Clock::sleep_ms(TimeType t) { delay_ms(t); }
+void Clock::sleep_us(TimeType t) { delay_us(t); }
 
 Clock& default_clock() {
   static Clock clock{};

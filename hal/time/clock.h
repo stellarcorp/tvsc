@@ -2,17 +2,19 @@
 
 #include <cstdint>
 
+#include "hal/time/time.h"
+
 namespace tvsc::hal::time {
 
 class Clock {
  public:
   virtual ~Clock() = default;
 
-  virtual uint64_t current_time_millis();
-  virtual uint64_t current_time_micros();
+  virtual TimeType current_time_millis();
+  virtual TimeType current_time_micros();
 
-  virtual void sleep_ms(uint32_t milliseconds);
-  virtual void sleep_us(uint32_t microseconds);
+  virtual void sleep_ms(TimeType milliseconds);
+  virtual void sleep_us(TimeType microseconds);
 };
 
 Clock& default_clock();
