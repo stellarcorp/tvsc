@@ -63,7 +63,7 @@ int main() {
     } else {
       tvsc::hal::output::println("send() failed.");
 
-      // Resend the "same" fragment.
+      // Resend the same fragment by reverting the sequence_number increment above.
       --sequence_number;
     }
 
