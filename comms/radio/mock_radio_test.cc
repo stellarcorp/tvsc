@@ -12,7 +12,6 @@ TEST(MockRadioTest, FragmentsAvailableAtDesignatedTime) {
   RadioT radio{clock};
 
   Fragment<RadioT::max_mtu()> fragment{};
-  fragment.set_protocol(Protocol::TVSC_TDMA_CONTROL);
   fragment.set_sender_id(1);
   radio.add_rx_fragment(1, fragment);
 
@@ -28,7 +27,6 @@ TEST(MockRadioTest, CanReceiveFragment) {
   RadioT radio{clock};
 
   Fragment<RadioT::max_mtu()> fragment{};
-  fragment.set_protocol(Protocol::TVSC_TDMA_CONTROL);
   fragment.set_sender_id(1);
   radio.add_rx_fragment(1, fragment);
 
@@ -40,7 +38,6 @@ TEST(MockRadioTest, CanReceiveFragment) {
   Fragment<RadioT::max_mtu()> received_fragment{};
   radio.read_received_fragment(received_fragment);
 
-  EXPECT_EQ(Protocol::TVSC_TDMA_CONTROL, received_fragment.protocol());
   EXPECT_EQ(1, received_fragment.sender_id());
 }
 
@@ -50,7 +47,6 @@ TEST(MockRadioTest, CanReceiveFragmentMultipleFragments) {
   RadioT radio{clock};
 
   Fragment<RadioT::max_mtu()> fragment{};
-  fragment.set_protocol(Protocol::TVSC_TDMA_CONTROL);
   fragment.set_sender_id(1);
   radio.add_rx_fragment(1, fragment);
 
@@ -65,7 +61,6 @@ TEST(MockRadioTest, CanReceiveFragmentMultipleFragments) {
   Fragment<RadioT::max_mtu()> received_fragment{};
   radio.read_received_fragment(received_fragment);
 
-  EXPECT_EQ(Protocol::TVSC_TDMA_CONTROL, received_fragment.protocol());
   EXPECT_EQ(1, received_fragment.sender_id());
 
   clock.set_current_time_micros(2);
@@ -74,7 +69,6 @@ TEST(MockRadioTest, CanReceiveFragmentMultipleFragments) {
 
   radio.read_received_fragment(received_fragment);
 
-  EXPECT_EQ(Protocol::TVSC_TDMA_CONTROL, received_fragment.protocol());
   EXPECT_EQ(2, received_fragment.sender_id());
 
   clock.set_current_time_micros(3);
@@ -89,7 +83,6 @@ TEST(MockRadioTest, LeavingReceiveModeBeforeFragmentReceiptDropsFragment) {
   RadioT radio{clock};
 
   Fragment<RadioT::max_mtu()> fragment{};
-  fragment.set_protocol(Protocol::TVSC_TDMA_CONTROL);
   fragment.set_sender_id(1);
   radio.add_rx_fragment(1, fragment);
 
@@ -104,7 +97,6 @@ TEST(MockRadioTest, LeavingReceiveModeBeforeFragmentReceiptDropsFragment) {
   Fragment<RadioT::max_mtu()> received_fragment{};
   radio.read_received_fragment(received_fragment);
 
-  ASSERT_EQ(Protocol::TVSC_TDMA_CONTROL, received_fragment.protocol());
   ASSERT_EQ(1, received_fragment.sender_id());
 
   radio.set_standby_mode();
@@ -121,7 +113,6 @@ TEST(MockRadioTest,
   RadioT radio{clock};
 
   Fragment<RadioT::max_mtu()> fragment{};
-  fragment.set_protocol(Protocol::TVSC_TDMA_CONTROL);
   fragment.set_sender_id(1);
   radio.add_rx_fragment(1, fragment);
 
@@ -136,7 +127,6 @@ TEST(MockRadioTest,
   Fragment<RadioT::max_mtu()> received_fragment{};
   radio.read_received_fragment(received_fragment);
 
-  ASSERT_EQ(Protocol::TVSC_TDMA_CONTROL, received_fragment.protocol());
   ASSERT_EQ(1, received_fragment.sender_id());
 
   radio.set_standby_mode();
@@ -154,7 +144,6 @@ TEST(MockRadioTest, CanTransmitFragment) {
   RadioT radio{clock};
 
   Fragment<RadioT::max_mtu()> fragment{};
-  fragment.set_protocol(Protocol::TVSC_TDMA_CONTROL);
   fragment.set_sender_id(1);
 
   clock.set_current_time_micros(1);
@@ -163,7 +152,6 @@ TEST(MockRadioTest, CanTransmitFragment) {
 
   EXPECT_EQ(1, radio.sent_fragments().size());
   for (const Fragment<RadioT::max_mtu()>& sent_fragment : radio.sent_fragments()) {
-    EXPECT_EQ(Protocol::TVSC_TDMA_CONTROL, sent_fragment.protocol());
     EXPECT_EQ(1, sent_fragment.sender_id());
   }
 }
@@ -174,7 +162,6 @@ TEST(MockRadioTest, SwitchesToStandbyModeAfterTransmittingFragment) {
   RadioT radio{clock};
 
   Fragment<RadioT::max_mtu()> fragment{};
-  fragment.set_protocol(Protocol::TVSC_TDMA_CONTROL);
   fragment.set_sender_id(1);
 
   clock.set_current_time_micros(1);
@@ -193,7 +180,6 @@ TEST(MockRadioTest, TransmittingFragmentWhileTransmittingOtherFragmentCorrupts) 
   RadioT radio{clock};
 
   Fragment<RadioT::max_mtu()> fragment{};
-  fragment.set_protocol(Protocol::TVSC_TDMA_CONTROL);
   fragment.set_sender_id(1);
 
   clock.set_current_time_micros(1);
@@ -212,7 +198,6 @@ TEST(MockRadioTest, TransmittingFragmentWhileTransmittingOtherFragmentCorrupts) 
   EXPECT_EQ(1, radio.count_corrupted_fragments());
 
   for (const Fragment<RadioT::max_mtu()>& sent_fragment : radio.sent_fragments()) {
-    EXPECT_EQ(Protocol::TVSC_TDMA_CONTROL, sent_fragment.protocol());
     EXPECT_EQ(2, sent_fragment.sender_id());
   }
 }
