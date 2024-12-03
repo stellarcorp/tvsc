@@ -5,7 +5,6 @@
 
 #include "base/bits.h"
 #include "buffer/buffer.h"
-#include "comms/radio/protocol.h"
 
 namespace tvsc::comms::radio {
 
@@ -35,9 +34,7 @@ class Fragment final {
 
  private:
   static constexpr size_t HEADER_OFFSET{0};
-  static constexpr size_t PROTOCOL_OFFSET{HEADER_OFFSET};
-  static constexpr size_t PROTOCOL_SIZE{1};
-  static constexpr size_t SENDER_ID_OFFSET{PROTOCOL_OFFSET + PROTOCOL_SIZE};
+  static constexpr size_t SENDER_ID_OFFSET{HEADER_OFFSET};
   static constexpr size_t SENDER_ID_SIZE{1};
   static constexpr size_t DESTINATION_ID_OFFSET{SENDER_ID_OFFSET + SENDER_ID_SIZE};
   static constexpr size_t DESTINATION_ID_SIZE{1};
@@ -45,7 +42,7 @@ class Fragment final {
   static constexpr size_t FRAGMENT_INDEX_SIZE{1};
   static constexpr size_t SEQUENCE_NUMBER_OFFSET{FRAGMENT_INDEX_OFFSET + FRAGMENT_INDEX_SIZE};
   static constexpr size_t SEQUENCE_NUMBER_SIZE{2};
-  static constexpr size_t HEADER_SIZE{PROTOCOL_SIZE + SENDER_ID_SIZE + DESTINATION_ID_SIZE +
+  static constexpr size_t HEADER_SIZE{SENDER_ID_SIZE + DESTINATION_ID_SIZE +
                                       FRAGMENT_INDEX_SIZE + SEQUENCE_NUMBER_SIZE};
 
   static constexpr size_t PAYLOAD_OFFSET{HEADER_OFFSET + HEADER_SIZE};
@@ -73,9 +70,6 @@ class Fragment final {
    * less than or equal to the MTU.
    */
   bool is_valid() const { return total_length() <= MTU; }
-
-  Protocol protocol() const { return static_cast<Protocol>(data[PROTOCOL_OFFSET]); }
-  void set_protocol(Protocol protocol) { data[PROTOCOL_OFFSET] = static_cast<uint8_t>(protocol); }
 
   uint8_t sender_id() const { return data[SENDER_ID_OFFSET]; }
   void set_sender_id(uint8_t id) { data[SENDER_ID_OFFSET] = id; }
