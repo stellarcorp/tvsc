@@ -71,7 +71,7 @@ class Eeprom final {
     }
     for (size_t i = 0; i < sizeof(T); ++i) {
       uint8_t val = read(index + i);
-      if (*(reinterpret_cast<const uint8_t*>(value) + i) != val) {
+      if (*(reinterpret_cast<const uint8_t*>(&value) + i) != val) {
         put(index, value);
         return;
       }
