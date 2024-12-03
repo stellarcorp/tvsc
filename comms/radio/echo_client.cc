@@ -1,18 +1,14 @@
 #include <string>
 
 #include "comms/radio/fragment.h"
-#include "comms/radio/radio_configuration.h"
 #include "comms/radio/radio_utilities.h"
 #include "comms/radio/rf69hcw.h"
-#include "comms/radio/rf69hcw_configuration.h"
 #include "comms/radio/settings.h"
 #include "comms/radio/single_radio_pin_mapping.h"
 #include "hal/gpio/pins.h"
 #include "hal/output/output.h"
 #include "hal/spi/spi.h"
 #include "hal/time/time.h"
-#include "pb_decode.h"
-#include "pb_encode.h"
 #include "random/random.h"
 
 /**
@@ -42,31 +38,27 @@ int main() {
   tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
   RadioT rf69{spi_peripheral, RF69_DIO0, RF69_RST};
 
-  tvsc::comms::radio::RadioConfiguration<RadioT> configuration{
-      rf69, tvsc::comms::radio::SingleRadioPinMapping::board_name()};
-
   tvsc::hal::output::print("Board id: ");
-  tvsc::comms::radio::print_id(configuration.identification());
+  tvsc::hal::output::print("<Not Implemented>");
+  // tvsc::comms::radio::print_id(configuration.identification());
   tvsc::hal::output::println();
-
-  configuration.change_values(tvsc::comms::radio::default_configuration<RadioT>());
-  configuration.commit_changes();
 
   uint32_t sequence_number{};
 
   while (true) {
     static constexpr char MESSAGE[] = "Hello, world!";
     FragmentT fragment{};
-    fragment.set_protocol(tvsc::comms::radio::Protocol::TVSC_TDMA_CONTROL);
     fragment.set_sequence_number(++sequence_number);
-    fragment.set_sender_id(configuration.id());
-    strncpy(reinterpret_cast<char*>(fragment.payload_start()), MESSAGE, sizeof(MESSAGE));
+    // fragment.set_sender_id(configuration.id());
+    strncpy(reinterpret_cast<char*>(fragment.payload_start()), MESSAGE,
+            FragmentT::max_payload_size());
     fragment.set_payload_size(sizeof(MESSAGE));
 
     if (tvsc::comms::radio::send(rf69, fragment)) {
       tvsc::hal::output::println("Sent.");
       tvsc::hal::output::print("Board id: ");
-      tvsc::comms::radio::print_id(configuration.identification());
+      tvsc::hal::output::print("<Not Implemented>");
+      // tvsc::comms::radio::print_id(configuration.identification());
       tvsc::hal::output::println();
 
     } else {

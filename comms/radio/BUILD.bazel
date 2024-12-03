@@ -2,11 +2,16 @@ load("//platforms:hex.bzl", "hex")
 
 cc_library(
     name = "radio",
+    srcs = [
+        "telemetry_accumulator.cc",
+    ],
     hdrs = [
         "fragment.h",
         "fragment_transceiver.h",
         "half_duplex_radio.h",
         "radio_utilities.h",
+        "settings.h",
+        "telemetry_accumulator.h",
         "yield.h",
     ],
     visibility = ["//visibility:public"],
@@ -17,18 +22,60 @@ cc_library(
         "//hal/time",
         "//hash",
         "//random",
+    ] + select(
+        {
+            "//platforms:no_eeprom": [
+                ":transceiver_identification_no_eeprom",
+            ],
+            "//conditions:default": [
+                ":transceiver_identification_eeprom",
+            ],
+        },
+    ),
+)
+
+cc_library(
+    name = "transceiver_identification_eeprom",
+    srcs = [
+        "persisted_transceiver_identification_eeprom.cc",
+        "transceiver_identification.cc",
+    ],
+    hdrs = [
+        "transceiver_identification.h",
+    ],
+    target_compatible_with = select({
+        "//platforms:no_eeprom": [
+            "@platforms//:incompatible",
+        ],
+        "//conditions:default": [
+        ],
+    }),
+    deps = [
+        "//hal/eeprom",
+        "//hal/output",
+        "//random",
     ],
 )
 
 cc_library(
-    name = "mock_radio",
-    testonly = True,
-    hdrs = ["mock_radio.h"],
-    visibility = ["//visibility:public"],
+    name = "transceiver_identification_no_eeprom",
+    srcs = [
+        "transceiver_identification.cc",
+        "unpersisted_transceiver_identification.cc",
+    ],
+    hdrs = [
+        "transceiver_identification.h",
+    ],
+    target_compatible_with = select({
+        "//platforms:no_eeprom": [
+        ],
+        "//conditions:default": [
+            "@platforms//:incompatible",
+        ],
+    }),
     deps = [
-        ":radio",
         "//hal/output",
-        "//hal/time",
+        "//random",
     ],
 )
 
@@ -199,6 +246,18 @@ hex(
             "@platforms//:incompatible",
         ],
     }),
+)
+
+cc_library(
+    name = "mock_radio",
+    testonly = True,
+    hdrs = ["mock_radio.h"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":radio",
+        "//hal/output",
+        "//hal/time",
+    ],
 )
 
 cc_test(

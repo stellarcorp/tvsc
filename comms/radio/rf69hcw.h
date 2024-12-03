@@ -8,6 +8,7 @@
 #include "base/except.h"
 #include "comms/radio/fragment.h"
 #include "comms/radio/half_duplex_radio.h"
+#include "comms/radio/settings.h"
 #include "comms/radio/yield.h"
 #include "hal/gpio/interrupts.h"
 #include "hal/gpio/pins.h"
@@ -23,6 +24,47 @@ namespace tvsc::comms::radio {
 #define ATOMIC_BLOCK_END
 #endif
 
+/**
+ * This class defines an interface for the HopeRF RFM69HCW radio module.
+ *
+ * Manufacturer's documentation for the radio module:
+ * https://www.hoperf.com/modules/rf_transceiver/RFM69HCW.html
+ *
+ * Note: this class covers the high-power variant tuned for ~433MHz.
+ * TODO(james): When implementing the next variant, add template parameters for the tuning and the
+ * power-level.
+ *
+ * From the RadioHead library documentation on this module:
+ *   Packet Format
+ *
+ *   All messages sent and received by this RH_RF69 Driver conform to this packet format:
+ *
+ *   - 4 octets PREAMBLE
+ *   - 2 octets SYNC 0x2d, 0xd4 (configurable, so you can use this as a network filter)
+ *   - 1 octet RH_RF69 payload length
+ *   - 4 octets HEADER: (TO, FROM, ID, FLAGS)
+ *   - 0 to 60 octets DATA
+ *   - 2 octets CRC computed with CRC16(IBM), computed on HEADER and DATA
+ *
+ * But that description leaves off these details:
+ *
+ * - The PREAMBLE can be configured to be from 0-65535 octets, though the comments indicate that
+ * at least 2 octets are needed for stable communications. There are two 8-bit registers to store
+ * the length of the preamble.
+ *
+ * - The length, as well as the contents, of the SYNC words are configurable. Allowed values for
+ * the length are actually [0,8] where zero implies that the SYNC functionality should be turned
+ * off. Not sure why, but the RadioHead implementation restricts the sync word size to 4 octets.
+ *
+ * - The implementation does not allow for an empty payload. Also, the hardware FIFO is documented
+ * as 66 bytes, but requires the first byte as a length. So the effective range for the DATA
+ * segment is likely 1-65 octets.
+ *
+ * - Longer payloads are possible if encryption is off. There might be some regulatory
+ * implications though. Without encryption, we cannot send flight or control messages per FCC
+ * regulations. Maybe our Tx/Rx API just includes a boolean indicating if the message is a control
+ * message and manages that aspect of the configuration directly for those messages?
+ */
 class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO size of 66
                                                       bytes minus one byte for the message size. */
                                              65> {
@@ -472,7 +514,7 @@ class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO s
     spi_->bus().using_interrupt(interrupt_pin_);
     tvsc::hal::gpio::attach_interrupt(interrupt_pin_, interrupt_fn);
 
-    // Put the radio module into its default state.
+    // Put the radio module into its default configuration.
     reset();
   }
 
@@ -528,10 +570,91 @@ class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO s
                                                   RF69HCW_PACKETCONFIG1_DCFREE_WHITENING |
                                                   RF69HCW_PACKETCONFIG1_ADDRESSFILTERING_NONE);
 
-    set_sync_words_length(8);
-
+    set_frequency_hz(433e6f);
     // Reset to +13dBm, same as power-on default.
     set_power_dbm(13);
+    set_preamble_length(0x10);
+    set_sync_words_length(8);
+    set_modulation_scheme(ModulationScheme::FSK);
+    set_line_coding(LineCoding::WHITENING);
+
+    static constexpr float bit_rate{12500.f};
+    static constexpr float freq_dev = std::min(500000.f - bit_rate / 2.f, 1.4f * bit_rate);
+
+    set_bit_rate(bit_rate);
+    set_frequency_deviation_hz(freq_dev);
+
+    set_receive_sensitivity_threshold_dbm(-95.f);
+    // TODO(james): Determine how to configure this setting. This value is much too high and will
+    // result in attempting to transmit when we need to be receiving.
+    // set_channel_activity_threshold_dbm(-10.f);
+  }
+
+  RF69HCW& in_high_throughput_configuration(RF69HCW& radio) {
+    reset();
+
+    set_frequency_hz(433e6f);
+    set_power_dbm(13);
+
+    // Successful values:
+    // 0x0f
+    // 0x10
+    // 0x11
+    // 0x14
+    // 0x15
+    // 0x01 <- Probably too small for high bit rates and high duty cycles.
+    // Unsuccessful values:
+    // 0xff
+    // 0x7f
+    // 0x3f
+    // 0x1f
+    // 0x1a
+    // 0x18 -- intermittent
+    // 0x17 -- intermittent
+    // 0x16 -- intermittent
+    // 0x00 -- intermittent
+    // Seems to be used only during TX. The receiver watches for the preamble to stop, but ignores
+    // this particular setting.
+    set_preamble_length(0x08);
+
+    // Successful values:
+    // 8
+    // 2
+    // Unsuccessful values:
+    // 0
+    // 1 -- intermittent
+    // The transmitter and receiver must agree both on length and content of the sync words.
+    set_sync_words_length(2);
+
+    set_modulation_scheme(ModulationScheme::GFSK);
+
+    // WHITENING seems to perform better at high bit rates & high duty cycles.
+    // MANCHESTER_ORIGINAL performs well, but results in dropped packets with high bit rates and
+    // duty cycles.
+    set_line_coding(LineCoding::WHITENING);
+
+    static constexpr float bit_rate{290000.f};
+    static constexpr float freq_dev = std::min(500000.f - bit_rate / 2.f, 1.4f * bit_rate);
+
+    set_bit_rate(bit_rate);
+
+    // Seems to be used only during TX. The receiver detects this spread and adjusts to the sender's
+    // value (likely some significant limits to this), but ignores this particular setting.
+    set_frequency_deviation_hz(freq_dev);
+
+    set_receive_sensitivity_threshold_dbm(-50.f);
+
+    // Note that the CAD threshold should be lower than the RX threshold, not higher. There are
+    // signals that are being transmitted that are too weak for us to properly receive and decode.
+    // These thresholds should be designed to avoid interfering with another transmitter, even if
+    // the transmission is too weak for us to receive.
+    // TODO(james): Determine why the RX and TX thresholds need to be inverted to get successful
+    // behavior.
+    // TODO(james): Determine how to configure this setting. This value is much too high and will
+    // result in attempting to transmit when we need to be receiving.
+    // set_channel_activity_threshold_dbm(-50.f);
+
+    return *this;
   }
 
   float read_rssi_dbm() override {
@@ -709,18 +832,18 @@ class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO s
 
   int8_t get_power_dbm() const { return power_; }
 
-  void set_modulation_scheme(tvsc_comms_radio_nano_ModulationTechnique modulation) {
+  void set_modulation_scheme(ModulationScheme modulation) {
     uint8_t register_value{RF69HCW_DATAMODUL_DATAMODE_PACKET};
     switch (modulation) {
-      case tvsc_comms_radio_nano_ModulationTechnique_OOK:
+      case ModulationScheme::OOK:
         register_value |=
             RF69HCW_DATAMODUL_MODULATIONTYPE_OOK | RF69HCW_DATAMODUL_MODULATIONSHAPING_OOK_NONE;
         break;
-      case tvsc_comms_radio_nano_ModulationTechnique_FSK:
+      case ModulationScheme::FSK:
         register_value |=
             RF69HCW_DATAMODUL_MODULATIONTYPE_FSK | RF69HCW_DATAMODUL_MODULATIONSHAPING_FSK_NONE;
         break;
-      case tvsc_comms_radio_nano_ModulationTechnique_GFSK:
+      case ModulationScheme::GFSK:
         register_value |=
             RF69HCW_DATAMODUL_MODULATIONTYPE_FSK | RF69HCW_DATAMODUL_MODULATIONSHAPING_FSK_BT1_0;
         break;
@@ -730,33 +853,33 @@ class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO s
     spi_->write(RF69HCW_REG_02_DATAMODUL, register_value);
   }
 
-  tvsc_comms_radio_nano_ModulationTechnique get_modulation_scheme() {
+  ModulationScheme get_modulation_scheme() {
     uint8_t register_value = spi_->read(RF69HCW_REG_02_DATAMODUL);
 
     if (register_value & RF69HCW_DATAMODUL_MODULATIONTYPE_FSK) {
       if (register_value & RF69HCW_DATAMODUL_MODULATIONSHAPING_FSK_BT1_0) {
-        return tvsc_comms_radio_nano_ModulationTechnique_GFSK;
+        return ModulationScheme::GFSK;
       } else {
-        return tvsc_comms_radio_nano_ModulationTechnique_FSK;
+        return ModulationScheme::FSK;
       }
     } else if (register_value & RF69HCW_DATAMODUL_MODULATIONTYPE_OOK) {
-      return tvsc_comms_radio_nano_ModulationTechnique_OOK;
+      return ModulationScheme::OOK;
     } else {
       except<std::domain_error>("Unknown modulation technique");
     }
   }
 
-  void set_line_coding(tvsc_comms_radio_nano_LineCoding coding) {
+  void set_line_coding(LineCoding coding) {
     uint8_t register_value = spi_->read(RF69HCW_REG_37_PACKETCONFIG1);
     register_value &= ~RF69HCW_PACKETCONFIG1_DCFREE;
     switch (coding) {
-      case tvsc_comms_radio_nano_LineCoding_NONE:
+      case LineCoding::NONE:
         register_value |= RF69HCW_PACKETCONFIG1_DCFREE_NONE;
         break;
-      case tvsc_comms_radio_nano_LineCoding_WHITENING:
+      case LineCoding::WHITENING:
         register_value |= RF69HCW_PACKETCONFIG1_DCFREE_WHITENING;
         break;
-      case tvsc_comms_radio_nano_LineCoding_MANCHESTER_ORIGINAL:
+      case LineCoding::MANCHESTER_ORIGINAL:
         register_value |= RF69HCW_PACKETCONFIG1_DCFREE_MANCHESTER;
         break;
       default:
@@ -765,15 +888,15 @@ class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO s
     spi_->write(RF69HCW_REG_37_PACKETCONFIG1, register_value);
   }
 
-  tvsc_comms_radio_nano_LineCoding get_line_coding() {
+  LineCoding get_line_coding() {
     uint8_t register_value = spi_->read(RF69HCW_REG_37_PACKETCONFIG1);
 
     if (register_value & RF69HCW_PACKETCONFIG1_DCFREE_MANCHESTER) {
-      return tvsc_comms_radio_nano_LineCoding_MANCHESTER_ORIGINAL;
+      return LineCoding::MANCHESTER_ORIGINAL;
     } else if (register_value & RF69HCW_PACKETCONFIG1_DCFREE_WHITENING) {
-      return tvsc_comms_radio_nano_LineCoding_WHITENING;
+      return LineCoding::WHITENING;
     } else {
-      return tvsc_comms_radio_nano_LineCoding_NONE;
+      return LineCoding::NONE;
     }
   }
 
