@@ -150,8 +150,7 @@ class Transceiver final {
 
   void print_configuration() const {
     tvsc::hal::output::print("Board id: ");
-    print_id(identification_);
-    tvsc::hal::output::println();
+    tvsc::hal::output::println(to_string(identification_));
   }
 
   void iterate() {

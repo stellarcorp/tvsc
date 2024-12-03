@@ -5,6 +5,7 @@
 #include "comms/radio/rf69hcw.h"
 #include "comms/radio/settings.h"
 #include "comms/radio/single_radio_pin_mapping.h"
+#include "comms/radio/transceiver_identification.h"
 #include "hal/gpio/pins.h"
 #include "hal/output/output.h"
 #include "hal/spi/spi.h"
@@ -23,12 +24,13 @@
  * - temperature of radio module
  */
 
-using RadioT = tvsc::comms::radio::RF69HCW;
-using FragmentT = tvsc::comms::radio::Fragment<RadioT::max_mtu()>;
+using namespace tvsc::comms::radio;
+using RadioT = RF69HCW;
+using FragmentT = Fragment<RadioT::max_mtu()>;
 
-const uint8_t RF69_RST{tvsc::comms::radio::SingleRadioPinMapping::reset_pin()};
-const uint8_t RF69_CS{tvsc::comms::radio::SingleRadioPinMapping::chip_select_pin()};
-const uint8_t RF69_DIO0{tvsc::comms::radio::SingleRadioPinMapping::interrupt_pin()};
+const uint8_t RF69_RST{SingleRadioPinMapping::reset_pin()};
+const uint8_t RF69_CS{SingleRadioPinMapping::chip_select_pin()};
+const uint8_t RF69_DIO0{SingleRadioPinMapping::interrupt_pin()};
 
 int main() {
   tvsc::random::initialize_seed();
@@ -37,11 +39,10 @@ int main() {
   tvsc::hal::spi::SpiBus bus{tvsc::hal::spi::get_default_spi_bus()};
   tvsc::hal::spi::SpiPeripheral spi_peripheral{bus, RF69_CS, 0x80};
   RadioT rf69{spi_peripheral, RF69_DIO0, RF69_RST};
+  TransceiverIdentification identification{TransceiverIdentification::initialize()};
 
   tvsc::hal::output::print("Board id: ");
-  tvsc::hal::output::print("<Not Implemented>");
-  // tvsc::comms::radio::print_id(configuration.identification());
-  tvsc::hal::output::println();
+  tvsc::hal::output::println(to_string(identification));
 
   uint32_t sequence_number{};
 
@@ -54,12 +55,10 @@ int main() {
             FragmentT::max_payload_size());
     fragment.set_payload_size(sizeof(MESSAGE));
 
-    if (tvsc::comms::radio::send(rf69, fragment)) {
+    if (send(rf69, fragment)) {
       tvsc::hal::output::println("Sent.");
       tvsc::hal::output::print("Board id: ");
-      tvsc::hal::output::print("<Not Implemented>");
-      // tvsc::comms::radio::print_id(configuration.identification());
-      tvsc::hal::output::println();
+      tvsc::hal::output::println(to_string(identification));
 
     } else {
       tvsc::hal::output::println("send() failed.");

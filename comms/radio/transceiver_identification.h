@@ -54,8 +54,4 @@ inline std::string to_string(const TransceiverIdentification& id) {
   return result;
 }
 
-inline void print_id(const TransceiverIdentification& id) {
-  tvsc::hal::output::println(to_string(id));
-}
-
 }  // namespace tvsc::comms::radio
