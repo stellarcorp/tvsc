@@ -108,9 +108,9 @@ def load_source_dependencies():
     if "com_pjrc_teensy_package" not in native.existing_rules():
         http_archive(
             name = "com_pjrc_teensy_package",
-            sha256 = "1922c67a3d1261efb085eda1d99f5907936b89cc078f3567825cfc49661141c2",
+            sha256 = "b9c1ea852bd5ac625559685a864d40803df566650864b415e7c14c9623520c59",
             urls = [
-                "https://www.pjrc.com/teensy/td_157/teensy-package.tar.bz2",
+                "https://www.pjrc.com/teensy/td_159/teensy-package-1.59.0.tar.zst",
             ],
             build_file = "//third_party/arduino/teensyduino:teensy_package.BUILD",
             patches = ["//third_party/arduino/teensyduino:Time.cpp.patch"],
