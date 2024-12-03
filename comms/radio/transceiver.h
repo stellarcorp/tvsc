@@ -18,9 +18,9 @@
 namespace tvsc::comms::radio {
 
 template <typename RadioT>
-class FragmentTransceiver final {
+class Transceiver final {
  private:
-  using FragmentT = Fragment<RadioT::max_mtu()>;
+  using FragmentType = Fragment<RadioT::max_mtu()>;
 
   const uint8_t RADIO_RESET_PIN{SingleRadioPinMapping::reset_pin()};
   const uint8_t RADIO_CHIP_SELECT_PIN{SingleRadioPinMapping::chip_select_pin()};
@@ -34,7 +34,7 @@ class FragmentTransceiver final {
   TelemetryAccumulator telemetry_{identification_};
 
   // We only support a single fragment waiting to be transmitted.
-  FragmentT fragment_{};
+  FragmentType fragment_{};
   bool have_fragment_to_transmit_{false};
 
   uint32_t previous_sequence_number_{};
@@ -66,7 +66,7 @@ class FragmentTransceiver final {
 
     //     pb_ostream_t ostream = pb_ostream_from_buffer(
     //         reinterpret_cast<uint8_t*>(fragment_.payload_start()),
-    //         FragmentT::max_payload_size());
+    //         FragmentType::max_payload_size());
     //     if (pb_encode(&ostream,
     //                   nanopb::MessageDescriptor<tvsc_comms_radio_nano_TelemetryEvent>::fields(),
     //                   &event)) {
@@ -146,7 +146,7 @@ class FragmentTransceiver final {
   }
 
  public:
-  FragmentTransceiver() = default;
+  Transceiver() = default;
 
   void print_configuration() const {
     tvsc::hal::output::print("Board id: ");
