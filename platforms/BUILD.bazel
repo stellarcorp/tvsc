@@ -43,6 +43,20 @@ platform(
     ],
 )
 
+platform(
+    name = "nucleo_h7",
+    constraint_values = [
+        "@platforms//cpu:armv7e-mf",
+        "@platforms//os:none",
+        ":stm32_core",
+        ":stm32_gpio",
+        ":stm32_spi",
+        ":stm32_eeprom",
+        ":no_networking",
+        ":nucleo_h7_board",
+    ],
+)
+
 # Core functionality. This constraint is a catch-all for general functionality including sleep &
 # time functions, printing & logging, random number generation, etc. If we need more specific
 # details on any given category, it should be broken out to its own constraint_setting.
@@ -60,11 +74,22 @@ constraint_value(
     constraint_setting = "core_functionality",
 )
 
+# These platforms depend on the STM32 libraries to provide core functions.
+constraint_value(
+    name = "stm32_core",
+    constraint_setting = "core_functionality",
+)
+
 # GPIO support.
 constraint_setting(name = "gpio")
 
 constraint_value(
     name = "teensyduino_gpio",
+    constraint_setting = "gpio",
+)
+
+constraint_value(
+    name = "stm32_gpio",
     constraint_setting = "gpio",
 )
 
@@ -87,6 +112,11 @@ constraint_value(
 )
 
 constraint_value(
+    name = "stm32_spi",
+    constraint_setting = "spi",
+)
+
+constraint_value(
     name = "spidev_spi",
     constraint_setting = "spi",
 )
@@ -101,6 +131,11 @@ constraint_setting(name = "eeprom")
 
 constraint_value(
     name = "teensyduino_eeprom",
+    constraint_setting = "eeprom",
+)
+
+constraint_value(
+    name = "stm32_eeprom",
     constraint_setting = "eeprom",
 )
 
@@ -133,5 +168,10 @@ constraint_value(
 
 constraint_value(
     name = "teensy41_board",
+    constraint_setting = "board_type",
+)
+
+constraint_value(
+    name = "nucleo_h7_board",
     constraint_setting = "board_type",
 )

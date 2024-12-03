@@ -8,6 +8,9 @@ cc_library(
         "//platforms:no_eeprom": [
             "@platforms//:incompatible",
         ],
+        "//platforms:stm32_eeprom": [
+            "@platforms//:incompatible",
+        ],
     }),
     visibility = ["//visibility:public"],
     deps = [":eeprom_header"] + select({

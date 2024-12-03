@@ -5,6 +5,9 @@ cc_library(
     target_compatible_with = select({
         "//conditions:default": [
         ],
+        "//platforms:stm32_spi": [
+            "@platforms//:incompatible",
+        ],
         "//platforms:no_spi": [
             "@platforms//:incompatible",
         ],

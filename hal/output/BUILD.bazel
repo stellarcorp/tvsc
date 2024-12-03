@@ -2,6 +2,13 @@ load("//platforms:hex.bzl", "hex")
 
 cc_library(
     name = "output",
+    target_compatible_with = select({
+        "//platforms:stm32_gpio": [
+            "@platforms//:incompatible",
+        ],
+        "//conditions:default": [
+        ],
+    }),
     visibility = ["//visibility:public"],
     deps = [":output_headers"] + select({
         "//platforms:teensyduino_gpio": [
@@ -47,6 +54,9 @@ cc_library(
         "//platforms:teensyduino_gpio": [
             "@platforms//:incompatible",
         ],
+        "//platforms:stm32_gpio": [
+            "@platforms//:incompatible",
+        ],
         "//conditions:default": [
         ],
     }),
@@ -62,6 +72,9 @@ cc_library(
     ],
     target_compatible_with = select({
         "//platforms:teensyduino_gpio": [
+            "@platforms//:incompatible",
+        ],
+        "//platforms:stm32_gpio": [
             "@platforms//:incompatible",
         ],
         "//conditions:default": [

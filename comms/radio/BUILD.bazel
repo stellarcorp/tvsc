@@ -168,6 +168,9 @@ cc_binary(
         "//platforms:no_gpio": [
             "@platforms//:incompatible",
         ],
+        "//platforms:stm32_gpio": [
+            "@platforms//:incompatible",
+        ],
         "//conditions:default": [
         ],
     }),
@@ -209,6 +212,9 @@ cc_binary(
     srcs = ["echo_server.cc"],
     target_compatible_with = select({
         "//platforms:no_gpio": [
+            "@platforms//:incompatible",
+        ],
+        "//platforms:stm32_gpio": [
             "@platforms//:incompatible",
         ],
         "//conditions:default": [
