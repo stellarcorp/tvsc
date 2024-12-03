@@ -238,7 +238,7 @@ def _impl(ctx):
         target_system_name = "arm-none-eabi-gcc",
         target_cpu = "armv7e-mf",
         target_libc = "unknown",
-        compiler = "arm-none-eabi-gcc-11.3",
+        compiler = "arm-none-eabi-gcc",
         abi_version = "unknown",
         abi_libc_version = "unknown",
         tool_paths = tool_paths,

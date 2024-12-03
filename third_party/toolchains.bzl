@@ -14,10 +14,7 @@ def load_toolchains():
     # Teensy toolchain URLs were extracted from a JSON file used to configure Arduino libraries and
     # tools: https://www.pjrc.com/teensy/package_teensy_index.json
     #
-    # The specific URLs were based on the Teensy avr version 0.58.3. Presumably, this was given
-    # the version "0.58.3" as a way of marking it as "beta". The Arduino IDE probably chooses
-    # the highest version number by default, 1.57.2 in this case. I expect this version number
-    # to become 1.58.x in the near future.
+    # The specific URLs were based on the Teensy avr version 1.59.
     #
     # This package should be kept in sync with the Teensy "package" downloaded in source_deps.bzl.
     #
@@ -26,9 +23,9 @@ def load_toolchains():
     if "com_pjrc_teensy_compile" not in native.existing_rules():
         http_archive(
             name = "com_pjrc_teensy_compile",
-            sha256 = "936e53df932c156f8aff869960cd9bf158fae5043a8cf6d335410c2221d73a8e",
+            sha256 = "9553a7d83b251717c94eb43318de6ca997cb461b19bc73a8c6ca10e9b83cccd4",
             urls = [
-                "https://www.pjrc.com/teensy/td_158-beta3/teensy-compile-linux64.tar.bz2",
+                "https://www.pjrc.com/teensy/td_158/teensy-compile-11.3.1-linux64.tar.zst",
             ],
             build_file = "//third_party/teensy:teensy_compile.BUILD",
             patches = [
