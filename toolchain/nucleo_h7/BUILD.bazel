@@ -16,8 +16,6 @@ filegroup(
     srcs = [
         ":wrappers",
         "@com_github_tvsc_arm-none-eabi-gcc-11.3.1//:toolchain",
-        "@com_pjrc_teensy_package//:teensy40_linker_script",
-        "@com_pjrc_teensy_package//:teensy41_linker_script",
     ],
 )
 
