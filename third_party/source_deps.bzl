@@ -101,11 +101,11 @@ def load_source_dependencies():
             strip_prefix = "grpc-1.52.1",
         )
 
-    # This "package" includes all of the source code for supporting C/C++ applications on Teensy
+    # This package includes all of the source code for supporting C/C++ applications on Teensy
     # platforms, including Arduino.h.
     # See note in toolchains.bzl for version information of this package. This package should be
     # kept in sync with the Teensy toolchains in toolchains.bzl.
-    if "com_pjrc_teensy_package" not in native.existing_rules():
+    if not native.existing_rule("com_pjrc_teensy_package"):
         http_archive(
             name = "com_pjrc_teensy_package",
             sha256 = "b9c1ea852bd5ac625559685a864d40803df566650864b415e7c14c9623520c59",
@@ -114,4 +114,15 @@ def load_source_dependencies():
             ],
             build_file = "//third_party/arduino/teensyduino:teensy_package.BUILD",
             patches = ["//third_party/arduino/teensyduino:Time.cpp.patch"],
+        )
+
+    # This package includes the source code for STM32 drivers for various facilities.
+    if not native.existing_rule("com_github_stellarcorp_stm32_libraries"):
+        http_archive(
+            name = "com_github_stellarcorp_stm32_libraries",
+            #sha256 = "",
+            urls = [
+                "https://github.com/stellarcorp/stm32_libraries/archive/759f7d113d4f5a37cb58b28d39ffb6c8374662cf.tar.gz",
+            ],
+            strip_prefix = "stm32_libraries-759f7d113d4f5a37cb58b28d39ffb6c8374662cf",
         )

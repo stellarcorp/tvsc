@@ -1,0 +1,12 @@
+licenses(["notice"])
+
+cc_library(
+    name = "stm32h7xx",
+    target_compatible_with = [
+        "//platforms:nucleo_h7_board",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_H7:nucleo_h743xx",
+    ],
+)
