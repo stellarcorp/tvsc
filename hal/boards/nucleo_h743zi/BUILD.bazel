@@ -1,0 +1,18 @@
+cc_library(
+    name = "nucleo_h743zi",
+    srcs = [
+        "startup_stm32h743xx.s",
+        "system_stm32h7xx_singlecore.cc",
+    ],
+    hdrs = [
+        "board_nucleo_h743zi.h",
+    ],
+    target_compatible_with = [
+        "//platforms:nucleo_h7_board",
+    ],
+    deps = [
+        "//hal/boards:headers",
+        "//third_party/stm32:stm32h7xx",
+    ],
+    visibility = ["//visibility:public"],
+)
