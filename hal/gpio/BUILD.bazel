@@ -2,35 +2,41 @@ load("//platforms:hex.bzl", "hex")
 
 # GPIO targets
 cc_library(
+    name = "gpio_headers",
+    hdrs = [
+        "interrupts.h",
+        "pins.h",
+    ],
+)
+
+cc_library(
     name = "gpio",
     target_compatible_with = select({
-        "//platforms:wiring_pi_gpio": [
-        ],
-        "//platforms:teensyduino_gpio": [
-        ],
-        "//platforms:no_gpio": [
-            "@platforms//:incompatible",
-        ],
-        "//conditions:default": [
-            "@platforms//:incompatible",
-        ],
+        "//platforms:no_gpio": ["@platforms//:incompatible"],
+        "//conditions:default": [],
     }),
     visibility = ["//visibility:public"],
     deps = [":gpio_headers"] + select({
+        "//platforms:stm32_gpio": [
+            ":stm32_gpio",
+        ],
         "//platforms:teensyduino_gpio": [
             ":teensyduino_gpio",
         ],
         "//platforms:wiring_pi_gpio": [
             ":wiring_pi_gpio",
         ],
+        "//conditions:default": [],
     }),
 )
 
 cc_library(
-    name = "gpio_headers",
-    hdrs = [
-        "interrupts.h",
-        "pins.h",
+    name = "stm32_gpio",
+    target_compatible_with = [
+        "//platforms:stm32_gpio",
+    ],
+    deps = [
+        ":gpio_headers",
     ],
 )
 
@@ -40,13 +46,9 @@ cc_library(
         "teensyduino_interrupts.cc",
         "teensyduino_pins.cc",
     ],
-    target_compatible_with = select({
-        "//platforms:teensyduino_gpio": [
-        ],
-        "//conditions:default": [
-            "@platforms//:incompatible",
-        ],
-    }),
+    target_compatible_with = [
+        "//platforms:teensyduino_gpio",
+    ],
     deps = [
         ":gpio_headers",
         "//base",
@@ -61,13 +63,9 @@ cc_library(
         "wiring_pi_interrupts.cc",
         "wiring_pi_pins.cc",
     ],
-    target_compatible_with = select({
-        "//platforms:wiring_pi_gpio": [
-        ],
-        "//conditions:default": [
-            "@platforms//:incompatible",
-        ],
-    }),
+    target_compatible_with = [
+        "//platforms:wiring_pi_gpio",
+    ],
     deps = [
         ":gpio_headers",
         "//base",
@@ -106,15 +104,10 @@ cc_library(
     srcs = [
         "blink_pin_mapping_teensy_default.cc",
     ],
-    target_compatible_with = select({
-        "//platforms:teensy40_board": [
-        ],
-        "//platforms:teensy41_board": [
-        ],
-        "//conditions:default": [
-            "@platforms//:incompatible",
-        ],
-    }),
+    target_compatible_with = [
+        "//platforms:teensy40_board",
+        "//platforms:teensy41_board",
+    ],
     deps = [
         ":blink_pin_mapping",
         "//third_party/arduino:core",
@@ -125,11 +118,7 @@ hex(
     name = "blink_hex",
     src = ":blink",
     out = "blink.hex",
-    target_compatible_with = select({
-        "@platforms//os:none": [
-        ],
-        "//conditions:default": [
-            "@platforms//:incompatible",
-        ],
-    }),
+    target_compatible_with = [
+        "@platforms//os:none",
+    ],
 )
