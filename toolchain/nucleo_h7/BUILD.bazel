@@ -58,3 +58,14 @@ toolchain(
     toolchain = ":armv7e-mf_toolchain",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
+
+# These linker scripts are good generic options, but we will likely need specific scripts for
+# different board configurations and SKUs.
+filegroup(
+    name = "generic_linker_scripts",
+    srcs = [
+        "STM32H743ZITX_FLASH.ld",
+        "STM32H743ZITX_RAM.ld",
+    ],
+    visibility = ["//visibility:public"],
+)
