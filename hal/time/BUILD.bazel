@@ -12,8 +12,11 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [":time_headers"] + select({
-        "//platforms:teensyduino_gpio": [
+        "//platforms:teensyduino_core": [
             ":teensyduino_time",
+        ],
+        "//platforms:stm32_core": [
+            ":stm32_time",
         ],
         "//conditions:default": [
             ":std_cpp_time",
@@ -33,16 +36,24 @@ cc_library(
     srcs = [
         "teensyduino_time.cc",
     ],
-    target_compatible_with = select({
-        "//platforms:teensyduino_gpio": [
-        ],
-        "//conditions:default": [
-            "@platforms//:incompatible",
-        ],
-    }),
+    target_compatible_with = [
+        "//platforms:teensyduino_core",
+    ],
     deps = [
         ":time_headers",
         "//third_party/arduino:core",
+    ],
+)
+
+cc_library(
+    name = "stm32_time",
+    srcs = [
+    ],
+    target_compatible_with = [
+        "//platforms:stm32_core",
+    ],
+    deps = [
+        ":time_headers",
     ],
 )
 
@@ -51,13 +62,9 @@ cc_library(
     srcs = [
         "std_cpp_time.cc",
     ],
-    target_compatible_with = select({
-        "//platforms:teensyduino_gpio": [
-            "@platforms//:incompatible",
-        ],
-        "//conditions:default": [
-        ],
-    }),
+    target_compatible_with = [
+        "//platforms:std_cpp",
+    ],
     deps = [
         ":time_headers",
     ],
