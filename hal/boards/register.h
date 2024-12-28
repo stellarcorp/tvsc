@@ -5,8 +5,13 @@
 namespace tvsc::hal::boards {
 
 template <uint8_t NUM_BITS, uint8_t BIT_OFFSET>
-constexpr uint32_t compute_mask() {
-  return ((1U << NUM_BITS) - 1U) << BIT_OFFSET;
+inline constexpr uint32_t compute_mask() {
+  static_assert(NUM_BITS + BIT_OFFSET <= 32,
+                "Invalid mask parameters. The total number of bits (offset and the number "
+                "of bits in the mask) must be less than or equal to the size of the word "
+                "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
+                "template parameters to call this method.");
+  return ((1UL << NUM_BITS) - 1UL) << BIT_OFFSET;
 }
 
 class Register final {
@@ -50,6 +55,11 @@ class Register final {
    */
   template <uint8_t NUM_BITS, uint8_t BIT_OFFSET>
   uint32_t field_value() const {
+    static_assert(NUM_BITS + BIT_OFFSET <= 32,
+                  "Invalid bit field parameters. The total number of bits (offset and the number "
+                  "of bits in the field) must be less than or equal to the size of the register "
+                  "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
+                  "template parameters to call this method.");
     const uint32_t MASK{compute_mask<NUM_BITS, BIT_OFFSET>()};
     return (value_ & MASK) >> BIT_OFFSET;
   }
@@ -59,6 +69,11 @@ class Register final {
    */
   template <uint8_t NUM_BITS, uint8_t BIT_OFFSET>
   void set_field_value(uint32_t value) {
+    static_assert(NUM_BITS + BIT_OFFSET <= 32,
+                  "Invalid bit field parameters. The total number of bits (offset and the number "
+                  "of bits in the field) must be less than or equal to the size of the register "
+                  "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
+                  "template parameters to call this method.");
     const uint32_t MASK{compute_mask<NUM_BITS, BIT_OFFSET>()};
     value_ = ((value << BIT_OFFSET) & MASK) | (value_ & ~MASK);
   }
@@ -68,6 +83,11 @@ class Register final {
    */
   template <uint8_t NUM_BITS, uint8_t BIT_OFFSET>
   void set_field_value_and_block(uint32_t value) {
+    static_assert(NUM_BITS + BIT_OFFSET <= 32,
+                  "Invalid bit field parameters. The total number of bits (offset and the number "
+                  "of bits in the field) must be less than or equal to the size of the register "
+                  "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
+                  "template parameters to call this method.");
     const uint32_t MASK{compute_mask<NUM_BITS, BIT_OFFSET>()};
     value_ = ((value << BIT_OFFSET) & MASK) | (value_ & ~MASK);
     block_until_updated();
