@@ -5,7 +5,7 @@
 namespace tvsc::hal::boards {
 
 TEST(ComputeMaskTest, GeneratesDesiredMask) {
-  uint8_t mask{};
+  uint32_t mask{};
   mask = compute_mask<8, 0>();
   EXPECT_EQ(0b11111111, mask);
   mask = compute_mask<6, 2>();
@@ -21,14 +21,14 @@ TEST(ComputeMaskTest, GeneratesDesiredMask) {
 }
 
 TEST(ComputeMaskTest, CanComputeMaskAtCompile) {
-  static constexpr uint8_t EXPECTED_MASK{0b01110000};
-  static constexpr uint8_t mask{compute_mask<3, 4>()};
+  static constexpr uint32_t EXPECTED_MASK{0b01110000};
+  static constexpr uint32_t mask{compute_mask<3, 4>()};
   static_assert(mask == EXPECTED_MASK, "Invalid mask");
   EXPECT_EQ(EXPECTED_MASK, mask);
 }
 
 TEST(RegisterTest, CanSetValue) {
-  static constexpr uint8_t EXPECTED_VALUE{0xab};
+  static constexpr uint32_t EXPECTED_VALUE{0xab};
   Register r{};
   r.set_value(EXPECTED_VALUE);
   EXPECT_EQ(EXPECTED_VALUE, r.value());
@@ -38,12 +38,12 @@ TEST(RegisterTest, CanSetBitFieldValue) {
   static constexpr uint8_t NUM_FIELD_BITS{3};
   static constexpr uint8_t FIELD_BIT_OFFSET{2};
 
-  static constexpr uint8_t FIELD_VALUE{0x03};
-  static constexpr uint8_t INITIAL_REGISTER_VALUE{0b10101010};
+  static constexpr uint32_t FIELD_VALUE{0x03};
+  static constexpr uint32_t INITIAL_REGISTER_VALUE{0b10101010};
   Register r{};
   r.set_value(INITIAL_REGISTER_VALUE);
 
-  uint8_t field_value;
+  uint32_t field_value;
 
   field_value = r.field_value<NUM_FIELD_BITS, FIELD_BIT_OFFSET>();
   EXPECT_EQ(2, field_value);
