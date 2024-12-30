@@ -6,13 +6,34 @@ cc_library(
     ],
     hdrs = [
         "board_nucleo_h743zi.h",
+        "clock.h",
+        "gpio.h",
     ],
     target_compatible_with = [
         "//platforms:nucleo_h7_board",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         "//hal/boards:headers",
+        "//hal/gpio",
+        "//hal/time",
         "//third_party/stm32:stm32h7xx",
     ],
-    visibility = ["//visibility:public"],
+)
+
+cc_binary(
+    name = "blink",
+    srcs = [
+        "blink.cc",
+    ],
+    additional_linker_inputs = [
+        "//toolchain/nucleo_h7:generic_flash_linker_script",
+    ],
+    linkopts = ["-Wl,-T$(execpath //toolchain/nucleo_h7:generic_flash_linker_script)"],
+    target_compatible_with = [
+        "//platforms:nucleo_h7_board",
+    ],
+    deps = [
+        ":nucleo_h743zi",
+    ],
 )
