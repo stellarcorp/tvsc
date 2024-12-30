@@ -10,25 +10,10 @@ cc_library(
 )
 
 cc_library(
-    name = "platform_headers",
-    hdrs = [
-        "board.h",
-    ],
-    # We want to organize board specific bringup in subpackages of this one. Those subpackages need access to
-    # these headers.
-    visibility = ["//hal/boards:__subpackages__"],
-    deps = [
-        ":headers",
-        "//hal/gpio",
-    ],
-)
-
-cc_library(
     name = "boards",
     visibility = ["//visibility:public"],
     deps = [
         ":headers",
-        ":platform_headers",
     ] + select({
         "//platforms:nucleo_h7_board": ["//hal/boards/nucleo_h743zi"],
     }),
