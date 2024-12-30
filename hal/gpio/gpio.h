@@ -2,13 +2,15 @@
 
 #include <cstdint>
 
-namespace tvsc::hal::gpio {
+#include "hal/gpio/pins.h"
 
-using Pin = uint8_t;
+namespace tvsc::hal::gpio {
 
 class Gpio {
  public:
   virtual ~Gpio() = default;
+
+  virtual void set_pin_mode(Pin pin, PinMode mode) = 0;
 
   virtual void toggle_pin(Pin pin) = 0;
 };

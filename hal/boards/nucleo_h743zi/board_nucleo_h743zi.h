@@ -7,14 +7,19 @@
 #include "hal/boards/nucleo_h743zi/clock.h"
 #include "hal/boards/nucleo_h743zi/gpio.h"
 #include "hal/gpio/gpio.h"
+#include "hal/gpio/pins.h"
 #include "hal/time/clock.h"
+
+extern "C" {
+#include "stm32h7xx.h"
+}
 
 namespace tvsc::hal::boards::nucleo_h743zi {
 
 class Board final {
  public:
   static constexpr Boards BOARD_ID{Boards::NUCLEO_STM32H743ZI};
-  static constexpr size_t NUM_GPIO_PORTS{4};
+  static constexpr gpio::Port NUM_GPIO_PORTS{4};
 
  private:
   ClockStm32H7xx clock_{};
@@ -28,7 +33,7 @@ class Board final {
   GpioStm32H7xx gpio_port_d_{GPIOD};
 
  public:
-  template <size_t GPIO_PORT>
+  template <gpio::Port GPIO_PORT>
   gpio::Gpio& gpio() {
     static_assert(
         GPIO_PORT < NUM_GPIO_PORTS,

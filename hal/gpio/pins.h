@@ -4,6 +4,16 @@
 
 namespace tvsc::hal::gpio {
 
+/**
+ * Type used to identify a GPIO port (specific peripheral) on an processor.
+ */
+using Port = uint8_t;
+
+/**
+ * Type used to identify a Pin on a GPIO port.
+ */
+using Pin = uint8_t;
+
 enum class PinMode : uint8_t {
   MODE_INPUT = 0,
   MODE_OUTPUT = 1,
