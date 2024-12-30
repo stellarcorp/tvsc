@@ -46,6 +46,10 @@
   * @{
   */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stm32h7xx.h"
 #include <math.h>
 
@@ -412,3 +416,7 @@ void SystemCoreClockUpdate (void)
 /**
   * @}
   */
+
+#ifdef __cplusplus
+}
+#endif
