@@ -4,6 +4,7 @@ load("//platforms:hex.bzl", "hex")
 cc_library(
     name = "gpio_headers",
     hdrs = [
+        "gpio.h",
         "interrupts.h",
         "pins.h",
     ],
