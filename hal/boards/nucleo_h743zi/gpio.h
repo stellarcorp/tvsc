@@ -1,6 +1,8 @@
 #pragma once
 
-#include "base/except.h"
+//#include "base/except.h"
+#include <new>
+
 #include "hal/boards/register.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/pins.h"
@@ -10,8 +12,6 @@ extern "C" {
 }
 
 namespace tvsc::hal::boards::nucleo_h743zi {
-
-namespace {
 
 class GpioRegisterBank final {
  public:
@@ -58,31 +58,29 @@ class GpioRegisterBank final {
   volatile Register AFRH;
 };
 
-}  // namespace
-
 class GpioStm32H7xx final : public gpio::Gpio {
  private:
   GpioRegisterBank* registers_;
 
   void set_ospeedr_value(gpio::Pin pin, gpio::PinSpeed speed) {
-    uint8_t speed_value;
+    uint8_t speed_value{};
     switch (speed) {
-      case LOW:
+      case gpio::PinSpeed::LOW:
         speed_value = 0b00;
         break;
-      case MEDIUM:
+      case gpio::PinSpeed::MEDIUM:
         speed_value = 0b01;
         break;
-      case HIGH:
+      case gpio::PinSpeed::HIGH:
         speed_value = 0b10;
         break;
-      case VERY_HIGH:
+      case gpio::PinSpeed::VERY_HIGH:
         speed_value = 0b11;
         break;
-      default:
-        except<std::domain_error>("Requested pin speed is not supported on this platform.");
+        // default:
+        // except<std::domain_error>("Requested pin speed is not supported on this platform.");
     }
-    registers_->OSPEEDR.set_bit_field_value<2>(speed_value, 2 * pin);
+    registers_->OSPEEDR.set_bit_field_value<2>(speed_value, static_cast<uint8_t>(2 * pin));
   }
 
   enum class MODER_VALUES : uint8_t {
@@ -92,16 +90,18 @@ class GpioStm32H7xx final : public gpio::Gpio {
     ANALOG = 0b11,
   };
   void set_moder_value(gpio::Pin pin, MODER_VALUES value) {
-    registers_->MODER.set_bit_field_value<2>(value, 2 * pin);
+    registers_->MODER.set_bit_field_value<2>(static_cast<uint32_t>(value),
+                                             static_cast<uint8_t>(2 * pin));
   }
 
-  enum class PUPDR_VALUES : uint8_t {
+  enum class OPUPDR_VALUES : uint8_t {
     BOTH_DISABLED = 0x00,
     PULL_UP_ENABLED = 0b01,
     PULL_DOWN_ENABLED = 0b10,
   };
-  void set_pupdr_value(gpio::Pin pin, PUPDR_VALUES value) {
-    registers_->PUPDR.set_bit_field_value<2>(value, 2 * pin);
+  void set_pupdr_value(gpio::Pin pin, OPUPDR_VALUES value) {
+    registers_->OPUPDR.set_bit_field_value<2>(static_cast<uint32_t>(value),
+                                              static_cast<uint8_t>(2 * pin));
   }
 
   enum class OTYPER_VALUES : uint8_t {
@@ -109,13 +109,14 @@ class GpioStm32H7xx final : public gpio::Gpio {
     MOSFET_OPEN_DRAIN = 0b1,
   };
   void set_otyper_value(gpio::Pin pin, OTYPER_VALUES value) {
-    registers_->OTYPER.set_bit_field_value<1>(value, pin);
+    registers_->OTYPER.set_bit_field_value<1>(static_cast<uint32_t>(value),
+                                              static_cast<uint8_t>(pin));
   }
 
  public:
   static constexpr size_t NUM_PINS{16};
 
-  GpioStm32H7xx(void* base_address) : registers_(new (base_address) GpioRegisterBank()) {
+  GpioStm32H7xx(void* base_address) : registers_(new (base_address) GpioRegisterBank) {
     // TODO(james): Move pin configuration out of this constructor. This class should provide an API
     // that allows for this configuration, but it should not dictate the configuration of any pin.
   }
@@ -124,124 +125,124 @@ class GpioStm32H7xx final : public gpio::Gpio {
     switch (mode) {
         // Unused pins get set to the reset state of most pins. Note that the reset state of some
         // pins, especially debug pins, is different.
-      case UNUSED:
+      case gpio::PinMode::UNUSED:
         set_moder_value(pin, MODER_VALUES::ANALOG);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_PUSH_PULL);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::BOTH_DISABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::BOTH_DISABLED);
         break;
 
         // Analog mode needs the mode configured, and the pull-up/pull-down resistors must be
         // disabled. Speed and type are ignored.
-      case ANALOG:
+      case gpio::PinMode::ANALOG:
         set_moder_value(pin, MODER_VALUES::ANALOG);
-        set_pupdr_value(pin, PUPDR_VALUES::BOTH_DISABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::BOTH_DISABLED);
         break;
 
         // Input modes need the mode and pull-up/pull-down configured. Speed and type are ignored.
-      case INPUT_FLOATING:
+      case gpio::PinMode::INPUT_FLOATING:
         set_moder_value(pin, MODER_VALUES::INPUT);
-        set_pupdr_value(pin, PUPDR_VALUES::BOTH_DISABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::BOTH_DISABLED);
         break;
 
-      case INPUT_WITH_PULL_UP:
+      case gpio::PinMode::INPUT_WITH_PULL_UP:
         set_moder_value(pin, MODER_VALUES::INPUT);
-        set_pupdr_value(pin, PUPDR_VALUES::PULL_UP_ENABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::PULL_UP_ENABLED);
         break;
 
-      case INPUT_WITH_PULL_DOWN:
+      case gpio::PinMode::INPUT_WITH_PULL_DOWN:
         set_moder_value(pin, MODER_VALUES::INPUT);
-        set_pupdr_value(pin, PUPDR_VALUES::PULL_DOWN_ENABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::PULL_DOWN_ENABLED);
         break;
 
         // Output modes need the mode, output type, output speed, and pull-up/pull-down configured.
-      case OUTPUT_PUSH_PULL:
+      case gpio::PinMode::OUTPUT_PUSH_PULL:
         set_moder_value(pin, MODER_VALUES::OUTPUT);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_PUSH_PULL);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::BOTH_DISABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::BOTH_DISABLED);
         break;
 
-      case OUTPUT_PUSH_PULL_WITH_PULL_UP:
+      case gpio::PinMode::OUTPUT_PUSH_PULL_WITH_PULL_UP:
         set_moder_value(pin, MODER_VALUES::OUTPUT);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_PUSH_PULL);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::PULL_UP_ENABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::PULL_UP_ENABLED);
         break;
 
-      case OUTPUT_PUSH_PULL_WITH_PULL_DOWN:
+      case gpio::PinMode::OUTPUT_PUSH_PULL_WITH_PULL_DOWN:
         set_moder_value(pin, MODER_VALUES::OUTPUT);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_PUSH_PULL);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::PULL_DOWN_ENABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::PULL_DOWN_ENABLED);
         break;
 
-      case OUTPUT_OPEN_DRAIN:
+      case gpio::PinMode::OUTPUT_OPEN_DRAIN:
         set_moder_value(pin, MODER_VALUES::OUTPUT);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_OPEN_DRAIN);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::BOTH_DISABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::BOTH_DISABLED);
         break;
 
-      case OUTPUT_OPEN_DRAIN_WITH_PULL_UP:
+      case gpio::PinMode::OUTPUT_OPEN_DRAIN_WITH_PULL_UP:
         set_moder_value(pin, MODER_VALUES::OUTPUT);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_OPEN_DRAIN);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::PULL_UP_ENABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::PULL_UP_ENABLED);
         break;
 
-      case OUTPUT_OPEN_DRAIN_WITH_PULL_DOWN:
+      case gpio::PinMode::OUTPUT_OPEN_DRAIN_WITH_PULL_DOWN:
         set_moder_value(pin, MODER_VALUES::OUTPUT);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_OPEN_DRAIN);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::PULL_DOWN_ENABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::PULL_DOWN_ENABLED);
         break;
 
         // Alternate function modes need the mode, type, speed, and pull-up/pull-down configured.
-      case ALTERNATE_FUNCTION_PUSH_PULL:
+      case gpio::PinMode::ALTERNATE_FUNCTION_PUSH_PULL:
         set_moder_value(pin, MODER_VALUES::ALTERNATE_FUNCTION);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_PUSH_PULL);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::BOTH_DISABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::BOTH_DISABLED);
         break;
 
-      case ALTERNATE_FUNCTION_PUSH_PULL_WITH_PULL_UP:
+      case gpio::PinMode::ALTERNATE_FUNCTION_PUSH_PULL_WITH_PULL_UP:
         set_moder_value(pin, MODER_VALUES::ALTERNATE_FUNCTION);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_PUSH_PULL);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::PULL_UP_ENABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::PULL_UP_ENABLED);
         break;
 
-      case ALTERNATE_FUNCTION_PUSH_PULL_WITH_PULL_DOWN:
+      case gpio::PinMode::ALTERNATE_FUNCTION_PUSH_PULL_WITH_PULL_DOWN:
         set_moder_value(pin, MODER_VALUES::ALTERNATE_FUNCTION);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_PUSH_PULL);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::PULL_DOWN_ENABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::PULL_DOWN_ENABLED);
         break;
 
-      case ALTERNATE_FUNCTION_OPEN_DRAIN:
+      case gpio::PinMode::ALTERNATE_FUNCTION_OPEN_DRAIN:
         set_moder_value(pin, MODER_VALUES::ALTERNATE_FUNCTION);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_OPEN_DRAIN);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::BOTH_DISABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::BOTH_DISABLED);
         break;
 
-      case ALTERNATE_FUNCTION_OPEN_DRAIN_WITH_PULL_UP:
+      case gpio::PinMode::ALTERNATE_FUNCTION_OPEN_DRAIN_WITH_PULL_UP:
         set_moder_value(pin, MODER_VALUES::ALTERNATE_FUNCTION);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_OPEN_DRAIN);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::PULL_UP_ENABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::PULL_UP_ENABLED);
         break;
 
-      case ALTERNATE_FUNCTION_OPEN_DRAIN_WITH_PULL_DOWN:
+      case gpio::PinMode::ALTERNATE_FUNCTION_OPEN_DRAIN_WITH_PULL_DOWN:
         set_moder_value(pin, MODER_VALUES::ALTERNATE_FUNCTION);
         set_otyper_value(pin, OTYPER_VALUES::MOSFET_OPEN_DRAIN);
         set_ospeedr_value(pin, speed);
-        set_pupdr_value(pin, PUPDR_VALUES::PULL_DOWN_ENABLED);
+        set_pupdr_value(pin, OPUPDR_VALUES::PULL_DOWN_ENABLED);
         break;
 
-      default:
-        except<std::domain_error>("Requested pin mode is not supported on this platform.");
+        // default:
+        // except<std::domain_error>("Requested pin mode is not supported on this platform.");
     }
   }
 

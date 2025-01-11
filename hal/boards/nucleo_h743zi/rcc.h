@@ -3,8 +3,10 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <new>
 
 #include "hal/boards/register.h"
+#include "hal/gpio/pins.h"
 
 extern "C" {
 
@@ -49,16 +51,12 @@ void SystemCoreClockUpdate();
 
 namespace tvsc::hal::boards::nucleo_h743zi {
 
-namespace {
-
 class RccRegisterBank final {
  public:
-  std::byte unused1[0x0D0];
-  // Offset 0x0D0
+  std::byte unused1[0x0e0];
+  // Offset 0x0e0
   volatile Register AHB4ENR;
 };
-
-}  // namespace
 
 /**
  * Class to manage the reset and clock circuitry (RCC) on the Nucleo H743ZI board.
@@ -66,9 +64,11 @@ class RccRegisterBank final {
 class Rcc final {
  private:
   RccRegisterBank* registers_;
+  uint32_t tick_count_{};
+  uint32_t tick_frequency_{};
 
  public:
-  Rcc(void* base_address) : registers_(new (base_address) RccRegisterBank()) {
+  Rcc(void* base_address) : registers_(new (base_address) RccRegisterBank) {
     // For details on startup procedures, see stm32h7xx_hal_rcc.c. The comments in that file
     // explain many details that are otherwise difficult to find.
 
@@ -80,10 +80,21 @@ class Rcc final {
     SystemCoreClockUpdate();
 
     // Generate a tick interrupt every millisecond.
-    SysTick_Config(SystemCoreClock / 1000);
+    tick_frequency_ = SystemCoreClock / 1000;
+    SysTick_Config(tick_frequency_);
+  }
 
-    // Enable the clock for the GPIO banks that we need; disable the clock for the ones we don't.
-    registers_->AHB4ENR.set_field_value_and_block<11, 0>(0x1f /* Enables GPIO banks A,B,C,D,E */);
+  uint32_t tick() const { return tick_count_; }
+  uint32_t tick_frequency() const { return tick_frequency_; }
+
+  template <gpio::Port GPIO_PORT>
+  void enable_port() {
+    registers_->AHB4ENR.set_bit_field_value_and_block<1>(1, static_cast<uint8_t>(GPIO_PORT));
+  }
+
+  template <gpio::Port GPIO_PORT>
+  void disable_port() {
+    registers_->AHB4ENR.set_bit_field_value_and_block<1>(0, static_cast<uint8_t>(GPIO_PORT));
   }
 };
 
