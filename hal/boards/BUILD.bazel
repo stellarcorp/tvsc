@@ -8,7 +8,7 @@ cc_library(
     # these headers.
     visibility = ["//hal/boards:__subpackages__"],
     deps = [
-        "//base",
+        "//base:bits",
     ],
 )
 
@@ -28,7 +28,7 @@ cc_test(
     srcs = ["register_test.cc"],
     deps = [
         ":headers",
-        "//base",
+        "//base:bits",
         "//third_party/gtest",
     ],
 )
