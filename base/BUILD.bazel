@@ -1,5 +1,20 @@
 cc_library(
-    name = "base",
+    name = "bits",
+    hdrs = [
+        "bits.h",
+    ],
+    defines = select({
+        "@platforms//os:none": [
+            "PLATFORM_OS_NONE",
+        ],
+        "//conditions:default": [
+        ],
+    }),
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "except",
     srcs = select({
         "@platforms//os:none": [
         ],
@@ -17,9 +32,7 @@ cc_library(
                 "initializer.h",
             ],
         }) + [
-            "bits.h",
             "except.h",
-            "units.h",
         ],
     defines = select({
         "@platforms//os:none": [
