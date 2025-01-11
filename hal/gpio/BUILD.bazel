@@ -52,7 +52,7 @@ cc_library(
     ],
     deps = [
         ":gpio_headers",
-        "//base",
+        "//base:bits",
         "//third_party/arduino:core",
         "//third_party/arduino:gpio",
     ],
@@ -69,7 +69,7 @@ cc_library(
     ],
     deps = [
         ":gpio_headers",
-        "//base",
+        "//base:bits",
         "//third_party/wiring_pi",
     ],
 )
