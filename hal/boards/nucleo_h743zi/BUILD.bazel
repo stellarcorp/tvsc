@@ -8,6 +8,7 @@ cc_library(
         "board_nucleo_h743zi.h",
         "clock.h",
         "gpio.h",
+        "rcc.h",
     ],
     target_compatible_with = [
         "//platforms:nucleo_h7_board",
