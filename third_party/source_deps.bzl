@@ -120,7 +120,7 @@ def load_source_dependencies():
     if not native.existing_rule("com_github_stellarcorp_stm32_libraries"):
         http_archive(
             name = "com_github_stellarcorp_stm32_libraries",
-            #sha256 = "",
+            sha256 = "3ffc36101da4e65b798054e90bc6fed2d1ab43412e9156df94d6a5accbdef0c9",
             urls = [
                 "https://github.com/stellarcorp/stm32_libraries/archive/759f7d113d4f5a37cb58b28d39ffb6c8374662cf.tar.gz",
             ],
