@@ -2,17 +2,9 @@
 
 #include <cstdint>
 
-namespace tvsc::hal::boards {
+#include "base/bits.h"
 
-template <uint8_t NUM_BITS, uint8_t BIT_OFFSET>
-inline constexpr uint32_t compute_mask() {
-  static_assert(NUM_BITS + BIT_OFFSET <= 32,
-                "Invalid mask parameters. The total number of bits (offset and the number "
-                "of bits in the mask) must be less than or equal to the size of the word "
-                "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
-                "template parameters to call this method.");
-  return ((1UL << NUM_BITS) - 1UL) << BIT_OFFSET;
-}
+namespace tvsc::hal::boards {
 
 class Register final {
  private:
@@ -54,42 +46,58 @@ class Register final {
    * Read the value of a bit field in a register.
    */
   template <uint8_t NUM_BITS, uint8_t BIT_OFFSET>
-  uint32_t field_value() const volatile {
-    static_assert(NUM_BITS + BIT_OFFSET <= 32,
-                  "Invalid bit field parameters. The total number of bits (offset and the number "
-                  "of bits in the field) must be less than or equal to the size of the register "
-                  "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
-                  "template parameters to call this method.");
-    static constexpr uint32_t MASK{compute_mask<NUM_BITS, BIT_OFFSET>()};
-    return (value_ & MASK) >> BIT_OFFSET;
+  uint32_t bit_field_value() const volatile {
+    return get_bit_field_value<NUM_BITS, BIT_OFFSET>(value_);
   }
 
   /**
    * Set the value of a bit field in a register.
    */
   template <uint8_t NUM_BITS, uint8_t BIT_OFFSET>
-  void set_field_value(uint32_t value) volatile {
-    static_assert(NUM_BITS + BIT_OFFSET <= 32,
-                  "Invalid bit field parameters. The total number of bits (offset and the number "
-                  "of bits in the field) must be less than or equal to the size of the register "
-                  "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
-                  "template parameters to call this method.");
-    static constexpr uint32_t MASK{compute_mask<NUM_BITS, BIT_OFFSET>()};
-    value_ = ((value << BIT_OFFSET) & MASK) | (value_ & ~MASK);
+  void set_bit_field_value(uint32_t bit_field_value) volatile {
+    modify_bit_field<NUM_BITS, BIT_OFFSET>(value_, bit_field_value);
   }
 
   /**
    * Set the value of a bit field in a register.
    */
   template <uint8_t NUM_BITS, uint8_t BIT_OFFSET>
-  void set_field_value_and_block(uint32_t value) volatile {
-    static_assert(NUM_BITS + BIT_OFFSET <= 32,
-                  "Invalid bit field parameters. The total number of bits (offset and the number "
-                  "of bits in the field) must be less than or equal to the size of the register "
-                  "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
-                  "template parameters to call this method.");
-    static constexpr uint32_t MASK{compute_mask<NUM_BITS, BIT_OFFSET>()};
-    value_ = ((value << BIT_OFFSET) & MASK) | (value_ & ~MASK);
+  void set_bit_field_value_and_block(uint32_t bit_field_value) volatile {
+    modify_bit_field<NUM_BITS, BIT_OFFSET>(value_, bit_field_value);
+    block_until_updated();
+  }
+
+  /**
+   * Set the value of a bit field in a register.
+   */
+  template <uint8_t NUM_BITS>
+  void set_bit_field_value(uint32_t bit_field_value, uint8_t bit_field_offset) volatile {
+    modify_bit_field<NUM_BITS>(value_, bit_field_value, bit_field_offset);
+  }
+
+  /**
+   * Set the value of a bit field in a register.
+   */
+  template <uint8_t NUM_BITS>
+  void set_bit_field_value_and_block(uint32_t bit_field_value, uint8_t bit_field_offset) volatile {
+    modify_bit_field<NUM_BITS>(value_, bit_field_value, bit_field_offset);
+    block_until_updated();
+  }
+
+  /**
+   * Set the value of a bit field in a register.
+   */
+  void set_bit_field_value(uint32_t bit_field_value, uint8_t num_bits,
+                           uint8_t bit_field_offset) volatile {
+    modify_bit_field(value_, bit_field_value, num_bits, bit_field_offset);
+  }
+
+  /**
+   * Set the value of a bit field in a register.
+   */
+  void set_bit_field_value_and_block(uint32_t bit_field_value, uint8_t num_bits,
+                                     uint8_t bit_field_offset) volatile {
+    modify_bit_field(value_, bit_field_value, num_bits, bit_field_offset);
     block_until_updated();
   }
 };
