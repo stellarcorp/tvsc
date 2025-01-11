@@ -4,17 +4,25 @@
 
 using BoardType = tvsc::hal::boards::nucleo_h743zi::Board;
 
-static constexpr tvsc::hal::gpio::Port DEBUG_LED_GPIO_PORT{0};
-static constexpr tvsc::hal::gpio::Pin DEBUG_LED_PIN{13};
+using namespace tvsc::hal::gpio;
 
 int main() {
   BoardType board{};
 
-  board.gpio<DEBUG_LED_GPIO_PORT>().set_pin_mode(DEBUG_LED_PIN,
-                                                 tvsc::hal::gpio::PinMode::MODE_OUTPUT);
+  // Configure the push button as an input.
+  board.gpio<BoardType::BLUE_PUSH_BUTTON_PORT>().set_pin_mode(BoardType::BLUE_PUSH_BUTTON_PIN,
+                                                              PinMode::INPUT_FLOATING);
+
+  /* Configure the debug LEDs. */
+  board.gpio<BoardType::RED_LED_PORT>().set_pin_mode(BoardType::RED_LED_PIN,
+                                                     PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
+  board.gpio<BoardType::YELLOW_LED_PORT>().set_pin_mode(BoardType::YELLOW_LED_PIN,
+                                                        PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
+  board.gpio<BoardType::GREEN_LED_PORT>().set_pin_mode(BoardType::GREEN_LED_PIN,
+                                                       PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
   while (true) {
-    board.gpio<DEBUG_LED_GPIO_PORT>().toggle_pin(DEBUG_LED_PIN);
+    board.gpio<BoardType::GREEN_LED_PORT>().toggle_pin(BoardType::GREEN_LED_PIN);
 
     board.clock().sleep_ms(750);
   }
