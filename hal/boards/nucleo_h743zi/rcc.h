@@ -10,12 +10,10 @@
 
 extern "C" {
 
-#include "stm32h7xx.h"
-
 /**
- * These symbols are required by the ARM CMSIS code. They are typically defined in a file named
- * system_<device>.c. We declare them here so that they can be used in our code as well; if we're
- * paying for them, we're using them.
+ * These symbols are usually required by the ARM CMSIS code. They are typically defined in a file
+ * named system_<device>.c. We declare them here so that they can be used in our code as well; if
+ * we're paying for them, we're using them.
  *
  * It's not clear what is required of these symbols or why they are left to user code to implement
  * and manage. I suspect they were originally intended to be hooks to allow for configurability,
@@ -31,8 +29,7 @@ extern "C" {
 
 /*
  * SystemCoreClock is a global variable required by the ARM CMSIS code. It contains the core clock
- * value; note that the units are not specified, though examples tend to indicate that it's in Hz
- * (events per second or something similar).
+ * value in ticks per second.
  *
  * For more information, see
  * https://arm-software.github.io/CMSIS_5/Core/html/group__system__init__gr.html#gaa3cd3e43291e81e795d642b79b6088e6
@@ -47,6 +44,15 @@ extern uint32_t SystemCoreClock;
  * for a bit more information.
  */
 void SystemCoreClockUpdate();
+
+/**
+ * Function to handle early system initialization, including clock selection. It is called from the
+ * ResetHandler in the startup_<device>.s file. This routine was provided by ST Micro.
+ *
+ * TODO(james): Modify this routine to fit our use case. In particular, switch to the CSI oscillator
+ * by default, rather than using the HSE or HSI oscillators.
+ */
+void SystemInit(void);
 }
 
 namespace tvsc::hal::boards::nucleo_h743zi {
@@ -64,8 +70,6 @@ class RccRegisterBank final {
 class Rcc final {
  private:
   RccRegisterBank* registers_;
-  uint32_t tick_count_{};
-  uint32_t tick_frequency_{};
 
  public:
   Rcc(void* base_address) : registers_(new (base_address) RccRegisterBank) {
@@ -78,14 +82,7 @@ class Rcc final {
     // We reinitialize SystemCoreClock as the startup process will have zeroed the BSS, likely
     // including SystemCoreClock. See the startup_<device>.s file for details on this process.
     SystemCoreClockUpdate();
-
-    // Generate a tick interrupt every millisecond.
-    tick_frequency_ = SystemCoreClock / 1000;
-    SysTick_Config(tick_frequency_);
   }
-
-  uint32_t tick() const { return tick_count_; }
-  uint32_t tick_frequency() const { return tick_frequency_; }
 
   template <gpio::Port GPIO_PORT>
   void enable_port() {

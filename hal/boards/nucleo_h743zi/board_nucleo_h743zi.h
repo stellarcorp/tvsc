@@ -47,6 +47,7 @@ class Board final {
 
  private:
   Rcc rcc_{reinterpret_cast<void*>(RCC_BASE)};
+  Ticker ticker_{reinterpret_cast<void*>(SysTick_BASE)};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32H7xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
@@ -58,7 +59,7 @@ class Board final {
   GpioStm32H7xx gpio_port_e_{reinterpret_cast<void*>(GPIOE)};
   // Don't forget to modify NUM_GPIO_PORTS above.
 
-  ClockStm32H7xx clock_{rcc_};
+  ClockStm32H7xx clock_{};
 
  public:
   Board() {
