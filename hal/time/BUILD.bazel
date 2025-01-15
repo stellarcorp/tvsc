@@ -1,13 +1,9 @@
-load("//platforms:hex.bzl", "hex")
-
 cc_library(
     name = "time",
     srcs = [
-        "clock.cc",
         "remote_clock.cc",
     ],
     hdrs = [
-        "clock.h",
         "remote_clock.h",
     ],
     visibility = ["//visibility:public"],
@@ -18,7 +14,7 @@ cc_library(
         "//platforms:stm32_core": [
             ":stm32_time",
         ],
-        "//conditions:default": [
+        "//platforms:std_cpp": [
             ":std_cpp_time",
         ],
     }),
@@ -27,14 +23,17 @@ cc_library(
 cc_library(
     name = "time_headers",
     hdrs = [
-        "time.h",
+        "clock.h",
     ],
 )
 
 cc_library(
     name = "teensyduino_time",
     srcs = [
-        "teensyduino_time.cc",
+        "teensyduino_clock.cc",
+    ],
+    hdrs = [
+        "teensyduino_clock.h",
     ],
     target_compatible_with = [
         "//platforms:teensyduino_core",
@@ -48,6 +47,10 @@ cc_library(
 cc_library(
     name = "stm32_time",
     srcs = [
+        "stm_clock.cc",
+    ],
+    hdrs = [
+        "stm_clock.h",
     ],
     target_compatible_with = [
         "//platforms:stm32_core",
@@ -60,7 +63,10 @@ cc_library(
 cc_library(
     name = "std_cpp_time",
     srcs = [
-        "std_cpp_time.cc",
+        "std_cpp_clock.cc",
+    ],
+    hdrs = [
+        "std_cpp_clock.h",
     ],
     target_compatible_with = [
         "//platforms:std_cpp",
@@ -81,7 +87,7 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        ":time",
+        ":time_headers",
     ],
 )
 

@@ -11,7 +11,7 @@ cc_library(
         "utils.h",
     ],
     deps = [
-        "//base",
+        "//base:except",
         "//filesystem",
         "//third_party/gtest:gtest_without_main",
     ],

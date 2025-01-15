@@ -1,9 +1,9 @@
-#include "hal/boards/register.h"
+#include "hal/register.h"
 
 #include "base/bits.h"
 #include "gtest/gtest.h"
 
-namespace tvsc::hal::boards {
+namespace tvsc::hal {
 
 TEST(ComputeMaskTest, GeneratesDesiredMask8bit) {
   // All of the masks here fit in the least significant 8 bits of the word. This test may help
@@ -76,4 +76,4 @@ TEST(RegisterTest, CanSetBitFieldValue) {
   EXPECT_EQ(0xae, r.value());
 }
 
-}  // namespace tvsc::hal::boards
+}  // namespace tvsc::hal

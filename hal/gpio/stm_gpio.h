@@ -1,0 +1,94 @@
+#pragma once
+
+#include <new>
+
+#include "hal/gpio/gpio.h"
+#include "hal/register.h"
+
+namespace tvsc::hal::gpio {
+
+class GpioRegisterBank final {
+ public:
+  // Configures the mode of a pin. One of input, output, alternate function, or analog.
+  // Offset 0x00
+  volatile Register MODER;
+
+  // Configures the output type of a pin.
+  // Offset 0x04
+  volatile Register OTYPER;
+
+  // Configures the output speed of a pin.
+  // Offset 0x08
+  volatile Register OSPEEDR;
+
+  // Configures pull-up or pull-down of a pin.
+  // Offset 0x0c.
+  volatile Register OPUPDR;
+
+  // Input data register for reading the current digital value of the pins in a GPIO port.
+  // Offset 0x10
+  volatile Register IDR;
+
+  // Output data register for reading or writing the digital value being output on the pins in a
+  // GPIO port.
+  // Offset 0x14
+  volatile Register ODR;
+
+  // Sets or resets pins atomically. This register always reads zero for all pins; its purpose is to
+  // set the value of the pin atomically regardless of the pin's current value. It accomplishes this
+  // atomicity by being write-only.
+  // Offset 0x18
+  volatile Register BSRR;
+
+  // Locks the configuration of the pins in this port.
+  // Offset 0x1c
+  volatile Register LCKR;
+
+  // Configures the alternate function for pins 0-7, 4 bits per pin.
+  // Offset 0x20
+  volatile Register AFRL;
+  // Configures the alternate function for pins 8-15, 4 bits per pin.
+  // Offset 0x24
+  volatile Register AFRH;
+};
+
+class GpioStm32H7xx final : public Gpio {
+ private:
+  GpioRegisterBank* registers_;
+
+  void set_ospeedr_value(Pin pin, PinSpeed speed);
+
+  enum class MODER_VALUES : uint8_t {
+    INPUT = 0b00,
+    OUTPUT = 0b01,
+    ALTERNATE_FUNCTION = 0b10,
+    ANALOG = 0b11,
+  };
+  void set_moder_value(Pin pin, MODER_VALUES value);
+
+  enum class OPUPDR_VALUES : uint8_t {
+    BOTH_DISABLED = 0x00,
+    PULL_UP_ENABLED = 0b01,
+    PULL_DOWN_ENABLED = 0b10,
+  };
+  void set_pupdr_value(Pin pin, OPUPDR_VALUES value);
+
+  enum class OTYPER_VALUES : uint8_t {
+    MOSFET_PUSH_PULL = 0b0,
+    MOSFET_OPEN_DRAIN = 0b1,
+  };
+  void set_otyper_value(Pin pin, OTYPER_VALUES value);
+
+ public:
+  static constexpr size_t NUM_PINS{16};
+
+  GpioStm32H7xx(void* base_address) : registers_(new (base_address) GpioRegisterBank) {}
+
+  void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) override;
+
+  void write_pin(Pin pin, bool on) override;
+
+  void toggle_pin(Pin pin) override;
+};
+
+}  // namespace tvsc::hal::gpio

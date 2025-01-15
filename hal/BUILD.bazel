@@ -1,0 +1,21 @@
+cc_library(
+    name = "hal",
+    hdrs = [
+        "register.h",
+    ],
+    # We don't want this module to be used directly except by its subpackages.
+    visibility = ["//hal/boards:__subpackages__"],
+    deps = [
+        "//base:bits",
+    ],
+)
+
+cc_test(
+    name = "register_test",
+    srcs = ["register_test.cc"],
+    deps = [
+        ":hal",
+        "//base:bits",
+        "//third_party/gtest",
+    ],
+)

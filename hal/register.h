@@ -4,7 +4,7 @@
 
 #include "base/bits.h"
 
-namespace tvsc::hal::boards {
+namespace tvsc::hal {
 
 class Register final {
  private:
@@ -102,4 +102,4 @@ class Register final {
   }
 };
 
-}  // namespace tvsc::hal::boards
+}  // namespace tvsc::hal
