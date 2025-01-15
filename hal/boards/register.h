@@ -18,7 +18,7 @@ class Register final {
    * Perform a dummy read on the register to block until the value of the register has been updated.
    */
   void block_until_updated() const volatile {
-    uint32_t temp = value_;
+    volatile uint32_t temp = value_;
     (void)temp;
   }
 
