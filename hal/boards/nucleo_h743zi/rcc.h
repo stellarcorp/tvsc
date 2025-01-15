@@ -62,6 +62,9 @@ class RccRegisterBank final {
   std::byte unused1[0x0e0];
   // Offset 0x0e0
   volatile Register AHB4ENR;
+  std::byte unused2[0x0f4 - 0x0e0];
+  // Offset 0x0f4
+  volatile Register APB4ENR;
 };
 
 /**
@@ -93,6 +96,9 @@ class Rcc final {
   void disable_port() {
     registers_->AHB4ENR.set_bit_field_value_and_block<1>(0, static_cast<uint8_t>(GPIO_PORT));
   }
+
+  void enable_syscfg() { registers_->APB4ENR.set_bit_field_value_and_block<1, 1>(1); }
+  void disable_syscfg() { registers_->APB4ENR.set_bit_field_value_and_block<1, 1>(0); }
 };
 
 }  // namespace tvsc::hal::boards::nucleo_h743zi
