@@ -23,7 +23,7 @@ extern uint32_t tick_frequency;
 /**
  * Current time in microseconds where "current time" means time since last reset.
  */
-extern CTimeType current_time_us;
+extern volatile CTimeType current_time_us;
 
 /**
  * Interrupt handler for SysTick. Handles scenario when the SysTick counter
@@ -52,10 +52,7 @@ class Ticker final {
 
  public:
   Ticker(void* base_address) : registers_(new (base_address) SysTickRegisterBank) {
-    // Generate a tick interrupt every 1000 ticks, regardless of clock speed. We don't want to
-    // change the interrupt rate every time we change the clock frequency. This means that the
-    // precision of our time is based on the clock speed.
-    tick_frequency = 1000;
+    tick_frequency = SystemCoreClock / 10000;
     SysTick_Config(tick_frequency);
   }
 };

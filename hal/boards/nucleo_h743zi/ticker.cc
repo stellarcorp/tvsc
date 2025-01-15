@@ -6,11 +6,11 @@ extern "C" {
 
 #include <math.h>
 
-uint32_t tick_frequency{};
+uint32_t tick_frequency{0};
 
-CTimeType current_time_us{};
+volatile CTimeType current_time_us{0};
 
-void SysTick_Handler() { current_time_us += tick_frequency * 1e6 / SystemCoreClock; }
+void SysTick_Handler() { current_time_us += 1e2; }
 
 #ifdef __cplusplus
 }
