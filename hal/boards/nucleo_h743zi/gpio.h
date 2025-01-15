@@ -250,11 +250,12 @@ class GpioStm32H7xx final : public gpio::Gpio {
     // Atomically turn on or off the pin. Setting a one in the lower 16-bits turns ON the pin.
     // Setting a one in the upper 16-bits turns OFF the pin.
     if (on) {
-      registers_->BSRR.set_value(pin);
+      registers_->BSRR.set_value(1U << pin);
     } else {
-      registers_->BSRR.set_value(pin << NUM_PINS);
+      registers_->BSRR.set_value((1U << pin) << NUM_PINS);
     }
   }
+
   void toggle_pin(gpio::Pin pin) override {
     const uint32_t current_value{registers_->ODR.value()};
     registers_->BSRR.set_value(((current_value & (1U << pin)) << NUM_PINS) |
