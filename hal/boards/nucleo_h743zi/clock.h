@@ -11,24 +11,17 @@ namespace tvsc::hal::boards::nucleo_h743zi {
  */
 class ClockStm32H7xx final : public time::Clock {
  public:
-  time::TimeType current_time_millis() override { return current_time_us / 1000; }
   time::TimeType current_time_micros() override { return current_time_us; }
-
-  void sleep_ms(time::TimeType milliseconds) override {
-    time::TimeType sleep_until(current_time_millis() + milliseconds);
-
-    while (current_time_millis() < sleep_until) {
-      // Do nothing
-    }
-  }
+  time::TimeType current_time_millis() override { return current_time_us / 1000; }
 
   void sleep_us(time::TimeType microseconds) override {
-    time::TimeType sleep_until(current_time_micros() + microseconds);
-
-    while (current_time_micros() < sleep_until) {
+    const time::TimeType sleep_until_us{current_time_micros() + microseconds};
+    while (current_time_micros() < sleep_until_us) {
       // Do nothing
     }
   }
+
+  void sleep_ms(time::TimeType milliseconds) override { sleep_us(milliseconds * 1000); }
 };
 
 }  // namespace tvsc::hal::boards::nucleo_h743zi
