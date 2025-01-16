@@ -7,8 +7,8 @@
 
 namespace tvsc::control {
 
-  namespace impl {
-    
+namespace impl {
+
 template <typename T>
 T default_precision() {
   return 1;
@@ -24,30 +24,33 @@ double default_precision<double>() {
   return std::numeric_limits<double>::epsilon();
 }
 
-  template <typename T>
-  double range_size(const T& low, const T& high, const T& precision, bool exclude_low, bool exclude_high) {
-    double result{static_cast<double>(high - low + 1)};
-    if (exclude_low) {
-      result -= 1.;
-    }
-    if (exclude_high) {
-      result -= 1.;
-    }
-    return result;
+template <typename T>
+double range_size(const T& low, const T& high, const T& precision, bool exclude_low,
+                  bool exclude_high) {
+  double result{static_cast<double>(high - low + 1)};
+  if (exclude_low) {
+    result -= 1.;
   }
-
-  template <>
-  double range_size(const float& low, const float& high, const float& precision, bool exclude_low, bool exclude_high) {
-    return high - low;
+  if (exclude_high) {
+    result -= 1.;
   }
-
-  template <>
-  double range_size(const double& low, const double& high, const double& precision, bool exclude_low, bool exclude_high) {
-    return high - low;
-  }
-
+  return result;
 }
-  
+
+template <>
+double range_size(const float& low, const float& high, const float& precision, bool exclude_low,
+                  bool exclude_high) {
+  return high - low;
+}
+
+template <>
+double range_size(const double& low, const double& high, const double& precision, bool exclude_low,
+                  bool exclude_high) {
+  return high - low;
+}
+
+}  // namespace impl
+
 template <typename T>
 class ParameterDomain {
  public:
@@ -107,7 +110,9 @@ class ContinuousParameterDomain final : public ParameterDomain<T> {
     }
   }
 
-  double size() const override { return range_size(low_, high_, precision_, exclude_low_, exclude_high_); }
+  double size() const override {
+    return range_size(low_, high_, precision_, exclude_low_, exclude_high_);
+  }
 };
 
 }  // namespace impl
