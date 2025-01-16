@@ -13,7 +13,9 @@ cc_library(
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
-    deps = [":time_headers"] + select({
+    deps = [
+        ":time_headers",
+    ] + select({
         "//platforms:teensyduino_core": [
             ":teensyduino_time",
         ],
