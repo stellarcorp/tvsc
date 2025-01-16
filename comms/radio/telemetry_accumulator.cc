@@ -1,7 +1,5 @@
 #include "comms/radio/telemetry_accumulator.h"
 
-#include "hal/time/time.h"
-
 namespace tvsc::comms::radio {
 
 void TelemetryAccumulator::update_time_measurement() {}
