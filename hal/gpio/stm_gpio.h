@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+#include <cstdint>
 #include <new>
 
 #include "hal/gpio/gpio.h"
@@ -87,8 +89,9 @@ class GpioStm32H7xx final : public Gpio {
   void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) override;
 
   void write_pin(Pin pin, bool on) override;
-
   void toggle_pin(Pin pin) override;
+
+  bool read_pin(Pin pin) override;
 };
 
 }  // namespace tvsc::hal::gpio

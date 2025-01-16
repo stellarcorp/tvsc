@@ -184,4 +184,6 @@ void GpioStm32H7xx::toggle_pin(Pin pin) {
                              (~current_value & (1U << pin)));
 }
 
+bool GpioStm32H7xx::read_pin(Pin pin) { registers_->IDR.bit_field_value<1>(1U << pin); }
+
 }  // namespace tvsc::hal::gpio
