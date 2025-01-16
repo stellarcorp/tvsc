@@ -1,15 +1,10 @@
 #pragma once
 
-#include <array>
-#include <cstddef>
 #include <cstdint>
 #include <new>
 
-#include "hal/boards/register.h"
-#include "hal/gpio/pins.h"
-#include "hal/time/time.h"
-
-typedef tvsc::hal::time::TimeType CTimeType;
+#include "hal/register.h"
+#include "hal/time/clock.h"
 
 extern "C" {
 

@@ -2,7 +2,6 @@
 
 #include "hal/boards/nucleo_h743zi/board_nucleo_h743zi.h"
 #include "hal/gpio/gpio.h"
-#include "hal/gpio/pins.h"
 
 using BoardType = tvsc::hal::boards::nucleo_h743zi::Board;
 

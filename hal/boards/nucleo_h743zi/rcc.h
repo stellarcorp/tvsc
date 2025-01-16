@@ -1,12 +1,11 @@
 #pragma once
 
-#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <new>
 
-#include "hal/boards/register.h"
-#include "hal/gpio/pins.h"
+#include "hal/gpio/gpio.h"
+#include "hal/register.h"
 
 extern "C" {
 
