@@ -38,11 +38,6 @@ class Board final {
   static constexpr gpio::Port BLUE_PUSH_BUTTON_PORT{GPIO_PORT_C};
   static constexpr gpio::Pin BLUE_PUSH_BUTTON_PIN{13};
 
-  // Location of the USB OTG (on-the-go) full-speed (as opposed to low speed or high speed) power
-  // enable pin.
-  static constexpr gpio::Port USB_OTG_FS_PWR_EN_PORT{GPIO_PORT_D};
-  static constexpr gpio::Pin USB_OTG_FS_PWR_EN_PIN{10};
-
  private:
   Rcc rcc_{reinterpret_cast<void*>(RCC_BASE)};
   Ticker ticker_{reinterpret_cast<void*>(SysTick_BASE)};
@@ -55,7 +50,7 @@ class Board final {
   gpio::GpioStm32H7xx gpio_port_c_{reinterpret_cast<void*>(GPIOC)};
   gpio::GpioStm32H7xx gpio_port_d_{reinterpret_cast<void*>(GPIOD)};
   gpio::GpioStm32H7xx gpio_port_e_{reinterpret_cast<void*>(GPIOE)};
-  // Don't forget to modify NUM_GPIO_PORTS above.
+  // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
   time::ClockStm32H7xx clock_{&current_time_us};
 
@@ -67,28 +62,6 @@ class Board final {
     rcc_.enable_port<GPIO_PORT_C>();
     rcc_.enable_port<GPIO_PORT_D>();
     rcc_.enable_port<GPIO_PORT_E>();
-
-    // Turn off all of the LEDs.
-    gpio<RED_LED_PORT>().write_pin(RED_LED_PIN, 0);
-    gpio<YELLOW_LED_PORT>().write_pin(YELLOW_LED_PIN, 0);
-    gpio<GREEN_LED_PORT>().write_pin(GREEN_LED_PIN, 0);
-
-    // Turn off USB OTG power. Do we need to do this?
-    gpio<USB_OTG_FS_PWR_EN_PORT>().write_pin(USB_OTG_FS_PWR_EN_PIN, 0);
-
-    // Do we need to configure USB OTG by default?
-    // /*Configure GPIO pin : USB_OTG_FS_PWR_EN_Pin */
-    // GPIO_InitStruct.Pin = USB_OTG_FS_PWR_EN_Pin;
-    // GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    // GPIO_InitStruct.Pull = GPIO_NOPULL;
-    // GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    // HAL_GPIO_Init(USB_OTG_FS_PWR_EN_GPIO_Port, &GPIO_InitStruct);
-
-    // /*Configure GPIO pin : USB_OTG_FS_OVCR_Pin */
-    // GPIO_InitStruct.Pin = USB_OTG_FS_OVCR_Pin;
-    // GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-    // GPIO_InitStruct.Pull = GPIO_NOPULL;
-    // HAL_GPIO_Init(USB_OTG_FS_OVCR_GPIO_Port, &GPIO_InitStruct);
   }
 
   template <gpio::Port GPIO_PORT>
