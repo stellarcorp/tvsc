@@ -21,8 +21,6 @@ cc_library(
     ],
     hdrs = [
         "board_nucleo_h743zi.h",
-        "clock.h",
-        "gpio.h",
         "rcc.h",
         "ticker.h",
     ],
@@ -32,7 +30,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":system_calls",
-        "//hal/boards:headers",
+        "//hal",
         "//hal/gpio",
         "//hal/time",
         "//third_party/stm32:stm32h7xx",
