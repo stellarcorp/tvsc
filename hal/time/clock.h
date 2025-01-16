@@ -2,6 +2,10 @@
 
 #include <cstdint>
 
+extern "C" {
+typedef uint64_t CTimeType;
+}
+
 namespace tvsc::hal::time {
 
 // Type for representing times (usually a count of seconds, milliseconds, or microseconds) as
