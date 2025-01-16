@@ -87,17 +87,14 @@ class Rcc final {
   }
 
   template <gpio::Port GPIO_PORT>
-  void enable_port() {
+  void enable_gpio_port() {
     registers_->AHB4ENR.set_bit_field_value_and_block<1>(1, static_cast<uint8_t>(GPIO_PORT));
   }
 
   template <gpio::Port GPIO_PORT>
-  void disable_port() {
+  void disable_gpio_port() {
     registers_->AHB4ENR.set_bit_field_value_and_block<1>(0, static_cast<uint8_t>(GPIO_PORT));
   }
-
-  void enable_syscfg() { registers_->APB4ENR.set_bit_field_value_and_block<1, 1>(1); }
-  void disable_syscfg() { registers_->APB4ENR.set_bit_field_value_and_block<1, 1>(0); }
 };
 
 }  // namespace tvsc::hal::boards::nucleo_h743zi

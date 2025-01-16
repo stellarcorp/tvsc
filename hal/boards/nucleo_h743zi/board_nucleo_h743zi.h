@@ -57,11 +57,11 @@ class Board final {
  public:
   Board() {
     // Turn on clocks for the GPIO ports that we want.
-    rcc_.enable_port<GPIO_PORT_A>();
-    rcc_.enable_port<GPIO_PORT_B>();
-    rcc_.enable_port<GPIO_PORT_C>();
-    rcc_.enable_port<GPIO_PORT_D>();
-    rcc_.enable_port<GPIO_PORT_E>();
+    rcc_.enable_gpio_port<GPIO_PORT_A>();
+    rcc_.enable_gpio_port<GPIO_PORT_B>();
+    rcc_.enable_gpio_port<GPIO_PORT_C>();
+    rcc_.enable_gpio_port<GPIO_PORT_D>();
+    rcc_.enable_gpio_port<GPIO_PORT_E>();
   }
 
   template <gpio::Port GPIO_PORT>
