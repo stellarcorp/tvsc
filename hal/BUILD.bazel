@@ -4,7 +4,7 @@ cc_library(
         "register.h",
     ],
     # We don't want this module to be used directly except by its subpackages.
-    visibility = ["//hal/boards:__subpackages__"],
+    visibility = ["//hal:__subpackages__"],
     deps = [
         "//base:bits",
     ],
