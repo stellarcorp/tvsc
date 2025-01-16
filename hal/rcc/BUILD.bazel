@@ -39,5 +39,7 @@ cc_library(
         ":rcc_headers",
         "//hal",
         "//hal/gpio",
+        "//hal/time",
+        "//third_party/stm32:stm32h7xx",
     ],
 )

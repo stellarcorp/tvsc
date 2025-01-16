@@ -3,7 +3,6 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "hal/boards/nucleo_h743zi/ticker.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
 #include "hal/rcc/rcc.h"
@@ -40,8 +39,7 @@ class Board final {
   static constexpr gpio::Pin BLUE_PUSH_BUTTON_PIN{13};
 
  private:
-  rcc::RccStm32H7xx rcc_{reinterpret_cast<void*>(RCC_BASE)};
-  Ticker ticker_{reinterpret_cast<void*>(SysTick_BASE)};
+  rcc::RccStm32H7xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE)};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32H7xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided

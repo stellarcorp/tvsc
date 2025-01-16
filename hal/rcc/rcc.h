@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "hal/gpio/gpio.h"
 
 namespace tvsc::hal::rcc {
@@ -13,6 +15,9 @@ class Rcc {
 
   virtual void enable_gpio_port(gpio::Port port) = 0;
   virtual void disable_gpio_port(gpio::Port port) = 0;
+
+  virtual void set_clock_to_max_speed() = 0;
+  virtual void set_clock_to_min_speed() = 0;
 };
 
 }  // namespace tvsc::hal::rcc
