@@ -6,11 +6,12 @@ cc_library(
     hdrs = [
         "remote_clock.h",
     ],
-    target_compatible_with = [
-        "//platforms:teensyduino_core",
-        "//platforms:stm32_core",
-        "//platforms:std_cpp",
-    ],
+    target_compatible_with = select({
+        "//platforms:teensyduino_core": [],
+        "//platforms:stm32_core": [],
+        "//platforms:std_cpp": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
     visibility = ["//visibility:public"],
     deps = [":time_headers"] + select({
         "//platforms:teensyduino_core": [
