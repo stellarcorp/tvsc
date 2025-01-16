@@ -86,14 +86,12 @@ class Rcc final {
     SystemCoreClockUpdate();
   }
 
-  template <gpio::Port GPIO_PORT>
-  void enable_gpio_port() {
-    registers_->AHB4ENR.set_bit_field_value_and_block<1>(1, static_cast<uint8_t>(GPIO_PORT));
+  void enable_gpio_port(gpio::Port port) {
+    registers_->AHB4ENR.set_bit_field_value_and_block<1>(1, static_cast<uint8_t>(port));
   }
 
-  template <gpio::Port GPIO_PORT>
-  void disable_gpio_port() {
-    registers_->AHB4ENR.set_bit_field_value_and_block<1>(0, static_cast<uint8_t>(GPIO_PORT));
+  void disable_gpio_port(gpio::Port port) {
+    registers_->AHB4ENR.set_bit_field_value_and_block<1>(0, static_cast<uint8_t>(port));
   }
 };
 

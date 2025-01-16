@@ -9,6 +9,10 @@ using namespace tvsc::hal::gpio;
 
 int main() {
   BoardType board{};
+  // Turn on clocks for the GPIO ports that we want.
+  board.rcc().enable_gpio_port(BoardType::RED_LED_PORT);
+  board.rcc().enable_gpio_port(BoardType::YELLOW_LED_PORT);
+  board.rcc().enable_gpio_port(BoardType::GREEN_LED_PORT);
 
   board.gpio<BoardType::RED_LED_PORT>().set_pin_mode(BoardType::RED_LED_PIN,
                                                      PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);

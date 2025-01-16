@@ -55,15 +55,6 @@ class Board final {
   time::ClockStm32H7xx clock_{&current_time_us};
 
  public:
-  Board() {
-    // Turn on clocks for the GPIO ports that we want.
-    rcc_.enable_gpio_port<GPIO_PORT_A>();
-    rcc_.enable_gpio_port<GPIO_PORT_B>();
-    rcc_.enable_gpio_port<GPIO_PORT_C>();
-    rcc_.enable_gpio_port<GPIO_PORT_D>();
-    rcc_.enable_gpio_port<GPIO_PORT_E>();
-  }
-
   template <gpio::Port GPIO_PORT>
   gpio::Gpio& gpio() {
     static_assert(
@@ -89,6 +80,8 @@ class Board final {
   }
 
   time::Clock& clock() { return clock_; }
+
+  Rcc& rcc() { return rcc_; };
 };
 
 }  // namespace tvsc::hal::boards::nucleo_h743zi
