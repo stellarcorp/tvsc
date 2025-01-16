@@ -59,7 +59,7 @@ cc_test(
         "bits_test.cc",
     ],
     deps = [
-        ":base",
+        ":bits",
         "//third_party/gtest",
     ],
 )
@@ -70,7 +70,7 @@ cc_test(
         "except_test.cc",
     ],
     deps = [
-        ":base",
+        ":except",
         "//third_party/gtest",
     ],
 )
@@ -84,7 +84,7 @@ cc_test(
         "NO_EXCEPTIONS",
     ],
     deps = [
-        ":base",
+        ":except",
         "//third_party/gtest",
     ],
 )

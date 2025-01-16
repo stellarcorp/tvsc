@@ -72,6 +72,18 @@ inline uint32_t get_bit_field_value(const volatile uint32_t& value) {
   return (value & MASK) >> BIT_FIELD_OFFSET;
 }
 
+template <uint8_t NUM_BITS>
+inline constexpr uint32_t get_bit_field_value(const uint32_t& value, uint8_t bit_field_offset) {
+  const uint32_t MASK{compute_bit_mask<NUM_BITS>(bit_field_offset)};
+  return (value & MASK) >> bit_field_offset;
+}
+
+template <uint8_t NUM_BITS>
+inline uint32_t get_bit_field_value(const volatile uint32_t& value, uint8_t bit_field_offset) {
+  const uint32_t MASK{compute_bit_mask<NUM_BITS>(bit_field_offset)};
+  return (value & MASK) >> bit_field_offset;
+}
+
 /**
  * Set a particular set of bits in a value, leaving the others unchanged.
  */
