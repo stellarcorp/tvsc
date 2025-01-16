@@ -51,6 +51,14 @@ class Register final {
   }
 
   /**
+   * Read the value of a bit field in a register.
+   */
+  template <uint8_t NUM_BITS>
+  uint32_t bit_field_value(uint8_t bit_field_offset) const volatile {
+    return get_bit_field_value<NUM_BITS>(value_, bit_field_offset);
+  }
+
+  /**
    * Set the value of a bit field in a register.
    */
   template <uint8_t NUM_BITS, uint8_t BIT_OFFSET>
