@@ -1,0 +1,43 @@
+cc_library(
+    name = "rcc_headers",
+    hdrs = [
+        "rcc.h",
+    ],
+    deps = [
+        "//hal/gpio",
+    ],
+)
+
+cc_library(
+    name = "rcc",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":rcc_headers",
+    ] + select({
+        "//platforms:stm32_core": [
+            ":stm32_rcc",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32_rcc",
+    srcs = [
+        "stm_rcc.cc",
+    ],
+    hdrs = [
+        "stm_rcc.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32_core",
+    ],
+    deps = [
+        ":rcc_headers",
+        "//hal",
+        "//hal/gpio",
+    ],
+)

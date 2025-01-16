@@ -5,6 +5,7 @@
 #include <new>
 
 #include "hal/gpio/gpio.h"
+#include "hal/rcc/rcc.h"
 #include "hal/register.h"
 
 extern "C" {
@@ -43,18 +44,9 @@ extern uint32_t SystemCoreClock;
  * for a bit more information.
  */
 void SystemCoreClockUpdate();
-
-/**
- * Function to handle early system initialization, including clock selection. It is called from the
- * ResetHandler in the startup_<device>.s file. This routine was provided by ST Micro.
- *
- * TODO(james): Modify this routine to fit our use case. In particular, switch to the CSI oscillator
- * by default, rather than using the HSE or HSI oscillators.
- */
-void SystemInit(void);
 }
 
-namespace tvsc::hal::boards::nucleo_h743zi {
+namespace tvsc::hal::rcc {
 
 class RccRegisterBank final {
  public:
@@ -69,12 +61,12 @@ class RccRegisterBank final {
 /**
  * Class to manage the reset and clock circuitry (RCC) on the Nucleo H743ZI board.
  */
-class Rcc final {
+class RccStm32H7xx final : public Rcc {
  private:
   RccRegisterBank* registers_;
 
  public:
-  Rcc(void* base_address) : registers_(new (base_address) RccRegisterBank) {
+  RccStm32H7xx(void* base_address) : registers_(new (base_address) RccRegisterBank) {
     // For details on startup procedures, see stm32h7xx_hal_rcc.c. The comments in that file
     // explain many details that are otherwise difficult to find.
 
@@ -86,13 +78,8 @@ class Rcc final {
     SystemCoreClockUpdate();
   }
 
-  void enable_gpio_port(gpio::Port port) {
-    registers_->AHB4ENR.set_bit_field_value_and_block<1>(1, static_cast<uint8_t>(port));
-  }
-
-  void disable_gpio_port(gpio::Port port) {
-    registers_->AHB4ENR.set_bit_field_value_and_block<1>(0, static_cast<uint8_t>(port));
-  }
+  void enable_gpio_port(gpio::Port port) override;
+  void disable_gpio_port(gpio::Port port) override;
 };
 
-}  // namespace tvsc::hal::boards::nucleo_h743zi
+}  // namespace tvsc::hal::rcc

@@ -3,10 +3,11 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "hal/boards/nucleo_h743zi/rcc.h"
 #include "hal/boards/nucleo_h743zi/ticker.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
+#include "hal/rcc/rcc.h"
+#include "hal/rcc/stm_rcc.h"
 #include "hal/time/clock.h"
 #include "hal/time/stm_clock.h"
 
@@ -39,7 +40,7 @@ class Board final {
   static constexpr gpio::Pin BLUE_PUSH_BUTTON_PIN{13};
 
  private:
-  Rcc rcc_{reinterpret_cast<void*>(RCC_BASE)};
+  rcc::RccStm32H7xx rcc_{reinterpret_cast<void*>(RCC_BASE)};
   Ticker ticker_{reinterpret_cast<void*>(SysTick_BASE)};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
@@ -81,7 +82,7 @@ class Board final {
 
   time::Clock& clock() { return clock_; }
 
-  Rcc& rcc() { return rcc_; };
+  rcc::Rcc& rcc() { return rcc_; };
 };
 
 }  // namespace tvsc::hal::boards::nucleo_h743zi
