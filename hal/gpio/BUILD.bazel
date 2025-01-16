@@ -7,6 +7,10 @@ cc_library(
 
 cc_library(
     name = "gpio",
+    target_compatible_with = [
+        "//platforms:teensyduino_core",
+        "//platforms:stm32_core",
+    ],
     visibility = ["//visibility:public"],
     deps = [":gpio_headers"] + select({
         "//platforms:teensyduino_core": [
@@ -48,5 +52,6 @@ cc_library(
     ],
     deps = [
         ":gpio_headers",
+        "//hal",
     ],
 )
