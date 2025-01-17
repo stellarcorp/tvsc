@@ -21,6 +21,7 @@ platform(
         "@platforms//cpu:armv7e-mf",
         "@platforms//os:none",
         ":teensy4",
+        ":teensy40_mcu",
         ":teensyduino_core",
         ":teensyduino_gpio",
         ":teensyduino_spi",
@@ -36,6 +37,7 @@ platform(
         "@platforms//cpu:armv7e-mf",
         "@platforms//os:none",
         ":teensy4",
+        ":teensy41_mcu",
         ":teensyduino_core",
         ":teensyduino_gpio",
         ":teensyduino_spi",
@@ -51,6 +53,7 @@ platform(
         "@platforms//cpu:armv7e-mf",
         "@platforms//os:none",
         ":stm32h7xx",
+        ":stm32h743xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
         ":stm32_spi",
@@ -61,11 +64,28 @@ platform(
 )
 
 platform(
+    name = "nucleo_l432kc",
+    constraint_values = [
+        "@platforms//cpu:armv7e-mf",
+        "@platforms//os:none",
+        ":stm32l4xx",
+        ":stm32l432xx_mcu",
+        ":stm32_core",
+        ":stm32_gpio",
+        ":stm32_spi",
+        ":stm32_eeprom",
+        ":no_networking",
+        ":nucleo_l432kc_board",
+    ],
+)
+
+platform(
     name = "nucleo_l452re",
     constraint_values = [
         "@platforms//cpu:armv7e-mf",
         "@platforms//os:none",
         ":stm32l4xx",
+        ":stm32l452xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
         ":stm32_spi",
@@ -91,6 +111,39 @@ constraint_value(
 constraint_value(
     name = "stm32h7xx",
     constraint_setting = "cpu_series",
+)
+
+# Specific MCU.
+constraint_setting(name = "mcu")
+
+constraint_value(
+    name = "stm32h743xx_mcu",
+    constraint_setting = "mcu",
+)
+
+constraint_value(
+    name = "stm32l412xx_mcu",
+    constraint_setting = "mcu",
+)
+
+constraint_value(
+    name = "stm32l432xx_mcu",
+    constraint_setting = "mcu",
+)
+
+constraint_value(
+    name = "stm32l452xx_mcu",
+    constraint_setting = "mcu",
+)
+
+constraint_value(
+    name = "teensy40_mcu",
+    constraint_setting = "mcu",
+)
+
+constraint_value(
+    name = "teensy41_mcu",
+    constraint_setting = "mcu",
 )
 
 # Core functionality. This constraint is a catch-all for general functionality including sleep &
@@ -198,21 +251,26 @@ constraint_value(
 constraint_setting(name = "board_type")
 
 constraint_value(
+    name = "nucleo_h743zi_board",
+    constraint_setting = "board_type",
+)
+
+constraint_value(
+    name = "nucleo_l432kc_board",
+    constraint_setting = "board_type",
+)
+
+constraint_value(
+    name = "nucleo_l452re_board",
+    constraint_setting = "board_type",
+)
+
+constraint_value(
     name = "teensy40_board",
     constraint_setting = "board_type",
 )
 
 constraint_value(
     name = "teensy41_board",
-    constraint_setting = "board_type",
-)
-
-constraint_value(
-    name = "nucleo_h743zi_board",
-    constraint_setting = "board_type",
-)
-
-constraint_value(
-    name = "nucleo_l452re_board",
     constraint_setting = "board_type",
 )
