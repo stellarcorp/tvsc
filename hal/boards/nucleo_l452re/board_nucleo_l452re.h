@@ -52,16 +52,17 @@ class Board final {
 
   time::ClockStm32xxxx clock_{&current_time_us};
 
-  // Note that GPIO Ports F and G are disallowed on this board. They are marked private to make it
+  // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
   static constexpr gpio::Port GPIO_PORT_F{5};
   static constexpr gpio::Port GPIO_PORT_G{6};
+  static constexpr size_t NUM_DISALLOWED_PORTS{2};
 
  public:
   template <gpio::Port GPIO_PORT>
   gpio::Gpio& gpio() {
     static_assert(
-        GPIO_PORT < NUM_GPIO_PORTS + 2,
+        GPIO_PORT < NUM_GPIO_PORTS + NUM_DISALLOWED_PORTS,
         "Invalid GPIO port id. Likely, there is a mismatch in the build that instantiates a Board "
         "without considering the correct BOARD_ID. Verify that the board-specific header file "
         "(hal/boards/board_<board-name>.h) is being included.");
