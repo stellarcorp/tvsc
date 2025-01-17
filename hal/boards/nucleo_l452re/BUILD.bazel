@@ -40,9 +40,9 @@ cc_binary(
         "blink.cc",
     ],
     additional_linker_inputs = [
-        "//toolchain/nucleo_l4:generic_flash_linker_script",
+        "//toolchain/nucleo_l4:stm32l452xx_flash_linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath //toolchain/nucleo_l4:generic_flash_linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //toolchain/nucleo_l4:stm32l452xx_flash_linker_script)"],
     deps = [
         ":nucleo_l452re",
     ],

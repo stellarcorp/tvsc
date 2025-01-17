@@ -63,17 +63,34 @@ toolchain(
 # These linker scripts are good generic options, but we will likely need specific scripts for
 # different board configurations and SKUs.
 filegroup(
-    name = "generic_flash_linker_script",
+    name = "stm32l432xx_flash_linker_script",
     srcs = [
-        "STM32L452RETX_FLASH.ld",
+        "STM32L432KCUX_FLASH.ld",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32l432xx_mcu",
     ],
     visibility = ["//visibility:public"],
 )
 
 filegroup(
-    name = "generic_ram_linker_script",
+    name = "stm32l452xx_flash_linker_script",
+    srcs = [
+        "STM32L452RETX_FLASH.ld",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32l452xx_mcu",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "stm32l452xx_ram_linker_script",
     srcs = [
         "STM32L452RETX_RAM.ld",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32l452xx_mcu",
     ],
     visibility = ["//visibility:public"],
 )

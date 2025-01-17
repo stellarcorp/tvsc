@@ -41,9 +41,9 @@ cc_binary(
         "blink.cc",
     ],
     additional_linker_inputs = [
-        "//toolchain/nucleo_h7:generic_flash_linker_script",
+        "//toolchain/nucleo_h7:stm32h743xx_flash_linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath //toolchain/nucleo_h7:generic_flash_linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //toolchain/nucleo_h7:stm32h743xx_flash_linker_script)"],
     deps = [
         ":nucleo_h743zi",
     ],
