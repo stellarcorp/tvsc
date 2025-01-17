@@ -226,7 +226,7 @@ def _impl(ctx):
     return cc_common.create_cc_toolchain_config_info(
         ctx = ctx,
         features = features,
-        toolchain_identifier = "armv7e-mf-toolchain",
+        toolchain_identifier = "stm32h7xx-armv7e-mf-toolchain",
         host_system_name = "local",
         target_system_name = "arm-none-eabi-gcc",
         target_cpu = "armv7e-mf",
