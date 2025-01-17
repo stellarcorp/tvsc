@@ -68,36 +68,23 @@ class RccRegisterBank final {
   // Offset 0x000
   volatile Register CR;
 
-  std::byte unused1[0x010 - sizeof(Register)];
+  std::byte unused1[0x08 - sizeof(Register)];
 
   // Clock configuration register. This register has several functions. It controls the source of
   // the MCO clock outputs. It controls the prescalers for the timers. It controls which clock is
   // used on a wakeup from system stop. And it controls which clock source is used for the system
   // clock.
-  // Offset 0x010
+  // Offset 0x08
   volatile Register CFGR;
 
-  std::byte unused2[0x060 - 0x10 - sizeof(Register)];
+  std::byte unused2[0x4c - 0x08 - sizeof(Register)];
 
-  // Clock source interrupt enable register. The bits in this register enable/disable the interrupt
-  // for the ready signal of the various clock sources.
-  // Offset 0x060
-  volatile Register CIER;
-
-  std::byte unused3[0x0e0 - 0x60 - sizeof(Register)];
-
-  // Offset 0x0e0
-  volatile Register AHB4ENR;
-
-  std::byte unused4[0x0f4 - 0x0e0 - sizeof(Register)];
-
-  // Offset 0x0f4
-  volatile Register APB4ENR;
+  // Offset 0x4c
+  volatile Register AHB2ENR;
 };
 
 class SysTickRegisterBank final {
  public:
-  //
   volatile Register CTRL;
   volatile Register LOAD;
   volatile Register VAL;

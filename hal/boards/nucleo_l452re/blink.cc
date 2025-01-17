@@ -10,8 +10,11 @@ using namespace tvsc::hal::gpio;
 int main() {
   BoardType board{};
 
-  static constexpr bool demo_speed_changes{false};
+  static constexpr bool demo_speed_changes{true};
   bool at_max_speed{false};
+  if constexpr (demo_speed_changes) {
+    board.rcc().set_clock_to_min_speed();
+  }
 
   // Turn on clocks for the GPIO ports that we want.
   // board.rcc().enable_gpio_port(BoardType::RED_LED_PORT);
