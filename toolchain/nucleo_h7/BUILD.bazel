@@ -19,10 +19,10 @@ filegroup(
     ],
 )
 
-cc_toolchain_config(name = "armv7e-mf_toolchain_config")
+cc_toolchain_config(name = "stm32h7xx-armv7e-mf_toolchain_config")
 
 cc_toolchain(
-    name = "armv7e-mf_toolchain",
+    name = "stm32h7xx-armv7e-mf_toolchain",
     all_files = ":all_files",
     ar_files = ":all_files",
     as_files = ":all_files",
@@ -33,20 +33,20 @@ cc_toolchain(
     strip_files = ":all_files",
     supports_param_files = 1,
     tags = ["manual"],
-    toolchain_config = ":armv7e-mf_toolchain_config",
-    toolchain_identifier = "armv7e-mf-toolchain",
+    toolchain_config = ":stm32h7xx-armv7e-mf_toolchain_config",
+    toolchain_identifier = "stm32h7xx-armv7e-mf-toolchain",
 )
 
 cc_toolchain_suite(
     name = "gcc_toolchain",
     tags = ["manual"],
     toolchains = {
-        "armv7e-mf": ":armv7e-mf_toolchain",
+        "armv7e-mf": ":stm32h7xx-armv7e-mf_toolchain",
     },
 )
 
 toolchain(
-    name = "armv7e-mf_none_toolchain",
+    name = "stm32h7xx-armv7e-mf_none_toolchain",
     exec_compatible_with = [
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
@@ -54,8 +54,9 @@ toolchain(
     target_compatible_with = [
         "@platforms//os:none",
         "@platforms//cpu:armv7e-mf",
+        "//platforms:stm32h7xx",
     ],
-    toolchain = ":armv7e-mf_toolchain",
+    toolchain = ":stm32h7xx-armv7e-mf_toolchain",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
 
