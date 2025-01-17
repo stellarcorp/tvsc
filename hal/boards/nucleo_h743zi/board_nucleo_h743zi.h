@@ -9,10 +9,7 @@
 #include "hal/rcc/stm_rcc.h"
 #include "hal/time/clock.h"
 #include "hal/time/stm_clock.h"
-
-extern "C" {
-#include "stm32h7xx.h"
-}
+#include "third_party/stm32/stm32.h"
 
 namespace tvsc::hal::boards::nucleo_h743zi {
 
@@ -44,14 +41,14 @@ class Board final {
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32H7xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
   // for the first few here, but this can be expanded if necessary.
-  gpio::GpioStm32H7xx gpio_port_a_{reinterpret_cast<void*>(GPIOA)};
-  gpio::GpioStm32H7xx gpio_port_b_{reinterpret_cast<void*>(GPIOB)};
-  gpio::GpioStm32H7xx gpio_port_c_{reinterpret_cast<void*>(GPIOC)};
-  gpio::GpioStm32H7xx gpio_port_d_{reinterpret_cast<void*>(GPIOD)};
-  gpio::GpioStm32H7xx gpio_port_e_{reinterpret_cast<void*>(GPIOE)};
+  gpio::GpioStm32xxxx gpio_port_a_{reinterpret_cast<void*>(GPIOA)};
+  gpio::GpioStm32xxxx gpio_port_b_{reinterpret_cast<void*>(GPIOB)};
+  gpio::GpioStm32xxxx gpio_port_c_{reinterpret_cast<void*>(GPIOC)};
+  gpio::GpioStm32xxxx gpio_port_d_{reinterpret_cast<void*>(GPIOD)};
+  gpio::GpioStm32xxxx gpio_port_e_{reinterpret_cast<void*>(GPIOE)};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
-  time::ClockStm32H7xx clock_{&current_time_us};
+  time::ClockStm32xxxx clock_{&current_time_us};
 
  public:
   template <gpio::Port GPIO_PORT>

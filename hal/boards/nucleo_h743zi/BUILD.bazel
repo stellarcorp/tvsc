@@ -8,7 +8,7 @@ cc_library(
         #"system_stm32h7xx_singlecore.c",
     ],
     deps = [
-        "//third_party/stm32:stm32h7xx",
+        "//third_party/stm32",
     ],
     alwayslink = True,
 )
@@ -22,7 +22,7 @@ cc_library(
         "board_nucleo_h743zi.h",
     ],
     target_compatible_with = [
-        "//platforms:nucleo_h7_board",
+        "//platforms:nucleo_h743zi_board",
     ],
     visibility = ["//visibility:public"],
     deps = [
@@ -31,7 +31,7 @@ cc_library(
         "//hal/gpio",
         "//hal/rcc",
         "//hal/time",
-        "//third_party/stm32:stm32h7xx",
+        "//third_party/stm32",
     ],
 )
 
@@ -44,9 +44,6 @@ cc_binary(
         "//toolchain/nucleo_h7:generic_flash_linker_script",
     ],
     linkopts = ["-Wl,-T$(execpath //toolchain/nucleo_h7:generic_flash_linker_script)"],
-    target_compatible_with = [
-        "//platforms:nucleo_h7_board",
-    ],
     deps = [
         ":nucleo_h743zi",
     ],
