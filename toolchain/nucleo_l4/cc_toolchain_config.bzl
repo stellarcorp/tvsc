@@ -89,7 +89,6 @@ def _impl(ctx):
                             "-Wall",
                             "-fstack-usage",
                             "-mcpu=cortex-m4",
-                            "-DSTM32L452xx",
                             #"-ffunction-sections",
                             #"-fdata-sections",
                             "-fno-exceptions",
