@@ -7,8 +7,8 @@
 
 #include "comms/radio/half_duplex_radio.h"
 #include "hal/output/output.h"
+#include "hal/time/clock.h"
 #include "hal/time/mock_clock.h"
-#include "hal/time/time.h"
 
 namespace tvsc::comms::radio {
 
