@@ -6,12 +6,12 @@
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
 #include "hal/rcc/rcc.h"
-#include "hal/rcc/stm32h7xx_rcc.h"
+#include "hal/rcc/stm32l4xx_rcc.h"
 #include "hal/time/clock.h"
 #include "hal/time/stm_clock.h"
 #include "third_party/stm32/stm32.h"
 
-namespace tvsc::hal::boards::nucleo_h743zi {
+namespace tvsc::hal::boards::nucleo_l452re {
 
 class Board final {
  public:
@@ -24,22 +24,22 @@ class Board final {
   static constexpr gpio::Port GPIO_PORT_E{4};
 
   // Location of the LEDs provided by this board.
+  static constexpr gpio::Port GREEN_LED_PORT{GPIO_PORT_A};
+  static constexpr gpio::Pin GREEN_LED_PIN{5};
+
+  // LEDs that might exist, but whose location is unknown.
   static constexpr gpio::Port RED_LED_PORT{GPIO_PORT_B};
   static constexpr gpio::Pin RED_LED_PIN{14};
-  static constexpr gpio::Port YELLOW_LED_PORT{GPIO_PORT_E};
-  static constexpr gpio::Pin YELLOW_LED_PIN{1};
-  static constexpr gpio::Port GREEN_LED_PORT{GPIO_PORT_B};
-  static constexpr gpio::Pin GREEN_LED_PIN{0};
 
   // Location of the push button on this board.
   static constexpr gpio::Port BLUE_PUSH_BUTTON_PORT{GPIO_PORT_C};
   static constexpr gpio::Pin BLUE_PUSH_BUTTON_PIN{13};
 
  private:
-  rcc::RccStm32H7xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE)};
+  rcc::RccStm32L4xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE)};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
-  // Note that the STM32H7xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
+  // Note that the STM32L4xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
   // for the first few here, but this can be expanded if necessary.
   gpio::GpioStm32xxxx gpio_port_a_{reinterpret_cast<void*>(GPIOA)};
   gpio::GpioStm32xxxx gpio_port_b_{reinterpret_cast<void*>(GPIOB)};
@@ -80,4 +80,4 @@ class Board final {
   rcc::Rcc& rcc() { return rcc_; };
 };
 
-}  // namespace tvsc::hal::boards::nucleo_h743zi
+}  // namespace tvsc::hal::boards::nucleo_l452re

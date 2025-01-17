@@ -1,4 +1,4 @@
-#include "hal/rcc/stm_rcc.h"
+#include "hal/rcc/stm32l4xx_rcc.h"
 
 #include "hal/gpio/gpio.h"
 #include "third_party/stm32/stm32.h"
@@ -17,15 +17,15 @@ void SysTick_Handler() { current_time_us += 1e2; }
 
 namespace tvsc::hal::rcc {
 
-void RccStm32H7xx::enable_gpio_port(gpio::Port port) {
+void RccStm32L4xx::enable_gpio_port(gpio::Port port) {
   rcc_registers_->AHB4ENR.set_bit_field_value_and_block<1>(1, static_cast<uint8_t>(port));
 }
 
-void RccStm32H7xx::disable_gpio_port(gpio::Port port) {
+void RccStm32L4xx::disable_gpio_port(gpio::Port port) {
   rcc_registers_->AHB4ENR.set_bit_field_value_and_block<1>(0, static_cast<uint8_t>(port));
 }
 
-void RccStm32H7xx::set_clock_to_max_speed() {
+void RccStm32L4xx::set_clock_to_max_speed() {
   // Set the speed of the HSI clock. Bits 3 and 4 of the CR register configure a clock divider for
   // the HSI clock. This exact value sets the clock to 32 MHz.
   rcc_registers_->CR.set_bit_field_value<2, 3>(0b01);
@@ -59,7 +59,7 @@ void RccStm32H7xx::set_clock_to_max_speed() {
   update_sys_tick();
 }
 
-void RccStm32H7xx::set_clock_to_min_speed() {
+void RccStm32L4xx::set_clock_to_min_speed() {
   // Turn on CSI clock source. Note that the speed of the CSI clock is fixed at 4 MHz, though it
   // might be configurable via various dividers. CSI ON flag is in bit 7 of the CR register.
   rcc_registers_->CR.set_bit_field_value<1, 7>(1);
@@ -88,6 +88,6 @@ void RccStm32H7xx::set_clock_to_min_speed() {
   update_sys_tick();
 }
 
-void RccStm32H7xx::update_sys_tick() { SysTick_Config(SystemCoreClock / 10000); }
+void RccStm32L4xx::update_sys_tick() { SysTick_Config(SystemCoreClock / 10000); }
 
 }  // namespace tvsc::hal::rcc

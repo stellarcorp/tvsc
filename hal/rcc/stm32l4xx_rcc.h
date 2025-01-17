@@ -105,9 +105,10 @@ class SysTickRegisterBank final {
 };
 
 /**
- * Class to manage the reset and clock circuitry (RCC) on the Nucleo H743ZI board.
+ * Class to manage the reset and clock circuitry (RCC) on the Nucleo L452RE board and other boards
+ * based on the STM32L4xx series of CPUs.
  */
-class RccStm32H7xx final : public Rcc {
+class RccStm32L4xx final : public Rcc {
  private:
   RccRegisterBank* const rcc_registers_;
   SysTickRegisterBank* const sys_tick_registers_;
@@ -115,7 +116,7 @@ class RccStm32H7xx final : public Rcc {
   void update_sys_tick();
 
  public:
-  RccStm32H7xx(void* rcc_base_address, void* sys_tick_base_address)
+  RccStm32L4xx(void* rcc_base_address, void* sys_tick_base_address)
       : rcc_registers_(new (rcc_base_address) RccRegisterBank),
         sys_tick_registers_(new (sys_tick_base_address) SysTickRegisterBank) {
     // For details on startup procedures, see stm32h7xx_hal_rcc.c. The comments in that file
