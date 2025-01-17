@@ -56,6 +56,7 @@ toolchain(
     target_compatible_with = [
         "@platforms//os:none",
         "@platforms//cpu:armv7e-mf",
+        "//platforms:teensy4",
     ],
     toolchain = ":armv7e-mf_toolchain",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
