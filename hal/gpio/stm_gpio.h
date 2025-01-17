@@ -54,7 +54,7 @@ class GpioRegisterBank final {
   volatile Register AFRH;
 };
 
-class GpioStm32H7xx final : public Gpio {
+class GpioStm32xxxx final : public Gpio {
  private:
   GpioRegisterBank* registers_;
 
@@ -84,7 +84,7 @@ class GpioStm32H7xx final : public Gpio {
  public:
   static constexpr size_t NUM_PINS{16};
 
-  GpioStm32H7xx(void* base_address) : registers_(new (base_address) GpioRegisterBank) {}
+  GpioStm32xxxx(void* base_address) : registers_(new (base_address) GpioRegisterBank) {}
 
   void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) override;
 
