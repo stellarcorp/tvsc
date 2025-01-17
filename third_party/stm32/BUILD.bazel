@@ -35,7 +35,7 @@ cc_library(
 cc_library(
     name = "stm32h743xx",
     target_compatible_with = [
-        "//platforms:stm32h743xx",
+        "//platforms:stm32h743xx_mcu",
     ],
     deps = [
         "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_H7:nucleo_h743xx",
