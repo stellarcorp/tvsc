@@ -1,12 +1,47 @@
 licenses(["notice"])
 
 cc_library(
-    name = "stm32h7xx",
-    target_compatible_with = [
-        "//platforms:nucleo_h7_board",
+    name = "stm32_headers",
+    hdrs = [
+        "stm32.h",
     ],
+)
+
+cc_library(
+    name = "stm32",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
     visibility = ["//visibility:public"],
     deps = [
+        ":stm32_headers",
+    ] + select({
+        "//platforms:stm32h7xx": [
+            ":stm32h7xx",
+        ],
+        "//platforms:stm32l4xx": [
+            ":stm32l4xx",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32h7xx",
+    target_compatible_with = [
+        "//platforms:stm32h7xx",
+    ],
+    deps = [
         "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_H7:nucleo_h743xx",
+    ],
+)
+
+cc_library(
+    name = "stm32l4xx",
+    target_compatible_with = [
+        "//platforms:stm32l4xx",
+    ],
+    deps = [
+        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_L4:nucleo_l452xx",
     ],
 )
