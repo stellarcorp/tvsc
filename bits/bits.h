@@ -8,7 +8,7 @@
 #endif
 #endif
 
-namespace tvsc {
+namespace tvsc::bits {
 
 namespace internal {
 
@@ -151,4 +151,4 @@ inline void modify_bit_field(volatile uint32_t& value, uint32_t bit_field_value,
   value = ((bit_field_value << bit_field_offset) & MASK) | (result & ~MASK);
 }
 
-}  // namespace tvsc
+}  // namespace tvsc::bits

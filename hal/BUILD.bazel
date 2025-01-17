@@ -6,7 +6,7 @@ cc_library(
     # We don't want this module to be used directly except by its subpackages.
     visibility = ["//hal:__subpackages__"],
     deps = [
-        "//base:bits",
+        "//bits",
     ],
 )
 
@@ -15,7 +15,7 @@ cc_test(
     srcs = ["register_test.cc"],
     deps = [
         ":hal",
-        "//base:bits",
+        "//bits",
         "//third_party/gtest",
     ],
 )

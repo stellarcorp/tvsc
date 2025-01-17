@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "base/bits.h"
+#include "bits/bits.h"
 
 namespace tvsc::hal {
 
@@ -47,7 +47,7 @@ class Register final {
    */
   template <uint8_t NUM_BITS, uint8_t BIT_OFFSET>
   uint32_t bit_field_value() const volatile {
-    return get_bit_field_value<NUM_BITS, BIT_OFFSET>(value_);
+    return bits::get_bit_field_value<NUM_BITS, BIT_OFFSET>(value_);
   }
 
   /**
@@ -55,7 +55,7 @@ class Register final {
    */
   template <uint8_t NUM_BITS>
   uint32_t bit_field_value(uint8_t bit_field_offset) const volatile {
-    return get_bit_field_value<NUM_BITS>(value_, bit_field_offset);
+    return bits::get_bit_field_value<NUM_BITS>(value_, bit_field_offset);
   }
 
   /**
@@ -63,7 +63,7 @@ class Register final {
    */
   template <uint8_t NUM_BITS, uint8_t BIT_OFFSET>
   void set_bit_field_value(uint32_t bit_field_value) volatile {
-    modify_bit_field<NUM_BITS, BIT_OFFSET>(value_, bit_field_value);
+    bits::modify_bit_field<NUM_BITS, BIT_OFFSET>(value_, bit_field_value);
   }
 
   /**
@@ -71,7 +71,7 @@ class Register final {
    */
   template <uint8_t NUM_BITS, uint8_t BIT_OFFSET>
   void set_bit_field_value_and_block(uint32_t bit_field_value) volatile {
-    modify_bit_field<NUM_BITS, BIT_OFFSET>(value_, bit_field_value);
+    bits::modify_bit_field<NUM_BITS, BIT_OFFSET>(value_, bit_field_value);
     block_until_updated();
   }
 
@@ -80,7 +80,7 @@ class Register final {
    */
   template <uint8_t NUM_BITS>
   void set_bit_field_value(uint32_t bit_field_value, uint8_t bit_field_offset) volatile {
-    modify_bit_field<NUM_BITS>(value_, bit_field_value, bit_field_offset);
+    bits::modify_bit_field<NUM_BITS>(value_, bit_field_value, bit_field_offset);
   }
 
   /**
@@ -88,7 +88,7 @@ class Register final {
    */
   template <uint8_t NUM_BITS>
   void set_bit_field_value_and_block(uint32_t bit_field_value, uint8_t bit_field_offset) volatile {
-    modify_bit_field<NUM_BITS>(value_, bit_field_value, bit_field_offset);
+    bits::modify_bit_field<NUM_BITS>(value_, bit_field_value, bit_field_offset);
     block_until_updated();
   }
 
@@ -97,7 +97,7 @@ class Register final {
    */
   void set_bit_field_value(uint32_t bit_field_value, uint8_t num_bits,
                            uint8_t bit_field_offset) volatile {
-    modify_bit_field(value_, bit_field_value, num_bits, bit_field_offset);
+    bits::modify_bit_field(value_, bit_field_value, num_bits, bit_field_offset);
   }
 
   /**
@@ -105,7 +105,7 @@ class Register final {
    */
   void set_bit_field_value_and_block(uint32_t bit_field_value, uint8_t num_bits,
                                      uint8_t bit_field_offset) volatile {
-    modify_bit_field(value_, bit_field_value, num_bits, bit_field_offset);
+    bits::modify_bit_field(value_, bit_field_value, num_bits, bit_field_offset);
     block_until_updated();
   }
 };

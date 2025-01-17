@@ -1,19 +1,4 @@
 cc_library(
-    name = "bits",
-    hdrs = [
-        "bits.h",
-    ],
-    defines = select({
-        "@platforms//os:none": [
-            "PLATFORM_OS_NONE",
-        ],
-        "//conditions:default": [
-        ],
-    }),
-    visibility = ["//visibility:public"],
-)
-
-cc_library(
     name = "except",
     srcs = select({
         "@platforms//os:none": [
@@ -51,17 +36,6 @@ cc_library(
             "//third_party/gflags",
         ],
     }),
-)
-
-cc_test(
-    name = "bits_test",
-    srcs = [
-        "bits_test.cc",
-    ],
-    deps = [
-        ":bits",
-        "//third_party/gtest",
-    ],
 )
 
 cc_test(

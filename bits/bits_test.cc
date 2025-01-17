@@ -1,8 +1,8 @@
-#include "base/bits.h"
+#include "bits/bits.h"
 
 #include "gtest/gtest.h"
 
-namespace tvsc {
+namespace tvsc::bits {
 
 TEST(BitWidthTest, ZeroRequiresZeroBits) { EXPECT_EQ(0, bit_width(0)); }
 
@@ -122,4 +122,4 @@ TEST(BitFieldTest, CanModifyBitFields) {
   EXPECT_TRUE(result);
 }
 
-}  // namespace tvsc
+}  // namespace tvsc::bits

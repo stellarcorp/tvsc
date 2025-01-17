@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-#include "base/bits.h"
+#include "bits/bits.h"
 #include "buffer/buffer.h"
 
 namespace tvsc::comms::radio {
@@ -17,13 +17,13 @@ template <size_t MTU>
 class Fragment final {
  public:
   static constexpr uint8_t payload_size_bytes_required() {
-    if constexpr (bit_width(MTU - PAYLOAD_OFFSET) < 8) {
+    if constexpr (bits::bit_width(MTU - PAYLOAD_OFFSET) < 8) {
       return 1;
-    } else if constexpr (bit_width(MTU - PAYLOAD_OFFSET) < 16) {
+    } else if constexpr (bits::bit_width(MTU - PAYLOAD_OFFSET) < 16) {
       return 2;
-    } else if constexpr (bit_width(MTU - PAYLOAD_OFFSET) < 24) {
+    } else if constexpr (bits::bit_width(MTU - PAYLOAD_OFFSET) < 24) {
       return 3;
-    } else if constexpr (bit_width(MTU - PAYLOAD_OFFSET) < 32) {
+    } else if constexpr (bits::bit_width(MTU - PAYLOAD_OFFSET) < 32) {
       return 4;
     } else {
       // If we have more than a 32-bit int of payload size, we can optimize payload computations for
@@ -42,8 +42,8 @@ class Fragment final {
   static constexpr size_t FRAGMENT_INDEX_SIZE{1};
   static constexpr size_t SEQUENCE_NUMBER_OFFSET{FRAGMENT_INDEX_OFFSET + FRAGMENT_INDEX_SIZE};
   static constexpr size_t SEQUENCE_NUMBER_SIZE{2};
-  static constexpr size_t HEADER_SIZE{SENDER_ID_SIZE + DESTINATION_ID_SIZE +
-                                      FRAGMENT_INDEX_SIZE + SEQUENCE_NUMBER_SIZE};
+  static constexpr size_t HEADER_SIZE{SENDER_ID_SIZE + DESTINATION_ID_SIZE + FRAGMENT_INDEX_SIZE +
+                                      SEQUENCE_NUMBER_SIZE};
 
   static constexpr size_t PAYLOAD_OFFSET{HEADER_OFFSET + HEADER_SIZE};
   static constexpr size_t PAYLOAD_SIZE_OFFSET{PAYLOAD_OFFSET};
