@@ -64,6 +64,22 @@ platform(
 )
 
 platform(
+    name = "nucleo_l412kb",
+    constraint_values = [
+        "@platforms//cpu:armv7e-mf",
+        "@platforms//os:none",
+        ":stm32l4xx",
+        ":stm32l412xx_mcu",
+        ":stm32_core",
+        ":stm32_gpio",
+        ":stm32_spi",
+        ":stm32_eeprom",
+        ":no_networking",
+        ":nucleo_l412kb_board",
+    ],
+)
+
+platform(
     name = "nucleo_l432kc",
     constraint_values = [
         "@platforms//cpu:armv7e-mf",
@@ -252,6 +268,11 @@ constraint_setting(name = "board_type")
 
 constraint_value(
     name = "nucleo_h743zi_board",
+    constraint_setting = "board_type",
+)
+
+constraint_value(
+    name = "nucleo_l412kb_board",
     constraint_setting = "board_type",
 )
 

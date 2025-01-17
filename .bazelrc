@@ -23,6 +23,10 @@ build:nucleo_h743zi --platforms=//platforms:nucleo_h743zi
 build:nucleo_h743zi --cpu=armv7e-mf --crosstool_top=//toolchain/nucleo_h7:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 build:nucleo_h743zi --copt -DSTM32H743xx
 
+build:nucleo_l412kb --platforms=//platforms:nucleo_l412kb
+build:nucleo_l412kb --cpu=armv7e-mf --crosstool_top=//toolchain/nucleo_l4:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:nucleo_l412kb --copt -DSTM32L412xx
+
 build:nucleo_l432kc --platforms=//platforms:nucleo_l432kc
 build:nucleo_l432kc --cpu=armv7e-mf --crosstool_top=//toolchain/nucleo_l4:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 build:nucleo_l432kc --copt -DSTM32L432xx
