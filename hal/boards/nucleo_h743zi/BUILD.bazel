@@ -1,23 +1,5 @@
 cc_library(
-    name = "system_calls",
-    srcs = [
-        "stm32h7xx_it.c",
-        "syscalls.c",
-        "sysmem.c",
-        "system_stm32h7xx.c",
-        #"system_stm32h7xx_singlecore.c",
-    ],
-    deps = [
-        "//third_party/stm32",
-    ],
-    alwayslink = True,
-)
-
-cc_library(
     name = "nucleo_h743zi",
-    srcs = [
-        "startup_stm32h743xx.s",
-    ],
     hdrs = [
         "board_nucleo_h743zi.h",
     ],
@@ -26,7 +8,6 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        ":system_calls",
         "//hal",
         "//hal/gpio",
         "//hal/rcc",
