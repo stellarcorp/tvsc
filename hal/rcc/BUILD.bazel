@@ -40,6 +40,6 @@ cc_library(
         "//hal",
         "//hal/gpio",
         "//hal/time",
-        "//third_party/stm32:stm32h7xx",
+        "//third_party/stm32",
     ],
 )

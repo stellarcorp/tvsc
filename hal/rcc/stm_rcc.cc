@@ -1,12 +1,11 @@
 #include "hal/rcc/stm_rcc.h"
 
 #include "hal/gpio/gpio.h"
+#include "third_party/stm32/stm32.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "stm32h7xx.h"
 
 volatile CTimeType current_time_us{0};
 
