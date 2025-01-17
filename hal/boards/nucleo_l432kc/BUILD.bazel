@@ -1,0 +1,49 @@
+cc_library(
+    name = "system_calls",
+    srcs = [
+        "stm32l4xx_it.c",
+        "syscalls.c",
+        "sysmem.c",
+        "system_stm32l4xx.c",
+    ],
+    deps = [
+        "//third_party/stm32",
+    ],
+    alwayslink = True,
+)
+
+cc_library(
+    name = "nucleo_l432kc",
+    srcs = [
+        "startup_stm32l452xx.s",
+    ],
+    hdrs = [
+        "board_nucleo_l432kc.h",
+    ],
+    target_compatible_with = [
+        "//platforms:nucleo_l432kc_board",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":system_calls",
+        "//hal",
+        "//hal/gpio",
+        "//hal/rcc",
+        "//hal/time",
+        "//third_party/stm32",
+    ],
+)
+
+cc_binary(
+    name = "blink.elf",
+    srcs = [
+        "blink.cc",
+    ],
+    additional_linker_inputs = [
+        "//toolchain/nucleo_l4:stm32l432xx_flash_linker_script",
+    ],
+    linkopts = ["-Wl,-T$(execpath //toolchain/nucleo_l4:stm32l432xx_flash_linker_script)"],
+    deps = [
+        ":nucleo_l432kc",
+    ],
+)
