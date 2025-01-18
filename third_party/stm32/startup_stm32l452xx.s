@@ -44,6 +44,10 @@ defined in linker script */
 .word	_sbss
 /* end address for the .bss section. defined in linker script */
 .word	_ebss
+/* start address for the .status section. defined in linker script */
+.word	_sstatus
+/* end address for the .status section. defined in linker script */
+.word	_estatus
 
 .equ  BootRAM,        0xF1E0F85F
 /**
@@ -60,6 +64,20 @@ defined in linker script */
 	.type	Reset_Handler, %function
 Reset_Handler:
   ldr   sp, =_estack    /* Set stack pointer */
+
+/* Zero fill the status segment. Zero filling these locations first allows SystemInit to report errors there. */
+  ldr r2, =_sstatus
+  ldr r4, =_estatus
+  movs r3, #0
+  b LoopFillZeroStatus
+
+FillZeroStatus:
+  str  r3, [r2]
+  adds r2, r2, #4
+
+LoopFillZeroStatus:
+  cmp r2, r4
+  bcc FillZeroStatus
 
 /* Call the clock system initialization function.*/
     bl  SystemInit
