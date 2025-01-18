@@ -15,24 +15,42 @@ cc_library(
         ":power_headers",
     ] + select({
         "//platforms:stm32h7xx": [
-            ":stm32_power",
+            ":stm32h7xx_power",
         ],
         "//platforms:stm32l4xx": [
-            ":stm32_power",
+            ":stm32l4xx_power",
         ],
     }),
 )
 
 cc_library(
-    name = "stm32_power",
+    name = "stm32h7xx_power",
     srcs = [
-        "stm32_power.cc",
+        "stm32h7xx_power.cc",
     ],
     hdrs = [
-        "stm32_power.h",
+        "stm32h7xx_power.h",
     ],
     target_compatible_with = [
-        "//platforms:stm32_core",
+        "//platforms:stm32h7xx",
+    ],
+    deps = [
+        ":power_headers",
+        "//hal",
+        "//third_party/stm32",
+    ],
+)
+
+cc_library(
+    name = "stm32l4xx_power",
+    srcs = [
+        "stm32l4xx_power.cc",
+    ],
+    hdrs = [
+        "stm32l4xx_power.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32l4xx",
     ],
     deps = [
         ":power_headers",

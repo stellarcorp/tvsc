@@ -21,12 +21,12 @@ class PowerRegisterBank final {
   volatile Register SR2;
 };
 
-class PowerStm32xxxx final : public Power {
+class PowerStm32H7xx final : public Power {
  private:
   PowerRegisterBank* registers_;
 
  public:
-  PowerStm32xxxx(void* base_address) : registers_(new (base_address) PowerRegisterBank) {}
+  PowerStm32H7xx(void* base_address) : registers_(new (base_address) PowerRegisterBank) {}
 
   void enter_low_power_run_mode() override;
   void exit_low_power_run_mode() override;
