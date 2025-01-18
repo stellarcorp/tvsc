@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-volatile CTimeType current_time_us{0};
+__attribute__((section(".status.time"))) volatile CTimeType current_time_us{0};
 
 void SysTick_Handler() { current_time_us += 1e4; }
 
