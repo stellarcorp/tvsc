@@ -1,9 +1,9 @@
 #include <cstring>
 
-#include "hal/boards/nucleo_l412kb/board_nucleo_l412kb.h"
+#include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
 
-using BoardType = tvsc::hal::boards::nucleo_l412kb::Board;
+using BoardType = tvsc::hal::board::Board;
 
 using namespace tvsc::hal::gpio;
 

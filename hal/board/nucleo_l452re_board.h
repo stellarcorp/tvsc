@@ -13,7 +13,7 @@
 #include "hal/time/stm_clock.h"
 #include "third_party/stm32/stm32.h"
 
-namespace tvsc::hal::boards::nucleo_l412kb {
+namespace tvsc::hal::board {
 
 class Board final {
  public:
@@ -22,11 +22,13 @@ class Board final {
   static constexpr gpio::Port GPIO_PORT_A{0};
   static constexpr gpio::Port GPIO_PORT_B{1};
   static constexpr gpio::Port GPIO_PORT_C{2};
+  static constexpr gpio::Port GPIO_PORT_D{3};
+  static constexpr gpio::Port GPIO_PORT_E{4};
   static constexpr gpio::Port GPIO_PORT_H{7};
 
   // Location of the LEDs provided by this board.
-  static constexpr gpio::Port GREEN_LED_PORT{GPIO_PORT_B};
-  static constexpr gpio::Pin GREEN_LED_PIN{3};
+  static constexpr gpio::Port GREEN_LED_PORT{GPIO_PORT_A};
+  static constexpr gpio::Pin GREEN_LED_PIN{5};
 
   // LEDs that might exist, but whose location is unknown.
   static constexpr gpio::Port RED_LED_PORT{GPIO_PORT_B};
@@ -45,6 +47,8 @@ class Board final {
   gpio::GpioStm32xxxx gpio_port_a_{reinterpret_cast<void*>(GPIOA)};
   gpio::GpioStm32xxxx gpio_port_b_{reinterpret_cast<void*>(GPIOB)};
   gpio::GpioStm32xxxx gpio_port_c_{reinterpret_cast<void*>(GPIOC)};
+  gpio::GpioStm32xxxx gpio_port_d_{reinterpret_cast<void*>(GPIOD)};
+  gpio::GpioStm32xxxx gpio_port_e_{reinterpret_cast<void*>(GPIOE)};
   gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH)};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
@@ -54,11 +58,9 @@ class Board final {
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
-  static constexpr gpio::Port GPIO_PORT_D{3};
-  static constexpr gpio::Port GPIO_PORT_E{4};
   static constexpr gpio::Port GPIO_PORT_F{5};
   static constexpr gpio::Port GPIO_PORT_G{6};
-  static constexpr size_t NUM_DISALLOWED_PORTS{4};
+  static constexpr size_t NUM_DISALLOWED_PORTS{2};
 
  public:
   template <gpio::Port GPIO_PORT>
@@ -66,18 +68,6 @@ class Board final {
     static_assert(
         GPIO_PORT < NUM_GPIO_PORTS + NUM_DISALLOWED_PORTS,
         "Invalid GPIO port id. Likely, there is a mismatch in the build that instantiates a Board "
-        "without considering the correct BOARD_ID. Verify that the board-specific header file "
-        "(hal/boards/board_<board-name>.h) is being included.");
-    static_assert(
-        GPIO_PORT != GPIO_PORT_D,
-        "Invalid GPIO port id. Port D does not exist on this board. Likely, there is a mismatch in "
-        "the build that instantiates a Board "
-        "without considering the correct BOARD_ID. Verify that the board-specific header file "
-        "(hal/boards/board_<board-name>.h) is being included.");
-    static_assert(
-        GPIO_PORT != GPIO_PORT_E,
-        "Invalid GPIO port id. Port E does not exist on this board. Likely, there is a mismatch in "
-        "the build that instantiates a Board "
         "without considering the correct BOARD_ID. Verify that the board-specific header file "
         "(hal/boards/board_<board-name>.h) is being included.");
     static_assert(
@@ -101,6 +91,12 @@ class Board final {
     if constexpr (GPIO_PORT == 2) {
       return gpio_port_c_;
     }
+    if constexpr (GPIO_PORT == 3) {
+      return gpio_port_d_;
+    }
+    if constexpr (GPIO_PORT == 4) {
+      return gpio_port_e_;
+    }
     if constexpr (GPIO_PORT == 7) {
       return gpio_port_h_;
     }
@@ -113,4 +109,4 @@ class Board final {
   power::Power& power() { return power_; }
 };
 
-}  // namespace tvsc::hal::boards::nucleo_l412kb
+}  // namespace tvsc::hal::board
