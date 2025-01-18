@@ -17,31 +17,20 @@ int main() {
   }
 
   // Turn on clocks for the GPIO ports that we want.
-  // board.rcc().enable_gpio_port(BoardType::RED_LED_PORT);
   board.rcc().enable_gpio_port(BoardType::GREEN_LED_PORT);
 
-  // board.gpio<BoardType::RED_LED_PORT>().set_pin_mode(BoardType::RED_LED_PIN,
-  //                                                    PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
   board.gpio<BoardType::GREEN_LED_PORT>().set_pin_mode(BoardType::GREEN_LED_PIN,
                                                        PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
   while (true) {
     for (int i = 0; i < 2; ++i) {
-      // board.gpio<BoardType::RED_LED_PORT>().toggle_pin(BoardType::RED_LED_PIN);
+      board.gpio<BoardType::GREEN_LED_PORT>().toggle_pin(BoardType::GREEN_LED_PIN);
 
-      // board.clock().sleep_ms(750);
+      board.clock().sleep_ms(500);
 
       board.gpio<BoardType::GREEN_LED_PORT>().toggle_pin(BoardType::GREEN_LED_PIN);
 
-      board.clock().sleep_ms(750);
-
-      // board.gpio<BoardType::RED_LED_PORT>().toggle_pin(BoardType::RED_LED_PIN);
-
-      // board.clock().sleep_ms(750);
-
-      board.gpio<BoardType::GREEN_LED_PORT>().toggle_pin(BoardType::GREEN_LED_PIN);
-
-      board.clock().sleep_ms(750);
+      board.clock().sleep_ms(500);
     }
 
     // Swap speeds so that we can detect any behavior changes due to the speed in the registers, LED
