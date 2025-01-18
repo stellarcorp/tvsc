@@ -122,8 +122,9 @@ SECTIONS
   {
     . = ALIGN(4);
     _sstatus = .;
-    *(.status.fault)
     *(.status.time)
+    *(.status.fault)
+    *(.bss.errno)
     *(.status.speed)
     *(.status.power)
     *(.status*)
