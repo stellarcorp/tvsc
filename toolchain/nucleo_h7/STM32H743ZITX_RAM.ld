@@ -130,7 +130,7 @@ SECTIONS
     *(.status*)
     . = ALIGN(4);
     _estatus = .;
-  } >RAM
+  } >DTCMRAM
 
   /* used by the startup to initialize data */
   _sidata = LOADADDR(.data);
