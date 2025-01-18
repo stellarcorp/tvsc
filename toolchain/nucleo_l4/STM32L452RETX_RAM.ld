@@ -132,6 +132,19 @@ SECTIONS
     . = ALIGN(4);
   } >RAM
 
+  .status :
+  {
+    . = ALIGN(4);
+    _sstatus = .;
+    *(.status.fault)
+    *(.status.time)
+    *(.status.speed)
+    *(.status.power)
+    *(.status*)
+    . = ALIGN(4);
+    _estatus = .;
+  } >RAM
+
   /* Used by the startup to initialize data */
   _sidata = LOADADDR(.data);
 
