@@ -10,6 +10,7 @@ cc_library(
     deps = [
         "//hal",
         "//hal/gpio",
+        "//hal/power",
         "//hal/rcc",
         "//hal/time",
         "//third_party/stm32",

@@ -14,6 +14,7 @@ int main() {
   bool at_max_speed{false};
   if constexpr (demo_speed_changes) {
     board.rcc().set_clock_to_min_speed();
+    board.power().enter_low_power_run_mode();
   }
 
   // Turn on clocks for the GPIO ports that we want.
@@ -38,8 +39,10 @@ int main() {
     if constexpr (demo_speed_changes) {
       if (at_max_speed) {
         board.rcc().set_clock_to_min_speed();
+        board.power().enter_low_power_run_mode();
         at_max_speed = false;
       } else {
+        board.power().exit_low_power_run_mode();
         board.rcc().set_clock_to_max_speed();
         at_max_speed = true;
       }

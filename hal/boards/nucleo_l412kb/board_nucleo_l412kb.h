@@ -5,6 +5,8 @@
 
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
+#include "hal/power/power.h"
+#include "hal/power/stm32_power.h"
 #include "hal/rcc/rcc.h"
 #include "hal/rcc/stm32l4xx_rcc.h"
 #include "hal/time/clock.h"
@@ -45,6 +47,8 @@ class Board final {
   gpio::GpioStm32xxxx gpio_port_c_{reinterpret_cast<void*>(GPIOC)};
   gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH)};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
+
+  power::PowerStm32xxxx power_{reinterpret_cast<void*>(PWR_BASE)};
 
   time::ClockStm32xxxx clock_{&current_time_us};
 
@@ -105,6 +109,8 @@ class Board final {
   time::Clock& clock() { return clock_; }
 
   rcc::Rcc& rcc() { return rcc_; };
+
+  power::Power& power() { return power_; }
 };
 
 }  // namespace tvsc::hal::boards::nucleo_l412kb
