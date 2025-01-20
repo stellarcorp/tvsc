@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "hal/dac/dac.h"
+#include "hal/dac/stm32xxxx_dac.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
 #include "hal/power/power.h"
@@ -40,6 +42,13 @@ class Board final {
  private:
   rcc::RccStm32H7xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE)};
 
+  power::PowerStm32H7xx power_{reinterpret_cast<void*>(PWR_BASE)};
+
+  time::ClockStm32xxxx clock_{&current_time_us};
+
+  dac::DacStm32xxxx<0 /* Channel index */> dac0_{reinterpret_cast<void*>(DAC1_BASE)};
+  dac::DacStm32xxxx<1 /* Channel index */> dac1_{reinterpret_cast<void*>(DAC1_BASE)};
+
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32H7xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
   // for the first few here, but this can be expanded if necessary.
@@ -49,10 +58,6 @@ class Board final {
   gpio::GpioStm32xxxx gpio_port_d_{reinterpret_cast<void*>(GPIOD)};
   gpio::GpioStm32xxxx gpio_port_e_{reinterpret_cast<void*>(GPIOE)};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
-
-  power::PowerStm32H7xx power_{reinterpret_cast<void*>(PWR_BASE)};
-
-  time::ClockStm32xxxx clock_{&current_time_us};
 
  public:
   template <gpio::Port GPIO_PORT>
@@ -84,6 +89,9 @@ class Board final {
   rcc::Rcc& rcc() { return rcc_; };
 
   power::Power& power() { return power_; }
+
+  dac::Dac& dac() { return dac0_; }
+  dac::Dac& dac2() { return dac1_; }
 };
 
 }  // namespace tvsc::hal::board

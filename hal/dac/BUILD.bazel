@@ -1,0 +1,45 @@
+cc_library(
+    name = "dac_headers",
+    hdrs = [
+        "dac.h",
+    ],
+)
+
+cc_library(
+    name = "dac",
+    target_compatible_with = select({
+        "//platforms:nucleo_h743zi_board": [],
+        "//platforms:nucleo_l432kc_board": [],
+        "//platforms:nucleo_l452re_board": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [":dac_headers"] + select({
+        "//platforms:nucleo_h743zi_board": [
+            ":stm32xxxx_dac",
+        ],
+        "//platforms:nucleo_l432kc_board": [
+            ":stm32xxxx_dac",
+        ],
+        "//platforms:nucleo_l452re_board": [
+            ":stm32xxxx_dac",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32xxxx_dac",
+    hdrs = [
+        "stm32xxxx_dac.h",
+    ],
+    target_compatible_with = select({
+        "//platforms:nucleo_h743zi_board": [],
+        "//platforms:nucleo_l432kc_board": [],
+        "//platforms:nucleo_l452re_board": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    deps = [
+        ":dac_headers",
+        "//hal",
+    ],
+)

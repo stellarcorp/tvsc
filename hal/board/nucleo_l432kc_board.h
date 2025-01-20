@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "hal/dac/dac.h"
+#include "hal/dac/stm32xxxx_dac.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
 #include "hal/power/power.h"
@@ -51,6 +53,9 @@ class Board final {
   power::PowerStm32L4xx power_{reinterpret_cast<void*>(PWR_BASE)};
 
   time::ClockStm32xxxx clock_{&current_time_us};
+
+  dac::DacStm32xxxx<0 /* Channel index */> dac0_{reinterpret_cast<void*>(DAC_BASE)};
+  dac::DacStm32xxxx<1 /* Channel index */> dac1_{reinterpret_cast<void*>(DAC_BASE)};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
@@ -111,6 +116,9 @@ class Board final {
   rcc::Rcc& rcc() { return rcc_; };
 
   power::Power& power() { return power_; }
+
+  dac::Dac& dac() { return dac0_; }
+  dac::Dac& dac2() { return dac1_; }
 };
 
 }  // namespace tvsc::hal::board

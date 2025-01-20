@@ -34,6 +34,7 @@ cc_library(
     ],
     deps = [
         "//hal",
+        "//hal/dac",
         "//hal/gpio",
         "//hal/power",
         "//hal/rcc",
@@ -70,6 +71,7 @@ cc_library(
     ],
     deps = [
         "//hal",
+        "//hal/dac",
         "//hal/gpio",
         "//hal/power",
         "//hal/rcc",
@@ -88,6 +90,7 @@ cc_library(
     ],
     deps = [
         "//hal",
+        "//hal/dac",
         "//hal/gpio",
         "//hal/power",
         "//hal/rcc",
