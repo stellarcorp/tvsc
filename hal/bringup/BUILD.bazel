@@ -32,6 +32,21 @@ cc_binary(
 )
 
 cc_binary(
+    name = "dac_demo.elf",
+    srcs = [
+        "dac_demo.cc",
+    ],
+    additional_linker_inputs = [
+        ":linker_script",
+    ],
+    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    deps = [
+        "//hal/board",
+        "//hal/gpio",
+    ],
+)
+
+cc_binary(
     name = "power_demo.elf",
     srcs = [
         "power_demo.cc",

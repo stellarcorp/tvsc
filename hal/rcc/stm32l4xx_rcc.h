@@ -79,8 +79,15 @@ class RccRegisterBank final {
 
   std::byte unused2[0x4c - 0x08 - sizeof(Register)];
 
+  // Register to enable peripherals on AHB2.
   // Offset 0x4c
   volatile Register AHB2ENR;
+
+  std::byte unused3[0x58 - 0x4c - sizeof(Register)];
+
+  // Register to enable peripherals on APB1.
+  // Offset 0x58
+  volatile Register APB1ENR1;
 };
 
 class SysTickRegisterBank final {
@@ -121,6 +128,9 @@ class RccStm32L4xx final : public Rcc {
 
   void enable_gpio_port(gpio::Port port) override;
   void disable_gpio_port(gpio::Port port) override;
+
+  void enable_dac() override;
+  void disable_dac() override;
 
   void set_clock_to_max_speed() override;
   void set_clock_to_min_speed() override;

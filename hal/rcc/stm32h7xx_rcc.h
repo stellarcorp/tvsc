@@ -86,10 +86,18 @@ class RccRegisterBank final {
 
   std::byte unused3[0x0e0 - 0x60 - sizeof(Register)];
 
+  // Peripheral clock enable registers.
+
   // Offset 0x0e0
   volatile Register AHB4ENR;
 
-  std::byte unused4[0x0f4 - 0x0e0 - sizeof(Register)];
+  // Offset 0x0e4
+  volatile Register APB3ENR;
+
+  // Offset 0x0e8
+  volatile Register APB1LENR;
+
+  std::byte unused4[0x0f4 - 0x0e8 - sizeof(Register)];
 
   // Offset 0x0f4
   volatile Register APB4ENR;
@@ -134,6 +142,9 @@ class RccStm32H7xx final : public Rcc {
 
   void enable_gpio_port(gpio::Port port) override;
   void disable_gpio_port(gpio::Port port) override;
+
+  void enable_dac() override;
+  void disable_dac() override;
 
   void set_clock_to_max_speed() override;
   void set_clock_to_min_speed() override;

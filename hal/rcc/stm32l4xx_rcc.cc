@@ -25,6 +25,14 @@ void RccStm32L4xx::disable_gpio_port(gpio::Port port) {
   rcc_registers_->AHB2ENR.set_bit_field_value_and_block<1>(0, static_cast<uint8_t>(port));
 }
 
+void RccStm32L4xx::enable_dac() {
+  rcc_registers_->APB1ENR1.set_bit_field_value_and_block<1, 29>(1);
+}
+
+void RccStm32L4xx::disable_dac() {
+  rcc_registers_->APB1ENR1.set_bit_field_value_and_block<1, 29>(0);
+}
+
 void RccStm32L4xx::set_clock_to_max_speed() {
   // Turn on HSI16 clock source.
   rcc_registers_->CR.set_bit_field_value<1, 8>(1);

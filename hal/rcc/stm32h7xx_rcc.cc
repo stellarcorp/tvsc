@@ -25,6 +25,14 @@ void RccStm32H7xx::disable_gpio_port(gpio::Port port) {
   rcc_registers_->AHB4ENR.set_bit_field_value_and_block<1>(0, static_cast<uint8_t>(port));
 }
 
+void RccStm32H7xx::enable_dac() {
+  rcc_registers_->APB1LENR.set_bit_field_value_and_block<1, 29>(1);
+}
+
+void RccStm32H7xx::disable_dac() {
+  rcc_registers_->APB1LENR.set_bit_field_value_and_block<1, 29>(0);
+}
+
 void RccStm32H7xx::set_clock_to_max_speed() {
   // Set the speed of the HSI clock. Bits 3 and 4 of the CR register configure a clock divider for
   // the HSI clock. This exact value sets the clock to 32 MHz.
