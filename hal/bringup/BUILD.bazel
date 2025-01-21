@@ -1,0 +1,47 @@
+filegroup(
+    name = "linker_script",
+    srcs = select({
+        "//platforms:nucleo_h743zi_board": [
+            "//toolchain/nucleo_h7:stm32h743xx_flash_linker_script",
+        ],
+        "//platforms:nucleo_l412kb_board": [
+            "//toolchain/nucleo_l4:stm32l412xx_flash_linker_script",
+        ],
+        "//platforms:nucleo_l432kc_board": [
+            "//toolchain/nucleo_l4:stm32l432xx_flash_linker_script",
+        ],
+        "//platforms:nucleo_l452re_board": [
+            "//toolchain/nucleo_l4:stm32l452xx_flash_linker_script",
+        ],
+    }),
+)
+
+cc_binary(
+    name = "blink.elf",
+    srcs = [
+        "blink.cc",
+    ],
+    additional_linker_inputs = [
+        ":linker_script",
+    ],
+    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    deps = [
+        "//hal/board",
+        "//hal/gpio",
+    ],
+)
+
+cc_binary(
+    name = "power_demo.elf",
+    srcs = [
+        "power_demo.cc",
+    ],
+    additional_linker_inputs = [
+        ":linker_script",
+    ],
+    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    deps = [
+        "//hal/board",
+        "//hal/gpio",
+    ],
+)
