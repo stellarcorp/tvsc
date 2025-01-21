@@ -57,7 +57,7 @@ class DacStm32xxxx<0 /* CHANNEL_INDEX */> final : public Dac {
     registers_->CR.set_bit_field_value<1, 2>(0b0);
   }
 
-  void set_value(uint16_t value) {
+  void set_value(uint16_t value) override {
     // Turn on the DAC.
     registers_->CR.set_bit_field_value<1, 0>(0b1);
 
@@ -73,7 +73,7 @@ class DacStm32xxxx<0 /* CHANNEL_INDEX */> final : public Dac {
     registers_->SWTRGR.set_bit_field_value<1, 0>(1);
   }
 
-  void clear_value() {
+  void clear_value() override {
     // Turn off the DAC.
     registers_->CR.set_bit_field_value<1, 0>(0b0);
   }
@@ -92,7 +92,7 @@ class DacStm32xxxx<1 /* CHANNEL_INDEX */> final : public Dac {
     registers_->CR.set_bit_field_value<1, 2 + 16>(0b0);
   }
 
-  void set_value(uint16_t value) {
+  void set_value(uint16_t value) override {
     // Turn on the DAC.
     registers_->CR.set_bit_field_value<1, 16>(0b1);
 
@@ -108,7 +108,7 @@ class DacStm32xxxx<1 /* CHANNEL_INDEX */> final : public Dac {
     registers_->SWTRGR.set_bit_field_value<1, 1>(1);
   }
 
-  void clear_value() {
+  void clear_value() override {
     // Turn off the DAC.
     registers_->CR.set_bit_field_value<1, 16>(0b0);
   }
