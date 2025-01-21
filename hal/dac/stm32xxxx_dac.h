@@ -57,17 +57,11 @@ class DacStm32xxxx<0 /* CHANNEL_INDEX */> final : public Dac {
     registers_->CR.set_bit_field_value<1, 2>(0b0);
   }
 
-  void set_value(uint16_t value) override {
+  void set_value(uint8_t value) override {
     // Turn on the DAC. This sets the enable bit on the CR register for this channel.
     registers_->CR.set_bit_field_value<1, 0>(0b1);
 
-    if (value >= (1U << 12)) {
-      // If the value is large, use the left-most 12 bits.
-      registers_->DHR12L1.set_bit_field_value<12, 4>(value >> 4);
-    } else {
-      // If the value is smaller, use all of the bits.
-      registers_->DHR12R1.set_bit_field_value<12, 0>(value);
-    }
+    registers_->DHR8R1.set_bit_field_value<8, 0>(value);
 
     // Trigger the DAC.
     registers_->SWTRGR.set_bit_field_value<1, 0>(1);
@@ -92,17 +86,11 @@ class DacStm32xxxx<1 /* CHANNEL_INDEX */> final : public Dac {
     registers_->CR.set_bit_field_value<1, 2 + 16>(0b0);
   }
 
-  void set_value(uint16_t value) override {
+  void set_value(uint8_t value) override {
     // Turn on the DAC. This sets the enable bit on the CR register for this channel.
     registers_->CR.set_bit_field_value<1, 16>(0b1);
 
-    if (value >= (1U << 12)) {
-      // If the value is large, use the left-most 12 bits.
-      registers_->DHR12L2.set_bit_field_value<12, 4>(value >> 4);
-    } else {
-      // If the value is smaller, use all of the bits.
-      registers_->DHR12R2.set_bit_field_value<12, 0>(value);
-    }
+    registers_->DHR8R2.set_bit_field_value<8, 0>(value);
 
     // Trigger the DAC.
     registers_->SWTRGR.set_bit_field_value<1, 1>(1);

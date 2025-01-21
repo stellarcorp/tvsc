@@ -17,8 +17,7 @@ int main() {
   auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
   gpio.set_pin_mode(BoardType::GREEN_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
-  uint16_t dac_values[] = {0,   1,   2,    4,    8,    16,   32,    64,    128,
-                           256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65535};
+  uint8_t dac_values[] = {0, 1, 2, 4, 8, 16, 32, 64, 128, 255};
   while (true) {
     auto& dac{board.dac()};
     auto& clock{board.clock()};

@@ -8,7 +8,7 @@ class Dac {
  public:
   virtual ~Dac() = default;
 
-  virtual void set_value(uint16_t) = 0;
+  virtual void set_value(uint8_t) = 0;
   virtual void clear_value() = 0;
 };
 
