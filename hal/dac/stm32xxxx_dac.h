@@ -58,7 +58,7 @@ class DacStm32xxxx<0 /* CHANNEL_INDEX */> final : public Dac {
   }
 
   void set_value(uint16_t value) override {
-    // Turn on the DAC.
+    // Turn on the DAC. This sets the enable bit on the CR register for this channel.
     registers_->CR.set_bit_field_value<1, 0>(0b1);
 
     if (value >= (1U << 12)) {
@@ -93,7 +93,7 @@ class DacStm32xxxx<1 /* CHANNEL_INDEX */> final : public Dac {
   }
 
   void set_value(uint16_t value) override {
-    // Turn on the DAC.
+    // Turn on the DAC. This sets the enable bit on the CR register for this channel.
     registers_->CR.set_bit_field_value<1, 16>(0b1);
 
     if (value >= (1U << 12)) {
