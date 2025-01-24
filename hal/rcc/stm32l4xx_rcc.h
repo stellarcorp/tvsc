@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <new>
 
-#include "hal/adc/stm32l4xx_adc.h"
 #include "hal/adc/stm32l4xx_adc_register_bank.h"
 #include "hal/gpio/gpio.h"
 #include "hal/rcc/rcc.h"
@@ -140,11 +139,11 @@ class RccStm32L4xx final : public Rcc {
   void enable_gpio_port(gpio::Port port) override;
   void disable_gpio_port(gpio::Port port) override;
 
-  void enable_dac() override;
-  void disable_dac() override;
-
   void enable_adc() override;
   void disable_adc() override;
+
+  void enable_dac() override;
+  void disable_dac() override;
 
   void set_clock_to_max_speed() override;
   void set_clock_to_min_speed() override;

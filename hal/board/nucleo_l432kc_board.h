@@ -56,7 +56,7 @@ class Board final {
   gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH)};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
-  power::PowerStm32L4xx power_{reinterpret_cast<void*>(PWR_BASE)};
+  power::PowerStm32l4xx power_{reinterpret_cast<void*>(PWR_BASE)};
 
   time::ClockStm32xxxx clock_{&current_time_us};
 

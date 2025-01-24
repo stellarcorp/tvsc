@@ -17,23 +17,86 @@ void SysTick_Handler() { current_time_us += 1e2; }
 
 namespace tvsc::hal::rcc {
 
-void RccStm32H7xx::enable_gpio_port(gpio::Port port) {
+void RccStm32h7xx::enable_gpio_port(gpio::Port port) {
   rcc_registers_->AHB4ENR.set_bit_field_value_and_block<1>(1, static_cast<uint8_t>(port));
 }
 
-void RccStm32H7xx::disable_gpio_port(gpio::Port port) {
+void RccStm32h7xx::disable_gpio_port(gpio::Port port) {
   rcc_registers_->AHB4ENR.set_bit_field_value_and_block<1>(0, static_cast<uint8_t>(port));
 }
 
-void RccStm32H7xx::enable_dac() {
+void RccStm32h7xx::enable_dac() {
   rcc_registers_->APB1LENR.set_bit_field_value_and_block<1, 29>(1);
 }
 
-void RccStm32H7xx::disable_dac() {
+void RccStm32h7xx::disable_dac() {
   rcc_registers_->APB1LENR.set_bit_field_value_and_block<1, 29>(0);
 }
 
-void RccStm32H7xx::set_clock_to_max_speed() {
+void RccStm32h7xx::enable_adc() {
+  // Use the system clock for the ADC.
+  rcc_registers_->D3CCIPR.set_bit_field_value_and_block<2, 16>(0b10);
+
+  // Enable the clock on the ADC.
+  rcc_registers_->AHB4ENR.set_bit_field_value_and_block<1, 24>(1);
+
+  // Exit "deep-power-down" state.
+  // adc_registers_->CR.set_bit_field_value_and_block<1, 29>(0);
+  adc_registers_->CR.set_value_and_block(0);
+
+  // Enable the ADC voltage regulator.
+  adc_registers_->CR.set_bit_field_value_and_block<1, 28>(1);
+
+  // Wait 20us or more. No API to check.
+  {
+    volatile uint32_t i = 2 * 20U * SystemCoreClock / 1'000'000;
+    while (i > 0) {
+      i--;
+    }
+  }
+
+  // Clear the ADRDY flag.
+  adc_registers_->ISR.set_bit_field_value<1, 0>(1);
+
+  // Enable the ADC on the CR register.
+  adc_registers_->CR.set_bit_field_value<1, 0>(1);
+
+  // Wait for the ADRDY flag to be asserted.
+  while (!adc_registers_->ISR.bit_field_value<1, 0>()) {
+    // Do nothing.
+  }
+
+  // Clear the ADRDY flag for completeness.
+  adc_registers_->ISR.set_bit_field_value<1, 0>(1);
+}
+
+void RccStm32h7xx::disable_adc() {
+  // Just return if there is an ongoing ADDIS command to stop the ADC.
+  if (adc_registers_->CR.bit_field_value<1, 1>()) {
+    return;
+  }
+
+  // Stop any ongoing conversions.
+  if (adc_registers_->CR.bit_field_value<1, 2>()) {
+    adc_registers_->CR.set_bit_field_value<1, 0>(0);
+  }
+
+  // Issue the ADDIS disable command to the ADC.
+  adc_registers_->CR.set_bit_field_value<1, 1>(1);
+  // Monitor the ADEN bit to pause until the ADC has been disabled.
+  while (adc_registers_->CR.bit_field_value<1, 0>()) {
+    // Do nothing while the ADC shuts down.
+  }
+
+  // Enter "deep-power-down" state. Note that this automatically disables the voltage regulator as
+  // well.
+  adc_registers_->CR.set_bit_field_value_and_block<1, 29>(1);
+
+  // Disable the clock for the ADC.
+  rcc_registers_->AHB2ENR.set_bit_field_value_and_block<1, 13>(0);
+}
+
+void RccStm32h7xx::set_clock_to_max_speed() {
   // Set the speed of the HSI clock. Bits 3 and 4 of the CR register configure a clock divider for
   // the HSI clock. This exact value sets the clock to 32 MHz.
   rcc_registers_->CR.set_bit_field_value<2, 3>(0b01);
@@ -67,7 +130,7 @@ void RccStm32H7xx::set_clock_to_max_speed() {
   update_sys_tick();
 }
 
-void RccStm32H7xx::set_clock_to_min_speed() {
+void RccStm32h7xx::set_clock_to_min_speed() {
   // Turn on CSI clock source. Note that the speed of the CSI clock is fixed at 4 MHz, though it
   // might be configurable via various dividers. CSI ON flag is in bit 7 of the CR register.
   rcc_registers_->CR.set_bit_field_value<1, 7>(1);
@@ -96,6 +159,6 @@ void RccStm32H7xx::set_clock_to_min_speed() {
   update_sys_tick();
 }
 
-void RccStm32H7xx::update_sys_tick() { SysTick_Config(SystemCoreClock / 10000); }
+void RccStm32h7xx::update_sys_tick() { SysTick_Config(SystemCoreClock / 10000); }
 
 }  // namespace tvsc::hal::rcc

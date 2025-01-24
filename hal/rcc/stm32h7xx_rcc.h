@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <new>
 
+#include "hal/adc/stm32h7xx_adc_register_bank.h"
 #include "hal/gpio/gpio.h"
 #include "hal/rcc/rcc.h"
 #include "hal/register.h"
@@ -77,16 +78,39 @@ class RccRegisterBank final {
   // Offset 0x010
   volatile Register CFGR;
 
-  std::byte unused2[0x060 - 0x10 - sizeof(Register)];
+  std::byte unused2[0x04c - 0x10 - sizeof(Register)];
+
+  // Offset 0x04c
+  volatile Register D1CCIPR;
+
+  // Offset 0x050
+  volatile Register D2CCIP1R;
+
+  // Offset 0x054
+  volatile Register D2CCIP2R;
+
+  // Offset 0x058
+  volatile Register D3CCIPR;
+
+  std::byte unused3[0x060 - 0x58 - sizeof(Register)];
 
   // Clock source interrupt enable register. The bits in this register enable/disable the interrupt
   // for the ready signal of the various clock sources.
   // Offset 0x060
   volatile Register CIER;
 
-  std::byte unused3[0x0e0 - 0x60 - sizeof(Register)];
+  std::byte unused4[0x0d4 - 0x60 - sizeof(Register)];
 
   // Peripheral clock enable registers.
+
+  // Offset 0xd4
+  volatile Register AHB3ENR;
+
+  // Offset 0xd8
+  volatile Register AHB1ENR;
+
+  // Offset 0xdc
+  volatile Register AHB2ENR;
 
   // Offset 0x0e0
   volatile Register AHB4ENR;
@@ -97,7 +121,11 @@ class RccRegisterBank final {
   // Offset 0x0e8
   volatile Register APB1LENR;
 
-  std::byte unused4[0x0f4 - 0x0e8 - sizeof(Register)];
+  // Offset 0x0ec
+  volatile Register APB1HENR;
+
+  // Offset 0x0f0
+  volatile Register APB2ENR;
 
   // Offset 0x0f4
   volatile Register APB4ENR;
@@ -116,17 +144,20 @@ class SysTickRegisterBank final {
  * Class to manage the reset and clock circuitry (RCC) on the Nucleo H743ZI board and other boards
  * based on the STM32H7xx series of CPUs.
  */
-class RccStm32H7xx final : public Rcc {
+class RccStm32h7xx final : public Rcc {
  private:
   RccRegisterBank* const rcc_registers_;
   SysTickRegisterBank* const sys_tick_registers_;
 
+  adc::Stm32h7xxAdcRegisterBank* const adc_registers_;
+
   void update_sys_tick();
 
  public:
-  RccStm32H7xx(void* rcc_base_address, void* sys_tick_base_address)
+  RccStm32h7xx(void* rcc_base_address, void* sys_tick_base_address, void* adc_base_address)
       : rcc_registers_(new (rcc_base_address) RccRegisterBank),
-        sys_tick_registers_(new (sys_tick_base_address) SysTickRegisterBank) {
+        sys_tick_registers_(new (sys_tick_base_address) SysTickRegisterBank),
+        adc_registers_(new (adc_base_address) adc::Stm32h7xxAdcRegisterBank) {
     // For details on startup procedures, see stm32h7xx_hal_rcc.c. The comments in that file
     // explain many details that are otherwise difficult to find.
 
@@ -142,6 +173,9 @@ class RccStm32H7xx final : public Rcc {
 
   void enable_gpio_port(gpio::Port port) override;
   void disable_gpio_port(gpio::Port port) override;
+
+  void enable_adc() override;
+  void disable_adc() override;
 
   void enable_dac() override;
   void disable_dac() override;

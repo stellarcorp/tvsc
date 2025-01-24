@@ -1,6 +1,6 @@
-#include "hal/adc/stm32l4xx_adc.h"
+#include "hal/adc/stm32h7xx_adc.h"
 
-#include "hal/adc/stm32l4xx_adc_register_bank.h"
+#include "hal/adc/stm32h7xx_adc_register_bank.h"
 #include "hal/gpio/gpio.h"
 #include "hal/register.h"
 
@@ -11,29 +11,15 @@ namespace tvsc::hal::adc {
 static constexpr uint8_t get_channel(gpio::Port port, gpio::Pin pin) {
   if (port == 0) {
     if (pin == 0) {
-      // ADC1_IN5
-      return 5;
     } else if (pin == 1) {
-      // ADC1_IN6
-      return 6;
     } else if (pin == 2) {
-      // ADC1_IN7
-      return 7;
     } else if (pin == 3) {
-      // ADC1_IN8
-      return 8;
     } else if (pin == 4) {
-      // ADC1_IN9
-      return 9;
+      // ADC1_IN18
+      return 18;
     } else if (pin == 5) {
-      // ADC1_IN10
-      return 10;
     } else if (pin == 6) {
-      // ADC1_IN11
-      return 11;
     } else if (pin == 7) {
-      // ADC1_IN12
-      return 12;
     }
   } else if (port == 1) {
   } else if (port == 2) {
@@ -46,7 +32,7 @@ static constexpr uint8_t get_channel(gpio::Port port, gpio::Pin pin) {
   return 0xff;
 }
 
-void AdcStm32l4xx::measure(gpio::Port port, gpio::Pin pin, uint8_t /*gain*/) {
+void AdcStm32h7xx::measure(gpio::Port port, gpio::Pin pin, uint8_t /*gain*/) {
   /* TODO(james): Add error handling of some form. */
   const uint8_t channel{get_channel(port, pin)};
   if (channel == 0xff) {
@@ -91,13 +77,13 @@ void AdcStm32l4xx::measure(gpio::Port port, gpio::Pin pin, uint8_t /*gain*/) {
   registers_->CR.set_bit_field_value<1, 2>(1);
 }
 
-uint16_t AdcStm32l4xx::read_result() {
+uint16_t AdcStm32h7xx::read_result() {
   return static_cast<uint16_t>(registers_->DR.bit_field_value<16, 0>());
 }
 
-bool AdcStm32l4xx::is_running() { return registers_->CR.bit_field_value<1, 2>(); }
+bool AdcStm32h7xx::is_running() { return registers_->CR.bit_field_value<1, 2>(); }
 
-void AdcStm32l4xx::stop() {
+void AdcStm32h7xx::stop() {
   registers_->CR.set_bit_field_value<1, 4>(1);
 
   while (registers_->CR.bit_field_value<1, 4>()) {
