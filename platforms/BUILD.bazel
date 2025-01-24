@@ -8,6 +8,8 @@ platform(
         "@platforms//os:linux",
         ":std_cpp",
         ":no_gpio",
+        ":no_adc",
+        ":no_dac",
         ":no_spi",
         ":no_eeprom",
         ":os_networking",
@@ -24,6 +26,8 @@ platform(
         ":teensy40_mcu",
         ":teensyduino_core",
         ":teensyduino_gpio",
+        ":teensyduino_adc",
+        ":teensyduino_dac",
         ":teensyduino_spi",
         ":teensyduino_eeprom",
         ":no_networking",
@@ -40,6 +44,8 @@ platform(
         ":teensy41_mcu",
         ":teensyduino_core",
         ":teensyduino_gpio",
+        ":teensyduino_adc",
+        ":teensyduino_dac",
         ":teensyduino_spi",
         ":teensyduino_eeprom",
         ":no_networking",
@@ -56,6 +62,8 @@ platform(
         ":stm32h743xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
+        ":stm32h7xx_adc",
+        ":stm32h7xx_dac",
         ":stm32_spi",
         ":stm32_eeprom",
         ":no_networking",
@@ -72,6 +80,8 @@ platform(
         ":stm32l412xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
+        ":stm32l4xx_adc",
+        ":no_dac",
         ":stm32_spi",
         ":stm32_eeprom",
         ":no_networking",
@@ -88,6 +98,8 @@ platform(
         ":stm32l432xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
+        ":stm32l4xx_adc",
+        ":stm32l4xx_dac",
         ":stm32_spi",
         ":stm32_eeprom",
         ":no_networking",
@@ -104,6 +116,8 @@ platform(
         ":stm32l452xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
+        ":stm32l4xx_adc",
+        ":stm32l4xx_dac",
         ":stm32_spi",
         ":stm32_eeprom",
         ":no_networking",
@@ -206,6 +220,52 @@ constraint_value(
 constraint_value(
     name = "no_gpio",
     constraint_setting = "gpio",
+)
+
+# ADC support.
+constraint_setting(name = "adc")
+
+constraint_value(
+    name = "teensyduino_adc",
+    constraint_setting = "adc",
+)
+
+constraint_value(
+    name = "stm32h7xx_adc",
+    constraint_setting = "adc",
+)
+
+constraint_value(
+    name = "stm32l4xx_adc",
+    constraint_setting = "adc",
+)
+
+constraint_value(
+    name = "no_adc",
+    constraint_setting = "adc",
+)
+
+# DAC support.
+constraint_setting(name = "dac")
+
+constraint_value(
+    name = "teensyduino_dac",
+    constraint_setting = "dac",
+)
+
+constraint_value(
+    name = "stm32h7xx_dac",
+    constraint_setting = "dac",
+)
+
+constraint_value(
+    name = "stm32l4xx_dac",
+    constraint_setting = "dac",
+)
+
+constraint_value(
+    name = "no_dac",
+    constraint_setting = "dac",
 )
 
 # SPI support.
