@@ -14,6 +14,11 @@ int main() {
   board.rcc().enable_gpio_port(BoardType::GREEN_LED_PORT);
   board.rcc().enable_dac();
 
+  {
+    auto& dac_out_gpio{board.gpio<BoardType::DAC_PORT>()};
+    dac_out_gpio.set_pin_mode(BoardType::DAC_PIN, PinMode::ANALOG);
+  }
+
   auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
   gpio.set_pin_mode(BoardType::GREEN_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
