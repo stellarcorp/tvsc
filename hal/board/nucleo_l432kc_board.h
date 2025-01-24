@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "hal/adc/adc.h"
+#include "hal/adc/stm32l4xx_adc.h"
 #include "hal/dac/dac.h"
 #include "hal/dac/stm32xxxx_dac.h"
 #include "hal/gpio/gpio.h"
@@ -38,8 +40,12 @@ class Board final {
   static constexpr gpio::Port BLUE_PUSH_BUTTON_PORT{GPIO_PORT_C};
   static constexpr gpio::Pin BLUE_PUSH_BUTTON_PIN{13};
 
+  static constexpr gpio::Port DAC_PORT{GPIO_PORT_A};
+  static constexpr gpio::Pin DAC_PIN{4};
+
  private:
-  rcc::RccStm32L4xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE)};
+  rcc::RccStm32L4xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE),
+                         reinterpret_cast<void*>(ADC1_BASE)};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32L4xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
@@ -56,6 +62,8 @@ class Board final {
 
   dac::DacStm32xxxx<0 /* Channel index */> dac0_{reinterpret_cast<void*>(DAC_BASE)};
   dac::DacStm32xxxx<1 /* Channel index */> dac1_{reinterpret_cast<void*>(DAC_BASE)};
+
+  adc::AdcStm32L4xx adc_{reinterpret_cast<void*>(ADC1_BASE)};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
@@ -119,6 +127,8 @@ class Board final {
 
   dac::Dac& dac() { return dac0_; }
   dac::Dac& dac2() { return dac1_; }
+
+  adc::Adc& adc() { return adc_; }
 };
 
 }  // namespace tvsc::hal::board

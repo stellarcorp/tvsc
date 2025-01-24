@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <new>
 
+#include "hal/adc/stm32l4xx_adc.h"
+#include "hal/adc/stm32l4xx_adc_register_bank.h"
 #include "hal/gpio/gpio.h"
 #include "hal/rcc/rcc.h"
 #include "hal/register.h"
@@ -88,6 +90,12 @@ class RccRegisterBank final {
   // Register to enable peripherals on APB1.
   // Offset 0x58
   volatile Register APB1ENR1;
+
+  std::byte unused4[0x88 - 0x58 - sizeof(Register)];
+
+  // Register to select the clock source for some peripherals such as the ADC, I2C buses, etc.
+  // Offset 0x88
+  volatile Register CCIPR;
 };
 
 class SysTickRegisterBank final {
@@ -107,12 +115,15 @@ class RccStm32L4xx final : public Rcc {
   RccRegisterBank* const rcc_registers_;
   SysTickRegisterBank* const sys_tick_registers_;
 
+  adc::Stm32l4xxAdcRegisterBank* const adc_registers_;
+
   void update_sys_tick();
 
  public:
-  RccStm32L4xx(void* rcc_base_address, void* sys_tick_base_address)
+  RccStm32L4xx(void* rcc_base_address, void* sys_tick_base_address, void* adc_base_address)
       : rcc_registers_(new (rcc_base_address) RccRegisterBank),
-        sys_tick_registers_(new (sys_tick_base_address) SysTickRegisterBank) {
+        sys_tick_registers_(new (sys_tick_base_address) SysTickRegisterBank),
+        adc_registers_(new (adc_base_address) adc::Stm32l4xxAdcRegisterBank) {
     // For details on startup procedures, see stm32h7xx_hal_rcc.c. The comments in that file
     // explain many details that are otherwise difficult to find.
 
@@ -131,6 +142,9 @@ class RccStm32L4xx final : public Rcc {
 
   void enable_dac() override;
   void disable_dac() override;
+
+  void enable_adc() override;
+  void disable_adc() override;
 
   void set_clock_to_max_speed() override;
   void set_clock_to_min_speed() override;

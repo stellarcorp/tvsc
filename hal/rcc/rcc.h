@@ -19,6 +19,9 @@ class Rcc {
   virtual void enable_dac() = 0;
   virtual void disable_dac() = 0;
 
+  virtual void enable_adc() = 0;
+  virtual void disable_adc() = 0;
+
   virtual void set_clock_to_max_speed() = 0;
   virtual void set_clock_to_min_speed() = 0;
 };

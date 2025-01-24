@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "hal/adc/adc.h"
 #include "hal/dac/dac.h"
 #include "hal/dac/stm32xxxx_dac.h"
 #include "hal/gpio/gpio.h"
@@ -40,18 +41,22 @@ class Board final {
   static constexpr gpio::Port BLUE_PUSH_BUTTON_PORT{GPIO_PORT_C};
   static constexpr gpio::Pin BLUE_PUSH_BUTTON_PIN{13};
 
+  static constexpr gpio::Port DAC_PORT{GPIO_PORT_A};
+  static constexpr gpio::Pin DAC_PIN{4};
+
  private:
-  rcc::RccStm32L4xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE)};
+  rcc::RccStm32L4xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE),
+                         reinterpret_cast<void*>(ADC1_BASE)};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32L4xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
   // for the first few here, but this can be expanded if necessary.
-  gpio::GpioStm32xxxx gpio_port_a_{reinterpret_cast<void*>(GPIOA)};
-  gpio::GpioStm32xxxx gpio_port_b_{reinterpret_cast<void*>(GPIOB)};
-  gpio::GpioStm32xxxx gpio_port_c_{reinterpret_cast<void*>(GPIOC)};
-  gpio::GpioStm32xxxx gpio_port_d_{reinterpret_cast<void*>(GPIOD)};
-  gpio::GpioStm32xxxx gpio_port_e_{reinterpret_cast<void*>(GPIOE)};
-  gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH)};
+  gpio::GpioStm32xxxx gpio_port_a_{reinterpret_cast<void*>(GPIOA_BASE)};
+  gpio::GpioStm32xxxx gpio_port_b_{reinterpret_cast<void*>(GPIOB_BASE)};
+  gpio::GpioStm32xxxx gpio_port_c_{reinterpret_cast<void*>(GPIOC_BASE)};
+  gpio::GpioStm32xxxx gpio_port_d_{reinterpret_cast<void*>(GPIOD_BASE)};
+  gpio::GpioStm32xxxx gpio_port_e_{reinterpret_cast<void*>(GPIOE_BASE)};
+  gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH_BASE)};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
   power::PowerStm32L4xx power_{reinterpret_cast<void*>(PWR_BASE)};
@@ -59,6 +64,7 @@ class Board final {
   time::ClockStm32xxxx clock_{&current_time_us};
 
   dac::DacStm32xxxx<> dac_{reinterpret_cast<void*>(DAC_BASE)};
+  adc::AdcStm32L4xx adc_{reinterpret_cast<void*>(ADC1_BASE)};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
@@ -113,6 +119,8 @@ class Board final {
   power::Power& power() { return power_; }
 
   dac::Dac& dac() { return dac_; }
+
+  adc::Adc& adc() { return adc_; }
 };
 
 }  // namespace tvsc::hal::board

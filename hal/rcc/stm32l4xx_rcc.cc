@@ -33,6 +33,69 @@ void RccStm32L4xx::disable_dac() {
   rcc_registers_->APB1ENR1.set_bit_field_value_and_block<1, 29>(0);
 }
 
+void RccStm32L4xx::enable_adc() {
+  // Use the system clock for the ADC.
+  rcc_registers_->CCIPR.set_bit_field_value_and_block<2, 28>(0b11);
+
+  // Enable the clock on the ADC.
+  rcc_registers_->AHB2ENR.set_bit_field_value_and_block<1, 13>(1);
+
+  // Exit "deep-power-down" state.
+  // adc_registers_->CR.set_bit_field_value_and_block<1, 29>(0);
+  adc_registers_->CR.set_value_and_block(0);
+
+  // Enable the ADC voltage regulator.
+  adc_registers_->CR.set_bit_field_value_and_block<1, 28>(1);
+
+  // Wait 20us or more. No API to check.
+  {
+    volatile uint32_t i = 2 * 20U * SystemCoreClock / 1'000'000;
+    while (i > 0) {
+      i--;
+    }
+  }
+
+  // Clear the ADRDY flag.
+  adc_registers_->ISR.set_bit_field_value<1, 0>(1);
+
+  // Enable the ADC on the CR register.
+  adc_registers_->CR.set_bit_field_value<1, 0>(1);
+
+  // Wait for the ADRDY flag to be asserted.
+  while (!adc_registers_->ISR.bit_field_value<1, 0>()) {
+    // Do nothing.
+  }
+
+  // Clear the ADRDY flag for completeness.
+  adc_registers_->ISR.set_bit_field_value<1, 0>(1);
+}
+
+void RccStm32L4xx::disable_adc() {
+  // Just return if there is an ongoing ADDIS command to stop the ADC.
+  if (adc_registers_->CR.bit_field_value<1, 1>()) {
+    return;
+  }
+
+  // Stop any ongoing conversions.
+  if (adc_registers_->CR.bit_field_value<1, 2>()) {
+    adc_registers_->CR.set_bit_field_value<1, 0>(0);
+  }
+
+  // Issue the ADDIS disable command to the ADC.
+  adc_registers_->CR.set_bit_field_value<1, 1>(1);
+  // Monitor the ADEN bit to pause until the ADC has been disabled.
+  while (adc_registers_->CR.bit_field_value<1, 0>()) {
+    // Do nothing while the ADC shuts down.
+  }
+
+  // Enter "deep-power-down" state. Note that this automatically disables the voltage regulator as
+  // well.
+  adc_registers_->CR.set_bit_field_value_and_block<1, 29>(1);
+
+  // Disable the clock for the ADC.
+  rcc_registers_->AHB2ENR.set_bit_field_value_and_block<1, 13>(0);
+}
+
 void RccStm32L4xx::set_clock_to_max_speed() {
   // Turn on HSI16 clock source.
   rcc_registers_->CR.set_bit_field_value<1, 8>(1);
