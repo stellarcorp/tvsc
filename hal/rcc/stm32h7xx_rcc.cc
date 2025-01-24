@@ -35,7 +35,7 @@ void RccStm32h7xx::disable_dac() {
 
 void RccStm32h7xx::enable_adc() {
   // Use the system clock for the ADC.
-  rcc_registers_->D3CCIPR.set_bit_field_value_and_block<2, 16>(0b10);
+  // rcc_registers_->D3CCIPR.set_bit_field_value_and_block<2, 16>(0b00);
 
   // Enable the clock on the ADC.
   rcc_registers_->AHB4ENR.set_bit_field_value_and_block<1, 24>(1);
@@ -61,13 +61,14 @@ void RccStm32h7xx::enable_adc() {
   // Enable the ADC on the CR register.
   adc_registers_->CR.set_bit_field_value<1, 0>(1);
 
+  // TODO(james): Determine if this is needed. Currently, it just hangs.
   // Wait for the ADRDY flag to be asserted.
-  while (!adc_registers_->ISR.bit_field_value<1, 0>()) {
-    // Do nothing.
-  }
+  // while (!adc_registers_->ISR.bit_field_value<1, 0>()) {
+  //   // Do nothing.
+  // }
 
   // Clear the ADRDY flag for completeness.
-  adc_registers_->ISR.set_bit_field_value<1, 0>(1);
+  // adc_registers_->ISR.set_bit_field_value<1, 0>(1);
 }
 
 void RccStm32h7xx::disable_adc() {

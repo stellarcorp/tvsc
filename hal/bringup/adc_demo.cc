@@ -40,6 +40,7 @@ int main() {
       dac.set_value(v);
       value_expected = v;
 
+      clock.sleep_ms(10);
       adc.measure(BoardType::DAC_PORT, BoardType::DAC_PIN);
       while (adc.is_running()) {
         // Block while we take the measurement.
