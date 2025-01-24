@@ -8,20 +8,16 @@ cc_library(
 cc_library(
     name = "dac",
     target_compatible_with = select({
-        "//platforms:nucleo_h743zi_board": [],
-        "//platforms:nucleo_l432kc_board": [],
-        "//platforms:nucleo_l452re_board": [],
+        "//platforms:stm32h7xx_dac": [],
+        "//platforms:stm32l4xx_dac": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
     deps = [":dac_headers"] + select({
-        "//platforms:nucleo_h743zi_board": [
+        "//platforms:stm32h7xx_dac": [
             ":stm32xxxx_dac",
         ],
-        "//platforms:nucleo_l432kc_board": [
-            ":stm32xxxx_dac",
-        ],
-        "//platforms:nucleo_l452re_board": [
+        "//platforms:stm32l4xx_dac": [
             ":stm32xxxx_dac",
         ],
     }),
@@ -33,9 +29,8 @@ cc_library(
         "stm32xxxx_dac.h",
     ],
     target_compatible_with = select({
-        "//platforms:nucleo_h743zi_board": [],
-        "//platforms:nucleo_l432kc_board": [],
-        "//platforms:nucleo_l452re_board": [],
+        "//platforms:stm32h7xx_dac": [],
+        "//platforms:stm32l4xx_dac": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     deps = [
