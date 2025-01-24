@@ -1,0 +1,47 @@
+cc_library(
+    name = "adc_headers",
+    hdrs = [
+        "adc.h",
+    ],
+    deps = [
+        "//hal/gpio",
+    ],
+)
+
+cc_library(
+    name = "adc",
+    target_compatible_with = select({
+        "//platforms:stm32h7xx_adc": [],
+        "//platforms:stm32l4xx_adc": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":adc_headers",
+    ] + select({
+        "//platforms:stm32l4xx_adc": [
+            ":stm32l4xx_adc",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32l4xx_adc",
+    srcs = [
+        "stm32l4xx_adc.cc",
+    ],
+    hdrs = [
+        "stm32l4xx_adc.h",
+        "stm32l4xx_adc_register_bank.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32l4xx_adc",
+    ],
+    deps = [
+        ":adc_headers",
+        "//hal",
+        "//hal/gpio",
+        "//hal/time",
+        "//third_party/stm32",
+    ],
+)

@@ -1,0 +1,33 @@
+#pragma once
+
+#include <cstdint>
+
+#include "hal/gpio/gpio.h"
+
+namespace tvsc::hal::adc {
+
+class Adc {
+ public:
+  /**
+   * Measure the voltage on a pin, optionally using an opamp to amplify the voltage by a gain.
+   *
+   * Configures an ADC to measure the voltage on the given pin. If the gain is non-unity, the
+   * onboard opamp is configured to amplify the signal before conversion. The measurement is
+   * asynchronous; the is_running() method will return false when the measurement is complete. The
+   * result is stored in the location specified by destination.
+   *
+   * TODO(james): Consider adding a callback. The callback could be on this method directly or it
+   * could be on the Adc instance as a whole.
+   */
+  virtual void measure(gpio::Port port, gpio::Pin pin, uint8_t gain = 1) = 0;
+  virtual uint16_t read_result() = 0;
+
+  virtual bool is_running() = 0;
+
+  /**
+   * Stop the current measurement or calibration sequence.
+   */
+  virtual void stop() = 0;
+};
+
+}  // namespace tvsc::hal::adc
