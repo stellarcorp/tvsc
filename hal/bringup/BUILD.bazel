@@ -36,6 +36,27 @@ cc_binary(
 )
 
 cc_binary(
+    name = "adc_demo.elf",
+    srcs = [
+        "adc_demo.cc",
+    ],
+    additional_linker_inputs = [
+        ":linker_script",
+    ],
+    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    target_compatible_with = select({
+        "//platforms:no_gpio": ["@platforms//:incompatible"],
+        "//platforms:no_dac": ["@platforms//:incompatible"],
+        "//platforms:no_adc": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    deps = [
+        "//hal/board",
+        "//hal/gpio",
+    ],
+)
+
+cc_binary(
     name = "dac_demo.elf",
     srcs = [
         "dac_demo.cc",
