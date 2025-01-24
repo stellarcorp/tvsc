@@ -8,35 +8,59 @@ extern uint32_t SystemCoreClock;
 
 namespace tvsc::hal::adc {
 
+static constexpr uint8_t get_channel(gpio::Port port, gpio::Pin pin) {
+  if (port == 0) {
+    if (pin == 0) {
+      // ADC1_IN5
+      return 5;
+    } else if (pin == 1) {
+      // ADC1_IN6
+      return 6;
+    } else if (pin == 2) {
+      // ADC1_IN7
+      return 7;
+    } else if (pin == 3) {
+      // ADC1_IN8
+      return 8;
+    } else if (pin == 4) {
+      // ADC1_IN9
+      return 9;
+    } else if (pin == 5) {
+      // ADC1_IN10
+      return 10;
+    } else if (pin == 6) {
+      // ADC1_IN11
+      return 11;
+    } else if (pin == 7) {
+      // ADC1_IN12
+      return 12;
+    }
+  } else if (port == 1) {
+  } else if (port == 2) {
+  } else if (port == 3) {
+  } else if (port == 4) {
+  } else if (port == 5) {
+  } else if (port == 6) {
+  } else if (port == 7) {
+  }
+  return 0xff;
+}
+
 void AdcStm32L4xx::measure(gpio::Port port, gpio::Pin pin, uint8_t /*gain*/) {
-  // Set clock to asynchronous mode. Should be the default on reset.
-  // registers_->CCR.set_bit_field_value<2, 16>(0b00);
-
-  // No prescaling of the clock. Should be the default on reset.
-  // registers_->CCR.set_bit_field_value<4, 18>(0b0000);
-
-  // Enable the ADC on the CR register.
-  // registers_->CR.set_bit_field_value<1, 0>(1);
-
-  /* TODO(james): Add a lookup table to find the channel from the requested pin. Here, we just
-   * hardcode channel 9, which gives us an ADC input from the DAC output. */
-  const uint8_t channel{9};
+  /* TODO(james): Add error handling of some form. */
+  const uint8_t channel{get_channel(port, pin)};
+  if (channel == 0xff) {
+    return;
+  }
 
   // TODO(james): Implement gain by routing pin voltage through onboard opamp and doing the ADC
   // on the opamp's output.
-
-  // Reset the CFGR register in order to disable everything that we don't want.
-  // TODO(james): This should not be necessary.
-  // registers_->CFGR.set_value(0x8000'0000);
 
   // Put the ADC in single conversion mode.
   registers_->CFGR.set_bit_field_value<1, 13>(0);
 
   // Turn off "discontinuous" mode as well. Not sure how "discontinuous" and single mode differ.
   registers_->CFGR.set_bit_field_value<1, 16>(0);
-
-  // Put the ADC in "discontinuous" mode. Not sure how "discontinuous" and single mode differ.
-  // registers_->CFGR.set_bit_field_value<1, 16>(1);
 
   // Right align the resulting data.
   registers_->CFGR.set_bit_field_value<1, 5>(0);
