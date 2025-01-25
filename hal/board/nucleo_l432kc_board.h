@@ -36,10 +36,6 @@ class Board final {
   static constexpr gpio::Port RED_LED_PORT{GPIO_PORT_B};
   static constexpr gpio::Pin RED_LED_PIN{14};
 
-  // Location of the push button on this board.
-  static constexpr gpio::Port BLUE_PUSH_BUTTON_PORT{GPIO_PORT_C};
-  static constexpr gpio::Pin BLUE_PUSH_BUTTON_PIN{13};
-
   static constexpr gpio::Port DAC_PORT{GPIO_PORT_A};
   static constexpr gpio::Pin DAC_PIN{4};
 
