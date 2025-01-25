@@ -39,6 +39,11 @@ class Stm32l4xxAdcRegisterBank final {
 
   // Offset 0x40
   volatile Register DR;
+
+  std::byte unused4[0xc4 - 0x40 - sizeof(Register)];
+
+  // Offset 0xc4
+  volatile Register CALFACT;
 };
 
 }  // namespace tvsc::hal::adc

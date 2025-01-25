@@ -56,14 +56,14 @@ class Board final {
   gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH)};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
-  power::PowerStm32l4xx power_{reinterpret_cast<void*>(PWR_BASE)};
+  power::PowerStm32L4xx power_{reinterpret_cast<void*>(PWR_BASE)};
 
   time::ClockStm32xxxx clock_{&current_time_us};
 
   dac::DacStm32xxxx<0 /* Channel index */> dac0_{reinterpret_cast<void*>(DAC_BASE)};
   dac::DacStm32xxxx<1 /* Channel index */> dac1_{reinterpret_cast<void*>(DAC_BASE)};
 
-  adc::AdcStm32L4xx adc_{reinterpret_cast<void*>(ADC1_BASE)};
+  adc::AdcStm32l4xx adc_{reinterpret_cast<void*>(ADC1_BASE)};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.

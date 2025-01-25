@@ -36,12 +36,17 @@ int main() {
     auto& dac{board.dac()};
     auto& clock{board.clock()};
 
+    adc.calibrate_single_ended_input();
+    while (adc.is_running()) {
+      // Do nothing.
+    }
+
     for (const auto& v : dac_values) {
       dac.set_value(v);
       value_expected = v;
 
       clock.sleep_ms(10);
-      adc.measure(BoardType::DAC_PORT, BoardType::DAC_PIN);
+      adc.start_conversion(BoardType::DAC_PORT, BoardType::DAC_PIN);
       while (adc.is_running()) {
         // Block while we take the measurement.
       }

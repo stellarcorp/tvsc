@@ -58,7 +58,7 @@ void RccStm32L4xx::enable_adc() {
   // Clear the ADRDY flag.
   adc_registers_->ISR.set_bit_field_value<1, 0>(1);
 
-  // Enable the ADC on the CR register.
+  // Enable the ADC by setting the ADEN flag on the CR register.
   adc_registers_->CR.set_bit_field_value<1, 0>(1);
 
   // Wait for the ADRDY flag to be asserted.

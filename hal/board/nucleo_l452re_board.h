@@ -4,6 +4,7 @@
 #include <cstdint>
 
 #include "hal/adc/adc.h"
+#include "hal/adc/stm32l4xx_adc.h"
 #include "hal/dac/dac.h"
 #include "hal/dac/stm32xxxx_dac.h"
 #include "hal/gpio/gpio.h"

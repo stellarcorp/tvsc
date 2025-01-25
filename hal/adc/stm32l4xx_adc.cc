@@ -46,7 +46,24 @@ static constexpr uint8_t get_channel(gpio::Port port, gpio::Pin pin) {
   return 0xff;
 }
 
-void AdcStm32l4xx::measure(gpio::Port port, gpio::Pin pin, uint8_t /*gain*/) {
+void AdcStm32l4xx::start_conversion(gpio::Port port, gpio::Pin pin, uint8_t /*gain*/) {
+  // If the ADC is not enabled (that is, if ADEN != 1) then we enable the ADC.
+  if (!registers_->CR.bit_field_value<1, 0>()) {
+    // Clear the ADRDY flag.
+    registers_->ISR.set_bit_field_value<1, 0>(1);
+
+    // Enable the ADC by setting the ADEN flag on the CR register.
+    registers_->CR.set_bit_field_value<1, 0>(1);
+
+    // Wait for the ADRDY flag to be asserted.
+    while (!registers_->ISR.bit_field_value<1, 0>()) {
+      // Do nothing.
+    }
+
+    // Clear the ADRDY flag for completeness.
+    registers_->ISR.set_bit_field_value<1, 0>(1);
+  }
+
   /* TODO(james): Add error handling of some form. */
   const uint8_t channel{get_channel(port, pin)};
   if (channel == 0xff) {
@@ -95,7 +112,9 @@ uint16_t AdcStm32l4xx::read_result() {
   return static_cast<uint16_t>(registers_->DR.bit_field_value<16, 0>());
 }
 
-bool AdcStm32l4xx::is_running() { return registers_->CR.bit_field_value<1, 2>(); }
+bool AdcStm32l4xx::is_running() {
+  return registers_->CR.bit_field_value<1, 2>() || registers_->CR.bit_field_value<1, 31>();
+}
 
 void AdcStm32l4xx::stop() {
   registers_->CR.set_bit_field_value<1, 4>(1);
@@ -103,6 +122,58 @@ void AdcStm32l4xx::stop() {
   while (registers_->CR.bit_field_value<1, 4>()) {
     // ADC is stopping. Do nothing.
   }
+}
+
+void AdcStm32l4xx::calibrate_single_ended_input() {
+  // Stop any ongoing conversions.
+  if (registers_->CR.bit_field_value<1, 2>()) {
+    registers_->CR.set_bit_field_value<1, 0>(0);
+  }
+
+  // Issue the ADDIS disable command to the ADC.
+  registers_->CR.set_bit_field_value<1, 1>(1);
+  // Monitor the ADEN bit to pause until the ADC has been disabled.
+  while (registers_->CR.bit_field_value<1, 0>()) {
+    // Do nothing while the ADC shuts down.
+  }
+
+  // Set up to calibrate single-ended conversions by setting the ADCALDIF to zero, meaning not
+  // differential inputs mode.
+  registers_->CR.set_bit_field_value<1, 30>(0);
+
+  // Start the calibration.
+  registers_->CR.set_bit_field_value<1, 31>(1);
+}
+
+void AdcStm32l4xx::calibrate_differential_input() {
+  // Stop any ongoing conversions.
+  if (registers_->CR.bit_field_value<1, 2>()) {
+    registers_->CR.set_bit_field_value<1, 0>(0);
+  }
+
+  // Issue the ADDIS disable command to the ADC.
+  registers_->CR.set_bit_field_value<1, 1>(1);
+  // Monitor the ADEN bit to pause until the ADC has been disabled.
+  while (registers_->CR.bit_field_value<1, 0>()) {
+    // Do nothing while the ADC shuts down.
+  }
+
+  // Set up to calibrate single-ended conversions by setting the ADCALDIF to one.
+  registers_->CR.set_bit_field_value<1, 30>(1);
+
+  // Start the calibration.
+  registers_->CR.set_bit_field_value<1, 31>(1);
+}
+
+uint16_t AdcStm32l4xx::read_calibration_factor() {
+  uint16_t result{static_cast<uint16_t>(registers_->CALFACT.bit_field_value<7, 16>())};
+  result = (result << 8) | static_cast<uint16_t>(registers_->CALFACT.bit_field_value<7, 0>());
+  return result;
+}
+
+void AdcStm32l4xx::write_calibration_factor(uint16_t factor) {
+  registers_->CALFACT.set_bit_field_value<7, 16>(factor >> 8);
+  registers_->CALFACT.set_bit_field_value<7, 0>(factor);
 }
 
 }  // namespace tvsc::hal::adc

@@ -32,7 +32,7 @@ static constexpr uint8_t get_channel(gpio::Port port, gpio::Pin pin) {
   return 0xff;
 }
 
-void AdcStm32h7xx::measure(gpio::Port port, gpio::Pin pin, uint8_t /*gain*/) {
+void AdcStm32h7xx::start_conversion(gpio::Port port, gpio::Pin pin, uint8_t /*gain*/) {
   /* TODO(james): Add error handling of some form. */
   const uint8_t channel{get_channel(port, pin)};
   if (channel == 0xff) {
@@ -89,6 +89,58 @@ void AdcStm32h7xx::stop() {
   while (registers_->CR.bit_field_value<1, 4>()) {
     // ADC is stopping. Do nothing.
   }
+}
+
+void AdcStm32h7xx::calibrate_single_ended_input() {
+  // Stop any ongoing conversions.
+  if (registers_->CR.bit_field_value<1, 2>()) {
+    registers_->CR.set_bit_field_value<1, 0>(0);
+  }
+
+  // Issue the ADDIS disable command to the ADC.
+  registers_->CR.set_bit_field_value<1, 1>(1);
+  // Monitor the ADEN bit to pause until the ADC has been disabled.
+  while (registers_->CR.bit_field_value<1, 0>()) {
+    // Do nothing while the ADC shuts down.
+  }
+
+  // Set up to calibrate single-ended conversions by setting the ADCALDIF to zero, meaning not
+  // differential inputs mode.
+  registers_->CR.set_bit_field_value<1, 30>(0);
+
+  // Start the calibration.
+  registers_->CR.set_bit_field_value<1, 31>(1);
+}
+
+void AdcStm32h7xx::calibrate_differential_input() {
+  // Stop any ongoing conversions.
+  if (registers_->CR.bit_field_value<1, 2>()) {
+    registers_->CR.set_bit_field_value<1, 0>(0);
+  }
+
+  // Issue the ADDIS disable command to the ADC.
+  registers_->CR.set_bit_field_value<1, 1>(1);
+  // Monitor the ADEN bit to pause until the ADC has been disabled.
+  while (registers_->CR.bit_field_value<1, 0>()) {
+    // Do nothing while the ADC shuts down.
+  }
+
+  // Set up to calibrate differential input conversions by setting the ADCALDIF to one.
+  registers_->CR.set_bit_field_value<1, 30>(1);
+
+  // Start the calibration.
+  registers_->CR.set_bit_field_value<1, 31>(1);
+}
+
+uint16_t AdcStm32h7xx::read_calibration_factor() {
+  uint16_t result{static_cast<uint16_t>(registers_->CALFACT.bit_field_value<7, 16>())};
+  result = (result << 8) | static_cast<uint16_t>(registers_->CALFACT.bit_field_value<7, 0>());
+  return result;
+}
+
+void AdcStm32h7xx::write_calibration_factor(uint16_t factor) {
+  registers_->CALFACT.set_bit_field_value<7, 16>(factor >> 8);
+  registers_->CALFACT.set_bit_field_value<7, 0>(factor);
 }
 
 }  // namespace tvsc::hal::adc
