@@ -49,7 +49,7 @@ class Board final {
 
   power::PowerStm32L4xx power_{reinterpret_cast<void*>(PWR_BASE)};
 
-  time::ClockStm32xxxx clock_{&current_time_us};
+  time::ClockStm32xxxx clock_{};
 
   adc::AdcStm32l4xx adc_{reinterpret_cast<void*>(ADC1_BASE)};
 

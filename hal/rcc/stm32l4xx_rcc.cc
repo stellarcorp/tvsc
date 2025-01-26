@@ -2,18 +2,7 @@
 
 #include "hal/gpio/gpio.h"
 #include "third_party/stm32/stm32.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-__attribute__((section(".status.time"))) volatile CTimeType current_time_us{0};
-
-void SysTick_Handler() { current_time_us += 1e4; }
-
-#ifdef __cplusplus
-}
-#endif
+#include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal::rcc {
 
@@ -121,7 +110,7 @@ void RccStm32L4xx::set_clock_to_max_speed() {
   SystemCoreClock = 16'000'000;
 
   // Update the SysTick configuration.
-  update_sys_tick();
+  HAL_InitTick(TICK_INT_PRIORITY);
 }
 
 void RccStm32L4xx::set_clock_to_min_speed() {
@@ -157,9 +146,7 @@ void RccStm32L4xx::set_clock_to_min_speed() {
   SystemCoreClock = 400'000;
 
   // Update the SysTick configuration.
-  update_sys_tick();
+  HAL_InitTick(TICK_INT_PRIORITY);
 }
-
-void RccStm32L4xx::update_sys_tick() { SysTick_Config(SystemCoreClock / 100); }
 
 }  // namespace tvsc::hal::rcc

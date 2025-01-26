@@ -51,7 +51,7 @@ class Board final {
 
   power::PowerStm32H7xx power_{reinterpret_cast<void*>(PWR_BASE)};
 
-  time::ClockStm32xxxx clock_{&current_time_us};
+  time::ClockStm32xxxx clock_{};
 
   dac::DacStm32xxxx<0 /* Channel index */> dac0_{reinterpret_cast<void*>(DAC1_BASE)};
   dac::DacStm32xxxx<1 /* Channel index */> dac1_{reinterpret_cast<void*>(DAC1_BASE)};

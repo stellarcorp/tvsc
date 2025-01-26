@@ -1,11 +1,22 @@
 #include "hal/time/stm_clock.h"
 
 #include "hal/time/clock.h"
+#include "third_party/stm32/stm32_hal.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void SysTick_Handler() { uwTick += static_cast<uint32_t>(uwTickFreq); }
+
+#ifdef __cplusplus
+}
+#endif
 
 namespace tvsc::hal::time {
 
-time::TimeType ClockStm32xxxx::current_time_micros() { return *current_time_us_; }
-time::TimeType ClockStm32xxxx::current_time_millis() { return *current_time_us_ / 1000; }
+time::TimeType ClockStm32xxxx::current_time_micros() { return uwTick * 1000; }
+time::TimeType ClockStm32xxxx::current_time_millis() { return uwTick; }
 
 void ClockStm32xxxx::sleep_us(time::TimeType microseconds) {
   const time::TimeType sleep_until_us{current_time_micros() + microseconds};

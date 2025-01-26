@@ -9,6 +9,7 @@
 #include "hal/rcc/rcc.h"
 #include "hal/register.h"
 #include "hal/time/clock.h"
+#include "third_party/stm32/stm32_hal.h"
 
 extern "C" {
 
@@ -29,11 +30,6 @@ extern "C" {
  * Currently, the implementation being used is from ST Micro.
  */
 
-/**
- * Current time in microseconds where "current time" means time since last reset.
- */
-extern volatile CTimeType current_time_us;
-
 /*
  * SystemCoreClock is a global variable required by the ARM CMSIS code. It contains the core clock
  * value in ticks per second.
@@ -51,12 +47,6 @@ extern uint32_t SystemCoreClock;
  * for a bit more information.
  */
 void SystemCoreClockUpdate();
-
-/**
- * Interrupt handler for SysTick. Handles scenario when the SysTick counter
- * (SysTickRegisterBank::VAL) reaches zero and reloads its value from SysTickRegisterBank::LOAD.
- */
-void SysTick_Handler();
 }
 
 namespace tvsc::hal::rcc {
@@ -116,13 +106,13 @@ class RccStm32L4xx final : public Rcc {
 
   adc::Stm32l4xxAdcRegisterBank* const adc_registers_;
 
-  void update_sys_tick();
-
  public:
   RccStm32L4xx(void* rcc_base_address, void* sys_tick_base_address, void* adc_base_address)
       : rcc_registers_(new (rcc_base_address) RccRegisterBank),
         sys_tick_registers_(new (sys_tick_base_address) SysTickRegisterBank),
         adc_registers_(new (adc_base_address) adc::Stm32l4xxAdcRegisterBank) {
+    HAL_Init();
+
     // For details on startup procedures, see stm32h7xx_hal_rcc.c. The comments in that file
     // explain many details that are otherwise difficult to find.
 
@@ -133,7 +123,8 @@ class RccStm32L4xx final : public Rcc {
     // including SystemCoreClock. See the startup_<device>.s file for details on this process.
     SystemCoreClockUpdate();
 
-    update_sys_tick();
+    // Update the SysTick configuration.
+    HAL_InitTick(TICK_INT_PRIORITY);
   }
 
   void enable_gpio_port(gpio::Port port) override;
