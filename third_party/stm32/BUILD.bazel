@@ -4,6 +4,7 @@ cc_library(
     name = "stm32_headers",
     hdrs = [
         "stm32.h",
+        "stm32_hal.h",
     ],
 )
 
