@@ -43,7 +43,7 @@ cc_library(
         "//platforms:stm32h743xx_mcu",
     ],
     deps = [
-        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_H7:nucleo_h743xx",
+        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_H7:nucleo_h743xx_hal",
     ],
     alwayslink = True,
 )
@@ -59,7 +59,7 @@ cc_library(
         "//platforms:stm32l412xx_mcu",
     ],
     deps = [
-        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_L4:nucleo_l412xx",
+        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_L4:nucleo_l412xx_hal",
     ],
     alwayslink = True,
 )
@@ -75,7 +75,7 @@ cc_library(
         "//platforms:stm32l432xx_mcu",
     ],
     deps = [
-        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_L4:nucleo_l432xx",
+        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_L4:nucleo_l432xx_hal",
     ],
     alwayslink = True,
 )
@@ -91,7 +91,7 @@ cc_library(
         "//platforms:stm32l452xx_mcu",
     ],
     deps = [
-        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_L4:nucleo_l452xx",
+        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_L4:nucleo_l452xx_hal",
     ],
     alwayslink = True,
 )
