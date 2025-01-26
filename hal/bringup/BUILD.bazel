@@ -27,6 +27,7 @@ cc_binary(
     linkopts = ["-Wl,-T$(execpath :linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
+        "//platforms:no_debug_led": ["@platforms//:incompatible"],
         "//conditions:default": [],
     }),
     deps = [
@@ -46,6 +47,7 @@ cc_binary(
     linkopts = ["-Wl,-T$(execpath :linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
+        "//platforms:no_debug_led": ["@platforms//:incompatible"],
         "//platforms:no_dac": ["@platforms//:incompatible"],
         "//platforms:no_adc": ["@platforms//:incompatible"],
         "//conditions:default": [],
@@ -67,6 +69,7 @@ cc_binary(
     linkopts = ["-Wl,-T$(execpath :linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
+        "//platforms:no_debug_led": ["@platforms//:incompatible"],
         "//platforms:no_dac": ["@platforms//:incompatible"],
         "//conditions:default": [],
     }),
@@ -87,6 +90,7 @@ cc_binary(
     linkopts = ["-Wl,-T$(execpath :linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
+        "//platforms:no_debug_led": ["@platforms//:incompatible"],
         "//conditions:default": [],
     }),
     deps = [

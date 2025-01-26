@@ -8,6 +8,8 @@ platform(
         "@platforms//os:linux",
         ":std_cpp",
         ":no_gpio",
+        ":no_debug_led",
+        ":no_debug_push_button",
         ":no_adc",
         ":no_dac",
         ":no_spi",
@@ -26,6 +28,8 @@ platform(
         ":teensy40_mcu",
         ":teensyduino_core",
         ":teensyduino_gpio",
+        ":debug_led",
+        ":no_debug_push_button",
         ":teensyduino_adc",
         ":teensyduino_dac",
         ":teensyduino_spi",
@@ -44,6 +48,8 @@ platform(
         ":teensy41_mcu",
         ":teensyduino_core",
         ":teensyduino_gpio",
+        ":debug_led",
+        ":no_debug_push_button",
         ":teensyduino_adc",
         ":teensyduino_dac",
         ":teensyduino_spi",
@@ -62,6 +68,8 @@ platform(
         ":stm32h743xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
+        ":debug_led",
+        ":debug_push_button",
         ":stm32h7xx_adc",
         ":stm32h7xx_dac",
         ":stm32_spi",
@@ -80,6 +88,8 @@ platform(
         ":stm32l412xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
+        ":debug_led",
+        ":no_debug_push_button",
         ":stm32l4xx_adc",
         ":no_dac",
         ":stm32_spi",
@@ -98,6 +108,8 @@ platform(
         ":stm32l432xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
+        ":debug_led",
+        ":no_debug_push_button",
         ":stm32l4xx_adc",
         ":stm32l4xx_dac",
         ":stm32_spi",
@@ -116,6 +128,8 @@ platform(
         ":stm32l452xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
+        ":debug_led",
+        ":debug_push_button",
         ":stm32l4xx_adc",
         ":stm32l4xx_dac",
         ":stm32_spi",
@@ -220,6 +234,32 @@ constraint_value(
 constraint_value(
     name = "no_gpio",
     constraint_setting = "gpio",
+)
+
+# Built-in debug LEDs.
+constraint_setting(name = "led")
+
+constraint_value(
+    name = "debug_led",
+    constraint_setting = "led",
+)
+
+constraint_value(
+    name = "no_debug_led",
+    constraint_setting = "led",
+)
+
+# Built-in debug push button(s).
+constraint_setting(name = "push_button")
+
+constraint_value(
+    name = "debug_push_button",
+    constraint_setting = "push_button",
+)
+
+constraint_value(
+    name = "no_debug_push_button",
+    constraint_setting = "push_button",
 )
 
 # ADC support.
