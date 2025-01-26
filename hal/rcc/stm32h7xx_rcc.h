@@ -29,11 +29,6 @@ extern "C" {
  * Currently, the implementation being used is from ST Micro.
  */
 
-/**
- * Current time in microseconds where "current time" means time since last reset.
- */
-extern volatile CTimeType current_time_us;
-
 /*
  * SystemCoreClock is a global variable required by the ARM CMSIS code. It contains the core clock
  * value in ticks per second.
@@ -51,12 +46,6 @@ extern uint32_t SystemCoreClock;
  * for a bit more information.
  */
 void SystemCoreClockUpdate();
-
-/**
- * Interrupt handler for SysTick. Handles scenario when the SysTick counter
- * (SysTickRegisterBank::VAL) reaches zero and reloads its value from SysTickRegisterBank::LOAD.
- */
-void SysTick_Handler();
 }
 
 namespace tvsc::hal::rcc {
@@ -171,14 +160,14 @@ class RccStm32h7xx final : public Rcc {
     update_sys_tick();
   }
 
-  void enable_gpio_port(gpio::Port port) override;
-  void disable_gpio_port(gpio::Port port) override;
+  void enable_gpio_port_clock(gpio::Port port) override;
+  void disable_gpio_port_clock(gpio::Port port) override;
 
-  void enable_adc() override;
-  void disable_adc() override;
+  void enable_adc_clock() override;
+  void disable_adc_clock() override;
 
-  void enable_dac() override;
-  void disable_dac() override;
+  void enable_dac_clock() override;
+  void disable_dac_clock() override;
 
   void set_clock_to_max_speed() override;
   void set_clock_to_min_speed() override;

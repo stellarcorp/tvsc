@@ -3,37 +3,25 @@
 #include "hal/gpio/gpio.h"
 #include "third_party/stm32/stm32.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-__attribute__((section(".status.time"))) volatile CTimeType current_time_us{0};
-
-void SysTick_Handler() { current_time_us += 1e2; }
-
-#ifdef __cplusplus
-}
-#endif
-
 namespace tvsc::hal::rcc {
 
-void RccStm32h7xx::enable_gpio_port(gpio::Port port) {
+void RccStm32h7xx::enable_gpio_port_clock(gpio::Port port) {
   rcc_registers_->AHB4ENR.set_bit_field_value_and_block<1>(1, static_cast<uint8_t>(port));
 }
 
-void RccStm32h7xx::disable_gpio_port(gpio::Port port) {
+void RccStm32h7xx::disable_gpio_port_clock(gpio::Port port) {
   rcc_registers_->AHB4ENR.set_bit_field_value_and_block<1>(0, static_cast<uint8_t>(port));
 }
 
-void RccStm32h7xx::enable_dac() {
+void RccStm32h7xx::enable_dac_clock() {
   rcc_registers_->APB1LENR.set_bit_field_value_and_block<1, 29>(1);
 }
 
-void RccStm32h7xx::disable_dac() {
+void RccStm32h7xx::disable_dac_clock() {
   rcc_registers_->APB1LENR.set_bit_field_value_and_block<1, 29>(0);
 }
 
-void RccStm32h7xx::enable_adc() {
+void RccStm32h7xx::enable_adc_clock() {
   // Use the system clock for the ADC.
   // rcc_registers_->D3CCIPR.set_bit_field_value_and_block<2, 16>(0b00);
 
@@ -71,7 +59,7 @@ void RccStm32h7xx::enable_adc() {
   // adc_registers_->ISR.set_bit_field_value<1, 0>(1);
 }
 
-void RccStm32h7xx::disable_adc() {
+void RccStm32h7xx::disable_adc_clock() {
   // Just return if there is an ongoing ADDIS command to stop the ADC.
   if (adc_registers_->CR.bit_field_value<1, 1>()) {
     return;

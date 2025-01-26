@@ -127,14 +127,14 @@ class RccStm32L4xx final : public Rcc {
     HAL_InitTick(TICK_INT_PRIORITY);
   }
 
-  void enable_gpio_port(gpio::Port port) override;
-  void disable_gpio_port(gpio::Port port) override;
+  void enable_gpio_port_clock(gpio::Port port) override;
+  void disable_gpio_port_clock(gpio::Port port) override;
 
-  void enable_adc() override;
-  void disable_adc() override;
+  void enable_adc_clock() override;
+  void disable_adc_clock() override;
 
-  void enable_dac() override;
-  void disable_dac() override;
+  void enable_dac_clock() override;
+  void disable_dac_clock() override;
 
   void set_clock_to_max_speed() override;
   void set_clock_to_min_speed() override;

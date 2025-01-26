@@ -18,9 +18,9 @@ int main() {
   BoardType board{};
 
   // Turn on clocks for the peripherals that we want.
-  board.rcc().enable_gpio_port(BoardType::GREEN_LED_PORT);
-  board.rcc().enable_dac();
-  board.rcc().enable_adc();
+  board.rcc().enable_gpio_port_clock(BoardType::GREEN_LED_PORT);
+  board.rcc().enable_dac_clock();
+  board.rcc().enable_adc_clock();
 
   {
     auto& dac_out_gpio{board.gpio<BoardType::DAC_PORT>()};

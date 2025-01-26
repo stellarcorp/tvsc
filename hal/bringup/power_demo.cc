@@ -20,7 +20,7 @@ int main() {
   }
 
   // Turn on clocks for the GPIO ports that we want.
-  rcc.enable_gpio_port(BoardType::GREEN_LED_PORT);
+  rcc.enable_gpio_port_clock(BoardType::GREEN_LED_PORT);
 
   auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
 
