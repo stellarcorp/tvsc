@@ -1,0 +1,22 @@
+cc_library(
+    name = "scheduler",
+    hdrs = [
+        "scheduler.h",
+        "task.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//hal/time",
+    ],
+)
+
+cc_test(
+    name = "scheduler_test",
+    srcs = ["scheduler_test.cc"],
+    deps = [
+        ":scheduler",
+        "//hal/time:mock_clock",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
