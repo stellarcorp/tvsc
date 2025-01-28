@@ -1,14 +1,20 @@
 # Defaults for all builds
 build --enable_platform_specific_config
-build --config=c++17
 build --config=platform_build
+build --config=c++20
+# Turn off this warning, especially in C++20. C++20 deprecated bitwise assignment operators on
+# volatile variables. Unfortunately, these operators are used extensively in many embedded
+# libraries. This deprecation was undone in C++23. For more information, see
+# https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2327r1.pdf
+build --cxxopt -Wno-volatile
+build --cxxopt -fcoroutines
 
 build:linux --platforms=//platforms:linux_x86_64_general
 
 # Settings for different C++ dialects
-build:c++17 --cxxopt -std=c++17
 build:c++20 --cxxopt -std=c++20
-build:c++2a --cxxopt -std=c++2a
+build:c++23 --cxxopt -std=c++23
+build:c++26 --cxxopt -std=c++26
 
 # Setting to enable platform builds.
 build:platform_build --incompatible_enable_cc_toolchain_resolution
