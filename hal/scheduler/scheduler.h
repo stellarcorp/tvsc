@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <coroutine>
 #include <cstdint>
 #include <string>
 
@@ -20,7 +21,6 @@ class Scheduler final {
  private:
   time::Clock* clock_;
   std::array<Task*, QUEUE_SIZE> task_queue_{};
-  Task* current_task_{nullptr};
 
   friend std::string to_string<QUEUE_SIZE>(const Scheduler&);
 
@@ -60,14 +60,12 @@ class Scheduler final {
       Task* task{task_queue_[i]};
       if (task != nullptr) {
         const uint64_t current_time_us{clock_->current_time_micros()};
-        current_task_ = task;
         if (task->is_ready(current_time_us)) {
           task->run();
         }
         if (task->is_complete()) {
           task_queue_[i] = nullptr;
         }
-        current_task_ = nullptr;
       }
     }
   }
@@ -79,8 +77,6 @@ class Scheduler final {
   }
 
   time::Clock& clock() { return *clock_; }
-
-  Task* current_task() { return current_task_; }
 };
 
 template <size_t QUEUE_SIZE>

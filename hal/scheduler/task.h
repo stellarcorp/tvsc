@@ -61,9 +61,6 @@ class Task final {
   bool is_complete() noexcept { return handle_.done(); }
 
   void run() noexcept { handle_(); }
-
-  void sleep_until_millis(uint64_t time_ms) { handle_.promise().wait_until_us_ = time_ms * 1000; }
-  void sleep_until_micros(uint64_t time_us) { handle_.promise().wait_until_us_ = time_us; }
 };
 
 }  // namespace tvsc::hal::scheduler
