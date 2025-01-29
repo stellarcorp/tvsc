@@ -14,7 +14,7 @@ using BoardType = tvsc::hal::board::Board;
 using namespace tvsc::hal::bringup;
 using namespace tvsc::hal::scheduler;
 
-static constexpr size_t QUEUE_SIZE{4};
+static constexpr size_t QUEUE_SIZE{1};
 
 int main() {
   BoardType board{};
