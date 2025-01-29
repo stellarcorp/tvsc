@@ -23,17 +23,30 @@ int main() {
 
   Scheduler<QUEUE_SIZE> scheduler{clock};
 
-  board.rcc().enable_gpio_port_clock(BoardType::GREEN_LED_PORT);
-  auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
-  scheduler.add_task(blink<4 * BASE_DURATION_MS>(clock, gpio, BoardType::GREEN_LED_PIN));
+  static constexpr uint64_t DURATION_MULTIPLES[] = {4, 3, 2};
 
-  board.rcc().enable_gpio_port_clock(BoardType::YELLOW_LED_PORT);
-  auto& gpio2{board.gpio<BoardType::YELLOW_LED_PORT>()};
-  scheduler.add_task(blink<3 * BASE_DURATION_MS>(clock, gpio2, BoardType::YELLOW_LED_PIN));
+  if constexpr (BoardType::NUM_DEBUG_LEDS >= 1) {
+    board.rcc().enable_gpio_port_clock(BoardType::DEBUG_LED_PORTS[0]);
+    auto& gpio{board.gpio<BoardType::DEBUG_LED_PORTS[0]>()};
+    scheduler.add_task(
+        blink<DURATION_MULTIPLES[0] * BASE_DURATION_MS>(clock, gpio, BoardType::DEBUG_LED_PINS[0]));
+  }
 
-  board.rcc().enable_gpio_port_clock(BoardType::RED_LED_PORT);
-  auto& gpio3{board.gpio<BoardType::RED_LED_PORT>()};
-  scheduler.add_task(blink<2 * BASE_DURATION_MS>(clock, gpio3, BoardType::RED_LED_PIN));
+  if constexpr (BoardType::NUM_DEBUG_LEDS >= 2) {
+    board.rcc().enable_gpio_port_clock(BoardType::DEBUG_LED_PORTS[1]);
+    auto& gpio{board.gpio<BoardType::DEBUG_LED_PORTS[1]>()};
+    scheduler.add_task(
+        blink<DURATION_MULTIPLES[1] * BASE_DURATION_MS>(clock, gpio, BoardType::DEBUG_LED_PINS[1]));
+  }
+
+  if constexpr (BoardType::NUM_DEBUG_LEDS >= 3) {
+    board.rcc().enable_gpio_port_clock(BoardType::DEBUG_LED_PORTS[2]);
+    auto& gpio{board.gpio<BoardType::DEBUG_LED_PORTS[2]>()};
+    scheduler.add_task(
+        blink<DURATION_MULTIPLES[2] * BASE_DURATION_MS>(clock, gpio, BoardType::DEBUG_LED_PINS[2]));
+  }
+
+  static_assert(BoardType::NUM_DEBUG_LEDS < 4, "Need to implement blink for more LEDs");
 
   scheduler.start();
 }
