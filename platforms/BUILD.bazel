@@ -28,7 +28,7 @@ platform(
         ":teensy40_mcu",
         ":teensyduino_core",
         ":teensyduino_gpio",
-        ":debug_led",
+        ":one_debug_led",
         ":no_debug_push_button",
         ":teensyduino_adc",
         ":teensyduino_dac",
@@ -48,7 +48,7 @@ platform(
         ":teensy41_mcu",
         ":teensyduino_core",
         ":teensyduino_gpio",
-        ":debug_led",
+        ":one_debug_led",
         ":no_debug_push_button",
         ":teensyduino_adc",
         ":teensyduino_dac",
@@ -68,7 +68,7 @@ platform(
         ":stm32h743xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
-        ":debug_led",
+        ":three_debug_leds",
         ":debug_push_button",
         ":stm32h7xx_adc",
         ":stm32h7xx_dac",
@@ -88,7 +88,7 @@ platform(
         ":stm32l412xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
-        ":debug_led",
+        ":one_debug_led",
         ":no_debug_push_button",
         ":stm32l4xx_adc",
         ":no_dac",
@@ -108,7 +108,7 @@ platform(
         ":stm32l432xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
-        ":debug_led",
+        ":one_debug_led",
         ":no_debug_push_button",
         ":stm32l4xx_adc",
         ":stm32l4xx_dac",
@@ -128,7 +128,7 @@ platform(
         ":stm32l452xx_mcu",
         ":stm32_core",
         ":stm32_gpio",
-        ":debug_led",
+        ":one_debug_led",
         ":debug_push_button",
         ":stm32l4xx_adc",
         ":stm32l4xx_dac",
@@ -240,7 +240,12 @@ constraint_value(
 constraint_setting(name = "led")
 
 constraint_value(
-    name = "debug_led",
+    name = "one_debug_led",
+    constraint_setting = "led",
+)
+
+constraint_value(
+    name = "three_debug_leds",
     constraint_setting = "led",
 )
 
