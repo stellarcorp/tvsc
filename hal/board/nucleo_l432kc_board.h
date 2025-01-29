@@ -122,6 +122,16 @@ class Board final {
     }
   }
 
+  gpio::Gpio& gpio(gpio::Port port) {
+    if (port == 0) {
+      return gpio_port_a_;
+    } else if (port == 1) {
+      return gpio_port_b_;
+    } else if (port == 2) {
+      return gpio_port_c_;
+    }
+  }
+
   time::Clock& clock() { return clock_; }
 
   rcc::Rcc& rcc() { return rcc_; };
