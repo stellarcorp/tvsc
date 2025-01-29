@@ -23,8 +23,8 @@ int main() {
   board.rcc().enable_adc_clock();
 
   {
-    auto& dac_out_gpio{board.gpio<BoardType::DAC_PORT>()};
-    dac_out_gpio.set_pin_mode(BoardType::DAC_PIN, PinMode::ANALOG);
+    auto& dac_out_gpio{board.gpio<BoardType::DAC_CHANNEL_1_PORT>()};
+    dac_out_gpio.set_pin_mode(BoardType::DAC_CHANNEL_1_PIN, PinMode::ANALOG);
   }
 
   auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
@@ -41,12 +41,13 @@ int main() {
       // Do nothing.
     }
 
+    dac.set_resolution(8);
     for (const auto& v : dac_values) {
       dac.set_value(v);
       value_expected = v;
 
       clock.sleep_ms(10);
-      adc.start_conversion(BoardType::DAC_PORT, BoardType::DAC_PIN);
+      adc.start_conversion(BoardType::DAC_CHANNEL_1_PORT, BoardType::DAC_CHANNEL_1_PIN);
       while (adc.is_running()) {
         // Block while we take the measurement.
       }
