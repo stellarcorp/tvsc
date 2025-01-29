@@ -33,6 +33,8 @@ cc_binary(
     deps = [
         "//hal/board",
         "//hal/gpio",
+        "//hal/scheduler",
+        "//hal/time",
     ],
 )
 
