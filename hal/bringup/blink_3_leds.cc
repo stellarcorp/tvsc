@@ -25,18 +25,15 @@ int main() {
 
   board.rcc().enable_gpio_port_clock(BoardType::GREEN_LED_PORT);
   auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
-  Task task{blink<4 * BASE_DURATION_MS>(clock, gpio, BoardType::GREEN_LED_PIN)};
-  scheduler.add_task(task);
+  scheduler.add_task(blink<4 * BASE_DURATION_MS>(clock, gpio, BoardType::GREEN_LED_PIN));
 
   board.rcc().enable_gpio_port_clock(BoardType::YELLOW_LED_PORT);
   auto& gpio2{board.gpio<BoardType::YELLOW_LED_PORT>()};
-  Task task2{blink<3 * BASE_DURATION_MS>(clock, gpio2, BoardType::YELLOW_LED_PIN)};
-  scheduler.add_task(task2);
+  scheduler.add_task(blink<3 * BASE_DURATION_MS>(clock, gpio2, BoardType::YELLOW_LED_PIN));
 
   board.rcc().enable_gpio_port_clock(BoardType::RED_LED_PORT);
   auto& gpio3{board.gpio<BoardType::RED_LED_PORT>()};
-  Task task3{blink<2 * BASE_DURATION_MS>(clock, gpio3, BoardType::RED_LED_PIN)};
-  scheduler.add_task(task3);
+  scheduler.add_task(blink<2 * BASE_DURATION_MS>(clock, gpio3, BoardType::RED_LED_PIN));
 
   scheduler.start();
 }

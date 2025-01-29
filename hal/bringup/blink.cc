@@ -24,10 +24,8 @@ int main() {
   auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
   auto& clock{board.clock()};
 
-  Task task{blink(clock, gpio, BoardType::GREEN_LED_PIN)};
-
   Scheduler<QUEUE_SIZE> scheduler{clock};
-  scheduler.add_task(task);
+  scheduler.add_task(blink(clock, gpio, BoardType::GREEN_LED_PIN));
 
   scheduler.start();
 }

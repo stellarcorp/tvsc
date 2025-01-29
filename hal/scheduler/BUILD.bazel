@@ -10,11 +10,36 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "testing",
+    testonly = True,
+    hdrs = [
+        "sample_tasks.h",
+    ],
+    deps = [
+        ":scheduler",
+        "//hal/time",
+    ],
+)
+
 cc_test(
     name = "scheduler_test",
     srcs = ["scheduler_test.cc"],
     deps = [
         ":scheduler",
+        ":testing",
+        "//hal/time:mock_clock",
+        "//third_party/glog",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "task_test",
+    srcs = ["task_test.cc"],
+    deps = [
+        ":scheduler",
+        ":testing",
         "//hal/time:mock_clock",
         "//third_party/glog",
         "//third_party/gtest",
