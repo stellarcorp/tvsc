@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 
@@ -22,6 +23,8 @@ namespace tvsc::hal::board {
 class Board final {
  public:
   static constexpr gpio::Port NUM_GPIO_PORTS{5};
+  static constexpr gpio::Port NUM_DAC_CHANNELS{2};
+  static constexpr size_t NUM_DEBUG_LEDS{3};
 
   static constexpr gpio::Port GPIO_PORT_A{0};
   static constexpr gpio::Port GPIO_PORT_B{1};
@@ -38,13 +41,24 @@ class Board final {
   static constexpr gpio::Port GREEN_LED_PORT{GPIO_PORT_B};
   static constexpr gpio::Pin GREEN_LED_PIN{0};
 
+  static constexpr std::array<gpio::Port, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{
+      RED_LED_PORT, YELLOW_LED_PORT, GREEN_LED_PORT};
+  static constexpr std::array<gpio::Pin, NUM_DEBUG_LEDS> DEBUG_LED_PINS{RED_LED_PIN, YELLOW_LED_PIN,
+                                                                        GREEN_LED_PIN};
+
   // Location of the push button on this board.
   static constexpr gpio::Port BLUE_PUSH_BUTTON_PORT{GPIO_PORT_C};
   static constexpr gpio::Pin BLUE_PUSH_BUTTON_PIN{13};
 
-  // Output pin of the first DAC when it enabled on external pins.
-  static constexpr gpio::Port DAC_PORT{GPIO_PORT_A};
-  static constexpr gpio::Pin DAC_PIN{4};
+  static constexpr gpio::Port DAC_CHANNEL_1_PORT{GPIO_PORT_A};
+  static constexpr gpio::Pin DAC_CHANNEL_1_PIN{4};
+  static constexpr gpio::Port DAC_CHANNEL_2_PORT{GPIO_PORT_A};
+  static constexpr gpio::Pin DAC_CHANNEL_2_PIN{5};
+
+  static constexpr std::array<gpio::Port, NUM_DAC_CHANNELS> DAC_PORTS{DAC_CHANNEL_1_PORT,
+                                                                      DAC_CHANNEL_2_PORT};
+  static constexpr std::array<gpio::Pin, NUM_DAC_CHANNELS> DAC_PINS{DAC_CHANNEL_1_PIN,
+                                                                    DAC_CHANNEL_2_PIN};
 
  private:
   rcc::RccStm32h7xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE),
@@ -54,8 +68,7 @@ class Board final {
 
   time::ClockStm32xxxx clock_{};
 
-  dac::DacStm32xxxx<0 /* Channel index */> dac0_{reinterpret_cast<void*>(DAC1_BASE)};
-  dac::DacStm32xxxx<1 /* Channel index */> dac1_{reinterpret_cast<void*>(DAC1_BASE)};
+  dac::DacStm32xxxx<NUM_DAC_CHANNELS> dac_{DAC1};
 
   adc::AdcStm32h7xx adc_{reinterpret_cast<void*>(ADC1_BASE)};
 
@@ -100,8 +113,7 @@ class Board final {
 
   power::Power& power() { return power_; }
 
-  dac::Dac& dac() { return dac0_; }
-  dac::Dac& dac2() { return dac1_; }
+  dac::Dac& dac() { return dac_; }
 
   adc::Adc& adc() { return adc_; }
 };

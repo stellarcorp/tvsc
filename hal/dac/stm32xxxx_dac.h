@@ -1,104 +1,85 @@
 #pragma once
 
+#include <array>
 #include <cstdint>
-#include <new>
 
 #include "hal/dac/dac.h"
 #include "hal/register.h"
+#include "third_party/stm32/stm32.h"
+#include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal::dac {
 
-class DacRegisterBank final {
- public:
-  // Offset 0x00
-  volatile Register CR;
-
-  // Offset 0x04
-  volatile Register SWTRGR;
-
-  // Right-aligned (small value) 12-bit value holding register for Channel 1.
-  // Offset 0x08
-  volatile Register DHR12R1;
-
-  // Left-aligned (small value) 12-bit value holding register for Channel 1.
-  // Offset 0x0c
-  volatile Register DHR12L1;
-
-  // 8-bit value holding register for Channel 1.
-  // Offset 0x10
-  volatile Register DHR8R1;
-
-  // Right-aligned (small value) 12-bit value holding register for Channel 2.
-  // Offset 0x14
-  volatile Register DHR12R2;
-
-  // Left-aligned (small value) 12-bit value holding register for Channel 2.
-  // Offset 0x18
-  volatile Register DHR12L2;
-
-  // 8-bit value holding register for Channel 2.
-  // Offset 0x1c
-  volatile Register DHR8R2;
-};
-
-template <uint8_t CHANNEL_INDEX = 0>
-class DacStm32xxxx;
-
-template <>
-class DacStm32xxxx<0 /* CHANNEL_INDEX */> final : public Dac {
+template <uint8_t NUM_CHANNELS = 1>
+class DacStm32xxxx final : public Dac {
  private:
-  DacRegisterBank* registers_;
+  struct Channel final {
+    uint32_t channel_id;
+    DAC_ChannelConfTypeDef config;
+    uint32_t hal_resolution_id{DAC_ALIGN_12B_R};
+    uint8_t bits_resolution{12};
+  };
+
+  DAC_HandleTypeDef hdac_{};
+  std::array<Channel, NUM_CHANNELS> channels_;
 
  public:
-  DacStm32xxxx(void* base_address) : registers_(new (base_address) DacRegisterBank) {
-    // Configure the DAC for software triggering.
-    registers_->CR.set_bit_field_value<3, 3>(0b111);
-    // Disable triggering by external signals.
-    registers_->CR.set_bit_field_value<1, 2>(0b0);
+  DacStm32xxxx(DAC_TypeDef* hal_dac) {
+    hdac_.Instance = hal_dac;
+    HAL_DAC_Init(&hdac_);
+
+    if constexpr (NUM_CHANNELS >= 1) {
+#if defined(DAC_CHANNEL_1)
+      channels_[0].channel_id = DAC_CHANNEL_1;
+#endif
+    }
+    if constexpr (NUM_CHANNELS >= 2) {
+#if defined(DAC_CHANNEL_2)
+      channels_[1].channel_id = DAC_CHANNEL_2;
+#endif
+    }
+    if constexpr (NUM_CHANNELS >= 2) {
+      static_assert(NUM_CHANNELS <= 2, "Implement DAC channels beyond 2");
+    }
+    for (auto& channel : channels_) {
+      channel.config.DAC_Trigger = DAC_TRIGGER_NONE;  // No trigger, direct output
+      channel.config.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
+    }
   }
 
-  void set_value(uint8_t value) override {
-    // Turn on the DAC. This sets the enable bit on the CR register for this channel.
-    registers_->CR.set_bit_field_value<1, 0>(0b1);
-
-    registers_->DHR8R1.set_bit_field_value<8, 0>(value);
-
-    // Trigger the DAC.
-    registers_->SWTRGR.set_bit_field_value<1, 0>(1);
+  void set_value(uint32_t value, uint8_t channel) override {
+    Channel& channel_config{channels_.at(channel)};
+    // Clamp the value according to the bits of resolution requested.
+    if (value > (1UL << channel_config.bits_resolution) - 1) {
+      value = (1UL << channel_config.bits_resolution) - 1;
+    }
+    HAL_DAC_SetValue(&hdac_, channel_config.channel_id, channel_config.hal_resolution_id, value);
+    HAL_DAC_Start(&hdac_, channel_config.channel_id);
   }
 
-  void clear_value() override {
-    // Turn off the DAC.
-    registers_->CR.set_bit_field_value<1, 0>(0b0);
-  }
-};
-
-template <>
-class DacStm32xxxx<1 /* CHANNEL_INDEX */> final : public Dac {
- private:
-  DacRegisterBank* registers_;
-
- public:
-  DacStm32xxxx(void* base_address) : registers_(new (base_address) DacRegisterBank) {
-    // Configure the DAC for software triggering.
-    registers_->CR.set_bit_field_value<3, 3 + 16>(0b111);
-    // Disable triggering by external signals.
-    registers_->CR.set_bit_field_value<1, 2 + 16>(0b0);
+  void clear_value(uint8_t channel) override {
+    // This either turns off the DAC, letting the voltage on the pin float, or leaves the DAC
+    // presenting the last voltage set.
+    const auto channel_id{channels_.at(channel).channel_id};
+    HAL_DAC_Stop(&hdac_, channel_id);
   }
 
-  void set_value(uint8_t value) override {
-    // Turn on the DAC. This sets the enable bit on the CR register for this channel.
-    registers_->CR.set_bit_field_value<1, 16>(0b1);
-
-    registers_->DHR8R2.set_bit_field_value<8, 0>(value);
-
-    // Trigger the DAC.
-    registers_->SWTRGR.set_bit_field_value<1, 1>(1);
-  }
-
-  void clear_value() override {
-    // Turn off the DAC.
-    registers_->CR.set_bit_field_value<1, 16>(0b0);
+  void set_resolution(uint8_t bits_resolution, uint8_t channel) override {
+    if (bits_resolution <= 8) {
+      channels_.at(channel).hal_resolution_id = DAC_ALIGN_8B_R;
+      channels_.at(channel).bits_resolution = bits_resolution;
+    } else if (bits_resolution <= 12) {
+      channels_.at(channel).hal_resolution_id = DAC_ALIGN_12B_R;
+      channels_.at(channel).bits_resolution = bits_resolution;
+    } else if (bits_resolution > 12) {
+      // Clamp the resolution. The value register only accepts 16-bit values. Any more resolution
+      // would cause a loss of MSB bits.
+      if (bits_resolution > 16) {
+        bits_resolution = 16;
+      }
+      channels_.at(channel).hal_resolution_id = DAC_ALIGN_12B_L;
+      channels_.at(channel).bits_resolution = bits_resolution;
+    }
   }
 };
 

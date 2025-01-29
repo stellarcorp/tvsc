@@ -5,40 +5,62 @@
 
 using BoardType = tvsc::hal::board::Board;
 
-using namespace tvsc::hal::gpio;
+template <uint8_t DAC_CHANNEL>
+void run_demo(BoardType& board) {
+  uint32_t dac_8bit_values[] = {0, 1, 2, 4, 8, 16, 32, 64, 128, 256};
+  uint32_t dac_12bit_values[] = {0, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
+  uint32_t dac_16bit_values[] = {0, 256, 512, 1024, 2048, 4096, 8192, 16636, 32768, 65536};
+
+  auto& dac{board.dac()};
+  auto& clock{board.clock()};
+
+  {
+    auto& dac_out_gpio{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>()};
+    dac_out_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], tvsc::hal::gpio::PinMode::ANALOG);
+  }
+
+  dac.set_resolution(8, DAC_CHANNEL);
+  for (const auto& v : dac_8bit_values) {
+    dac.set_value(v, DAC_CHANNEL);
+    clock.sleep_ms(100);
+  }
+
+  dac.clear_value(DAC_CHANNEL);
+  clock.sleep_ms(500);
+
+  dac.set_resolution(12, DAC_CHANNEL);
+  for (const auto& v : dac_12bit_values) {
+    dac.set_value(v, DAC_CHANNEL);
+    clock.sleep_ms(100);
+  }
+
+  dac.clear_value(DAC_CHANNEL);
+  clock.sleep_ms(500);
+
+  dac.set_resolution(16, DAC_CHANNEL);
+  for (const auto& v : dac_16bit_values) {
+    dac.set_value(v, DAC_CHANNEL);
+    clock.sleep_ms(100);
+  }
+
+  dac.clear_value(DAC_CHANNEL);
+  clock.sleep_ms(500);
+}
 
 int main() {
   BoardType board{};
 
   // Turn on clocks for the peripherals that we want.
-  board.rcc().enable_gpio_port_clock(BoardType::GREEN_LED_PORT);
   board.rcc().enable_dac_clock();
 
-  {
-    auto& dac_out_gpio{board.gpio<BoardType::DAC_PORT>()};
-    dac_out_gpio.set_pin_mode(BoardType::DAC_PIN, PinMode::ANALOG);
-  }
-
-  auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
-  gpio.set_pin_mode(BoardType::GREEN_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
-
-  uint8_t dac_values[] = {0, 1, 2, 4, 8, 16, 32, 64, 128, 255};
-  while (true) {
-    auto& dac{board.dac()};
-    auto& clock{board.clock()};
-
-    for (const auto& v : dac_values) {
-      dac.set_value(v);
-      gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
-      clock.sleep_ms(100);
-      gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
-      clock.sleep_ms(400);
+  if constexpr (BoardType::NUM_DAC_CHANNELS == 1) {
+    while (true) {
+      run_demo<0>(board);
     }
-
-    dac.clear_value();
-    gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
-    clock.sleep_ms(500);
-    gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
-    clock.sleep_ms(500);
+  } else if constexpr (BoardType::NUM_DAC_CHANNELS == 2) {
+    while (true) {
+      run_demo<0>(board);
+      run_demo<1>(board);
+    }
   }
 }
