@@ -39,13 +39,15 @@ Task do_something(time::Clock& clock, int& run_count) {
   co_return;
 }
 
-template <size_t QUEUE_SIZE>
+template <size_t QUEUE_SIZE, size_t SUBTASK_CREATION_RATE = 10>
 Task creates_subtask(Scheduler<QUEUE_SIZE>& scheduler, int& run_count) {
-  scheduler.add_task(run_forever(run_count));
   while (true) {
-    ++run_count;
-    // Return a lambda indicating that this Task is always ready to run.
-    co_yield []() { return true; };
+    scheduler.add_task(run_forever(run_count));
+    for (size_t i = 0; i < SUBTASK_CREATION_RATE; ++i) {
+      ++run_count;
+      // Return a lambda indicating that this Task is always ready to run.
+      co_yield []() { return true; };
+    }
   }
 }
 

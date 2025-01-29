@@ -108,19 +108,21 @@ TEST(SchedulerTest, CanRunNeverendingTaskMultipleTimes) {
 }
 
 TEST(SchedulerTest, CanRunTaskThatAddsSubtasks) {
+  static constexpr size_t QUEUE_SIZE{4};
   int run_count{};
   time::MockClock clock{};
-  Scheduler<4> scheduler{clock};
-  Task task{creates_subtask(scheduler, run_count)};
+  Scheduler<QUEUE_SIZE> scheduler{clock};
+  Task task{creates_subtask<QUEUE_SIZE, 1>(scheduler, run_count)};
   scheduler.add_task(std::move(task));
 
   scheduler.run_tasks_once();
   EXPECT_EQ(2, scheduler.queue_size()) << to_string(scheduler);
   EXPECT_EQ(2, run_count);
 
+  run_count = 0;
   scheduler.run_tasks_once();
-  EXPECT_EQ(2, scheduler.queue_size()) << to_string(scheduler);
-  EXPECT_EQ(4, run_count);
+  EXPECT_EQ(3, scheduler.queue_size()) << to_string(scheduler);
+  EXPECT_EQ(3, run_count);
 }
 
 TEST(SchedulerTest, CanRunTaskOnce) {
