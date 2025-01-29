@@ -148,6 +148,6 @@ void RccStm32h7xx::set_clock_to_min_speed() {
   update_sys_tick();
 }
 
-void RccStm32h7xx::update_sys_tick() { SysTick_Config(SystemCoreClock / 10000); }
+void RccStm32h7xx::update_sys_tick() { SysTick_Config(SystemCoreClock / 1000); }
 
 }  // namespace tvsc::hal::rcc
