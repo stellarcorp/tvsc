@@ -25,7 +25,7 @@ Task blink(Clock& clock, Gpio& gpio, Pin pin) {
   gpio.write_pin(pin, 0);
   while (clock.current_time_millis() < stop_time_ms) {
     gpio.toggle_pin(pin);
-    co_yield(clock.current_time_millis() + DELAY_MS) * 1000;
+    co_yield 1000 * (clock.current_time_millis() + DELAY_MS);
   }
   gpio.write_pin(pin, 0);
   co_return;
