@@ -34,9 +34,6 @@ class Board final {
   static constexpr gpio::Port GREEN_LED_PORT{GPIO_PORT_A};
   static constexpr gpio::Pin GREEN_LED_PIN{5};
 
-  static GPIO_TypeDef* GREEN_LED_PORT_HAL;
-  static uint32_t GREEN_LED_PIN_HAL;
-
   // LEDs that might exist, but whose location is unknown.
   static constexpr gpio::Port RED_LED_PORT{GPIO_PORT_B};
   static constexpr gpio::Pin RED_LED_PIN{14};

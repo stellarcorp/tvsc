@@ -84,9 +84,6 @@ cc_library(
 
 cc_library(
     name = "nucleo_l452re_board",
-    srcs = [
-        "nucleo_l452re_board.cc",
-    ],
     hdrs = [
         "nucleo_l452re_board.h",
     ],
