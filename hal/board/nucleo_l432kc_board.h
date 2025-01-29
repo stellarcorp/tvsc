@@ -29,12 +29,9 @@ class Board final {
   static constexpr gpio::Port GPIO_PORT_H{7};
 
   // Location of the LEDs provided by this board.
+  static constexpr size_t NUM_USER_LEDS{1};
   static constexpr gpio::Port GREEN_LED_PORT{GPIO_PORT_B};
   static constexpr gpio::Pin GREEN_LED_PIN{3};
-
-  // LEDs that might exist, but whose location is unknown.
-  static constexpr gpio::Port RED_LED_PORT{GPIO_PORT_B};
-  static constexpr gpio::Pin RED_LED_PIN{14};
 
   static constexpr gpio::Port DAC_PORT{GPIO_PORT_A};
   static constexpr gpio::Pin DAC_PIN{4};
