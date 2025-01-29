@@ -14,6 +14,9 @@ filegroup(
             "//toolchain/nucleo_l4:stm32l452xx_flash_linker_script",
         ],
     }),
+    target_compatible_with = [
+        "@platforms//os:none",
+    ],
 )
 
 cc_library(
