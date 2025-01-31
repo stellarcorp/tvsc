@@ -1,10 +1,6 @@
 #include "hal/adc/stm32l4xx_adc.h"
 
-#include "hal/adc/stm32l4xx_adc_register_bank.h"
 #include "hal/gpio/gpio.h"
-#include "hal/register.h"
-
-extern uint32_t SystemCoreClock;
 
 namespace tvsc::hal::adc {
 

@@ -4,7 +4,6 @@
 #include <new>
 
 #include "hal/adc/adc.h"
-#include "hal/adc/stm32l4xx_adc_register_bank.h"
 #include "hal/gpio/gpio.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
