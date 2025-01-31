@@ -8,172 +8,144 @@ extern uint32_t SystemCoreClock;
 
 namespace tvsc::hal::adc {
 
-static constexpr uint8_t get_channel(gpio::Port port, gpio::Pin pin) {
-  if (port == 0) {
-    if (pin == 0) {
+static constexpr uint32_t get_channel(gpio::PortPin pin) {
+  if (pin.port == 0) {
+    if (pin.pin == 0) {
       // ADC1_IN5
-      return 5;
-    } else if (pin == 1) {
+      return ADC_CHANNEL_5;
+    } else if (pin.pin == 1) {
       // ADC1_IN6
-      return 6;
-    } else if (pin == 2) {
+      return ADC_CHANNEL_6;
+    } else if (pin.pin == 2) {
       // ADC1_IN7
-      return 7;
-    } else if (pin == 3) {
+      return ADC_CHANNEL_7;
+    } else if (pin.pin == 3) {
       // ADC1_IN8
-      return 8;
-    } else if (pin == 4) {
+      return ADC_CHANNEL_8;
+    } else if (pin.pin == 4) {
       // ADC1_IN9
-      return 9;
-    } else if (pin == 5) {
+      return ADC_CHANNEL_9;
+    } else if (pin.pin == 5) {
       // ADC1_IN10
-      return 10;
-    } else if (pin == 6) {
+      return ADC_CHANNEL_10;
+    } else if (pin.pin == 6) {
       // ADC1_IN11
-      return 11;
-    } else if (pin == 7) {
+      return ADC_CHANNEL_11;
+    } else if (pin.pin == 7) {
       // ADC1_IN12
-      return 12;
+      return ADC_CHANNEL_12;
     }
-  } else if (port == 1) {
-  } else if (port == 2) {
-  } else if (port == 3) {
-  } else if (port == 4) {
-  } else if (port == 5) {
-  } else if (port == 6) {
-  } else if (port == 7) {
+  } else if (pin.port == 1) {
+  } else if (pin.port == 2) {
+  } else if (pin.port == 3) {
+  } else if (pin.port == 4) {
+  } else if (pin.port == 5) {
+  } else if (pin.port == 6) {
+  } else if (pin.port == 7) {
   }
   return 0xff;
 }
 
-void AdcStm32l4xx::start_conversion(gpio::Port port, gpio::Pin pin, uint8_t /*gain*/) {
-  // If the ADC is not enabled (that is, if ADEN != 1) then we enable the ADC.
-  if (!registers_->CR.bit_field_value<1, 0>()) {
-    // Clear the ADRDY flag.
-    registers_->ISR.set_bit_field_value<1, 0>(1);
+void AdcStm32l4xx::start_conversion(gpio::PortPin pin, uint32_t* destination,
+                                    size_t destination_buffer_size) {
+  // Enable ADC Clock
+  __HAL_RCC_ADC_CLK_ENABLE();
 
-    // Enable the ADC by setting the ADEN flag on the CR register.
-    registers_->CR.set_bit_field_value<1, 0>(1);
+  // Enable DMA Clock
+  __HAL_RCC_DMA1_CLK_ENABLE();
 
-    // Wait for the ADRDY flag to be asserted.
-    while (!registers_->ISR.bit_field_value<1, 0>()) {
-      // Do nothing.
-    }
+  // Configure DMA
+  // TODO(james): Does this work for the H743's BDMA as well?
+  dma_.Init.Direction = DMA_PERIPH_TO_MEMORY;
+  dma_.Init.PeriphInc = DMA_PINC_DISABLE;
+  dma_.Init.MemInc = DMA_MINC_ENABLE;
+  // TODO(james): These alignment values are suspect.
+  dma_.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+  dma_.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+  dma_.Init.Mode = DMA_CIRCULAR;
+  dma_.Init.Priority = DMA_PRIORITY_HIGH;
 
-    // Clear the ADRDY flag for completeness.
-    registers_->ISR.set_bit_field_value<1, 0>(1);
-  }
+  HAL_DMA_Init(&dma_);
 
-  /* TODO(james): Add error handling of some form. */
-  const uint8_t channel{get_channel(port, pin)};
-  if (channel == 0xff) {
-    return;
-  }
+  // Link DMA to ADC1
+  // __HAL_LINKDMA(&adc_, DMA_Handle, dma_); // Handled in constructor.
 
-  // TODO(james): Implement gain by routing pin voltage through onboard opamp and doing the ADC
-  // on the opamp's output.
+  // Configure ADC.
+  adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
+  adc_.Init.Resolution = ADC_RESOLUTION_12B;
+  adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  adc_.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  adc_.Init.EOCSelection = ADC_EOC_SEQ_CONV;
+  adc_.Init.ContinuousConvMode = ENABLE;  // Continuous mode for DMA
+  adc_.Init.DMAContinuousRequests = ENABLE;
+  adc_.Init.NbrOfConversion = 1;
+  adc_.Init.ExternalTrigConv = ADC_SOFTWARE_START;
 
-  // Put the ADC in single conversion mode.
-  registers_->CFGR.set_bit_field_value<1, 13>(0);
+  HAL_ADC_Init(&adc_);
 
-  // Turn off "discontinuous" mode as well. Not sure how "discontinuous" and single mode differ.
-  registers_->CFGR.set_bit_field_value<1, 16>(0);
+  // Configure ADC Channel.
+  channel_config_.Channel = get_channel(pin);
+  channel_config_.Rank = ADC_REGULAR_RANK_1;
+  channel_config_.SamplingTime = ADC_SAMPLETIME_24CYCLES_5;
 
-  // Right align the resulting data.
-  registers_->CFGR.set_bit_field_value<1, 5>(0);
+  HAL_ADC_ConfigChannel(&adc_, &channel_config_);
 
-  // Set result data resolution to 8-bit.
-  registers_->CFGR.set_bit_field_value<2, 3>(0b10);
-
-  // Tell the ADC that we are doing one conversion.
-  registers_->SQR1.set_bit_field_value<4, 0>(0b0000);
-
-  // Configure the first sequence to use the pin as the input to the ADC.
-  registers_->SQR1.set_bit_field_value<5, 6>(channel);
-
-  // Configure the sample time to be ~50 ADC clock cycles.
-  // TODO(james): Write code to configure the sample time in us instead of clock cycles of the ADC.
-  if (channel < 10) {
-    // Sample time configuration for the first nine channels are in SMPR1.
-    registers_->SMPR1.set_bit_field_value<3>(0b100, 3 * channel);
-  } else {
-    // SMPR2 handles channels 10-18.
-    registers_->SMPR2.set_bit_field_value<3>(0b100, 3 * (channel - 10));
-  }
-
-  // Select software triggering.
-  registers_->CFGR.set_bit_field_value<2, 10>(0b00);
-
-  // Start a conversion. This sets the ADSTART flag of the CR register.
-  registers_->CR.set_bit_field_value<1, 2>(1);
-}
-
-uint16_t AdcStm32l4xx::read_result() {
-  return static_cast<uint16_t>(registers_->DR.bit_field_value<16, 0>());
+  HAL_ADC_Start_DMA(&adc_, destination, destination_buffer_size);
 }
 
 bool AdcStm32l4xx::is_running() {
-  return registers_->CR.bit_field_value<1, 2>() || registers_->CR.bit_field_value<1, 31>();
+  const auto state{HAL_ADC_GetState(&adc_)};
+  return (state & HAL_ADC_STATE_REG_BUSY) || (state & HAL_ADC_STATE_INJ_BUSY) ||
+         (state & HAL_ADC_STATE_BUSY_INTERNAL);
 }
 
-void AdcStm32l4xx::stop() {
-  registers_->CR.set_bit_field_value<1, 4>(1);
+void AdcStm32l4xx::stop() { HAL_ADC_Stop_DMA(&adc_); }
 
-  while (registers_->CR.bit_field_value<1, 4>()) {
-    // ADC is stopping. Do nothing.
-  }
+void initialize_for_calibration(ADC_HandleTypeDef& adc) {
+  adc.Instance = ADC1;
+  adc.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
+  adc.Init.Resolution = ADC_RESOLUTION_8B;
+  adc.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  adc.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  adc.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  adc.Init.LowPowerAutoWait = DISABLE;
+  adc.Init.ContinuousConvMode = DISABLE;
+  adc.Init.NbrOfConversion = 1;
+  adc.Init.DiscontinuousConvMode = DISABLE;
+  adc.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  adc.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  adc.Init.DMAContinuousRequests = DISABLE;
+  adc.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
+
+  HAL_ADC_Init(&adc);
 }
 
 void AdcStm32l4xx::calibrate_single_ended_input() {
-  // Stop any ongoing conversions.
-  if (registers_->CR.bit_field_value<1, 2>()) {
-    registers_->CR.set_bit_field_value<1, 0>(0);
+  __HAL_RCC_ADC_CLK_ENABLE();
+
+  if (is_running()) {
+    stop();
   }
 
-  // Issue the ADDIS disable command to the ADC.
-  registers_->CR.set_bit_field_value<1, 1>(1);
-  // Monitor the ADEN bit to pause until the ADC has been disabled.
-  while (registers_->CR.bit_field_value<1, 0>()) {
-    // Do nothing while the ADC shuts down.
-  }
+  initialize_for_calibration(adc_);
 
-  // Set up to calibrate single-ended conversions by setting the ADCALDIF to zero, meaning not
-  // differential inputs mode.
-  registers_->CR.set_bit_field_value<1, 30>(0);
-
-  // Start the calibration.
-  registers_->CR.set_bit_field_value<1, 31>(1);
+  HAL_ADCEx_Calibration_Start(&adc_, ADC_SINGLE_ENDED);
 }
 
 void AdcStm32l4xx::calibrate_differential_input() {
-  // Stop any ongoing conversions.
-  if (registers_->CR.bit_field_value<1, 2>()) {
-    registers_->CR.set_bit_field_value<1, 0>(0);
+  __HAL_RCC_ADC_CLK_ENABLE();
+
+  if (is_running()) {
+    stop();
   }
 
-  // Issue the ADDIS disable command to the ADC.
-  registers_->CR.set_bit_field_value<1, 1>(1);
-  // Monitor the ADEN bit to pause until the ADC has been disabled.
-  while (registers_->CR.bit_field_value<1, 0>()) {
-    // Do nothing while the ADC shuts down.
-  }
+  initialize_for_calibration(adc_);
 
-  // Set up to calibrate single-ended conversions by setting the ADCALDIF to one.
-  registers_->CR.set_bit_field_value<1, 30>(1);
-
-  // Start the calibration.
-  registers_->CR.set_bit_field_value<1, 31>(1);
+  HAL_ADCEx_Calibration_Start(&adc_, ADC_DIFFERENTIAL_ENDED);
 }
 
-uint16_t AdcStm32l4xx::read_calibration_factor() {
-  uint16_t result{static_cast<uint16_t>(registers_->CALFACT.bit_field_value<7, 16>())};
-  result = (result << 8) | static_cast<uint16_t>(registers_->CALFACT.bit_field_value<7, 0>());
-  return result;
-}
+uint32_t AdcStm32l4xx::read_calibration_factor() { return adc_.Instance->CALFACT; }
 
-void AdcStm32l4xx::write_calibration_factor(uint16_t factor) {
-  registers_->CALFACT.set_bit_field_value<7, 16>(factor >> 8);
-  registers_->CALFACT.set_bit_field_value<7, 0>(factor);
-}
+void AdcStm32l4xx::write_calibration_factor(uint32_t factor) { adc_.Instance->CALFACT = factor; }
 
 }  // namespace tvsc::hal::adc

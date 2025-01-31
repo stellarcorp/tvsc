@@ -16,8 +16,8 @@ class AdcStm32h7xx final : public Adc {
  public:
   AdcStm32h7xx(void* base_address) : registers_(new (base_address) Stm32h7xxAdcRegisterBank) {}
 
-  void start_conversion(gpio::Port port, gpio::Pin pin, uint8_t gain = 1) override;
-  uint16_t read_result() override;
+  void start_conversion(gpio::Port port, gpio::Pin pin, uint8_t gain, uint32_t* destination,
+                        size_t destination_buffer_size) override;
 
   void calibrate_single_ended_input() override;
   void calibrate_differential_input() override;

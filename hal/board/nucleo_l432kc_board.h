@@ -66,7 +66,7 @@ class Board final {
 
   dac::DacStm32xxxx<NUM_DAC_CHANNELS> dac_{DAC};
 
-  adc::AdcStm32l4xx adc_{reinterpret_cast<void*>(ADC1_BASE)};
+  adc::AdcStm32l4xx adc_{ADC1, DMA1_Channel1, DMA_REQUEST_0};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.

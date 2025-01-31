@@ -70,7 +70,9 @@ class Board final {
 
   dac::DacStm32xxxx<NUM_DAC_CHANNELS> dac_{DAC1};
 
-  adc::AdcStm32h7xx adc_{reinterpret_cast<void*>(ADC1_BASE)};
+  adc::AdcStm32xx adc_{ADC1, DMA1_Channel0, DMA_REQUEST_ADC1};
+  adc::AdcStm32xx adc2_{ADC2, DMA1_Channel1, DMA_REQUEST_ADC2};
+  adc::AdcStm32xx adc3_{ADC3, BDMA1_Channel0, BDMA_REQUEST_ADC3};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32H7xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
@@ -130,6 +132,8 @@ class Board final {
   dac::Dac& dac() { return dac_; }
 
   adc::Adc& adc() { return adc_; }
+  adc::Adc& adc2() { return adc2_; }
+  adc::Adc& adc3() { return adc3_; }
 };
 
 }  // namespace tvsc::hal::board

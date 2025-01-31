@@ -32,7 +32,8 @@ static constexpr uint8_t get_channel(gpio::Port port, gpio::Pin pin) {
   return 0xff;
 }
 
-void AdcStm32h7xx::start_conversion(gpio::Port port, gpio::Pin pin, uint8_t /*gain*/) {
+ void AdcStm32h7xx::start_conversion(gpio::Port port, gpio::Pin pin, uint8_t gain, uint32_t* destination,
+					      size_t destination_buffer_size) {
   /* TODO(james): Add error handling of some form. */
   const uint8_t channel{get_channel(port, pin)};
   if (channel == 0xff) {
