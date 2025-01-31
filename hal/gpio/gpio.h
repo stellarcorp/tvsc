@@ -14,6 +14,11 @@ using Port = uint8_t;
  */
 using Pin = uint8_t;
 
+struct PortPin final {
+  Port port{};
+  Pin pin{};
+};
+
 /**
  * Union across all relevant platforms of all possible modes for a pin. Some modes will not be
  * supported on some platforms.
