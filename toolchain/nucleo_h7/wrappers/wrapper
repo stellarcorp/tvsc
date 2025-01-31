@@ -1,6 +1,0 @@
-#!/bin/bash
- 
-NAME=$(basename "$0")
-TOOLCHAIN_BINDIR=external/com_github_tvsc_arm-none-eabi-gcc-11.3.1/tools/bin
- 
-exec "${TOOLCHAIN_BINDIR}"/"${NAME}" "$@"

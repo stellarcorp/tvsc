@@ -60,26 +60,6 @@ platform(
 )
 
 platform(
-    name = "nucleo_h743zi",
-    constraint_values = [
-        "@platforms//cpu:armv7e-mf",
-        "@platforms//os:none",
-        ":stm32h7xx",
-        ":stm32h743xx_mcu",
-        ":stm32_core",
-        ":stm32_gpio",
-        ":three_debug_leds",
-        ":debug_push_button",
-        ":no_adc", #":stm32h7xx_adc",
-        ":no_dac", #":stm32h7xx_dac",
-        ":stm32_spi",
-        ":stm32_eeprom",
-        ":no_networking",
-        ":nucleo_h743zi_board",
-    ],
-)
-
-platform(
     name = "nucleo_l412kb",
     constraint_values = [
         "@platforms//cpu:armv7e-mf",
@@ -152,18 +132,8 @@ constraint_value(
     constraint_setting = "cpu_series",
 )
 
-constraint_value(
-    name = "stm32h7xx",
-    constraint_setting = "cpu_series",
-)
-
 # Specific MCU.
 constraint_setting(name = "mcu")
-
-constraint_value(
-    name = "stm32h743xx_mcu",
-    constraint_setting = "mcu",
-)
 
 constraint_value(
     name = "stm32l412xx_mcu",
@@ -276,11 +246,6 @@ constraint_value(
 )
 
 constraint_value(
-    name = "stm32h7xx_adc",
-    constraint_setting = "adc",
-)
-
-constraint_value(
     name = "stm32l4xx_adc",
     constraint_setting = "adc",
 )
@@ -295,11 +260,6 @@ constraint_setting(name = "dac")
 
 constraint_value(
     name = "teensyduino_dac",
-    constraint_setting = "dac",
-)
-
-constraint_value(
-    name = "stm32h7xx_dac",
     constraint_setting = "dac",
 )
 
@@ -370,11 +330,6 @@ constraint_value(
 # Board-specific constraints. Some things are just directly dependent on the exact board
 # configuration, for example, the wiring of signals to pins.
 constraint_setting(name = "board_type")
-
-constraint_value(
-    name = "nucleo_h743zi_board",
-    constraint_setting = "board_type",
-)
 
 constraint_value(
     name = "nucleo_l412kb_board",

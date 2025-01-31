@@ -1,9 +1,6 @@
 filegroup(
     name = "linker_script",
     srcs = select({
-        "//platforms:nucleo_h743zi_board": [
-            "//toolchain/nucleo_h7:stm32h743xx_flash_linker_script",
-        ],
         "//platforms:nucleo_l412kb_board": [
             "//toolchain/nucleo_l4:stm32l412xx_flash_linker_script",
         ],

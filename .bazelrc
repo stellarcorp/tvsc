@@ -25,11 +25,6 @@ build:teensy40 --cpu=armv7e-mf --crosstool_top=//toolchain/teensy:gcc_toolchain 
 build:teensy41 --platforms=//platforms:teensy41
 build:teensy41 --cpu=armv7e-mf --crosstool_top=//toolchain/teensy:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
-build:nucleo_h743zi --platforms=//platforms:nucleo_h743zi
-build:nucleo_h743zi --cpu=armv7e-mf --crosstool_top=//toolchain/nucleo_h7:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
-build:nucleo_h743zi --copt -DSTM32H743xx
-build:nucleo_h743zi --copt -DNUCLEO_H743ZI
-
 build:nucleo_l412kb --platforms=//platforms:nucleo_l412kb
 build:nucleo_l412kb --cpu=armv7e-mf --crosstool_top=//toolchain/nucleo_l4:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 build:nucleo_l412kb --copt -DSTM32L412xx

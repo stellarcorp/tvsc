@@ -22,9 +22,6 @@ cc_library(
     deps = [
         ":stm32_headers",
     ] + select({
-        "//platforms:stm32h743xx_mcu": [
-            ":stm32h743xx",
-        ],
         "//platforms:stm32l412xx_mcu": [
             ":stm32l412xx",
         ],
@@ -35,21 +32,6 @@ cc_library(
             ":stm32l452xx",
         ],
     }),
-    alwayslink = True,
-)
-
-cc_library(
-    name = "stm32h743xx",
-    srcs = [
-        "startup_stm32h743xx.s",
-        "system_stm32h7xx.c",
-    ],
-    target_compatible_with = [
-        "//platforms:stm32h743xx_mcu",
-    ],
-    deps = [
-        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_H7:nucleo_h743xx_hal",
-    ],
     alwayslink = True,
 )
 

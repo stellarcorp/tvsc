@@ -9,9 +9,6 @@ cc_library(
     }),
     visibility = ["//visibility:public"],
     deps = select({
-        "//platforms:nucleo_h743zi_board": [
-            ":nucleo_h743zi_board",
-        ],
         "//platforms:nucleo_l412kb_board": [
             ":nucleo_l412kb_board",
         ],
@@ -22,25 +19,6 @@ cc_library(
             ":nucleo_l452re_board",
         ],
     }),
-)
-
-cc_library(
-    name = "nucleo_h743zi_board",
-    hdrs = [
-        "nucleo_h743zi_board.h",
-    ],
-    target_compatible_with = [
-        "//platforms:nucleo_h743zi_board",
-    ],
-    deps = [
-        "//hal",
-        "//hal/dac",
-        "//hal/gpio",
-        "//hal/power",
-        "//hal/rcc",
-        "//hal/time",
-        "//third_party/stm32",
-    ],
 )
 
 cc_library(
