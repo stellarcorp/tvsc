@@ -4,10 +4,6 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "hal/adc/adc.h"
-#include "hal/adc/stm32h7xx_adc.h"
-#include "hal/dac/dac.h"
-#include "hal/dac/stm32xxxx_dac.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
 #include "hal/power/power.h"
@@ -50,16 +46,6 @@ class Board final {
   static constexpr gpio::Port BLUE_PUSH_BUTTON_PORT{GPIO_PORT_C};
   static constexpr gpio::Pin BLUE_PUSH_BUTTON_PIN{13};
 
-  static constexpr gpio::Port DAC_CHANNEL_1_PORT{GPIO_PORT_A};
-  static constexpr gpio::Pin DAC_CHANNEL_1_PIN{4};
-  static constexpr gpio::Port DAC_CHANNEL_2_PORT{GPIO_PORT_A};
-  static constexpr gpio::Pin DAC_CHANNEL_2_PIN{5};
-
-  static constexpr std::array<gpio::Port, NUM_DAC_CHANNELS> DAC_PORTS{DAC_CHANNEL_1_PORT,
-                                                                      DAC_CHANNEL_2_PORT};
-  static constexpr std::array<gpio::Pin, NUM_DAC_CHANNELS> DAC_PINS{DAC_CHANNEL_1_PIN,
-                                                                    DAC_CHANNEL_2_PIN};
-
  private:
   rcc::RccStm32h7xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE),
                          reinterpret_cast<void*>(ADC1_BASE)};
@@ -67,12 +53,6 @@ class Board final {
   power::PowerStm32H7xx power_{reinterpret_cast<void*>(PWR_BASE)};
 
   time::ClockStm32xxxx clock_{};
-
-  dac::DacStm32xxxx<NUM_DAC_CHANNELS> dac_{DAC1};
-
-  adc::AdcStm32xx adc_{ADC1, DMA1_Channel0, DMA_REQUEST_ADC1};
-  adc::AdcStm32xx adc2_{ADC2, DMA1_Channel1, DMA_REQUEST_ADC2};
-  adc::AdcStm32xx adc3_{ADC3, BDMA1_Channel0, BDMA_REQUEST_ADC3};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32H7xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
@@ -128,12 +108,6 @@ class Board final {
   rcc::Rcc& rcc() { return rcc_; };
 
   power::Power& power() { return power_; }
-
-  dac::Dac& dac() { return dac_; }
-
-  adc::Adc& adc() { return adc_; }
-  adc::Adc& adc2() { return adc2_; }
-  adc::Adc& adc3() { return adc3_; }
 };
 
 }  // namespace tvsc::hal::board
