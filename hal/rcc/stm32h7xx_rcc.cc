@@ -2,6 +2,7 @@
 
 #include "hal/gpio/gpio.h"
 #include "third_party/stm32/stm32.h"
+#include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal::rcc {
 
@@ -20,6 +21,10 @@ void RccStm32h7xx::enable_dac_clock() {
 void RccStm32h7xx::disable_dac_clock() {
   rcc_registers_->APB1LENR.set_bit_field_value_and_block<1, 29>(0);
 }
+
+void RccStm32h7xx::enable_dma_clock() { __HAL_RCC_DMA1_CLK_ENABLE(); }
+
+void RccStm32h7xx::disable_dma_clock() { __HAL_RCC_DMA1_CLK_DISABLE(); }
 
 void RccStm32h7xx::enable_adc_clock() {
   // Use the system clock for the ADC.

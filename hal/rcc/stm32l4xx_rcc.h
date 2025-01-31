@@ -136,6 +136,9 @@ class RccStm32L4xx final : public Rcc {
   void enable_dac_clock() override;
   void disable_dac_clock() override;
 
+  void enable_dma_clock() override;
+  void disable_dma_clock() override;
+
   void set_clock_to_max_speed() override;
   void set_clock_to_min_speed() override;
 };

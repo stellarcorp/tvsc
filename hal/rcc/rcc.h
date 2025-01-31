@@ -22,6 +22,9 @@ class Rcc {
   virtual void enable_adc_clock() = 0;
   virtual void disable_adc_clock() = 0;
 
+  virtual void enable_dma_clock() = 0;
+  virtual void disable_dma_clock() = 0;
+
   virtual void set_clock_to_max_speed() = 0;
   virtual void set_clock_to_min_speed() = 0;
 };

@@ -22,6 +22,10 @@ void RccStm32L4xx::disable_dac_clock() {
   rcc_registers_->APB1ENR1.set_bit_field_value_and_block<1, 29>(0);
 }
 
+void RccStm32L4xx::enable_dma_clock() { __HAL_RCC_DMA1_CLK_ENABLE(); }
+
+void RccStm32L4xx::disable_dma_clock() { __HAL_RCC_DMA1_CLK_DISABLE(); }
+
 void RccStm32L4xx::enable_adc_clock() {
   // Use the system clock for the ADC.
   rcc_registers_->CCIPR.set_bit_field_value_and_block<2, 28>(0b11);
