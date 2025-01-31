@@ -20,9 +20,10 @@ filegroup(
 )
 
 cc_library(
-    name = "blink",
+    name = "tasks",
     hdrs = [
         "blink.h",
+        "dac_demo.h",
     ],
     deps = [
         "//hal/board",
@@ -47,7 +48,7 @@ cc_binary(
         "//conditions:default": [],
     }),
     deps = [
-        ":blink",
+        ":tasks",
         "//hal/board",
         "//hal/gpio",
         "//hal/scheduler",
@@ -70,7 +71,7 @@ cc_binary(
         "//conditions:default": [],
     }),
     deps = [
-        ":blink",
+        ":tasks",
         "//hal/board",
         "//hal/gpio",
         "//hal/scheduler",
@@ -95,8 +96,11 @@ cc_binary(
         "//conditions:default": [],
     }),
     deps = [
+        ":tasks",
         "//hal/board",
         "//hal/gpio",
+        "//hal/scheduler",
+        "//hal/time",
     ],
 )
 
@@ -116,6 +120,7 @@ cc_binary(
         "//conditions:default": [],
     }),
     deps = [
+        ":tasks",
         "//hal/board",
         "//hal/gpio",
         "//hal/scheduler",
