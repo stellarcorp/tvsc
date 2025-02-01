@@ -76,7 +76,15 @@ class Board final {
   static constexpr gpio::Port GPIO_PORT_G{6};
   static constexpr size_t NUM_DISALLOWED_PORTS{4};
 
+  static Board board_;
+
+  // Private constructor to restrict inadvertent instantiation and copying.
+  Board();
+
  public:
+  // One board per executable.
+  static Board& board();
+
   template <gpio::Port GPIO_PORT>
   gpio::Gpio& gpio() {
     static_assert(

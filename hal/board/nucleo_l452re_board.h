@@ -8,6 +8,8 @@
 #include "hal/adc/stm32l4xx_adc.h"
 #include "hal/dac/dac.h"
 #include "hal/dac/stm32xxxx_dac.h"
+#include "hal/dma/dma.h"
+#include "hal/dma/stm32l4xx_dma.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
 #include "hal/power/power.h"
@@ -71,7 +73,8 @@ class Board final {
 
   dac::DacStm32xxxx<NUM_DAC_CHANNELS> dac_{DAC};
 
-  adc::AdcStm32l4xx adc_{ADC1, DMA1_Channel1, DMA_REQUEST_0};
+  dma::DmaStm32l4xx dma_{DMA1_Channel1, DMA_REQUEST_0};
+  adc::AdcStm32l4xx adc_{ADC1, dma_};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
@@ -79,7 +82,15 @@ class Board final {
   static constexpr gpio::Port GPIO_PORT_G{6};
   static constexpr size_t NUM_DISALLOWED_PORTS{2};
 
+  static Board board_;
+
+  // Private constructor to restrict inadvertent instantiation and copying.
+  Board();
+
  public:
+  // One board per executable.
+  static Board& board();
+
   template <gpio::Port GPIO_PORT>
   gpio::Gpio& gpio() {
     static_assert(
@@ -119,6 +130,12 @@ class Board final {
     }
   }
 
+  /**
+   * Accessor for GPIO periperhals. Note that the templated version above is vastly preferred, as it
+   * gives compile-time errors, as opposed to runtime errors like this method. This method should
+   * only be used as to lookup GPIO ports using integer values that can be evaluated at
+   * compile-time; these integer values will mainly come from STM's HAL.
+   */
   gpio::Gpio& gpio(gpio::Port port) {
     if (port == 0) {
       return gpio_port_a_;
@@ -130,6 +147,8 @@ class Board final {
       return gpio_port_d_;
     } else if (port == 4) {
       return gpio_port_e_;
+    } else if (port == 7) {
+      return gpio_port_h_;
     }
   }
 
@@ -142,6 +161,8 @@ class Board final {
   dac::Dac& dac() { return dac_; }
 
   adc::Adc& adc() { return adc_; }
+
+  dma::Dma& dma() { return dma_; }
 };
 
 }  // namespace tvsc::hal::board

@@ -1,5 +1,8 @@
 cc_library(
     name = "board",
+    srcs = [
+        "board.cc",
+    ],
     hdrs = [
         "board.h",
     ],
@@ -19,10 +22,14 @@ cc_library(
             ":nucleo_l452re_board",
         ],
     }),
+    alwayslink = True,
 )
 
 cc_library(
     name = "nucleo_l412kb_board",
+    srcs = [
+        "nucleo_l412kb_board.cc",
+    ],
     hdrs = [
         "nucleo_l412kb_board.h",
     ],
@@ -32,6 +39,7 @@ cc_library(
     deps = [
         "//hal",
         "//hal/adc",
+        "//hal/dma",
         "//hal/gpio",
         "//hal/power",
         "//hal/rcc",
@@ -42,6 +50,9 @@ cc_library(
 
 cc_library(
     name = "nucleo_l432kc_board",
+    srcs = [
+        "nucleo_l432kc_board.cc",
+    ],
     hdrs = [
         "nucleo_l432kc_board.h",
     ],
@@ -52,6 +63,7 @@ cc_library(
         "//hal",
         "//hal/adc",
         "//hal/dac",
+        "//hal/dma",
         "//hal/gpio",
         "//hal/power",
         "//hal/rcc",
@@ -62,6 +74,9 @@ cc_library(
 
 cc_library(
     name = "nucleo_l452re_board",
+    srcs = [
+        "nucleo_l452re_board.cc",
+    ],
     hdrs = [
         "nucleo_l452re_board.h",
     ],
@@ -72,6 +87,7 @@ cc_library(
         "//hal",
         "//hal/adc",
         "//hal/dac",
+        "//hal/dma",
         "//hal/gpio",
         "//hal/power",
         "//hal/rcc",
