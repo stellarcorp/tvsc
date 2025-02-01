@@ -17,7 +17,7 @@ static constexpr size_t QUEUE_SIZE{4};
 
 int main() {
   static constexpr uint64_t BASE_DURATION_MS{200};
-  BoardType board{};
+  BoardType& board{BoardType::board()};
 
   auto& clock{board.clock()};
 

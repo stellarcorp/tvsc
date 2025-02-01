@@ -17,7 +17,7 @@ using namespace tvsc::hal::scheduler;
 static constexpr size_t QUEUE_SIZE{1};
 
 int main() {
-  BoardType board{};
+  BoardType& board{BoardType::board()};
 
   board.rcc().enable_gpio_port_clock(BoardType::GREEN_LED_PORT);
 

@@ -8,7 +8,7 @@ using BoardType = tvsc::hal::board::Board;
 using namespace tvsc::hal::gpio;
 
 int main() {
-  BoardType board{};
+  BoardType& board{BoardType::board()};
   auto& rcc{board.rcc()};
   auto& power{board.power()};
 

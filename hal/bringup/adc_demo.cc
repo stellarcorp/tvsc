@@ -144,7 +144,7 @@ using namespace tvsc::hal::bringup;
 using namespace tvsc::hal::scheduler;
 
 int main() {
-  BoardType board{};
+  BoardType& board{BoardType::board()};
 
   Scheduler<4 /*QUEUE_SIZE*/> scheduler{board.clock()};
   scheduler.add_task(run_adc_demo(board));
