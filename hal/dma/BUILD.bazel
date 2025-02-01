@@ -1,0 +1,39 @@
+cc_library(
+    name = "dma_headers",
+    hdrs = [
+        "dma.h",
+    ],
+)
+
+cc_library(
+    name = "dma",
+    target_compatible_with = select({
+        "//platforms:stm32l4xx_dma": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":dma_headers",
+    ] + select({
+        "//platforms:stm32l4xx_dma": [
+            ":stm32l4xx_dma",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32l4xx_dma",
+    srcs = [
+        "stm32l4xx_dma.cc",
+    ],
+    hdrs = [
+        "stm32l4xx_dma.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32l4xx_dma",
+    ],
+    deps = [
+        ":dma_headers",
+        "//third_party/stm32",
+    ],
+)
