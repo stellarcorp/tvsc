@@ -47,40 +47,9 @@ void RccStm32L4xx::enable_adc_clock() {
       i--;
     }
   }
-
-  // Clear the ADRDY flag.
-  adc_registers_->ISR.set_bit_field_value<1, 0>(1);
-
-  // Enable the ADC by setting the ADEN flag on the CR register.
-  adc_registers_->CR.set_bit_field_value<1, 0>(1);
-
-  // Wait for the ADRDY flag to be asserted.
-  while (!adc_registers_->ISR.bit_field_value<1, 0>()) {
-    // Do nothing.
-  }
-
-  // Clear the ADRDY flag for completeness.
-  adc_registers_->ISR.set_bit_field_value<1, 0>(1);
 }
 
 void RccStm32L4xx::disable_adc_clock() {
-  // Just return if there is an ongoing ADDIS command to stop the ADC.
-  if (adc_registers_->CR.bit_field_value<1, 1>()) {
-    return;
-  }
-
-  // Stop any ongoing conversions.
-  if (adc_registers_->CR.bit_field_value<1, 2>()) {
-    adc_registers_->CR.set_bit_field_value<1, 0>(0);
-  }
-
-  // Issue the ADDIS disable command to the ADC.
-  adc_registers_->CR.set_bit_field_value<1, 1>(1);
-  // Monitor the ADEN bit to pause until the ADC has been disabled.
-  while (adc_registers_->CR.bit_field_value<1, 0>()) {
-    // Do nothing while the ADC shuts down.
-  }
-
   // Enter "deep-power-down" state. Note that this automatically disables the voltage regulator as
   // well.
   adc_registers_->CR.set_bit_field_value_and_block<1, 29>(1);

@@ -110,23 +110,13 @@ class RccStm32L4xx final : public Rcc {
   RccStm32L4xx(void* rcc_base_address, void* sys_tick_base_address, void* adc_base_address)
       : rcc_registers_(new (rcc_base_address) RccRegisterBank),
         sys_tick_registers_(new (sys_tick_base_address) SysTickRegisterBank),
-        adc_registers_(new (adc_base_address) adc::Stm32l4xxAdcRegisterBank) {
-    HAL_Init();
+        adc_registers_(new (adc_base_address) adc::Stm32l4xxAdcRegisterBank) {}
 
-    // For details on startup procedures, see stm32h7xx_hal_rcc.c. The comments in that file
-    // explain many details that are otherwise difficult to find.
+  void set_clock_to_max_speed() override;
+  void set_clock_to_min_speed() override;
 
-    // Also, the code in STM32Cube_FW_H7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c can be a
-    // useful reference.
-
-    // We reinitialize SystemCoreClock as the startup process will have zeroed the BSS, likely
-    // including SystemCoreClock. See the startup_<device>.s file for details on this process.
-    SystemCoreClockUpdate();
-
-    // Update the SysTick configuration.
-    HAL_InitTick(TICK_INT_PRIORITY);
-  }
-
+  // TODO(james): Remove these methods and add the equivalent functionality to the peripheral
+  // classes directly.
   void enable_gpio_port_clock(gpio::Port port) override;
   void disable_gpio_port_clock(gpio::Port port) override;
 
@@ -138,9 +128,6 @@ class RccStm32L4xx final : public Rcc {
 
   void enable_dma_clock() override;
   void disable_dma_clock() override;
-
-  void set_clock_to_max_speed() override;
-  void set_clock_to_min_speed() override;
 };
 
 }  // namespace tvsc::hal::rcc
