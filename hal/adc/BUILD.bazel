@@ -39,6 +39,7 @@ cc_library(
     deps = [
         ":adc_headers",
         "//hal",
+        "//hal/dma",
         "//hal/gpio",
         "//hal/time",
         "//third_party/stm32",

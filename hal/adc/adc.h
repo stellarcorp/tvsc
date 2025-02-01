@@ -34,6 +34,8 @@ class Adc {
    * Stop the current measurement or calibration sequence.
    */
   virtual void stop() = 0;
+
+  virtual void handle_interrupt() = 0;
 };
 
 }  // namespace tvsc::hal::adc

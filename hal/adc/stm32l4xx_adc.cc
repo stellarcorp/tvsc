@@ -47,42 +47,33 @@ void AdcStm32l4xx::start_conversion(gpio::PortPin pin, uint32_t* destination,
   // Enable ADC Clock
   __HAL_RCC_ADC_CLK_ENABLE();
 
-  // Enable DMA Clock
-  __HAL_RCC_DMA1_CLK_ENABLE();
-
-  // Configure DMA
-  // TODO(james): Does this work for the H743's BDMA as well?
-  dma_.Init.Direction = DMA_PERIPH_TO_MEMORY;
-  dma_.Init.PeriphInc = DMA_PINC_DISABLE;
-  dma_.Init.MemInc = DMA_MINC_ENABLE;
-  // TODO(james): These alignment values are suspect.
-  dma_.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
-  dma_.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
-  dma_.Init.Mode = DMA_CIRCULAR;
-  dma_.Init.Priority = DMA_PRIORITY_HIGH;
-
-  HAL_DMA_Init(&dma_);
-
-  // Link DMA to ADC1
-  // __HAL_LINKDMA(&adc_, DMA_Handle, dma_); // Handled in constructor.
-
   // Configure ADC.
   adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
-  adc_.Init.Resolution = ADC_RESOLUTION_12B;
-  adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  adc_.Init.ScanConvMode = ADC_SCAN_DISABLE;
-  adc_.Init.EOCSelection = ADC_EOC_SEQ_CONV;
-  adc_.Init.ContinuousConvMode = ENABLE;  // Continuous mode for DMA
-  adc_.Init.DMAContinuousRequests = ENABLE;
+  adc_.Init.Resolution = ADC_RESOLUTION_12B;     // 12-bit resolution
+  adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;     // Right-aligned data
+  adc_.Init.ScanConvMode = ADC_SCAN_DISABLE;     // Single channel
+  adc_.Init.EOCSelection = ADC_EOC_SINGLE_CONV;  // End of conversion flag
+  adc_.Init.LowPowerAutoWait = DISABLE;
+  adc_.Init.ContinuousConvMode = DISABLE;  // Default single-shot
   adc_.Init.NbrOfConversion = 1;
-  adc_.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  adc_.Init.DiscontinuousConvMode = DISABLE;
+  adc_.Init.ExternalTrigConv = ADC_SOFTWARE_START;  // Start via software
+  adc_.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
 
   HAL_ADC_Init(&adc_);
+
+  dma_->start_circular_transfer();
+
+  // Link DMA to ADC1. This allows the DMA's interrupt handler to (eventually) call the ADC's
+  // interrupt handler, among other things.
+  __HAL_LINKDMA(&adc_, DMA_Handle, *dma_->handle());
 
   // Configure ADC Channel.
   channel_config_.Channel = get_channel(pin);
   channel_config_.Rank = ADC_REGULAR_RANK_1;
-  channel_config_.SamplingTime = ADC_SAMPLETIME_24CYCLES_5;
+  channel_config_.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
+  channel_config_.SingleDiff = ADC_SINGLE_ENDED;
+  channel_config_.Offset = 0;
 
   HAL_ADC_ConfigChannel(&adc_, &channel_config_);
 
@@ -143,5 +134,7 @@ void AdcStm32l4xx::calibrate_differential_input() {
 uint32_t AdcStm32l4xx::read_calibration_factor() { return adc_.Instance->CALFACT; }
 
 void AdcStm32l4xx::write_calibration_factor(uint32_t factor) { adc_.Instance->CALFACT = factor; }
+
+void AdcStm32l4xx::handle_interrupt() { HAL_ADC_IRQHandler(&adc_); }
 
 }  // namespace tvsc::hal::adc
