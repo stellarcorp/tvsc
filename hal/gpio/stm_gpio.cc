@@ -209,7 +209,7 @@ void disable(Port port) {
 }
 
 EnableLock GpioStm32xxxx::enable() {
-  if (use_counter_ == 0) {
+  if (enable_counter_ == 0) {
     if (port_ == 0) {
       __HAL_RCC_GPIOA_CLK_ENABLE();
     } else if (port_ == 1) {
@@ -228,10 +228,10 @@ EnableLock GpioStm32xxxx::enable() {
       __HAL_RCC_GPIOH_CLK_ENABLE();
     }
   }
-  ++use_counter_;
+  ++enable_counter_;
   return EnableLock([this]() {
-    --use_counter_;
-    if (use_counter_ == 0) {
+    --enable_counter_;
+    if (enable_counter_ == 0) {
       disable(port_);
     }
   });

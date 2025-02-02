@@ -23,7 +23,7 @@ class DacStm32xxxx final : public Dac {
 
   DAC_HandleTypeDef hdac_{};
   std::array<Channel, NUM_CHANNELS> channels_;
-  uint16_t use_counter_{0};
+  uint32_t enable_counter_{0};
 
   void disable() { __HAL_RCC_DAC1_CLK_DISABLE(); }
 
@@ -87,13 +87,13 @@ class DacStm32xxxx final : public Dac {
   }
 
   EnableLock enable() {
-    if (use_counter_ == 0) {
+    if (enable_counter_ == 0) {
       __HAL_RCC_DAC1_CLK_ENABLE();
     }
-    ++use_counter_;
+    ++enable_counter_;
     return EnableLock([this]() {
-      --use_counter_;
-      if (use_counter_ == 0) {
+      --enable_counter_;
+      if (enable_counter_ == 0) {
         disable();
       }
     });

@@ -25,13 +25,13 @@ void DmaStm32l4xx::start_circular_transfer() {
 void disable() { __HAL_RCC_DMA1_CLK_DISABLE(); }
 
 EnableLock DmaStm32l4xx::enable() {
-  if (use_counter_ == 0) {
+  if (enable_counter_ == 0) {
     __HAL_RCC_DMA1_CLK_ENABLE();
   }
-  ++use_counter_;
+  ++enable_counter_;
   return EnableLock([this]() {
-    --use_counter_;
-    if (use_counter_ == 0) {
+    --enable_counter_;
+    if (enable_counter_ == 0) {
       disable();
     }
   });

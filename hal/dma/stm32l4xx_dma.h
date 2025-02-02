@@ -10,7 +10,7 @@ namespace tvsc::hal::dma {
 class DmaStm32l4xx final : public Dma {
  private:
   DMA_HandleTypeDef dma_{};
-  uint16_t use_counter_{0};
+  uint32_t enable_counter_{0};
 
  public:
   DmaStm32l4xx(DMA_Channel_TypeDef* dma_instance, uint32_t request_mapping) {

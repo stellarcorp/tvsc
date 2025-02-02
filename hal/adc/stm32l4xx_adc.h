@@ -18,7 +18,7 @@ class AdcStm32l4xx final : public Adc {
   ADC_HandleTypeDef adc_{};
   dma::DmaStm32l4xx* dma_;
   ADC_ChannelConfTypeDef channel_config_{};
-  uint16_t use_counter_{0};
+  uint32_t enable_counter_{0};
 
  public:
   AdcStm32l4xx(ADC_TypeDef* adc_instance, dma::DmaStm32l4xx& dma) : dma_(&dma) {
