@@ -55,7 +55,7 @@ scheduler::Task run_adc_demo(BoardType& board) {
   uint32_t iteration_counter{0};
   while (true) {
     // Recalibrate after a certain number of conversions.
-    static constexpr uint32_t CALIBRATION_FREQUENCY{2};
+    static constexpr uint32_t CALIBRATION_FREQUENCY{16};
     if ((iteration_counter % CALIBRATION_FREQUENCY) == 0) {
       adc.calibrate_single_ended_input();
 
