@@ -113,7 +113,7 @@ class Gpio {
   virtual void toggle_pin(Pin pin) = 0;
 
   // Turn on power and clock to this GPIO.
-  virtual PowerToken turn_on() = 0;
+  virtual PowerToken enable() = 0;
 };
 
 }  // namespace tvsc::hal::gpio

@@ -25,7 +25,7 @@ class DacStm32xxxx final : public Dac {
   std::array<Channel, NUM_CHANNELS> channels_;
   uint16_t use_counter_{0};
 
-  void turn_off() { __HAL_RCC_DAC1_CLK_DISABLE(); }
+  void disable() { __HAL_RCC_DAC1_CLK_DISABLE(); }
 
  public:
   DacStm32xxxx(DAC_TypeDef* hal_dac) {
@@ -86,7 +86,7 @@ class DacStm32xxxx final : public Dac {
     }
   }
 
-  PowerToken turn_on() {
+  PowerToken enable() {
     if (use_counter_ == 0) {
       __HAL_RCC_DAC1_CLK_ENABLE();
     }
@@ -94,7 +94,7 @@ class DacStm32xxxx final : public Dac {
     return PowerToken([this]() {
       --use_counter_;
       if (use_counter_ == 0) {
-        turn_off();
+        disable();
       }
     });
   }

@@ -16,7 +16,7 @@ class Dac {
   virtual void set_resolution(uint8_t bits_resolution, uint8_t channel = 0) = 0;
 
   // Turn on power and clock to this peripheral.
-  virtual PowerToken turn_on() = 0;
+  virtual PowerToken enable() = 0;
 };
 
 }  // namespace tvsc::hal::dac

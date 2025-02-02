@@ -22,9 +22,9 @@ void DmaStm32l4xx::start_circular_transfer() {
   HAL_DMA_Init(&dma_);
 }
 
-void turn_off() { __HAL_RCC_DMA1_CLK_DISABLE(); }
+void disable() { __HAL_RCC_DMA1_CLK_DISABLE(); }
 
-PowerToken DmaStm32l4xx::turn_on() {
+PowerToken DmaStm32l4xx::enable() {
   if (use_counter_ == 0) {
     __HAL_RCC_DMA1_CLK_ENABLE();
   }
@@ -32,7 +32,7 @@ PowerToken DmaStm32l4xx::turn_on() {
   return PowerToken([this]() {
     --use_counter_;
     if (use_counter_ == 0) {
-      turn_off();
+      disable();
     }
   });
 }

@@ -42,7 +42,7 @@ class AdcStm32l4xx final : public Adc {
   void handle_interrupt() override;
 
   // Turn on power and clock to this peripheral.
-  PowerToken turn_on() override;
+  PowerToken enable() override;
 };
 
 }  // namespace tvsc::hal::adc

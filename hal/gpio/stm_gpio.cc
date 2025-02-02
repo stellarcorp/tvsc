@@ -188,7 +188,7 @@ void GpioStm32xxxx::toggle_pin(Pin pin) {
 
 bool GpioStm32xxxx::read_pin(Pin pin) { return registers_->IDR.bit_field_value<1>(1U << pin); }
 
-void turn_off(Port port) {
+void disable(Port port) {
   if (port == 0) {
     __HAL_RCC_GPIOA_CLK_DISABLE();
   } else if (port == 1) {
@@ -208,7 +208,7 @@ void turn_off(Port port) {
   }
 }
 
-PowerToken GpioStm32xxxx::turn_on() {
+PowerToken GpioStm32xxxx::enable() {
   if (use_counter_ == 0) {
     if (port_ == 0) {
       __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -232,7 +232,7 @@ PowerToken GpioStm32xxxx::turn_on() {
   return PowerToken([this]() {
     --use_counter_;
     if (use_counter_ == 0) {
-      turn_off(port_);
+      disable(port_);
     }
   });
 }

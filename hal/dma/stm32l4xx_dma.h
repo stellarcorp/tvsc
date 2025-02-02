@@ -26,7 +26,7 @@ class DmaStm32l4xx final : public Dma {
   // the DMA handle in order to manage the DMA as part of that process.
   DMA_HandleTypeDef* handle() { return &dma_; }
 
-  PowerToken turn_on() override;
+  PowerToken enable() override;
 };
 
 }  // namespace tvsc::hal::dma

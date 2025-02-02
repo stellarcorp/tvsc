@@ -134,9 +134,9 @@ void AdcStm32l4xx::write_calibration_factor(uint32_t factor) { adc_.Instance->CA
 
 void AdcStm32l4xx::handle_interrupt() { HAL_ADC_IRQHandler(&adc_); }
 
-void turn_off() { __HAL_RCC_ADC_CLK_DISABLE(); }
+void disable() { __HAL_RCC_ADC_CLK_DISABLE(); }
 
-PowerToken AdcStm32l4xx::turn_on() {
+PowerToken AdcStm32l4xx::enable() {
   if (use_counter_ == 0) {
     __HAL_RCC_ADC_CLK_ENABLE();
   }
@@ -144,7 +144,7 @@ PowerToken AdcStm32l4xx::turn_on() {
   return PowerToken([this]() {
     --use_counter_;
     if (use_counter_ == 0) {
-      turn_off();
+      disable();
     }
   });
 }

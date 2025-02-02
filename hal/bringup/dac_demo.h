@@ -32,7 +32,7 @@ scheduler::Task run_dac_demo(board::Board& board, uint32_t& current_output_value
   }
 
   // Turn on clocks for the peripherals that we want.
-  const PowerToken dac_power{dac.turn_on()};
+  const PowerToken dac_power{dac.enable()};
 
   while (true) {
     for (auto& v : dac_8bit_values) {

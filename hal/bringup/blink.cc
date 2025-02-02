@@ -21,7 +21,7 @@ int main() {
   BoardType& board{BoardType::board()};
 
   auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
-  tvsc::hal::PowerToken gpio_power{gpio.turn_on()};
+  tvsc::hal::PowerToken gpio_power{gpio.enable()};
 
   auto& clock{board.clock()};
 

@@ -23,7 +23,7 @@ int main() {
   auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
 
   // Turn on clocks for the GPIO ports that we want.
-  tvsc::hal::PowerToken gpio_power{gpio.turn_on()};
+  tvsc::hal::PowerToken gpio_power{gpio.enable()};
 
   gpio.set_pin_mode(BoardType::GREEN_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
