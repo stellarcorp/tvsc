@@ -29,6 +29,9 @@ class AdcStm32l4xx final : public Adc {
   void start_single_conversion(gpio::PortPin pin, uint32_t* destination,
                                size_t destination_buffer_size) override;
 
+  void start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
+                               size_t destination_buffer_size) override;
+
   void reset_after_conversion() override;
 
   void set_resolution(uint8_t bits_resolution) override;

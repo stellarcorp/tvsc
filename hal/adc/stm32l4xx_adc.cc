@@ -43,6 +43,41 @@ static constexpr uint32_t get_channel(gpio::PortPin pin) {
   return 0xff;
 }
 
+void AdcStm32l4xx::start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
+                                           size_t destination_buffer_size) {
+  // Configure ADC.
+  adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
+  adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  adc_.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  adc_.Init.EOCSelection = ADC_EOC_SEQ_CONV;
+  adc_.Init.LowPowerAutoWait = DISABLE;
+  adc_.Init.ContinuousConvMode = DISABLE;
+  adc_.Init.NbrOfConversion = 1;
+  adc_.Init.DiscontinuousConvMode = DISABLE;
+  // TODO(james): Set up the timers.
+  adc_.Init.ExternalTrigConv = ADC_EXTERNALTRIG_T2_TRGO; // Use TIM2 as the trigger.
+  adc_.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_RISING;
+
+  HAL_ADC_Init(&adc_);
+
+  dma_->start_circular_transfer();
+
+  // Link DMA to ADC1. This allows the DMA's interrupt handler to (eventually) call the ADC's
+  // interrupt handler, among other things.
+  __HAL_LINKDMA(&adc_, DMA_Handle, *dma_->handle());
+
+  // Configure ADC Channel.
+  channel_config_.Channel = get_channel(pin);
+  channel_config_.Rank = ADC_REGULAR_RANK_1;
+  channel_config_.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
+  channel_config_.SingleDiff = ADC_SINGLE_ENDED;
+  channel_config_.Offset = 0;
+
+  HAL_ADC_ConfigChannel(&adc_, &channel_config_);
+
+  HAL_ADC_Start_DMA(&adc_, destination, destination_buffer_size);
+}
+
 void AdcStm32l4xx::start_single_conversion(gpio::PortPin pin, uint32_t* destination,
                                            size_t destination_buffer_size) {
   // Configure ADC.

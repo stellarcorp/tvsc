@@ -24,6 +24,9 @@ class Adc {
   virtual void start_single_conversion(gpio::PortPin pin, uint32_t* destination,
                                        size_t destination_buffer_size) = 0;
 
+  virtual void start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
+                                       size_t destination_buffer_size) = 0;
+
   virtual void reset_after_conversion() = 0;
 
   virtual void set_resolution(uint8_t bits_resolution) = 0;

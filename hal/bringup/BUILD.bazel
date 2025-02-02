@@ -106,6 +106,32 @@ cc_binary(
 )
 
 cc_binary(
+    name = "streaming_adc.elf",
+    srcs = [
+        "streaming_adc.cc",
+    ],
+    additional_linker_inputs = [
+        ":linker_script",
+    ],
+    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    target_compatible_with = select({
+        "//platforms:no_gpio": ["@platforms//:incompatible"],
+        "//platforms:no_debug_led": ["@platforms//:incompatible"],
+        "//platforms:no_dac": ["@platforms//:incompatible"],
+        "//platforms:no_adc": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    deps = [
+        ":tasks",
+        "//hal",
+        "//hal/board",
+        "//hal/gpio",
+        "//hal/scheduler",
+        "//hal/time",
+    ],
+)
+
+cc_binary(
     name = "dac_demo.elf",
     srcs = [
         "dac_demo.cc",
