@@ -100,9 +100,7 @@ bool AdcStm32l4xx::is_running() {
 void AdcStm32l4xx::stop() { HAL_ADC_Stop_DMA(&adc_); }
 
 void initialize_for_calibration(ADC_HandleTypeDef& adc) {
-  adc.Instance = ADC1;
-  adc.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
-  adc.Init.Resolution = ADC_RESOLUTION_8B;
+  adc.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
   adc.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   adc.Init.ScanConvMode = ADC_SCAN_DISABLE;
   adc.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
@@ -119,22 +117,14 @@ void initialize_for_calibration(ADC_HandleTypeDef& adc) {
 }
 
 void AdcStm32l4xx::calibrate_single_ended_input() {
-  if (is_running()) {
-    stop();
-  }
-
+  stop();
   initialize_for_calibration(adc_);
-
   HAL_ADCEx_Calibration_Start(&adc_, ADC_SINGLE_ENDED);
 }
 
 void AdcStm32l4xx::calibrate_differential_input() {
-  if (is_running()) {
-    stop();
-  }
-
+  stop();
   initialize_for_calibration(adc_);
-
   HAL_ADCEx_Calibration_Start(&adc_, ADC_DIFFERENTIAL_ENDED);
 }
 

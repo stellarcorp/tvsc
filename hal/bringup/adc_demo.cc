@@ -44,42 +44,35 @@ scheduler::Task run_adc_demo(BoardType& board) {
     dac_out_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], gpio::PinMode::ANALOG);
   }
 
+  gpio.set_pin_mode(BoardType::GREEN_LED_PIN, gpio::PinMode::OUTPUT_PUSH_PULL, gpio::PinSpeed::LOW);
+
   static constexpr uint8_t RESOLUTION{12};
-  dac.set_resolution(RESOLUTION);
-  adc.set_resolution(RESOLUTION);
   static constexpr uint8_t RESOLUTION_SHIFT{RESOLUTION - 8};
 
-  gpio.set_pin_mode(BoardType::GREEN_LED_PIN, gpio::PinMode::OUTPUT_PUSH_PULL, gpio::PinSpeed::LOW);
+  dac.set_resolution(RESOLUTION);
+  adc.set_resolution(RESOLUTION);
 
   uint32_t iteration_counter{0};
   while (true) {
     // Recalibrate after a certain number of conversions.
-    static constexpr uint32_t CALIBRATION_FREQUENCY{1024};
+    static constexpr uint32_t CALIBRATION_FREQUENCY{2};
     if ((iteration_counter % CALIBRATION_FREQUENCY) == 0) {
-      // adc.calibrate_single_ended_input();
-      // while (adc.is_running()) {
-      //   gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
-      //   // Yield while we calibrate.
-      //   co_yield 1000 * (5 + clock.current_time_millis());
-      // }
+      adc.calibrate_single_ended_input();
 
-      // Flash after calibration.
+      // Flash slowly after calibration.
       gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
-      co_yield 1000 * (50 + clock.current_time_millis());
+      co_yield 1000 * (500 + clock.current_time_millis());
       gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
-      co_yield 1000 * (50 + clock.current_time_millis());
+      co_yield 1000 * (500 + clock.current_time_millis());
       gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
-      co_yield 1000 * (50 + clock.current_time_millis());
+      co_yield 1000 * (500 + clock.current_time_millis());
       gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
-      co_yield 1000 * (50 + clock.current_time_millis());
+      co_yield 1000 * (500 + clock.current_time_millis());
     }
 
     for (auto v : {256, 0, 1, 2, 4, 8, 16, 32, 64, 128, 256}) {
       current_output_value = (v << RESOLUTION_SHIFT);
       dac.set_value(current_output_value);
-
-      // Let the DAC settle.
-      co_yield 1'000'000 + clock.current_time_micros();
 
       dma_complete = false;
       dma_error = false;
@@ -112,7 +105,6 @@ scheduler::Task run_adc_demo(BoardType& board) {
         }
       }
     }
-
     ++iteration_counter;
 
     // Clear the state, DAC, and LED and pause between iterations.
