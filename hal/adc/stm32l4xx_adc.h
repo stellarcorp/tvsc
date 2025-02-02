@@ -6,8 +6,8 @@
 #include "hal/adc/adc.h"
 #include "hal/dma/dma.h"
 #include "hal/dma/stm32l4xx_dma.h"
-#include "hal/gpio/gpio.h"
 #include "hal/enable_lock.h"
+#include "hal/gpio/gpio.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
@@ -26,8 +26,10 @@ class AdcStm32l4xx final : public Adc {
     adc_.Init.Resolution = ADC_RESOLUTION_12B;
   }
 
-  void start_conversion(gpio::PortPin pin, uint32_t* destination,
-                        size_t destination_buffer_size) override;
+  void start_single_conversion(gpio::PortPin pin, uint32_t* destination,
+                               size_t destination_buffer_size) override;
+
+  void reset_after_conversion() override;
 
   void set_resolution(uint8_t bits_resolution) override;
 

@@ -1,7 +1,7 @@
 #include "hal/adc/stm32l4xx_adc.h"
 
-#include "hal/gpio/gpio.h"
 #include "hal/enable_lock.h"
+#include "hal/gpio/gpio.h"
 
 namespace tvsc::hal::adc {
 
@@ -43,8 +43,8 @@ static constexpr uint32_t get_channel(gpio::PortPin pin) {
   return 0xff;
 }
 
-void AdcStm32l4xx::start_conversion(gpio::PortPin pin, uint32_t* destination,
-                                    size_t destination_buffer_size) {
+void AdcStm32l4xx::start_single_conversion(gpio::PortPin pin, uint32_t* destination,
+                                           size_t destination_buffer_size) {
   // Configure ADC.
   adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
   adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;     // Right-aligned data
@@ -76,6 +76,8 @@ void AdcStm32l4xx::start_conversion(gpio::PortPin pin, uint32_t* destination,
 
   HAL_ADC_Start_DMA(&adc_, destination, destination_buffer_size);
 }
+
+void AdcStm32l4xx::reset_after_conversion() { stop(); }
 
 void AdcStm32l4xx::set_resolution(uint8_t bits_resolution) {
   if (bits_resolution <= 6) {

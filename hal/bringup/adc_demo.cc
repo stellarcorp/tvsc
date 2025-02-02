@@ -77,12 +77,13 @@ scheduler::Task run_adc_demo(BoardType& board) {
       dma_complete = false;
       dma_error = false;
 
-      adc.start_conversion({BoardType::DAC_CHANNEL_1_PORT, BoardType::DAC_CHANNEL_1_PIN},
-                           &value_read, 1);
+      adc.start_single_conversion({BoardType::DAC_CHANNEL_1_PORT, BoardType::DAC_CHANNEL_1_PIN},
+                                  &value_read, 1);
       while (!dma_complete) {
         // Yield while we take the measurement.
         co_yield 1000 * (5 + clock.current_time_millis());
       }
+      adc.reset_after_conversion();
 
       static constexpr float epsilon{0.01};
       relative_difference = std::abs(static_cast<float>(current_output_value) - value_read) /
