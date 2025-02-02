@@ -1,6 +1,7 @@
 #include "hal/adc/stm32l4xx_adc.h"
 
 #include "hal/gpio/gpio.h"
+#include "hal/power_token.h"
 
 namespace tvsc::hal::adc {
 
@@ -44,12 +45,8 @@ static constexpr uint32_t get_channel(gpio::PortPin pin) {
 
 void AdcStm32l4xx::start_conversion(gpio::PortPin pin, uint32_t* destination,
                                     size_t destination_buffer_size) {
-  // Enable ADC Clock
-  __HAL_RCC_ADC_CLK_ENABLE();
-
   // Configure ADC.
   adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
-  adc_.Init.Resolution = ADC_RESOLUTION_12B;     // 12-bit resolution
   adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;     // Right-aligned data
   adc_.Init.ScanConvMode = ADC_SCAN_DISABLE;     // Single channel
   adc_.Init.EOCSelection = ADC_EOC_SINGLE_CONV;  // End of conversion flag
@@ -71,13 +68,27 @@ void AdcStm32l4xx::start_conversion(gpio::PortPin pin, uint32_t* destination,
   // Configure ADC Channel.
   channel_config_.Channel = get_channel(pin);
   channel_config_.Rank = ADC_REGULAR_RANK_1;
-  channel_config_.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
+  channel_config_.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
   channel_config_.SingleDiff = ADC_SINGLE_ENDED;
   channel_config_.Offset = 0;
 
   HAL_ADC_ConfigChannel(&adc_, &channel_config_);
 
   HAL_ADC_Start_DMA(&adc_, destination, destination_buffer_size);
+}
+
+void AdcStm32l4xx::set_resolution(uint8_t bits_resolution) {
+  if (bits_resolution <= 6) {
+    adc_.Init.Resolution = ADC_RESOLUTION_6B;
+  } else if (bits_resolution <= 8) {
+    adc_.Init.Resolution = ADC_RESOLUTION_8B;
+  } else if (bits_resolution <= 10) {
+    adc_.Init.Resolution = ADC_RESOLUTION_10B;
+  } else if (bits_resolution <= 12) {
+    adc_.Init.Resolution = ADC_RESOLUTION_12B;
+  } else {
+    adc_.Init.Resolution = ADC_RESOLUTION_12B;
+  }
 }
 
 bool AdcStm32l4xx::is_running() {
@@ -108,8 +119,6 @@ void initialize_for_calibration(ADC_HandleTypeDef& adc) {
 }
 
 void AdcStm32l4xx::calibrate_single_ended_input() {
-  __HAL_RCC_ADC_CLK_ENABLE();
-
   if (is_running()) {
     stop();
   }
@@ -120,8 +129,6 @@ void AdcStm32l4xx::calibrate_single_ended_input() {
 }
 
 void AdcStm32l4xx::calibrate_differential_input() {
-  __HAL_RCC_ADC_CLK_ENABLE();
-
   if (is_running()) {
     stop();
   }
@@ -136,5 +143,20 @@ uint32_t AdcStm32l4xx::read_calibration_factor() { return adc_.Instance->CALFACT
 void AdcStm32l4xx::write_calibration_factor(uint32_t factor) { adc_.Instance->CALFACT = factor; }
 
 void AdcStm32l4xx::handle_interrupt() { HAL_ADC_IRQHandler(&adc_); }
+
+void turn_off() { __HAL_RCC_ADC_CLK_DISABLE(); }
+
+PowerToken AdcStm32l4xx::turn_on() {
+  if (use_counter_ == 0) {
+    __HAL_RCC_ADC_CLK_ENABLE();
+  }
+  ++use_counter_;
+  return PowerToken([this]() {
+    --use_counter_;
+    if (use_counter_ == 0) {
+      turn_off();
+    }
+  });
+}
 
 }  // namespace tvsc::hal::adc

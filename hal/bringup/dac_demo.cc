@@ -17,8 +17,6 @@ __attribute__((section(".status.value"))) uint32_t current_output_dac2;
 int main() {
   BoardType& board{BoardType::board()};
 
-  // Turn on clocks for the peripherals that we want.
-  board.rcc().enable_dac_clock();
   Scheduler<QUEUE_SIZE> scheduler{board.clock()};
 
   if constexpr (BoardType::NUM_DAC_CHANNELS >= 1) {

@@ -7,6 +7,8 @@
 #include "hal/adc/stm32l4xx_adc.h"
 #include "hal/dac/dac.h"
 #include "hal/dac/stm32xxxx_dac.h"
+#include "hal/dma/dma.h"
+#include "hal/dma/stm32l4xx_dma.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
 #include "hal/power/power.h"
@@ -48,16 +50,15 @@ class Board final {
                                                                     DAC_CHANNEL_2_PIN};
 
  private:
-  rcc::RccStm32L4xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE),
-                         reinterpret_cast<void*>(ADC1_BASE)};
+  rcc::RccStm32L4xx rcc_{reinterpret_cast<void*>(RCC_BASE)};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32L4xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
   // for the first few here, but this can be expanded if necessary.
-  gpio::GpioStm32xxxx gpio_port_a_{reinterpret_cast<void*>(GPIOA)};
-  gpio::GpioStm32xxxx gpio_port_b_{reinterpret_cast<void*>(GPIOB)};
-  gpio::GpioStm32xxxx gpio_port_c_{reinterpret_cast<void*>(GPIOC)};
-  gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH)};
+  gpio::GpioStm32xxxx gpio_port_a_{reinterpret_cast<void*>(GPIOA_BASE), 0};
+  gpio::GpioStm32xxxx gpio_port_b_{reinterpret_cast<void*>(GPIOB_BASE), 1};
+  gpio::GpioStm32xxxx gpio_port_c_{reinterpret_cast<void*>(GPIOC_BASE), 2};
+  gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH_BASE), 7};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
   power::PowerStm32L4xx power_{reinterpret_cast<void*>(PWR_BASE)};
@@ -66,7 +67,8 @@ class Board final {
 
   dac::DacStm32xxxx<NUM_DAC_CHANNELS> dac_{DAC};
 
-  adc::AdcStm32l4xx adc_{ADC1, DMA1_Channel1, DMA_REQUEST_0};
+  dma::DmaStm32l4xx dma_{DMA1_Channel1, DMA_REQUEST_0};
+  adc::AdcStm32l4xx adc_{ADC1, dma_};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
@@ -149,6 +151,8 @@ class Board final {
   dac::Dac& dac() { return dac_; }
 
   adc::Adc& adc() { return adc_; }
+
+  dma::Dma& dma() { return dma_; }
 };
 
 }  // namespace tvsc::hal::board

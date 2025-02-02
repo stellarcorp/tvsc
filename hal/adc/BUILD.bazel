@@ -17,6 +17,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":adc_headers",
+        "//hal",
     ] + select({
         "//platforms:stm32l4xx_adc": [
             ":stm32l4xx_adc",

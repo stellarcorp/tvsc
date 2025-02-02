@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "hal/power_token.h"
+
 namespace tvsc::hal::gpio {
 
 /**
@@ -109,6 +111,9 @@ class Gpio {
   virtual bool read_pin(Pin pin) = 0;
   virtual void write_pin(Pin pin, bool on) = 0;
   virtual void toggle_pin(Pin pin) = 0;
+
+  // Turn on power and clock to this GPIO.
+  virtual PowerToken turn_on() = 0;
 };
 
 }  // namespace tvsc::hal::gpio

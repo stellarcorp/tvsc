@@ -4,6 +4,8 @@
 
 #include "hal/gpio/gpio.h"
 #include "hal/register.h"
+#include "third_party/stm32/stm32.h"
+#include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal::gpio {
 
@@ -185,5 +187,54 @@ void GpioStm32xxxx::toggle_pin(Pin pin) {
 }
 
 bool GpioStm32xxxx::read_pin(Pin pin) { return registers_->IDR.bit_field_value<1>(1U << pin); }
+
+void turn_off(Port port) {
+  if (port == 0) {
+    __HAL_RCC_GPIOA_CLK_DISABLE();
+  } else if (port == 1) {
+    __HAL_RCC_GPIOB_CLK_DISABLE();
+  } else if (port == 2) {
+    __HAL_RCC_GPIOC_CLK_DISABLE();
+  } else if (port == 3) {
+#if defined(__HAL_RCC_GPIOD_CLK_DISABLE)
+    __HAL_RCC_GPIOD_CLK_DISABLE();
+#endif
+  } else if (port == 4) {
+#if defined(__HAL_RCC_GPIOE_CLK_DISABLE)
+    __HAL_RCC_GPIOE_CLK_DISABLE();
+#endif
+  } else if (port == 7) {
+    __HAL_RCC_GPIOH_CLK_DISABLE();
+  }
+}
+
+PowerToken GpioStm32xxxx::turn_on() {
+  if (use_counter_ == 0) {
+    if (port_ == 0) {
+      __HAL_RCC_GPIOA_CLK_ENABLE();
+    } else if (port_ == 1) {
+      __HAL_RCC_GPIOB_CLK_ENABLE();
+    } else if (port_ == 2) {
+      __HAL_RCC_GPIOC_CLK_ENABLE();
+    } else if (port_ == 3) {
+#if defined(__HAL_RCC_GPIOD_CLK_ENABLE)
+      __HAL_RCC_GPIOD_CLK_ENABLE();
+#endif
+    } else if (port_ == 4) {
+#if defined(__HAL_RCC_GPIOE_CLK_ENABLE)
+      __HAL_RCC_GPIOE_CLK_ENABLE();
+#endif
+    } else if (port_ == 7) {
+      __HAL_RCC_GPIOH_CLK_ENABLE();
+    }
+  }
+  ++use_counter_;
+  return PowerToken([this]() {
+    --use_counter_;
+    if (use_counter_ == 0) {
+      turn_off(port_);
+    }
+  });
+}
 
 }  // namespace tvsc::hal::gpio

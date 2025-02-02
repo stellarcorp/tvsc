@@ -57,6 +57,8 @@ class GpioRegisterBank final {
 class GpioStm32xxxx final : public Gpio {
  private:
   GpioRegisterBank* registers_;
+  const Port port_;
+  uint16_t use_counter_{0};
 
   void set_ospeedr_value(Pin pin, PinSpeed speed);
 
@@ -84,7 +86,8 @@ class GpioStm32xxxx final : public Gpio {
  public:
   static constexpr size_t NUM_PINS{16};
 
-  GpioStm32xxxx(void* base_address) : registers_(new (base_address) GpioRegisterBank) {}
+  GpioStm32xxxx(void* base_address, Port port)
+      : registers_(new (base_address) GpioRegisterBank), port_(port) {}
 
   void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) override;
 
@@ -92,6 +95,8 @@ class GpioStm32xxxx final : public Gpio {
   void toggle_pin(Pin pin) override;
 
   bool read_pin(Pin pin) override;
+
+  PowerToken turn_on() override;
 };
 
 }  // namespace tvsc::hal::gpio

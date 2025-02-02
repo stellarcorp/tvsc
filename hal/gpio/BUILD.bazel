@@ -13,7 +13,10 @@ cc_library(
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
-    deps = [":gpio_headers"] + select({
+    deps = [
+        ":gpio_headers",
+        "//hal",
+    ] + select({
         "//platforms:teensyduino_core": [
             ":teensyduino_gpio",
         ],
@@ -36,6 +39,7 @@ cc_library(
     ],
     deps = [
         ":gpio_headers",
+        "//hal",
         "//third_party/arduino:core",
     ],
 )
@@ -54,5 +58,6 @@ cc_library(
     deps = [
         ":gpio_headers",
         "//hal",
+        "//third_party/stm32",
     ],
 )

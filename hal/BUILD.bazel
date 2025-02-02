@@ -1,6 +1,7 @@
 cc_library(
     name = "hal",
     hdrs = [
+        "power_token.h",
         "register.h",
     ],
     # We don't want this module to be used directly except by its subpackages.

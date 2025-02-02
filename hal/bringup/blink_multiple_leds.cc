@@ -27,7 +27,6 @@ int main() {
   static_assert(BoardType::NUM_DEBUG_LEDS < 4, "Need to implement blink for more LEDs");
 
   for (size_t i = 0; i < BoardType::NUM_DEBUG_LEDS; ++i) {
-    board.rcc().enable_gpio_port_clock(BoardType::DEBUG_LED_PORTS[i]);
     auto& gpio{board.gpio(BoardType::DEBUG_LED_PORTS[i])};
     scheduler.add_task(
         blink(clock, gpio, BoardType::DEBUG_LED_PINS[i], DURATION_MULTIPLES[i] * BASE_DURATION_MS));

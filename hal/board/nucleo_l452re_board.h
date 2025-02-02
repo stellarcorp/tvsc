@@ -53,18 +53,17 @@ class Board final {
   static constexpr std::array<gpio::Pin, NUM_DAC_CHANNELS> DAC_PINS{DAC_CHANNEL_1_PIN};
 
  private:
-  rcc::RccStm32L4xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE),
-                         reinterpret_cast<void*>(ADC1_BASE)};
+  rcc::RccStm32L4xx rcc_{reinterpret_cast<void*>(RCC_BASE)};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32L4xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
   // for the first few here, but this can be expanded if necessary.
-  gpio::GpioStm32xxxx gpio_port_a_{reinterpret_cast<void*>(GPIOA_BASE)};
-  gpio::GpioStm32xxxx gpio_port_b_{reinterpret_cast<void*>(GPIOB_BASE)};
-  gpio::GpioStm32xxxx gpio_port_c_{reinterpret_cast<void*>(GPIOC_BASE)};
-  gpio::GpioStm32xxxx gpio_port_d_{reinterpret_cast<void*>(GPIOD_BASE)};
-  gpio::GpioStm32xxxx gpio_port_e_{reinterpret_cast<void*>(GPIOE_BASE)};
-  gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH_BASE)};
+  gpio::GpioStm32xxxx gpio_port_a_{reinterpret_cast<void*>(GPIOA_BASE), 0};
+  gpio::GpioStm32xxxx gpio_port_b_{reinterpret_cast<void*>(GPIOB_BASE), 1};
+  gpio::GpioStm32xxxx gpio_port_c_{reinterpret_cast<void*>(GPIOC_BASE), 2};
+  gpio::GpioStm32xxxx gpio_port_d_{reinterpret_cast<void*>(GPIOD_BASE), 3};
+  gpio::GpioStm32xxxx gpio_port_e_{reinterpret_cast<void*>(GPIOE_BASE), 4};
+  gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH_BASE), 7};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
   power::PowerStm32L4xx power_{reinterpret_cast<void*>(PWR_BASE)};

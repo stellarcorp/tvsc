@@ -29,6 +29,8 @@ Board::Board() {
 
 }  // namespace tvsc::hal::board
 
+extern "C" {
+
 /**
  * The ISRs below are declared in the startup assembly (startup_<device>.s for STM32 devices). They
  * are also given weak, default implementations to call a default handler. The default handler just
@@ -102,4 +104,5 @@ void PendSV_Handler(void) {}
 void DMA1_Channel1_IRQHandler() {
   tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
   board.dma().handle_interrupt();
+}
 }

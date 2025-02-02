@@ -2,6 +2,7 @@
 
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
+#include "hal/power_token.h"
 
 using BoardType = tvsc::hal::board::Board;
 
@@ -19,10 +20,10 @@ int main() {
     power.enter_low_power_run_mode();
   }
 
-  // Turn on clocks for the GPIO ports that we want.
-  rcc.enable_gpio_port_clock(BoardType::GREEN_LED_PORT);
-
   auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
+
+  // Turn on clocks for the GPIO ports that we want.
+  tvsc::hal::PowerToken gpio_power{gpio.turn_on()};
 
   gpio.set_pin_mode(BoardType::GREEN_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 

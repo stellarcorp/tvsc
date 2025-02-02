@@ -6,58 +6,6 @@
 
 namespace tvsc::hal::rcc {
 
-void RccStm32L4xx::enable_gpio_port_clock(gpio::Port port) {
-  rcc_registers_->AHB2ENR.set_bit_field_value_and_block<1>(1, static_cast<uint8_t>(port));
-}
-
-void RccStm32L4xx::disable_gpio_port_clock(gpio::Port port) {
-  rcc_registers_->AHB2ENR.set_bit_field_value_and_block<1>(0, static_cast<uint8_t>(port));
-}
-
-void RccStm32L4xx::enable_dac_clock() {
-  rcc_registers_->APB1ENR1.set_bit_field_value_and_block<1, 29>(1);
-}
-
-void RccStm32L4xx::disable_dac_clock() {
-  rcc_registers_->APB1ENR1.set_bit_field_value_and_block<1, 29>(0);
-}
-
-void RccStm32L4xx::enable_dma_clock() { __HAL_RCC_DMA1_CLK_ENABLE(); }
-
-void RccStm32L4xx::disable_dma_clock() { __HAL_RCC_DMA1_CLK_DISABLE(); }
-
-void RccStm32L4xx::enable_adc_clock() {
-  // Use the system clock for the ADC.
-  rcc_registers_->CCIPR.set_bit_field_value_and_block<2, 28>(0b11);
-
-  // Enable the clock on the ADC.
-  rcc_registers_->AHB2ENR.set_bit_field_value_and_block<1, 13>(1);
-
-  // Exit "deep-power-down" state.
-  // adc_registers_->CR.set_bit_field_value_and_block<1, 29>(0);
-  adc_registers_->CR.set_value_and_block(0);
-
-  // Enable the ADC voltage regulator.
-  adc_registers_->CR.set_bit_field_value_and_block<1, 28>(1);
-
-  // Wait 20us or more. No API to check.
-  {
-    volatile uint32_t i = 2 * 20U * SystemCoreClock / 1'000'000;
-    while (i > 0) {
-      i--;
-    }
-  }
-}
-
-void RccStm32L4xx::disable_adc_clock() {
-  // Enter "deep-power-down" state. Note that this automatically disables the voltage regulator as
-  // well.
-  adc_registers_->CR.set_bit_field_value_and_block<1, 29>(1);
-
-  // Disable the clock for the ADC.
-  rcc_registers_->AHB2ENR.set_bit_field_value_and_block<1, 13>(0);
-}
-
 void RccStm32L4xx::set_clock_to_max_speed() {
   // Turn on HSI16 clock source.
   rcc_registers_->CR.set_bit_field_value<1, 8>(1);

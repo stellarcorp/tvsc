@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <new>
 
-#include "hal/adc/stm32l4xx_adc_register_bank.h"
 #include "hal/gpio/gpio.h"
 #include "hal/rcc/rcc.h"
 #include "hal/register.h"
@@ -102,32 +101,12 @@ class SysTickRegisterBank final {
 class RccStm32L4xx final : public Rcc {
  private:
   RccRegisterBank* const rcc_registers_;
-  SysTickRegisterBank* const sys_tick_registers_;
-
-  adc::Stm32l4xxAdcRegisterBank* const adc_registers_;
 
  public:
-  RccStm32L4xx(void* rcc_base_address, void* sys_tick_base_address, void* adc_base_address)
-      : rcc_registers_(new (rcc_base_address) RccRegisterBank),
-        sys_tick_registers_(new (sys_tick_base_address) SysTickRegisterBank),
-        adc_registers_(new (adc_base_address) adc::Stm32l4xxAdcRegisterBank) {}
+  RccStm32L4xx(void* rcc_base_address) : rcc_registers_(new (rcc_base_address) RccRegisterBank) {}
 
   void set_clock_to_max_speed() override;
   void set_clock_to_min_speed() override;
-
-  // TODO(james): Remove these methods and add the equivalent functionality to the peripheral
-  // classes directly.
-  void enable_gpio_port_clock(gpio::Port port) override;
-  void disable_gpio_port_clock(gpio::Port port) override;
-
-  void enable_adc_clock() override;
-  void disable_adc_clock() override;
-
-  void enable_dac_clock() override;
-  void disable_dac_clock() override;
-
-  void enable_dma_clock() override;
-  void disable_dma_clock() override;
 };
 
 }  // namespace tvsc::hal::rcc

@@ -4,6 +4,7 @@
 #include <cstdint>
 
 #include "hal/dac/dac.h"
+#include "hal/power_token.h"
 #include "hal/register.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
@@ -22,6 +23,9 @@ class DacStm32xxxx final : public Dac {
 
   DAC_HandleTypeDef hdac_{};
   std::array<Channel, NUM_CHANNELS> channels_;
+  uint16_t use_counter_{0};
+
+  void turn_off() { __HAL_RCC_DAC1_CLK_DISABLE(); }
 
  public:
   DacStm32xxxx(DAC_TypeDef* hal_dac) {
@@ -80,6 +84,19 @@ class DacStm32xxxx final : public Dac {
       channels_.at(channel).hal_resolution_id = DAC_ALIGN_12B_L;
       channels_.at(channel).bits_resolution = bits_resolution;
     }
+  }
+
+  PowerToken turn_on() {
+    if (use_counter_ == 0) {
+      __HAL_RCC_DAC1_CLK_ENABLE();
+    }
+    ++use_counter_;
+    return PowerToken([this]() {
+      --use_counter_;
+      if (use_counter_ == 0) {
+        turn_off();
+      }
+    });
   }
 };
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "hal/power_token.h"
+
 namespace tvsc::hal::dma {
 
 class Dma {
@@ -7,6 +9,9 @@ class Dma {
   virtual void start_circular_transfer() = 0;
 
   virtual void handle_interrupt() = 0;
+
+  // Turn on power and clock to this peripheral.
+  virtual PowerToken turn_on() = 0;
 };
 
 }  // namespace tvsc::hal::dma

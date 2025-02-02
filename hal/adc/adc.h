@@ -4,6 +4,7 @@
 #include <cstdlib>
 
 #include "hal/gpio/gpio.h"
+#include "hal/power_token.h"
 
 namespace tvsc::hal::adc {
 
@@ -23,6 +24,8 @@ class Adc {
   virtual void start_conversion(gpio::PortPin pin, uint32_t* destination,
                                 size_t destination_buffer_size) = 0;
 
+  virtual void set_resolution(uint8_t bits_resolution) = 0;
+
   virtual void calibrate_single_ended_input() = 0;
   virtual void calibrate_differential_input() = 0;
   virtual uint32_t read_calibration_factor() = 0;
@@ -36,6 +39,9 @@ class Adc {
   virtual void stop() = 0;
 
   virtual void handle_interrupt() = 0;
+
+  // Turn on power and clock to this peripheral.
+  virtual PowerToken turn_on() = 0;
 };
 
 }  // namespace tvsc::hal::adc

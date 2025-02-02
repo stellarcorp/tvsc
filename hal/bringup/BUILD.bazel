@@ -23,6 +23,7 @@ cc_library(
         "dac_demo.h",
     ],
     deps = [
+        "//hal",
         "//hal/board",
         "//hal/gpio",
         "//hal/scheduler",
@@ -46,6 +47,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//hal",
         "//hal/board",
         "//hal/gpio",
         "//hal/scheduler",
@@ -69,6 +71,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//hal",
         "//hal/board",
         "//hal/gpio",
         "//hal/scheduler",
@@ -94,6 +97,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//hal",
         "//hal/board",
         "//hal/gpio",
         "//hal/scheduler",
@@ -118,6 +122,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//hal",
         "//hal/board",
         "//hal/gpio",
         "//hal/scheduler",
@@ -140,6 +145,7 @@ cc_binary(
         "//conditions:default": [],
     }),
     deps = [
+        "//hal",
         "//hal/board",
         "//hal/gpio",
     ],
