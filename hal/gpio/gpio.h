@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "hal/power_token.h"
+#include "hal/enable_lock.h"
 
 namespace tvsc::hal::gpio {
 
@@ -113,7 +113,7 @@ class Gpio {
   virtual void toggle_pin(Pin pin) = 0;
 
   // Turn on power and clock to this GPIO.
-  virtual PowerToken enable() = 0;
+  virtual EnableLock enable() = 0;
 };
 
 }  // namespace tvsc::hal::gpio

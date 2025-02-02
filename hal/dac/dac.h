@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "hal/power_token.h"
+#include "hal/enable_lock.h"
 
 namespace tvsc::hal::dac {
 
@@ -16,7 +16,7 @@ class Dac {
   virtual void set_resolution(uint8_t bits_resolution, uint8_t channel = 0) = 0;
 
   // Turn on power and clock to this peripheral.
-  virtual PowerToken enable() = 0;
+  virtual EnableLock enable() = 0;
 };
 
 }  // namespace tvsc::hal::dac

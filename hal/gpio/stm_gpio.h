@@ -96,7 +96,7 @@ class GpioStm32xxxx final : public Gpio {
 
   bool read_pin(Pin pin) override;
 
-  PowerToken enable() override;
+  EnableLock enable() override;
 };
 
 }  // namespace tvsc::hal::gpio

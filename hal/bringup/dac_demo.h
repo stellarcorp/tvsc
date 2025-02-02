@@ -4,7 +4,7 @@
 
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
-#include "hal/power_token.h"
+#include "hal/enable_lock.h"
 #include "hal/scheduler/task.h"
 
 namespace tvsc::hal::bringup {
@@ -32,7 +32,7 @@ scheduler::Task run_dac_demo(board::Board& board, uint32_t& current_output_value
   }
 
   // Turn on clocks for the peripherals that we want.
-  const PowerToken dac_power{dac.enable()};
+  const EnableLock dac_power{dac.enable()};
 
   while (true) {
     for (auto& v : dac_8bit_values) {

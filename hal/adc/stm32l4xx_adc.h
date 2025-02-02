@@ -7,7 +7,7 @@
 #include "hal/dma/dma.h"
 #include "hal/dma/stm32l4xx_dma.h"
 #include "hal/gpio/gpio.h"
-#include "hal/power_token.h"
+#include "hal/enable_lock.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
@@ -42,7 +42,7 @@ class AdcStm32l4xx final : public Adc {
   void handle_interrupt() override;
 
   // Turn on power and clock to this peripheral.
-  PowerToken enable() override;
+  EnableLock enable() override;
 };
 
 }  // namespace tvsc::hal::adc

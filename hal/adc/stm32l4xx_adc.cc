@@ -1,7 +1,7 @@
 #include "hal/adc/stm32l4xx_adc.h"
 
 #include "hal/gpio/gpio.h"
-#include "hal/power_token.h"
+#include "hal/enable_lock.h"
 
 namespace tvsc::hal::adc {
 
@@ -136,12 +136,12 @@ void AdcStm32l4xx::handle_interrupt() { HAL_ADC_IRQHandler(&adc_); }
 
 void disable() { __HAL_RCC_ADC_CLK_DISABLE(); }
 
-PowerToken AdcStm32l4xx::enable() {
+EnableLock AdcStm32l4xx::enable() {
   if (use_counter_ == 0) {
     __HAL_RCC_ADC_CLK_ENABLE();
   }
   ++use_counter_;
-  return PowerToken([this]() {
+  return EnableLock([this]() {
     --use_counter_;
     if (use_counter_ == 0) {
       disable();

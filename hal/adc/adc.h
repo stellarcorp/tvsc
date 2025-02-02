@@ -4,7 +4,7 @@
 #include <cstdlib>
 
 #include "hal/gpio/gpio.h"
-#include "hal/power_token.h"
+#include "hal/enable_lock.h"
 
 namespace tvsc::hal::adc {
 
@@ -41,7 +41,7 @@ class Adc {
   virtual void handle_interrupt() = 0;
 
   // Turn on power and clock to this peripheral.
-  virtual PowerToken enable() = 0;
+  virtual EnableLock enable() = 0;
 };
 
 }  // namespace tvsc::hal::adc

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "hal/dma/dma.h"
-#include "hal/power_token.h"
+#include "hal/enable_lock.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
@@ -26,7 +26,7 @@ class DmaStm32l4xx final : public Dma {
   // the DMA handle in order to manage the DMA as part of that process.
   DMA_HandleTypeDef* handle() { return &dma_; }
 
-  PowerToken enable() override;
+  EnableLock enable() override;
 };
 
 }  // namespace tvsc::hal::dma

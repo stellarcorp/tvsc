@@ -208,7 +208,7 @@ void disable(Port port) {
   }
 }
 
-PowerToken GpioStm32xxxx::enable() {
+EnableLock GpioStm32xxxx::enable() {
   if (use_counter_ == 0) {
     if (port_ == 0) {
       __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -229,7 +229,7 @@ PowerToken GpioStm32xxxx::enable() {
     }
   }
   ++use_counter_;
-  return PowerToken([this]() {
+  return EnableLock([this]() {
     --use_counter_;
     if (use_counter_ == 0) {
       disable(port_);

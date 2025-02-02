@@ -5,7 +5,7 @@
 
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
-#include "hal/power_token.h"
+#include "hal/enable_lock.h"
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
 #include "hal/time/clock.h"
@@ -21,7 +21,7 @@ int main() {
   BoardType& board{BoardType::board()};
 
   auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
-  tvsc::hal::PowerToken gpio_power{gpio.enable()};
+  tvsc::hal::EnableLock gpio_power{gpio.enable()};
 
   auto& clock{board.clock()};
 

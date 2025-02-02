@@ -4,13 +4,13 @@
 
 namespace tvsc::hal {
 
-class PowerToken final {
+class EnableLock final {
  private:
   std::function<void()> callback_;
 
  public:
-  PowerToken(std::function<void()> turn_off) : callback_(turn_off) {}
-  ~PowerToken() {
+  EnableLock(std::function<void()> turn_off) : callback_(turn_off) {}
+  ~EnableLock() {
     if (callback_) {
       callback_();
     }

@@ -4,7 +4,7 @@
 #include <cstdint>
 
 #include "hal/dac/dac.h"
-#include "hal/power_token.h"
+#include "hal/enable_lock.h"
 #include "hal/register.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
@@ -86,12 +86,12 @@ class DacStm32xxxx final : public Dac {
     }
   }
 
-  PowerToken enable() {
+  EnableLock enable() {
     if (use_counter_ == 0) {
       __HAL_RCC_DAC1_CLK_ENABLE();
     }
     ++use_counter_;
-    return PowerToken([this]() {
+    return EnableLock([this]() {
       --use_counter_;
       if (use_counter_ == 0) {
         disable();

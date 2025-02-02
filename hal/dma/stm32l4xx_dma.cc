@@ -1,6 +1,6 @@
 #include "hal/dma/stm32l4xx_dma.h"
 
-#include "hal/power_token.h"
+#include "hal/enable_lock.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
@@ -24,12 +24,12 @@ void DmaStm32l4xx::start_circular_transfer() {
 
 void disable() { __HAL_RCC_DMA1_CLK_DISABLE(); }
 
-PowerToken DmaStm32l4xx::enable() {
+EnableLock DmaStm32l4xx::enable() {
   if (use_counter_ == 0) {
     __HAL_RCC_DMA1_CLK_ENABLE();
   }
   ++use_counter_;
-  return PowerToken([this]() {
+  return EnableLock([this]() {
     --use_counter_;
     if (use_counter_ == 0) {
       disable();
