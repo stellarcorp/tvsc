@@ -1,13 +1,36 @@
 cc_library(
-    name = "hal",
+    name = "hal_headers",
     hdrs = [
         "enable_lock.h",
+        "peripheral_id.h",
         "register.h",
     ],
+)
+
+cc_library(
+    name = "hal",
     # We don't want this module to be used directly except by its subpackages.
     visibility = ["//hal:__subpackages__"],
     deps = [
         "//bits",
+        ":hal_headers",
+    ] + select({
+        "//platforms:stm32_core": [
+            ":stm32_peripherals",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32_peripherals",
+    hdrs = [
+        "stm32_peripheral_ids.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32_core",
+    ],
+    deps = [
+        ":hal_headers",
     ],
 )
 
