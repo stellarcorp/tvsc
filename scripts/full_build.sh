@@ -16,7 +16,7 @@ done
 
 for mode in fastbuild opt dbg
 do
-    for sku in teensy40 teensy41
+    for sku in nucleo_l452re nucleo_l432kc nucleo_l412kb
     do
 	./bazelisk-linux-amd64 build --compilation_mode "${mode}" --config="${sku}" //...
     done
