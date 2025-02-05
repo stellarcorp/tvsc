@@ -1,0 +1,44 @@
+cc_library(
+    name = "timer_headers",
+    hdrs = [
+        "timer.h",
+    ],
+    deps = [
+        "//hal/gpio",
+    ],
+)
+
+cc_library(
+    name = "timer",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":timer_headers",
+        "//hal",
+    ] + select({
+        "//platforms:stm32_core": [
+            ":stm32l4xx_timer",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32l4xx_timer",
+    srcs = [
+        "stm32l4xx_timer.cc",
+    ],
+    hdrs = [
+        "stm32l4xx_timer.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32_core",
+    ],
+    deps = [
+        ":timer_headers",
+        "//hal",
+        "//third_party/stm32",
+    ],
+)
