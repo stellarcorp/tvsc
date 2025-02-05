@@ -1,16 +1,12 @@
-# TVSC
+#TVSC
 
-This repository is the principal codebase for the Tennessee Valley Stellar Corporation. We are a community-scale space agency in east Tennessee dedicated to the open development of technologies enabling the public use of space. Our first project is a drone-based communication system called "Virtual Tower". Its goal is to extend radio communications without the need of a physical radio tower. The Virtual Tower is currently under development and is not yet ready for general use.
+This repository is the principal codebase for the Tennessee Valley Stellar Corporation. We are a community-scale space agency in east Tennessee dedicated to the open development of technologies enabling the public use of space.
 
 ## Repository structure
 
-As the Virtual Tower progresses, we will add specific directories to this repository for that project. Until then, the best places to start are the [radio](./radio) and the [service](./service) directories. The radio directory contains APIs for working with low-level radio modules, often on embedded systems. The service directory contains the various services that will comprise the Virtual Tower and future projects.
+There are three main sections to the repository. The most active development at the moment is taking place in the [hal](./hal) and the [electronics](./electronics) directories. The hal directory contains the Hardware Abstraction Layer. The electronics directory holds our PCB design work. The rest of the repository (the third section) consists of older code that is in need of maintenance/documentation or deletion.
 
 ## Getting started
-
-### Checkout this repo
-
-See instructions from gitlab.com.
 
 ### Bazel
 
@@ -20,13 +16,19 @@ Part of Bazel is a command line tool called [Bazelisk](https://github.com/bazelb
 
 On the first run of bazelisk on a given computer, it will download the correct version of Bazel. So, this first build may take a while.
 
+### Toolchain
+
+The build uses the local toolchain for desktop builds. This toolchain should support C++20.
+
+For embedded builds, the toolchain and system libraries are downloaded from various external repositories.
+
+The builds are designed to work on Linux. Other systems can be added as needed.
+
 ### Do a test build for your local system:
 
 From the top-level of the repo,
 ```
-./bazelisk-linux-amd64 run //service/hello:hello_world
+./bazelisk-linux-amd64 build --config=nucleo_l452re //...
 ```
 
-You can guess what this should print. Any issues are likely due to missing or out-of-date compilers.
-
-Note: future examples will use `bazel` instead of one of the bazelisk executables. This is inline with examples from the [Bazel documentation](https://bazel.build/) and other online sources. Please continue to use bazelisk, even when the examples say `bazel`. You may find it useful to make an alias from `bazel` to the correct bazelisk executable.
+The first build will take a long time, but future builds should be relatively fast.
