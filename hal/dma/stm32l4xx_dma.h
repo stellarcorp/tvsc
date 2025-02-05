@@ -2,6 +2,7 @@
 
 #include "hal/dma/dma.h"
 #include "hal/enable_lock.h"
+#include "hal/peripheral_id.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
@@ -11,12 +12,16 @@ class DmaStm32l4xx final : public Dma {
  private:
   DMA_HandleTypeDef dma_{};
   uint32_t enable_counter_{0};
+  PeripheralId id_;
 
  public:
-  DmaStm32l4xx(DMA_Channel_TypeDef* dma_instance, uint32_t request_mapping) {
+  DmaStm32l4xx(PeripheralId id, DMA_Channel_TypeDef* dma_instance, uint32_t request_mapping)
+      : id_(id) {
     dma_.Instance = dma_instance;
     dma_.Init.Request = request_mapping;
   }
+
+  PeripheralId id() override;
 
   void start_circular_transfer() override;
 

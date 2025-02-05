@@ -1,10 +1,13 @@
 #include "hal/dma/stm32l4xx_dma.h"
 
 #include "hal/enable_lock.h"
+#include "hal/peripheral_id.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal::dma {
+
+PeripheralId DmaStm32l4xx::id() { return id_; }
 
 void DmaStm32l4xx::handle_interrupt() { HAL_DMA_IRQHandler(&dma_); }
 
@@ -14,8 +17,8 @@ void DmaStm32l4xx::start_circular_transfer() {
   dma_.Init.PeriphInc = DMA_PINC_DISABLE;
   dma_.Init.MemInc = DMA_MINC_ENABLE;
   // TODO(james): These alignment values are suspect.
-  dma_.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
-  dma_.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+  dma_.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+  dma_.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
   dma_.Init.Mode = DMA_CIRCULAR;
   dma_.Init.Priority = DMA_PRIORITY_HIGH;
 
