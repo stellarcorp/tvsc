@@ -2,8 +2,32 @@
 
 #include "hal/enable_lock.h"
 #include "hal/gpio/gpio.h"
+#include "hal/peripheral_id.h"
+#include "hal/stm32_peripheral_ids.h"
 
 namespace tvsc::hal::adc {
+
+static constexpr size_t NUMBER_RANKS_IN_SEQUENCER{16};
+
+uint32_t trigger_flag(PeripheralId trigger_id) {
+  if (trigger_id == Stm32PeripheralIds::TIM1_ID) {
+    return ADC_EXTERNALTRIG_T1_TRGO;
+  } else if (trigger_id == Stm32PeripheralIds::TIM2_ID) {
+    return ADC_EXTERNALTRIG_T2_TRGO;
+  } else if (trigger_id == Stm32PeripheralIds::TIM3_ID) {
+    return ADC_EXTERNALTRIG_T3_TRGO;
+  } else if (trigger_id == Stm32PeripheralIds::TIM4_ID) {
+    return ADC_EXTERNALTRIG_T4_TRGO;
+  } else if (trigger_id == Stm32PeripheralIds::TIM6_ID) {
+    return ADC_EXTERNALTRIG_T6_TRGO;
+  } else if (trigger_id == Stm32PeripheralIds::TIM8_ID) {
+    return ADC_EXTERNALTRIG_T8_TRGO;
+  } else if (trigger_id == Stm32PeripheralIds::TIM15_ID) {
+    return ADC_EXTERNALTRIG_T15_TRGO;
+  } else {
+    return -1;
+  }
+}
 
 static constexpr uint32_t get_channel(gpio::PortPin pin) {
   if (pin.port == 0) {
@@ -43,43 +67,83 @@ static constexpr uint32_t get_channel(gpio::PortPin pin) {
   return 0xff;
 }
 
+uint32_t rank_by_index(uint8_t index) {
+  if (index == 1) {
+    return ADC_REGULAR_RANK_1;
+  } else if (index == 2) {
+    return ADC_REGULAR_RANK_2;
+  } else if (index == 3) {
+    return ADC_REGULAR_RANK_3;
+  } else if (index == 4) {
+    return ADC_REGULAR_RANK_4;
+  } else if (index == 5) {
+    return ADC_REGULAR_RANK_5;
+  } else if (index == 6) {
+    return ADC_REGULAR_RANK_6;
+  } else if (index == 7) {
+    return ADC_REGULAR_RANK_7;
+  } else if (index == 8) {
+    return ADC_REGULAR_RANK_8;
+  } else if (index == 9) {
+    return ADC_REGULAR_RANK_9;
+  } else if (index == 10) {
+    return ADC_REGULAR_RANK_10;
+  } else if (index == 11) {
+    return ADC_REGULAR_RANK_11;
+  } else if (index == 12) {
+    return ADC_REGULAR_RANK_12;
+  } else if (index == 13) {
+    return ADC_REGULAR_RANK_13;
+  } else if (index == 14) {
+    return ADC_REGULAR_RANK_14;
+  } else if (index == 15) {
+    return ADC_REGULAR_RANK_15;
+  } else if (index == 16) {
+    return ADC_REGULAR_RANK_16;
+  }
+}
+
 void AdcStm32l4xx::start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
-                                           size_t destination_buffer_size) {
+                                           size_t destination_buffer_size, timer::Timer& trigger) {
   // Configure ADC.
   adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
   adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  adc_.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  adc_.Init.ScanConvMode = ADC_SCAN_ENABLE;
   adc_.Init.EOCSelection = ADC_EOC_SEQ_CONV;
   adc_.Init.LowPowerAutoWait = DISABLE;
   adc_.Init.ContinuousConvMode = DISABLE;
   adc_.Init.NbrOfConversion = 1;
   adc_.Init.DiscontinuousConvMode = DISABLE;
-  // TODO(james): Set up the timers.
-  adc_.Init.ExternalTrigConv = ADC_EXTERNALTRIG_T2_TRGO; // Use TIM2 as the trigger.
+  adc_.Init.ExternalTrigConv = trigger_flag(trigger.id());
   adc_.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_RISING;
+  adc_.Init.DMAContinuousRequests = ENABLE;
 
   HAL_ADC_Init(&adc_);
 
-  dma_->start_circular_transfer();
+  // Configure an ADC Channel for each pin.
+  channel_config_.Rank = 1;
+  channel_config_.Channel = get_channel(pin);
+  channel_config_.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
+  channel_config_.SingleDiff = ADC_SINGLE_ENDED;
+  channel_config_.Offset = 0;
+
+  HAL_ADC_ConfigChannel(&adc_, &channel_config_);
 
   // Link DMA to ADC1. This allows the DMA's interrupt handler to (eventually) call the ADC's
   // interrupt handler, among other things.
   __HAL_LINKDMA(&adc_, DMA_Handle, *dma_->handle());
 
-  // Configure ADC Channel.
-  channel_config_.Channel = get_channel(pin);
-  channel_config_.Rank = ADC_REGULAR_RANK_1;
-  channel_config_.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
-  channel_config_.SingleDiff = ADC_SINGLE_ENDED;
-  channel_config_.Offset = 0;
-
-  HAL_ADC_ConfigChannel(&adc_, &channel_config_);
+  dma_->start_circular_transfer();
 
   HAL_ADC_Start_DMA(&adc_, destination, destination_buffer_size);
 }
 
 void AdcStm32l4xx::start_single_conversion(gpio::PortPin pin, uint32_t* destination,
                                            size_t destination_buffer_size) {
+  // Link DMA to ADC1. This allows the DMA's interrupt handler to (eventually) call the ADC's
+  // interrupt handler, among other things.
+  __HAL_LINKDMA(&adc_, DMA_Handle, *dma_->handle());
+
   // Configure ADC.
   adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
   adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;     // Right-aligned data
@@ -95,10 +159,6 @@ void AdcStm32l4xx::start_single_conversion(gpio::PortPin pin, uint32_t* destinat
   HAL_ADC_Init(&adc_);
 
   dma_->start_circular_transfer();
-
-  // Link DMA to ADC1. This allows the DMA's interrupt handler to (eventually) call the ADC's
-  // interrupt handler, among other things.
-  __HAL_LINKDMA(&adc_, DMA_Handle, *dma_->handle());
 
   // Configure ADC Channel.
   channel_config_.Channel = get_channel(pin);

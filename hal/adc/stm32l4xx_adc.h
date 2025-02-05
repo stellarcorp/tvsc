@@ -30,7 +30,7 @@ class AdcStm32l4xx final : public Adc {
                                size_t destination_buffer_size) override;
 
   void start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
-                               size_t destination_buffer_size) override;
+                               size_t destination_buffer_size, timer::Timer& trigger) override;
 
   void reset_after_conversion() override;
 

@@ -1,31 +1,33 @@
 #pragma once
 
+#include <array>
 #include <cstdint>
 #include <cstdlib>
 
 #include "hal/enable_lock.h"
 #include "hal/gpio/gpio.h"
+#include "hal/timer/timer.h"
 
 namespace tvsc::hal::adc {
 
 class Adc {
  public:
   /**
-   * Measure the voltage on a pin, optionally using an opamp to amplify the voltage by a gain.
+   * Measure the voltage on a pin.
    *
-   * Configures an ADC to measure the voltage on the given pin. If the gain is non-unity, the
-   * onboard opamp is configured to amplify the signal before conversion. The measurement is
+   * Configures an ADC to measure the voltage on the given pin. The measurement is
    * asynchronous; the is_running() method will return false when the measurement is complete. The
-   * result is stored in the location specified by destination.
+   * result is stored in the location specified by destination using DMA.
    *
-   * TODO(james): Consider adding a callback. The callback could be on this method directly or it
-   * could be on the Adc instance as a whole.
+   * TODO(james): Rework this API to support converting multiple pins at one time. Likely, we would
+   * want begin/end iterators as parameters. (Note: can't use std::array as it would require
+   * templating on the size of the array, and template functions can't be virtual.
    */
   virtual void start_single_conversion(gpio::PortPin pin, uint32_t* destination,
                                        size_t destination_buffer_size) = 0;
 
   virtual void start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
-                                       size_t destination_buffer_size) = 0;
+                                       size_t destination_buffer_size, timer::Timer& trigger) = 0;
 
   virtual void reset_after_conversion() = 0;
 
