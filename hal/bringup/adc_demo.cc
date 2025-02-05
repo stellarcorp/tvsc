@@ -13,7 +13,7 @@ using BoardType = tvsc::hal::board::Board;
 extern "C" {
 
 __attribute__((section(".status.value"))) uint32_t current_output_value{};
-__attribute__((section(".status.value"))) uint32_t value_read{};
+__attribute__((section(".status.value"))) std::array<uint32_t, 4> buffer{};
 __attribute__((section(".status.value"))) float absolute_difference{};
 __attribute__((section(".status.value"))) float relative_difference{};
 __attribute__((section(".status.value"))) volatile bool dma_complete{};
@@ -77,14 +77,17 @@ scheduler::Task run_adc_demo(BoardType& board) {
       dma_complete = false;
       dma_error = false;
 
+      // Set the values in the buffer to a known pattern to check for buffer overrun issues.
+      buffer = {0xdead, 0xabcd, 0x1234, 0xef12};
       adc.start_single_conversion({BoardType::DAC_CHANNEL_1_PORT, BoardType::DAC_CHANNEL_1_PIN},
-                                  &value_read, 1);
+                                  buffer.data(), 1);
       while (!dma_complete) {
         // Yield while we take the measurement.
         co_yield 1000 * (5 + clock.current_time_millis());
       }
       adc.reset_after_conversion();
 
+      uint16_t value_read = buffer[0];
       static constexpr float epsilon{0.01};
       relative_difference = std::abs(static_cast<float>(current_output_value) - value_read) /
                             (current_output_value + epsilon);
@@ -110,7 +113,6 @@ scheduler::Task run_adc_demo(BoardType& board) {
 
     // Clear the state, DAC, and LED and pause between iterations.
     current_output_value = 0;
-    value_read = 0;
     absolute_difference = 0.f;
     relative_difference = 0.f;
     dac.set_value(current_output_value);
