@@ -63,42 +63,6 @@ static constexpr uint32_t get_channel(gpio::PortPin pin) {
   return 0xff;
 }
 
-uint32_t rank_by_index(uint8_t index) {
-  if (index == 1) {
-    return ADC_REGULAR_RANK_1;
-  } else if (index == 2) {
-    return ADC_REGULAR_RANK_2;
-  } else if (index == 3) {
-    return ADC_REGULAR_RANK_3;
-  } else if (index == 4) {
-    return ADC_REGULAR_RANK_4;
-  } else if (index == 5) {
-    return ADC_REGULAR_RANK_5;
-  } else if (index == 6) {
-    return ADC_REGULAR_RANK_6;
-  } else if (index == 7) {
-    return ADC_REGULAR_RANK_7;
-  } else if (index == 8) {
-    return ADC_REGULAR_RANK_8;
-  } else if (index == 9) {
-    return ADC_REGULAR_RANK_9;
-  } else if (index == 10) {
-    return ADC_REGULAR_RANK_10;
-  } else if (index == 11) {
-    return ADC_REGULAR_RANK_11;
-  } else if (index == 12) {
-    return ADC_REGULAR_RANK_12;
-  } else if (index == 13) {
-    return ADC_REGULAR_RANK_13;
-  } else if (index == 14) {
-    return ADC_REGULAR_RANK_14;
-  } else if (index == 15) {
-    return ADC_REGULAR_RANK_15;
-  } else if (index == 16) {
-    return ADC_REGULAR_RANK_16;
-  }
-}
-
 void AdcStm32l4xx::start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
                                            size_t destination_buffer_size, timer::Timer& trigger) {
   // Configure ADC.
