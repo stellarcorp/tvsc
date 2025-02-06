@@ -41,8 +41,6 @@ void disable(PeripheralId id) {
     __HAL_RCC_TIM1_CLK_DISABLE();
   } else if (id == Stm32PeripheralIds::TIM2_ID) {
     __HAL_RCC_TIM2_CLK_DISABLE();
-  } else if (id == Stm32PeripheralIds::TIM3_ID) {
-    __HAL_RCC_TIM3_CLK_DISABLE();
   } else if (id == Stm32PeripheralIds::TIM4_ID) {
     __HAL_RCC_TIM2_CLK_DISABLE();
   } else if (id == Stm32PeripheralIds::TIM6_ID) {
@@ -58,8 +56,6 @@ EnableLock TimerStm32l4xx::enable() {
       __HAL_RCC_TIM1_CLK_ENABLE();
     } else if (id_ == Stm32PeripheralIds::TIM2_ID) {
       __HAL_RCC_TIM2_CLK_ENABLE();
-    } else if (id_ == Stm32PeripheralIds::TIM3_ID) {
-      __HAL_RCC_TIM3_CLK_ENABLE();
     } else if (id_ == Stm32PeripheralIds::TIM4_ID) {
       __HAL_RCC_TIM2_CLK_ENABLE();
     } else if (id_ == Stm32PeripheralIds::TIM6_ID) {

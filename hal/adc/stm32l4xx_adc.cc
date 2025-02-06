@@ -14,14 +14,10 @@ uint32_t trigger_flag(PeripheralId trigger_id) {
     return ADC_EXTERNALTRIG_T1_TRGO;
   } else if (trigger_id == Stm32PeripheralIds::TIM2_ID) {
     return ADC_EXTERNALTRIG_T2_TRGO;
-  } else if (trigger_id == Stm32PeripheralIds::TIM3_ID) {
-    return ADC_EXTERNALTRIG_T3_TRGO;
   } else if (trigger_id == Stm32PeripheralIds::TIM4_ID) {
     return ADC_EXTERNALTRIG_T4_TRGO;
   } else if (trigger_id == Stm32PeripheralIds::TIM6_ID) {
     return ADC_EXTERNALTRIG_T6_TRGO;
-  } else if (trigger_id == Stm32PeripheralIds::TIM8_ID) {
-    return ADC_EXTERNALTRIG_T8_TRGO;
   } else if (trigger_id == Stm32PeripheralIds::TIM15_ID) {
     return ADC_EXTERNALTRIG_T15_TRGO;
   } else {

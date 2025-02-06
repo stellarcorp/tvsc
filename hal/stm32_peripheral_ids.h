@@ -18,12 +18,9 @@ class Stm32PeripheralIds final {
   // Timers
   static constexpr PeripheralId TIM1_ID{1};
   static constexpr PeripheralId TIM2_ID{2};
-  static constexpr PeripheralId TIM3_ID{3};
-  static constexpr PeripheralId TIM4_ID{4};
-  static constexpr PeripheralId TIM6_ID{5};
-  static constexpr PeripheralId TIM8_ID{6};
-  static constexpr PeripheralId TIM15_ID{7};
-  static constexpr PeripheralId LPTIM1_ID{8};
+  static constexpr PeripheralId TIM4_ID{3};
+  static constexpr PeripheralId TIM6_ID{4};
+  static constexpr PeripheralId TIM15_ID{5};
 
   // DMAs
   // Note that DMAs are mostly identified by channel, rather than the peripheral itself. In ST

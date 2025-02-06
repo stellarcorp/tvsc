@@ -15,8 +15,11 @@
 #include "hal/power/stm32l4xx_power.h"
 #include "hal/rcc/rcc.h"
 #include "hal/rcc/stm32l4xx_rcc.h"
+#include "hal/stm32_peripheral_ids.h"
 #include "hal/time/clock.h"
 #include "hal/time/stm_clock.h"
+#include "hal/timer/stm32l4xx_timer.h"
+#include "hal/timer/timer.h"
 #include "third_party/stm32/stm32.h"
 
 namespace tvsc::hal::board {
@@ -67,8 +70,10 @@ class Board final {
 
   dac::DacStm32xxxx<NUM_DAC_CHANNELS> dac_{DAC};
 
-  dma::DmaStm32l4xx dma_{DMA1_Channel1, DMA_REQUEST_0};
+  dma::DmaStm32l4xx dma_{Stm32PeripheralIds::DMA1_CHANNEL1_ID, DMA1_Channel1, DMA_REQUEST_0};
   adc::AdcStm32l4xx adc_{ADC1, dma_};
+
+  timer::TimerStm32l4xx timer2_{Stm32PeripheralIds::TIM2_ID, TIM2};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
@@ -153,6 +158,8 @@ class Board final {
   adc::Adc& adc() { return adc_; }
 
   dma::Dma& dma() { return dma_; }
+
+  timer::Timer& timer2() { return timer2_; }
 };
 
 }  // namespace tvsc::hal::board
