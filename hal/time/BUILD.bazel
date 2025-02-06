@@ -60,12 +60,13 @@ cc_library(
     hdrs = [
         "stm_clock.h",
     ],
-    target_compatible_with = [
-        "//platforms:stm32_core",
-    ],
     deps = [
+        # Note that we do not include a dependency on the STM32 HAL. Where necessary, we forward
+        # declare globals, types, and functions in the code here. This allows us to test the clock
+        # on x86_64, if we fake SysTick interrupts.
+        # Also, we don't restrict the use of this library to just STM32 MCUs via
+        # target_compatible_with(). Again, this is to allow us to test this code on the desktop.
         ":time_headers",
-        "//third_party/stm32",
     ],
 )
 
@@ -119,6 +120,17 @@ cc_test(
     deps = [
         ":mock_clock",
         ":time",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "stm32_clock_test",
+    srcs = [
+        "stm_clock_test.cc",
+    ],
+    deps = [
+        ":stm32_time",
         "//third_party/gtest",
     ],
 )

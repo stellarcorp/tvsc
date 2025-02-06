@@ -1,13 +1,16 @@
 #include "hal/time/stm_clock.h"
 
+#include <cstdint>
+
 #include "hal/time/clock.h"
-#include "third_party/stm32/stm32_hal.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void SysTick_Handler() { uwTick += static_cast<uint32_t>(uwTickFreq); }
+extern volatile uint64_t uwTick;
+
+void SysTick_Handler() { ++uwTick; }
 
 #ifdef __cplusplus
 }
@@ -26,5 +29,9 @@ void ClockStm32xxxx::sleep_us(TimeType microseconds) {
 }
 
 void ClockStm32xxxx::sleep_ms(TimeType milliseconds) { sleep_us(milliseconds * 1000); }
+
+ClockStm32xxxx::time_point ClockStm32xxxx::now() noexcept {
+  return time_point{duration{uwTick}};
+}
 
 }  // namespace tvsc::hal::time
