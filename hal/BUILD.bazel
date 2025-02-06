@@ -18,6 +18,8 @@ cc_library(
         "//platforms:stm32_core": [
             ":stm32_peripherals",
         ],
+        "//conditions:default": [
+        ],
     }),
 )
 
