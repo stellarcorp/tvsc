@@ -9,11 +9,11 @@ namespace tvsc::hal::time {
  */
 class ClockStm32xxxx final : public time::Clock {
  public:
-  time::TimeType current_time_micros() override;
-  time::TimeType current_time_millis() override;
+  TimeType current_time_micros() override;
+  TimeType current_time_millis() override;
 
-  void sleep_us(time::TimeType microseconds) override;
-  void sleep_ms(time::TimeType milliseconds) override;
+  void sleep_us(TimeType microseconds) override;
+  void sleep_ms(TimeType milliseconds) override;
 };
 
 }  // namespace tvsc::hal::time
