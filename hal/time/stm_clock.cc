@@ -18,6 +18,11 @@ void SysTick_Handler() { ++uwTick; }
 
 namespace tvsc::hal::time {
 
+Clock& system_clock() {
+  static ClockStm32xxxx system_clock_{};
+  return system_clock_;
+}
+
 TimeType ClockStm32xxxx::current_time_micros() { return uwTick * 1000; }
 TimeType ClockStm32xxxx::current_time_millis() { return uwTick; }
 
@@ -29,9 +34,5 @@ void ClockStm32xxxx::sleep_us(TimeType microseconds) {
 }
 
 void ClockStm32xxxx::sleep_ms(TimeType milliseconds) { sleep_us(milliseconds * 1000); }
-
-ClockStm32xxxx::time_point ClockStm32xxxx::now() noexcept {
-  return time_point{duration{uwTick}};
-}
 
 }  // namespace tvsc::hal::time
