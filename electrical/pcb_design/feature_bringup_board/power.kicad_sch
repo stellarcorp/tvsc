@@ -2,7 +2,14 @@
 
   (uuid 9842dc54-6421-41d0-87cb-74c8120e705e)
 
-  (paper "A4")
+  (paper "USLetter")
+
+  (title_block
+    (title "Feature Bringup Board")
+    (date "2025-02-12")
+    (rev "${PCB_VERSION}")
+    (company "TVSC")
+  )
 
   (lib_symbols
     (symbol "Connector:TestPoint_Probe" (pin_numbers hide) (pin_names (offset 0.762) hide) (in_bom yes) (on_board yes)

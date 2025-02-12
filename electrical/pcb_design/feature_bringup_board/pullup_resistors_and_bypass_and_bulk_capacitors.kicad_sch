@@ -2,7 +2,14 @@
 
   (uuid 3f65be9d-1a8e-49fd-9da0-63df2f2f0b73)
 
-  (paper "A4")
+  (paper "USLetter")
+
+  (title_block
+    (title "Feature Bringup Board")
+    (date "2025-02-12")
+    (rev "${PCB_VERSION}")
+    (company "TVSC")
+  )
 
   (lib_symbols
     (symbol "Device:C" (pin_numbers hide) (pin_names (offset 0.254)) (in_bom yes) (on_board yes)

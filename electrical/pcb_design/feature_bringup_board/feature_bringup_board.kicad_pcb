@@ -5,6 +5,13 @@
   )
 
   (paper "A4")
+  (title_block
+    (title "Feature Bringup Board")
+    (date "2025-02-12")
+    (rev "${PCB_VERSION}")
+    (company "TVSC")
+  )
+
   (layers
     (0 "F.Cu" signal)
     (1 "In1.Cu" signal)
@@ -93,6 +100,8 @@
       (outputdirectory "")
     )
   )
+
+  (property "PCB_VERSION" "0.9")
 
   (net 0 "")
   (net 1 "GND")
@@ -4645,6 +4654,15 @@
       (rotate (xyz 0 0 0))
     )
   )
+
+  (gr_text_box "Developed with the support of the Hacker Initiative"
+    (start 134.625 44.525) (end 128.625 61.5) (angle 270) (layer "F.SilkS") (tstamp 26b1468e-9fb9-4a29-a65d-9d2118aca560)
+      (effects (font (size 1 1) (thickness 0.15)) (justify left top))
+    (stroke (width 0.15) (type solid))  )
+  (gr_text_box "Tennessee Valley Stellar Corporation\nFeature Bringup Board v${PCB_VERSION}\n"
+    (start 142.799521 44.475) (end 135.45048 61.501919) (angle 270) (layer "F.SilkS") (tstamp 4c6aaae0-e46a-4f48-a2a2-85de2e3c70bb)
+      (effects (font (size 1 1) (thickness 0.15)) (justify left top))
+    (stroke (width 0.15) (type solid))  )
 
   (segment (start 149.519998 26.995) (end 149.519998 26.4) (width 0.3) (layer "F.Cu") (net 1) (tstamp 0c6ca933-6801-442d-bcf2-46a416fb68a2))
   (segment (start 148.629998 26.4) (end 149.519998 26.4) (width 0.5) (layer "F.Cu") (net 1) (tstamp 0cae1def-9732-48a3-af5c-79dce600707b))
