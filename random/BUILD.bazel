@@ -2,24 +2,22 @@ load("//platforms:hex.bzl", "hex")
 
 cc_library(
     name = "random",
+    srcs = select({
+        "//platforms:teensyduino_core": ["arduino_random.cc"],
+        "//platforms:stm32_core": ["stm32_random.cc"],
+        "//platforms:std_cpp": ["std_cpp_random.cc"],
+    }),
     hdrs = [
         "random.h",
-    ] + select({
-        "//platforms:teensyduino_core": ["arduino_random.h"],
-        "//platforms:std_cpp": ["std_cpp_random.h"],
-    }),
-    target_compatible_with = select({
-        "//platforms:stm32_core": [
-            "@platforms//:incompatible",
-        ],
-        "//conditions:default": [
-        ],
-    }),
+    ],
     visibility = ["//visibility:public"],
     deps = select({
         "//platforms:teensyduino_core": [
             "//third_party/arduino:core",
             "//third_party/arduino:entropy",
+        ],
+        "//platforms:stm32_core": [
+            "//hal/random",
         ],
         "//conditions:default": [],
     }),
