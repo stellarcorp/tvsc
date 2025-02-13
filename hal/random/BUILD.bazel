@@ -1,0 +1,42 @@
+cc_library(
+    name = "random_headers",
+    hdrs = [
+        "rng.h",
+    ],
+)
+
+cc_library(
+    name = "random",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":random_headers",
+        "//hal",
+    ] + select({
+        "//platforms:stm32_core": [
+            ":stm32xxxx_random",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32xxxx_random",
+    srcs = [
+        "stm32xxxx_rng.cc",
+    ],
+    hdrs = [
+        "stm32xxxx_rng.h",
+    ],
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    deps = [
+        ":random_headers",
+        "//hal",
+        "//third_party/stm32",
+    ],
+)
