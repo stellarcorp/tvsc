@@ -11,7 +11,8 @@ namespace tvsc::hal::random {
 
 class RngStm32xxxx final : public Rng {
  private:
-  RNG_HandleTypeDef rng_;
+  RNG_HandleTypeDef rng_{.Instance = RNG};
+  uint32_t enable_counter_{};
 
  public:
   // Turn on power and clock to this peripheral.

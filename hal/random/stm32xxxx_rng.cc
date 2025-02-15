@@ -12,20 +12,24 @@ void disable() { __HAL_RCC_RNG_CLK_DISABLE(); }
 
 // Turn on power and clock to this peripheral.
 EnableLock RngStm32xxxx::enable() {
+  ++enable_counter_;
   __HAL_RCC_RNG_CLK_ENABLE();
+
   // TODO(james): Rework this code. The HAL function below can block for up to 2ms.
   HAL_RNG_Init(&rng_);
 
-  return EnableLock([]() { disable(); });
+  return EnableLock([this]() {
+    if (--enable_counter_ == 0) {
+      disable();
+    }
+  });
 }
 
 uint32_t RngStm32xxxx::operator()() {
   uint32_t result;
 
   // TODO(james): Rework this code. The HAL function below can block for up to 2ms.
-  while (HAL_RNG_GenerateRandomNumber(&rng_, &result) != HAL_OK) {
-    // co_yield;
-  }
+  HAL_RNG_GenerateRandomNumber(&rng_, &result);
   return result;
 }
 

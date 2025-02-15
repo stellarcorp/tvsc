@@ -19,8 +19,8 @@ scheduler::Task blink_randomly(time::Clock& clock, gpio::Gpio& gpio, gpio::Pin p
 
   gpio.write_pin(pin, 0);
   while (clock.current_time_millis() < stop_time_ms) {
-    uint64_t delay_ms = tvsc::random::generate_random_value(5, 1000);
     gpio.toggle_pin(pin);
+    const uint32_t delay_ms{tvsc::random::generate_random_value(5U, 1000U)};
     co_yield 1000 * (clock.current_time_millis() + delay_ms);
   }
   gpio.write_pin(pin, 0);
