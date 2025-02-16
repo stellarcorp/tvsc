@@ -10,7 +10,7 @@
 namespace tvsc::hal::bringup {
 
 template <uint8_t DAC_CHANNEL = 0>
-scheduler::Task run_dac_demo(board::Board& board, uint32_t& current_output_value,
+scheduler::Task run_dac_demo(board::Board& board, uint32_t& output_value,
                              uint64_t initial_delay_ms = 0) {
   static constexpr uint32_t dac_8bit_values[] = {0, 1, 2, 4, 8, 16, 32, 64, 128, 256};
   static constexpr uint32_t dac_12bit_values[] = {0, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
@@ -36,7 +36,7 @@ scheduler::Task run_dac_demo(board::Board& board, uint32_t& current_output_value
 
   while (true) {
     for (auto& v : dac_8bit_values) {
-      current_output_value = v;
+      output_value = v;
       dac.set_resolution(8, DAC_CHANNEL);
       dac.set_value(v, DAC_CHANNEL);
       co_yield 50'000 + clock.current_time_micros();
