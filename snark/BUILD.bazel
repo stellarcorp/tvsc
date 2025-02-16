@@ -1,0 +1,21 @@
+cc_library(
+    name = "snark",
+    srcs = [
+        "snark.cc",
+    ],
+    hdrs = [
+        "snark.h",
+    ],
+    deps = [
+        "//random",
+    ],
+)
+
+cc_test(
+    name = "snark_test",
+    srcs = ["snark_test.cc"],
+    deps = [
+        ":snark",
+        "//third_party/gtest",
+    ],
+)
