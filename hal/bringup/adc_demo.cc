@@ -4,6 +4,7 @@
 
 #include "hal/board/board.h"
 #include "hal/bringup/dac_demo.h"
+#include "hal/enable_lock.h"
 #include "hal/gpio/gpio.h"
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
@@ -28,21 +29,20 @@ namespace tvsc::hal::bringup {
 
 template <uint8_t DAC_CHANNEL = 0>
 scheduler::Task run_adc_demo(BoardType& board) {
-  auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
+  auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
   auto& adc{board.adc()};
   auto& dac{board.dac()};
   auto& clock{board.clock()};
+  auto& dac_gpio_peripheral{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>()};
 
   // Turn on clocks for the peripherals that we want.
   const EnableLock dac_power{dac.enable()};
-  const EnableLock gpio_power{gpio.enable()};
+  auto gpio{gpio_peripheral.access()};
   const EnableLock dma_power{board.dma().enable()};
   const EnableLock adc_power{adc.enable()};
+  auto dac_gpio{dac_gpio_peripheral.access()};
 
-  {
-    auto& dac_out_gpio{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>()};
-    dac_out_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], gpio::PinMode::ANALOG);
-  }
+  dac_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], gpio::PinMode::ANALOG);
 
   gpio.set_pin_mode(BoardType::GREEN_LED_PIN, gpio::PinMode::OUTPUT_PUSH_PULL, gpio::PinSpeed::LOW);
 

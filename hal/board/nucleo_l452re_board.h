@@ -96,7 +96,7 @@ class Board final {
   static Board& board();
 
   template <gpio::Port GPIO_PORT>
-  gpio::Gpio& gpio() {
+  gpio::GpioPeripheral& gpio() {
     static_assert(
         GPIO_PORT < NUM_GPIO_PORTS + NUM_DISALLOWED_PORTS,
         "Invalid GPIO port id. Likely, there is a mismatch in the build that instantiates a Board "
@@ -140,7 +140,7 @@ class Board final {
    * only be used as to lookup GPIO ports using integer values that can be evaluated at
    * compile-time; these integer values will mainly come from STM's HAL.
    */
-  gpio::Gpio& gpio(gpio::Port port) {
+  gpio::GpioPeripheral& gpio(gpio::Port port) {
     if (port == 0) {
       return gpio_port_a_;
     } else if (port == 1) {

@@ -3,8 +3,8 @@
 #include <cstdint>
 
 #include "hal/board/board.h"
-#include "hal/gpio/gpio.h"
 #include "hal/enable_lock.h"
+#include "hal/gpio/gpio.h"
 #include "hal/scheduler/task.h"
 
 namespace tvsc::hal::bringup {
@@ -21,18 +21,17 @@ scheduler::Task run_dac_demo(board::Board& board, uint32_t& output_value,
 
   auto& dac{board.dac()};
   auto& clock{board.clock()};
+  auto& dac_gpio_peripheral{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>()};
 
   if (initial_delay_ms > 0) {
     co_yield 1000 * (initial_delay_ms + clock.current_time_millis());
   }
 
-  {
-    auto& dac_out_gpio{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>()};
-    dac_out_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], gpio::PinMode::ANALOG);
-  }
-
   // Turn on clocks for the peripherals that we want.
-  const EnableLock dac_power{dac.enable()};
+  auto dac_out_gpio{dac_gpio_peripheral.access()};
+  EnableLock dac_power{dac.enable()};
+
+  dac_out_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], gpio::PinMode::ANALOG);
 
   while (true) {
     for (auto& v : dac_8bit_values) {

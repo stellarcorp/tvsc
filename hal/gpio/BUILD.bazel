@@ -1,5 +1,8 @@
 cc_library(
     name = "gpio_headers",
+    srcs = [
+        "gpio.cc",
+    ],
     hdrs = [
         "gpio.h",
     ],

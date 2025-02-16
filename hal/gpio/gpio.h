@@ -1,8 +1,8 @@
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
-
-#include "hal/enable_lock.h"
+#include <utility>
 
 namespace tvsc::hal::gpio {
 
@@ -102,18 +102,79 @@ enum class PinSpeed : uint8_t {
   VERY_HIGH,
 };
 
-class Gpio {
- public:
-  virtual ~Gpio() = default;
+class Gpio;
 
-  virtual void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed = PinSpeed::LOW) = 0;
+class GpioPeripheral {
+ private:
+  size_t ref_count_{};
+
+ protected:
+  void inc_ref_count() {
+    if (ref_count_++ == 0) {
+      enable();
+    }
+  }
+
+  void dec_ref_count() {
+    if (--ref_count_ == 0) {
+      disable();
+    }
+  }
+
+  virtual void enable() = 0;
+  virtual void disable() = 0;
+
+  virtual void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) = 0;
 
   virtual bool read_pin(Pin pin) = 0;
   virtual void write_pin(Pin pin, bool on) = 0;
   virtual void toggle_pin(Pin pin) = 0;
 
-  // Turn on power and clock to this GPIO.
-  virtual EnableLock enable() = 0;
+  friend class Gpio;
+
+ public:
+  virtual ~GpioPeripheral() = default;
+
+  // Use the functionality of this peripheral.
+  Gpio access();
+};
+
+class Gpio final {
+  GpioPeripheral* peripheral_;
+
+  Gpio(GpioPeripheral& peripheral) : peripheral_(&peripheral) { peripheral_->inc_ref_count(); }
+
+  friend class GpioPeripheral;
+
+ public:
+  ~Gpio() {
+    if (peripheral_ != nullptr) {
+      peripheral_->dec_ref_count();
+    }
+  }
+
+  Gpio(Gpio&& rhs) : peripheral_(std::exchange(rhs.peripheral_, nullptr)) {}
+
+  Gpio& operator=(Gpio&& rhs) {
+    std::swap(peripheral_, rhs.peripheral_);
+    return *this;
+  }
+
+  Gpio(const Gpio& rhs) : peripheral_(rhs.peripheral_) { peripheral_->inc_ref_count(); }
+
+  Gpio& operator=(const Gpio& rhs) {
+    peripheral_ = rhs.peripheral_;
+    peripheral_->inc_ref_count();
+    return *this;
+  }
+
+  void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed = PinSpeed::LOW) {
+    peripheral_->set_pin_mode(pin, mode, speed);
+  }
+
+  bool read_pin(Pin pin) { return peripheral_->read_pin(pin); }
+  void write_pin(Pin pin, bool on) { peripheral_->write_pin(pin, on); }
+  void toggle_pin(Pin pin) { peripheral_->toggle_pin(pin); }
 };
 
 }  // namespace tvsc::hal::gpio

@@ -188,53 +188,44 @@ void GpioStm32xxxx::toggle_pin(Pin pin) {
 
 bool GpioStm32xxxx::read_pin(Pin pin) { return registers_->IDR.bit_field_value<1>(1U << pin); }
 
-void disable(Port port) {
-  if (port == 0) {
+void GpioStm32xxxx::disable() {
+  if (port_ == 0) {
     __HAL_RCC_GPIOA_CLK_DISABLE();
-  } else if (port == 1) {
+  } else if (port_ == 1) {
     __HAL_RCC_GPIOB_CLK_DISABLE();
-  } else if (port == 2) {
+  } else if (port_ == 2) {
     __HAL_RCC_GPIOC_CLK_DISABLE();
-  } else if (port == 3) {
+  } else if (port_ == 3) {
 #if defined(__HAL_RCC_GPIOD_CLK_DISABLE)
     __HAL_RCC_GPIOD_CLK_DISABLE();
 #endif
-  } else if (port == 4) {
+  } else if (port_ == 4) {
 #if defined(__HAL_RCC_GPIOE_CLK_DISABLE)
     __HAL_RCC_GPIOE_CLK_DISABLE();
 #endif
-  } else if (port == 7) {
+  } else if (port_ == 7) {
     __HAL_RCC_GPIOH_CLK_DISABLE();
   }
 }
 
-EnableLock GpioStm32xxxx::enable() {
-  if (enable_counter_ == 0) {
-    if (port_ == 0) {
-      __HAL_RCC_GPIOA_CLK_ENABLE();
-    } else if (port_ == 1) {
-      __HAL_RCC_GPIOB_CLK_ENABLE();
-    } else if (port_ == 2) {
-      __HAL_RCC_GPIOC_CLK_ENABLE();
-    } else if (port_ == 3) {
+void GpioStm32xxxx::enable() {
+  if (port_ == 0) {
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+  } else if (port_ == 1) {
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+  } else if (port_ == 2) {
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+  } else if (port_ == 3) {
 #if defined(__HAL_RCC_GPIOD_CLK_ENABLE)
-      __HAL_RCC_GPIOD_CLK_ENABLE();
+    __HAL_RCC_GPIOD_CLK_ENABLE();
 #endif
-    } else if (port_ == 4) {
+  } else if (port_ == 4) {
 #if defined(__HAL_RCC_GPIOE_CLK_ENABLE)
-      __HAL_RCC_GPIOE_CLK_ENABLE();
+    __HAL_RCC_GPIOE_CLK_ENABLE();
 #endif
-    } else if (port_ == 7) {
-      __HAL_RCC_GPIOH_CLK_ENABLE();
-    }
+  } else if (port_ == 7) {
+    __HAL_RCC_GPIOH_CLK_ENABLE();
   }
-  ++enable_counter_;
-  return EnableLock([this]() {
-    --enable_counter_;
-    if (enable_counter_ == 0) {
-      disable(port_);
-    }
-  });
 }
 
 }  // namespace tvsc::hal::gpio

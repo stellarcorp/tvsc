@@ -54,11 +54,10 @@ class GpioRegisterBank final {
   volatile Register AFRH;
 };
 
-class GpioStm32xxxx final : public Gpio {
+class GpioStm32xxxx final : public GpioPeripheral {
  private:
   GpioRegisterBank* registers_;
   const Port port_;
-  uint32_t enable_counter_{0};
 
   void set_ospeedr_value(Pin pin, PinSpeed speed);
 
@@ -83,6 +82,9 @@ class GpioStm32xxxx final : public Gpio {
   };
   void set_otyper_value(Pin pin, OTYPER_VALUES value);
 
+  void disable() override;
+  void enable() override;
+
  public:
   static constexpr size_t NUM_PINS{16};
 
@@ -95,8 +97,6 @@ class GpioStm32xxxx final : public Gpio {
   void toggle_pin(Pin pin) override;
 
   bool read_pin(Pin pin) override;
-
-  EnableLock enable() override;
 };
 
 }  // namespace tvsc::hal::gpio
