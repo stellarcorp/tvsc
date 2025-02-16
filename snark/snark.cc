@@ -59,7 +59,7 @@ static constexpr const std::array messages = {
 };
 
 const char* random_snark() {
-  const size_t index{random::generate_random_value(0UL, messages.size() - 1)};
+  const size_t index{random::generate_random_value(0, messages.size() - 1)};
   return messages[index];
 }
 
