@@ -4,15 +4,13 @@
 #include <cstdint>
 
 #include "hal/dac/dac.h"
-#include "hal/enable_lock.h"
-#include "hal/register.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal::dac {
 
 template <uint8_t NUM_CHANNELS = 1>
-class DacStm32xxxx final : public Dac {
+class DacStm32xxxx final : public DacPeripheral {
  private:
   struct Channel final {
     uint32_t channel_id;
@@ -23,33 +21,9 @@ class DacStm32xxxx final : public Dac {
 
   DAC_HandleTypeDef hdac_{};
   std::array<Channel, NUM_CHANNELS> channels_;
-  uint32_t enable_counter_{0};
 
-  void disable() { __HAL_RCC_DAC1_CLK_DISABLE(); }
-
- public:
-  DacStm32xxxx(DAC_TypeDef* hal_dac) {
-    hdac_.Instance = hal_dac;
-    HAL_DAC_Init(&hdac_);
-
-    if constexpr (NUM_CHANNELS >= 1) {
-#if defined(DAC_CHANNEL_1)
-      channels_[0].channel_id = DAC_CHANNEL_1;
-#endif
-    }
-    if constexpr (NUM_CHANNELS >= 2) {
-#if defined(DAC_CHANNEL_2)
-      channels_[1].channel_id = DAC_CHANNEL_2;
-#endif
-    }
-    if constexpr (NUM_CHANNELS >= 2) {
-      static_assert(NUM_CHANNELS <= 2, "Implement DAC channels beyond 2");
-    }
-    for (auto& channel : channels_) {
-      channel.config.DAC_Trigger = DAC_TRIGGER_NONE;  // No trigger, direct output
-      channel.config.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
-    }
-  }
+  void enable() override { __HAL_RCC_DAC1_CLK_ENABLE(); }
+  void disable() override { __HAL_RCC_DAC1_CLK_DISABLE(); }
 
   void set_value(uint32_t value, uint8_t channel) override {
     Channel& channel_config{channels_.at(channel)};
@@ -86,17 +60,28 @@ class DacStm32xxxx final : public Dac {
     }
   }
 
-  EnableLock enable() {
-    if (enable_counter_ == 0) {
-      __HAL_RCC_DAC1_CLK_ENABLE();
+ public:
+  DacStm32xxxx(DAC_TypeDef* hal_dac) {
+    hdac_.Instance = hal_dac;
+    HAL_DAC_Init(&hdac_);
+
+    if constexpr (NUM_CHANNELS >= 1) {
+#if defined(DAC_CHANNEL_1)
+      channels_[0].channel_id = DAC_CHANNEL_1;
+#endif
     }
-    ++enable_counter_;
-    return EnableLock([this]() {
-      --enable_counter_;
-      if (enable_counter_ == 0) {
-        disable();
-      }
-    });
+    if constexpr (NUM_CHANNELS >= 2) {
+#if defined(DAC_CHANNEL_2)
+      channels_[1].channel_id = DAC_CHANNEL_2;
+#endif
+    }
+    if constexpr (NUM_CHANNELS >= 2) {
+      static_assert(NUM_CHANNELS <= 2, "Implement DAC channels beyond 2");
+    }
+    for (auto& channel : channels_) {
+      channel.config.DAC_Trigger = DAC_TRIGGER_NONE;  // No trigger, direct output
+      channel.config.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
+    }
   }
 };
 

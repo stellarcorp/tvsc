@@ -39,12 +39,12 @@ template <uint8_t DAC_CHANNEL = 0>
 scheduler::Task run_adc_demo(BoardType& board) {
   auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
   auto& adc{board.adc()};
-  auto& dac{board.dac()};
+  auto& dac_peripheral{board.dac()};
   auto& clock{board.clock()};
   auto& timer{board.timer2()};
 
   // Turn on clocks for the peripherals that we want.
-  const EnableLock dac_power{dac.enable()};
+  auto dac{dac_peripheral.access()};
   auto gpio{gpio_peripheral.access()};
   const EnableLock dma_power{board.dma().enable()};
   const EnableLock adc_power{adc.enable()};

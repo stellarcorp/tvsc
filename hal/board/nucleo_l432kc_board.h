@@ -153,7 +153,7 @@ class Board final {
 
   power::Power& power() { return power_; }
 
-  dac::Dac& dac() { return dac_; }
+  dac::DacPeripheral& dac() { return dac_; }
 
   adc::Adc& adc() { return adc_; }
 

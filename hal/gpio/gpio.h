@@ -142,7 +142,9 @@ class GpioPeripheral {
 class Gpio final {
   GpioPeripheral* peripheral_;
 
-  Gpio(GpioPeripheral& peripheral) : peripheral_(&peripheral) { peripheral_->inc_ref_count(); }
+  explicit Gpio(GpioPeripheral& peripheral) : peripheral_(&peripheral) {
+    peripheral_->inc_ref_count();
+  }
 
   friend class GpioPeripheral;
 

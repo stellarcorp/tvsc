@@ -3,7 +3,6 @@
 #include <cstdint>
 
 #include "hal/board/board.h"
-#include "hal/enable_lock.h"
 #include "hal/gpio/gpio.h"
 #include "hal/scheduler/task.h"
 
@@ -19,7 +18,7 @@ scheduler::Task run_dac_demo(board::Board& board, uint32_t& output_value,
 
   using BoardType = board::Board;
 
-  auto& dac{board.dac()};
+  auto& dac_peripheral{board.dac()};
   auto& clock{board.clock()};
   auto& dac_gpio_peripheral{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>()};
 
@@ -29,12 +28,12 @@ scheduler::Task run_dac_demo(board::Board& board, uint32_t& output_value,
 
   // Turn on clocks for the peripherals that we want.
   auto dac_out_gpio{dac_gpio_peripheral.access()};
-  EnableLock dac_power{dac.enable()};
 
   dac_out_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], gpio::PinMode::ANALOG);
 
   while (true) {
     for (auto& v : dac_8bit_values) {
+      auto dac{dac_peripheral.access()};
       output_value = v;
       dac.set_resolution(8, DAC_CHANNEL);
       dac.set_value(v, DAC_CHANNEL);
@@ -44,6 +43,7 @@ scheduler::Task run_dac_demo(board::Board& board, uint32_t& output_value,
     co_yield 1000 * (250 + clock.current_time_millis());
 
     for (auto& v : dac_12bit_values) {
+      auto dac{dac_peripheral.access()};
       dac.set_resolution(12, DAC_CHANNEL);
       dac.set_value(v, DAC_CHANNEL);
       co_yield 50'000 + clock.current_time_micros();
@@ -52,6 +52,7 @@ scheduler::Task run_dac_demo(board::Board& board, uint32_t& output_value,
     co_yield 1000 * (250 + clock.current_time_millis());
 
     for (auto& v : dac_16bit_values) {
+      auto dac{dac_peripheral.access()};
       dac.set_resolution(16, DAC_CHANNEL);
       dac.set_value(v, DAC_CHANNEL);
       co_yield 50'000 + clock.current_time_micros();
