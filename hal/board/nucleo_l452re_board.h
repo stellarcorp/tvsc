@@ -168,7 +168,7 @@ class Board final {
 
   dma::Dma& dma() { return dma_; }
 
-  timer::Timer& timer2() { return timer2_; }
+  timer::TimerPeripheral& timer2() { return timer2_; }
 };
 
 }  // namespace tvsc::hal::board

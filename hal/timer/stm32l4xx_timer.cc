@@ -1,6 +1,5 @@
 #include "hal/timer/stm32l4xx_timer.h"
 
-#include "hal/enable_lock.h"
 #include "hal/peripheral_id.h"
 #include "hal/stm32_peripheral_ids.h"
 #include "third_party/stm32/stm32.h"
@@ -17,7 +16,7 @@ void TimerStm32l4xx::start(uint32_t interval_us, bool high_precision) {
   // Configure TIMER.
   timer_.Init.Prescaler = SystemCoreClock / 1'000'000 - 1;  // One tick per us.
   timer_.Init.CounterMode = TIM_COUNTERMODE_UP;
-  timer_.Init.Period = 10'000; //interval_us / clock_divider - 1;
+  timer_.Init.Period = 10'000;  // interval_us / clock_divider - 1;
   timer_.Init.ClockDivision = clock_division;
   timer_.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 
@@ -36,41 +35,32 @@ bool TimerStm32l4xx::is_running() { return HAL_TIM_Base_GetState(&timer_) == HAL
 
 void TimerStm32l4xx::stop() { HAL_TIM_Base_Stop(&timer_); }
 
-void disable(PeripheralId id) {
-  if (id == Stm32PeripheralIds::TIM1_ID) {
+void TimerStm32l4xx::disable() {
+  if (id_ == Stm32PeripheralIds::TIM1_ID) {
     __HAL_RCC_TIM1_CLK_DISABLE();
-  } else if (id == Stm32PeripheralIds::TIM2_ID) {
+  } else if (id_ == Stm32PeripheralIds::TIM2_ID) {
     __HAL_RCC_TIM2_CLK_DISABLE();
-  } else if (id == Stm32PeripheralIds::TIM4_ID) {
+  } else if (id_ == Stm32PeripheralIds::TIM4_ID) {
     __HAL_RCC_TIM2_CLK_DISABLE();
-  } else if (id == Stm32PeripheralIds::TIM6_ID) {
+  } else if (id_ == Stm32PeripheralIds::TIM6_ID) {
     __HAL_RCC_TIM6_CLK_DISABLE();
-  } else if (id == Stm32PeripheralIds::TIM15_ID) {
+  } else if (id_ == Stm32PeripheralIds::TIM15_ID) {
     __HAL_RCC_TIM15_CLK_DISABLE();
   }
 }
 
-EnableLock TimerStm32l4xx::enable() {
-  if (enable_counter_ == 0) {
-    if (id_ == Stm32PeripheralIds::TIM1_ID) {
-      __HAL_RCC_TIM1_CLK_ENABLE();
-    } else if (id_ == Stm32PeripheralIds::TIM2_ID) {
-      __HAL_RCC_TIM2_CLK_ENABLE();
-    } else if (id_ == Stm32PeripheralIds::TIM4_ID) {
-      __HAL_RCC_TIM2_CLK_ENABLE();
-    } else if (id_ == Stm32PeripheralIds::TIM6_ID) {
-      __HAL_RCC_TIM6_CLK_ENABLE();
-    } else if (id_ == Stm32PeripheralIds::TIM15_ID) {
-      __HAL_RCC_TIM15_CLK_ENABLE();
-    }
+void TimerStm32l4xx::enable() {
+  if (id_ == Stm32PeripheralIds::TIM1_ID) {
+    __HAL_RCC_TIM1_CLK_ENABLE();
+  } else if (id_ == Stm32PeripheralIds::TIM2_ID) {
+    __HAL_RCC_TIM2_CLK_ENABLE();
+  } else if (id_ == Stm32PeripheralIds::TIM4_ID) {
+    __HAL_RCC_TIM2_CLK_ENABLE();
+  } else if (id_ == Stm32PeripheralIds::TIM6_ID) {
+    __HAL_RCC_TIM6_CLK_ENABLE();
+  } else if (id_ == Stm32PeripheralIds::TIM15_ID) {
+    __HAL_RCC_TIM15_CLK_ENABLE();
   }
-  ++enable_counter_;
-  return EnableLock([this]() {
-    --enable_counter_;
-    if (enable_counter_ == 0) {
-      disable(id_);
-    }
-  });
 }
 
 void TimerStm32l4xx::handle_interrupt() { HAL_TIM_IRQHandler(&timer_); }

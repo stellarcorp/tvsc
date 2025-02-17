@@ -41,14 +41,14 @@ scheduler::Task run_adc_demo(BoardType& board) {
   auto& adc_peripheral{board.adc()};
   auto& dac_peripheral{board.dac()};
   auto& clock{board.clock()};
-  auto& timer{board.timer2()};
+  auto& timer_peripheral{board.timer2()};
 
   // Turn on clocks for the peripherals that we want.
   auto dac{dac_peripheral.access()};
   auto gpio{gpio_peripheral.access()};
   const EnableLock dma_power{board.dma().enable()};
   auto adc{adc_peripheral.access()};
-  const EnableLock timer_power{timer.enable()};
+  auto timer{timer_peripheral.access()};
   auto dac_out_gpio{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>().access()};
 
   dac_out_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], gpio::PinMode::ANALOG);

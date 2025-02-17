@@ -2,7 +2,6 @@
 
 #include <cstdint>
 
-#include "hal/enable_lock.h"
 #include "hal/peripheral_id.h"
 #include "hal/stm32_peripheral_ids.h"
 #include "hal/timer/timer.h"
@@ -11,11 +10,10 @@
 
 namespace tvsc::hal::timer {
 
-class TimerStm32l4xx final : public Timer {
+class TimerStm32l4xx final : public TimerPeripheral {
  private:
   TIM_HandleTypeDef timer_{};
   PeripheralId id_;
-  uint32_t enable_counter_{0};
 
  public:
   TimerStm32l4xx(PeripheralId id, TIM_TypeDef* timer_instance) : id_(id) {
@@ -30,7 +28,8 @@ class TimerStm32l4xx final : public Timer {
   bool is_running() override;
 
   // Turn on power and clock to this peripheral.
-  EnableLock enable() override;
+  void enable() override;
+  void disable() override;
 
   void handle_interrupt() override;
 };
