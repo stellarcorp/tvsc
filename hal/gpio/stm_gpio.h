@@ -82,14 +82,8 @@ class GpioStm32xxxx final : public GpioPeripheral {
   };
   void set_otyper_value(Pin pin, OTYPER_VALUES value);
 
-  void disable() override;
   void enable() override;
-
- public:
-  static constexpr size_t NUM_PINS{16};
-
-  GpioStm32xxxx(void* base_address, Port port)
-      : registers_(new (base_address) GpioRegisterBank), port_(port) {}
+  void disable() override;
 
   void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) override;
 
@@ -97,6 +91,12 @@ class GpioStm32xxxx final : public GpioPeripheral {
   void toggle_pin(Pin pin) override;
 
   bool read_pin(Pin pin) override;
+
+ public:
+  static constexpr size_t NUM_PINS{16};
+
+  GpioStm32xxxx(void* base_address, Port port)
+      : registers_(new (base_address) GpioRegisterBank), port_(port) {}
 };
 
 }  // namespace tvsc::hal::gpio

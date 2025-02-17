@@ -2,6 +2,7 @@ cc_library(
     name = "hal_headers",
     hdrs = [
         "enable_lock.h",
+        "peripheral.h",
         "peripheral_id.h",
         "register.h",
     ],
