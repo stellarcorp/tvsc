@@ -157,7 +157,7 @@ class Board final {
 
   adc::AdcPeripheral& adc() { return adc_; }
 
-  dma::Dma& dma() { return dma_; }
+  dma::DmaPeripheral& dma() { return dma_; }
 
   timer::TimerPeripheral& timer2() { return timer2_; }
 };

@@ -5,10 +5,10 @@
 namespace tvsc::hal {
 
 /**
- * Numerical ids identifying each of the peripherals in STM32 MCUs. The symbols in the enum attempt
- * to use the same names as in the code and literature from ST Micro. We add the suffix of ID, since
- * ST defines the corresponding symbol as a macro, defeating any namespacing. This list is not
- * exhaustive; we add ids when they are needed. Also, not all peripherals identified here are
+ * Numerical ids identifying each of the peripherals in STM32 MCUs. The symbols in the enumeration
+ * attempt to use the same names as in the code and literature from ST Micro. We add the suffix of
+ * ID, since ST defines the corresponding symbol as a macro, defeating any namespacing. This list is
+ * not exhaustive; we add ids when they are needed. Also, not all peripherals identified here are
  * available in every board. We could make enums for every board. That would allow us to catch more
  * errors at compile-time. But, so far, it hasn't been worth the extra design and maintenance
  * effort.

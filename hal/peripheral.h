@@ -122,6 +122,13 @@ class Functional {
     }
     return *this;
   }
+
+  void invalidate() {
+    if (peripheral_ != nullptr) {
+      peripheral_->dec_ref_count();
+    }
+    peripheral_ = nullptr;
+  }
 };
 
 }  // namespace tvsc::hal

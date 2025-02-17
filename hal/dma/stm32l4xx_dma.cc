@@ -25,19 +25,8 @@ void DmaStm32l4xx::start_circular_transfer() {
   HAL_DMA_Init(&dma_);
 }
 
-void disable() { __HAL_RCC_DMA1_CLK_DISABLE(); }
+void DmaStm32l4xx::enable() { __HAL_RCC_DMA1_CLK_ENABLE(); }
 
-EnableLock DmaStm32l4xx::enable() {
-  if (enable_counter_ == 0) {
-    __HAL_RCC_DMA1_CLK_ENABLE();
-  }
-  ++enable_counter_;
-  return EnableLock([this]() {
-    --enable_counter_;
-    if (enable_counter_ == 0) {
-      disable();
-    }
-  });
-}
+void DmaStm32l4xx::disable() { __HAL_RCC_DMA1_CLK_DISABLE(); }
 
 }  // namespace tvsc::hal::dma

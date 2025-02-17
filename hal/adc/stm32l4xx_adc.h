@@ -15,8 +15,9 @@ namespace tvsc::hal::adc {
 class AdcStm32l4xx final : public AdcPeripheral {
  private:
   ADC_HandleTypeDef adc_{};
-  dma::DmaStm32l4xx* dma_;
   ADC_ChannelConfTypeDef channel_config_{};
+  dma::DmaStm32l4xx* dma_peripheral_;
+  dma::Dma dma_{};
 
   void enable() override;
   void disable() override;
@@ -42,7 +43,8 @@ class AdcStm32l4xx final : public AdcPeripheral {
   void handle_interrupt() override;
 
  public:
-  AdcStm32l4xx(ADC_TypeDef* adc_instance, dma::DmaStm32l4xx& dma) : dma_(&dma) {
+  AdcStm32l4xx(ADC_TypeDef* adc_instance, dma::DmaStm32l4xx& dma_peripheral)
+      : dma_peripheral_(&dma_peripheral) {
     adc_.Instance = adc_instance;
     adc_.Init.Resolution = ADC_RESOLUTION_12B;
   }

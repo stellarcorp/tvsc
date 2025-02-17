@@ -88,11 +88,13 @@ void AdcStm32l4xx::start_conversion_stream(gpio::PortPin pin, uint32_t* destinat
 
   HAL_ADC_ConfigChannel(&adc_, &channel_config_);
 
+  dma_ = dma_peripheral_->access();
+
   // Link DMA to ADC1. This allows the DMA's interrupt handler to (eventually) call the ADC's
   // interrupt handler, among other things.
-  __HAL_LINKDMA(&adc_, DMA_Handle, *dma_->handle());
+  __HAL_LINKDMA(&adc_, DMA_Handle, *dma_peripheral_->handle());
 
-  dma_->start_circular_transfer();
+  dma_.start_circular_transfer();
 
   HAL_ADC_Start_DMA(&adc_, destination, destination_buffer_size);
 }
@@ -101,7 +103,7 @@ void AdcStm32l4xx::start_single_conversion(gpio::PortPin pin, uint32_t* destinat
                                            size_t destination_buffer_size) {
   // Link DMA to ADC1. This allows the DMA's interrupt handler to (eventually) call the ADC's
   // interrupt handler, among other things.
-  __HAL_LINKDMA(&adc_, DMA_Handle, *dma_->handle());
+  __HAL_LINKDMA(&adc_, DMA_Handle, *dma_peripheral_->handle());
 
   // Configure ADC.
   adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
@@ -117,7 +119,7 @@ void AdcStm32l4xx::start_single_conversion(gpio::PortPin pin, uint32_t* destinat
 
   HAL_ADC_Init(&adc_);
 
-  dma_->start_circular_transfer();
+  dma_.start_circular_transfer();
 
   // Configure ADC Channel.
   channel_config_.Channel = get_channel(pin);
@@ -190,7 +192,14 @@ void AdcStm32l4xx::write_calibration_factor(uint32_t factor) { adc_.Instance->CA
 
 void AdcStm32l4xx::handle_interrupt() { HAL_ADC_IRQHandler(&adc_); }
 
-void AdcStm32l4xx::enable() { __HAL_RCC_ADC_CLK_ENABLE(); }
-void AdcStm32l4xx::disable() { __HAL_RCC_ADC_CLK_DISABLE(); }
+void AdcStm32l4xx::enable() {
+  dma_ = dma_peripheral_->access();
+  __HAL_RCC_ADC_CLK_ENABLE();
+}
+
+void AdcStm32l4xx::disable() {
+  __HAL_RCC_ADC_CLK_DISABLE();
+  dma_.invalidate();
+}
 
 }  // namespace tvsc::hal::adc
