@@ -2,23 +2,22 @@
 
 #include <cstdint>
 
-#include "hal/enable_lock.h"
 #include "hal/random/rng.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal::random {
 
-class RngStm32xxxx final : public Rng {
+class RngStm32xxxx final : public RngPeripheral {
  private:
   RNG_HandleTypeDef rng_{.Instance = RNG};
-  uint32_t enable_counter_{};
+
+  // Turn on power and clock to this peripheral.
+  void enable() override;
+  void disable() override;
 
  public:
-  // Turn on power and clock to this peripheral.
-  EnableLock enable() override;
-
-  uint32_t operator()() override;
+  uint32_t generate() override;
 };
 
 }  // namespace tvsc::hal::random

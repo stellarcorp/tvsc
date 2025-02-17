@@ -8,24 +8,17 @@
 
 namespace tvsc::hal::random {
 
-void disable() { __HAL_RCC_RNG_CLK_DISABLE(); }
-
 // Turn on power and clock to this peripheral.
-EnableLock RngStm32xxxx::enable() {
-  ++enable_counter_;
+void RngStm32xxxx::enable() {
   __HAL_RCC_RNG_CLK_ENABLE();
 
   // TODO(james): Rework this code. The HAL function below can block for up to 2ms.
   HAL_RNG_Init(&rng_);
-
-  return EnableLock([this]() {
-    if (--enable_counter_ == 0) {
-      disable();
-    }
-  });
 }
 
-uint32_t RngStm32xxxx::operator()() {
+void RngStm32xxxx::disable() { __HAL_RCC_RNG_CLK_DISABLE(); }
+
+uint32_t RngStm32xxxx::generate() {
   uint32_t result;
 
   // TODO(james): Rework this code. The HAL function below can block for up to 2ms.
