@@ -2,7 +2,6 @@
 
 #include <cstdint>
 
-#include "hal/enable_lock.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 

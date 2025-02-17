@@ -1,6 +1,5 @@
 #include "hal/dma/stm32l4xx_dma.h"
 
-#include "hal/enable_lock.h"
 #include "hal/peripheral_id.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"

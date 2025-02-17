@@ -1,7 +1,6 @@
 #include <cstring>
 
 #include "hal/board/board.h"
-#include "hal/enable_lock.h"
 #include "hal/gpio/gpio.h"
 
 using BoardType = tvsc::hal::board::Board;

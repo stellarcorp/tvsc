@@ -4,7 +4,6 @@
 #include <limits>
 
 #include "hal/board/board.h"
-#include "hal/enable_lock.h"
 #include "hal/gpio/gpio.h"
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
