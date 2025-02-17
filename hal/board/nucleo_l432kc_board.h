@@ -155,7 +155,7 @@ class Board final {
 
   dac::DacPeripheral& dac() { return dac_; }
 
-  adc::Adc& adc() { return adc_; }
+  adc::AdcPeripheral& adc() { return adc_; }
 
   dma::Dma& dma() { return dma_; }
 

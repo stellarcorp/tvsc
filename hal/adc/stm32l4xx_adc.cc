@@ -1,6 +1,5 @@
 #include "hal/adc/stm32l4xx_adc.h"
 
-#include "hal/enable_lock.h"
 #include "hal/gpio/gpio.h"
 #include "hal/peripheral_id.h"
 #include "hal/stm32_peripheral_ids.h"
@@ -191,19 +190,7 @@ void AdcStm32l4xx::write_calibration_factor(uint32_t factor) { adc_.Instance->CA
 
 void AdcStm32l4xx::handle_interrupt() { HAL_ADC_IRQHandler(&adc_); }
 
-void disable() { __HAL_RCC_ADC_CLK_DISABLE(); }
-
-EnableLock AdcStm32l4xx::enable() {
-  if (enable_counter_ == 0) {
-    __HAL_RCC_ADC_CLK_ENABLE();
-  }
-  ++enable_counter_;
-  return EnableLock([this]() {
-    --enable_counter_;
-    if (enable_counter_ == 0) {
-      disable();
-    }
-  });
-}
+void AdcStm32l4xx::enable() { __HAL_RCC_ADC_CLK_ENABLE(); }
+void AdcStm32l4xx::disable() { __HAL_RCC_ADC_CLK_DISABLE(); }
 
 }  // namespace tvsc::hal::adc

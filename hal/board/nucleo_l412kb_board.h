@@ -140,7 +140,7 @@ class Board final {
 
   power::Power& power() { return power_; }
 
-  adc::Adc& adc() { return adc_; }
+  adc::AdcPeripheral& adc() { return adc_; }
 
   dma::Dma& dma() { return dma_; }
 

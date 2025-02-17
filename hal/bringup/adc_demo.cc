@@ -30,7 +30,7 @@ namespace tvsc::hal::bringup {
 template <uint8_t DAC_CHANNEL = 0>
 scheduler::Task run_adc_demo(BoardType& board) {
   auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
-  auto& adc{board.adc()};
+  auto& adc_peripheral{board.adc()};
   auto& dac_peripheral{board.dac()};
   auto& clock{board.clock()};
   auto& dac_gpio_peripheral{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>()};
@@ -39,7 +39,7 @@ scheduler::Task run_adc_demo(BoardType& board) {
   auto dac{dac_peripheral.access()};
   auto gpio{gpio_peripheral.access()};
   const EnableLock dma_power{board.dma().enable()};
-  const EnableLock adc_power{adc.enable()};
+  auto adc{adc_peripheral.access()};
   auto dac_gpio{dac_gpio_peripheral.access()};
 
   dac_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], gpio::PinMode::ANALOG);
