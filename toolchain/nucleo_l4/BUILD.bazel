@@ -41,7 +41,9 @@ cc_toolchain_suite(
     name = "gcc_toolchain",
     tags = ["manual"],
     toolchains = {
-        "armv7e-mf": ":stm32l4xx-armv7e-mf_toolchain",
+        "armv7e-mf-stm32-l412": ":stm32l4xx-armv7e-mf_toolchain",
+        "armv7e-mf-stm32-l432": ":stm32l4xx-armv7e-mf_toolchain",
+        "armv7e-mf-stm32-l452": ":stm32l4xx-armv7e-mf_toolchain",
     },
 )
 
