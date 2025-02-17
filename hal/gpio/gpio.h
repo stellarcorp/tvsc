@@ -108,6 +108,9 @@ class Gpio;
 
 class GpioPeripheral : public Peripheral<GpioPeripheral, Gpio> {
  private:
+  virtual void enable() = 0;
+  virtual void disable() = 0;
+
   virtual void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) = 0;
 
   virtual bool read_pin(Pin pin) = 0;
@@ -122,7 +125,7 @@ class GpioPeripheral : public Peripheral<GpioPeripheral, Gpio> {
 
 class Gpio final : public Functional<GpioPeripheral, Gpio> {
  protected:
-  Gpio(GpioPeripheral& peripheral) : Functional<GpioPeripheral, Gpio>(peripheral) {}
+  explicit Gpio(GpioPeripheral& peripheral) : Functional<GpioPeripheral, Gpio>(peripheral) {}
 
   friend class Peripheral<GpioPeripheral, Gpio>;
 
