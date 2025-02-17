@@ -1,10 +1,10 @@
 cc_library(
     name = "dac_headers",
-    srcs = [
-        "dac.cc",
-    ],
     hdrs = [
         "dac.h",
+    ],
+    deps = [
+        "//hal",
     ],
 )
 
