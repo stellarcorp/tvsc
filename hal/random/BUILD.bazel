@@ -37,6 +37,7 @@ cc_library(
     deps = [
         ":random_headers",
         "//hal",
+        "//hal/rcc",
         "//third_party/stm32",
     ],
 )

@@ -70,4 +70,42 @@ void RccStm32L4xx::set_clock_to_min_speed() {
   HAL_InitTick(TICK_INT_PRIORITY);
 }
 
+void Hsi48OscillatorStm32L4xx::enable() {
+  /**
+   * Turn up the main internal regulator output voltage to 1.2V. This allows clock speeds up to
+   * 80MHz, but it uses more power.
+   */
+  // TODO(james): Ensure that this is at the lower voltage on startup in the RCC implementation. Or,
+  // implement a form of caching away the current value and restore it on the disable() call.
+  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
+
+  /**
+   * Turn on the HSI 48 oscillator.
+   */
+  RCC_OscInitTypeDef RCC_OscInitStruct{};
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48;
+  RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
+  // Note that this function call can block for up to 2 ms.
+  HAL_RCC_OscConfig(&RCC_OscInitStruct);
+}
+
+void Hsi48OscillatorStm32L4xx::disable() {
+  /**
+   * Turn off the HSI 48 oscillator.
+   */
+  RCC_OscInitTypeDef RCC_OscInitStruct{};
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48;
+  RCC_OscInitStruct.HSI48State = RCC_HSI48_OFF;
+  // Note that this function call can block for up to 2 ms.
+  HAL_RCC_OscConfig(&RCC_OscInitStruct);
+
+  /**
+   * Turn down the main internal regulator output voltage to 1.0V. This restricts clock speeds to
+   * under 26MHz and conserves power.
+   */
+  // TODO(james): Ensure that this is at the lower voltage on startup in the RCC implementation. Or,
+  // implement a form of caching away the current value and restore it on the disable() call.
+  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
+}
+
 }  // namespace tvsc::hal::rcc

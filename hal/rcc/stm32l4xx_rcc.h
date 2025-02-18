@@ -109,4 +109,10 @@ class RccStm32L4xx final : public Rcc {
   void set_clock_to_min_speed() override;
 };
 
+class Hsi48OscillatorStm32L4xx final : public Hsi48Oscillator {
+ private:
+  void enable() override;
+  void disable() override;
+};
+
 }  // namespace tvsc::hal::rcc

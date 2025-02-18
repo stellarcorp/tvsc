@@ -13,6 +13,8 @@
 #include "hal/gpio/stm_gpio.h"
 #include "hal/power/power.h"
 #include "hal/power/stm32l4xx_power.h"
+#include "hal/random/rng.h"
+#include "hal/random/stm32xxxx_rng.h"
 #include "hal/rcc/rcc.h"
 #include "hal/rcc/stm32l4xx_rcc.h"
 #include "hal/stm32_peripheral_ids.h"
@@ -74,6 +76,9 @@ class Board final {
   adc::AdcStm32l4xx adc_{ADC1, dma_};
 
   timer::TimerStm32l4xx timer2_{Stm32PeripheralIds::TIM2_ID, TIM2};
+
+  rcc::Hsi48OscillatorStm32L4xx hsi48_oscillator_{};
+  random::RngStm32xxxx rng_{hsi48_oscillator_};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
@@ -160,6 +165,8 @@ class Board final {
   dma::DmaPeripheral& dma() { return dma_; }
 
   timer::TimerPeripheral& timer2() { return timer2_; }
+
+  random::RngPeripheral& rng() { return rng_; }
 };
 
 }  // namespace tvsc::hal::board

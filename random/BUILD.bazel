@@ -18,6 +18,7 @@ cc_library(
         ],
         "//platforms:stm32_core": [
             "//hal/random",
+            "//hal/board",
         ],
         "//conditions:default": [],
     }),
