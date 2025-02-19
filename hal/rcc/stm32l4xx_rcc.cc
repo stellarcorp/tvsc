@@ -48,6 +48,8 @@ void RccStm32L4xx::set_clock_to_max_speed() {
 
   // Update the SysTick configuration.
   HAL_InitTick(TICK_INT_PRIORITY);
+
+  __HAL_RCC_WAKEUPSTOP_CLK_CONFIG(RCC_STOP_WAKEUPCLOCK_MSI);
 }
 
 void RccStm32L4xx::set_clock_to_min_speed() {
@@ -83,6 +85,8 @@ void RccStm32L4xx::set_clock_to_min_speed() {
 
   // Configure the main internal regulator output voltage to undervolt the CPU to save power.
   HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
+
+  __HAL_RCC_WAKEUPSTOP_CLK_CONFIG(RCC_STOP_WAKEUPCLOCK_MSI);
 }
 
 void Hsi48OscillatorStm32L4xx::enable() {
