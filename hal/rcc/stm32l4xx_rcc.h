@@ -30,81 +30,23 @@ extern "C" {
  */
 
 /*
- * SystemCoreClock is a global variable required by the ARM CMSIS code. It contains the core clock
- * value in ticks per second.
+ * SystemCoreClock is a global variable required by the ARM CMSIS and STM32 HAL. It contains the
+ * core clock value in ticks per second.
  *
  * For more information, see
  * https://arm-software.github.io/CMSIS_5/Core/html/group__system__init__gr.html#gaa3cd3e43291e81e795d642b79b6088e6
  */
 extern uint32_t SystemCoreClock;
-
-/**
- * Function to update the core clock status variable.
- *
- * See
- * https://arm-software.github.io/CMSIS_5/Core/html/group__system__init__gr.html#gae0c36a9591fe6e9c45ecb21a794f0f0f
- * for a bit more information.
- */
-void SystemCoreClockUpdate();
 }
 
 namespace tvsc::hal::rcc {
-
-class RccRegisterBank final {
- public:
-  // Clock source register. This register determines which clocks are in use. It includes flags for
-  // turning on the various clocks and PLLs, as well as flags to determine if those clock sources
-  // are ready to be used.
-  // Offset 0x000
-  volatile Register CR;
-
-  std::byte unused1[0x08 - sizeof(Register)];
-
-  // Clock configuration register. This register has several functions. It controls the source of
-  // the MCO clock outputs. It controls the prescalers for the timers. It controls which clock is
-  // used on a wakeup from system stop. And it controls which clock source is used for the system
-  // clock.
-  // Offset 0x08
-  volatile Register CFGR;
-
-  std::byte unused2[0x4c - 0x08 - sizeof(Register)];
-
-  // Register to enable peripherals on AHB2.
-  // Offset 0x4c
-  volatile Register AHB2ENR;
-
-  std::byte unused3[0x58 - 0x4c - sizeof(Register)];
-
-  // Register to enable peripherals on APB1.
-  // Offset 0x58
-  volatile Register APB1ENR1;
-
-  std::byte unused4[0x88 - 0x58 - sizeof(Register)];
-
-  // Register to select the clock source for some peripherals such as the ADC, I2C buses, etc.
-  // Offset 0x88
-  volatile Register CCIPR;
-};
-
-class SysTickRegisterBank final {
- public:
-  volatile Register CTRL;
-  volatile Register LOAD;
-  volatile Register VAL;
-  volatile Register CALIB;
-};
 
 /**
  * Class to manage the reset and clock circuitry (RCC) on the Nucleo L452RE board and other boards
  * based on the STM32L4xx series of CPUs.
  */
 class RccStm32L4xx final : public Rcc {
- private:
-  RccRegisterBank* const rcc_registers_;
-
  public:
-  RccStm32L4xx(void* rcc_base_address) : rcc_registers_(new (rcc_base_address) RccRegisterBank) {}
-
   void set_clock_to_max_speed() override;
   void set_clock_to_min_speed() override;
 };

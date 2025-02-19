@@ -55,7 +55,7 @@ class Board final {
                                                                     DAC_CHANNEL_2_PIN};
 
  private:
-  rcc::RccStm32L4xx rcc_{reinterpret_cast<void*>(RCC_BASE)};
+  rcc::RccStm32L4xx rcc_{};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32L4xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided

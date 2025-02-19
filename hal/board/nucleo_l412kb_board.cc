@@ -15,12 +15,9 @@ Board::Board() {
   // Also, the code in STM32Cube_FW_H7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c can be a
   // useful reference.
 
-  // We reinitialize SystemCoreClock as the startup process will have zeroed the BSS, likely
-  // including SystemCoreClock. See the startup_<device>.s file for details on this process.
-  SystemCoreClockUpdate();
-
-  // Update the SysTick configuration.
-  HAL_InitTick(TICK_INT_PRIORITY);
+  // Slow the board down to its minimum speed. This will also initialize the SystemCoreClock
+  // variable and configure the SysTick interrupt.
+  rcc_.set_clock_to_min_speed();
 
   // DMA interrupt(s).
   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);

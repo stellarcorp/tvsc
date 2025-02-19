@@ -7,67 +7,82 @@
 namespace tvsc::hal::rcc {
 
 void RccStm32L4xx::set_clock_to_max_speed() {
-  // Turn on HSI16 clock source.
-  rcc_registers_->CR.set_bit_field_value<1, 8>(1);
+  // The current implementation puts SYSCLK signal as well as peripheral buses at 32 MHz. This speed
+  // requires one flash wait state per operation. Note that any higher of a clock speed would
+  // require two flash wait states.
 
-  // Wait for HSI16 to be ready. The HSI16 ready flag is in bit 10 of the CR register.
-  while (!rcc_registers_->CR.bit_field_value<1, 10>()) {
-    // Do nothing.
-  }
+  // Bring up the internal regulator voltage to its normal level. The system will be very unstable
+  // if we are undervolting while trying to run at a higher clock speed.
+  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-  // Configure system to use HSI16.
-  rcc_registers_->CFGR.set_bit_field_value<2, 0>(0b01);
+  // Set the MSI oscillator to 4 MHz and use the PLL to multiple the speed up to a total of 32 MHz.
+  RCC_OscInitTypeDef RCC_OscInitStruct{};
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.MSIState = RCC_MSI_ON;
+  RCC_OscInitStruct.MSICalibrationValue = 0;
+  RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
+  RCC_OscInitStruct.PLL.PLLM = 1;
+  RCC_OscInitStruct.PLL.PLLN = 32;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
+  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV4;
+  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV4;
+  HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
-  // Wait for the system to acknowledge HSI16 is being used as core system clock.  The system
-  // updates bits 2-3 of the CFGR register to indicate the current system clock.
-  while (rcc_registers_->CFGR.bit_field_value<2, 2>() != 0b01) {
-    // Do nothing.
-  }
+  // Configure the flash latency as well as initialize the CPU, AHB and APB bus clocks to use the
+  // MSI without any divider.
+  RCC_ClkInitTypeDef RCC_ClkInitStruct{};
+  RCC_ClkInitStruct.ClockType =
+      RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  // Turn off MSI clock source. MSI ON flag is in bit 0 of the CR register.
-  rcc_registers_->CR.set_bit_field_value<1, 0>(0);
+  // Note that we also designate the flash latency here as having a one cycle wait state.
+  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1);
 
-  // Update the SystemCoreClock value;
-  SystemCoreClock = 16'000'000;
+  // Update the SystemCoreClock value.
+  SystemCoreClock = 32'000'000;
 
   // Update the SysTick configuration.
   HAL_InitTick(TICK_INT_PRIORITY);
 }
 
 void RccStm32L4xx::set_clock_to_min_speed() {
-  // Set the speed of the MSI clock. Bits 4-7 of the CR register configure the MSI clock. This exact
-  // value sets the clock to 400 kHz.
-  rcc_registers_->CR.set_bit_field_value<4, 4>(0b0010);
+  // Set the MSI oscillator to 100 kHz. This is its minimum speed.
+  // Bypass the PLL.
+  RCC_OscInitTypeDef RCC_OscInitStruct{};
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.MSIState = RCC_MSI_ON;
+  RCC_OscInitStruct.MSICalibrationValue = 0;
+  RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_0;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
 
-  // Weirdly, after setting the clock speed in a register, you have to actually write to another bit
-  // to tell it to use that value.
-  rcc_registers_->CR.set_bit_field_value<1, 3>(1);
+  HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
-  // Turn on MSI clock source. MSI ON flag is in bit 0 of the CR register.
-  rcc_registers_->CR.set_bit_field_value<1, 0>(1);
+  // Configure the flash latency as well as initialize the CPU, AHB and APB buses clocks to use the
+  // MSI without any divider.
+  RCC_ClkInitTypeDef RCC_ClkInitStruct{};
+  RCC_ClkInitStruct.ClockType =
+      RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_MSI;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  // Wait for it to be ready. The MSI ready flag is in bit 1 of the CR register.
-  while (!rcc_registers_->CR.bit_field_value<1, 1>()) {
-    // Do nothing.
-  }
+  // Note that we also designate the flash latency here as having zero wait states.
+  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0);
 
-  // Configure system to use MSI.
-  rcc_registers_->CFGR.set_bit_field_value<2, 0>(0b00);
-
-  // Wait for the system to acknowledge MSI is being used as core system clock. The system
-  // updates bits 2-3 of the CFGR register to indicate the current system clock.
-  while (rcc_registers_->CFGR.bit_field_value<2, 2>() != 0b00) {
-    // Do nothing.
-  }
-
-  // Turn off HSI clock source. The HSI on flag is in bit 8.
-  rcc_registers_->CR.set_bit_field_value<1, 8>(0);
-
-  // Update the SystemCoreClock value;
-  SystemCoreClock = 400'000;
+  // Update the SystemCoreClock value.
+  SystemCoreClock = 100'000;
 
   // Update the SysTick configuration.
   HAL_InitTick(TICK_INT_PRIORITY);
+
+  // Configure the main internal regulator output voltage to undervolt the CPU to save power.
+  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
 }
 
 void Hsi48OscillatorStm32L4xx::enable() {
