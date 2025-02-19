@@ -22,7 +22,7 @@ int main() {
   auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
   auto& clock{board.clock()};
 
-  Scheduler<QUEUE_SIZE> scheduler{clock};
+  Scheduler<QUEUE_SIZE> scheduler{clock, board.rcc()};
   scheduler.add_task(blink_randomly(clock, gpio, BoardType::GREEN_LED_PIN));
 
   scheduler.start();

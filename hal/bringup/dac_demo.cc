@@ -17,7 +17,7 @@ __attribute__((section(".status.value"))) uint32_t dac2_value;
 int main() {
   BoardType& board{BoardType::board()};
 
-  Scheduler<QUEUE_SIZE> scheduler{board.clock()};
+  Scheduler<QUEUE_SIZE> scheduler{board.clock(), board.rcc()};
 
   if constexpr (BoardType::NUM_DAC_CHANNELS >= 1) {
     scheduler.add_task(run_dac_demo<0>(board, dac1_value));

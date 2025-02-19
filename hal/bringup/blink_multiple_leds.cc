@@ -21,7 +21,7 @@ int main() {
 
   auto& clock{board.clock()};
 
-  Scheduler<QUEUE_SIZE> scheduler{clock};
+  Scheduler<QUEUE_SIZE> scheduler{clock, board.rcc()};
 
   static constexpr uint64_t DURATION_MULTIPLES[] = {4, 3, 2};
   static_assert(BoardType::NUM_DEBUG_LEDS < 4, "Need to implement blink for more LEDs");

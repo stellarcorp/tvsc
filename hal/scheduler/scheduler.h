@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string>
 
+#include "hal/rcc/rcc.h"
 #include "hal/scheduler/task.h"
 #include "hal/time/clock.h"
 
@@ -20,12 +21,13 @@ template <size_t QUEUE_SIZE>
 class Scheduler final {
  private:
   time::Clock* clock_;
+  rcc::Rcc* rcc_;
   std::array<Task, QUEUE_SIZE> task_queue_{};
 
   friend std::string to_string<QUEUE_SIZE>(const Scheduler&);
 
  public:
-  Scheduler(time::Clock& clock) : clock_(&clock) {}
+  Scheduler(time::Clock& clock, rcc::Rcc& rcc) : clock_(&clock), rcc_(&rcc) {}
 
   size_t add_task(Task&& task) {
     for (size_t i = 0; i < QUEUE_SIZE; ++i) {
@@ -55,6 +57,10 @@ class Scheduler final {
   }
 
   void run_tasks_once() {
+    // TODO(james): Play around with this speed strategy. Especially investigate lookahead
+    // strategies to know if we even want to boost the clock speed at all.
+    // See https://chatgpt.com/share/67b593a9-5fb4-8006-9cdf-1d22aa22c574 for ideas.
+    rcc_->set_clock_to_max_speed();
     for (size_t i = 0; i < QUEUE_SIZE; ++i) {
       Task& task{task_queue_[i]};
       if (task.is_valid()) {
@@ -67,10 +73,14 @@ class Scheduler final {
         }
       }
     }
+    rcc_->set_clock_to_min_speed();
   }
 
   void start() {
     while (true) {
+      // TODO(james): Iterate on the scheduling strategy here. We should investigate mechanisms for
+      // putting the CPU in stop or standby mode if no tasks are ready to run. This would require
+      // knowing when the next task to run might be ready.
       run_tasks_once();
     }
   }
