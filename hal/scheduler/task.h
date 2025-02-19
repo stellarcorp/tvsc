@@ -15,6 +15,8 @@ class Task final {
 
  public:
   struct promise_type {
+    // TODO(james): Replace these with a general task status that indicates what resources the task
+    // is currently using, and when it might need access to the CPU again.
     uint64_t wait_until_us_{};
     std::function<bool()> ready_condition_{};
 
