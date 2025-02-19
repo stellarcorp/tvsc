@@ -129,6 +129,8 @@ class Functional {
     }
     peripheral_ = nullptr;
   }
+
+  bool is_valid() const { return peripheral_ != nullptr; }
 };
 
 }  // namespace tvsc::hal
