@@ -22,6 +22,10 @@ Board::Board() {
   // DMA interrupt(s).
   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+
+  // LPTIM1 interrupt(s).
+  HAL_NVIC_SetPriority(LPTIM1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(LPTIM1_IRQn);
 }
 
 }  // namespace tvsc::hal::board
