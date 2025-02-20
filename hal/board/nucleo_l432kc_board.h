@@ -66,9 +66,7 @@ class Board final {
   gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH_BASE), 7};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
-  power::PowerStm32L4xx power_{reinterpret_cast<void*>(PWR_BASE)};
-
-  time::ClockStm32xxxx clock_{};
+  power::PowerStm32L4xx power_{};
 
   dac::DacStm32xxxx<NUM_DAC_CHANNELS> dac_{DAC};
 
@@ -76,6 +74,11 @@ class Board final {
   adc::AdcStm32l4xx adc_{ADC1, dma_};
 
   timer::TimerStm32l4xx timer2_{Stm32PeripheralIds::TIM2_ID, TIM2};
+
+  rcc::LsiOscillatorStm32L4xx lsi_oscillator_{};
+  timer::Stm32l4xxLptim lptim1_{Stm32PeripheralIds::LPTIM1_ID, LPTIM1, lsi_oscillator_};
+
+  time::ClockStm32xxxx clock_{/*lptim1_, power_*/};
 
   rcc::Hsi48OscillatorStm32L4xx hsi48_oscillator_{};
   random::RngStm32xxxx rng_{hsi48_oscillator_};
