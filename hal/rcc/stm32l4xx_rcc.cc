@@ -1,6 +1,5 @@
 #include "hal/rcc/stm32l4xx_rcc.h"
 
-#include "hal/gpio/gpio.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
@@ -94,9 +93,9 @@ void Hsi48OscillatorStm32L4xx::enable() {
    * Turn up the main internal regulator output voltage to 1.2V. This allows clock speeds up to
    * 80MHz, but it uses more power.
    */
-  // TODO(james): Ensure that this is at the lower voltage on startup in the RCC implementation. Or,
-  // implement a form of caching away the current value and restore it on the disable() call.
-  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
+  // TODO(james): Determine if this is necessary. The HSI 48 oscillator may run independent of this
+  // voltage regulator.
+  // HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
 
   /**
    * Turn on the HSI 48 oscillator.
@@ -122,9 +121,41 @@ void Hsi48OscillatorStm32L4xx::disable() {
    * Turn down the main internal regulator output voltage to 1.0V. This restricts clock speeds to
    * under 26MHz and conserves power.
    */
-  // TODO(james): Ensure that this is at the lower voltage on startup in the RCC implementation. Or,
-  // implement a form of caching away the current value and restore it on the disable() call.
-  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
+  // TODO(james): Determine if this is necessary. The HSI 48 oscillator may run independent of this
+  // voltage regulator.
+  // HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
+}
+
+void LsiOscillatorStm32L4xx::enable() {
+  // Note that these might be needed, both in enable() and disable(). Not sure why, or if they
+  // belong here, or in the power module.
+  //__HAL_RCC_PWR_CLK_ENABLE();
+  // HAL_PWR_EnableBkUpAccess();
+
+  /**
+   * Turn on the LSI oscillator.
+   */
+  RCC_OscInitTypeDef RCC_OscInitStruct{};
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
+  // Note that this function call can block for up to 2 ms.
+  HAL_RCC_OscConfig(&RCC_OscInitStruct);
+}
+
+void LsiOscillatorStm32L4xx::disable() {
+  /**
+   * Turn off the LSI oscillator.
+   */
+  RCC_OscInitTypeDef RCC_OscInitStruct{};
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
+  // Note that this function call can block for up to 2 ms.
+  HAL_RCC_OscConfig(&RCC_OscInitStruct);
+
+  // Note that these might be needed, both in enable() and disable(). Not sure why, or if they
+  // belong here, or in the power module.
+  //  HAL_PWR_DisableBkUpAccess();
+  // __HAL_RCC_PWR_CLK_DISABLE();
 }
 
 }  // namespace tvsc::hal::rcc

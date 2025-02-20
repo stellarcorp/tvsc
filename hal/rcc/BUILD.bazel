@@ -3,9 +3,6 @@ cc_library(
     hdrs = [
         "rcc.h",
     ],
-    deps = [
-        "//hal/gpio",
-    ],
 )
 
 cc_library(
@@ -38,9 +35,6 @@ cc_library(
     deps = [
         ":rcc_headers",
         "//hal",
-        "//hal/adc",
-        "//hal/gpio",
-        "//hal/time",
         "//third_party/stm32",
     ],
 )

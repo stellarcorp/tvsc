@@ -1,8 +1,6 @@
 #pragma once
 
-#include <cstdint>
-
-#include "hal/gpio/gpio.h"
+#include "hal/peripheral.h"
 
 namespace tvsc::hal::rcc {
 
@@ -56,6 +54,34 @@ class Hsi48Activation final : public Functional<Hsi48Oscillator, Hsi48Activation
 
  public:
   Hsi48Activation() = default;
+
+  // No direct public methods. Any public methods come from superclasses.
+};
+
+class LsiActivation;
+
+class LsiOscillator : public Peripheral<LsiOscillator, LsiActivation> {
+ private:
+  virtual void enable() = 0;
+  virtual void disable() = 0;
+
+ public:
+  virtual ~LsiOscillator() = default;
+};
+
+class LsiActivation final : public Functional<LsiOscillator, LsiActivation> {
+ private:
+  // Existence of a valid instance of this class on the stack ensures that the HSI 48 clock is
+  // enabled. The clock is disabled when all of these instances fall out of scope (RAII) or are
+  // invalidate()'d.
+
+  explicit LsiActivation(LsiOscillator& peripheral)
+      : Functional<LsiOscillator, LsiActivation>(peripheral) {}
+
+  friend class Peripheral<LsiOscillator, LsiActivation>;
+
+ public:
+  LsiActivation() = default;
 
   // No direct public methods. Any public methods come from superclasses.
 };

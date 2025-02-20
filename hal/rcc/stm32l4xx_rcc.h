@@ -2,13 +2,8 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <new>
 
-#include "hal/gpio/gpio.h"
 #include "hal/rcc/rcc.h"
-#include "hal/register.h"
-#include "hal/time/clock.h"
-#include "third_party/stm32/stm32_hal.h"
 
 extern "C" {
 
@@ -52,6 +47,12 @@ class RccStm32L4xx final : public Rcc {
 };
 
 class Hsi48OscillatorStm32L4xx final : public Hsi48Oscillator {
+ private:
+  void enable() override;
+  void disable() override;
+};
+
+class LsiOscillatorStm32L4xx final : public LsiOscillator {
  private:
   void enable() override;
   void disable() override;
