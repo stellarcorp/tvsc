@@ -22,6 +22,9 @@ class Stm32PeripheralIds final {
   static constexpr PeripheralId TIM6_ID{4};
   static constexpr PeripheralId TIM15_ID{5};
 
+  static constexpr PeripheralId LPTIM1_ID{6};
+  static constexpr PeripheralId LPTIM2_ID{7};
+
   // DMAs
   // Note that DMAs are mostly identified by channel, rather than the peripheral itself. In ST
   // Micro's HAL, the main configuration structure DMA_Handle_TypeDef has an instance of the channel
