@@ -30,12 +30,10 @@ int main() {
   gpio.set_pin_mode(BoardType::GREEN_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
   while (true) {
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 20; ++i) {
       auto& clock{board.clock()};
       gpio.toggle_pin(BoardType::GREEN_LED_PIN);
-      clock.sleep_ms(100);
-      gpio.toggle_pin(BoardType::GREEN_LED_PIN);
-      clock.sleep_ms(100);
+      clock.sleep_ms(75);
     }
 
     // Swap speeds so that we can detect any behavior changes.
