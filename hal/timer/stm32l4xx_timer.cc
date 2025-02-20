@@ -65,4 +65,86 @@ void TimerStm32l4xx::enable() {
 
 void TimerStm32l4xx::handle_interrupt() { HAL_TIM_IRQHandler(&timer_); }
 
+PeripheralId Stm32l4xxLptim::id() { return id_; }
+
+void Stm32l4xxLptim::start(uint32_t interval_us, bool /*high_precision*/) {
+  // This next line assigns the clock source to be the LSI. I think. Need to determine how the
+  // line in enable() and the init structure in start() interact.
+  timer_.Init.Clock.Source = LPTIM_CLOCKSOURCE_APBCLOCK_LPOSC;
+  timer_.Init.Trigger.Source = LPTIM_TRIGSOURCE_SOFTWARE;
+  timer_.Init.OutputPolarity = LPTIM_OUTPUTPOLARITY_HIGH;
+  timer_.Init.UpdateMode = LPTIM_UPDATE_IMMEDIATE;
+  timer_.Init.CounterSource = LPTIM_COUNTERSOURCE_INTERNAL;
+
+  static constexpr uint32_t LSI_FREQ_HZ{32000};
+
+  uint32_t timeout_ticks{LSI_FREQ_HZ / 1'000 * interval_us / 1'000};
+  if (interval_us < 2048000) {
+    timer_.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV1;
+  } else if (interval_us < 4'096'000) {
+    timer_.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV2;
+    timeout_ticks /= 2;
+  } else if (interval_us < 8'192'000) {
+    timer_.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV4;
+    timeout_ticks /= 4;
+  } else if (interval_us < 16'384'000) {
+    timer_.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV8;
+    timeout_ticks /= 8;
+  } else if (interval_us < 32'768'000) {
+    timer_.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV16;
+    timeout_ticks /= 16;
+  } else if (interval_us < 65'536'000) {
+    timer_.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV32;
+    timeout_ticks /= 32;
+  } else if (interval_us < 131'072'000) {
+    timer_.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV64;
+    timeout_ticks /= 64;
+  } else {
+    timer_.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV128;
+    timeout_ticks /= 128;
+  }
+
+  HAL_LPTIM_Init(&timer_);
+
+  is_running_ = true;
+
+  HAL_LPTIM_TimeOut_Start_IT(&timer_, 0xFFFF, timeout_ticks);
+}
+
+bool Stm32l4xxLptim::is_running() { return is_running_; }
+
+void Stm32l4xxLptim::stop() {
+  is_running_ = false;
+  HAL_LPTIM_TimeOut_Stop_IT(&timer_);
+}
+
+void Stm32l4xxLptim::disable() {
+  if (id_ == Stm32PeripheralIds::LPTIM1_ID) {
+    __HAL_RCC_LPTIM1_CLK_DISABLE();
+  } else if (id_ == Stm32PeripheralIds::LPTIM2_ID) {
+    __HAL_RCC_LPTIM2_CLK_DISABLE();
+  }
+
+  lsi_active_.invalidate();
+}
+
+void Stm32l4xxLptim::enable() {
+  lsi_active_ = oscillator_->access();
+
+  if (id_ == Stm32PeripheralIds::LPTIM1_ID) {
+    // This next line assigns the clock source to be the LSI. I think. Need to determine how the
+    // line in enable() and the init structure in start() interact.
+    __HAL_RCC_LPTIM1_CONFIG(RCC_LPTIM1CLKSOURCE_LSI);
+    __HAL_RCC_LPTIM1_CLK_ENABLE();
+  } else if (id_ == Stm32PeripheralIds::LPTIM2_ID) {
+    __HAL_RCC_LPTIM2_CONFIG(RCC_LPTIM2CLKSOURCE_LSI);
+    __HAL_RCC_LPTIM2_CLK_ENABLE();
+  }
+}
+
+void Stm32l4xxLptim::handle_interrupt() {
+  is_running_ = false;
+  HAL_LPTIM_IRQHandler(&timer_);
+}
+
 }  // namespace tvsc::hal::timer
