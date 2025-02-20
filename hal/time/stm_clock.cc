@@ -3,34 +3,41 @@
 #include <cstdint>
 
 #include "hal/time/clock.h"
+#include "third_party/stm32/stm32.h"
+#include "third_party/stm32/stm32_hal.h"
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 extern volatile uint64_t uwTick;
 
 void SysTick_Handler() { ++uwTick; }
 
-#ifdef __cplusplus
-}
-#endif
+}  // extern "C"
 
 namespace tvsc::hal::time {
-
-Clock& system_clock() {
-  static ClockStm32xxxx system_clock_{};
-  return system_clock_;
-}
 
 TimeType ClockStm32xxxx::current_time_micros() { return uwTick * 1000; }
 TimeType ClockStm32xxxx::current_time_millis() { return uwTick; }
 
 void ClockStm32xxxx::sleep_us(TimeType microseconds) {
-  const TimeType sleep_until_us{current_time_micros() + microseconds};
-  while (current_time_micros() < sleep_until_us) {
-    // Do nothing
+  timer_ = timer_peripheral_->access();
+
+  // Start the timer. Assume that it will trigger an interrupt at the end of the interval. Then
+  // enter stop mode. We exit stop mode on any interrupt (or possibly any EXTI event as well). So,
+  // we wrap the call to enter stop mode with a check to see if the timer is still running.
+  timer_.start(microseconds);
+  if (microseconds < 500) {
+    __WFI();
+  } else {
+    // TODO(james): Save the clock speed and reset it after waking from stop mode.
+    while (timer_.is_running()) {
+      power_peripheral_->enter_stop_mode();
+    }
+    uwTick += microseconds / 1000;
   }
+
+  // Release the resources of the timer.
+  timer_.invalidate();
 }
 
 void ClockStm32xxxx::sleep_ms(TimeType milliseconds) { sleep_us(milliseconds * 1000); }
