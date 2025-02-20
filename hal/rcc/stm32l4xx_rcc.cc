@@ -24,7 +24,8 @@ void RccStm32L4xx::set_clock_to_max_speed() {
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
   RCC_OscInitStruct.PLL.PLLM = 1;
   RCC_OscInitStruct.PLL.PLLN = 32;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
+  // Note that we do not configure PLLP, since that parameter is not available on the STM32L412, and
+  // we don't use that signal for anything.
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV4;
   RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV4;
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
