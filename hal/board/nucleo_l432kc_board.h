@@ -168,6 +168,7 @@ class Board final {
   dma::DmaPeripheral& dma() { return dma_; }
 
   timer::TimerPeripheral& timer2() { return timer2_; }
+  timer::TimerPeripheral& lptim1() { return lptim1_; }
 
   random::RngPeripheral& rng() { return rng_; }
 };
