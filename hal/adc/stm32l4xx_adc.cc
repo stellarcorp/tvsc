@@ -3,6 +3,8 @@
 #include "hal/gpio/gpio.h"
 #include "hal/peripheral_id.h"
 #include "hal/stm32_peripheral_ids.h"
+#include "third_party/stm32/stm32.h"
+#include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal::adc {
 
