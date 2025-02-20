@@ -33,7 +33,6 @@ cc_library(
     ],
     deps = [
         ":power_headers",
-        "//hal",
         "//third_party/stm32",
     ],
 )

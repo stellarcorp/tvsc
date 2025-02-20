@@ -1,28 +1,10 @@
 #include "hal/power/stm32l4xx_power.h"
 
+#include "third_party/stm32/stm32.h"
+#include "third_party/stm32/stm32_hal.h"
+
 namespace tvsc::hal::power {
 
-void PowerStm32L4xx::enter_low_power_run_mode() {
-  // Block until the low power regulator is ready.
-  while (registers_->SR2.bit_field_value<1, 8>() == 0) {
-    // Do nothing.
-  }
-
-  registers_->CR1.set_bit_field_value_and_block<1, 14>(1);
-
-  // Block while we are in "main mode" where this flag reads a zero.
-  // while (registers_->SR2.bit_field_value<1, 9>() == 0) {
-  //   // Do nothing.
-  // }
-}
-
-void PowerStm32L4xx::exit_low_power_run_mode() {
-  registers_->CR1.set_bit_field_value_and_block<1, 14>(0);
-
-  // Block while we are in "low power mode" where this flag reads a one.
-  // while (registers_->SR2.bit_field_value<1, 9>() == 1) {
-  //   // Do nothing.
-  // }
-}
+void PowerStm32L4xx::enter_stop_mode() { HAL_PWREx_EnterSTOP1Mode(PWR_STOPENTRY_WFI); }
 
 }  // namespace tvsc::hal::power

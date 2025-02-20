@@ -6,8 +6,9 @@ class Power {
  public:
   virtual ~Power() = default;
 
-  virtual void enter_low_power_run_mode() = 0;
-  virtual void exit_low_power_run_mode() = 0;
+  // Note: be sure to configure an interrupt mechanism before calling this method. It does not
+  // return until an interrupt fires.
+  virtual void enter_stop_mode() = 0;
 };
 
 }  // namespace tvsc::hal::power
