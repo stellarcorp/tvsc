@@ -41,9 +41,18 @@ namespace tvsc::hal::rcc {
  * based on the STM32L4xx series of CPUs.
  */
 class RccStm32L4xx final : public Rcc {
+ private:
+  enum class ClockConfiguration {
+    UNCONFIGURED,
+    MIN_SPEED,
+    MAX_SPEED,
+  };
+  ClockConfiguration clock_configuration_{ClockConfiguration::UNCONFIGURED};
+
  public:
   void set_clock_to_max_speed() override;
   void set_clock_to_min_speed() override;
+  void restore_clock_speed() override;
 };
 
 class Hsi48OscillatorStm32L4xx final : public Hsi48Oscillator {

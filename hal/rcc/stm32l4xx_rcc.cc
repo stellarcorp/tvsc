@@ -50,6 +50,8 @@ void RccStm32L4xx::set_clock_to_max_speed() {
   HAL_InitTick(TICK_INT_PRIORITY);
 
   __HAL_RCC_WAKEUPSTOP_CLK_CONFIG(RCC_STOP_WAKEUPCLOCK_MSI);
+
+  clock_configuration_ = ClockConfiguration::MAX_SPEED;
 }
 
 void RccStm32L4xx::set_clock_to_min_speed() {
@@ -87,6 +89,16 @@ void RccStm32L4xx::set_clock_to_min_speed() {
   HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
 
   __HAL_RCC_WAKEUPSTOP_CLK_CONFIG(RCC_STOP_WAKEUPCLOCK_MSI);
+
+  clock_configuration_ = ClockConfiguration::MIN_SPEED;
+}
+
+void RccStm32L4xx::restore_clock_speed() {
+  if (clock_configuration_ == ClockConfiguration::MIN_SPEED) {
+    set_clock_to_min_speed();
+  } else if (clock_configuration_ == ClockConfiguration::MAX_SPEED) {
+    set_clock_to_max_speed();
+  }
 }
 
 void Hsi48OscillatorStm32L4xx::enable() {
@@ -130,7 +142,7 @@ void Hsi48OscillatorStm32L4xx::disable() {
 void LsiOscillatorStm32L4xx::enable() {
   // Note that these might be needed, both in enable() and disable(). Not sure why, or if they
   // belong here, or in the power module.
-  //__HAL_RCC_PWR_CLK_ENABLE();
+  // __HAL_RCC_PWR_CLK_ENABLE();
   // HAL_PWR_EnableBkUpAccess();
 
   /**
@@ -149,7 +161,7 @@ void LsiOscillatorStm32L4xx::disable() {
    */
   RCC_OscInitTypeDef RCC_OscInitStruct{};
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI;
-  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_OFF;
   // Note that this function call can block for up to 2 ms.
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
