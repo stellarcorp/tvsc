@@ -25,12 +25,12 @@ class TimerPeripheral : public Peripheral<TimerPeripheral, Timer> {
 
   virtual bool is_running() = 0;
 
-  virtual void handle_interrupt() = 0;
-
   friend class Timer;
 
  public:
   virtual ~TimerPeripheral() = default;
+
+  virtual void handle_interrupt() = 0;
 };
 
 class Timer final : public Functional<TimerPeripheral, Timer> {
@@ -40,6 +40,8 @@ class Timer final : public Functional<TimerPeripheral, Timer> {
   friend class Peripheral<TimerPeripheral, Timer>;
 
  public:
+  Timer() = default;
+
   PeripheralId id() { return peripheral_->id(); }
 
   void start(uint32_t interval_us, bool high_precision = false) {
