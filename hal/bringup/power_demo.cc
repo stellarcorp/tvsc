@@ -1,4 +1,4 @@
-#include <cstring>
+#include <cstdint>
 
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
@@ -17,6 +17,13 @@ int main() {
     rcc.set_clock_to_min_speed();
   }
 
+  // Defense against getting stuck in an ISR. When things go awry, this bringup script can get often
+  // stuck in an ISR, and in those cases, it seems to be difficult to re-flash the MCU. This extra
+  // delay gives us a tiny window to initiate a flash.
+  for (uint32_t i = 0; i < SystemCoreClock / 2; ++i) {
+    // Just loop.
+  }
+
   // Turn on clocks for the GPIO ports that we want.
   auto gpio{board.gpio<BoardType::GREEN_LED_PORT>().access()};
 
@@ -25,7 +32,6 @@ int main() {
   while (true) {
     for (int i = 0; i < 10; ++i) {
       auto& clock{board.clock()};
-
       gpio.toggle_pin(BoardType::GREEN_LED_PIN);
       clock.sleep_ms(100);
       gpio.toggle_pin(BoardType::GREEN_LED_PIN);
