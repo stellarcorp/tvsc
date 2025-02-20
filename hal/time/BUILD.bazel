@@ -83,6 +83,7 @@ cc_library(
     deps = [
         ":time_headers",
         "//hal/power",
+        "//hal/rcc",
         "//hal/timer",
         "//third_party/stm32",
     ],

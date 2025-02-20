@@ -65,7 +65,7 @@ class Board final {
   rcc::LsiOscillatorStm32L4xx lsi_oscillator_{};
   timer::Stm32l4xxLptim lptim1_{Stm32PeripheralIds::LPTIM1_ID, LPTIM1, lsi_oscillator_};
 
-  time::ClockStm32xxxx clock_{lptim1_, power_};
+  time::ClockStm32xxxx clock_{lptim1_, power_, rcc_};
 
   rcc::Hsi48OscillatorStm32L4xx hsi48_oscillator_{};
   random::RngStm32xxxx rng_{hsi48_oscillator_};

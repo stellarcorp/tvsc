@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hal/power/power.h"
+#include "hal/rcc/rcc.h"
 #include "hal/time/clock.h"
 #include "hal/timer/timer.h"
 
@@ -12,12 +13,17 @@ namespace tvsc::hal::time {
 class ClockStm32xxxx final : public Clock {
  private:
   timer::TimerPeripheral* timer_peripheral_;
-  timer::Timer timer_{};
+
+  // Note that we are keeping this timer on the whole time. We might be better served by turning it
+  // on and off inside of sleep_us().
+  timer::Timer timer_{timer_peripheral_->access()};
   power::Power* power_peripheral_;
+  rcc::Rcc* rcc_;
 
  public:
-  ClockStm32xxxx(timer::TimerPeripheral& timer_peripheral, power::Power& power_peripheral)
-      : timer_peripheral_(&timer_peripheral), power_peripheral_(&power_peripheral) {}
+  ClockStm32xxxx(timer::TimerPeripheral& timer_peripheral, power::Power& power_peripheral,
+                 rcc::Rcc& rcc)
+      : timer_peripheral_(&timer_peripheral), power_peripheral_(&power_peripheral), rcc_(&rcc) {}
 
   TimeType current_time_micros() override;
   TimeType current_time_millis() override;
