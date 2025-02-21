@@ -1,3 +1,4 @@
+#include <chrono>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
@@ -30,6 +31,7 @@ using TaskType = tvsc::hal::scheduler::Task<ClockType>;
 
 template <uint8_t DAC_CHANNEL = 0>
 TaskType run_adc_demo(BoardType& board) {
+  using namespace std::chrono_literals;
   auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
   auto& adc_peripheral{board.adc()};
   auto& dac_peripheral{board.dac()};
@@ -61,13 +63,13 @@ TaskType run_adc_demo(BoardType& board) {
 
       // Flash slowly after calibration.
       gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
-      co_yield 1000 * (500 + clock.current_time_millis());
+      co_yield 500ms;
       gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
-      co_yield 1000 * (500 + clock.current_time_millis());
+      co_yield 500ms;
       gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
-      co_yield 1000 * (500 + clock.current_time_millis());
+      co_yield 500ms;
       gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
-      co_yield 1000 * (500 + clock.current_time_millis());
+      co_yield 500ms;
     }
 
     for (auto v : {256, 0, 1, 2, 4, 8, 16, 32, 64, 128, 256}) {
@@ -96,16 +98,16 @@ TaskType run_adc_demo(BoardType& board) {
       if (relative_difference < 0.25f || absolute_difference < (3 << RESOLUTION_SHIFT)) {
         // Success. Short solid.
         gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
-        co_yield 1000 * (400 + clock.current_time_millis());
+        co_yield 400ms;
         gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
-        co_yield 1000 * (100 + clock.current_time_millis());
+        co_yield 100ms;
       } else {
         // Failure. Flash frenetically.
         for (int i = 0; i < 2; ++i) {
           gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
-          co_yield 1000 * (50 + clock.current_time_millis());
+          co_yield 50ms;
           gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
-          co_yield 1000 * (50 + clock.current_time_millis());
+          co_yield 50ms;
         }
       }
     }
@@ -118,7 +120,7 @@ TaskType run_adc_demo(BoardType& board) {
     dac.set_value(current_output_value);
     dac.clear_value();
     gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
-    co_yield 1000 * (500 + clock.current_time_millis());
+    co_yield 500ms;
   }
 }
 
