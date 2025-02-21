@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 
 #include "hal/board/board.h"
@@ -11,6 +12,7 @@ namespace tvsc::hal::bringup {
 template <typename ClockType, uint8_t DAC_CHANNEL = 0>
 scheduler::Task<ClockType> run_dac_demo(board::Board& board, uint32_t& output_value,
                                         uint64_t initial_delay_ms = 0) {
+  using namespace std::chrono_literals;
   static constexpr uint32_t dac_8bit_values[] = {0, 1, 2, 4, 8, 16, 32, 64, 128, 256};
   static constexpr uint32_t dac_12bit_values[] = {0, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
   static constexpr uint32_t dac_16bit_values[] = {0,    256,  512,   1024,  2048,
@@ -19,11 +21,10 @@ scheduler::Task<ClockType> run_dac_demo(board::Board& board, uint32_t& output_va
   using BoardType = board::Board;
 
   auto& dac_peripheral{board.dac()};
-  auto& clock{board.clock()};
   auto& dac_gpio_peripheral{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>()};
 
   if (initial_delay_ms > 0) {
-    co_yield 1000 * (initial_delay_ms + clock.current_time_millis());
+    co_yield std::chrono::milliseconds{initial_delay_ms};
   }
 
   // Turn on clocks for the peripherals that we want.
@@ -37,28 +38,28 @@ scheduler::Task<ClockType> run_dac_demo(board::Board& board, uint32_t& output_va
       output_value = v;
       dac.set_resolution(8, DAC_CHANNEL);
       dac.set_value(v, DAC_CHANNEL);
-      co_yield 50'000 + clock.current_time_micros();
+      co_yield 50ms;
     }
 
-    co_yield 1000 * (250 + clock.current_time_millis());
+    co_yield 250ms;
 
     for (auto& v : dac_12bit_values) {
       auto dac{dac_peripheral.access()};
       dac.set_resolution(12, DAC_CHANNEL);
       dac.set_value(v, DAC_CHANNEL);
-      co_yield 50'000 + clock.current_time_micros();
+      co_yield 50ms;
     }
 
-    co_yield 1000 * (250 + clock.current_time_millis());
+    co_yield 250ms;
 
     for (auto& v : dac_16bit_values) {
       auto dac{dac_peripheral.access()};
       dac.set_resolution(16, DAC_CHANNEL);
       dac.set_value(v, DAC_CHANNEL);
-      co_yield 50'000 + clock.current_time_micros();
+      co_yield 50ms;
     }
 
-    co_yield 1000 * (500 + clock.current_time_millis());
+    co_yield 500ms;
   }
 }
 
