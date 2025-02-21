@@ -6,15 +6,14 @@
 namespace tvsc::hal::rcc {
 
 void RccStm32L4xx::set_clock_to_max_speed() {
-  // The current implementation puts SYSCLK signal as well as peripheral buses at 32 MHz. This speed
-  // requires one flash wait state per operation. Note that any higher of a clock speed would
-  // require two flash wait states.
+  // The current implementation puts SYSCLK signal as well as peripheral buses at 80 MHz. This speed
+  // requires four flash wait states per operation.
 
   // Bring up the internal regulator voltage to its normal level. The system will be very unstable
   // if we are undervolting while trying to run at a higher clock speed.
   HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-  // Set the MSI oscillator to 4 MHz and use the PLL to multiple the speed up to a total of 32 MHz.
+  // Set the MSI oscillator to 4 MHz and use the PLL to multiple the speed up to a total of 80 MHz.
   RCC_OscInitTypeDef RCC_OscInitStruct{};
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
@@ -23,11 +22,11 @@ void RccStm32L4xx::set_clock_to_max_speed() {
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
   RCC_OscInitStruct.PLL.PLLM = 1;
-  RCC_OscInitStruct.PLL.PLLN = 32;
+  RCC_OscInitStruct.PLL.PLLN = 40;
   // Note that we do not configure PLLP, since that parameter is not available on the STM32L412, and
   // we don't use that signal for anything.
-  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV4;
-  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV4;
+  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
   // Configure the flash latency as well as initialize the CPU, AHB and APB bus clocks to use the
@@ -41,10 +40,10 @@ void RccStm32L4xx::set_clock_to_max_speed() {
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   // Note that we also designate the flash latency here as having a one cycle wait state.
-  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1);
+  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4);
 
   // Update the SystemCoreClock value.
-  SystemCoreClock = 32'000'000;
+  SystemCoreClock = 80'000'000;
 
   // Update the SysTick configuration.
   HAL_InitTick(TICK_INT_PRIORITY);
