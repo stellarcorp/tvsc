@@ -21,6 +21,7 @@ class Task final {
     // is currently using, and when it might need access to the CPU again.
     ClockType::time_point wait_until_{};
     std::function<bool()> ready_condition_{};
+    ClockType* clock_{};
 
     Task get_return_object() noexcept { return Task{HandleType::from_promise(*this)}; }
 
@@ -36,6 +37,12 @@ class Task final {
 
     std::suspend_always yield_value(ClockType::time_point t) noexcept {
       wait_until_ = t;
+      ready_condition_ = {};
+      return {};
+    }
+
+    std::suspend_always yield_value(ClockType::duration d) noexcept {
+      wait_until_ = clock_->current_time() + d;
       ready_condition_ = {};
       return {};
     }
@@ -74,6 +81,8 @@ class Task final {
     rhs.handle_ = nullptr;
     return *this;
   }
+
+  void set_clock(ClockType& clock) noexcept { handle_.promise().clock_ = &clock; }
 
   bool operator==(const Task& rhs) const noexcept { return handle_ == rhs.handle_; }
 

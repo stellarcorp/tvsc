@@ -37,6 +37,7 @@ class Scheduler final {
     for (size_t i = 0; i < QUEUE_SIZE; ++i) {
       if (!task_queue_[i].is_valid()) {
         task_queue_[i] = std::move(task);
+        task_queue_[i].set_clock(*clock_);
         return i;
       }
     }
