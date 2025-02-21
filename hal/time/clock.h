@@ -18,12 +18,6 @@ class Clock {
  public:
   virtual ~Clock() = default;
 
-  virtual TimeType current_time_millis() = 0;
-  virtual TimeType current_time_micros() = 0;
-
-  virtual void sleep_ms(TimeType milliseconds) = 0;
-  virtual void sleep_us(TimeType microseconds) = 0;
-
   // C++ Clock requirements.
   // We do not implement the static now() function. This means that our Clock does not satisfy
   // std::chrono::is_clock. Implementing that function causes a circular dependency between the
@@ -32,9 +26,9 @@ class Clock {
   // from //hal/time. But we want to instantiate the specific Clock instance in the Board. That's a
   // dependency on //hal/time from //hal/board. We can break this dependency fairly easily, at the
   // expense of creating extra implementation targets in the //hal/time package, but then, every
-  // binary would need to add an extra dependency. Ultimately, we aren't using now(), so dropping it
-  // from the API is the easiest approach, even at the expense of losing std::chrono::is_clock
-  // compatibility.
+  // binary would need to add an extra dependency. Ultimately, we use current_time() instead of the
+  // static now(), so dropping it from the API is the easiest approach, even at the expense of
+  // losing std::chrono::is_clock compatibility.
 
   using rep = TimeType;
   using period = std::micro;
@@ -44,8 +38,23 @@ class Clock {
   // This clock always moves forward and is never adjusted.
   static constexpr bool is_steady{true};
 
+  virtual TimeType current_time_millis() = 0;
+  virtual TimeType current_time_micros() = 0;
+
   time_point current_time() noexcept {
     return time_point{std::chrono::microseconds{current_time_micros()}};
+  }
+
+  virtual void sleep_ms(TimeType milliseconds) = 0;
+  virtual void sleep_us(TimeType microseconds) = 0;
+
+  void sleep(time_point t) {
+    sleep_us(std::chrono::duration_cast<std::chrono::microseconds>(t - current_time()).count());
+  }
+
+  template <typename Rep, typename Period>
+  void sleep(std::chrono::duration<Rep, Period> d) {
+    sleep_us(std::chrono::duration_cast<std::chrono::microseconds>(d).count());
   }
 };
 

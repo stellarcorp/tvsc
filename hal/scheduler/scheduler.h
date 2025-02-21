@@ -60,11 +60,8 @@ class Scheduler final {
     return size;
   }
 
-  void run_tasks_once() {
-    // TODO(james): Play around with this speed strategy. Especially investigate lookahead
-    // strategies to know if we even want to boost the clock speed at all.
-    // See https://chatgpt.com/share/67b593a9-5fb4-8006-9cdf-1d22aa22c574 for ideas.
-    rcc_->set_clock_to_max_speed();
+  auto run_tasks_once() {
+    auto next_ready_time{ClockType::time_point::max()};
     for (size_t i = 0; i < QUEUE_SIZE; ++i) {
       TaskType& task{task_queue_[i]};
       if (task.is_valid()) {
@@ -74,17 +71,34 @@ class Scheduler final {
         if (task.is_complete()) {
           task_queue_[i] = {};
         }
+        next_ready_time = std::min(next_ready_time, task.estimate_ready_at());
       }
     }
-    rcc_->set_clock_to_min_speed();
+    return next_ready_time;
   }
 
   void start() {
+    // TODO(james): Play around with this strategy. Currently, this strategy assumes that we have a
+    // CPU-heavy workload and that we can ignore flash wait states. Both of these assumptions are
+    // likely wrong. Bus transfers (I2C, CAN bus, and SPI) probably won't need max speed but may
+    // need frequent (small number of microseconds) CPU access. See
+    // https://chatgpt.com/share/67b593a9-5fb4-8006-9cdf-1d22aa22c574 for ideas as well as timing
+    // estimates for switching clock speeds and entering/exiting stop mode.
+    //
+    // This particular strategy is just to put the clock at max speed and sleep when tasks aren't
+    // ready.
+    //
+    // We use this strategy because:
+    // - It is simple.
+    // - The latency to switch clock speeds from high speed to low speed is ~500 us.
+    // - The latency to configure a timer, enter stop mode, and exit stop mode is also ~500 us.
+    // - The latency to set up a timer, enter sleep mode, and exit sleep mode is about 25 us.
+    // That is, switching clock speeds here appears to be a false savings; we could enter stop mode
+    // in the same time, and stop mode uses vastly less power.
+    rcc_->set_clock_to_max_speed();
     while (true) {
-      // TODO(james): Iterate on the scheduling strategy here. We should investigate mechanisms for
-      // putting the CPU in stop or standby mode if no tasks are ready to run. This would require
-      // knowing when the next task to run might be ready.
-      run_tasks_once();
+      auto next_ready_time{run_tasks_once()};
+      clock_->sleep(next_ready_time);
     }
   }
 

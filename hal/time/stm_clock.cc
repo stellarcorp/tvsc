@@ -20,7 +20,14 @@ TimeType ClockStm32xxxx::current_time_micros() { return uwTick * 1000; }
 TimeType ClockStm32xxxx::current_time_millis() { return uwTick; }
 
 void ClockStm32xxxx::sleep_us(TimeType microseconds) {
+  static constexpr TimeType TIME_TO_START_TIMER_US{25};
   static constexpr TimeType TIME_TO_WAKE_FROM_STOP_MODE_US{500};
+
+  // We can't achieve any better precision than this, so just don't bother.
+  if (microseconds < TIME_TO_START_TIMER_US) {
+    return;
+  }
+
   // Start the timer. Assume that it will trigger an interrupt at the end of the interval. Then
   // enter stop mode. We exit stop mode on any interrupt (or possibly any EXTI event as well). So,
   // we wrap the call to enter stop mode with a check to see if the timer is still running; when it
