@@ -19,4 +19,4 @@ do
   esac
 done
 
-/opt/st/stm32cube_programmer/bin/STM32_Programmer.sh --connect port=SWD index=${INDEX} shared --write "${remaining_args[@]}" --verify -rst -run
+/opt/st/stm32cube_programmer/bin/STM32_Programmer.sh --connect port=SWD index=${INDEX} shared reset=HWrst --write "${remaining_args[@]}" --verify -rst -run
