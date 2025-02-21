@@ -38,7 +38,11 @@ class Clock {
   // This clock always moves forward and is never adjusted.
   static constexpr bool is_steady{true};
 
-  static time_point now() noexcept;
+  time_point current_time() noexcept {
+    return time_point{std::chrono::microseconds{current_time_micros()}};
+  }
+
+  // static time_point now() noexcept;
 };
 
 /**
@@ -46,6 +50,6 @@ class Clock {
  * Unlike C++'s system_clock type, this clock should be steady. Note that the result of this
  * function is used in the now() function above.
  */
-Clock& system_clock();
+// Clock& system_clock();
 
 }  // namespace tvsc::hal::time
