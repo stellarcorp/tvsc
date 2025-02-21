@@ -1,7 +1,6 @@
 cc_library(
     name = "time",
     srcs = [
-        #"clock.cc",
         "remote_clock.cc",
     ],
     hdrs = [
@@ -28,25 +27,6 @@ cc_library(
         ],
     }),
 )
-
-# cc_library(
-#     name = "time_system_clock",
-#     target_compatible_with = select({
-#         "//platforms:teensyduino_core": [],
-#         "//platforms:stm32_core": [],
-#         "//platforms:std_cpp": [],
-#         "//conditions:default": ["@platforms//:incompatible"],
-#     }),
-#     visibility = ["//visibility:public"],
-#     deps = [
-#         ":time_headers",
-#     ] + select({
-#         "//platforms:stm32_core": [
-#             ":stm32_time_system_clock",
-#         ],
-#         "//conditions:default": [],
-#     }),
-# )
 
 cc_library(
     name = "time_headers",
@@ -88,17 +68,6 @@ cc_library(
         "//third_party/stm32",
     ],
 )
-
-# cc_library(
-#     name = "stm32_time_system_clock",
-#     srcs = [
-#         "stm_system_clock.cc",
-#     ],
-#     deps = [
-#         ":time_headers",
-#         "//hal/board",
-#     ],
-# )
 
 cc_library(
     name = "std_cpp_time",

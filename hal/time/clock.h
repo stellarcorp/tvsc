@@ -25,11 +25,17 @@ class Clock {
   virtual void sleep_us(TimeType microseconds) = 0;
 
   // C++ Clock requirements.
-  // We assume that the implementations of this interface will be implement the system_clock()
-  // function below. That function is used in the now() function in this interface. We could have
-  // also used the curiously recurring template pattern, but this is the current structure.
+  // We do not implement the static now() function. This means that our Clock does not satisfy
+  // std::chrono::is_clock. Implementing that function causes a circular dependency between the
+  // //hal/time target and the //hal/board target. To implement it correctly, we want to use the
+  // Clock instance from the board in the definition of now(). That's a dependency on //hal/board
+  // from //hal/time. But we want to instantiate the specific Clock instance in the Board. That's a
+  // dependency on //hal/time from //hal/board. We can break this dependency fairly easily, at the
+  // expense of creating extra implementation targets in the //hal/time package, but then, every
+  // binary would need to add an extra dependency. Ultimately, we aren't using now(), so dropping it
+  // from the API is the easiest approach, even at the expense of losing std::chrono::is_clock
+  // compatibility.
 
-  // TODO(james): Flip these around. Remove TimeType and make this the canonical type.
   using rep = TimeType;
   using period = std::micro;
   using duration = std::chrono::duration<rep, period>;
@@ -41,15 +47,6 @@ class Clock {
   time_point current_time() noexcept {
     return time_point{std::chrono::microseconds{current_time_micros()}};
   }
-
-  // static time_point now() noexcept;
 };
-
-/**
- * Accessor to a global instance of a steady clock that acts as the primary clock for the system.
- * Unlike C++'s system_clock type, this clock should be steady. Note that the result of this
- * function is used in the now() function above.
- */
-// Clock& system_clock();
 
 }  // namespace tvsc::hal::time
