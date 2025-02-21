@@ -16,6 +16,7 @@ template <typename FirstT, typename SecondT = FirstT,
                            bool> = true>
 inline auto generate_random_value(FirstT minimum = std::numeric_limits<FirstT>::lowest(),
                                   SecondT maximum = std::numeric_limits<SecondT>::max())
+    // TODO(james): Switch to using std::common_type here and similar below.
     -> decltype(minimum + maximum) {
   using ResultT = decltype(minimum + maximum);
   std::uniform_int_distribution dist{static_cast<ResultT>(minimum), static_cast<ResultT>(maximum)};
