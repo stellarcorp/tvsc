@@ -35,7 +35,6 @@ TaskType run_adc_demo(BoardType& board) {
   auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
   auto& adc_peripheral{board.adc()};
   auto& dac_peripheral{board.dac()};
-  auto& clock{board.clock()};
   auto& dac_gpio_peripheral{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>()};
 
   // Turn on clocks for the peripherals that we want.
