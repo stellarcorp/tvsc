@@ -85,7 +85,7 @@ TaskType run_adc_demo(BoardType& board) {
                                   buffer.data(), 1);
       while (!dma_complete) {
         // Yield while we take the measurement.
-        co_yield 1000 * (5 + clock.current_time_millis());
+        co_yield 5ms;
       }
       adc.reset_after_conversion();
 
