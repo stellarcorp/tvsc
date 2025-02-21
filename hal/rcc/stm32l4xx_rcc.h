@@ -46,12 +46,16 @@ class RccStm32L4xx final : public Rcc {
     UNCONFIGURED,
     MIN_SPEED,
     MAX_SPEED,
+    // The energy efficient speed attempts to minimize the total energy required to execute a
+    // CPU-intensive task.
+    ENERGY_EFFICIENT_SPEED,
   };
   ClockConfiguration clock_configuration_{ClockConfiguration::UNCONFIGURED};
 
  public:
   void set_clock_to_max_speed() override;
   void set_clock_to_min_speed() override;
+  void set_clock_to_energy_efficient_speed() override;
   void restore_clock_speed() override;
 };
 

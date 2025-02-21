@@ -85,17 +85,17 @@ class Scheduler final {
     // https://chatgpt.com/share/67b593a9-5fb4-8006-9cdf-1d22aa22c574 for ideas as well as timing
     // estimates for switching clock speeds and entering/exiting stop mode.
     //
-    // This particular strategy is just to put the clock at max speed and sleep when tasks aren't
-    // ready.
+    // This particular strategy is puts the clock at an energy efficient speed and sleeps when tasks
+    // aren't ready.
     //
     // We use this strategy because:
     // - It is simple.
-    // - The latency to switch clock speeds from high speed to low speed is ~500 us.
+    // - The latency to switch clock speeds is ~500 us.
     // - The latency to configure a timer, enter stop mode, and exit stop mode is also ~500 us.
     // - The latency to set up a timer, enter sleep mode, and exit sleep mode is about 25 us.
     // That is, switching clock speeds here appears to be a false savings; we could enter stop mode
     // in the same time, and stop mode uses vastly less power.
-    rcc_->set_clock_to_max_speed();
+    rcc_->set_clock_to_energy_efficient_speed();
     while (true) {
       auto next_ready_time{run_tasks_once()};
       clock_->sleep(next_ready_time);

@@ -11,8 +11,9 @@ class Rcc {
  public:
   virtual ~Rcc() = default;
 
-  virtual void set_clock_to_max_speed() = 0;
   virtual void set_clock_to_min_speed() = 0;
+  virtual void set_clock_to_max_speed() = 0;
+  virtual void set_clock_to_energy_efficient_speed() = 0;
 
   // Restore the clock speed to the last requested setting after waking from stop mode. When exiting
   // stop mode, the clock defaults to a 4 MHz MSI clock, possibly with no PLL setting. This method

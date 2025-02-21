@@ -54,6 +54,54 @@ void RccStm32L4xx::set_clock_to_max_speed() {
   clock_configuration_ = ClockConfiguration::MAX_SPEED;
 }
 
+void RccStm32L4xx::set_clock_to_energy_efficient_speed() {
+  // The current implementation puts SYSCLK signal as well as peripheral buses at 26 MHz. This speed
+  // is the maximum speed allowed when undervolting the system. This speed requires one flash wait
+  // state per operation.
+
+  // Set the MSI oscillator to 4 MHz and use the PLL to multiple the speed up to a total of 26 MHz.
+  RCC_OscInitTypeDef RCC_OscInitStruct{};
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.MSIState = RCC_MSI_ON;
+  RCC_OscInitStruct.MSICalibrationValue = 0;
+  RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
+  RCC_OscInitStruct.PLL.PLLM = 1;
+  RCC_OscInitStruct.PLL.PLLN = 26;
+  // Note that we do not configure PLLP, since that parameter is not available on the STM32L412, and
+  // we don't use that signal for anything.
+  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV4;
+  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV4;
+  HAL_RCC_OscConfig(&RCC_OscInitStruct);
+
+  // Configure the flash latency as well as initialize the CPU, AHB and APB bus clocks to use the
+  // MSI without any divider.
+  RCC_ClkInitTypeDef RCC_ClkInitStruct{};
+  RCC_ClkInitStruct.ClockType =
+      RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  // Note that we also designate the flash latency here as having a one cycle wait state.
+  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1);
+
+  // Configure the main internal regulator output voltage to undervolt the CPU to save power.
+  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
+
+  // Update the SystemCoreClock value.
+  SystemCoreClock = 26'000'000;
+
+  // Update the SysTick configuration.
+  HAL_InitTick(TICK_INT_PRIORITY);
+
+  __HAL_RCC_WAKEUPSTOP_CLK_CONFIG(RCC_STOP_WAKEUPCLOCK_MSI);
+
+  clock_configuration_ = ClockConfiguration::ENERGY_EFFICIENT_SPEED;
+}
+
 void RccStm32L4xx::set_clock_to_min_speed() {
   // Set the MSI oscillator to 100 kHz. This is its minimum speed.
   // Bypass the PLL.
@@ -96,6 +144,8 @@ void RccStm32L4xx::set_clock_to_min_speed() {
 void RccStm32L4xx::restore_clock_speed() {
   if (clock_configuration_ == ClockConfiguration::MIN_SPEED) {
     set_clock_to_min_speed();
+  } else if (clock_configuration_ == ClockConfiguration::ENERGY_EFFICIENT_SPEED) {
+    set_clock_to_energy_efficient_speed();
   } else if (clock_configuration_ == ClockConfiguration::MAX_SPEED) {
     set_clock_to_max_speed();
   }
