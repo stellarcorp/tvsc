@@ -1,4 +1,5 @@
 #include <array>
+#include <chrono>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
@@ -23,11 +24,13 @@ __attribute__((section(".status.value"))) volatile bool dma_error{};
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* adc) { dma_complete = true; }
 
 void HAL_ADC_ErrorCallback(ADC_HandleTypeDef* adc) { dma_error = true; }
-}
+
+}  // extern "C"
 
 namespace tvsc::hal::bringup {
 
-static constexpr uint32_t PERIOD_US{500'000};
+using namespace std::chrono_literals;
+static constexpr std::chrono::microseconds PERIOD_US{500ms};
 
 /**
  * NOTE: This bringup script is NOT fully functional.
@@ -41,7 +44,6 @@ TaskType run_adc_demo(BoardType& board) {
   auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
   auto& adc_peripheral{board.adc()};
   auto& dac_peripheral{board.dac()};
-  auto& clock{board.clock()};
   auto& timer_peripheral{board.timer2()};
 
   // Turn on clocks for the peripherals that we want.
@@ -73,7 +75,7 @@ TaskType run_adc_demo(BoardType& board) {
       gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
     }
 
-    timer.start(PERIOD_US, true);
+    timer.start(PERIOD_US.count(), true);
     adc.start_conversion_stream({BoardType::DAC_CHANNEL_1_PORT, BoardType::DAC_CHANNEL_1_PIN},
                                 values_read.data(), values_read.size() * 2, timer);
 
@@ -86,7 +88,7 @@ TaskType run_adc_demo(BoardType& board) {
 
       // Hold the DAC at this value. The ADC runs in the background and will measure this value
       // asynchronously.
-      co_yield PERIOD_US + clock.current_time_micros();
+      co_yield PERIOD_US;
     }
 
     // Stop the ADC.
@@ -96,7 +98,7 @@ TaskType run_adc_demo(BoardType& board) {
     current_output_value = 0;
     dac.set_value(current_output_value);
     // Hold the DAC at this value.
-    co_yield PERIOD_US + clock.current_time_micros();
+    co_yield PERIOD_US;
     dac.clear_value();
     ++iteration_counter;
   }

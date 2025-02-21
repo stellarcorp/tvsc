@@ -21,11 +21,9 @@ static constexpr size_t QUEUE_SIZE{1};
 int main() {
   BoardType& board{BoardType::board()};
 
-  auto& gpio{board.gpio<BoardType::GREEN_LED_PORT>()};
-  auto& clock{board.clock()};
-
-  Scheduler<ClockType, QUEUE_SIZE> scheduler{clock, board.rcc()};
-  scheduler.add_task(blink_randomly(clock, gpio, BoardType::GREEN_LED_PIN));
+  Scheduler<ClockType, QUEUE_SIZE> scheduler{board.clock(), board.rcc()};
+  scheduler.add_task(
+      blink_randomly<ClockType>(board.gpio<BoardType::GREEN_LED_PORT>(), BoardType::GREEN_LED_PIN));
 
   scheduler.start();
 }
