@@ -9,6 +9,8 @@
 #include "hal/time/clock.h"
 
 using BoardType = tvsc::hal::board::Board;
+using ClockType = BoardType::ClockType;
+using TaskType = tvsc::hal::scheduler::Task<ClockType>;
 
 using namespace tvsc::hal::bringup;
 using namespace tvsc::hal::scheduler;
@@ -21,7 +23,7 @@ int main() {
 
   auto& clock{board.clock()};
 
-  Scheduler<QUEUE_SIZE> scheduler{clock, board.rcc()};
+  Scheduler<ClockType, QUEUE_SIZE> scheduler{clock, board.rcc()};
 
   static constexpr uint64_t DURATION_MULTIPLES[] = {4, 3, 2};
   static_assert(BoardType::NUM_DEBUG_LEDS < 4, "Need to implement blink for more LEDs");

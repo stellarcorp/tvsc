@@ -1,11 +1,13 @@
 #pragma once
 
+#include <chrono>
 #include <coroutine>
 #include <cstdint>
 #include <functional>
 
 namespace tvsc::hal::scheduler {
 
+template <typename ClockType>
 class Task final {
  public:
   struct promise_type;
@@ -17,7 +19,7 @@ class Task final {
   struct promise_type {
     // TODO(james): Replace these with a general task status that indicates what resources the task
     // is currently using, and when it might need access to the CPU again.
-    uint64_t wait_until_us_{};
+    ClockType::time_point wait_until_{};
     std::function<bool()> ready_condition_{};
 
     Task get_return_object() noexcept { return Task{HandleType::from_promise(*this)}; }
@@ -27,12 +29,19 @@ class Task final {
     std::suspend_always final_suspend() noexcept { return {}; }
 
     std::suspend_always yield_value(uint64_t t) noexcept {
-      wait_until_us_ = t;
+      wait_until_ = typename ClockType::time_point{std::chrono::microseconds{t}};
+      ready_condition_ = {};
+      return {};
+    }
+
+    std::suspend_always yield_value(ClockType::time_point t) noexcept {
+      wait_until_ = t;
       ready_condition_ = {};
       return {};
     }
 
     std::suspend_always yield_value(std::function<bool()> ready_condition) noexcept {
+      wait_until_ = {};
       ready_condition_ = ready_condition;
       return {};
     }
@@ -68,16 +77,29 @@ class Task final {
 
   bool operator==(const Task& rhs) const noexcept { return handle_ == rhs.handle_; }
 
-  bool is_ready(uint64_t now_us) const noexcept {
+  bool is_ready(ClockType::time_point now) const noexcept {
     if (handle_) {
       auto& promise{handle_.promise()};
       if (promise.ready_condition_) {
         return promise.ready_condition_();
       } else {
-        return now_us >= promise.wait_until_us_;
+        return now >= promise.wait_until_;
       }
     } else {
       return false;
+    }
+  }
+
+  ClockType::time_point estimate_ready_at() const noexcept {
+    if (handle_) {
+      auto& promise{handle_.promise()};
+      if (promise.ready_condition_) {
+        return ClockType::time_point::max();
+      } else {
+        return promise.wait_until_;
+      }
+    } else {
+      return ClockType::time_point::max();
     }
   }
 

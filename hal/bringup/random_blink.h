@@ -10,9 +10,10 @@
 
 namespace tvsc::hal::bringup {
 
-template <uint64_t DURATION_MS = 365UL * 24 * 60 * 60 * 1000 /* one year in milliseconds */>
-scheduler::Task blink_randomly(time::Clock& clock, gpio::GpioPeripheral& gpio_peripheral,
-                               gpio::Pin pin) {
+template <typename ClockType,
+          uint64_t DURATION_MS = 365UL * 24 * 60 * 60 * 1000 /* one year in milliseconds */>
+scheduler::Task<ClockType> blink_randomly(ClockType& clock, gpio::GpioPeripheral& gpio_peripheral,
+                                          gpio::Pin pin) {
   auto gpio{gpio_peripheral.access()};
 
   gpio.set_pin_mode(pin, gpio::PinMode::OUTPUT_PUSH_PULL);

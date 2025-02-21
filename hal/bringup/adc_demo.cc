@@ -8,8 +8,6 @@
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
 
-using BoardType = tvsc::hal::board::Board;
-
 extern "C" {
 
 __attribute__((section(".status.value"))) uint32_t current_output_value{};
@@ -26,8 +24,12 @@ void HAL_ADC_ErrorCallback(ADC_HandleTypeDef* adc) { dma_error = true; }
 
 namespace tvsc::hal::bringup {
 
+using BoardType = tvsc::hal::board::Board;
+using ClockType = BoardType::ClockType;
+using TaskType = tvsc::hal::scheduler::Task<ClockType>;
+
 template <uint8_t DAC_CHANNEL = 0>
-scheduler::Task run_adc_demo(BoardType& board) {
+TaskType run_adc_demo(BoardType& board) {
   auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
   auto& adc_peripheral{board.adc()};
   auto& dac_peripheral{board.dac()};
@@ -128,7 +130,7 @@ using namespace tvsc::hal::scheduler;
 int main() {
   BoardType& board{BoardType::board()};
 
-  Scheduler<4 /*QUEUE_SIZE*/> scheduler{board.clock(), board.rcc()};
+  Scheduler<ClockType, 4 /*QUEUE_SIZE*/> scheduler{board.clock(), board.rcc()};
   scheduler.add_task(run_adc_demo(board));
   scheduler.start();
 }

@@ -10,6 +10,8 @@
 #include "hal/scheduler/task.h"
 
 using BoardType = tvsc::hal::board::Board;
+using ClockType = BoardType::ClockType;
+using TaskType = tvsc::hal::scheduler::Task<ClockType>;
 
 extern "C" {
 
@@ -35,7 +37,7 @@ static constexpr uint32_t PERIOD_US{500'000};
  * value.
  */
 template <uint8_t DAC_CHANNEL = 0>
-scheduler::Task run_adc_demo(BoardType& board) {
+TaskType run_adc_demo(BoardType& board) {
   auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
   auto& adc_peripheral{board.adc()};
   auto& dac_peripheral{board.dac()};
@@ -108,7 +110,7 @@ using namespace tvsc::hal::scheduler;
 int main() {
   BoardType& board{BoardType::board()};
 
-  Scheduler<4 /*QUEUE_SIZE*/> scheduler{board.clock(), board.rcc()};
+  Scheduler<ClockType, 4 /*QUEUE_SIZE*/> scheduler{board.clock(), board.rcc()};
   scheduler.add_task(run_adc_demo(board));
   scheduler.start();
 }

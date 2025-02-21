@@ -28,6 +28,8 @@ namespace tvsc::hal::board {
 
 class Board final {
  public:
+  using ClockType = time::Clock;
+
   static constexpr gpio::Port NUM_GPIO_PORTS{6};
   static constexpr size_t NUM_DAC_CHANNELS{2};
   static constexpr size_t NUM_DEBUG_LEDS{1};
@@ -155,7 +157,7 @@ class Board final {
     }
   }
 
-  time::Clock& clock() { return clock_; }
+  ClockType& clock() { return clock_; }
 
   rcc::Rcc& rcc() { return rcc_; };
 
