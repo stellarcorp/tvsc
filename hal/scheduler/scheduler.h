@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <string>
 
+#include "hal/error.h"
 #include "hal/rcc/rcc.h"
 #include "hal/scheduler/task.h"
 #include "hal/time/clock.h"
@@ -42,9 +43,9 @@ class Scheduler final {
         return i;
       }
     }
-    // TODO(james): Work out error handling strategy.
-    // error();
-    return -1;
+    // No more room for tasks. The size of the scheduler is fixed at compile-time and is required to
+    // have enough space for all possible tasks.
+    error(false);
   }
 
   void remove_task(size_t index) { task_queue_.at(index) = {}; }

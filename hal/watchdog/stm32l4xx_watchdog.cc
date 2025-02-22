@@ -3,6 +3,7 @@
 #include <chrono>
 #include <cstdlib>
 
+#include "hal/error.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
@@ -36,7 +37,7 @@ void WatchdogStm32l4xx::disable() {
   // Watchdogs can't be disabled by design, except on system reset.
   // Attempting to disable the watchdog means that we are no longer actively feeding it. In that
   // case, it is best to fail sooner, rather than wait for the watchdog to reset the system.
-  // error();
+  error(false);
 }
 
 }  // namespace tvsc::hal::watchdog

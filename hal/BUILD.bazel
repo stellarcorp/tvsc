@@ -1,6 +1,10 @@
 cc_library(
     name = "hal_headers",
+    srcs = [
+        "error.cc",
+    ],
     hdrs = [
+        "error.h",
         "peripheral.h",
         "peripheral_id.h",
         "register.h",
