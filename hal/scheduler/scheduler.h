@@ -43,7 +43,7 @@ class Scheduler final {
       }
     }
     // TODO(james): Work out error handling strategy.
-    // TODO(james): Perhaps use a vector instead of an array.
+    // error();
     return -1;
   }
 
@@ -80,7 +80,7 @@ class Scheduler final {
     return next_wakeup_time;
   }
 
-  void start() {
+  [[noreturn]] void start() {
     // TODO(james): Play around with this strategy. Currently, this strategy assumes that we have a
     // CPU-heavy workload and that we can ignore flash wait states. Both of these assumptions are
     // likely wrong. Bus transfers (I2C, CAN bus, and SPI) probably won't need max speed but may
