@@ -32,6 +32,12 @@ void ClockStm32xxxx::sleep_us(TimeType microseconds) {
     return;
   }
 
+  // Useful when debugging to ensure that the core stays responsive for JTAG/SWD.
+  // const TimeType wake_time{uwTick + microseconds};
+  // while (uwTick < wake_time) {
+  // }
+  // return;
+
   // Start the timer. Assume that it will trigger an interrupt at the end of the interval. Then
   // enter stop mode. We exit stop mode on any interrupt (or possibly any EXTI event as well). So,
   // we wrap the call to enter stop mode with a check to see if the timer is still running; when it
