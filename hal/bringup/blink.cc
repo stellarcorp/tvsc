@@ -4,10 +4,8 @@
 #include <limits>
 
 #include "hal/board/board.h"
-#include "hal/gpio/gpio.h"
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
-#include "hal/time/clock.h"
 
 using BoardType = tvsc::hal::board::Board;
 using ClockType = BoardType::ClockType;
@@ -20,7 +18,6 @@ static constexpr size_t QUEUE_SIZE{1};
 
 int main() {
   BoardType& board{BoardType::board()};
-
   auto& clock{board.clock()};
 
   Scheduler<ClockType, QUEUE_SIZE> scheduler{clock, board.rcc()};
