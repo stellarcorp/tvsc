@@ -22,6 +22,8 @@
 #include "hal/time/stm_clock.h"
 #include "hal/timer/stm32l4xx_timer.h"
 #include "hal/timer/timer.h"
+#include "hal/watchdog/stm32l4xx_watchdog.h"
+#include "hal/watchdog/watchdog.h"
 #include "third_party/stm32/stm32.h"
 
 namespace tvsc::hal::board {
@@ -84,6 +86,8 @@ class Board final {
 
   rcc::Hsi48OscillatorStm32L4xx hsi48_oscillator_{};
   random::RngStm32xxxx rng_{hsi48_oscillator_};
+
+  watchdog::WatchdogStm32l4xx iwdg_{IWDG, lsi_oscillator_};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
@@ -173,6 +177,8 @@ class Board final {
   timer::TimerPeripheral& lptim1() { return lptim1_; }
 
   random::RngPeripheral& rng() { return rng_; }
+
+  watchdog::Watchdog& iwdg() { return iwdg_; }
 };
 
 }  // namespace tvsc::hal::board
