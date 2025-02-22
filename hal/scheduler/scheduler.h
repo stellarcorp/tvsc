@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <chrono>
 #include <coroutine>
 #include <cstdint>
 #include <string>
@@ -62,7 +63,8 @@ class Scheduler final {
   }
 
   auto run_tasks_once() {
-    auto next_ready_time{ClockType::time_point::max()};
+    using namespace std::chrono_literals;
+    auto next_wakeup_time{clock_->current_time() + 5s};
     for (size_t i = 0; i < QUEUE_SIZE; ++i) {
       TaskType& task{task_queue_[i]};
       if (task.is_valid()) {
@@ -72,10 +74,10 @@ class Scheduler final {
         if (task.is_complete()) {
           task_queue_[i] = {};
         }
-        next_ready_time = std::min(next_ready_time, task.estimate_ready_at());
+        next_wakeup_time = std::min(next_wakeup_time, task.estimate_ready_at());
       }
     }
-    return next_ready_time;
+    return next_wakeup_time;
   }
 
   void start() {
@@ -98,8 +100,8 @@ class Scheduler final {
     // in the same time, and stop mode uses vastly less power.
     rcc_->set_clock_to_energy_efficient_speed();
     while (true) {
-      auto next_ready_time{run_tasks_once()};
-      clock_->sleep(next_ready_time);
+      auto next_wakeup_time{run_tasks_once()};
+      clock_->sleep(next_wakeup_time);
     }
   }
 
