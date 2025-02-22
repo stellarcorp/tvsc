@@ -21,7 +21,7 @@ class WatchdogPeripheral : public Peripheral<WatchdogPeripheral, Watchdog> {
  public:
   virtual ~WatchdogPeripheral() = default;
 
-  virtual std::chrono::milliseconds reset_interval() = 0;
+  [[nodiscard]] virtual std::chrono::milliseconds reset_interval() = 0;
 };
 
 class Watchdog final : public Functional<WatchdogPeripheral, Watchdog> {
@@ -34,7 +34,7 @@ class Watchdog final : public Functional<WatchdogPeripheral, Watchdog> {
  public:
   void feed() { peripheral_->feed(); }
 
-  std::chrono::milliseconds reset_interval() { return peripheral_->reset_interval(); }
+  [[nodiscard]] std::chrono::milliseconds reset_interval() { return peripheral_->reset_interval(); }
 };
 
 }  // namespace tvsc::hal::watchdog

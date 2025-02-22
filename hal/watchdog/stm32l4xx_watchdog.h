@@ -25,7 +25,7 @@ class WatchdogStm32l4xx final : public WatchdogPeripheral {
     watchdog_.Instance = watchdog_instance;
   }
 
-  std::chrono::milliseconds reset_interval();
+  [[nodiscard]] std::chrono::milliseconds reset_interval() override;
 };
 
 }  // namespace tvsc::hal::watchdog
