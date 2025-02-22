@@ -11,7 +11,7 @@
 
 extern "C" {
 
-__attribute__((section(".status.value"))) uint32_t watchdog_counter{};
+__attribute__((section(".status.value"))) volatile uint32_t watchdog_counter{};
 
 }  // extern "C"
 
@@ -26,18 +26,15 @@ using namespace std::chrono_literals;
 template <typename Duration = std::chrono::years>
 TaskType run_watchdog(ClockType& clock, watchdog::WatchdogPeripheral& watchdog_peripheral,
                       Duration reset_in = std::chrono::duration_cast<Duration>(1y)) {
-  const auto feed_interval{watchdog_peripheral.reset_interval() / 2};
+  const auto feed_interval{watchdog_peripheral.reset_interval() / 4};
   const auto reset_at{clock.current_time() + reset_in};
 
   // Enable the watchdog here. After this, if the dog isn't fed on time, the board will reset.
   auto watchdog{watchdog_peripheral.access()};
-  while (true) {
+  while (clock.current_time() < reset_at) {
     co_yield feed_interval;
     watchdog.feed();
     ++watchdog_counter;
-    if (clock.current_time() > reset_at) {
-      break;
-    }
   }
 
   // Stop feeding, but keep the watchdog instance alive. This will trigger a reset.
