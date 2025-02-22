@@ -15,9 +15,9 @@ Board::Board() {
   // Also, the code in STM32Cube_FW_H7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c can be a
   // useful reference.
 
-  // Slow the board down to its minimum speed. This will also initialize the SystemCoreClock
+  // Put the board at our preferred speed. This will also initialize the SystemCoreClock
   // variable and configure the SysTick interrupt.
-  rcc_.set_clock_to_min_speed();
+  rcc_.set_clock_to_energy_efficient_speed();
 
   // DMA interrupt(s).
   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
