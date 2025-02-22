@@ -10,14 +10,18 @@ extern "C" {
 
 extern volatile uint64_t uwTick;
 
-void SysTick_Handler() { ++uwTick; }
+void SysTick_Handler() {
+  // SysTick fires every millisecond. We keep the tick counter in microseconds in order to better
+  // avoid round-off errors. See the sleep_us() method below.
+  uwTick += 1000;
+}
 
 }  // extern "C"
 
 namespace tvsc::hal::time {
 
-TimeType ClockStm32xxxx::current_time_micros() { return uwTick * 1000; }
-TimeType ClockStm32xxxx::current_time_millis() { return uwTick; }
+TimeType ClockStm32xxxx::current_time_micros() { return uwTick; }
+TimeType ClockStm32xxxx::current_time_millis() { return uwTick / 1000; }
 
 void ClockStm32xxxx::sleep_us(TimeType microseconds) {
   static constexpr TimeType TIME_TO_START_TIMER_US{25};
@@ -43,7 +47,9 @@ void ClockStm32xxxx::sleep_us(TimeType microseconds) {
     while (timer_.is_running()) {
       power_peripheral_->enter_stop_mode();
     }
-    uwTick += microseconds / 1000;
+    // In stop mode, the SysTick is not running, so we manually update the tick counter with the
+    // amount of time we spent in stop mode.
+    uwTick += microseconds;
     rcc_->restore_clock_speed();
   }
 }
