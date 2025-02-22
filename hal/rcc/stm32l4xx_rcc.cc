@@ -54,11 +54,11 @@ void RccStm32L4xx::set_clock_to_max_speed() {
 }
 
 void RccStm32L4xx::set_clock_to_energy_efficient_speed() {
-  // The current implementation puts SYSCLK signal as well as peripheral buses at 26 MHz. This speed
-  // is the maximum speed allowed when undervolting the system. This speed requires one flash wait
+  // The current implementation puts SYSCLK signal as well as peripheral buses at 16 MHz. This speed
+  // is the maximum speed allowed when undervolting the system. This speed requires zero flash wait
   // state per operation.
 
-  // Set the MSI oscillator to 4 MHz and use the PLL to multiple the speed up to a total of 26 MHz.
+  // Set the MSI oscillator to 4 MHz and use the PLL to multiple the speed up to a total of 16 MHz.
   RCC_OscInitTypeDef RCC_OscInitStruct{};
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
@@ -67,7 +67,7 @@ void RccStm32L4xx::set_clock_to_energy_efficient_speed() {
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
   RCC_OscInitStruct.PLL.PLLM = 1;
-  RCC_OscInitStruct.PLL.PLLN = 26;
+  RCC_OscInitStruct.PLL.PLLN = 16;
   // Note that we do not configure PLLP, since that parameter is not available on the STM32L412, and
   // we don't use that signal for anything.
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV4;
@@ -85,13 +85,13 @@ void RccStm32L4xx::set_clock_to_energy_efficient_speed() {
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   // Note that we also designate the flash latency here as having a one cycle wait state.
-  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1);
+  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0);
 
   // Configure the main internal regulator output voltage to undervolt the CPU to save power.
   HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
 
   // Update the SystemCoreClock value.
-  SystemCoreClock = 26'000'000;
+  SystemCoreClock = 16'000'000;
 
   // Update the SysTick configuration.
   HAL_InitTick(TICK_INT_PRIORITY);
