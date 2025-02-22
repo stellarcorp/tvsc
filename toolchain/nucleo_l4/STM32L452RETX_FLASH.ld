@@ -135,11 +135,11 @@ SECTIONS
     . = ALIGN(4);
     _sstatus = .;
     *(.status.time)
-    *(.status.fault)
-    *(.bss.errno)
     *(.status.speed)
     *(.status.power)
     *(.status*)
+    *(.bss.errno)
+    *(.status.fault)
     . = ALIGN(4);
     _estatus = .;
   } >RAM
