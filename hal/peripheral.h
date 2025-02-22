@@ -75,7 +75,9 @@ class Peripheral {
   virtual ~Peripheral() = default;
 
   // Access an interface to use the functionality of this peripheral.
-  FunctionalType access() { return FunctionalType{*reinterpret_cast<PeripheralType*>(this)}; }
+  [[nodiscard]] FunctionalType access() {
+    return FunctionalType{*reinterpret_cast<PeripheralType*>(this)};
+  }
 };
 
 template <typename PeripheralType, typename FunctionalType>
