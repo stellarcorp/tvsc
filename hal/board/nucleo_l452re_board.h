@@ -187,7 +187,7 @@ class Board final {
 
   random::RngPeripheral& rng() { return rng_; }
 
-  watchdog::Watchdog& iwdg() { return iwdg_; }
+  watchdog::WatchdogPeripheral& iwdg() { return iwdg_; }
 };
 
 }  // namespace tvsc::hal::board
