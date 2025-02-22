@@ -29,12 +29,6 @@ class Task final {
 
     std::suspend_always final_suspend() noexcept { return {}; }
 
-    std::suspend_always yield_value(uint64_t t) noexcept {
-      wait_until_ = typename ClockType::time_point{std::chrono::microseconds{t}};
-      ready_condition_ = {};
-      return {};
-    }
-
     std::suspend_always yield_value(ClockType::time_point t) noexcept {
       wait_until_ = t;
       ready_condition_ = {};
