@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "hal/error.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
 #include "hal/power/power.h"
@@ -101,6 +102,7 @@ class Board final {
     } else if (port == 4) {
       return gpio_port_e_;
     }
+    error(false);
   }
 
   time::Clock& clock() { return clock_; }

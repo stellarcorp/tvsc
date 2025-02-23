@@ -9,6 +9,7 @@
 #include "hal/dac/stm32xxxx_dac.h"
 #include "hal/dma/dma.h"
 #include "hal/dma/stm32l4xx_dma.h"
+#include "hal/error.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
 #include "hal/power/power.h"
@@ -159,6 +160,7 @@ class Board final {
     } else if (port == 2) {
       return gpio_port_c_;
     }
+    error(false);
   }
 
   ClockType& clock() { return clock_; }
