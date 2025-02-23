@@ -36,7 +36,7 @@ int main() {
   auto timer{board.lptim1().access()};
   debug_stats.timer_id = timer.id();
   while (true) {
-    timer.start(500'000, false);
+    timer.start(500'000);
     const uint32_t old_interrupt_trigger_count{debug_stats.interrupt_trigger_count};
     while (debug_stats.interrupt_trigger_count == old_interrupt_trigger_count) {
       // Wait for the interrupt to trigger.

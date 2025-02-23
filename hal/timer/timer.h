@@ -20,7 +20,7 @@ class TimerPeripheral : public Peripheral<TimerPeripheral, Timer> {
   // Peripheral id for linking peripherals together in a platform-dependent manner.
   virtual PeripheralId id() = 0;
 
-  virtual void start(uint32_t interval_us, bool high_precision) = 0;
+  virtual void start(uint32_t interval_us) = 0;
   virtual void stop() = 0;
 
   virtual bool is_running() = 0;
@@ -44,9 +44,7 @@ class Timer final : public Functional<TimerPeripheral, Timer> {
 
   PeripheralId id() { return peripheral_->id(); }
 
-  void start(uint32_t interval_us, bool high_precision = false) {
-    peripheral_->start(interval_us, high_precision);
-  }
+  void start(uint32_t interval_us) { peripheral_->start(interval_us); }
   void stop() { peripheral_->stop(); }
 
   bool is_running() { return peripheral_->is_running(); }

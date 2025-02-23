@@ -9,15 +9,12 @@ namespace tvsc::hal::timer {
 
 PeripheralId TimerStm32l4xx::id() { return id_; }
 
-void TimerStm32l4xx::start(uint32_t interval_us, bool high_precision) {
-  const uint32_t clock_divider{high_precision ? 1U : 4U};
-  const uint32_t clock_division{high_precision ? TIM_CLOCKDIVISION_DIV1 : TIM_CLOCKDIVISION_DIV4};
-
+void TimerStm32l4xx::start(uint32_t interval_us) {
   // Configure TIMER.
   timer_.Init.Prescaler = SystemCoreClock / 1'000'000 - 1;  // One tick per us.
   timer_.Init.CounterMode = TIM_COUNTERMODE_UP;
   timer_.Init.Period = 10'000;  // interval_us / clock_divider - 1;
-  timer_.Init.ClockDivision = clock_division;
+  timer_.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
   timer_.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 
   HAL_TIM_Base_Init(&timer_);
@@ -67,7 +64,7 @@ void TimerStm32l4xx::handle_interrupt() { HAL_TIM_IRQHandler(&timer_); }
 
 PeripheralId Stm32l4xxLptim::id() { return id_; }
 
-void Stm32l4xxLptim::start(uint32_t interval_us, bool /*high_precision*/) {
+void Stm32l4xxLptim::start(uint32_t interval_us) {
   // This next line assigns the clock source to be the LSI. I think. Need to determine how the
   // line in enable() and the init structure in start() interact.
   timer_.Init.Clock.Source = LPTIM_CLOCKSOURCE_APBCLOCK_LPOSC;

@@ -23,7 +23,7 @@ class TimerStm32l4xx final : public TimerPeripheral {
 
   PeripheralId id() override;
 
-  void start(uint32_t interval_us, bool high_precision) override;
+  void start(uint32_t interval_us) override;
   void stop() override;
 
   bool is_running() override;
@@ -52,7 +52,7 @@ class Stm32l4xxLptim final : public TimerPeripheral {
 
   PeripheralId id() override;
 
-  void start(uint32_t interval_us, bool high_precision) override;
+  void start(uint32_t interval_us) override;
   void stop() override;
 
   bool is_running() override;
