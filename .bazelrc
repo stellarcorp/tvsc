@@ -10,6 +10,7 @@ build --cxxopt -Wno-volatile
 build --cxxopt -fcoroutines
 
 build:linux --platforms=//platforms:linux_x86_64_general
+build:linux --copt -DGENERAL_PURPOSE_COMPUTER
 
 # Settings for different C++ dialects
 build:c++20 --cxxopt -std=c++20

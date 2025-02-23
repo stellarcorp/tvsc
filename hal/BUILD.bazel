@@ -5,7 +5,6 @@ cc_library(
     ],
     hdrs = [
         "error.h",
-        "irq.h",
         "peripheral.h",
         "peripheral_id.h",
         "register.h",
@@ -19,6 +18,7 @@ cc_library(
     deps = [
         "//bits",
         ":hal_headers",
+        ":irq",
     ] + select({
         "//platforms:stm32_core": [
             ":stm32_peripherals",
@@ -26,6 +26,40 @@ cc_library(
         "//conditions:default": [
         ],
     }),
+)
+
+cc_library(
+    name = "irq",
+    hdrs = [
+        "irq.h",
+    ],
+    deps = select({
+        "//platforms:stm32_core": [
+            ":irq_arm",
+        ],
+        "@platforms//os:linux": [
+            ":irq_noop",
+        ],
+        "//conditions:default": [
+        ],
+    }),
+)
+
+cc_library(
+    name = "irq_arm",
+    hdrs = ["irq_arm.h"],
+    target_compatible_with = [
+        "@platforms//cpu:armv7e-mf",
+        "@platforms//os:none",
+    ],
+)
+
+cc_library(
+    name = "irq_noop",
+    hdrs = ["irq_noop.h"],
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
 )
 
 cc_library(
