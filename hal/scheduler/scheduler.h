@@ -45,7 +45,7 @@ class Scheduler final {
     }
     // No more room for tasks. The size of the scheduler is fixed at compile-time and is required to
     // have enough space for all possible tasks.
-    error(false);
+    error();
   }
 
   void remove_task(size_t index) { task_queue_.at(index) = {}; }

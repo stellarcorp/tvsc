@@ -102,7 +102,7 @@ class Board final {
     } else if (port == 4) {
       return gpio_port_e_;
     }
-    error(false);
+    error();
   }
 
   time::Clock& clock() { return clock_; }

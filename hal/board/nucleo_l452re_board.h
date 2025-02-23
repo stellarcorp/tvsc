@@ -169,7 +169,7 @@ class Board final {
     } else if (port == 7) {
       return gpio_port_h_;
     }
-    error(false);
+    error();
   }
 
   ClockType& clock() { return clock_; }

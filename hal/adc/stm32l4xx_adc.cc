@@ -1,5 +1,6 @@
 #include "hal/adc/stm32l4xx_adc.h"
 
+#include "hal/error.h"
 #include "hal/gpio/gpio.h"
 #include "hal/peripheral_id.h"
 #include "hal/stm32_peripheral_ids.h"
@@ -21,9 +22,8 @@ uint32_t trigger_flag(PeripheralId trigger_id) {
     return ADC_EXTERNALTRIG_T6_TRGO;
   } else if (trigger_id == Stm32PeripheralIds::TIM15_ID) {
     return ADC_EXTERNALTRIG_T15_TRGO;
-  } else {
-    return -1;
   }
+  error();
 }
 
 static constexpr uint32_t get_channel(gpio::PortPin pin) {
@@ -61,7 +61,7 @@ static constexpr uint32_t get_channel(gpio::PortPin pin) {
   } else if (pin.port == 6) {
   } else if (pin.port == 7) {
   }
-  return 0xff;
+  error();
 }
 
 void AdcStm32l4xx::start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
