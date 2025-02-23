@@ -5,6 +5,7 @@ cc_library(
     ],
     hdrs = [
         "error.h",
+        "irq.h",
         "peripheral.h",
         "peripheral_id.h",
         "register.h",

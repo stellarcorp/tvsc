@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <cstdlib>
 
+#include "hal/irq.h"
+
 namespace tvsc::hal {
 
 struct ErrorLocation {
@@ -20,13 +22,6 @@ struct ErrorLocation {
 };
 
 __attribute__((section(".status.fault"))) ErrorLocation error_location{};
-
-/**
- * Disable interrupts.
- */
-__attribute__((always_inline)) static inline void disable_irq(void) {
-  __asm volatile("cpsid i" : : : "memory");
-}
 
 [[noreturn]] void failure(const char* filename, uint32_t line_number) {
   static constexpr size_t LARGEST_FILENAME_ALLOWED{4096};
