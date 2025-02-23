@@ -75,7 +75,7 @@ TaskType run_adc_demo(BoardType& board) {
       gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
     }
 
-    timer.start(PERIOD_US.count(), true);
+    timer.start(PERIOD_US.count());
     adc.start_conversion_stream({BoardType::DAC_CHANNEL_1_PORT, BoardType::DAC_CHANNEL_1_PIN},
                                 values_read.data(), values_read.size() * 2, timer);
 
