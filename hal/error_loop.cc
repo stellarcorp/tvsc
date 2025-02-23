@@ -1,5 +1,3 @@
-#include "hal/error.h"
-
 #include <cstdint>
 #include <cstdlib>
 
@@ -23,7 +21,7 @@ struct ErrorLocation {
 
 __attribute__((section(".status.fault"))) ErrorLocation error_location{};
 
-[[noreturn]] void failure(const char* filename, uint32_t line_number) {
+[[noreturn]] void failure(const char* filename, uint32_t line_number) noexcept {
   static constexpr size_t LARGEST_FILENAME_ALLOWED{4096};
 
   // Disable interrupts so that fewer things have a chance to change memory before we can examine

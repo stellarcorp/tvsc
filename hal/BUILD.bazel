@@ -66,6 +66,46 @@ cc_library(
 )
 
 cc_library(
+    name = "error",
+    hdrs = [
+        "error.h",
+    ],
+    deps = select({
+        "//platforms:stm32_core": [
+            ":error_loop",
+        ],
+        "@platforms//os:linux": [
+            ":error_terminate",
+        ],
+        "//conditions:default": [
+        ],
+    }),
+)
+
+cc_library(
+    name = "error_loop",
+    srcs = ["error_loop.cc"],
+    target_compatible_with = [
+        "@platforms//cpu:armv7e-mf",
+        "@platforms//os:none",
+    ],
+    deps = [
+        ":irq",
+    ],
+)
+
+cc_library(
+    name = "error_terminate",
+    srcs = ["error_terminate.cc"],
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
+    deps = [
+        ":irq",
+    ],
+)
+
+cc_library(
     name = "stm32_peripherals",
     hdrs = [
         "stm32_peripheral_ids.h",
