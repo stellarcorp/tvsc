@@ -10,11 +10,13 @@ namespace tvsc::hal::timer {
 PeripheralId TimerStm32l4xx::id() { return id_; }
 
 void TimerStm32l4xx::start(uint32_t interval_us) {
+  static constexpr uint32_t CLOCK_DIVIDER{4};
+  static constexpr uint32_t CLOCK_DIVISION_VALUE{TIM_CLOCKDIVISION_DIV4};
   // Configure TIMER.
   timer_.Init.Prescaler = SystemCoreClock / 1'000'000 - 1;  // One tick per us.
   timer_.Init.CounterMode = TIM_COUNTERMODE_UP;
-  timer_.Init.Period = 10'000;  // interval_us / clock_divider - 1;
-  timer_.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
+  timer_.Init.Period = interval_us / CLOCK_DIVIDER - 1;
+  timer_.Init.ClockDivision = CLOCK_DIVISION_VALUE;
   timer_.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 
   HAL_TIM_Base_Init(&timer_);
