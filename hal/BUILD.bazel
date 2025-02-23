@@ -1,5 +1,5 @@
 cc_library(
-    name = "hal_headers",
+    name = "hal_interface",
     srcs = [
         "error.cc",
     ],
@@ -9,6 +9,9 @@ cc_library(
         "peripheral_id.h",
         "register.h",
     ],
+    deps = [
+        ":irq",
+    ],
 )
 
 cc_library(
@@ -17,7 +20,7 @@ cc_library(
     visibility = ["//hal:__subpackages__"],
     deps = [
         "//bits",
-        ":hal_headers",
+        ":hal_interface",
         ":irq",
     ] + select({
         "//platforms:stm32_core": [
@@ -71,7 +74,7 @@ cc_library(
         "//platforms:stm32_core",
     ],
     deps = [
-        ":hal_headers",
+        ":hal_interface",
     ],
 )
 
