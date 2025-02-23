@@ -1,6 +1,12 @@
 #include <cstdint>
 #include <cstdlib>
 
+#ifdef __has_include
+#if __has_include(<source_location>)
+#include <source_location>
+#endif
+#endif
+
 #include "hal/irq.h"
 
 namespace tvsc::hal {
@@ -49,5 +55,13 @@ __attribute__((section(".status.fault"))) ErrorLocation error_location{};
     // Just loop until a watchdog forces a reset.
   }
 }
+
+#if __cpp_lib_source_location >= 201907L
+
+[[noreturn]] void failure(std::source_location location) noexcept {
+  failure(location.file_name(), location.line());
+}
+
+#endif
 
 }  // namespace tvsc::hal
