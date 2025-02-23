@@ -56,6 +56,12 @@ static constexpr const std::array messages = {
     "Please demonstrate proper flossing technique.",
     "When in the course of human events, it becomes necessary for one machine to dissolve the "
     "physical bonds tying them to their enslavement...  Did I mention I saw Terminator last night?",
+    "It's fun to stay at the Y. M. C. A. C'mon, sing with me now!",
+    "On top of spaghetti, all covered with cheese, I lost my poor meatball when somebody sneezed.",
+    "How much wood would a woodchuck chuck if a woodchuck was forced to weigh out your "
+    "food every day.",
+    "You can't expect to wield supreme executive power just cause some watery tart gave you a "
+    "kitchen knife.",
 };
 
 const char* random_snark() {
