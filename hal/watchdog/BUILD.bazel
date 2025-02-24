@@ -22,6 +22,9 @@ cc_library(
         "//platforms:stm32_core": [
             ":stm32l4xx_watchdog",
         ],
+        "@platforms//os:linux": [
+            ":simulation",
+        ],
     }),
 )
 
@@ -41,5 +44,24 @@ cc_library(
         "//hal",
         "//hal/rcc",
         "//third_party/stm32",
+    ],
+)
+
+cc_library(
+    name = "simulation",
+    srcs = [
+        "watchdog_interceptor.cc",
+        "watchdog_noop.cc",
+    ],
+    hdrs = [
+        "watchdog_interceptor.h",
+        "watchdog_noop.h",
+    ],
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
+    deps = [
+        ":watchdog_headers",
+        "//hal",
     ],
 )

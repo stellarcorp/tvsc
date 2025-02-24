@@ -17,6 +17,7 @@ class WatchdogPeripheral : public Peripheral<WatchdogPeripheral, Watchdog> {
   virtual void feed() = 0;
 
   friend class Watchdog;
+  friend class WatchdogInterceptor;
 
  public:
   virtual ~WatchdogPeripheral() = default;
