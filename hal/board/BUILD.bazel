@@ -8,6 +8,7 @@ cc_library(
     ],
     target_compatible_with = select({
         "//platforms:stm32_core": [],
+        "@platforms//os:linux": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
@@ -20,6 +21,9 @@ cc_library(
         ],
         "//platforms:nucleo_l452re_board": [
             ":nucleo_l452re_board",
+        ],
+        "@platforms//os:linux": [
+            ":simulation",
         ],
     }),
     alwayslink = True,
@@ -99,5 +103,23 @@ cc_library(
         "//hal/time",
         "//hal/watchdog",
         "//third_party/stm32",
+    ],
+)
+
+cc_library(
+    name = "simulation",
+    srcs = [
+        "simulation_board.cc",
+    ],
+    hdrs = [
+        "simulation_board.h",
+    ],
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
+    deps = [
+        "//hal",
+        "//hal/gpio",
+        "//hal/watchdog",
     ],
 )
