@@ -12,6 +12,7 @@ cc_library(
     name = "watchdog",
     target_compatible_with = select({
         "//platforms:stm32_core": [],
+        "@platforms//os:linux": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
