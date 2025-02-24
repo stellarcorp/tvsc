@@ -118,6 +118,7 @@ class GpioPeripheral : public Peripheral<GpioPeripheral, Gpio> {
   virtual void toggle_pin(Pin pin) = 0;
 
   friend class Gpio;
+  friend class GpioInterceptor;
 
  public:
   virtual ~GpioPeripheral() = default;

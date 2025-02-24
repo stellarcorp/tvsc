@@ -25,6 +25,9 @@ cc_library(
         "//platforms:stm32_core": [
             ":stm32_gpio",
         ],
+        "@platforms//os:linux": [
+            ":simulation",
+        ],
     }),
 )
 
@@ -61,5 +64,24 @@ cc_library(
         ":gpio_headers",
         "//hal",
         "//third_party/stm32",
+    ],
+)
+
+cc_library(
+    name = "simulation",
+    srcs = [
+        "gpio_interceptor.cc",
+        "gpio_noop.cc",
+    ],
+    hdrs = [
+        "gpio_interceptor.h",
+        "gpio_noop.h",
+    ],
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
+    deps = [
+        ":gpio_headers",
+        "//hal",
     ],
 )
