@@ -7,15 +7,20 @@ cc_library(
 
 cc_library(
     name = "power",
-    target_compatible_with = [
-        "//platforms:stm32_core",
-    ],
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
     visibility = ["//visibility:public"],
     deps = [
         ":power_headers",
     ] + select({
         "//platforms:stm32l4xx": [
             ":stm32l4xx_power",
+        ],
+        "@platforms//os:linux": [
+            ":simulation",
         ],
     }),
 )
@@ -34,5 +39,24 @@ cc_library(
     deps = [
         ":power_headers",
         "//third_party/stm32",
+    ],
+)
+
+cc_library(
+    name = "simulation",
+    srcs = [
+        "power_interceptor.cc",
+        "power_noop.cc",
+    ],
+    hdrs = [
+        "power_interceptor.h",
+        "power_noop.h",
+    ],
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
+    deps = [
+        ":power_headers",
+        "//hal",
     ],
 )
