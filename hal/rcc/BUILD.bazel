@@ -9,6 +9,7 @@ cc_library(
     name = "rcc",
     target_compatible_with = select({
         "//platforms:stm32_core": [],
+        "@platforms//os:linux": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
@@ -17,6 +18,9 @@ cc_library(
     ] + select({
         "//platforms:stm32l4xx": [
             ":stm32l4xx_rcc",
+        ],
+        "@platforms//os:linux": [
+            ":simulation",
         ],
     }),
 )
@@ -36,5 +40,24 @@ cc_library(
         ":rcc_headers",
         "//hal",
         "//third_party/stm32",
+    ],
+)
+
+cc_library(
+    name = "simulation",
+    srcs = [
+        "rcc_interceptor.cc",
+        "rcc_noop.cc",
+    ],
+    hdrs = [
+        "rcc_interceptor.h",
+        "rcc_noop.h",
+    ],
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
+    deps = [
+        ":rcc_headers",
+        "//hal",
     ],
 )
