@@ -5,6 +5,7 @@
 
 namespace tvsc::hal::power {
 
+void PowerStm32L4xx::enter_sleep_mode() { __WFI(); }
 void PowerStm32L4xx::enter_stop_mode() { HAL_PWREx_EnterSTOP1Mode(PWR_STOPENTRY_WFI); }
 
 }  // namespace tvsc::hal::power
