@@ -19,7 +19,7 @@
 #include "hal/rcc/stm32l4xx_rcc.h"
 #include "hal/stm32_peripheral_ids.h"
 #include "hal/time/clock.h"
-#include "hal/time/stm_clock.h"
+#include "hal/time/embedded_clock.h"
 #include "hal/timer/stm32l4xx_timer.h"
 #include "hal/timer/timer.h"
 #include "hal/watchdog/stm32l4xx_watchdog.h"
@@ -30,8 +30,6 @@ namespace tvsc::hal::board {
 
 class Board final {
  public:
-  using ClockType = time::Clock;
-
   static constexpr gpio::Port NUM_GPIO_PORTS{6};
   static constexpr size_t NUM_DAC_CHANNELS{0};
   static constexpr size_t NUM_DEBUG_LEDS{1};
@@ -70,7 +68,7 @@ class Board final {
   rcc::LsiOscillatorStm32L4xx lsi_oscillator_{};
   timer::Stm32l4xxLptim lptim1_{Stm32PeripheralIds::LPTIM1_ID, LPTIM1, lsi_oscillator_};
 
-  time::ClockStm32xxxx clock_{lptim1_, power_, rcc_};
+  time::EmbeddedClock clock_{lptim1_, power_, rcc_};
 
   rcc::Hsi48OscillatorStm32L4xx hsi48_oscillator_{};
   random::RngStm32xxxx rng_{hsi48_oscillator_};
@@ -150,7 +148,7 @@ class Board final {
     error();
   }
 
-  ClockType& clock() { return clock_; }
+  time::Clock& clock() { return clock_; }
 
   rcc::Rcc& rcc() { return rcc_; };
 

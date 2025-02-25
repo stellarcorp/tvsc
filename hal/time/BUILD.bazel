@@ -15,17 +15,13 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":time_headers",
+        ":embedded_time",
     ] + select({
-        "//platforms:teensyduino_core": [
-            ":teensyduino_time",
-        ],
-        "//platforms:stm32_core": [
-            ":stm32_time",
-        ],
         "//platforms:std_cpp": [
             ":std_cpp_time",
             ":mock_clock",
         ],
+        "//conditions:default": [],
     }),
 )
 
@@ -37,36 +33,18 @@ cc_library(
 )
 
 cc_library(
-    name = "teensyduino_time",
+    name = "embedded_time",
     srcs = [
-        "teensyduino_clock.cc",
+        "embedded_clock.cc",
     ],
     hdrs = [
-        "teensyduino_clock.h",
-    ],
-    target_compatible_with = [
-        "//platforms:teensyduino_core",
-    ],
-    deps = [
-        ":time_headers",
-        "//third_party/arduino:core",
-    ],
-)
-
-cc_library(
-    name = "stm32_time",
-    srcs = [
-        "stm_clock.cc",
-    ],
-    hdrs = [
-        "stm_clock.h",
+        "embedded_clock.h",
     ],
     deps = [
         ":time_headers",
         "//hal/power",
         "//hal/rcc",
         "//hal/timer",
-        "//third_party/stm32",
     ],
 )
 

@@ -10,7 +10,7 @@ namespace tvsc::hal::time {
 /**
  * Class to manage the compute the current time and handle sleep requests for the STM32 MCUs.
  */
-class ClockStm32xxxx final : public Clock {
+class EmbeddedClock final : public Clock {
  private:
   // Note that we are keeping this timer on the whole time, since we expect to use it often.
   timer::Timer timer_;
@@ -18,8 +18,8 @@ class ClockStm32xxxx final : public Clock {
   rcc::Rcc* rcc_;
 
  public:
-  ClockStm32xxxx(timer::TimerPeripheral& timer_peripheral, power::Power& power_peripheral,
-                 rcc::Rcc& rcc)
+  EmbeddedClock(timer::TimerPeripheral& timer_peripheral, power::Power& power_peripheral,
+                rcc::Rcc& rcc)
       : timer_(timer_peripheral.access()), power_peripheral_(&power_peripheral), rcc_(&rcc) {}
 
   TimeType current_time_micros() override;

@@ -1,10 +1,8 @@
-#include "hal/time/stm_clock.h"
+#include "hal/time/embedded_clock.h"
 
 #include <cstdint>
 
 #include "hal/time/clock.h"
-#include "third_party/stm32/stm32.h"
-#include "third_party/stm32/stm32_hal.h"
 
 extern "C" {
 
@@ -20,10 +18,10 @@ void SysTick_Handler() {
 
 namespace tvsc::hal::time {
 
-TimeType ClockStm32xxxx::current_time_micros() { return uwTick; }
-TimeType ClockStm32xxxx::current_time_millis() { return uwTick / 1000; }
+TimeType EmbeddedClock::current_time_micros() { return uwTick; }
+TimeType EmbeddedClock::current_time_millis() { return uwTick / 1000; }
 
-void ClockStm32xxxx::sleep_us(TimeType microseconds) {
+void EmbeddedClock::sleep_us(TimeType microseconds) {
   static constexpr TimeType TIME_TO_START_TIMER_US{25};
   static constexpr TimeType TIME_TO_WAKE_FROM_STOP_MODE_US{500};
 
@@ -47,7 +45,7 @@ void ClockStm32xxxx::sleep_us(TimeType microseconds) {
   timer_.start(microseconds);
   if (microseconds < TIME_TO_WAKE_FROM_STOP_MODE_US) {
     while (timer_.is_running()) {
-      __WFI();
+      power_peripheral_->enter_sleep_mode();
     }
   } else {
     while (timer_.is_running()) {
@@ -60,6 +58,6 @@ void ClockStm32xxxx::sleep_us(TimeType microseconds) {
   }
 }
 
-void ClockStm32xxxx::sleep_ms(TimeType milliseconds) { sleep_us(milliseconds * 1000); }
+void EmbeddedClock::sleep_ms(TimeType milliseconds) { sleep_us(milliseconds * 1000); }
 
 }  // namespace tvsc::hal::time
