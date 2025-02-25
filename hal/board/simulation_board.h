@@ -8,6 +8,11 @@
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/gpio_interceptor.h"
 #include "hal/gpio/gpio_noop.h"
+#include "hal/rcc/rcc.h"
+#include "hal/rcc/rcc_interceptor.h"
+#include "hal/rcc/rcc_noop.h"
+#include "hal/time/clock.h"
+#include "hal/time/mock_clock.h"
 #include "hal/watchdog/watchdog.h"
 #include "hal/watchdog/watchdog_interceptor.h"
 #include "hal/watchdog/watchdog_noop.h"
@@ -16,6 +21,8 @@ namespace tvsc::hal::board {
 
 class Board final {
  public:
+  using ClockType = time::Clock;
+
   static constexpr gpio::Port NUM_GPIO_PORTS{1};
   static constexpr size_t NUM_DAC_CHANNELS{0};
   static constexpr size_t NUM_DEBUG_LEDS{1};
@@ -30,12 +37,17 @@ class Board final {
   static constexpr std::array<gpio::Pin, NUM_DEBUG_LEDS> DEBUG_LED_PINS{GREEN_LED_PIN};
 
  private:
+  rcc::RccNoop rcc_noop_{};
+  rcc::RccInterceptor rcc_interceptor_{rcc_noop_};
+
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32L4xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
   // for the first few here, but this can be expanded if necessary.
   gpio::GpioNoop gpio_noop_{};
   gpio::GpioInterceptor gpio_interceptor_{gpio_noop_};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
+
+  time::MockClock clock_{};
 
   watchdog::WatchdogNoop iwdg_noop_{};
   watchdog::WatchdogNoop iwdg_interceptor_{iwdg_noop_};
@@ -73,6 +85,10 @@ class Board final {
     }
     error();
   }
+
+  ClockType& clock() { return clock_; }
+
+  rcc::Rcc& rcc() { return rcc_interceptor_; };
 
   watchdog::WatchdogPeripheral& iwdg() { return iwdg_interceptor_; }
 };

@@ -120,6 +120,8 @@ cc_library(
     deps = [
         "//hal",
         "//hal/gpio",
+        "//hal/rcc",
+        "//hal/time",
         "//hal/watchdog",
     ],
 )
