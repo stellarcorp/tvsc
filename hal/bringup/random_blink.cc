@@ -10,8 +10,6 @@
 #include "hal/time/clock.h"
 
 using BoardType = tvsc::hal::board::Board;
-using ClockType = BoardType::ClockType;
-using TaskType = tvsc::hal::scheduler::Task<ClockType>;
 
 using namespace tvsc::hal::bringup;
 using namespace tvsc::hal::scheduler;
@@ -21,9 +19,9 @@ static constexpr size_t QUEUE_SIZE{1};
 int main() {
   BoardType& board{BoardType::board()};
 
-  Scheduler<ClockType, QUEUE_SIZE> scheduler{board.clock(), board.rcc()};
+  Scheduler<QUEUE_SIZE> scheduler{board.clock(), board.rcc()};
   scheduler.add_task(
-      blink_randomly<ClockType>(board.gpio<BoardType::GREEN_LED_PORT>(), BoardType::GREEN_LED_PIN));
+      blink_randomly(board.gpio<BoardType::GREEN_LED_PORT>(), BoardType::GREEN_LED_PIN));
 
   scheduler.start();
 }

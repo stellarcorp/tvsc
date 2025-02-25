@@ -9,10 +9,9 @@
 
 namespace tvsc::hal::bringup {
 
-template <typename ClockType,
-          uint64_t DURATION_MS = 365UL * 24 * 60 * 60 * 1000 /* one year in milliseconds */>
-scheduler::Task<ClockType> blink(ClockType& clock, gpio::GpioPeripheral& gpio_peripheral,
-                                 gpio::Pin pin, uint64_t delay_ms = 500) {
+template <uint64_t DURATION_MS = 365UL * 24 * 60 * 60 * 1000 /* one year in milliseconds */>
+scheduler::Task blink(time::Clock& clock, gpio::GpioPeripheral& gpio_peripheral, gpio::Pin pin,
+                      uint64_t delay_ms = 500) {
   const std::chrono::milliseconds delay{delay_ms};
   gpio::Gpio gpio{gpio_peripheral.access()};
 

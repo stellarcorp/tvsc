@@ -9,9 +9,9 @@
 
 namespace tvsc::hal::bringup {
 
-template <typename ClockType, uint8_t DAC_CHANNEL = 0>
-scheduler::Task<ClockType> run_dac_demo(board::Board& board, uint32_t& output_value,
-                                        uint64_t initial_delay_ms = 0) {
+template <uint8_t DAC_CHANNEL = 0>
+scheduler::Task run_dac_demo(board::Board& board, uint32_t& output_value,
+                             uint64_t initial_delay_ms = 0) {
   using namespace std::chrono_literals;
   static constexpr uint32_t dac_8bit_values[] = {0, 1, 2, 4, 8, 16, 32, 64, 128, 256};
   static constexpr uint32_t dac_12bit_values[] = {0, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
