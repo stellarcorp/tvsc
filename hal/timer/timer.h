@@ -13,7 +13,6 @@ class Timer;
 
 class TimerPeripheral : public Peripheral<TimerPeripheral, Timer> {
  private:
-  // Turn on power and clock to this peripheral.
   virtual void enable() = 0;
   virtual void disable() = 0;
 
@@ -26,6 +25,7 @@ class TimerPeripheral : public Peripheral<TimerPeripheral, Timer> {
   virtual bool is_running() = 0;
 
   friend class Timer;
+  friend class TimerInterceptor;
 
  public:
   virtual ~TimerPeripheral() = default;

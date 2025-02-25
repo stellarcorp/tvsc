@@ -28,7 +28,6 @@ class TimerStm32l4xx final : public TimerPeripheral {
 
   bool is_running() override;
 
-  // Turn on power and clock to this peripheral.
   void enable() override;
   void disable() override;
 
@@ -57,7 +56,6 @@ class Stm32l4xxLptim final : public TimerPeripheral {
 
   bool is_running() override;
 
-  // Turn on power and clock to this peripheral.
   void enable() override;
   void disable() override;
 
