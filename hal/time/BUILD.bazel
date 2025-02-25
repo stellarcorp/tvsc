@@ -24,6 +24,7 @@ cc_library(
         ],
         "//platforms:std_cpp": [
             ":std_cpp_time",
+            ":mock_clock",
         ],
     }),
 )
@@ -87,7 +88,6 @@ cc_library(
 
 cc_library(
     name = "mock_clock",
-    testonly = True,
     srcs = [
         "mock_clock.cc",
     ],
