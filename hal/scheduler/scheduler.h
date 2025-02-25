@@ -13,29 +13,25 @@
 
 namespace tvsc::hal::scheduler {
 
-template <typename ClockType, size_t QUEUE_SIZE>
+template <size_t QUEUE_SIZE>
 class Scheduler;
 
-template <typename ClockType, size_t QUEUE_SIZE>
-std::string to_string(const Scheduler<ClockType, QUEUE_SIZE>& scheduler);
+template <size_t QUEUE_SIZE>
+std::string to_string(const Scheduler<QUEUE_SIZE>& scheduler);
 
-template <typename ClockT, size_t QUEUE_SIZE>
+template <size_t QUEUE_SIZE>
 class Scheduler final {
- public:
-  using ClockType = ClockT;
-  using TaskType = Task<ClockType>;
-
  private:
-  ClockType* clock_;
+  time::Clock* clock_;
   rcc::Rcc* rcc_;
-  std::array<TaskType, QUEUE_SIZE> task_queue_{};
+  std::array<Task, QUEUE_SIZE> task_queue_{};
 
-  friend std::string to_string<ClockType, QUEUE_SIZE>(const Scheduler&);
+  friend std::string to_string<QUEUE_SIZE>(const Scheduler&);
 
  public:
-  Scheduler(ClockType& clock, rcc::Rcc& rcc) : clock_(&clock), rcc_(&rcc) {}
+  Scheduler(time::Clock& clock, rcc::Rcc& rcc) : clock_(&clock), rcc_(&rcc) {}
 
-  size_t add_task(TaskType&& task) {
+  size_t add_task(Task&& task) {
     for (size_t i = 0; i < QUEUE_SIZE; ++i) {
       if (!task_queue_[i].is_valid()) {
         task_queue_[i] = std::move(task);
@@ -50,8 +46,8 @@ class Scheduler final {
 
   void remove_task(size_t index) { task_queue_.at(index) = {}; }
 
-  TaskType& task(size_t index) noexcept { return task_queue_.at(index); }
-  const TaskType& task(size_t index) const noexcept { return task_queue_.at(index); }
+  Task& task(size_t index) noexcept { return task_queue_.at(index); }
+  const Task& task(size_t index) const noexcept { return task_queue_.at(index); }
 
   size_t queue_size() const {
     size_t size{};
@@ -67,7 +63,7 @@ class Scheduler final {
     using namespace std::chrono_literals;
     auto next_wakeup_time{clock_->current_time() + 5s};
     for (size_t i = 0; i < QUEUE_SIZE; ++i) {
-      TaskType& task{task_queue_[i]};
+      Task& task{task_queue_[i]};
       if (task.is_valid()) {
         if (task.is_ready(clock_->current_time())) {
           task.run();
@@ -109,8 +105,8 @@ class Scheduler final {
   time::Clock& clock() { return *clock_; }
 };
 
-template <typename ClockType, size_t QUEUE_SIZE>
-std::string to_string(const Scheduler<ClockType, QUEUE_SIZE>& scheduler) {
+template <size_t QUEUE_SIZE>
+std::string to_string(const Scheduler<QUEUE_SIZE>& scheduler) {
   using std::to_string;
 
   std::string result{};
