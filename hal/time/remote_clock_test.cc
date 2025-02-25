@@ -3,6 +3,12 @@
 #include "gtest/gtest.h"
 #include "hal/time/mock_clock.h"
 
+extern "C" {
+
+volatile uint64_t uwTick{};
+
+}  // extern "C"
+
 namespace tvsc::hal::time {
 
 TEST(RemoteClockTest, CanCompile) {

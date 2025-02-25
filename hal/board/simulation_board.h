@@ -8,11 +8,17 @@
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/gpio_interceptor.h"
 #include "hal/gpio/gpio_noop.h"
+#include "hal/power/power.h"
+#include "hal/power/power_interceptor.h"
+#include "hal/power/power_noop.h"
 #include "hal/rcc/rcc.h"
 #include "hal/rcc/rcc_interceptor.h"
 #include "hal/rcc/rcc_noop.h"
 #include "hal/time/clock.h"
-#include "hal/time/mock_clock.h"
+#include "hal/time/embedded_clock.h"
+#include "hal/timer/timer.h"
+#include "hal/timer/timer_interceptor.h"
+#include "hal/timer/timer_noop.h"
 #include "hal/watchdog/watchdog.h"
 #include "hal/watchdog/watchdog_interceptor.h"
 #include "hal/watchdog/watchdog_noop.h"
@@ -21,8 +27,6 @@ namespace tvsc::hal::board {
 
 class Board final {
  public:
-  using ClockType = time::Clock;
-
   static constexpr gpio::Port NUM_GPIO_PORTS{1};
   static constexpr size_t NUM_DAC_CHANNELS{0};
   static constexpr size_t NUM_DEBUG_LEDS{1};
@@ -47,7 +51,13 @@ class Board final {
   gpio::GpioInterceptor gpio_interceptor_{gpio_noop_};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
-  time::MockClock clock_{};
+  power::PowerNoop power_noop_{};
+  power::PowerInterceptor power_interceptor_{power_noop_};
+
+  timer::TimerNoop timer_noop_{};
+  timer::TimerInterceptor timer_interceptor_{timer_noop_};
+
+  time::EmbeddedClock clock_{timer_interceptor_, power_interceptor_, rcc_interceptor_};
 
   watchdog::WatchdogNoop iwdg_noop_{};
   watchdog::WatchdogNoop iwdg_interceptor_{iwdg_noop_};
@@ -86,7 +96,7 @@ class Board final {
     error();
   }
 
-  ClockType& clock() { return clock_; }
+  time::Clock& clock() { return clock_; }
 
   rcc::Rcc& rcc() { return rcc_interceptor_; };
 

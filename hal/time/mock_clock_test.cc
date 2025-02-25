@@ -2,6 +2,12 @@
 
 #include "gtest/gtest.h"
 
+extern "C" {
+
+volatile uint64_t uwTick{};
+
+}  // extern "C"
+
 namespace tvsc::hal::time {
 
 TEST(MockClockTest, ReturnsSetTime) {
