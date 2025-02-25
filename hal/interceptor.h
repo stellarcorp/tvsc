@@ -46,7 +46,8 @@ class Interceptor : public Interface {
 };
 
 // Provide a macro so that we can use the same code with and without support for
-// std::source_location.
+// std::source_location. Note that this macro only works within the context of Interceptor and its
+// subclasses.
 #if __cpp_lib_source_location >= 201907L
 #define LOG_FN() log_fn()
 #else
