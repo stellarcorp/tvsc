@@ -25,15 +25,14 @@ template <size_t num_iterations, uint64_t wake_interval_us>
 Task do_something(time::Clock& clock, int& run_count) {
   for (unsigned i = 0; i < num_iterations; ++i) {
     ++run_count;
-    const uint64_t wake_time_us{clock.current_time_micros() + wake_interval_us};
+    const auto wake_time{clock.current_time() + std::chrono::microseconds{wake_interval_us}};
     if (i % 2) {
       // Return a lambda indicating that this Task will be ready to run at a certain time.
-      co_yield
-          [wake_time_us, &clock]() -> bool { return clock.current_time_micros() >= wake_time_us; };
+      co_yield [wake_time, &clock]() -> bool { return clock.current_time() >= wake_time; };
     } else {
       // As above, but using the shorthand of just returning a uint64_t representing the time in
       // microseconds when it will be ready.
-      co_yield wake_time_us;
+      co_yield wake_time;
     }
   }
   co_return;
