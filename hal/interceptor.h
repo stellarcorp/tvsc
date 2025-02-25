@@ -33,8 +33,7 @@ class Interceptor : public Interface {
 
 #else
 
-  void log_fn(const char* function_name, const char* filename = __FILE__,
-              uint32_t line_number = __LINE__) {
+  void log_fn(const char* filename, uint32_t line_number, const char* function_name) {
     // TODO(james): Replace with write to protocol buffer for better analysis.
     std::cout << filename << ":" << line_number << " -- " << function_name << "()\n";
   }
@@ -45,5 +44,13 @@ class Interceptor : public Interface {
   explicit Interceptor(Interface& instance) : instance_(&instance) {}
   virtual ~Interceptor() = default;
 };
+
+// Provide a macro so that we can use the same code with and without support for
+// std::source_location.
+#if __cpp_lib_source_location >= 201907L
+#define LOG_FN() log_fn()
+#else
+#define LOG_FN() log_fn((__FILE__), (__LINE__), (__PRETTY_FUNCTION__))
+#endif
 
 }  // namespace tvsc::hal
