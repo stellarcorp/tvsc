@@ -8,6 +8,7 @@
 #include "hal/bringup/blink.h"
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
+#include "hal/time/embedded_clock.h"
 
 extern "C" {
 
@@ -18,12 +19,14 @@ __attribute__((section(".status.value"))) volatile uint32_t watchdog_counter{};
 namespace tvsc::hal::bringup {
 
 using BoardType = tvsc::hal::board::Board;
+using ClockType = tvsc::hal::time::EmbeddedClock;
+using TaskType = tvsc::hal::scheduler::Task<ClockType>;
 
 using namespace std::chrono_literals;
 
 template <typename Duration = std::chrono::days>
-scheduler::Task run_watchdog(time::Clock& clock, watchdog::WatchdogPeripheral& watchdog_peripheral,
-                             Duration reset_in = std::chrono::duration_cast<Duration>(24h)) {
+TaskType run_watchdog(ClockType& clock, watchdog::WatchdogPeripheral& watchdog_peripheral,
+                      Duration reset_in = std::chrono::duration_cast<Duration>(24h)) {
   const auto feed_interval{watchdog_peripheral.reset_interval() / 4};
   const auto reset_at{clock.current_time() + reset_in};
 
@@ -49,14 +52,14 @@ using namespace tvsc::hal::scheduler;
 
 int main() {
   static constexpr auto CYCLE_TIME{5s};
-  BoardType& board{BoardType::board()};
-  auto& clock{board.clock()};
+  auto& board{BoardType::board()};
+  auto& clock{ClockType::clock()};
 
   // Sleep now so that we can detect the board reset. If we just launch into the tasks, we might not
   // be able to detect that the watchdog caused a reset.
   clock.sleep(CYCLE_TIME);
 
-  Scheduler<4 /*QUEUE_SIZE*/> scheduler{clock, board.rcc()};
+  Scheduler<ClockType, 4 /*QUEUE_SIZE*/> scheduler{board.rcc()};
   scheduler.add_task(run_watchdog(clock, board.iwdg(), CYCLE_TIME));
   scheduler.add_task(
       blink(clock, board.gpio<BoardType::GREEN_LED_PORT>(), BoardType::GREEN_LED_PIN));

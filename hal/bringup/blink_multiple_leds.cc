@@ -6,9 +6,10 @@
 #include "hal/gpio/gpio.h"
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
-#include "hal/time/clock.h"
+#include "hal/time/embedded_clock.h"
 
 using BoardType = tvsc::hal::board::Board;
+using ClockType = tvsc::hal::time::EmbeddedClock;
 
 using namespace tvsc::hal::bringup;
 using namespace tvsc::hal::scheduler;
@@ -17,11 +18,11 @@ static constexpr size_t QUEUE_SIZE{4};
 
 int main() {
   static constexpr uint64_t BASE_DURATION_MS{200};
-  BoardType& board{BoardType::board()};
+  auto& board{BoardType::board()};
 
-  auto& clock{board.clock()};
+  auto& clock{ClockType::clock()};
 
-  Scheduler<QUEUE_SIZE> scheduler{clock, board.rcc()};
+  Scheduler<ClockType, QUEUE_SIZE> scheduler{board.rcc()};
 
   static constexpr uint64_t DURATION_MULTIPLES[] = {4, 3, 2};
   static_assert(BoardType::NUM_DEBUG_LEDS < 4, "Need to implement blink for more LEDs");

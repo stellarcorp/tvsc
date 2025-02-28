@@ -2,6 +2,7 @@
 
 #include <cstdint>
 
+#include "hal/board/board.h"
 #include "hal/time/clock.h"
 
 extern "C" {
@@ -18,10 +19,10 @@ void SysTick_Handler() {
 
 namespace tvsc::hal::time {
 
-TimeType EmbeddedClock::current_time_micros() { return uwTick; }
-TimeType EmbeddedClock::current_time_millis() { return uwTick / 1000; }
+TimeType EmbeddedClock::current_time_micros() noexcept { return uwTick; }
+TimeType EmbeddedClock::current_time_millis() noexcept { return uwTick / 1000; }
 
-void EmbeddedClock::sleep_us(TimeType microseconds) {
+void EmbeddedClock::sleep_us(TimeType microseconds) noexcept {
   static constexpr TimeType TIME_TO_START_TIMER_US{25};
   static constexpr TimeType TIME_TO_WAKE_FROM_STOP_MODE_US{500};
 
@@ -58,6 +59,14 @@ void EmbeddedClock::sleep_us(TimeType microseconds) {
   }
 }
 
-void EmbeddedClock::sleep_ms(TimeType milliseconds) { sleep_us(milliseconds * 1000); }
+void EmbeddedClock::sleep_ms(TimeType milliseconds) noexcept { sleep_us(milliseconds * 1000); }
+
+EmbeddedClock::time_point EmbeddedClock::now() noexcept { return clock().current_time(); }
+
+EmbeddedClock& EmbeddedClock::clock() noexcept {
+  static EmbeddedClock instance{board::Board::board().sleep_timer(), board::Board::board().power(),
+                                board::Board::board().rcc()};
+  return instance;
+}
 
 }  // namespace tvsc::hal::time

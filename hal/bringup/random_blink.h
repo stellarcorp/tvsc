@@ -11,7 +11,8 @@
 
 namespace tvsc::hal::bringup {
 
-scheduler::Task blink_randomly(gpio::GpioPeripheral& gpio_peripheral, gpio::Pin pin) {
+template <typename ClockType>
+scheduler::Task<ClockType> blink_randomly(gpio::GpioPeripheral& gpio_peripheral, gpio::Pin pin) {
   auto gpio{gpio_peripheral.access()};
   gpio.set_pin_mode(pin, gpio::PinMode::OUTPUT_PUSH_PULL);
   gpio.write_pin(pin, 0);

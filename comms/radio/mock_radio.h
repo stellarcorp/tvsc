@@ -113,7 +113,7 @@ class MockRadio final : public HalfDuplexRadio<MTU>, tvsc::hal::time::Clockable 
     }
   }
 
-  void update(TimeType current_time_us) override {
+  void update(TimeType current_time_us) noexcept override {
     process_reception(current_time_us);
     process_ongoing_transmission(current_time_us);
   }

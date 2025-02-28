@@ -8,6 +8,7 @@
 #include "hal/gpio/gpio.h"
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
+#include "hal/time/embedded_clock.h"
 
 extern "C" {
 
@@ -26,9 +27,10 @@ void HAL_ADC_ErrorCallback(ADC_HandleTypeDef* adc) { dma_error = true; }
 namespace tvsc::hal::bringup {
 
 using BoardType = tvsc::hal::board::Board;
+using ClockType = tvsc::hal::time::EmbeddedClock;
 
-template <uint8_t DAC_CHANNEL = 0>
-scheduler::Task run_adc_demo(BoardType& board) {
+template <typename ClockType, uint8_t DAC_CHANNEL = 0>
+scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
   using namespace std::chrono_literals;
   auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
   auto& adc_peripheral{board.adc()};
@@ -129,7 +131,7 @@ using namespace tvsc::hal::scheduler;
 int main() {
   BoardType& board{BoardType::board()};
 
-  Scheduler<4 /*QUEUE_SIZE*/> scheduler{board.clock(), board.rcc()};
-  scheduler.add_task(run_adc_demo(board));
+  Scheduler<ClockType, 4 /*QUEUE_SIZE*/> scheduler{board.rcc()};
+  scheduler.add_task(run_adc_demo<ClockType>(board));
   scheduler.start();
 }

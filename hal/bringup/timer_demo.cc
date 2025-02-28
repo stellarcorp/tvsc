@@ -33,7 +33,7 @@ int main() {
   gpio.set_pin_mode(BoardType::GREEN_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
   gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
 
-  auto timer{board.lptim1().access()};
+  auto timer{board.sleep_timer().access()};
   debug_stats.timer_id = timer.id();
   while (true) {
     timer.start(500'000);

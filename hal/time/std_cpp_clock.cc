@@ -3,33 +3,31 @@
 #include <chrono>
 #include <thread>
 
-#include "hal/time/clock.h"
-
 namespace tvsc::hal::time {
 
-Clock& system_clock() {
+StdCppClock& StdCppClock::clock() noexcept {
   static StdCppClock clock{};
   return clock;
 }
 
-TimeType StdCppClock::current_time_millis() {
-  return std::chrono::duration_cast<std::chrono::milliseconds>(
-             std::chrono::steady_clock::now().time_since_epoch())
+StdCppClock::time_point StdCppClock::now() noexcept { return clock().current_time(); }
+
+TimeType StdCppClock::current_time_millis() noexcept {
+  return std::chrono::duration_cast<std::chrono::milliseconds>(current_time().time_since_epoch())
       .count();
 }
 
-TimeType StdCppClock::current_time_micros() {
-  return std::chrono::duration_cast<std::chrono::microseconds>(
-             std::chrono::steady_clock::now().time_since_epoch())
+TimeType StdCppClock::current_time_micros() noexcept {
+  return std::chrono::duration_cast<std::chrono::microseconds>(current_time().time_since_epoch())
       .count();
 }
 
-void StdCppClock::sleep_ms(TimeType milliseconds) {
-  std::this_thread::sleep_for(std::chrono::duration<uint32_t, std::milli>(milliseconds));
+void StdCppClock::sleep_ms(TimeType milliseconds) noexcept {
+  std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
 }
 
-void StdCppClock::sleep_us(TimeType microseconds) {
-  std::this_thread::sleep_for(std::chrono::duration<uint32_t, std::micro>(microseconds));
+void StdCppClock::sleep_us(TimeType microseconds) noexcept {
+  std::this_thread::sleep_for(std::chrono::microseconds(microseconds));
 }
 
 }  // namespace tvsc::hal::time

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 #include <vector>
 
@@ -9,29 +10,53 @@ namespace tvsc::hal::time {
 
 class Clockable;
 
-class MockClock final : public Clock {
+class MockClock final {
  private:
   TimeType current_time_us_{};
 
   std::vector<Clockable*> clockables_{};
 
-  void update_clockables();
+  void update_clockables() noexcept;
+
+  // Private constructor. Can only be instantiated by the clock() static method.
+  MockClock() noexcept = default;
 
  public:
-  void register_clockable(Clockable& clockable) { clockables_.push_back(&clockable); }
+  // C++ Clock types.
+  using rep = TimeType;
+  using period = std::micro;
+  using duration = std::chrono::duration<rep, period>;
+  using time_point = std::chrono::time_point<MockClock, duration>;
 
-  TimeType current_time_millis() override;
-  TimeType current_time_micros() override;
+  // This clock always moves forward and is never adjusted.
+  static constexpr bool is_steady{true};
 
-  void sleep_ms(TimeType milliseconds) override;
-  void sleep_us(TimeType microseconds) override;
+  [[nodiscard]] static time_point now() noexcept;
+  [[nodiscard]] static MockClock& clock() noexcept;
+
+  void register_clockable(Clockable& clockable) noexcept { clockables_.push_back(&clockable); }
+
+  [[nodiscard]] TimeType current_time_millis() noexcept;
+  [[nodiscard]] TimeType current_time_micros() noexcept;
+  [[nodiscard]] time_point current_time() noexcept {
+    return time_point{std::chrono::microseconds{current_time_micros()}};
+  }
+
+  void sleep_ms(TimeType milliseconds) noexcept;
+  void sleep_us(TimeType microseconds) noexcept;
+
+  template <typename Rep, typename Period>
+  void sleep(std::chrono::duration<Rep, Period> d) noexcept {
+    sleep_us(std::chrono::duration_cast<std::chrono::microseconds>(d).count());
+  }
+  void sleep(time_point t) noexcept { sleep(t - current_time()); }
 
   // Setters/modifiers for testing.
-  void set_current_time_millis(TimeType current_time_ms);
-  void increment_current_time_millis(TimeType increment_ms = 1);
+  void set_current_time_millis(TimeType current_time_ms) noexcept;
+  void increment_current_time_millis(TimeType increment_ms = 1) noexcept;
 
-  void set_current_time_micros(TimeType current_time_us);
-  void increment_current_time_micros(TimeType increment_us = 1);
+  void set_current_time_micros(TimeType current_time_us) noexcept;
+  void increment_current_time_micros(TimeType increment_us = 1) noexcept;
 };
 
 /**
@@ -45,10 +70,10 @@ class Clockable {
   MockClock* clock_;
 
  public:
-  Clockable(MockClock& clock) : clock_(&clock) { clock_->register_clockable(*this); }
-  virtual ~Clockable() = default;
+  Clockable(MockClock& clock) noexcept : clock_(&clock) { clock_->register_clockable(*this); }
+  virtual ~Clockable() noexcept = default;
 
-  virtual void update(TimeType current_time_us) = 0;
+  virtual void update(TimeType current_time_us) noexcept = 0;
 };
 
 }  // namespace tvsc::hal::time

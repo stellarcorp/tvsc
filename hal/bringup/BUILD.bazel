@@ -201,6 +201,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/gpio",
+        "//hal/time",
     ],
 )
 
@@ -243,6 +244,7 @@ cc_binary(
         ":tasks",
         "//hal",
         "//hal/board",
+        "//hal/time",
         "//hal/watchdog",
     ],
 )
@@ -260,6 +262,7 @@ cc_binary(
         ":tasks",
         "//hal",
         "//hal/board",
+        "//hal/time",
         "//hal/watchdog",
     ],
 )

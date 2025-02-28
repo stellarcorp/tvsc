@@ -2,8 +2,6 @@
 
 #include <cstdint>
 
-#include "hal/time/clock.h"
-
 namespace tvsc::hal::time {
 
 /**
@@ -17,7 +15,7 @@ namespace tvsc::hal::time {
  * (which it currently does); differences in crystal frequencies, such as those caused by
  * temperature fluctuations; and relativistic effects.
  */
-class RemoteClock final : public Clock {
+class RemoteClock final {
  private:
   Clock* local_clock_;
 
@@ -39,11 +37,11 @@ class RemoteClock final : public Clock {
    */
   void mark_remote_time_micros(TimeType remote_time_micros);
 
-  TimeType current_time_millis() override;
-  TimeType current_time_micros() override;
+  TimeType current_time_millis();
+  TimeType current_time_micros();
 
-  void sleep_ms(TimeType milliseconds) override;
-  void sleep_us(TimeType microseconds) override;
+  void sleep_ms(TimeType milliseconds);
+  void sleep_us(TimeType microseconds);
 };
 
 }  // namespace tvsc::hal::time

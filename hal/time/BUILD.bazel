@@ -1,10 +1,21 @@
 cc_library(
+    name = "time_headers",
+    hdrs = [
+        "clock.h",
+        "embedded_clock.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//hal/power",
+        "//hal/rcc",
+        "//hal/timer",
+    ],
+)
+
+cc_library(
     name = "time",
     srcs = [
-        "remote_clock.cc",
-    ],
-    hdrs = [
-        "remote_clock.h",
+        "embedded_clock.cc",
     ],
     target_compatible_with = select({
         "//platforms:teensyduino_core": [],
@@ -15,6 +26,10 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":time_headers",
+        "//hal/board",
+        "//hal/power",
+        "//hal/rcc",
+        "//hal/timer",
     ] + select({
         "//platforms:std_cpp": [
             ":std_cpp_time",
@@ -22,30 +37,6 @@ cc_library(
         ],
         "//conditions:default": [],
     }),
-)
-
-cc_library(
-    name = "embedded_time",
-    srcs = [
-        "embedded_clock.cc",
-    ],
-    hdrs = [
-        "embedded_clock.h",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        ":time_headers",
-        "//hal/power",
-        "//hal/rcc",
-        "//hal/timer",
-    ],
-)
-
-cc_library(
-    name = "time_headers",
-    hdrs = [
-        "clock.h",
-    ],
 )
 
 cc_library(
@@ -85,18 +76,6 @@ cc_test(
     ],
     deps = [
         ":mock_clock",
-        "//third_party/gtest",
-    ],
-)
-
-cc_test(
-    name = "remote_clock_test",
-    srcs = [
-        "remote_clock_test.cc",
-    ],
-    deps = [
-        ":mock_clock",
-        ":time",
         "//third_party/gtest",
     ],
 )

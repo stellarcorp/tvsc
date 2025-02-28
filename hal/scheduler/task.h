@@ -9,6 +9,7 @@
 
 namespace tvsc::hal::scheduler {
 
+template <typename ClockType>
 class Task final {
  public:
   struct promise_type;
@@ -20,9 +21,8 @@ class Task final {
   struct promise_type {
     // TODO(james): Replace these with a general task status that indicates what resources the task
     // is currently using, and when it might need access to the CPU again.
-    time::Clock::time_point wait_until_{};
+    ClockType::time_point wait_until_{};
     std::function<bool()> ready_condition_{};
-    time::Clock* clock_{};
 
     Task get_return_object() noexcept { return Task{HandleType::from_promise(*this)}; }
 
@@ -30,14 +30,14 @@ class Task final {
 
     std::suspend_always final_suspend() noexcept { return {}; }
 
-    std::suspend_always yield_value(time::Clock::time_point t) noexcept {
+    std::suspend_always yield_value(ClockType::time_point t) noexcept {
       wait_until_ = t;
       ready_condition_ = {};
       return {};
     }
 
-    std::suspend_always yield_value(time::Clock::duration d) noexcept {
-      wait_until_ = clock_->current_time() + d;
+    std::suspend_always yield_value(ClockType::duration d) noexcept {
+      wait_until_ = ClockType::now() + d;
       ready_condition_ = {};
       return {};
     }
@@ -77,11 +77,9 @@ class Task final {
     return *this;
   }
 
-  void set_clock(time::Clock& clock) noexcept { handle_.promise().clock_ = &clock; }
-
   bool operator==(const Task& rhs) const noexcept { return handle_ == rhs.handle_; }
 
-  bool is_ready(time::Clock::time_point now) const noexcept {
+  bool is_ready(ClockType::time_point now) const noexcept {
     if (handle_) {
       auto& promise{handle_.promise()};
       if (promise.ready_condition_) {
@@ -94,16 +92,16 @@ class Task final {
     }
   }
 
-  time::Clock::time_point estimate_ready_at() const noexcept {
+  ClockType::time_point estimate_ready_at() const noexcept {
     if (handle_) {
       auto& promise{handle_.promise()};
       if (promise.ready_condition_) {
-        return time::Clock::time_point::max();
+        return ClockType::time_point::max();
       } else {
         return promise.wait_until_;
       }
     } else {
-      return time::Clock::time_point::max();
+      return ClockType::time_point::max();
     }
   }
 
