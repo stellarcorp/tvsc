@@ -109,7 +109,7 @@ void DMA1_Channel1_IRQHandler() {
 
 void LPTIM1_IRQHandler() {
   tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
-  board.lptim1().handle_interrupt();
+  board.sleep_timer().handle_interrupt();
 }
 
 }  // extern "C"

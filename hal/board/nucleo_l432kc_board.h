@@ -19,8 +19,6 @@
 #include "hal/rcc/rcc.h"
 #include "hal/rcc/stm32l4xx_rcc.h"
 #include "hal/stm32_peripheral_ids.h"
-#include "hal/time/clock.h"
-#include "hal/time/embedded_clock.h"
 #include "hal/timer/stm32l4xx_timer.h"
 #include "hal/timer/timer.h"
 #include "hal/watchdog/stm32l4xx_watchdog.h"
@@ -80,8 +78,6 @@ class Board final {
 
   rcc::LsiOscillatorStm32L4xx lsi_oscillator_{};
   timer::Stm32l4xxLptim lptim1_{Stm32PeripheralIds::LPTIM1_ID, LPTIM1, lsi_oscillator_};
-
-  time::EmbeddedClock clock_{lptim1_, power_, rcc_};
 
   rcc::Hsi48OscillatorStm32L4xx hsi48_oscillator_{};
   random::RngStm32xxxx rng_{hsi48_oscillator_};
@@ -161,8 +157,6 @@ class Board final {
     error();
   }
 
-  time::Clock& clock() { return clock_; }
-
   rcc::Rcc& rcc() { return rcc_; };
 
   power::Power& power() { return power_; }
@@ -174,7 +168,7 @@ class Board final {
   dma::DmaPeripheral& dma() { return dma_; }
 
   timer::TimerPeripheral& timer2() { return timer2_; }
-  timer::TimerPeripheral& lptim1() { return lptim1_; }
+  timer::TimerPeripheral& sleep_timer() { return lptim1_; }
 
   random::RngPeripheral& rng() { return rng_; }
 

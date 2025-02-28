@@ -14,8 +14,6 @@
 #include "hal/rcc/rcc.h"
 #include "hal/rcc/rcc_interceptor.h"
 #include "hal/rcc/rcc_noop.h"
-#include "hal/time/clock.h"
-#include "hal/time/embedded_clock.h"
 #include "hal/timer/timer.h"
 #include "hal/timer/timer_interceptor.h"
 #include "hal/timer/timer_noop.h"
@@ -57,8 +55,6 @@ class Board final {
   timer::TimerNoop timer_noop_{};
   timer::TimerInterceptor timer_interceptor_{timer_noop_};
 
-  time::EmbeddedClock clock_{timer_interceptor_, power_interceptor_, rcc_interceptor_};
-
   watchdog::WatchdogNoop iwdg_noop_{};
   watchdog::WatchdogNoop iwdg_interceptor_{iwdg_noop_};
 
@@ -96,11 +92,10 @@ class Board final {
     error();
   }
 
-  time::Clock& clock() { return clock_; }
-
-  rcc::Rcc& rcc() { return rcc_interceptor_; };
-
   watchdog::WatchdogPeripheral& iwdg() { return iwdg_interceptor_; }
+  power::Power& power() { return power_interceptor_; };
+  rcc::Rcc& rcc() { return rcc_interceptor_; };
+  timer::TimerPeripheral& sleep_timer() { return timer_interceptor_; }
 };
 
 }  // namespace tvsc::hal::board
