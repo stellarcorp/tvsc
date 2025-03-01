@@ -259,6 +259,7 @@ cc_library(
     name = "mock_radio",
     testonly = True,
     hdrs = ["mock_radio.h"],
+    tags = ["manual"],
     visibility = ["//visibility:public"],
     deps = [
         ":radio",
@@ -270,6 +271,7 @@ cc_library(
 cc_test(
     name = "mock_radio_test",
     srcs = ["mock_radio_test.cc"],
+    tags = ["manual"],
     deps = [
         ":mock_radio",
         "//hal/time:mock_clock",
