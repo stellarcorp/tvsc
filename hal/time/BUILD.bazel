@@ -61,6 +61,7 @@ cc_library(
         "mock_clock.cc",
     ],
     hdrs = [
+        "clockable.h",
         "mock_clock.h",
     ],
     visibility = ["//visibility:public"],
