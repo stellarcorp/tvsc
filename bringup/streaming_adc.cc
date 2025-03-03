@@ -4,8 +4,8 @@
 #include <cstdint>
 #include <cstring>
 
-#include "hal/board/board.h"
 #include "bringup/dac_demo.h"
+#include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
@@ -54,7 +54,8 @@ tvsc::hal::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
   auto dac_out_gpio{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>().access()};
 
   dac_out_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], tvsc::hal::gpio::PinMode::ANALOG);
-  gpio.set_pin_mode(BoardType::GREEN_LED_PIN, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal::gpio::PinSpeed::LOW);
+  gpio.set_pin_mode(BoardType::GREEN_LED_PIN, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL,
+                    tvsc::hal::gpio::PinSpeed::LOW);
 
   static constexpr uint8_t RESOLUTION{8};
   static constexpr uint8_t RESOLUTION_SHIFT{RESOLUTION - 8};

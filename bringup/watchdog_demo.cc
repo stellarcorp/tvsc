@@ -4,8 +4,8 @@
 #include <cstring>
 #include <limits>
 
-#include "hal/board/board.h"
 #include "bringup/blink.h"
+#include "hal/board/board.h"
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
 #include "hal/time/embedded_clock.h"
@@ -25,7 +25,8 @@ using TaskType = tvsc::hal::scheduler::Task<ClockType>;
 using namespace std::chrono_literals;
 
 template <typename Duration = std::chrono::days>
-TaskType run_watchdog(ClockType& clock, tvsc::hal::watchdog::WatchdogPeripheral& watchdog_peripheral,
+TaskType run_watchdog(ClockType& clock,
+                      tvsc::hal::watchdog::WatchdogPeripheral& watchdog_peripheral,
                       Duration reset_in = std::chrono::duration_cast<Duration>(24h)) {
   const auto feed_interval{watchdog_peripheral.reset_interval() / 4};
   const auto reset_at{clock.current_time() + reset_in};

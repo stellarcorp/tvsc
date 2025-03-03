@@ -1,8 +1,8 @@
 #include <cstring>
 #include <limits>
 
-#include "hal/board/board.h"
 #include "bringup/blink.h"
+#include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
