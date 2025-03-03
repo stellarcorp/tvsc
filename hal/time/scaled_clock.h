@@ -1,7 +1,7 @@
 #pragma once
 
 #include <chrono>
-#include <ratio>
+#include <cstdint>
 #include <vector>
 
 #include "hal/time/clock.h"
