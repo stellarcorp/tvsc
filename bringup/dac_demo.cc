@@ -1,4 +1,4 @@
-#include "hal/bringup/dac_demo.h"
+#include "bringup/dac_demo.h"
 
 #include <cstddef>
 
@@ -9,7 +9,7 @@
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::hal::time::EmbeddedClock;
 
-using namespace tvsc::hal::bringup;
+using namespace tvsc::bringup;
 using namespace tvsc::hal::scheduler;
 
 static constexpr size_t QUEUE_SIZE{BoardType::NUM_DAC_CHANNELS};

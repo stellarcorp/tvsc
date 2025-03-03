@@ -9,12 +9,12 @@
 #include "hal/time/clock.h"
 #include "random/random.h"
 
-namespace tvsc::hal::bringup {
+namespace tvsc::bringup {
 
 template <typename ClockType>
-scheduler::Task<ClockType> blink_randomly(gpio::GpioPeripheral& gpio_peripheral, gpio::Pin pin) {
+tvsc::hal::scheduler::Task<ClockType> blink_randomly(tvsc::hal::gpio::GpioPeripheral& gpio_peripheral, tvsc::hal::gpio::Pin pin) {
   auto gpio{gpio_peripheral.access()};
-  gpio.set_pin_mode(pin, gpio::PinMode::OUTPUT_PUSH_PULL);
+  gpio.set_pin_mode(pin, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
   gpio.write_pin(pin, 0);
 
   while (true) {
@@ -24,4 +24,4 @@ scheduler::Task<ClockType> blink_randomly(gpio::GpioPeripheral& gpio_peripheral,
   }
 }
 
-}  // namespace tvsc::hal::bringup
+}  // namespace tvsc::bringup

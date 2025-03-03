@@ -7,10 +7,10 @@
 #include "hal/gpio/gpio.h"
 #include "hal/scheduler/task.h"
 
-namespace tvsc::hal::bringup {
+namespace tvsc::bringup {
 
 template <typename ClockType, uint8_t DAC_CHANNEL = 0>
-scheduler::Task<ClockType> run_dac_demo(board::Board& board, uint32_t& output_value,
+tvsc::hal::scheduler::Task<ClockType> run_dac_demo(tvsc::hal::board::Board& board, uint32_t& output_value,
                                         uint64_t initial_delay_ms = 0) {
   using namespace std::chrono_literals;
   static constexpr uint32_t dac_8bit_values[] = {0, 1, 2, 4, 8, 16, 32, 64, 128, 256};
@@ -18,7 +18,7 @@ scheduler::Task<ClockType> run_dac_demo(board::Board& board, uint32_t& output_va
   static constexpr uint32_t dac_16bit_values[] = {0,    256,  512,   1024,  2048,
                                                   4096, 8192, 16636, 32768, 65536};
 
-  using BoardType = board::Board;
+  using BoardType = tvsc::hal::board::Board;
 
   auto& dac_peripheral{board.dac()};
   auto& dac_gpio_peripheral{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>()};
@@ -30,7 +30,7 @@ scheduler::Task<ClockType> run_dac_demo(board::Board& board, uint32_t& output_va
   // Turn on clocks for the peripherals that we want.
   auto dac_out_gpio{dac_gpio_peripheral.access()};
 
-  dac_out_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], gpio::PinMode::ANALOG);
+  dac_out_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], tvsc::hal::gpio::PinMode::ANALOG);
 
   while (true) {
     for (auto& v : dac_8bit_values) {
@@ -63,4 +63,4 @@ scheduler::Task<ClockType> run_dac_demo(board::Board& board, uint32_t& output_va
   }
 }
 
-}  // namespace tvsc::hal::bringup
+}  // namespace tvsc::bringup

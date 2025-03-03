@@ -3,8 +3,8 @@
 #include <cstdint>
 #include <cstring>
 
+#include "bringup/dac_demo.h"
 #include "hal/board/board.h"
-#include "hal/bringup/dac_demo.h"
 #include "hal/gpio/gpio.h"
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
@@ -24,13 +24,13 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* adc) { dma_complete = true; }
 void HAL_ADC_ErrorCallback(ADC_HandleTypeDef* adc) { dma_error = true; }
 }
 
-namespace tvsc::hal::bringup {
+namespace tvsc::bringup {
 
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::hal::time::EmbeddedClock;
 
 template <typename ClockType, uint8_t DAC_CHANNEL = 0>
-scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
+tvsc::hal::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
   using namespace std::chrono_literals;
   auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
   auto& adc_peripheral{board.adc()};
@@ -43,9 +43,9 @@ scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
   auto adc{adc_peripheral.access()};
   auto dac_gpio{dac_gpio_peripheral.access()};
 
-  dac_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], gpio::PinMode::ANALOG);
+  dac_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], tvsc::hal::gpio::PinMode::ANALOG);
 
-  gpio.set_pin_mode(BoardType::GREEN_LED_PIN, gpio::PinMode::OUTPUT_PUSH_PULL, gpio::PinSpeed::LOW);
+  gpio.set_pin_mode(BoardType::GREEN_LED_PIN, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal::gpio::PinSpeed::LOW);
 
   static constexpr uint8_t RESOLUTION{12};
   static constexpr uint8_t RESOLUTION_SHIFT{RESOLUTION - 8};
@@ -123,9 +123,9 @@ scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
   }
 }
 
-}  // namespace tvsc::hal::bringup
+}  // namespace tvsc::bringup
 
-using namespace tvsc::hal::bringup;
+using namespace tvsc::bringup;
 using namespace tvsc::hal::scheduler;
 
 int main() {

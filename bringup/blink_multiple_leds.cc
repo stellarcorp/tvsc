@@ -2,7 +2,7 @@
 #include <limits>
 
 #include "hal/board/board.h"
-#include "hal/bringup/blink.h"
+#include "bringup/blink.h"
 #include "hal/gpio/gpio.h"
 #include "hal/scheduler/scheduler.h"
 #include "hal/scheduler/task.h"
@@ -11,7 +11,7 @@
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::hal::time::EmbeddedClock;
 
-using namespace tvsc::hal::bringup;
+using namespace tvsc::bringup;
 using namespace tvsc::hal::scheduler;
 
 static constexpr size_t QUEUE_SIZE{4};

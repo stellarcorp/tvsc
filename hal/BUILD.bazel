@@ -12,8 +12,7 @@ cc_library(
 
 cc_library(
     name = "hal",
-    # We don't want this module to be used directly except by its subpackages.
-    visibility = ["//hal:__subpackages__"],
+    visibility = ["//visibility:public"],
     deps = [
         "//bits",
         ":hal_interface",
