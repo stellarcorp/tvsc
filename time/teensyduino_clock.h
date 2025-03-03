@@ -1,8 +1,8 @@
 #pragma once
 
-#include "hal/time/clock.h"
+#include "time/clock.h"
 
-namespace tvsc::hal::time {
+namespace tvsc::time {
 
 class TeensyduinoClock final : public Clock {
  public:
@@ -13,4 +13,4 @@ class TeensyduinoClock final : public Clock {
   void sleep_us(TimeType microseconds) override;
 };
 
-}  // namespace tvsc::hal::time
+}  // namespace tvsc::time

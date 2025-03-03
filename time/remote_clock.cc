@@ -1,8 +1,8 @@
-#include "hal/time/remote_clock.h"
+#include "time/remote_clock.h"
 
 #include <cstdint>
 
-namespace tvsc::hal::time {
+namespace tvsc::time {
 
 TimeType RemoteClock::current_time_micros() {
   double time_us = local_clock_->current_time_micros();
@@ -21,4 +21,4 @@ void RemoteClock::mark_remote_time_micros(TimeType remote_time_us) {
   skew_us_ = remote_time_us - local_time_us;
 }
 
-}  // namespace tvsc::hal::time
+}  // namespace tvsc::time

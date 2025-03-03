@@ -11,8 +11,8 @@
 #include "hal/power/stm32h7xx_power.h"
 #include "hal/rcc/rcc.h"
 #include "hal/rcc/stm32h7xx_rcc.h"
-#include "hal/time/clock.h"
-#include "hal/time/stm_clock.h"
+#include "time/clock.h"
+#include "time/stm_clock.h"
 #include "third_party/stm32/stm32.h"
 
 namespace tvsc::hal::board {

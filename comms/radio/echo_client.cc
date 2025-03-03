@@ -9,7 +9,7 @@
 #include "hal/gpio/pins.h"
 #include "hal/output/output.h"
 #include "hal/spi/spi.h"
-#include "hal/time/time.h"
+#include "time/time.h"
 #include "random/random.h"
 
 /**
@@ -68,7 +68,7 @@ int main() {
     }
 
     rf69.set_standby_mode();
-    tvsc::hal::time::delay_ms(1000);
+    tvsc::time::delay_ms(1000);
   }
 
   return 0;

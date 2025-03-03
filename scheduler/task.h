@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <functional>
 
-#include "hal/time/clock.h"
+#include "time/clock.h"
 
 namespace tvsc::scheduler {
 

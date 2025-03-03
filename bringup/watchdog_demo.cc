@@ -8,7 +8,7 @@
 #include "hal/board/board.h"
 #include "scheduler/scheduler.h"
 #include "scheduler/task.h"
-#include "hal/time/embedded_clock.h"
+#include "time/embedded_clock.h"
 
 extern "C" {
 
@@ -19,7 +19,7 @@ __attribute__((section(".status.value"))) volatile uint32_t watchdog_counter{};
 namespace tvsc::bringup {
 
 using BoardType = tvsc::hal::board::Board;
-using ClockType = tvsc::hal::time::EmbeddedClock;
+using ClockType = tvsc::time::EmbeddedClock;
 using TaskType = tvsc::scheduler::Task<ClockType>;
 
 using namespace std::chrono_literals;

@@ -4,10 +4,10 @@
 
 #include "hal/power/power.h"
 #include "hal/rcc/rcc.h"
-#include "hal/time/clock.h"
 #include "hal/timer/timer.h"
+#include "time/clock.h"
 
-namespace tvsc::hal::time {
+namespace tvsc::time {
 
 /**
  * Class to manage the compute the current time and handle sleep requests for the STM32 MCUs.
@@ -15,12 +15,12 @@ namespace tvsc::hal::time {
 class EmbeddedClock final {
  private:
   // Note that we are keeping this timer on the whole time, since we expect to use it often.
-  timer::Timer timer_;
-  power::Power* power_peripheral_;
-  rcc::Rcc* rcc_;
+  tvsc::hal::timer::Timer timer_;
+  tvsc::hal::power::Power* power_peripheral_;
+  tvsc::hal::rcc::Rcc* rcc_;
 
-  EmbeddedClock(timer::TimerPeripheral& timer_peripheral, power::Power& power_peripheral,
-                rcc::Rcc& rcc) noexcept
+  EmbeddedClock(tvsc::hal::timer::TimerPeripheral& timer_peripheral,
+                tvsc::hal::power::Power& power_peripheral, tvsc::hal::rcc::Rcc& rcc) noexcept
       : timer_(timer_peripheral.access()), power_peripheral_(&power_peripheral), rcc_(&rcc) {}
 
  public:
@@ -53,4 +53,4 @@ class EmbeddedClock final {
   void sleep(time_point t) noexcept { sleep(t - current_time()); }
 };
 
-}  // namespace tvsc::hal::time
+}  // namespace tvsc::time

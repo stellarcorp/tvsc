@@ -8,12 +8,12 @@
 #include "hal/rcc/rcc_noop.h"
 #include "scheduler/sample_tasks.h"
 #include "scheduler/task.h"
-#include "hal/time/clock.h"
-#include "hal/time/mock_clock.h"
+#include "time/clock.h"
+#include "time/mock_clock.h"
 
 namespace tvsc::scheduler {
 
-using ClockType = tvsc::hal::time::MockClock;
+using ClockType = tvsc::time::MockClock;
 using TaskType = Task<ClockType>;
 static constexpr size_t DEFAULT_QUEUE_SIZE{4};
 using SchedulerType = Scheduler<ClockType, DEFAULT_QUEUE_SIZE>;

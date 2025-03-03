@@ -5,7 +5,7 @@
 
 namespace tvsc::scheduler {
 
-using ClockType = tvsc::hal::time::MockClock;
+using ClockType = tvsc::time::MockClock;
 using TaskType = Task<ClockType>;
 
 TEST(TaskTest, DefaultTaskIsInvalid) { EXPECT_FALSE(TaskType{}.is_valid()); }

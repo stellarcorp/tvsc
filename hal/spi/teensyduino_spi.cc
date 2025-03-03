@@ -2,7 +2,7 @@
 #include "SPI.h"
 #include "hal/gpio/pins.h"
 #include "hal/spi/spi.h"
-#include "hal/time/time.h"
+#include "time/time.h"
 
 #ifndef ATOMIC_BLOCK_START
 #define ATOMIC_BLOCK_START

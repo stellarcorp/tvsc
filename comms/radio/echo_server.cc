@@ -1,7 +1,7 @@
 #include "comms/radio/rf69hcw.h"
 #include "comms/radio/transceiver.h"
 #include "hal/gpio/pins.h"
-#include "hal/time/clock.h"
+#include "time/clock.h"
 #include "random/random.h"
 
 int main() {
@@ -12,7 +12,7 @@ int main() {
 
   transceiver.print_configuration();
 
-  tvsc::hal::time::Clock clock{};
+  tvsc::time::Clock clock{};
   while (true) {
     transceiver.iterate(clock.current_time_millis());
   }

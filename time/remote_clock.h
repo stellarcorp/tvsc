@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace tvsc::hal::time {
+namespace tvsc::time {
 
 /**
  * Clock implementation that models the time on a remote clock, likely on another computer. This
@@ -44,4 +44,4 @@ class RemoteClock final {
   void sleep_us(TimeType microseconds);
 };
 
-}  // namespace tvsc::hal::time
+}  // namespace tvsc::time

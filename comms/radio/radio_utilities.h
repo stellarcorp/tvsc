@@ -10,7 +10,7 @@
 #include "comms/radio/half_duplex_radio.h"
 #include "comms/radio/yield.h"
 #include "hal/output/output.h"
-#include "hal/time/time.h"
+#include "time/time.h"
 
 namespace tvsc::comms::radio {
 
@@ -92,13 +92,13 @@ bool send(HalfDuplexRadio<MTU>& transceiver, const Fragment<MTU>& msg, uint16_t 
 
 template <size_t MTU, uint16_t POLL_DELAY_MS = 1>
 bool block_until_fragment_available(HalfDuplexRadio<MTU>& transceiver, uint16_t timeout_ms) {
-  const uint64_t start_time{tvsc::hal::time::time_millis()};
+  const uint64_t start_time{tvsc::time::time_millis()};
   while (!transceiver.has_fragment_available()) {
-    if (tvsc::hal::time::time_millis() - start_time > timeout_ms) {
+    if (tvsc::time::time_millis() - start_time > timeout_ms) {
       return false;
     }
     if constexpr (POLL_DELAY_MS > 0) {
-      tvsc::hal::time::delay_ms(POLL_DELAY_MS);
+      tvsc::time::delay_ms(POLL_DELAY_MS);
     } else {
       YIELD;
     }
@@ -108,13 +108,13 @@ bool block_until_fragment_available(HalfDuplexRadio<MTU>& transceiver, uint16_t 
 
 template <size_t MTU, uint16_t POLL_DELAY_MS = 1>
 bool block_until_channel_activity_clear(HalfDuplexRadio<MTU>& transceiver, uint16_t timeout_ms) {
-  const uint64_t start_time{tvsc::hal::time::time_millis()};
+  const uint64_t start_time{tvsc::time::time_millis()};
   while (transceiver.channel_activity_detected()) {
-    if (tvsc::hal::time::time_millis() - start_time > timeout_ms) {
+    if (tvsc::time::time_millis() - start_time > timeout_ms) {
       return false;
     }
     if constexpr (POLL_DELAY_MS > 0) {
-      tvsc::hal::time::delay_ms(POLL_DELAY_MS);
+      tvsc::time::delay_ms(POLL_DELAY_MS);
     } else {
       YIELD;
     }
@@ -124,13 +124,13 @@ bool block_until_channel_activity_clear(HalfDuplexRadio<MTU>& transceiver, uint1
 
 template <size_t MTU, uint16_t POLL_DELAY_MS = 1>
 bool block_until_transmission_complete(HalfDuplexRadio<MTU>& transceiver, uint16_t timeout_ms) {
-  const uint64_t start_time{tvsc::hal::time::time_millis()};
+  const uint64_t start_time{tvsc::time::time_millis()};
   while (transceiver.is_transmitting_fragment()) {
-    if (tvsc::hal::time::time_millis() - start_time > timeout_ms) {
+    if (tvsc::time::time_millis() - start_time > timeout_ms) {
       return false;
     }
     if constexpr (POLL_DELAY_MS > 0) {
-      tvsc::hal::time::delay_ms(POLL_DELAY_MS);
+      tvsc::time::delay_ms(POLL_DELAY_MS);
     } else {
       YIELD;
     }

@@ -2,7 +2,7 @@
 
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
-#include "hal/time/embedded_clock.h"
+#include "time/embedded_clock.h"
 
 using BoardType = tvsc::hal::board::Board;
 
@@ -26,7 +26,7 @@ int main() {
   while (true) {
     for (int i = 0; i < 20; ++i) {
       gpio.toggle_pin(BoardType::GREEN_LED_PIN);
-      tvsc::hal::time::EmbeddedClock& clock{tvsc::hal::time::EmbeddedClock::clock()};
+      tvsc::time::EmbeddedClock& clock{tvsc::time::EmbeddedClock::clock()};
       clock.sleep_ms(75);
     }
 

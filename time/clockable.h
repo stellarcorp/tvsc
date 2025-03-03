@@ -1,6 +1,6 @@
 #pragma once
 
-namespace tvsc::hal::time {
+namespace tvsc::time {
 
 /**
  * A Clockable is a test- and simulation-only mock that represents a parallel processing subsystem,
@@ -26,4 +26,4 @@ class Clockable {
   virtual void run(ClockType::time_point current_time) noexcept = 0;
 };
 
-}  // namespace tvsc::hal::time
+}  // namespace tvsc::time

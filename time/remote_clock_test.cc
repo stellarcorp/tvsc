@@ -1,7 +1,7 @@
-#include "hal/time/remote_clock.h"
+#include "time/remote_clock.h"
 
 #include "gtest/gtest.h"
-#include "hal/time/mock_clock.h"
+#include "time/mock_clock.h"
 
 extern "C" {
 
@@ -9,7 +9,7 @@ volatile uint64_t uwTick{};
 
 }  // extern "C"
 
-namespace tvsc::hal::time {
+namespace tvsc::time {
 
 TEST(RemoteClockTest, CanCompile) {
   MockClock local_clock{};
@@ -74,4 +74,4 @@ TEST(RemoteClockTest, TracksLocalClockIfHaveMarkedTimes) {
   EXPECT_EQ(local_clock.current_time_micros() + OFFSET_US, remote_clock.current_time_micros());
 }
 
-}  // namespace tvsc::hal::time
+}  // namespace tvsc::time

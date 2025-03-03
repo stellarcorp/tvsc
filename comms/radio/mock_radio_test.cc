@@ -2,7 +2,7 @@
 
 #include "comms/radio/fragment.h"
 #include "gtest/gtest.h"
-#include "hal/time/mock_clock.h"
+#include "time/mock_clock.h"
 
 namespace tvsc::comms::radio {
 

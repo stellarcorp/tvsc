@@ -42,7 +42,7 @@ cc_library(
     deps = [
         ":eeprom_header",
         "//hal/gpio",
-        "//hal/time",
+        "//time",
         "//third_party/arduino:core",
         "//third_party/arduino:eeprom",
     ],

@@ -9,7 +9,7 @@
 #include "hal/gpio/gpio.h"
 #include "scheduler/scheduler.h"
 #include "scheduler/task.h"
-#include "hal/time/embedded_clock.h"
+#include "time/embedded_clock.h"
 
 extern "C" {
 
@@ -27,7 +27,7 @@ void HAL_ADC_ErrorCallback(ADC_HandleTypeDef* adc) { dma_error = true; }
 namespace tvsc::bringup {
 
 using BoardType = tvsc::hal::board::Board;
-using ClockType = tvsc::hal::time::EmbeddedClock;
+using ClockType = tvsc::time::EmbeddedClock;
 
 using namespace std::chrono_literals;
 static constexpr std::chrono::microseconds PERIOD_US{500ms};

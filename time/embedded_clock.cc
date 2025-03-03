@@ -1,9 +1,9 @@
-#include "hal/time/embedded_clock.h"
+#include "time/embedded_clock.h"
 
 #include <cstdint>
 
 #include "hal/board/board.h"
-#include "hal/time/clock.h"
+#include "time/clock.h"
 
 extern "C" {
 
@@ -17,7 +17,7 @@ void SysTick_Handler() {
 
 }  // extern "C"
 
-namespace tvsc::hal::time {
+namespace tvsc::time {
 
 TimeType EmbeddedClock::current_time_micros() noexcept { return uwTick; }
 TimeType EmbeddedClock::current_time_millis() noexcept { return uwTick / 1000; }
@@ -64,9 +64,10 @@ void EmbeddedClock::sleep_ms(TimeType milliseconds) noexcept { sleep_us(millisec
 EmbeddedClock::time_point EmbeddedClock::now() noexcept { return clock().current_time(); }
 
 EmbeddedClock& EmbeddedClock::clock() noexcept {
-  static EmbeddedClock instance{board::Board::board().sleep_timer(), board::Board::board().power(),
-                                board::Board::board().rcc()};
+  static EmbeddedClock instance{tvsc::hal::board::Board::board().sleep_timer(),
+                                tvsc::hal::board::Board::board().power(),
+                                tvsc::hal::board::Board::board().rcc()};
   return instance;
 }
 
-}  // namespace tvsc::hal::time
+}  // namespace tvsc::time

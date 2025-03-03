@@ -4,10 +4,10 @@
 #include <cstdint>
 #include <vector>
 
-#include "hal/time/clock.h"
-#include "hal/time/clockable.h"
+#include "time/clock.h"
+#include "time/clockable.h"
 
-namespace tvsc::hal::time {
+namespace tvsc::time {
 
 template <std::intmax_t SCALE_FACTOR_NUMERATOR, std::intmax_t SCALE_FACTOR_DENOMINATOR = 1,
           typename BaseClockT = std::chrono::steady_clock>
@@ -92,4 +92,4 @@ class ScaledClock final {
   }
 };
 
-}  // namespace tvsc::hal::time
+}  // namespace tvsc::time

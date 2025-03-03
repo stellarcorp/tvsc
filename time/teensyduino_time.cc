@@ -1,9 +1,9 @@
 #include <cstdint>
 
 #include "Arduino.h"
-#include "hal/time/time.h"
+#include "time/time.h"
 
-namespace tvsc::hal::time {
+namespace tvsc::time {
 
 void delay_ms(TimeType milliseconds) { delay(milliseconds); }
 
@@ -13,4 +13,4 @@ TimeType time_millis() { return millis(); }
 
 TimeType time_micros() { return micros(); }
 
-}  // namespace tvsc::hal::time
+}  // namespace tvsc::time

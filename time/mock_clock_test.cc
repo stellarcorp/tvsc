@@ -1,10 +1,10 @@
-#include "hal/time/mock_clock.h"
+#include "time/mock_clock.h"
 
 #include <chrono>
 
 #include "gtest/gtest.h"
 
-namespace tvsc::hal::time {
+namespace tvsc::time {
 
 using namespace std::chrono_literals;
 
@@ -73,4 +73,4 @@ TEST(MockClockTest, ClockablesCanRollbackTimeUpdate) {
   EXPECT_EQ(2, counts.run_call_count);
 }
 
-}  // namespace tvsc::hal::time
+}  // namespace tvsc::time

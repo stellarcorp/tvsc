@@ -9,7 +9,7 @@
 #include "hal/error.h"
 #include "hal/rcc/rcc.h"
 #include "scheduler/task.h"
-#include "hal/time/clock.h"
+#include "time/clock.h"
 
 namespace tvsc::scheduler {
 

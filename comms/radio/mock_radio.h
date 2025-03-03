@@ -7,15 +7,15 @@
 
 #include "comms/radio/half_duplex_radio.h"
 #include "hal/output/output.h"
-#include "hal/time/clock.h"
-#include "hal/time/mock_clock.h"
+#include "time/clock.h"
+#include "time/mock_clock.h"
 
 namespace tvsc::comms::radio {
 
 template <size_t MTU>
-class MockRadio final : public HalfDuplexRadio<MTU>, tvsc::hal::time::Clockable {
+class MockRadio final : public HalfDuplexRadio<MTU>, tvsc::time::Clockable {
  public:
-  using TimeType = tvsc::hal::time::TimeType;
+  using TimeType = tvsc::time::TimeType;
 
  private:
   // Amount of time in microseconds required to transmit a fragment, including ramping up and down
@@ -132,12 +132,12 @@ class MockRadio final : public HalfDuplexRadio<MTU>, tvsc::hal::time::Clockable 
   }
 
  public:
-  MockRadio(tvsc::hal::time::MockClock& clock) : Clockable(clock) {}
+  MockRadio(tvsc::time::MockClock& clock) : Clockable(clock) {}
 
   /**
    * Add a fragment to be received. Use this method to configure the mock radio state.
    */
-  void add_rx_fragment(tvsc::hal::time::TimeType rx_timestamp_us, const Fragment<MTU>& fragment) {
+  void add_rx_fragment(tvsc::time::TimeType rx_timestamp_us, const Fragment<MTU>& fragment) {
     rx_fragments_.insert({rx_timestamp_us, fragment});
   }
 

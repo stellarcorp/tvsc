@@ -12,7 +12,7 @@
 #include "hal/gpio/pins.h"
 #include "hal/output/output.h"
 #include "hal/spi/spi.h"
-#include "hal/time/time.h"
+#include "time/time.h"
 #include "random/random.h"
 
 namespace tvsc::comms::radio {
@@ -20,7 +20,7 @@ namespace tvsc::comms::radio {
 template <typename RadioT>
 class Transceiver final {
  public:
-  using TimeType = tvsc::hal::time::TimeType;
+  using TimeType = tvsc::time::TimeType;
 
  private:
   using FragmentType = Fragment<RadioT::max_mtu()>;

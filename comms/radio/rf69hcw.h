@@ -14,7 +14,7 @@
 #include "hal/gpio/pins.h"
 #include "hal/output/output.h"
 #include "hal/spi/spi.h"
-#include "hal/time/time.h"
+#include "time/time.h"
 #include "random/random.h"
 
 namespace tvsc::comms::radio {
@@ -524,11 +524,11 @@ class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO s
     // 5ms, and then it will be ready. The pin should be pulled low by default on the radio module,
     // but we drive it low first anyway.
     tvsc::hal::gpio::write_pin(reset_pin_, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
-    tvsc::hal::time::delay_ms(10);
+    tvsc::time::delay_ms(10);
     tvsc::hal::gpio::write_pin(reset_pin_, tvsc::hal::gpio::DigitalValue::VALUE_HIGH);
-    tvsc::hal::time::delay_ms(10);
+    tvsc::time::delay_ms(10);
     tvsc::hal::gpio::write_pin(reset_pin_, tvsc::hal::gpio::DigitalValue::VALUE_LOW);
-    tvsc::hal::time::delay_ms(10);
+    tvsc::time::delay_ms(10);
 
     // Verify that we are actually connected to a device. We expect this will return 0x00 or 0xff
     // only if the device is not connected correctly.
@@ -537,7 +537,7 @@ class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO s
     // come loose.
     uint8_t device_type{};
     do {
-      tvsc::hal::time::delay_ms(10);
+      tvsc::time::delay_ms(10);
       device_type = spi_->read(RF69HCW_REG_10_VERSION);
       // except<std::runtime_error>("Could not read radio device type.");
     } while (device_type == 00 || device_type == 0xff);
@@ -548,7 +548,7 @@ class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO s
     // Clear out the opmode register to remove any spurious settings and then switch to standby
     // mode.
     // spi_->write(RF69HCW_REG_01_OPMODE, 0x00);
-    // tvsc::hal::time::delay_ms(10);
+    // tvsc::time::delay_ms(10);
     set_mode_standby();
 
     // Specify time to ramp up and down the amplifiers. Note that the PARAMP must match the
@@ -672,7 +672,7 @@ class RF69HCW final : public HalfDuplexRadio</* Hardware MTU. This is the FIFO s
     std::array<uint8_t, NUMBER_MEASUREMENTS> rssi{};
     for (int i = 0; i < NUMBER_MEASUREMENTS; ++i) {
       if (i > 0) {
-        tvsc::hal::time::delay_us(DELAY_BETWEEN_MEASUREMENTS_US);
+        tvsc::time::delay_us(DELAY_BETWEEN_MEASUREMENTS_US);
       }
       rssi[i] = spi_->read(RF69HCW_REG_24_RSSIVALUE);
     }

@@ -3,7 +3,7 @@
 #include <cstdint>
 
 #include "comms/radio/fragment.h"
-#include "hal/time/clock.h"
+#include "time/clock.h"
 #include "random/random.h"
 
 namespace tvsc::comms::radio {

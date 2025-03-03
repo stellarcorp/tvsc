@@ -6,7 +6,7 @@
 #include "hal/gpio/gpio.h"
 #include "scheduler/scheduler.h"
 #include "scheduler/task.h"
-#include "hal/time/clock.h"
+#include "time/clock.h"
 #include "random/random.h"
 
 namespace tvsc::bringup {
