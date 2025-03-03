@@ -32,27 +32,10 @@ cc_library(
         "//hal/timer",
     ] + select({
         "//platforms:std_cpp": [
-            ":std_cpp_time",
             ":simulation_clock",
         ],
         "//conditions:default": [],
     }),
-)
-
-cc_library(
-    name = "std_cpp_time",
-    srcs = [
-        "std_cpp_clock.cc",
-    ],
-    hdrs = [
-        "std_cpp_clock.h",
-    ],
-    target_compatible_with = [
-        "//platforms:std_cpp",
-    ],
-    deps = [
-        ":time_headers",
-    ],
 )
 
 cc_library(
