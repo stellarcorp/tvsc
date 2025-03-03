@@ -57,12 +57,13 @@ cc_library(
 
 cc_library(
     name = "mock_clock",
-    srcs = [
-        "mock_clock.cc",
-    ],
     hdrs = [
         "clockable.h",
         "mock_clock.h",
+        "scaled_clock.h",
+    ],
+    target_compatible_with = [
+        "//platforms:std_cpp",
     ],
     visibility = ["//visibility:public"],
     deps = [

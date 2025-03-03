@@ -18,7 +18,7 @@ class Clockable {
 
  public:
   Clockable(ClockType& clock) noexcept : clock_(&clock) { clock_->register_clockable(*this); }
-  virtual ~Clockable() noexcept = default;
+  virtual ~Clockable() noexcept { clock_->deregister_clockable(*this); }
 
   [[nodiscard]] virtual ClockType::time_point update_time(
       ClockType::time_point current_time) noexcept = 0;

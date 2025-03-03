@@ -33,4 +33,44 @@ TEST(MockClockTest, SleepTimePointUpdatesCurrentTime) {
   EXPECT_EQ(initial_time + 50ms, clock.current_time());
 }
 
+class CountingClockable final : public Clockable<MockClock> {
+ public:
+  int update_time_call_count{};
+  int run_call_count{};
+
+  MockClock::time_point next_time{MockClock::time_point::max()};
+
+  CountingClockable(MockClock& clock) : Clockable(clock) {}
+
+  MockClock::time_point update_time(MockClock::time_point t) noexcept override {
+    ++update_time_call_count;
+    MockClock::time_point result{std::min(next_time, t)};
+    next_time = MockClock::time_point::max();
+    return result;
+  }
+
+  void run(MockClock::time_point t) noexcept override { ++run_call_count; }
+};
+
+TEST(MockClockTest, SettingTimeUpdatesClockables) {
+  MockClock& clock{MockClock::clock()};
+  CountingClockable counts{clock};
+  EXPECT_EQ(0, counts.update_time_call_count);
+  EXPECT_EQ(0, counts.run_call_count);
+  clock.increment_current_time(42ms);
+  EXPECT_EQ(1, counts.update_time_call_count);
+  EXPECT_EQ(1, counts.run_call_count);
+}
+
+TEST(MockClockTest, ClockablesCanRollbackTimeUpdate) {
+  MockClock& clock{MockClock::clock()};
+  CountingClockable counts{clock};
+  counts.next_time = MockClock::time_point{21ms};
+  EXPECT_EQ(0, counts.update_time_call_count);
+  EXPECT_EQ(0, counts.run_call_count);
+  clock.increment_current_time(42ms);
+  EXPECT_EQ(2, counts.update_time_call_count);
+  EXPECT_EQ(2, counts.run_call_count);
+}
+
 }  // namespace tvsc::hal::time
