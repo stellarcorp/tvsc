@@ -1,0 +1,61 @@
+cc_library(
+    name = "systick_headers",
+    hdrs = [
+        "systick.h",
+    ],
+)
+
+cc_library(
+    name = "systick",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":systick_headers",
+    ] + select({
+        "//platforms:stm32_core": [
+            ":stm32l4xx_systick",
+        ],
+        "@platforms//os:linux": [
+            ":simulation",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32l4xx_systick",
+    srcs = [
+        "stm32l4xx_systick.cc",
+    ],
+    hdrs = [
+        "stm32l4xx_systick.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32_core",
+    ],
+    deps = [
+        ":systick_headers",
+        "//third_party/stm32",
+    ],
+)
+
+cc_library(
+    name = "simulation",
+    srcs = [
+        "systick_interceptor.cc",
+        "systick_noop.cc",
+    ],
+    hdrs = [
+        "systick_interceptor.h",
+        "systick_noop.h",
+    ],
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
+    deps = [
+        ":systick_headers",
+    ],
+)

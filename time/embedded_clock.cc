@@ -5,22 +5,12 @@
 #include "hal/board/board.h"
 #include "time/clock.h"
 
-extern "C" {
-
-extern volatile uint64_t uwTick;
-
-void SysTick_Handler() {
-  // SysTick fires every millisecond. We keep the tick counter in microseconds in order to better
-  // avoid round-off errors. See the sleep_us() method below.
-  uwTick += 1000;
-}
-
-}  // extern "C"
-
 namespace tvsc::time {
 
-TimeType EmbeddedClock::current_time_micros() noexcept { return uwTick; }
-TimeType EmbeddedClock::current_time_millis() noexcept { return uwTick / 1000; }
+TimeType EmbeddedClock::current_time_micros() noexcept { return sys_tick_->current_time_micros(); }
+TimeType EmbeddedClock::current_time_millis() noexcept {
+  return sys_tick_->current_time_micros() / 1000;
+}
 
 void EmbeddedClock::sleep_us(TimeType microseconds) noexcept {
   static constexpr TimeType TIME_TO_START_TIMER_US{25};
@@ -30,12 +20,6 @@ void EmbeddedClock::sleep_us(TimeType microseconds) noexcept {
   if (microseconds < TIME_TO_START_TIMER_US) {
     return;
   }
-
-  // Useful when debugging to ensure that the core stays responsive for JTAG/SWD.
-  // const TimeType wake_time{uwTick + microseconds};
-  // while (uwTick < wake_time) {
-  // }
-  // return;
 
   // Start the timer. Assume that it will trigger an interrupt at the end of the interval. Then
   // enter stop mode. We exit stop mode on any interrupt (or possibly any EXTI event as well). So,
@@ -54,7 +38,7 @@ void EmbeddedClock::sleep_us(TimeType microseconds) noexcept {
     }
     // In stop mode, the SysTick is not running, so we manually update the tick counter with the
     // amount of time we spent in stop mode.
-    uwTick += microseconds;
+    sys_tick_->increment_micros(microseconds);
     rcc_->restore_clock_speed();
   }
 }
@@ -64,9 +48,12 @@ void EmbeddedClock::sleep_ms(TimeType milliseconds) noexcept { sleep_us(millisec
 EmbeddedClock::time_point EmbeddedClock::now() noexcept { return clock().current_time(); }
 
 EmbeddedClock& EmbeddedClock::clock() noexcept {
-  static EmbeddedClock instance{tvsc::hal::board::Board::board().sleep_timer(),
-                                tvsc::hal::board::Board::board().power(),
-                                tvsc::hal::board::Board::board().rcc()};
+  static EmbeddedClock instance{
+      tvsc::hal::board::Board::board().sys_tick(),     //
+      tvsc::hal::board::Board::board().sleep_timer(),  //
+      tvsc::hal::board::Board::board().power(),        //
+      tvsc::hal::board::Board::board().rcc()           //
+  };
   return instance;
 }
 

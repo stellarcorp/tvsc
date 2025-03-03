@@ -19,6 +19,8 @@
 #include "hal/rcc/rcc.h"
 #include "hal/rcc/stm32l4xx_rcc.h"
 #include "hal/stm32_peripheral_ids.h"
+#include "hal/systick/stm32l4xx_systick.h"
+#include "hal/systick/systick.h"
 #include "hal/timer/stm32l4xx_timer.h"
 #include "hal/timer/timer.h"
 #include "hal/watchdog/stm32l4xx_watchdog.h"
@@ -57,6 +59,8 @@ class Board final {
 
  private:
   rcc::RccStm32L4xx rcc_{};
+
+  systick::SysTickStm32l4xx sys_tick_{};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32L4xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
@@ -169,6 +173,8 @@ class Board final {
 
   timer::TimerPeripheral& timer2() { return timer2_; }
   timer::TimerPeripheral& sleep_timer() { return lptim1_; }
+
+  systick::SysTickType& sys_tick() { return sys_tick_; }
 
   random::RngPeripheral& rng() { return rng_; }
 

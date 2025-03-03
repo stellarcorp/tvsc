@@ -4,6 +4,7 @@
 
 #include "hal/power/power.h"
 #include "hal/rcc/rcc.h"
+#include "hal/systick/systick.h"
 #include "hal/timer/timer.h"
 #include "time/clock.h"
 
@@ -14,14 +15,20 @@ namespace tvsc::time {
  */
 class EmbeddedClock final {
  private:
+  tvsc::hal::systick::SysTickType* sys_tick_{};
   // Note that we are keeping this timer on the whole time, since we expect to use it often.
   tvsc::hal::timer::Timer timer_;
   tvsc::hal::power::Power* power_peripheral_;
   tvsc::hal::rcc::Rcc* rcc_;
 
-  EmbeddedClock(tvsc::hal::timer::TimerPeripheral& timer_peripheral,
-                tvsc::hal::power::Power& power_peripheral, tvsc::hal::rcc::Rcc& rcc) noexcept
-      : timer_(timer_peripheral.access()), power_peripheral_(&power_peripheral), rcc_(&rcc) {}
+  EmbeddedClock(tvsc::hal::systick::SysTickType& sys_tick,            //
+                tvsc::hal::timer::TimerPeripheral& timer_peripheral,  //
+                tvsc::hal::power::Power& power_peripheral,            //
+                tvsc::hal::rcc::Rcc& rcc) noexcept
+      : sys_tick_(&sys_tick),
+        timer_(timer_peripheral.access()),
+        power_peripheral_(&power_peripheral),
+        rcc_(&rcc) {}
 
  public:
   // C++ Clock types.

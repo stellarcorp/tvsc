@@ -8,6 +8,7 @@ cc_library(
     deps = [
         "//hal/power",
         "//hal/rcc",
+        "//hal/systick",
         "//hal/timer",
     ],
 )
