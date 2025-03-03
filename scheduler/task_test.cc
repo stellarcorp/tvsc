@@ -1,11 +1,11 @@
-#include "hal/scheduler/task.h"
+#include "scheduler/task.h"
 
 #include "gtest/gtest.h"
-#include "hal/scheduler/sample_tasks.h"
+#include "scheduler/sample_tasks.h"
 
-namespace tvsc::hal::scheduler {
+namespace tvsc::scheduler {
 
-using ClockType = time::MockClock;
+using ClockType = tvsc::hal::time::MockClock;
 using TaskType = Task<ClockType>;
 
 TEST(TaskTest, DefaultTaskIsInvalid) { EXPECT_FALSE(TaskType{}.is_valid()); }
@@ -28,4 +28,4 @@ TEST(TaskTest, CanDetectInvalidTasksInCollection) {
   EXPECT_FALSE(tasks[2].is_valid());
 }
 
-}  // namespace tvsc::hal::scheduler
+}  // namespace tvsc::scheduler

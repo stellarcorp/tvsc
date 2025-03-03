@@ -14,15 +14,15 @@ namespace tvsc::hal {
 
 [[noreturn]] void failure(std::source_location location = std::source_location::current()) noexcept;
 
-#define error() failure()
-#define require(expr) ((expr) ? (void)0U : failure())
+#define error() tvsc::hal::failure()
+#define require(expr) ((expr) ? (void)0U : tvsc::hal::failure())
 
 #else
 
 [[noreturn]] void failure(const char* filename, uint32_t line_number) noexcept;
 
-#define error() failure((__FILE__), (__LINE__))
-#define require(expr) ((expr) ? (void)0U : failure((__FILE__), (__LINE__)))
+#define error() tvsc::hal::failure((__FILE__), (__LINE__))
+#define require(expr) ((expr) ? (void)0U : tvsc::hal::failure((__FILE__), (__LINE__)))
 
 #endif
 

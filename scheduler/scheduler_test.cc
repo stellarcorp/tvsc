@@ -1,4 +1,4 @@
-#include "hal/scheduler/scheduler.h"
+#include "scheduler/scheduler.h"
 
 #include <coroutine>
 #include <cstdint>
@@ -6,26 +6,26 @@
 
 #include "gtest/gtest.h"
 #include "hal/rcc/rcc_noop.h"
-#include "hal/scheduler/sample_tasks.h"
-#include "hal/scheduler/task.h"
+#include "scheduler/sample_tasks.h"
+#include "scheduler/task.h"
 #include "hal/time/clock.h"
 #include "hal/time/mock_clock.h"
 
-namespace tvsc::hal::scheduler {
+namespace tvsc::scheduler {
 
-using ClockType = time::MockClock;
+using ClockType = tvsc::hal::time::MockClock;
 using TaskType = Task<ClockType>;
 static constexpr size_t DEFAULT_QUEUE_SIZE{4};
 using SchedulerType = Scheduler<ClockType, DEFAULT_QUEUE_SIZE>;
 
 TEST(SchedulerTest, QueueIsEmptyAfterCreation) {
-  rcc::RccNoop rcc{};
+  tvsc::hal::rcc::RccNoop rcc{};
   SchedulerType scheduler{rcc};
   EXPECT_EQ(0, scheduler.queue_size());
 }
 
 TEST(SchedulerTest, CanQueueTask) {
-  rcc::RccNoop rcc{};
+  tvsc::hal::rcc::RccNoop rcc{};
   TaskType task{just_return<ClockType>()};
   SchedulerType scheduler{rcc};
   scheduler.add_task(std::move(task));
@@ -36,7 +36,7 @@ TEST(SchedulerTest, CanQueueTaskThatTakesParameters) {
   static constexpr size_t NUM_ITERATIONS{1};
   static constexpr uint64_t WAKE_INTERVAL_US{1};
 
-  rcc::RccNoop rcc{};
+  tvsc::hal::rcc::RccNoop rcc{};
   int run_count{};
   TaskType task{do_something<ClockType, NUM_ITERATIONS, WAKE_INTERVAL_US>(run_count)};
   SchedulerType scheduler{rcc};
@@ -45,7 +45,7 @@ TEST(SchedulerTest, CanQueueTaskThatTakesParameters) {
 }
 
 TEST(SchedulerTest, CanQueueTwoTasks) {
-  rcc::RccNoop rcc{};
+  tvsc::hal::rcc::RccNoop rcc{};
   int run_count{};
   TaskType task1{just_return<ClockType>()};
   TaskType task2{run_forever<ClockType>(run_count)};
@@ -56,7 +56,7 @@ TEST(SchedulerTest, CanQueueTwoTasks) {
 }
 
 TEST(SchedulerTest, CanQueueSeveralTasks) {
-  rcc::RccNoop rcc{};
+  tvsc::hal::rcc::RccNoop rcc{};
   int run_count{};
   TaskType task1{just_return<ClockType>()};
   TaskType task2{run_forever<ClockType>(run_count)};
@@ -71,7 +71,7 @@ TEST(SchedulerTest, CanQueueSeveralTasks) {
 }
 
 TEST(SchedulerTest, CanRunTaskThatRunsOnce) {
-  rcc::RccNoop rcc{};
+  tvsc::hal::rcc::RccNoop rcc{};
   TaskType task{just_return<ClockType>()};
   EXPECT_FALSE(task.is_complete());
   SchedulerType scheduler{rcc};
@@ -86,7 +86,7 @@ TEST(SchedulerTest, CanRunNeverendingTaskTwice) {
   int run_count{};
   TaskType task{};
 
-  rcc::RccNoop rcc{};
+  tvsc::hal::rcc::RccNoop rcc{};
   Scheduler<ClockType, 1> scheduler{rcc};
   size_t task_index{scheduler.add_task(run_forever<ClockType>(run_count))};
 
@@ -102,7 +102,7 @@ TEST(SchedulerTest, CanRunNeverendingTaskMultipleTimes) {
   static constexpr size_t NUM_ITERATIONS{10};
   int run_count{};
 
-  rcc::RccNoop rcc{};
+  tvsc::hal::rcc::RccNoop rcc{};
   Scheduler<ClockType, 1> scheduler{rcc};
   size_t task_index{scheduler.add_task(run_forever<ClockType>(run_count))};
 
@@ -116,7 +116,7 @@ TEST(SchedulerTest, CanRunNeverendingTaskMultipleTimes) {
 
 TEST(SchedulerTest, CanRunTaskThatAddsSubtasks) {
   int run_count{};
-  rcc::RccNoop rcc{};
+  tvsc::hal::rcc::RccNoop rcc{};
   SchedulerType scheduler{rcc};
   TaskType task{creates_subtask<ClockType, DEFAULT_QUEUE_SIZE, 1>(scheduler, run_count)};
   scheduler.add_task(std::move(task));
@@ -135,7 +135,7 @@ TEST(SchedulerTest, CanRunTaskOnce) {
   static constexpr size_t NUM_ITERATIONS{1};
   static constexpr uint64_t WAKE_INTERVAL_US{1};
 
-  rcc::RccNoop rcc{};
+  tvsc::hal::rcc::RccNoop rcc{};
   int run_count{};
 
   SchedulerType scheduler{rcc};
@@ -164,7 +164,7 @@ TEST(SchedulerTest, CanRunTaskThatSleeps) {
   static constexpr size_t NUM_ITERATIONS{1};
   static constexpr uint64_t WAKE_INTERVAL_US{10};
 
-  rcc::RccNoop rcc{};
+  tvsc::hal::rcc::RccNoop rcc{};
   int run_count{};
 
   SchedulerType scheduler{rcc};
@@ -193,7 +193,7 @@ TEST(SchedulerTest, CanRunTaskThatSleepsMultipleTimes) {
   static constexpr size_t NUM_ITERATIONS{20};
   static constexpr uint64_t WAKE_INTERVAL_US{10};
 
-  rcc::RccNoop rcc{};
+  tvsc::hal::rcc::RccNoop rcc{};
   int run_count{};
 
   SchedulerType scheduler{rcc};
@@ -218,4 +218,4 @@ TEST(SchedulerTest, CanRunTaskThatSleepsMultipleTimes) {
   EXPECT_EQ(NUM_ITERATIONS, run_count);
 }
 
-}  // namespace tvsc::hal::scheduler
+}  // namespace tvsc::scheduler

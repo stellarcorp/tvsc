@@ -3,14 +3,14 @@
 #include <cstddef>
 
 #include "hal/board/board.h"
-#include "hal/scheduler/scheduler.h"
+#include "scheduler/scheduler.h"
 #include "hal/time/embedded_clock.h"
 
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::hal::time::EmbeddedClock;
 
 using namespace tvsc::bringup;
-using namespace tvsc::hal::scheduler;
+using namespace tvsc::scheduler;
 
 static constexpr size_t QUEUE_SIZE{BoardType::NUM_DAC_CHANNELS};
 

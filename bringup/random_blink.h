@@ -4,15 +4,15 @@
 
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
-#include "hal/scheduler/scheduler.h"
-#include "hal/scheduler/task.h"
+#include "scheduler/scheduler.h"
+#include "scheduler/task.h"
 #include "hal/time/clock.h"
 #include "random/random.h"
 
 namespace tvsc::bringup {
 
 template <typename ClockType>
-tvsc::hal::scheduler::Task<ClockType> blink_randomly(
+tvsc::scheduler::Task<ClockType> blink_randomly(
     tvsc::hal::gpio::GpioPeripheral& gpio_peripheral, tvsc::hal::gpio::Pin pin) {
   auto gpio{gpio_peripheral.access()};
   gpio.set_pin_mode(pin, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);

@@ -4,12 +4,12 @@
 #include <cstdint>
 
 #include "gtest/gtest.h"
-#include "hal/scheduler/scheduler.h"
-#include "hal/scheduler/task.h"
+#include "scheduler/scheduler.h"
+#include "scheduler/task.h"
 #include "hal/time/clock.h"
 #include "hal/time/mock_clock.h"
 
-namespace tvsc::hal::scheduler {
+namespace tvsc::scheduler {
 
 template <typename ClockType>
 Task<ClockType> just_return() {
@@ -54,4 +54,4 @@ Task<ClockType> creates_subtask(Scheduler<ClockType, QUEUE_SIZE>& scheduler, int
   }
 }
 
-}  // namespace tvsc::hal::scheduler
+}  // namespace tvsc::scheduler

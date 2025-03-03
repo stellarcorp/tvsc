@@ -6,8 +6,8 @@
 #include "bringup/dac_demo.h"
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
-#include "hal/scheduler/scheduler.h"
-#include "hal/scheduler/task.h"
+#include "scheduler/scheduler.h"
+#include "scheduler/task.h"
 #include "hal/time/embedded_clock.h"
 
 extern "C" {
@@ -30,7 +30,7 @@ using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::hal::time::EmbeddedClock;
 
 template <typename ClockType, uint8_t DAC_CHANNEL = 0>
-tvsc::hal::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
+tvsc::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
   using namespace std::chrono_literals;
   auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
   auto& adc_peripheral{board.adc()};
@@ -127,7 +127,7 @@ tvsc::hal::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
 }  // namespace tvsc::bringup
 
 using namespace tvsc::bringup;
-using namespace tvsc::hal::scheduler;
+using namespace tvsc::scheduler;
 
 int main() {
   BoardType& board{BoardType::board()};

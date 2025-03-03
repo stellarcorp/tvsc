@@ -6,8 +6,8 @@
 
 #include "bringup/blink.h"
 #include "hal/board/board.h"
-#include "hal/scheduler/scheduler.h"
-#include "hal/scheduler/task.h"
+#include "scheduler/scheduler.h"
+#include "scheduler/task.h"
 #include "hal/time/embedded_clock.h"
 
 extern "C" {
@@ -20,7 +20,7 @@ namespace tvsc::bringup {
 
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::hal::time::EmbeddedClock;
-using TaskType = tvsc::hal::scheduler::Task<ClockType>;
+using TaskType = tvsc::scheduler::Task<ClockType>;
 
 using namespace std::chrono_literals;
 
@@ -49,7 +49,7 @@ TaskType run_watchdog(ClockType& clock,
 }  // namespace tvsc::bringup
 
 using namespace tvsc::bringup;
-using namespace tvsc::hal::scheduler;
+using namespace tvsc::scheduler;
 
 int main() {
   static constexpr auto CYCLE_TIME{5s};

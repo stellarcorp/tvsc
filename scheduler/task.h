@@ -7,7 +7,7 @@
 
 #include "hal/time/clock.h"
 
-namespace tvsc::hal::scheduler {
+namespace tvsc::scheduler {
 
 template <typename ClockType>
 class Task final {
@@ -118,4 +118,4 @@ class Task final {
   void run() noexcept { handle_(); }
 };
 
-}  // namespace tvsc::hal::scheduler
+}  // namespace tvsc::scheduler

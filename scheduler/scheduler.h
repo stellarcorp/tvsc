@@ -8,10 +8,10 @@
 
 #include "hal/error.h"
 #include "hal/rcc/rcc.h"
-#include "hal/scheduler/task.h"
+#include "scheduler/task.h"
 #include "hal/time/clock.h"
 
-namespace tvsc::hal::scheduler {
+namespace tvsc::scheduler {
 
 template <typename ClockType, size_t QUEUE_SIZE>
 class Scheduler;
@@ -27,13 +27,13 @@ class Scheduler final {
 
  private:
   ClockType* clock_{&ClockType::clock()};
-  rcc::Rcc* rcc_;
+  tvsc::hal::rcc::Rcc* rcc_;
   std::array<TaskType, QUEUE_SIZE> task_queue_{};
 
   friend std::string to_string<ClockType, QUEUE_SIZE>(const Scheduler&);
 
  public:
-  Scheduler(rcc::Rcc& rcc) : rcc_(&rcc) {}
+  Scheduler(tvsc::hal::rcc::Rcc& rcc) : rcc_(&rcc) {}
 
   size_t add_task(TaskType&& task) {
     for (size_t i = 0; i < QUEUE_SIZE; ++i) {
@@ -119,4 +119,4 @@ std::string to_string(const Scheduler<ClockType, QUEUE_SIZE>& scheduler) {
   return result;
 }
 
-}  // namespace tvsc::hal::scheduler
+}  // namespace tvsc::scheduler
