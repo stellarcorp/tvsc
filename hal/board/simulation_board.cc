@@ -1,11 +1,5 @@
 #include "hal/board/simulation_board.h"
 
-extern "C" {
-
-volatile uint64_t uwTick{};
-
-}  // extern "C"
-
 namespace tvsc::hal::board {
 
 Board& Board::board() { return board_; }

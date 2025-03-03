@@ -14,6 +14,9 @@
 #include "hal/rcc/rcc.h"
 #include "hal/rcc/rcc_interceptor.h"
 #include "hal/rcc/rcc_noop.h"
+#include "hal/systick/systick.h"
+#include "hal/systick/systick_interceptor.h"
+#include "hal/systick/systick_noop.h"
 #include "hal/timer/timer.h"
 #include "hal/timer/timer_interceptor.h"
 #include "hal/timer/timer_noop.h"
@@ -41,6 +44,9 @@ class Board final {
  private:
   rcc::RccNoop rcc_noop_{};
   rcc::RccInterceptor rcc_interceptor_{rcc_noop_};
+
+  systick::SysTickNoop systick_noop_{};
+  systick::SysTickInterceptor systick_interceptor_{systick_noop_};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32L4xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
@@ -96,6 +102,7 @@ class Board final {
   power::Power& power() { return power_interceptor_; };
   rcc::Rcc& rcc() { return rcc_interceptor_; };
   timer::TimerPeripheral& sleep_timer() { return timer_interceptor_; }
+  systick::SysTickType& sys_tick() { return systick_interceptor_; }
 };
 
 }  // namespace tvsc::hal::board
