@@ -31,7 +31,7 @@ cc_test(
         ":scheduler",
         ":testing",
         "//hal/rcc",
-        "//hal/time:mock_clock",
+        "//hal/time:simulation_clock",
         "//third_party/glog",
         "//third_party/gtest",
     ],
@@ -43,7 +43,7 @@ cc_test(
     deps = [
         ":scheduler",
         ":testing",
-        "//hal/time:mock_clock",
+        "//hal/time:simulation_clock",
         "//third_party/glog",
         "//third_party/gtest",
     ],
