@@ -112,4 +112,9 @@ void LPTIM1_IRQHandler() {
   board.sleep_timer().handle_interrupt();
 }
 
+void SysTick_Handler() {
+  tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
+  board.sys_tick().handle_interrupt();
+}
+
 }  // extern "C"
