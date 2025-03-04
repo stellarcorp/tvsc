@@ -1,10 +1,8 @@
 #include "hal/systick/stm32l4xx_systick.h"
 
 #include "hal/systick/systick.h"
-
-extern "C" {
-extern volatile uint64_t uwTick;
-}
+#include "third_party/stm32/stm32.h"
+#include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal::systick {
 

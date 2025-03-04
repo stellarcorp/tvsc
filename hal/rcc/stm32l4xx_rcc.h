@@ -53,6 +53,7 @@ class RccStm32L4xx final : public Rcc {
   ClockConfiguration clock_configuration_{ClockConfiguration::UNCONFIGURED};
 
  public:
+  RccStm32L4xx() { set_clock_to_energy_efficient_speed(); }
   void set_clock_to_max_speed() override;
   void set_clock_to_min_speed() override;
   void set_clock_to_energy_efficient_speed() override;

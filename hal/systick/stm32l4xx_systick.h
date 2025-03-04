@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdint>
-
 #include "hal/systick/systick.h"
 
 namespace tvsc::hal::systick {

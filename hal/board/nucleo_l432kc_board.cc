@@ -7,18 +7,6 @@ namespace tvsc::hal::board {
 Board& Board::board() { return board_; }
 
 Board::Board() {
-  HAL_Init();
-
-  // For details on startup procedures, see stm32h7xx_hal_rcc.c. The comments in that file
-  // explain many details that are otherwise difficult to find.
-
-  // Also, the code in STM32Cube_FW_H7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c can be a
-  // useful reference.
-
-  // Put the board at our preferred speed. This will also initialize the SystemCoreClock
-  // variable and configure the SysTick interrupt.
-  rcc_.set_clock_to_energy_efficient_speed();
-
   // DMA interrupt(s).
   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);

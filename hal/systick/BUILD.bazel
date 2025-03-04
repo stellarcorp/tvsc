@@ -38,6 +38,8 @@ cc_library(
     ],
     deps = [
         ":systick_headers",
+        "//hal",
+        "//hal/rcc",
         "//third_party/stm32",
     ],
 )
