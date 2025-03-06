@@ -122,8 +122,10 @@ cc_library(
         "//hal/gpio",
         "//hal/power",
         "//hal/rcc",
+        "//hal/simulation",
         "//hal/systick",
         "//hal/timer",
         "//hal/watchdog",
+        "//time:simulation_clock",
     ],
 )

@@ -14,6 +14,7 @@
 #include "hal/rcc/rcc.h"
 #include "hal/rcc/rcc_interceptor.h"
 #include "hal/rcc/rcc_noop.h"
+#include "hal/simulation/reactor.h"
 #include "hal/systick/systick.h"
 #include "hal/systick/systick_interceptor.h"
 #include "hal/systick/systick_noop.h"
@@ -23,6 +24,7 @@
 #include "hal/watchdog/watchdog.h"
 #include "hal/watchdog/watchdog_interceptor.h"
 #include "hal/watchdog/watchdog_noop.h"
+#include "time/scaled_clock.h"
 
 namespace tvsc::hal::board {
 
@@ -41,7 +43,18 @@ class Board final {
   static constexpr std::array<gpio::Port, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{GREEN_LED_PORT};
   static constexpr std::array<gpio::Pin, NUM_DEBUG_LEDS> DEBUG_LED_PINS{GREEN_LED_PIN};
 
+  // We use a simulation clock that gives one millisecond of time in the simulation for every
+  // microsecond on the running system's steady_clock. This ratio simulates a much slower CPU than
+  // the one running the simulation. The exact ratio is not exactly 1000x as given here and would
+  // vary depending on many factors -- configured speed of the simulated CPU, clock accuracies,
+  // timings of entering and exiting sleep and stop modes, thermal throttling of simulation system,
+  // load of simulation system, etc. Achieving an exact timing for the simulated CPU is out of
+  // scope.
+  using SimulationClockType = time::ScaledClock<1000, 1, std::chrono::steady_clock>;
+
  private:
+  simulation::Reactor<SimulationClockType> reactor_{SimulationClockType::clock()};
+
   rcc::RccNoop rcc_noop_{};
   rcc::RccInterceptor rcc_interceptor_{rcc_noop_};
 
