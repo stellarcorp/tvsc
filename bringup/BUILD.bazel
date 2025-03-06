@@ -27,9 +27,9 @@ cc_library(
         "//hal",
         "//hal/board",
         "//hal/gpio",
+        "//random",
         "//scheduler",
         "//time",
-        "//random",
     ],
 )
 
@@ -100,9 +100,9 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/gpio",
+        "//random",
         "//scheduler",
         "//time",
-        "//random",
     ],
 )
 
@@ -244,8 +244,8 @@ cc_binary(
         ":tasks",
         "//hal",
         "//hal/board",
-        "//time",
         "//hal/watchdog",
+        "//time",
     ],
 )
 
@@ -262,7 +262,7 @@ cc_binary(
         ":tasks",
         "//hal",
         "//hal/board",
-        "//time",
         "//hal/watchdog",
+        "//time",
     ],
 )
