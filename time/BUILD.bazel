@@ -31,12 +31,7 @@ cc_library(
         "//hal/power",
         "//hal/rcc",
         "//hal/timer",
-    ] + select({
-        "//platforms:std_cpp": [
-            ":simulation_clock",
-        ],
-        "//conditions:default": [],
-    }),
+    ],
 )
 
 cc_library(
