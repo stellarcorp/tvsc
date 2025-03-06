@@ -39,8 +39,7 @@ class ScaledClock final {
     do {
       time_point override_time{requested_time};
       for (auto* clockable : clockables_) {
-        override_time = std::max(scaled_time_offset_,
-                                 std::min(override_time, clockable->update_time(override_time)));
+        override_time = std::min(override_time, clockable->update_time(override_time));
       }
       scaled_time_offset_ = override_time;
       for (auto* clockable : clockables_) {
@@ -53,6 +52,11 @@ class ScaledClock final {
   ScaledClock() noexcept = default;
 
  public:
+  ScaledClock(const ScaledClock&) = delete;
+  ScaledClock(ScaledClock&&) = delete;
+  void operator=(const ScaledClock&) = delete;
+  void operator=(ScaledClock&&) = delete;
+
   [[nodiscard]] static time_point now() { return clock().current_time(); }
   [[nodiscard]] static ScaledClock& clock() noexcept {
     static ScaledClock instance{};
