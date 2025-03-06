@@ -1,9 +1,10 @@
 #include "hal/systick/systick_noop.h"
 
 #include "hal/systick/systick.h"
+#include "hal/time_type.h"
 
 extern "C" {
-volatile uint64_t uwTick{};
+volatile tvsc::hal::TimeType uwTick{};
 }
 
 namespace tvsc::hal::systick {

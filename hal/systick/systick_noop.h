@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hal/systick/systick.h"
+#include "hal/time_type.h"
 
 namespace tvsc::hal::systick {
 

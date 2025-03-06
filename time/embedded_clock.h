@@ -5,8 +5,8 @@
 #include "hal/power/power.h"
 #include "hal/rcc/rcc.h"
 #include "hal/systick/systick.h"
+#include "hal/time_type.h"
 #include "hal/timer/timer.h"
-#include "time/clock.h"
 
 namespace tvsc::time {
 
@@ -32,7 +32,7 @@ class EmbeddedClock final {
 
  public:
   // C++ Clock types.
-  using rep = TimeType;
+  using rep = tvsc::hal::TimeType;
   using period = std::micro;
   using duration = std::chrono::duration<rep, period>;
   using time_point = std::chrono::time_point<EmbeddedClock, duration>;
@@ -43,14 +43,14 @@ class EmbeddedClock final {
   [[nodiscard]] static time_point now() noexcept;
   [[nodiscard]] static EmbeddedClock& clock() noexcept;
 
-  [[nodiscard]] TimeType current_time_micros() noexcept;
-  [[nodiscard]] TimeType current_time_millis() noexcept;
+  [[nodiscard]] tvsc::hal::TimeType current_time_micros() noexcept;
+  [[nodiscard]] tvsc::hal::TimeType current_time_millis() noexcept;
   [[nodiscard]] time_point current_time() noexcept {
     return time_point{std::chrono::microseconds{current_time_micros()}};
   }
 
-  void sleep_us(TimeType microseconds) noexcept;
-  void sleep_ms(TimeType milliseconds) noexcept;
+  void sleep_us(tvsc::hal::TimeType microseconds) noexcept;
+  void sleep_ms(tvsc::hal::TimeType milliseconds) noexcept;
 
   template <typename Rep, typename Period>
   void sleep(std::chrono::duration<Rep, Period> d) noexcept {

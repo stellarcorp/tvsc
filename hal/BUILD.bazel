@@ -4,6 +4,7 @@ cc_library(
         "peripheral.h",
         "peripheral_id.h",
         "register.h",
+        "time_type.h",
     ],
     deps = [
         ":error",

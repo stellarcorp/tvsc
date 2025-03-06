@@ -2,9 +2,9 @@
 
 #include <cstdint>
 
-namespace tvsc::hal::systick {
+#include "hal/time_type.h"
 
-using TimeType = uint64_t;
+namespace tvsc::hal::systick {
 
 class SysTickType {
  public:

@@ -3,9 +3,9 @@
 
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
+#include "hal/time_type.h"
 #include "scheduler/scheduler.h"
 #include "scheduler/task.h"
-#include "time/clock.h"
 
 namespace tvsc::bringup {
 

@@ -1,6 +1,7 @@
 #include "hal/systick/stm32l4xx_systick.h"
 
 #include "hal/systick/systick.h"
+#include "hal/time_type.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 

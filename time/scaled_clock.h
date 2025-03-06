@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "time/clock.h"
+#include "hal/time_type.h"
 #include "time/clockable.h"
 
 namespace tvsc::time {
@@ -87,11 +87,11 @@ class ScaledClock final {
     set_current_time(current_time() + std::chrono::duration_cast<duration>(d));
   }
 
-  void increment_current_time_millis(TimeType increment_ms = 1) noexcept {
+  void increment_current_time_millis(tvsc::hal::TimeType increment_ms = 1) noexcept {
     set_current_time(current_time() + std::chrono::milliseconds(increment_ms));
   }
 
-  void increment_current_time_micros(TimeType increment_us = 1) noexcept {
+  void increment_current_time_micros(tvsc::hal::TimeType increment_us = 1) noexcept {
     set_current_time(current_time() + std::chrono::microseconds(increment_us));
   }
 };

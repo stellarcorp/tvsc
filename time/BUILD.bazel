@@ -1,11 +1,12 @@
 cc_library(
     name = "time_headers",
     hdrs = [
-        "clock.h",
+        "chrono_utils.h",
         "embedded_clock.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
+        "//hal",
         "//hal/power",
         "//hal/rcc",
         "//hal/systick",
@@ -37,7 +38,6 @@ cc_library(
 cc_library(
     name = "simulation_clock",
     hdrs = [
-        "chrono_utils.h",
         "clockable.h",
         "mock_clock.h",
         "scaled_clock.h",
@@ -47,7 +47,7 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        ":time_headers",
+        "//hal",
     ],
 )
 

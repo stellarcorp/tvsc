@@ -3,18 +3,21 @@
 #include <cstdint>
 
 #include "hal/board/board.h"
-#include "time/clock.h"
+#include "hal/time_type.h"
 
 namespace tvsc::time {
 
-TimeType EmbeddedClock::current_time_micros() noexcept { return sys_tick_->current_time_micros(); }
-TimeType EmbeddedClock::current_time_millis() noexcept {
+tvsc::hal::TimeType EmbeddedClock::current_time_micros() noexcept {
+  return sys_tick_->current_time_micros();
+}
+
+tvsc::hal::TimeType EmbeddedClock::current_time_millis() noexcept {
   return sys_tick_->current_time_micros() / 1000;
 }
 
-void EmbeddedClock::sleep_us(TimeType microseconds) noexcept {
-  static constexpr TimeType TIME_TO_START_TIMER_US{25};
-  static constexpr TimeType TIME_TO_WAKE_FROM_STOP_MODE_US{500};
+void EmbeddedClock::sleep_us(tvsc::hal::TimeType microseconds) noexcept {
+  static constexpr tvsc::hal::TimeType TIME_TO_START_TIMER_US{25};
+  static constexpr tvsc::hal::TimeType TIME_TO_WAKE_FROM_STOP_MODE_US{500};
 
   // We can't achieve any better precision than this, so just don't bother.
   if (microseconds < TIME_TO_START_TIMER_US) {
@@ -43,7 +46,9 @@ void EmbeddedClock::sleep_us(TimeType microseconds) noexcept {
   }
 }
 
-void EmbeddedClock::sleep_ms(TimeType milliseconds) noexcept { sleep_us(milliseconds * 1000); }
+void EmbeddedClock::sleep_ms(tvsc::hal::TimeType milliseconds) noexcept {
+  sleep_us(milliseconds * 1000);
+}
 
 EmbeddedClock::time_point EmbeddedClock::now() noexcept { return clock().current_time(); }
 

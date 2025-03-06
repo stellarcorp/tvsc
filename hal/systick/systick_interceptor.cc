@@ -1,6 +1,7 @@
 #include "hal/systick/systick_interceptor.h"
 
 #include "hal/systick/systick.h"
+#include "hal/time_type.h"
 
 namespace tvsc::hal::systick {
 
