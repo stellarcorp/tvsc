@@ -37,6 +37,7 @@ cc_library(
 cc_library(
     name = "simulation_clock",
     hdrs = [
+        "chrono_utils.h",
         "clockable.h",
         "mock_clock.h",
         "scaled_clock.h",
