@@ -15,6 +15,7 @@
 #include "hal/rcc/rcc_interceptor.h"
 #include "hal/rcc/rcc_noop.h"
 #include "hal/simulation/reactor.h"
+#include "hal/systick/fake_systick.h"
 #include "hal/systick/systick.h"
 #include "hal/systick/systick_interceptor.h"
 #include "hal/systick/systick_noop.h"
@@ -58,7 +59,7 @@ class Board final {
   rcc::RccNoop rcc_{};
   rcc::RccInterceptor rcc_interceptor_{rcc_};
 
-  systick::SysTickNoop systick_{};
+  systick::FakeSysTick<SimulationClockType> systick_{reactor_};
   systick::SysTickInterceptor systick_interceptor_{systick_};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
