@@ -42,12 +42,6 @@ void RccStm32L4xx::set_clock_to_max_speed() {
   // Note that we also designate the flash latency here as having a one cycle wait state.
   HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4);
 
-  // Update the SystemCoreClock value.
-  SystemCoreClock = 80'000'000;
-
-  // Update the SysTick configuration.
-  HAL_InitTick(TICK_INT_PRIORITY);
-
   __HAL_RCC_WAKEUPSTOP_CLK_CONFIG(RCC_STOP_WAKEUPCLOCK_MSI);
 
   clock_configuration_ = ClockConfiguration::MAX_SPEED;
@@ -90,12 +84,6 @@ void RccStm32L4xx::set_clock_to_energy_efficient_speed() {
   // Configure the main internal regulator output voltage to undervolt the CPU to save power.
   HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
 
-  // Update the SystemCoreClock value.
-  SystemCoreClock = 16'000'000;
-
-  // Update the SysTick configuration.
-  HAL_InitTick(TICK_INT_PRIORITY);
-
   __HAL_RCC_WAKEUPSTOP_CLK_CONFIG(RCC_STOP_WAKEUPCLOCK_MSI);
 
   clock_configuration_ = ClockConfiguration::ENERGY_EFFICIENT_SPEED;
@@ -125,12 +113,6 @@ void RccStm32L4xx::set_clock_to_min_speed() {
 
   // Note that we also designate the flash latency here as having zero wait states.
   HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0);
-
-  // Update the SystemCoreClock value.
-  SystemCoreClock = 100'000;
-
-  // Update the SysTick configuration.
-  HAL_InitTick(TICK_INT_PRIORITY);
 
   // Configure the main internal regulator output voltage to undervolt the CPU to save power.
   HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
