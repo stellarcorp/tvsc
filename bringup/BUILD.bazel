@@ -228,6 +228,46 @@ cc_binary(
 )
 
 cc_binary(
+    name = "systick_blink_demo.elf",
+    srcs = [
+        "systick_blink_demo.cc",
+    ],
+    additional_linker_inputs = [
+        ":linker_script",
+    ],
+    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    target_compatible_with = select({
+        "@platforms//os:none": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    deps = [
+        ":tasks",
+        "//hal",
+        "//hal/board",
+        "//hal/gpio",
+        "//time",
+    ],
+)
+
+cc_binary(
+    name = "systick_blink_demo",
+    srcs = [
+        "systick_blink_demo.cc",
+    ],
+    target_compatible_with = select({
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    deps = [
+        ":tasks",
+        "//hal",
+        "//hal/board",
+        "//hal/gpio",
+        "//time",
+    ],
+)
+
+cc_binary(
     name = "watchdog_demo.elf",
     srcs = [
         "watchdog_demo.cc",
