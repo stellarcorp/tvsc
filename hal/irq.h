@@ -1,7 +1,5 @@
 #pragma once
 
-#pragma once
-
 #if defined(NUCLEO_H743ZI)
 #include "hal/irq_arm.h"
 #elif defined(NUCLEO_L412KB)
