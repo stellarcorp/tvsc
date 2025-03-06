@@ -5,8 +5,6 @@
 #include <cstdint>
 #include <functional>
 
-#include "time/clock.h"
-
 namespace tvsc::scheduler {
 
 template <typename ClockType>

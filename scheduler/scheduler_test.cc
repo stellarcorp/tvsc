@@ -8,7 +8,6 @@
 #include "hal/rcc/rcc_noop.h"
 #include "scheduler/sample_tasks.h"
 #include "scheduler/task.h"
-#include "time/clock.h"
 #include "time/mock_clock.h"
 
 namespace tvsc::scheduler {

@@ -6,7 +6,6 @@
 #include "gtest/gtest.h"
 #include "scheduler/scheduler.h"
 #include "scheduler/task.h"
-#include "time/clock.h"
 #include "time/mock_clock.h"
 
 namespace tvsc::scheduler {
