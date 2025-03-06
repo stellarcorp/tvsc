@@ -51,6 +51,7 @@ cc_library(
         "systick_noop.cc",
     ],
     hdrs = [
+        "fake_systick.h",
         "systick_interceptor.h",
         "systick_noop.h",
     ],
@@ -60,5 +61,6 @@ cc_library(
     deps = [
         ":systick_headers",
         "//hal",
+        "//hal/simulation",
     ],
 )
