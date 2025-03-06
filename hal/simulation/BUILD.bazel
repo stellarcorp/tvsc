@@ -1,0 +1,29 @@
+cc_library(
+    name = "simulation",
+    hdrs = [
+        "event_generator.h",
+        "reactor.h",
+    ],
+    linkopts = ["-pthread"],
+    target_compatible_with = select({
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/glog",
+        "//time:simulation_clock",
+    ],
+)
+
+cc_test(
+    name = "reactor_test",
+    srcs = [
+        "reactor_test.cc",
+    ],
+    deps = [
+        ":simulation",
+        "//third_party/gtest",
+        "//time:simulation_clock",
+    ],
+)
