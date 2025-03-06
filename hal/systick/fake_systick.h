@@ -14,11 +14,10 @@ class FakeSysTick final : public SysTickType, public simulation::EventGenerator<
   using ReactorType = simulation::Reactor<ClockType>;
 
  private:
-  ReactorType* reactor_;
   TimeType uwTick_{};
 
  public:
-  FakeSysTick(ReactorType& reactor) : reactor_(&reactor) {}
+  FakeSysTick(ReactorType& reactor) { reactor.add_generator(*this); }
 
   TimeType current_time_micros() override { return uwTick_; }
   void increment_micros(TimeType us) override { uwTick_ += us; }
