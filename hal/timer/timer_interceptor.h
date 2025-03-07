@@ -1,14 +1,14 @@
 #pragma once
 
-#include "hal/interceptor.h"
+#include "hal/simulation/interceptor.h"
 #include "hal/timer/timer.h"
 
 namespace tvsc::hal::timer {
 
 template <typename ClockType>
-class TimerInterceptor final : public Interceptor<TimerPeripheral, ClockType> {
+class TimerInterceptor final : public simulation::Interceptor<TimerPeripheral, ClockType> {
  public:
-  TimerInterceptor(TimerPeripheral& timer) : Interceptor<TimerPeripheral, ClockType>(timer) {}
+  TimerInterceptor(TimerPeripheral& timer) : simulation::Interceptor<TimerPeripheral, ClockType>(timer) {}
 
   PeripheralId id() override {
     LOG_FN();

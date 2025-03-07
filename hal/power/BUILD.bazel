@@ -57,5 +57,6 @@ cc_library(
     deps = [
         ":power_headers",
         "//hal",
+        "//hal/simulation",
     ],
 )

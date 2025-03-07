@@ -83,5 +83,6 @@ cc_library(
     deps = [
         ":gpio_headers",
         "//hal",
+        "//hal/simulation",
     ],
 )

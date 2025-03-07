@@ -2,17 +2,17 @@
 
 #include <chrono>
 
-#include "hal/interceptor.h"
+#include "hal/simulation/interceptor.h"
 #include "hal/peripheral.h"
 #include "hal/watchdog/watchdog.h"
 
 namespace tvsc::hal::watchdog {
 
 template <typename ClockType>
-class WatchdogInterceptor final : public Interceptor<WatchdogPeripheral, ClockType> {
+class WatchdogInterceptor final : public simulation::Interceptor<WatchdogPeripheral, ClockType> {
  public:
   WatchdogInterceptor(WatchdogPeripheral& watchdog)
-      : Interceptor<WatchdogPeripheral, ClockType>(watchdog) {}
+      : simulation::Interceptor<WatchdogPeripheral, ClockType>(watchdog) {}
 
   void enable() override {
     LOG_FN();

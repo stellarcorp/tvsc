@@ -63,5 +63,6 @@ cc_library(
     deps = [
         ":watchdog_headers",
         "//hal",
+        "//hal/simulation",
     ],
 )

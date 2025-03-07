@@ -58,5 +58,6 @@ cc_library(
     deps = [
         ":rcc_headers",
         "//hal",
+        "//hal/simulation",
     ],
 )

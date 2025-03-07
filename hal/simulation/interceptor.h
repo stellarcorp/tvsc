@@ -11,7 +11,7 @@
 #endif
 #endif
 
-namespace tvsc::hal {
+namespace tvsc::hal::simulation {
 
 template <typename Interface, typename ClockType>
 class Interceptor : public Interface {
@@ -58,4 +58,4 @@ class Interceptor : public Interface {
 #define LOG_FN() this->log_fn((__FILE__), (__LINE__), (__PRETTY_FUNCTION__))
 #endif
 
-}  // namespace tvsc::hal
+}  // namespace tvsc::hal::simulation
