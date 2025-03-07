@@ -3,9 +3,6 @@ workspace(name = "com_gitlab_tvsc_tvsc")
 load("//third_party:deps.bzl", "load_dependencies")
 load_dependencies()
 
-load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
-bazel_skylib_workspace()
-
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 grpc_deps()
 load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
