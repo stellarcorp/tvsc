@@ -11,12 +11,14 @@ grpc_deps()
 load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
 grpc_extra_deps()
 
-load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
+load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies")
 rules_proto_dependencies()
-rules_proto_toolchains()
 
-load("@rules_cc//cc:repositories.bzl", "rules_cc_dependencies")
-rules_cc_dependencies()
+load("@rules_proto//proto:setup.bzl", "rules_proto_setup")
+rules_proto_setup()
+
+load("@rules_proto//proto:toolchains.bzl", "rules_proto_toolchains")
+rules_proto_toolchains()
 
 load("//toolchain:toolchain.bzl", "register_all_toolchains")
 register_all_toolchains()
