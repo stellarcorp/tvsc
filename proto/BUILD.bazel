@@ -1,0 +1,23 @@
+cc_library(
+    name = "proto",
+    srcs = [
+        "proto_file_reader.cc",
+        "proto_file_writer.cc",
+    ],
+    hdrs = [
+        "proto_file_reader.h",
+        "proto_file_writer.h",
+    ],
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/protobuf",
+    ],
+)
