@@ -8,19 +8,40 @@
 
 namespace tvsc::hal::gpio {
 
-class GpioInterceptor final : public Interceptor<GpioPeripheral> {
+template <typename ClockType>
+class GpioInterceptor final : public Interceptor<GpioPeripheral, ClockType> {
  public:
-  GpioInterceptor(GpioPeripheral& gpio) : Interceptor(gpio) {}
+  explicit GpioInterceptor(GpioPeripheral& gpio) : Interceptor<GpioPeripheral, ClockType>(gpio) {}
 
-  // Turn on power and clock to this peripheral.
-  void enable() override;
-  void disable() override;
+  void enable() override {
+    LOG_FN();
+    return this->call(&GpioPeripheral::enable);
+  }
 
-  void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) override;
+  void disable() override {
+    LOG_FN();
+    return this->call(&GpioPeripheral::disable);
+  }
 
-  bool read_pin(Pin pin) override;
-  void write_pin(Pin pin, bool on) override;
-  void toggle_pin(Pin pin) override;
+  void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) override {
+    LOG_FN();
+    return this->call(&GpioPeripheral::set_pin_mode, pin, mode, speed);
+  }
+
+  bool read_pin(Pin pin) override {
+    LOG_FN();
+    return this->call(&GpioPeripheral::read_pin, pin);
+  }
+
+  void write_pin(Pin pin, bool on) override {
+    LOG_FN();
+    return this->call(&GpioPeripheral::write_pin, pin, on);
+  }
+
+  void toggle_pin(Pin pin) override {
+    LOG_FN();
+    return this->call(&GpioPeripheral::toggle_pin, pin);
+  }
 };
 
 }  // namespace tvsc::hal::gpio

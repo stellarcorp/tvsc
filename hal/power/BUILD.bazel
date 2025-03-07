@@ -45,7 +45,6 @@ cc_library(
 cc_library(
     name = "simulation",
     srcs = [
-        "power_interceptor.cc",
         "power_noop.cc",
     ],
     hdrs = [

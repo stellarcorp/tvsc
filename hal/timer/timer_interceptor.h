@@ -5,22 +5,45 @@
 
 namespace tvsc::hal::timer {
 
-class TimerInterceptor final : public Interceptor<TimerPeripheral> {
+template <typename ClockType>
+class TimerInterceptor final : public Interceptor<TimerPeripheral, ClockType> {
  public:
-  TimerInterceptor(TimerPeripheral& timer) : Interceptor(timer) {}
+  TimerInterceptor(TimerPeripheral& timer) : Interceptor<TimerPeripheral, ClockType>(timer) {}
 
-  PeripheralId id() override;
+  PeripheralId id() override {
+    LOG_FN();
+    return this->call(&TimerPeripheral::id);
+  }
 
-  void start(uint32_t interval_us) override;
-  void stop() override;
+  void start(uint32_t interval_us) override {
+    LOG_FN();
+    return this->call(&TimerPeripheral::start, interval_us);
+  }
 
-  bool is_running() override;
+  void stop() override {
+    LOG_FN();
+    return this->call(&TimerPeripheral::stop);
+  }
 
-  // Turn on timer and clock to this peripheral.
-  void enable() override;
-  void disable() override;
+  bool is_running() override {
+    LOG_FN();
+    return this->call(&TimerPeripheral::is_running);
+  }
 
-  void handle_interrupt() override;
+  void enable() override {
+    LOG_FN();
+    return this->call(&TimerPeripheral::enable);
+  }
+
+  void disable() override {
+    LOG_FN();
+    return this->call(&TimerPeripheral::disable);
+  }
+
+  void handle_interrupt() override {
+    LOG_FN();
+    return this->call(&TimerPeripheral::handle_interrupt);
+  }
 };
 
 }  // namespace tvsc::hal::timer

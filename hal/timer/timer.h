@@ -25,6 +25,8 @@ class TimerPeripheral : public Peripheral<TimerPeripheral, Timer> {
   virtual bool is_running() = 0;
 
   friend class Timer;
+
+  template <typename ClockType>
   friend class TimerInterceptor;
 
  public:

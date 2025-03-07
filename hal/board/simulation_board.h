@@ -57,26 +57,26 @@ class Board final {
   simulation::Reactor<SimulationClockType> reactor_{SimulationClockType::clock()};
 
   rcc::RccNoop rcc_{};
-  rcc::RccInterceptor rcc_interceptor_{rcc_};
+  rcc::RccInterceptor<SimulationClockType> rcc_interceptor_{rcc_};
 
   systick::FakeSysTick<SimulationClockType> systick_{reactor_};
-  systick::SysTickInterceptor systick_interceptor_{systick_};
+  systick::SysTickInterceptor<SimulationClockType> systick_interceptor_{systick_};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32L4xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
   // for the first few here, but this can be expanded if necessary.
   gpio::GpioNoop gpio_{};
-  gpio::GpioInterceptor gpio_interceptor_{gpio_};
+  gpio::GpioInterceptor<SimulationClockType> gpio_interceptor_{gpio_};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
   power::PowerNoop power_{};
-  power::PowerInterceptor power_interceptor_{power_};
+  power::PowerInterceptor<SimulationClockType> power_interceptor_{power_};
 
   timer::TimerNoop timer_{};
-  timer::TimerInterceptor timer_interceptor_{timer_};
+  timer::TimerInterceptor<SimulationClockType> timer_interceptor_{timer_};
 
   watchdog::WatchdogNoop iwdg_{};
-  watchdog::WatchdogNoop iwdg_interceptor_{iwdg_};
+  watchdog::WatchdogInterceptor<SimulationClockType> iwdg_interceptor_{iwdg_};
 
   static Board board_;
 

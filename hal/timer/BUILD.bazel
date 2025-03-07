@@ -51,7 +51,6 @@ cc_library(
 cc_library(
     name = "simulation",
     srcs = [
-        "timer_interceptor.cc",
         "timer_noop.cc",
     ],
     hdrs = [

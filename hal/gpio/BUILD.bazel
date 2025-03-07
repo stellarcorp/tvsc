@@ -71,7 +71,6 @@ cc_library(
 cc_library(
     name = "simulation",
     srcs = [
-        "gpio_interceptor.cc",
         "gpio_noop.cc",
     ],
     hdrs = [

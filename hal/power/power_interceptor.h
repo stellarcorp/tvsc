@@ -5,12 +5,20 @@
 
 namespace tvsc::hal::power {
 
-class PowerInterceptor final : public Interceptor<Power> {
+template <typename ClockType>
+class PowerInterceptor final : public Interceptor<Power, ClockType> {
  public:
-  PowerInterceptor(Power& power) : Interceptor(power) {}
+  PowerInterceptor(Power& power) : Interceptor<Power, ClockType>(power) {}
 
-  void enter_sleep_mode() override;
-  void enter_stop_mode() override;
+  void enter_sleep_mode() override {
+    LOG_FN();
+    return this->call(&Power::enter_sleep_mode);
+  }
+
+  void enter_stop_mode() override {
+    LOG_FN();
+    return this->call(&Power::enter_stop_mode);
+  }
 };
 
 }  // namespace tvsc::hal::power

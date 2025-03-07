@@ -8,17 +8,31 @@
 
 namespace tvsc::hal::watchdog {
 
-class WatchdogInterceptor final : public Interceptor<WatchdogPeripheral> {
+template <typename ClockType>
+class WatchdogInterceptor final : public Interceptor<WatchdogPeripheral, ClockType> {
  public:
-  WatchdogInterceptor(WatchdogPeripheral& watchdog) : Interceptor(watchdog) {}
+  WatchdogInterceptor(WatchdogPeripheral& watchdog)
+      : Interceptor<WatchdogPeripheral, ClockType>(watchdog) {}
 
-  // Turn on power and clock to this peripheral.
-  void enable() override;
-  void disable() override;
+  void enable() override {
+    LOG_FN();
+    return this->call(&WatchdogPeripheral::enable);
+  }
 
-  void feed() override;
+  void disable() override {
+    LOG_FN();
+    return this->call(&WatchdogPeripheral::disable);
+  }
 
-  [[nodiscard]] std::chrono::milliseconds reset_interval() override;
+  void feed() override {
+    LOG_FN();
+    return this->call(&WatchdogPeripheral::feed);
+  }
+
+  [[nodiscard]] std::chrono::milliseconds reset_interval() override {
+    LOG_FN();
+    return this->call(&WatchdogPeripheral::reset_interval);
+  }
 };
 
 }  // namespace tvsc::hal::watchdog

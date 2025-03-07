@@ -6,13 +6,25 @@
 
 namespace tvsc::hal::systick {
 
-class SysTickInterceptor final : public Interceptor<SysTickType> {
+template <typename ClockType>
+class SysTickInterceptor final : public Interceptor<SysTickType, ClockType> {
  public:
-  SysTickInterceptor(SysTickType& systick) : Interceptor(systick) {}
+  SysTickInterceptor(SysTickType& systick) : Interceptor<SysTickType, ClockType>(systick) {}
 
-  TimeType current_time_micros() override;
-  void increment_micros(TimeType us) override;
-  void handle_interrupt() override;
+  TimeType current_time_micros() override {
+    LOG_FN();
+    return this->call(&SysTickType::current_time_micros);
+  }
+
+  void increment_micros(TimeType us) override {
+    LOG_FN();
+    return this->call(&SysTickType::increment_micros, us);
+  }
+
+  void handle_interrupt() override {
+    LOG_FN();
+    return this->call(&SysTickType::handle_interrupt);
+  }
 };
 
 }  // namespace tvsc::hal::systick

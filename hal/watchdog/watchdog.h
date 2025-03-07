@@ -17,6 +17,8 @@ class WatchdogPeripheral : public Peripheral<WatchdogPeripheral, Watchdog> {
   virtual void feed() = 0;
 
   friend class Watchdog;
+
+  template <typename ClockType>
   friend class WatchdogInterceptor;
 
  public:

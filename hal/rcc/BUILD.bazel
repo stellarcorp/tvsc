@@ -46,7 +46,6 @@ cc_library(
 cc_library(
     name = "simulation",
     srcs = [
-        "rcc_interceptor.cc",
         "rcc_noop.cc",
     ],
     hdrs = [
