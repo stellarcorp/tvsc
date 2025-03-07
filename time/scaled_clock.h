@@ -28,7 +28,7 @@ class ScaledClock final {
   static constexpr bool is_steady{true};
 
  private:
-  BaseClockType::time_point base_time_offset_{};
+  BaseClockType::time_point base_time_offset_{BaseClockType::now()};
   time_point scaled_time_offset_{};
 
   std::vector<ClockableType*> clockables_{};
