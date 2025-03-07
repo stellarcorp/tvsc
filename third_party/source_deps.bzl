@@ -50,13 +50,6 @@ def load_source_dependencies():
             sha256 = "8a298e832762eda1830597d64fe7db58178aa84cd5926d76d5b744d6558941c2",
         )
 
-    if not native.existing_rule("io_bazel_rules_docker"):
-        http_archive(
-            name = "io_bazel_rules_docker",
-            sha256 = "b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf",
-            urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.25.0/rules_docker-v0.25.0.tar.gz"],
-        )
-
     if not native.existing_rule("com_google_googletest"):
         http_archive(
             name = "com_google_googletest",
