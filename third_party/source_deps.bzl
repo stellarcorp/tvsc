@@ -11,16 +11,6 @@ def load_source_dependencies():
             sha256 = "f7be3474d42aae265405a592bb7da8e171919d74c16f082a5457840f06054728",
         )
 
-    if not native.existing_rule("rules_cc"):
-        http_archive(
-            name = "rules_cc",
-            strip_prefix = "rules_cc-2f8c04c04462ab83c545ab14c0da68c3b4c96191",
-            sha256 = "4aeb102efbcfad509857d7cb9c5456731e8ce566bfbf2960286a2ec236796cc3",
-            urls = [
-                "https://github.com/bazelbuild/rules_cc/archive/2f8c04c04462ab83c545ab14c0da68c3b4c96191.tar.gz",
-            ],
-        )
-
     if not native.existing_rule("io_bazel_rules_closure"):
         http_archive(
             name = "io_bazel_rules_closure",
