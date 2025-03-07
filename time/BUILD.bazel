@@ -1,7 +1,6 @@
 cc_library(
     name = "time_headers",
     hdrs = [
-        "chrono_utils.h",
         "embedded_clock.h",
     ],
     visibility = ["//visibility:public"],

@@ -1,6 +1,7 @@
 cc_library(
     name = "hal_interface",
     hdrs = [
+        "chrono_utils.h",
         "peripheral.h",
         "peripheral_id.h",
         "register.h",
