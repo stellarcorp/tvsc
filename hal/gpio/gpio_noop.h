@@ -3,7 +3,6 @@
 #include <chrono>
 
 #include "hal/gpio/gpio.h"
-#include "hal/simulation/interceptor.h"
 #include "hal/peripheral.h"
 
 namespace tvsc::hal::gpio {

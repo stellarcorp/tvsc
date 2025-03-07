@@ -2,7 +2,6 @@
 
 #include <chrono>
 
-#include "hal/simulation/interceptor.h"
 #include "hal/peripheral.h"
 #include "hal/watchdog/watchdog.h"
 
