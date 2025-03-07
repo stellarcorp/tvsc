@@ -20,7 +20,7 @@ cc_library(
         "//base:except",
         "//buffer",
         "//hal/output",
-        "//time",
+        "//time:embedded_clock",
         "//hash",
         "//random",
     ] + select(
@@ -107,7 +107,7 @@ cc_library(
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
-        "//time",
+        "//time:embedded_clock",
         "//random",
     ] + select(
         {
@@ -181,7 +181,7 @@ cc_binary(
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
-        "//time",
+        "//time:embedded_clock",
         "//random",
     ] + select(
         {
@@ -228,7 +228,7 @@ cc_binary(
         "//hal/gpio",
         "//hal/output",
         "//hal/spi",
-        "//time",
+        "//time:embedded_clock",
         "//random",
     ] + select(
         {
@@ -264,7 +264,7 @@ cc_library(
     deps = [
         ":radio",
         "//hal/output",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
 
@@ -274,7 +274,7 @@ cc_test(
     tags = ["manual"],
     deps = [
         ":mock_radio",
-        "//time:mock_clock",
         "//third_party/gtest",
+        "//time:mock_clock",
     ],
 )

@@ -29,7 +29,7 @@ cc_library(
         "//hal/gpio",
         "//random",
         "//scheduler",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
 
@@ -53,7 +53,7 @@ cc_binary(
         "//hal/board",
         "//hal/gpio",
         "//scheduler",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
 
@@ -77,7 +77,7 @@ cc_binary(
         "//hal/board",
         "//hal/gpio",
         "//scheduler",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
 
@@ -102,7 +102,7 @@ cc_binary(
         "//hal/gpio",
         "//random",
         "//scheduler",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
 
@@ -128,7 +128,7 @@ cc_binary(
         "//hal/board",
         "//hal/gpio",
         "//scheduler",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
 
@@ -154,7 +154,7 @@ cc_binary(
         "//hal/board",
         "//hal/gpio",
         "//scheduler",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
 
@@ -179,7 +179,7 @@ cc_binary(
         "//hal/board",
         "//hal/gpio",
         "//scheduler",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
 
@@ -201,7 +201,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/gpio",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
 
@@ -245,7 +245,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/gpio",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
 
@@ -263,7 +263,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/gpio",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
 
@@ -285,7 +285,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/watchdog",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
 
@@ -303,6 +303,6 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/watchdog",
-        "//time",
+        "//time:embedded_clock",
     ],
 )
