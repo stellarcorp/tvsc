@@ -24,11 +24,11 @@ def load_source_dependencies():
     if not native.existing_rule("io_bazel_rules_closure"):
         http_archive(
             name = "io_bazel_rules_closure",
-            sha256 = "9498e57368efb82b985db1ed426a767cbf1ba0398fd7aed632fc3908654e1b1e",
-            strip_prefix = "rules_closure-0.12.0",
+            sha256 = "12f1169ebe782f8631fcb8da81aa12ba192f8952875b4a1e8f20c49fc6e10223",
+            strip_prefix = "rules_closure-0.14.0",
             urls = [
-                "https://mirror.bazel.build/github.com/bazelbuild/rules_closure/archive/0.12.0.tar.gz",
-                "https://github.com/bazelbuild/rules_closure/archive/0.12.0.tar.gz",
+                "https://mirror.bazel.build/github.com/bazelbuild/rules_closure/archive/0.14.0.tar.gz",
+                "https://github.com/bazelbuild/rules_closure/archive/0.14.0.tar.gz",
             ],
         )
 
