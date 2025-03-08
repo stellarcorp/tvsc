@@ -31,6 +31,10 @@ int main(int argc, char* argv[]) {
     while (clock.current_time() < change_time) {
       // Busy loop to keep dependencies simple. This avoids using the scheduler and avoids
       // sleep/stop modes used when using the sleep methods of the clock.
+      for (int i = 0; i < 1000; ++i) {
+        // We use this inside for loop to avoid calling clock.current_time() so often. This reduces
+        // logging noise in simulation.
+      }
     }
   }
 }
