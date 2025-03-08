@@ -1,14 +1,16 @@
 #pragma once
 
-#include "hal/simulation/interceptor.h"
 #include "hal/power/power.h"
+#include "hal/simulation/interceptor.h"
+#include "hal/simulation/logger.h"
 
 namespace tvsc::hal::power {
 
 template <typename ClockType>
 class PowerInterceptor final : public simulation::Interceptor<Power, ClockType> {
  public:
-  PowerInterceptor(Power& power) : simulation::Interceptor<Power, ClockType>(power) {}
+  PowerInterceptor(Power& power, simulation::Logger<ClockType>& logger)
+      : simulation::Interceptor<Power, ClockType>(power, logger) {}
 
   void enter_sleep_mode() override {
     LOG_FN();

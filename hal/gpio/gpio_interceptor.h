@@ -3,15 +3,17 @@
 #include <chrono>
 
 #include "hal/gpio/gpio.h"
-#include "hal/simulation/interceptor.h"
 #include "hal/peripheral.h"
+#include "hal/simulation/interceptor.h"
+#include "hal/simulation/logger.h"
 
 namespace tvsc::hal::gpio {
 
 template <typename ClockType>
 class GpioInterceptor final : public simulation::Interceptor<GpioPeripheral, ClockType> {
  public:
-  explicit GpioInterceptor(GpioPeripheral& gpio) : simulation::Interceptor<GpioPeripheral, ClockType>(gpio) {}
+  explicit GpioInterceptor(GpioPeripheral& gpio, simulation::Logger<ClockType>& logger)
+      : simulation::Interceptor<GpioPeripheral, ClockType>(gpio, logger) {}
 
   void enable() override {
     LOG_FN();

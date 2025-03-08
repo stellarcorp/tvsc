@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hal/simulation/interceptor.h"
+#include "hal/simulation/logger.h"
 #include "hal/systick/systick.h"
 #include "hal/time_type.h"
 
@@ -9,7 +10,8 @@ namespace tvsc::hal::systick {
 template <typename ClockType>
 class SysTickInterceptor final : public simulation::Interceptor<SysTickType, ClockType> {
  public:
-  SysTickInterceptor(SysTickType& systick) : simulation::Interceptor<SysTickType, ClockType>(systick) {}
+  SysTickInterceptor(SysTickType& systick, simulation::Logger<ClockType>& logger)
+      : simulation::Interceptor<SysTickType, ClockType>(systick, logger) {}
 
   TimeType current_time_micros() override {
     LOG_FN();

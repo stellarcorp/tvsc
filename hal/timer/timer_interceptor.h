@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hal/simulation/interceptor.h"
+#include "hal/simulation/logger.h"
 #include "hal/timer/timer.h"
 
 namespace tvsc::hal::timer {
@@ -8,7 +9,8 @@ namespace tvsc::hal::timer {
 template <typename ClockType>
 class TimerInterceptor final : public simulation::Interceptor<TimerPeripheral, ClockType> {
  public:
-  TimerInterceptor(TimerPeripheral& timer) : simulation::Interceptor<TimerPeripheral, ClockType>(timer) {}
+  TimerInterceptor(TimerPeripheral& timer, simulation::Logger<ClockType>& logger)
+      : simulation::Interceptor<TimerPeripheral, ClockType>(timer, logger) {}
 
   PeripheralId id() override {
     LOG_FN();

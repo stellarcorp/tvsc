@@ -1,14 +1,16 @@
 #pragma once
 
-#include "hal/simulation/interceptor.h"
 #include "hal/rcc/rcc.h"
+#include "hal/simulation/interceptor.h"
+#include "hal/simulation/logger.h"
 
 namespace tvsc::hal::rcc {
 
 template <typename ClockType>
 class RccInterceptor final : public simulation::Interceptor<Rcc, ClockType> {
  public:
-  RccInterceptor(Rcc& rcc) : simulation::Interceptor<Rcc, ClockType>(rcc) {}
+  RccInterceptor(Rcc& rcc, simulation::Logger<ClockType>& logger)
+      : simulation::Interceptor<Rcc, ClockType>(rcc, logger) {}
 
   void set_clock_to_max_speed() override {
     LOG_FN();

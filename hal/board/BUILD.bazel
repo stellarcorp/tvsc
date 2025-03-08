@@ -126,6 +126,7 @@ cc_library(
         "//hal/systick",
         "//hal/timer",
         "//hal/watchdog",
+        "//third_party/glog",
         "//time:simulation_clock",
     ],
 )

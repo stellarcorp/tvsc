@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package tvsc.hal.simulation;
+
+message Irq {
+  uint32 irq_number = 1;
+}
+
+message Function {
+  string name = 1;
+  string source_file = 2;
+  uint32 line_number = 3;
+}
+
+message Event {
+  double timestamp = 1;
+  oneof event_type {
+    Irq irq = 2;
+    Function fn = 3;
+  }
+}
