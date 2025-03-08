@@ -2,6 +2,7 @@ cc_library(
     name = "except",
     srcs = select({
         "@platforms//os:none": [
+            "initializer_noop.cc",
         ],
         "//conditions:default": [
             "initializer.cc",
@@ -14,10 +15,10 @@ cc_library(
             ],
             "//conditions:default": [
                 "except_with_glog.h",
-                "initializer.h",
             ],
         }) + [
             "except.h",
+            "initializer.h",
         ],
     defines = select({
         "@platforms//os:none": [

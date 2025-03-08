@@ -13,6 +13,6 @@ namespace tvsc {
  *   tvsc::initialize(&argc, &argv);
  *
  */
-void initialize(int* argc, char** argv[], const std::string& log_dir = "/var/log/tvsc");
+void initialize(int* argc, char** argv[]);
 
 }  // namespace tvsc
