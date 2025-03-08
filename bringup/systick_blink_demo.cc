@@ -1,5 +1,6 @@
 #include <chrono>
 
+#include "base/initializer.h"
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
 #include "time/embedded_clock.h"
@@ -9,7 +10,9 @@ using ClockType = tvsc::time::EmbeddedClock;
 
 using namespace std::chrono_literals;
 
-int main() {
+int main(int argc, char* argv[]) {
+  tvsc::initialize(&argc, &argv);
+
   auto& board{BoardType::board()};
   auto& clock{ClockType::clock()};
 

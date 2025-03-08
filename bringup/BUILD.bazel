@@ -242,6 +242,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//base:except",
         "//hal",
         "//hal/board",
         "//hal/gpio",
@@ -260,6 +261,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//base:except",
         "//hal",
         "//hal/board",
         "//hal/gpio",
