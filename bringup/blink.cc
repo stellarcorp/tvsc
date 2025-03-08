@@ -3,6 +3,7 @@
 #include <cstring>
 #include <limits>
 
+#include "base/initializer.h"
 #include "hal/board/board.h"
 #include "scheduler/scheduler.h"
 #include "scheduler/task.h"
@@ -16,7 +17,9 @@ using namespace tvsc::scheduler;
 
 static constexpr size_t QUEUE_SIZE{1};
 
-int main() {
+int main(int argc, char* argv[]) {
+  tvsc::initialize(&argc, &argv);
+
   auto& board{BoardType::board()};
   auto& clock{ClockType::clock()};
 

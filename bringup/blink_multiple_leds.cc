@@ -1,6 +1,7 @@
 #include <cstring>
 #include <limits>
 
+#include "base/initializer.h"
 #include "bringup/blink.h"
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
@@ -16,7 +17,9 @@ using namespace tvsc::scheduler;
 
 static constexpr size_t QUEUE_SIZE{4};
 
-int main() {
+int main(int argc, char* argv[]) {
+  tvsc::initialize(&argc, &argv);
+
   static constexpr uint64_t BASE_DURATION_MS{200};
   auto& board{BoardType::board()};
 

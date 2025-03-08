@@ -2,6 +2,7 @@
 
 #include <cstddef>
 
+#include "base/initializer.h"
 #include "hal/board/board.h"
 #include "scheduler/scheduler.h"
 #include "time/embedded_clock.h"
@@ -17,7 +18,9 @@ static constexpr size_t QUEUE_SIZE{BoardType::NUM_DAC_CHANNELS};
 __attribute__((section(".status.value"))) uint32_t dac1_value;
 __attribute__((section(".status.value"))) uint32_t dac2_value;
 
-int main() {
+int main(int argc, char* argv[]) {
+  tvsc::initialize(&argc, &argv);
+
   auto& board{BoardType::board()};
 
   Scheduler<ClockType, QUEUE_SIZE> scheduler{board.rcc()};

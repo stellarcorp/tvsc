@@ -1,5 +1,6 @@
 #include <cstdint>
 
+#include "base/initializer.h"
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
 #include "hal/peripheral_id.h"
@@ -24,7 +25,9 @@ void HAL_LPTIM_CompareMatchCallback(LPTIM_HandleTypeDef *) {
   ++debug_stats.interrupt_trigger_count;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+  tvsc::initialize(&argc, &argv);
+
   BoardType &board{BoardType::board()};
 
   // Turn on clocks for the GPIO ports that we want.

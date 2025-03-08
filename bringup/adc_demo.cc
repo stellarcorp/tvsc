@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cstring>
 
+#include "base/initializer.h"
 #include "bringup/dac_demo.h"
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
@@ -129,7 +130,9 @@ tvsc::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
 using namespace tvsc::bringup;
 using namespace tvsc::scheduler;
 
-int main() {
+int main(int argc, char* argv[]) {
+  tvsc::initialize(&argc, &argv);
+
   BoardType& board{BoardType::board()};
 
   Scheduler<ClockType, 4 /*QUEUE_SIZE*/> scheduler{board.rcc()};

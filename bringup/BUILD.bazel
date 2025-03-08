@@ -49,6 +49,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//base:except",
         "//hal",
         "//hal/board",
         "//hal/gpio",
@@ -73,6 +74,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//base:except",
         "//hal",
         "//hal/board",
         "//hal/gpio",
@@ -97,6 +99,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//base:except",
         "//hal",
         "//hal/board",
         "//hal/gpio",
@@ -124,6 +127,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//base:except",
         "//hal",
         "//hal/board",
         "//hal/gpio",
@@ -150,6 +154,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//base:except",
         "//hal",
         "//hal/board",
         "//hal/gpio",
@@ -175,6 +180,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//base:except",
         "//hal",
         "//hal/board",
         "//hal/gpio",
@@ -198,6 +204,7 @@ cc_binary(
         "//conditions:default": [],
     }),
     deps = [
+        "//base:except",
         "//hal",
         "//hal/board",
         "//hal/gpio",
@@ -220,6 +227,7 @@ cc_binary(
         "//conditions:default": [],
     }),
     deps = [
+        "//base:except",
         "//hal",
         "//hal/board",
         "//hal/gpio",
@@ -284,6 +292,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//base:except",
         "//hal",
         "//hal/board",
         "//hal/watchdog",
@@ -302,6 +311,7 @@ cc_binary(
     }),
     deps = [
         ":tasks",
+        "//base:except",
         "//hal",
         "//hal/board",
         "//hal/watchdog",

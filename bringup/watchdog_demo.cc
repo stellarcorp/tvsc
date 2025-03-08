@@ -4,6 +4,7 @@
 #include <cstring>
 #include <limits>
 
+#include "base/initializer.h"
 #include "bringup/blink.h"
 #include "hal/board/board.h"
 #include "scheduler/scheduler.h"
@@ -51,7 +52,9 @@ TaskType run_watchdog(ClockType& clock,
 using namespace tvsc::bringup;
 using namespace tvsc::scheduler;
 
-int main() {
+int main(int argc, char* argv[]) {
+  tvsc::initialize(&argc, &argv);
+
   static constexpr auto CYCLE_TIME{5s};
   auto& board{BoardType::board()};
   auto& clock{ClockType::clock()};
