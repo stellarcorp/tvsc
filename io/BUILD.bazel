@@ -1,9 +1,13 @@
 cc_library(
     name = "io",
+    srcs = [
+        "temp_filename.cc",
+    ],
     hdrs = [
         "file_data_source.h",
         "file_reader.h",
         "looping_file_reader.h",
+        "temp_filename.h",
     ],
     linkopts = ["-lstdc++fs"],
     target_compatible_with = select(
