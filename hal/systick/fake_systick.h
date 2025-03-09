@@ -23,12 +23,12 @@ class FakeSysTick final : public SysTickType, public simulation::EventGenerator<
   void increment_micros(TimeType us) override { uwTick_ += us; }
   void handle_interrupt() override { uwTick_ += 1000; }
 
-  ClockType::duration next_event_in(ClockType::time_point now) const noexcept override {
+  ClockType::duration next_event_in(ClockType::time_point /*now*/) const noexcept override {
     using namespace std::chrono_literals;
     return 1000us;
   }
 
-  void generate(ClockType::time_point now) noexcept override { handle_interrupt(); }
+  void generate(ClockType::time_point /*now*/) noexcept override { handle_interrupt(); }
 };
 
 }  // namespace tvsc::hal::systick
