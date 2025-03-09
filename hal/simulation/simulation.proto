@@ -3,7 +3,8 @@ syntax = "proto3";
 package tvsc.hal.simulation;
 
 message Irq {
-  uint32 irq_number = 1;
+  int32 irq_number = 1;
+  string irq_name = 2;
 }
 
 message Function {
