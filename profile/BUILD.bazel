@@ -3,13 +3,5 @@ cc_library(
     hdrs = [
         "profile.h",
     ],
-    target_compatible_with = select(
-        {
-            "@platforms//os:none": [
-                "@platforms//:incompatible",
-            ],
-            "//conditions:default": [],
-        },
-    ),
     visibility = ["//visibility:public"],
 )
