@@ -52,3 +52,20 @@ cc_test(
         "//time:simulation_clock",
     ],
 )
+
+cc_binary(
+    name = "read_simulation_log",
+    srcs = [
+        "read_simulation_log.cc",
+    ],
+    target_compatible_with = select({
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    deps = [
+        ":simulation_cc_proto",
+        "//base",
+        "//proto",
+        "//third_party/gflags",
+    ],
+)
