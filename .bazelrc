@@ -41,6 +41,29 @@ build:nucleo_l452re --cpu=armv7e-mf-stm32-l452 --crosstool_top=//toolchain/nucle
 build:nucleo_l452re --copt -DSTM32L452xx
 build:nucleo_l452re --copt -DNUCLEO_L452RE
 
+# Profiling
+# Install these tools:
+#   apt install google-perftools libgoogle-perftools-dev
+#
+# Instrument your code by bracketing the code you want profiled in calls to
+# tvsc::profile::profiler_start() and tvsc::profile::profiler_stop(). These are simple wrapper
+# functions around ProfilerStart(<filename>) and ProfilerStop(). (These functions are declared
+# in <gperftools/profiler.h>.)
+#
+# Build with:
+#   bazel build --config profile -c opt <target>
+#
+# Run the code.
+#   ./your_binary
+#
+# Analyze results with:
+#   pprof --text ./your_binary profile.prof
+#
+# More details at https://gperftools.github.io/gperftools/cpuprofile.html
+build:profile --linkopt -lprofiler
+build:profile --copt -g
+build:profile --copt -DPROFILING_ENABLED
+
 # Address sanitizer
 # CC=clang bazel build --config asan
 build:asan --strip=never

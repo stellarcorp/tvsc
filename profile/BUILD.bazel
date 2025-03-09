@@ -1,0 +1,15 @@
+cc_library(
+    name = "profile",
+    hdrs = [
+        "profile.h",
+    ],
+    target_compatible_with = select(
+        {
+            "@platforms//os:none": [
+                "@platforms//:incompatible",
+            ],
+            "//conditions:default": [],
+        },
+    ),
+    visibility = ["//visibility:public"],
+)
