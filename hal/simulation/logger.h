@@ -58,6 +58,18 @@ class Logger final {
   }
 
 #endif
+
+  void log_irq(int irq, const char* name) {
+    Event msg{};
+    const int64_t current_time_us{
+        std::chrono::duration_cast<std::chrono::microseconds>(ClockType::now().time_since_epoch())
+            .count()};
+    msg.set_timestamp_sec(current_time_us / 1'000'000.);
+    Irq* irq_proto = msg.mutable_irq();
+    irq_proto->set_irq_number(irq);
+    irq_proto->set_irq_name(name);
+    writer_.write_message(msg);
+  }
 };
 
 }  // namespace tvsc::hal::simulation
