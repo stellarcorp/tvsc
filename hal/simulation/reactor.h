@@ -8,7 +8,6 @@
 #include <thread>
 #include <vector>
 
-#include "glog/logging.h"
 #include "hal/simulation/event_generator.h"
 #include "time/clockable.h"
 
@@ -54,9 +53,10 @@ class Reactor final : public time::Clockable<ClockT> {
   }
 
   void generate_irqs() noexcept {
+    using namespace std::chrono_literals;
     std::unique_lock lock(m_);
     while (!stop_requested_) {
-      cv_.wait(lock);
+      cv_.wait_for(lock, 1ms / ClockType::SCALE_FACTOR);
       generate_irqs_once();
     }
   }
