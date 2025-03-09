@@ -1,0 +1,13 @@
+cc_library(
+    name = "flags",
+    hdrs = [
+        "flags.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = select({
+        "@platforms//os:linux": [
+            "//third_party/gflags",
+        ],
+        "//conditions:default": [],
+    }),
+)
