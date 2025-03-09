@@ -8,7 +8,7 @@
 #include <thread>
 #include <vector>
 
-#include "hal/simulation/event_generator.h"
+#include "hal/simulation/irq_generator.h"
 #include "time/clockable.h"
 
 namespace tvsc::hal::simulation {
@@ -21,7 +21,7 @@ class Reactor final : public time::Clockable<ClockT> {
  private:
   struct EventTiming final {
     ClockType::time_point next_event_time;
-    EventGenerator<ClockType>* generator;
+    IrqGenerator<ClockType>* generator;
   };
 
   std::vector<EventTiming> timings_{};
@@ -41,9 +41,9 @@ class Reactor final : public time::Clockable<ClockT> {
     auto current_time{ClockType::now()};
     for (auto& timing : timings_) {
       if (timing.next_event_time <= current_time) {
-        timing.generator->generate(current_time);
+        timing.generator->generate_interrupt(current_time);
         current_time = ClockType::now();
-        timing.next_event_time = current_time + timing.generator->next_event_in(current_time);
+        timing.next_event_time = current_time + timing.generator->next_interrupt_in(current_time);
       } else {
         break;
       }
@@ -56,7 +56,11 @@ class Reactor final : public time::Clockable<ClockT> {
     using namespace std::chrono_literals;
     std::unique_lock lock(m_);
     while (!stop_requested_) {
-      cv_.wait_for(lock, 1ms / ClockType::SCALE_FACTOR);
+      if constexpr (ClockType::SCALE_FACTOR > 0.) {
+        cv_.wait_for(lock, 1ms / ClockType::SCALE_FACTOR);
+      } else {
+        cv_.wait(lock);
+      }
       generate_irqs_once();
     }
   }
@@ -97,9 +101,9 @@ class Reactor final : public time::Clockable<ClockT> {
     }
   }
 
-  void add_generator(EventGenerator<ClockType>& generator) noexcept {
+  void add_generator(IrqGenerator<ClockType>& generator) noexcept {
     const auto current_time{ClockType::now()};
-    auto next_event_time = current_time + generator.next_event_in(current_time);
+    auto next_event_time = current_time + generator.next_interrupt_in(current_time);
 
     {
       std::lock_guard lock(m_);

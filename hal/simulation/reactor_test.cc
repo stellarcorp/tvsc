@@ -3,6 +3,7 @@
 #include <chrono>
 
 #include "gtest/gtest.h"
+#include "hal/simulation/irq_generator.h"
 #include "time/mock_clock.h"
 
 namespace tvsc::hal::simulation {
@@ -12,19 +13,23 @@ using namespace std::chrono_literals;
 
 TEST(ReactorTest, CanInstantiate) { Reactor r{ClockType::clock()}; }
 
-class TestEventGenerator final : public EventGenerator<ClockType> {
+class TestIrqGenerator final : public IrqGenerator<ClockType> {
  public:
   int times_called{};
 
-  ClockType::duration next_event_in(ClockType::time_point now) const noexcept override {
+  int irq() const noexcept override { return 42; }
+
+  const char* irq_name() const noexcept override { return "test interrupt"; }
+
+  ClockType::duration next_interrupt_in(ClockType::time_point now) const noexcept override {
     return 10ms;
   }
 
-  void generate(ClockType::time_point now) noexcept override { ++times_called; }
+  void handle_interrupt() noexcept override { ++times_called; }
 };
 
 TEST(ReactorTest, CanRunGeneratorOnce) {
-  TestEventGenerator generator{};
+  TestIrqGenerator generator{};
   {
     ClockType& clock{ClockType::clock()};
     Reactor r{clock};
@@ -36,7 +41,7 @@ TEST(ReactorTest, CanRunGeneratorOnce) {
 }
 
 TEST(ReactorTest, CanRunGeneratorOnInterval) {
-  TestEventGenerator generator{};
+  TestIrqGenerator generator{};
   {
     ClockType& clock{ClockType::clock()};
     Reactor r{clock};

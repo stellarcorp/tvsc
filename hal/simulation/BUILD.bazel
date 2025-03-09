@@ -1,7 +1,7 @@
 cc_library(
     name = "simulation",
     hdrs = [
-        "event_generator.h",
+        "irq_generator.h",
         "interceptor.h",
         "logger.h",
         "reactor.h",
