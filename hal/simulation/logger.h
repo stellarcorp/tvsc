@@ -6,6 +6,8 @@
 #endif
 #endif
 
+#include <cstdint>
+
 #include "hal/simulation/simulation.pb.h"
 #include "io/temp_filename.h"
 #include "proto/proto_file_writer.h"
@@ -29,7 +31,10 @@ class Logger final {
 
   void log_fn(const std::source_location& location = std::source_location::current()) {
     Event msg{};
-    msg.set_timestamp(ClockType::now().time_since_epoch().count());
+    const int64_t current_time_us{
+        std::chrono::duration_cast<std::chrono::microseconds>(ClockType::now().time_since_epoch())
+            .count()};
+    msg.set_timestamp_sec(current_time_us / 1'000'000.);
     Function* fn = msg.mutable_fn();
     fn->set_name(location.function_name());
     fn->set_source_file(location.file_name());
@@ -41,7 +46,10 @@ class Logger final {
 
   void log_fn(const char* filename, uint32_t line_number, const char* function_name) {
     Event msg{};
-    msg.set_timestamp(ClockType::now().time_since_epoch().count());
+    const int64_t current_time_us{
+        std::chrono::duration_cast<std::chrono::microseconds>(ClockType::now().time_since_epoch())
+            .count()};
+    msg.set_timestamp_sec(current_time_us / 1'000'000.);
     Function* fn = msg.mutable_fn();
     fn->set_name(function_name);
     fn->set_source_file(filename);
