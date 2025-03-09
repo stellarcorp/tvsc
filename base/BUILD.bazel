@@ -1,5 +1,5 @@
 cc_library(
-    name = "except",
+    name = "base",
     srcs = select({
         "@platforms//os:none": [
             "initializer_noop.cc",
@@ -8,6 +8,23 @@ cc_library(
             "initializer.cc",
         ],
     }),
+    hdrs =
+        [
+            "initializer.h",
+        ],
+    visibility = ["//visibility:public"],
+    deps = select({
+        "@platforms//os:none": [
+        ],
+        "//conditions:default": [
+            "//third_party/glog",
+            "//third_party/gflags",
+        ],
+    }),
+)
+
+cc_library(
+    name = "except",
     hdrs =
         select({
             "@platforms//os:none": [
@@ -18,7 +35,6 @@ cc_library(
             ],
         }) + [
             "except.h",
-            "initializer.h",
         ],
     defines = select({
         "@platforms//os:none": [

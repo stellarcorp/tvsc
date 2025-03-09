@@ -1,7 +1,5 @@
 #include "base/initializer.h"
 
-#include <filesystem>
-
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
