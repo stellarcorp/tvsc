@@ -16,15 +16,20 @@ void print(const Event& msg) {
   result.append(to_string(msg.timestamp_sec())).append(": ");
   if (msg.has_fn()) {
     const Function& fn{msg.fn()};
-    result.append(fn.name())
-        .append(" (")
-        .append(fn.source_file())
-        .append(":")
-        .append(to_string(fn.line_number()))
+    result
+        .append(fn.name())                    //
+        .append(" (")                         //
+        .append(fn.source_file())             //
+        .append(":")                          //
+        .append(to_string(fn.line_number()))  //
         .append(")");
   } else if (msg.has_irq()) {
     const Irq& irq{msg.irq()};
-    result.append(to_string(irq.irq_number()));
+    result
+        .append(to_string(irq.irq_number()))  //
+        .append(" (")                         //
+        .append(irq.irq_name())               //
+        .append(")");
   }
   std::cout << result << "\n";
 }
