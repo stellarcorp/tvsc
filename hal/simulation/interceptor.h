@@ -33,7 +33,7 @@ class Interceptor : public InterfaceType {
 #if __cpp_lib_source_location >= 201907L
 #define LOG_FN() this->logger_->log_fn()
 #else
-#define LOG_FN() this->logger_->log_fn((__FILE__), (__LINE__), (__PRETTY_FUNCTION__))
+#define LOG_FN() this->logger_->log_fn((__FILE__), (__LINE__), (__func__))
 #endif
 
 }  // namespace tvsc::hal::simulation
