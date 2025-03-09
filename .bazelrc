@@ -28,16 +28,19 @@ build:teensy41 --cpu=armv7e-mf --crosstool_top=//toolchain/teensy:gcc_toolchain 
 
 build:nucleo_l412kb --platforms=//platforms:nucleo_l412kb
 build:nucleo_l412kb --cpu=armv7e-mf-stm32-l412 --crosstool_top=//toolchain/nucleo_l4:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:nucleo_l412kb --copt -DEMBEDDED_PLATFORM
 build:nucleo_l412kb --copt -DSTM32L412xx
 build:nucleo_l412kb --copt -DNUCLEO_L412KB
 
 build:nucleo_l432kc --platforms=//platforms:nucleo_l432kc
 build:nucleo_l432kc --cpu=armv7e-mf-stm32-l432 --crosstool_top=//toolchain/nucleo_l4:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:nucleo_l432kc --copt -DEMBEDDED_PLATFORM
 build:nucleo_l432kc --copt -DSTM32L432xx
 build:nucleo_l432kc --copt -DNUCLEO_L432KC
 
 build:nucleo_l452re --platforms=//platforms:nucleo_l452re
 build:nucleo_l452re --cpu=armv7e-mf-stm32-l452 --crosstool_top=//toolchain/nucleo_l4:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:nucleo_l452re --copt -DEMBEDDED_PLATFORM
 build:nucleo_l452re --copt -DSTM32L452xx
 build:nucleo_l452re --copt -DNUCLEO_L452RE
 
