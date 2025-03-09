@@ -14,7 +14,9 @@ class SysTickInterceptor final : public simulation::Interceptor<SysTickType, Clo
       : simulation::Interceptor<SysTickType, ClockType>(systick, logger) {}
 
   TimeType current_time_micros() override {
-    LOG_FN();
+    // We disable logging of this function. It is called often, creating a lot of noise in the log
+    // file, and we generally do not care about these calls.
+    // LOG_FN();
     return this->call(&SysTickType::current_time_micros);
   }
 
