@@ -3,7 +3,7 @@
 #include <chrono>
 #include <string>
 
-namespace tvsc::time {
+namespace tvsc::hal {
 
 inline std::string to_string(std::chrono::microseconds d) noexcept {
   using std::to_string;
@@ -73,4 +73,4 @@ std::string to_string(std::chrono::time_point<ClockType, Duration> t) noexcept {
   return to_string(t.time_since_epoch());
 }
 
-}  // namespace tvsc::time
+}  // namespace tvsc::hal
