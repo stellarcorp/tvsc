@@ -1,6 +1,6 @@
 #pragma once
 
-#if !defined(PROFILING_ENABLED)
+#if not defined(PROFILING_ENABLED)
 
 // Without PROFILING_ENABLED, these calls are no-ops, and we do not include the header dependency.
 // See .bazelrc for the profiling configuration details.
