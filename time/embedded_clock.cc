@@ -7,14 +7,6 @@
 
 namespace tvsc::time {
 
-tvsc::hal::TimeType EmbeddedClock::current_time_micros() noexcept {
-  return sys_tick_->current_time_micros();
-}
-
-tvsc::hal::TimeType EmbeddedClock::current_time_millis() noexcept {
-  return sys_tick_->current_time_micros() / 1000;
-}
-
 void EmbeddedClock::sleep_us(tvsc::hal::TimeType microseconds) noexcept {
   static constexpr tvsc::hal::TimeType TIME_TO_START_TIMER_US{25};
   static constexpr tvsc::hal::TimeType TIME_TO_WAKE_FROM_STOP_MODE_US{500};
@@ -44,10 +36,6 @@ void EmbeddedClock::sleep_us(tvsc::hal::TimeType microseconds) noexcept {
     sys_tick_->increment_micros(microseconds);
     rcc_->restore_clock_speed();
   }
-}
-
-void EmbeddedClock::sleep_ms(tvsc::hal::TimeType milliseconds) noexcept {
-  sleep_us(milliseconds * 1000);
 }
 
 EmbeddedClock::time_point EmbeddedClock::now() noexcept { return clock().current_time(); }

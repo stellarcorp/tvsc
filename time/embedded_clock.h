@@ -43,14 +43,20 @@ class EmbeddedClock final {
   [[nodiscard]] static time_point now() noexcept;
   [[nodiscard]] static EmbeddedClock& clock() noexcept;
 
-  [[nodiscard]] tvsc::hal::TimeType current_time_micros() noexcept;
-  [[nodiscard]] tvsc::hal::TimeType current_time_millis() noexcept;
+  [[nodiscard]] tvsc::hal::TimeType current_time_micros() noexcept {
+    return sys_tick_->current_time_micros();
+  }
+
+  [[nodiscard]] tvsc::hal::TimeType current_time_millis() noexcept {
+    return sys_tick_->current_time_micros() / 1000;
+  }
+
   [[nodiscard]] time_point current_time() noexcept {
     return time_point{std::chrono::microseconds{current_time_micros()}};
   }
 
   void sleep_us(tvsc::hal::TimeType microseconds) noexcept;
-  void sleep_ms(tvsc::hal::TimeType milliseconds) noexcept;
+  void sleep_ms(tvsc::hal::TimeType milliseconds) noexcept { sleep_us(milliseconds * 1000); }
 
   template <typename Rep, typename Period>
   void sleep(std::chrono::duration<Rep, Period> d) noexcept {
