@@ -13,6 +13,6 @@ Board& Board::board() {
   return board_;
 }
 
-Board::Board() {}
+Board::Board() { reactor_.add_generator(systick_interceptor_); }
 
 }  // namespace tvsc::hal::board

@@ -60,7 +60,7 @@ class Board final {
   rcc::RccNoop rcc_{};
   rcc::RccInterceptor<SimulationClockType> rcc_interceptor_{rcc_, logger_};
 
-  systick::FakeSysTick<SimulationClockType> systick_{reactor_};
+  systick::FakeSysTick<SimulationClockType> systick_{};
   systick::SysTickInterceptor<SimulationClockType> systick_interceptor_{systick_, logger_};
 
   // We initialize these GPIO ports with the addresses where their registers are bound.

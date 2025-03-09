@@ -1,5 +1,6 @@
 #pragma once
 
+#include "hal/simulation/event_generator.h"
 #include "hal/simulation/interceptor.h"
 #include "hal/simulation/logger.h"
 #include "hal/systick/systick.h"
@@ -8,8 +9,11 @@
 namespace tvsc::hal::systick {
 
 template <typename ClockType>
-class SysTickInterceptor final : public simulation::Interceptor<SysTickType, ClockType> {
+class SysTickInterceptor final : public simulation::Interceptor<SysTickType, ClockType>,
+                                 public simulation::EventGenerator<ClockType> {
  public:
+  using ReactorType = simulation::Reactor<ClockType>;
+
   SysTickInterceptor(SysTickType& systick, simulation::Logger<ClockType>& logger)
       : simulation::Interceptor<SysTickType, ClockType>(systick, logger) {}
 
@@ -29,6 +33,13 @@ class SysTickInterceptor final : public simulation::Interceptor<SysTickType, Clo
     LOG_FN();
     return this->call(&SysTickType::handle_interrupt);
   }
+
+  ClockType::duration next_event_in(ClockType::time_point /*now*/) const noexcept override {
+    using namespace std::chrono_literals;
+    return 1000us;
+  }
+
+  void generate(ClockType::time_point /*now*/) noexcept override { handle_interrupt(); }
 };
 
 }  // namespace tvsc::hal::systick
