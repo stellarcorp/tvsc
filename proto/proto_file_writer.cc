@@ -4,6 +4,7 @@
 #include <unistd.h>
 
 #include <memory>
+#include <mutex>
 #include <string>
 
 #include "google/protobuf/io/coded_stream.h"
@@ -22,6 +23,7 @@ ProtoFileWriter::ProtoFileWriter(const std::string& filename) {
 }
 
 bool ProtoFileWriter::write_message(const google::protobuf::MessageLite& message) {
+  std::lock_guard lock{m_};
   google::protobuf::io::CodedOutputStream coded_stream(stream_.get());
 
   size_t size = message.ByteSizeLong();

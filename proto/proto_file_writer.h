@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <mutex>
 #include <string>
 
 #include "google/protobuf/io/zero_copy_stream_impl.h"
@@ -11,6 +12,7 @@ namespace tvsc::proto {
 class ProtoFileWriter {
  private:
   std::unique_ptr<google::protobuf::io::FileOutputStream> stream_;
+  std::mutex m_{};
 
  public:
   explicit ProtoFileWriter(const std::string& filename);
