@@ -24,6 +24,8 @@ class Reactor final : public time::Clockable<ClockT> {
     IrqGenerator<ClockType>* generator;
   };
 
+  static constexpr double SCALE_FACTOR{ClockType::SCALE_FACTOR > 0 ? ClockType::SCALE_FACTOR : 1.};
+
   std::vector<EventTiming> timings_{};
 
   std::thread generation_thread_;
@@ -43,7 +45,8 @@ class Reactor final : public time::Clockable<ClockT> {
       if (timing.next_event_time <= current_time) {
         timing.generator->generate_interrupt(current_time);
         current_time = ClockType::now();
-        timing.next_event_time = current_time + timing.generator->next_interrupt_in(current_time);
+        timing.next_event_time =
+            current_time + timing.generator->next_interrupt_in(current_time) / SCALE_FACTOR;
       } else {
         break;
       }
@@ -56,11 +59,12 @@ class Reactor final : public time::Clockable<ClockT> {
     using namespace std::chrono_literals;
     std::unique_lock lock(m_);
     while (!stop_requested_) {
-      if constexpr (ClockType::SCALE_FACTOR > 0.) {
-        cv_.wait_for(lock, 1ms / ClockType::SCALE_FACTOR);
-      } else {
-        cv_.wait(lock);
+      auto current_time{ClockType::now()};
+      auto wait_time{current_time + 10ms / SCALE_FACTOR};
+      if (!timings_.empty()) {
+        wait_time = std::min(wait_time, timings_[0].next_event_time);
       }
+      cv_.wait_until(lock, wait_time);
       generate_irqs_once();
     }
   }
@@ -103,7 +107,7 @@ class Reactor final : public time::Clockable<ClockT> {
 
   void add_generator(IrqGenerator<ClockType>& generator) noexcept {
     const auto current_time{ClockType::now()};
-    auto next_event_time = current_time + generator.next_interrupt_in(current_time);
+    auto next_event_time = current_time + generator.next_interrupt_in(current_time) / SCALE_FACTOR;
 
     {
       std::lock_guard lock(m_);
