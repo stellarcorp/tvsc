@@ -25,6 +25,7 @@
 #include "hal/watchdog/watchdog.h"
 #include "hal/watchdog/watchdog_interceptor.h"
 #include "hal/watchdog/watchdog_noop.h"
+#include "io/managed_directory.h"
 #include "time/scaled_clock.h"
 
 namespace tvsc::hal::board {
@@ -54,7 +55,9 @@ class Board final {
   using SimulationClockType = time::ScaledClock<1000, 1, std::chrono::steady_clock>;
 
  private:
-  simulation::Logger<SimulationClockType> logger_{};
+  io::ManagedDirectory log_directory_{};
+
+  simulation::Logger<SimulationClockType> logger_{log_directory_};
   simulation::Reactor<SimulationClockType> reactor_{SimulationClockType::clock()};
 
   rcc::RccNoop rcc_{};
@@ -87,6 +90,8 @@ class Board final {
  public:
   // One board per executable.
   static Board& board();
+
+  io::ManagedDirectory& log_directory() noexcept { return log_directory_; }
 
   template <gpio::Port GPIO_PORT>
   gpio::GpioPeripheral& gpio() {

@@ -7,9 +7,11 @@
 #endif
 
 #include <cstdint>
+#include <filesystem>
+#include <string>
 
 #include "hal/simulation/simulation.pb.h"
-#include "io/temp_filename.h"
+#include "io/managed_directory.h"
 #include "proto/proto_file_writer.h"
 
 namespace tvsc::hal::simulation {
@@ -17,15 +19,17 @@ namespace tvsc::hal::simulation {
 template <typename ClockType>
 class Logger final {
  private:
-  tvsc::proto::ProtoFileWriter writer_;
-  const std::string filename_;
+  const std::filesystem::path filename_;
+  tvsc::proto::ProtoFileWriter writer_{filename_};
 
  public:
-  Logger(const std::string& filename) : writer_(filename), filename_(filename) {}
+  Logger(io::ManagedDirectory& log_directory, const std::string& filename)
+      : filename_(log_directory.contextualize_filename(filename)) {}
 
-  Logger() : Logger(tvsc::io::generate_temp_filename("sim", ".log.pb")) {}
+  Logger(io::ManagedDirectory& log_directory)
+      : filename_(log_directory.create_temp_filename("sim_", ".log.pb")) {}
 
-  const std::string& log_file_name() const noexcept { return filename_; }
+  const std::filesystem::path& log_file_name() const noexcept { return filename_; }
 
 #if __cpp_lib_source_location >= 201907L
 
