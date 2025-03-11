@@ -3,6 +3,12 @@
 #include <functional>
 #include <iostream>
 
+#ifdef __has_include
+#if __has_include(<source_location>)
+#include <source_location>
+#endif
+#endif
+
 #include "hal/simulation/logger.h"
 
 namespace tvsc::hal::simulation {
