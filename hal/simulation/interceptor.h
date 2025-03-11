@@ -3,7 +3,6 @@
 #include <functional>
 #include <iostream>
 
-#include "hal/chrono_utils.h"
 #include "hal/simulation/logger.h"
 
 namespace tvsc::hal::simulation {

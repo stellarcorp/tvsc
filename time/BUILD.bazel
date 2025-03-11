@@ -1,4 +1,11 @@
 cc_library(
+    name = "time",
+    hdrs = [
+        "chrono_utils.h",
+    ],
+)
+
+cc_library(
     name = "embedded_clock",
     srcs = [
         "embedded_clock.cc",
