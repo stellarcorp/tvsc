@@ -4,9 +4,9 @@
 #include <unistd.h>
 
 #include <cstdint>
+#include <filesystem>
 #include <memory>
 #include <stdexcept>
-#include <string>
 
 #include "google/protobuf/io/coded_stream.h"
 #include "google/protobuf/io/zero_copy_stream_impl.h"
@@ -14,7 +14,7 @@
 
 namespace tvsc::proto {
 
-ProtoFileReader::ProtoFileReader(const std::string& filename) {
+ProtoFileReader::ProtoFileReader(const std::filesystem::path& filename) {
   const int fd{open(filename.c_str(), O_RDONLY)};
   if (fd < 0) {
     throw std::runtime_error("Failed to open file for reading.");

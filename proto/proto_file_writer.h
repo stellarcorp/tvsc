@@ -1,8 +1,8 @@
 #pragma once
 
+#include <filesystem>
 #include <memory>
 #include <mutex>
-#include <string>
 
 #include "google/protobuf/io/zero_copy_stream_impl.h"
 #include "google/protobuf/message_lite.h"
@@ -15,7 +15,7 @@ class ProtoFileWriter {
   std::mutex m_{};
 
  public:
-  explicit ProtoFileWriter(const std::string& filename);
+  explicit ProtoFileWriter(const std::filesystem::path& filename);
   bool write_message(const google::protobuf::MessageLite& message);
 };
 
