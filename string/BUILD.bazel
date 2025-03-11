@@ -1,7 +1,17 @@
 cc_library(
     name = "string",
     hdrs = [
+        "base64.h",
         "strings.h",
     ],
     visibility = ["//visibility:public"],
+)
+
+cc_test(
+    name = "base64_test",
+    srcs = ["base64_test.cc"],
+    deps = [
+        ":string",
+        "//third_party/gtest",
+    ],
 )
