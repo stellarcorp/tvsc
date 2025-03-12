@@ -11,7 +11,7 @@
 #include <string>
 
 #include "hal/simulation/simulation.pb.h"
-#include "io/managed_directory.h"
+#include "io/session_directory.h"
 #include "proto/proto_file_writer.h"
 
 namespace tvsc::hal::simulation {
@@ -23,10 +23,10 @@ class Logger final {
   tvsc::proto::ProtoFileWriter writer_{filename_};
 
  public:
-  Logger(io::ManagedDirectory& log_directory, const std::string& filename)
+  Logger(io::SessionDirectory& log_directory, const std::string& filename)
       : filename_(log_directory.contextualize_filename(filename)) {}
 
-  Logger(io::ManagedDirectory& log_directory)
+  Logger(io::SessionDirectory& log_directory)
       : filename_(log_directory.create_temp_filename("sim_", ".log.pb")) {}
 
   const std::filesystem::path& log_file_name() const noexcept { return filename_; }

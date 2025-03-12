@@ -1,14 +1,14 @@
 cc_library(
     name = "io",
     srcs = [
-        "managed_directory.cc",
+        "session_directory.cc",
         "temp_filename.cc",
     ],
     hdrs = [
         "file_data_source.h",
         "file_reader.h",
         "looping_file_reader.h",
-        "managed_directory.h",
+        "session_directory.h",
         "temp_filename.h",
     ],
     linkopts = ["-lstdc++fs"],

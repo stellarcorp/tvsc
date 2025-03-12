@@ -1,4 +1,4 @@
-#include "io/managed_directory.h"
+#include "io/session_directory.h"
 
 #include <filesystem>
 
@@ -7,11 +7,11 @@
 
 namespace tvsc::io {
 
-void ManagedDirectory::ensure_directory_exists() {
+void SessionDirectory::ensure_directory_exists() {
   std::filesystem::create_directories(directory_);
 }
 
-std::filesystem::path ManagedDirectory::create_temp_filename(const std::string& prefix,
+std::filesystem::path SessionDirectory::create_temp_filename(const std::string& prefix,
                                                              const std::string& suffix) noexcept {
   auto random{tvsc::random::generate_random_value<uint64_t>()};
   return std::filesystem::path{prefix + tvsc::string::Base64::encode(random) + suffix};

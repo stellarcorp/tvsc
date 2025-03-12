@@ -7,16 +7,16 @@
 
 namespace tvsc::io {
 
-class ManagedDirectory final {
+class SessionDirectory final {
  private:
   std::filesystem::path directory_{"/tmp/tvsc"};
 
   void ensure_directory_exists();
 
  public:
-  ManagedDirectory() { ensure_directory_exists(); }
+  SessionDirectory() { ensure_directory_exists(); }
 
-  explicit ManagedDirectory(const std::filesystem::path& directory) noexcept
+  explicit SessionDirectory(const std::filesystem::path& directory) noexcept
       : directory_(directory) {
     ensure_directory_exists();
   }
