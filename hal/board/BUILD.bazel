@@ -12,7 +12,9 @@ cc_library(
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
-    deps = select({
+    deps = [
+        "//flags",
+    ] + select({
         "//platforms:nucleo_l412kb_board": [
             ":nucleo_l412kb_board",
         ],

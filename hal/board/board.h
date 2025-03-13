@@ -1,5 +1,9 @@
 #pragma once
 
+#include "flags/flags.h"
+
+DECLARE_uint64(run_duration_sec);
+
 #if defined(NUCLEO_H743ZI)
 #include "hal/board/nucleo_h743zi_board.h"
 #elif defined(NUCLEO_L412KB)

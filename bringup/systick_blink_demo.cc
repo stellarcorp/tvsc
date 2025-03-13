@@ -12,9 +12,6 @@
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::time::EmbeddedClock;
 
-DEFINE_uint64(run_duration_sec, std::numeric_limits<uint64_t>::max(),
-              "How long to run this script in seconds");
-
 using namespace std::chrono_literals;
 
 int main(int argc, char* argv[]) {
