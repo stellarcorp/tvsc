@@ -28,6 +28,7 @@ class Scheduler final {
   ClockType* clock_{&ClockType::clock()};
   tvsc::hal::rcc::Rcc* rcc_;
   std::array<TaskType, QUEUE_SIZE> task_queue_{};
+  bool stop_requested_{false};
 
   friend std::string to_string<ClockType, QUEUE_SIZE>(const Scheduler&);
 
@@ -79,7 +80,7 @@ class Scheduler final {
     return next_wakeup_time;
   }
 
-  [[noreturn]] void start() {
+  void start() {
     // TODO(james): Play around with this strategy. Currently, this strategy assumes that we have a
     // CPU-heavy workload. This assumptions is likely wrong. Bus transfers (I2C, CAN bus, and SPI)
     // probably won't need max speed but may need frequent (small number of microseconds) CPU
@@ -96,11 +97,13 @@ class Scheduler final {
     // That is, switching clock speeds here appears to be a false savings; we could enter stop mode
     // in the same time, and stop mode uses vastly less power.
     rcc_->set_clock_to_energy_efficient_speed();
-    while (true) {
+    while (!stop_requested_) {
       auto next_wakeup_time{run_tasks_once()};
       clock_->sleep(next_wakeup_time);
     }
   }
+
+  void stop() { stop_requested_ = true; }
 };
 
 template <typename ClockType, size_t QUEUE_SIZE>
