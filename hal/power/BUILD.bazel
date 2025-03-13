@@ -45,9 +45,11 @@ cc_library(
 cc_library(
     name = "simulation",
     srcs = [
+        "fake_power.cc",
         "power_noop.cc",
     ],
     hdrs = [
+        "fake_power.h",
         "power_interceptor.h",
         "power_noop.h",
     ],

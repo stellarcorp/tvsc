@@ -8,6 +8,7 @@
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/gpio_interceptor.h"
 #include "hal/gpio/gpio_noop.h"
+#include "hal/power/fake_power.h"
 #include "hal/power/power.h"
 #include "hal/power/power_interceptor.h"
 #include "hal/power/power_noop.h"
@@ -73,7 +74,7 @@ class Board final {
   gpio::GpioInterceptor<SimulationClockType> gpio_interceptor_{gpio_, logger_};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
-  power::PowerNoop power_{};
+  power::FakePower<SimulationClockType> power_{reactor_};
   power::PowerInterceptor<SimulationClockType> power_interceptor_{power_, logger_};
 
   timer::TimerNoop timer_{};

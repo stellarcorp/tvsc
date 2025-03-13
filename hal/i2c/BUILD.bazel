@@ -1,0 +1,43 @@
+cc_library(
+    name = "i2c_headers",
+    hdrs = [
+        "i2c.h",
+    ],
+    deps = [
+        "//hal",
+    ],
+)
+
+cc_library(
+    name = "i2c",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":i2c_headers",
+    ] + select({
+        "//platforms:stm32l4xx": [
+            ":stm32l4xx_i2c",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32l4xx_i2c",
+    srcs = [
+        "stm32l4xx_i2c.cc",
+    ],
+    hdrs = [
+        "stm32l4xx_i2c.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32l4xx",
+    ],
+    deps = [
+        ":i2c_headers",
+        "//hal",
+        "//third_party/stm32",
+    ],
+)

@@ -31,6 +31,13 @@ class Reactor final : public time::Clockable<ClockT> {
   std::thread generation_thread_;
   std::mutex m_{};
   std::condition_variable cv_{};
+
+  // Synchronization mechanism to block the core thread until an IRQ wakes it up. The thread
+  // simulating the core blocks when the core is put in either sleep or stop mode. This semaphore is
+  // how it blocks when running under simulation.
+  std::mutex core_thread_mutex_{};
+  std::condition_variable core_thread_block_{};
+
   bool stop_requested_{false};
 
   void reorder_timings() noexcept {
@@ -43,6 +50,7 @@ class Reactor final : public time::Clockable<ClockT> {
     auto current_time{ClockType::now()};
     for (auto& timing : timings_) {
       if (timing.next_event_time <= current_time) {
+        wake_core_thread();
         timing.generator->generate_interrupt(current_time);
         current_time = ClockType::now();
         timing.next_event_time =
@@ -85,6 +93,11 @@ class Reactor final : public time::Clockable<ClockT> {
     cv_.notify_all();
   }
 
+  void wake_core_thread() noexcept {
+    // Notify the core thread that it can resume.
+    core_thread_block_.notify_all();
+  }
+
  public:
   Reactor(ClockType& clock) noexcept
       : time::Clockable<ClockType>(clock), generation_thread_(&Reactor::generate_irqs, this) {}
@@ -93,7 +106,7 @@ class Reactor final : public time::Clockable<ClockT> {
     if (generation_thread_.joinable()) {
       // Tell the generation_thread to stop.
       {
-        std::lock_guard lock(m_);
+        std::lock_guard lock{m_};
         stop_requested_ = true;
       }
 
@@ -103,6 +116,12 @@ class Reactor final : public time::Clockable<ClockT> {
       // Allow the Reactor to be destroyed only after the generation_thread has finished.
       generation_thread_.join();
     }
+  }
+
+  void block_core_thread_until_irq() noexcept {
+    // Block until an IRQ is about to be generated.
+    std::unique_lock lock{core_thread_mutex_};
+    core_thread_block_.wait(lock);
   }
 
   void add_generator(IrqGenerator<ClockType>& generator) noexcept {
