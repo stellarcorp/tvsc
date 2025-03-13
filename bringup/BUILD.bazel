@@ -21,9 +21,11 @@ cc_library(
     hdrs = [
         "blink.h",
         "dac_demo.h",
+        "quit.h",
         "random_blink.h",
     ],
     deps = [
+        "//flags",
         "//hal",
         "//hal/board",
         "//hal/gpio",
