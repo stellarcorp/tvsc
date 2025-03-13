@@ -36,6 +36,27 @@ cc_library(
 )
 
 cc_binary(
+    name = "blink",
+    srcs = [
+        "blink.cc",
+    ],
+    target_compatible_with = select({
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    deps = [
+        ":tasks",
+        "//base",
+        "//hal",
+        "//hal/board",
+        "//hal/gpio",
+        "//profile",
+        "//scheduler",
+        "//time:embedded_clock",
+    ],
+)
+
+cc_binary(
     name = "blink.elf",
     srcs = [
         "blink.cc",

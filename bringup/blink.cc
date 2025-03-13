@@ -4,6 +4,7 @@
 #include <limits>
 
 #include "base/initializer.h"
+#include "bringup/quit.h"
 #include "hal/board/board.h"
 #include "scheduler/scheduler.h"
 #include "scheduler/task.h"
@@ -15,7 +16,7 @@ using ClockType = tvsc::time::EmbeddedClock;
 using namespace tvsc::bringup;
 using namespace tvsc::scheduler;
 
-static constexpr size_t QUEUE_SIZE{1};
+static constexpr size_t QUEUE_SIZE{2};
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
@@ -26,6 +27,7 @@ int main(int argc, char* argv[]) {
   Scheduler<ClockType, QUEUE_SIZE> scheduler{board.rcc()};
   scheduler.add_task(
       blink(clock, board.gpio<BoardType::GREEN_LED_PORT>(), BoardType::GREEN_LED_PIN));
+  scheduler.add_task(quit(scheduler));
 
   scheduler.start();
 }
