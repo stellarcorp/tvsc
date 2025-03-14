@@ -8,6 +8,8 @@
 #include "hal/irq_arm.h"
 #elif defined(NUCLEO_L452RE)
 #include "hal/irq_arm.h"
+#elif defined(FEATURE_BRINGUP)
+#include "hal/irq_arm.h"
 #elif defined(GENERAL_PURPOSE_COMPUTER)
 #include "hal/irq_noop.h"
 #else

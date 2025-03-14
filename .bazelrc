@@ -44,6 +44,12 @@ build:nucleo_l452re --copt -DEMBEDDED_PLATFORM
 build:nucleo_l452re --copt -DSTM32L452xx
 build:nucleo_l452re --copt -DNUCLEO_L452RE
 
+build:feature_bringup --platforms=//platforms:feature_bringup
+build:feature_bringup --cpu=armv7e-mf-stm32-l452 --crosstool_top=//toolchain/nucleo_l4:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:feature_bringup --copt -DEMBEDDED_PLATFORM
+build:feature_bringup --copt -DSTM32L452xx
+build:feature_bringup --copt -DFEATURE_BRINGUP
+
 # Profiling
 # Install these tools:
 #   apt install google-perftools libgoogle-perftools-dev

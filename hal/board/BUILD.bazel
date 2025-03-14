@@ -24,6 +24,9 @@ cc_library(
         "//platforms:nucleo_l452re_board": [
             ":nucleo_l452re_board",
         ],
+        "//platforms:feature_bringup_board": [
+            ":feature_bringup_board",
+        ],
         "@platforms//os:linux": [
             ":simulation",
         ],
@@ -92,6 +95,32 @@ cc_library(
     ],
     target_compatible_with = [
         "//platforms:nucleo_l452re_board",
+    ],
+    deps = [
+        "//hal",
+        "//hal/adc",
+        "//hal/dac",
+        "//hal/dma",
+        "//hal/gpio",
+        "//hal/power",
+        "//hal/random",
+        "//hal/rcc",
+        "//hal/systick",
+        "//hal/watchdog",
+        "//third_party/stm32",
+    ],
+)
+
+cc_library(
+    name = "feature_bringup_board",
+    srcs = [
+        "feature_bringup_board.cc",
+    ],
+    hdrs = [
+        "feature_bringup_board.h",
+    ],
+    target_compatible_with = [
+        "//platforms:feature_bringup_board",
     ],
     deps = [
         "//hal",

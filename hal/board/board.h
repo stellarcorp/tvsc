@@ -12,6 +12,8 @@ DECLARE_uint64(run_duration_sec);
 #include "hal/board/nucleo_l432kc_board.h"
 #elif defined(NUCLEO_L452RE)
 #include "hal/board/nucleo_l452re_board.h"
+#elif defined(FEATURE_BRINGUP)
+#include "hal/board/feature_bringup_board.h"
 #elif defined(GENERAL_PURPOSE_COMPUTER)
 #include "hal/board/simulation_board.h"
 #else
