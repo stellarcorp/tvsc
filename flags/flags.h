@@ -13,7 +13,7 @@
 #include <cstdint>
 
 #define DEFINE_VARIABLE(type, name, value) \
-  static const type FLAGS_##name { value }
+  const type FLAGS_##name { value }
 
 #define DEFINE_bool(name, val, txt) DEFINE_VARIABLE(bool, name, val)
 #define DEFINE_int32(name, val, txt) DEFINE_VARIABLE(int32_t, name, val)
