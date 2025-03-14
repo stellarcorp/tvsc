@@ -6,6 +6,7 @@
 
 #include "base/initializer.h"
 #include "bringup/blink.h"
+#include "bringup/quit.h"
 #include "hal/board/board.h"
 #include "scheduler/scheduler.h"
 #include "scheduler/task.h"
@@ -27,22 +28,14 @@ using namespace std::chrono_literals;
 
 template <typename Duration = std::chrono::days>
 TaskType run_watchdog(ClockType& clock,
-                      tvsc::hal::watchdog::WatchdogPeripheral& watchdog_peripheral,
-                      Duration reset_in = std::chrono::duration_cast<Duration>(24h)) {
+                      tvsc::hal::watchdog::WatchdogPeripheral& watchdog_peripheral) {
   const auto feed_interval{watchdog_peripheral.reset_interval() / 4};
-  const auto reset_at{clock.current_time() + reset_in};
 
   // Enable the watchdog here. After this, if the dog isn't fed on time, the board will reset.
   auto watchdog{watchdog_peripheral.access()};
-  while (clock.current_time() < reset_at) {
-    co_yield feed_interval;
-    watchdog.feed();
-    ++watchdog_counter;
-  }
-
-  // Stop feeding, but keep the watchdog instance alive. This will trigger a reset.
   while (true) {
     co_yield feed_interval;
+    watchdog.feed();
     ++watchdog_counter;
   }
 }
@@ -64,8 +57,9 @@ int main(int argc, char* argv[]) {
   clock.sleep(CYCLE_TIME);
 
   Scheduler<ClockType, 4 /*QUEUE_SIZE*/> scheduler{board.rcc()};
-  scheduler.add_task(run_watchdog(clock, board.iwdg(), CYCLE_TIME));
+  scheduler.add_task(run_watchdog(clock, board.iwdg()));
   scheduler.add_task(
       blink(clock, board.gpio<BoardType::GREEN_LED_PORT>(), BoardType::GREEN_LED_PIN));
+  scheduler.add_task(quit(scheduler, CYCLE_TIME));
   scheduler.start();
 }
