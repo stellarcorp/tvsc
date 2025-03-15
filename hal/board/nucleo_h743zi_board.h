@@ -35,13 +35,13 @@ class Board final {
   static constexpr gpio::Pin RED_LED_PIN{14};
   static constexpr gpio::Port YELLOW_LED_PORT{GPIO_PORT_E};
   static constexpr gpio::Pin YELLOW_LED_PIN{1};
-  static constexpr gpio::Port GREEN_LED_PORT{GPIO_PORT_B};
-  static constexpr gpio::Pin GREEN_LED_PIN{0};
+  static constexpr gpio::Port DEBUG_LED_PORT{GPIO_PORT_B};
+  static constexpr gpio::Pin DEBUG_LED_PIN{0};
 
   static constexpr std::array<gpio::Port, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{
-      RED_LED_PORT, YELLOW_LED_PORT, GREEN_LED_PORT};
+      RED_LED_PORT, YELLOW_LED_PORT, DEBUG_LED_PORT};
   static constexpr std::array<gpio::Pin, NUM_DEBUG_LEDS> DEBUG_LED_PINS{RED_LED_PIN, YELLOW_LED_PIN,
-                                                                        GREEN_LED_PIN};
+                                                                        DEBUG_LED_PIN};
 
   // Location of the push button on this board.
   static constexpr gpio::Port BLUE_PUSH_BUTTON_PORT{GPIO_PORT_C};

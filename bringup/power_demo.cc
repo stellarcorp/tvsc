@@ -22,13 +22,13 @@ int main(int argc, char* argv[]) {
   }
 
   // Turn on clocks for the GPIO ports that we want.
-  auto gpio{board.gpio<BoardType::GREEN_LED_PORT>().access()};
+  auto gpio{board.gpio<BoardType::DEBUG_LED_PORT>().access()};
 
-  gpio.set_pin_mode(BoardType::GREEN_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
+  gpio.set_pin_mode(BoardType::DEBUG_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
   while (true) {
     for (int i = 0; i < 20; ++i) {
-      gpio.toggle_pin(BoardType::GREEN_LED_PIN);
+      gpio.toggle_pin(BoardType::DEBUG_LED_PIN);
       tvsc::time::EmbeddedClock& clock{tvsc::time::EmbeddedClock::clock()};
       clock.sleep_ms(75);
     }

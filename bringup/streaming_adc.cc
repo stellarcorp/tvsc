@@ -42,7 +42,7 @@ static constexpr std::chrono::microseconds PERIOD_US{500ms};
  */
 template <typename ClockType, uint8_t DAC_CHANNEL = 0>
 tvsc::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
-  auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
+  auto& gpio_peripheral{board.gpio<BoardType::DEBUG_LED_PORT>()};
   auto& adc_peripheral{board.adc()};
   auto& dac_peripheral{board.dac()};
   auto& timer_peripheral{board.timer2()};
@@ -55,7 +55,7 @@ tvsc::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
   auto dac_out_gpio{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>().access()};
 
   dac_out_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], tvsc::hal::gpio::PinMode::ANALOG);
-  gpio.set_pin_mode(BoardType::GREEN_LED_PIN, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL,
+  gpio.set_pin_mode(BoardType::DEBUG_LED_PIN, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL,
                     tvsc::hal::gpio::PinSpeed::LOW);
 
   static constexpr uint8_t RESOLUTION{8};
@@ -70,11 +70,11 @@ tvsc::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
     static constexpr uint32_t CALIBRATION_FREQUENCY{1024};
     if ((iteration_counter % CALIBRATION_FREQUENCY) == 0) {
       // Turn on LED while calibrating.
-      gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
+      gpio.write_pin(BoardType::DEBUG_LED_PIN, 1);
 
       adc.calibrate_single_ended_input();
 
-      gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
+      gpio.write_pin(BoardType::DEBUG_LED_PIN, 0);
     }
 
     timer.start(PERIOD_US.count());

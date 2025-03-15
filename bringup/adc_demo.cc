@@ -33,7 +33,7 @@ using ClockType = tvsc::time::EmbeddedClock;
 template <typename ClockType, uint8_t DAC_CHANNEL = 0>
 tvsc::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
   using namespace std::chrono_literals;
-  auto& gpio_peripheral{board.gpio<BoardType::GREEN_LED_PORT>()};
+  auto& gpio_peripheral{board.gpio<BoardType::DEBUG_LED_PORT>()};
   auto& adc_peripheral{board.adc()};
   auto& dac_peripheral{board.dac()};
   auto& dac_gpio_peripheral{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>()};
@@ -46,7 +46,7 @@ tvsc::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
 
   dac_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], tvsc::hal::gpio::PinMode::ANALOG);
 
-  gpio.set_pin_mode(BoardType::GREEN_LED_PIN, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL,
+  gpio.set_pin_mode(BoardType::DEBUG_LED_PIN, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL,
                     tvsc::hal::gpio::PinSpeed::LOW);
 
   static constexpr uint8_t RESOLUTION{12};
@@ -63,13 +63,13 @@ tvsc::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
       adc.calibrate_single_ended_input();
 
       // Flash slowly after calibration.
-      gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
+      gpio.write_pin(BoardType::DEBUG_LED_PIN, 1);
       co_yield 500ms;
-      gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
+      gpio.write_pin(BoardType::DEBUG_LED_PIN, 0);
       co_yield 500ms;
-      gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
+      gpio.write_pin(BoardType::DEBUG_LED_PIN, 1);
       co_yield 500ms;
-      gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
+      gpio.write_pin(BoardType::DEBUG_LED_PIN, 0);
       co_yield 500ms;
     }
 
@@ -98,16 +98,16 @@ tvsc::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
 
       if (relative_difference < 0.25f || absolute_difference < (3 << RESOLUTION_SHIFT)) {
         // Success. Short solid.
-        gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
+        gpio.write_pin(BoardType::DEBUG_LED_PIN, 1);
         co_yield 400ms;
-        gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
+        gpio.write_pin(BoardType::DEBUG_LED_PIN, 0);
         co_yield 100ms;
       } else {
         // Failure. Flash frenetically.
         for (int i = 0; i < 2; ++i) {
-          gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
+          gpio.write_pin(BoardType::DEBUG_LED_PIN, 1);
           co_yield 50ms;
-          gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
+          gpio.write_pin(BoardType::DEBUG_LED_PIN, 0);
           co_yield 50ms;
         }
       }
@@ -120,7 +120,7 @@ tvsc::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
     relative_difference = 0.f;
     dac.set_value(current_output_value);
     dac.clear_value();
-    gpio.write_pin(BoardType::GREEN_LED_PIN, 0);
+    gpio.write_pin(BoardType::DEBUG_LED_PIN, 0);
     co_yield 500ms;
   }
 }

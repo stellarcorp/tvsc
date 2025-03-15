@@ -40,11 +40,11 @@ class Board final {
   static constexpr gpio::Port GPIO_PORT_A{0};
 
   // Location of the LEDs provided by this board.
-  static constexpr gpio::Port GREEN_LED_PORT{GPIO_PORT_A};
-  static constexpr gpio::Pin GREEN_LED_PIN{5};
+  static constexpr gpio::Port DEBUG_LED_PORT{GPIO_PORT_A};
+  static constexpr gpio::Pin DEBUG_LED_PIN{5};
 
-  static constexpr std::array<gpio::Port, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{GREEN_LED_PORT};
-  static constexpr std::array<gpio::Pin, NUM_DEBUG_LEDS> DEBUG_LED_PINS{GREEN_LED_PIN};
+  static constexpr std::array<gpio::Port, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{DEBUG_LED_PORT};
+  static constexpr std::array<gpio::Pin, NUM_DEBUG_LEDS> DEBUG_LED_PINS{DEBUG_LED_PIN};
 
   // We use a simulation clock that gives one millisecond of time in the simulation for every
   // microsecond on the running system's steady_clock. This ratio simulates a much slower CPU than

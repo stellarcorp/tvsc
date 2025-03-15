@@ -31,10 +31,10 @@ int main(int argc, char *argv[]) {
   BoardType &board{BoardType::board()};
 
   // Turn on clocks for the GPIO ports that we want.
-  auto gpio{board.gpio<BoardType::GREEN_LED_PORT>().access()};
+  auto gpio{board.gpio<BoardType::DEBUG_LED_PORT>().access()};
 
-  gpio.set_pin_mode(BoardType::GREEN_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
-  gpio.write_pin(BoardType::GREEN_LED_PIN, 1);
+  gpio.set_pin_mode(BoardType::DEBUG_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
+  gpio.write_pin(BoardType::DEBUG_LED_PIN, 1);
 
   auto timer{board.sleep_timer().access()};
   debug_stats.timer_id = timer.id();
@@ -50,6 +50,6 @@ int main(int argc, char *argv[]) {
       // LPTIM_CompareMatchCallback().
       __WFI();
     }
-    gpio.toggle_pin(BoardType::GREEN_LED_PIN);
+    gpio.toggle_pin(BoardType::DEBUG_LED_PIN);
   }
 }

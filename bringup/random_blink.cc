@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 
   Scheduler<ClockType, QUEUE_SIZE> scheduler{board.rcc()};
   scheduler.add_task(
-      blink_randomly<ClockType>(board.gpio<BoardType::GREEN_LED_PORT>(), BoardType::GREEN_LED_PIN));
+      blink_randomly<ClockType>(board.gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN));
 
   scheduler.start();
 }

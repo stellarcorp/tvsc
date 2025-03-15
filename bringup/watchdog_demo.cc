@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
   Scheduler<ClockType, 4 /*QUEUE_SIZE*/> scheduler{board.rcc()};
   scheduler.add_task(run_watchdog(clock, board.iwdg()));
   scheduler.add_task(
-      blink(clock, board.gpio<BoardType::GREEN_LED_PORT>(), BoardType::GREEN_LED_PIN));
+      blink(clock, board.gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN));
   scheduler.add_task(quit(scheduler, CYCLE_TIME));
   scheduler.start();
 }
