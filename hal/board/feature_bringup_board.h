@@ -76,8 +76,10 @@ class Board final {
 
   dac::DacStm32xxxx<NUM_DAC_CHANNELS> dac_{DAC};
 
-  dma::DmaStm32l4xx dma_{Stm32PeripheralIds::DMA1_CHANNEL1_ID, DMA1_Channel1, DMA_REQUEST_0};
-  adc::AdcStm32l4xx adc_{ADC1, dma_};
+  dma::DmaStm32l4xx dma1_{DMA1};
+  dma::DmaStm32l4xx dma2_{DMA2};
+
+  adc::AdcStm32l4xx adc_{ADC1, dma1_, DMA1_Channel1, DMA_REQUEST_0};
 
   timer::TimerStm32l4xx timer2_{Stm32PeripheralIds::TIM2_ID, TIM2};
 
@@ -173,8 +175,6 @@ class Board final {
   dac::DacPeripheral& dac() { return dac_; }
 
   adc::AdcPeripheral& adc() { return adc_; }
-
-  dma::DmaPeripheral& dma() { return dma_; }
 
   timer::TimerPeripheral& timer2() { return timer2_; }
   timer::TimerPeripheral& sleep_timer() { return lptim1_; }

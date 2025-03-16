@@ -87,12 +87,11 @@ void DebugMon_Handler(void) {}
 void PendSV_Handler(void) {}
 
 /**
- * DMA interrupt handler. Note that the specific reason this interrupt is triggered will vary from
- * board to board.
+ * DMA interrupt handlers.
  */
 void DMA1_Channel1_IRQHandler() {
   tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
-  board.dma().handle_interrupt();
+  board.adc().handle_interrupt();
 }
 
 void LPTIM1_IRQHandler() {

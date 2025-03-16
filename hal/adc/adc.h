@@ -50,12 +50,12 @@ class AdcPeripheral : public Peripheral<AdcPeripheral, Adc> {
    */
   virtual void stop() = 0;
 
-  virtual void handle_interrupt() = 0;
-
   friend class Adc;
 
  public:
   virtual ~AdcPeripheral() = default;
+
+  virtual void handle_interrupt() = 0;
 };
 
 class Adc final : public Functional<AdcPeripheral, Adc> {
@@ -90,8 +90,6 @@ class Adc final : public Functional<AdcPeripheral, Adc> {
    * Stop the current measurement sequence.
    */
   void stop() { peripheral_->stop(); }
-
-  void handle_interrupt() { peripheral_->handle_interrupt(); }
 };
 
 }  // namespace tvsc::hal::adc

@@ -66,6 +66,24 @@ static constexpr uint32_t get_channel(gpio::PortPin pin) {
 
 void AdcStm32l4xx::start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
                                            size_t destination_buffer_size, timer::Timer& trigger) {
+  // Ensure the DMA controller is on.
+  dma_ = dma_peripheral_->access();
+
+  // Configure the DMA transfers.
+  dma_handle_.Init.Direction = DMA_PERIPH_TO_MEMORY;
+  dma_handle_.Init.PeriphInc = DMA_PINC_DISABLE;
+  dma_handle_.Init.MemInc = DMA_MINC_ENABLE;
+  if (adc_.Init.Resolution == ADC_RESOLUTION_6B || adc_.Init.Resolution == ADC_RESOLUTION_8B) {
+    dma_handle_.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+  } else {
+    dma_handle_.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+  }
+  dma_handle_.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+  dma_handle_.Init.Mode = DMA_CIRCULAR;
+  dma_handle_.Init.Priority = DMA_PRIORITY_LOW;
+
+  HAL_DMA_Init(&dma_handle_);
+
   // Configure ADC.
   adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
   adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;
@@ -82,7 +100,7 @@ void AdcStm32l4xx::start_conversion_stream(gpio::PortPin pin, uint32_t* destinat
   HAL_ADC_Init(&adc_);
 
   // Configure an ADC Channel for each pin.
-  channel_config_.Rank = 1;
+  channel_config_.Rank = ADC_REGULAR_RANK_1;
   channel_config_.Channel = get_channel(pin);
   channel_config_.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
   channel_config_.SingleDiff = ADC_SINGLE_ENDED;
@@ -90,45 +108,58 @@ void AdcStm32l4xx::start_conversion_stream(gpio::PortPin pin, uint32_t* destinat
 
   HAL_ADC_ConfigChannel(&adc_, &channel_config_);
 
-  dma_ = dma_peripheral_->access();
-
   // Link DMA to ADC1. This allows the DMA's interrupt handler to (eventually) call the ADC's
   // interrupt handler, among other things.
-  __HAL_LINKDMA(&adc_, DMA_Handle, *dma_peripheral_->handle());
-
-  dma_.start_circular_transfer();
+  __HAL_LINKDMA(&adc_, DMA_Handle, dma_handle_);
 
   HAL_ADC_Start_DMA(&adc_, destination, destination_buffer_size);
 }
 
 void AdcStm32l4xx::start_single_conversion(gpio::PortPin pin, uint32_t* destination,
                                            size_t destination_buffer_size) {
-  // Link DMA to ADC1. This allows the DMA's interrupt handler to (eventually) call the ADC's
-  // interrupt handler, among other things.
-  __HAL_LINKDMA(&adc_, DMA_Handle, *dma_peripheral_->handle());
+  // Ensure the DMA controller is on.
+  dma_ = dma_peripheral_->access();
+
+  // Configure the DMA transfers.
+  dma_handle_.Init.Direction = DMA_PERIPH_TO_MEMORY;
+  dma_handle_.Init.PeriphInc = DMA_PINC_DISABLE;
+  dma_handle_.Init.MemInc = DMA_MINC_ENABLE;
+  if (adc_.Init.Resolution == ADC_RESOLUTION_6B || adc_.Init.Resolution == ADC_RESOLUTION_8B) {
+    dma_handle_.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+  } else {
+    dma_handle_.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+  }
+  dma_handle_.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+  dma_handle_.Init.Mode = DMA_CIRCULAR;
+  dma_handle_.Init.Priority = DMA_PRIORITY_HIGH;
 
   // Configure ADC.
   adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
-  adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;     // Right-aligned data
-  adc_.Init.ScanConvMode = ADC_SCAN_DISABLE;     // Single channel
-  adc_.Init.EOCSelection = ADC_EOC_SINGLE_CONV;  // End of conversion flag
+  adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  adc_.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  adc_.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   adc_.Init.LowPowerAutoWait = DISABLE;
-  adc_.Init.ContinuousConvMode = DISABLE;  // Default single-shot
+  adc_.Init.ContinuousConvMode = DISABLE;
   adc_.Init.NbrOfConversion = 1;
   adc_.Init.DiscontinuousConvMode = DISABLE;
-  adc_.Init.ExternalTrigConv = ADC_SOFTWARE_START;  // Start via software
+  adc_.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   adc_.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  adc_.Init.DMAContinuousRequests = ENABLE;
 
-  HAL_ADC_Init(&adc_);
-
-  dma_.start_circular_transfer();
-
-  // Configure ADC Channel.
+  // Configure an ADC Channel for each pin.
   channel_config_.Channel = get_channel(pin);
   channel_config_.Rank = ADC_REGULAR_RANK_1;
   channel_config_.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
   channel_config_.SingleDiff = ADC_SINGLE_ENDED;
   channel_config_.Offset = 0;
+
+  // Link DMA to ADC1. This allows the DMA's interrupt handler to (eventually) call the ADC's
+  // interrupt handler, among other things.
+  __HAL_LINKDMA(&adc_, DMA_Handle, dma_handle_);
+
+  HAL_DMA_Init(&dma_handle_);
+
+  HAL_ADC_Init(&adc_);
 
   HAL_ADC_ConfigChannel(&adc_, &channel_config_);
 
@@ -192,7 +223,7 @@ uint32_t AdcStm32l4xx::read_calibration_factor() { return adc_.Instance->CALFACT
 
 void AdcStm32l4xx::write_calibration_factor(uint32_t factor) { adc_.Instance->CALFACT = factor; }
 
-void AdcStm32l4xx::handle_interrupt() { HAL_ADC_IRQHandler(&adc_); }
+void AdcStm32l4xx::handle_interrupt() { HAL_DMA_IRQHandler(&dma_handle_); }
 
 void AdcStm32l4xx::enable() {
   dma_ = dma_peripheral_->access();
