@@ -14,7 +14,7 @@
 extern "C" {
 
 __attribute__((section(".status.value"))) uint32_t current_output_value{};
-__attribute__((section(".status.value"))) std::array<uint32_t, 4> buffer{};
+__attribute__((section(".status.value"))) std::array<uint32_t, 1> buffer{};
 __attribute__((section(".status.value"))) float absolute_difference{};
 __attribute__((section(".status.value"))) float relative_difference{};
 __attribute__((section(".status.value"))) volatile bool dma_complete{};
@@ -77,16 +77,16 @@ tvsc::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
       current_output_value = (v << RESOLUTION_SHIFT);
       dac.set_value(current_output_value);
 
-      dma_complete = false;
-      dma_error = false;
-
       // Set the values in the buffer to a known pattern to check for buffer overrun issues.
       for (size_t i = 0; i < buffer.size(); ++i) {
         buffer[i] = 0xfefefefe;
       }
 
+      dma_complete = false;
+      dma_error = false;
+
       adc.start_single_conversion({BoardType::DAC_CHANNEL_1_PORT, BoardType::DAC_CHANNEL_1_PIN},
-                                  buffer.data(), 1);
+                                  buffer.data(), buffer.size());
 
       while (!dma_complete) {
         // Yield while we take the measurement.
