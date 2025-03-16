@@ -81,9 +81,13 @@ tvsc::scheduler::Task<ClockType> run_adc_demo(BoardType& board) {
       dma_error = false;
 
       // Set the values in the buffer to a known pattern to check for buffer overrun issues.
-      buffer = {0xdead, 0xabcd, 0x1234, 0xef12};
+      for (size_t i = 0; i < buffer.size(); ++i) {
+        buffer[i] = 0xfefefefe;
+      }
+
       adc.start_single_conversion({BoardType::DAC_CHANNEL_1_PORT, BoardType::DAC_CHANNEL_1_PIN},
                                   buffer.data(), 1);
+
       while (!dma_complete) {
         // Yield while we take the measurement.
         co_yield 5ms;
