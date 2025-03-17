@@ -223,7 +223,16 @@ uint32_t AdcStm32l4xx::read_calibration_factor() { return adc_.Instance->CALFACT
 
 void AdcStm32l4xx::write_calibration_factor(uint32_t factor) { adc_.Instance->CALFACT = factor; }
 
-void AdcStm32l4xx::handle_interrupt() { HAL_DMA_IRQHandler(&dma_handle_); }
+void AdcStm32l4xx::handle_interrupt() {
+  // The ADC controls the DMA channel; under STM32 HAL language, the ADC is the DMA's parent
+  // peripheral. With this configuration, the IRQ indicating the end of the transfer (or an error,
+  // or halfway point of a transfer) comes from the DMA. Boards should map that IRQ to this
+  // handle_interrupt() method. We then handle the DMA IRQ with this function call. That function
+  // will forward the handling through the ADC IRQ callbacks. It results in a lot of function calls
+  // for an ISR, but each one seems to have value. This call below, for example, determines why the
+  // interrupt occurred and clears the corresponding register flags.
+  HAL_DMA_IRQHandler(&dma_handle_);
+}
 
 void AdcStm32l4xx::enable() {
   dma_ = dma_peripheral_->access();
