@@ -87,16 +87,16 @@ def load_source_dependencies():
     # platforms, including Arduino.h.
     # See note in toolchains.bzl for version information of this package. This package should be
     # kept in sync with the Teensy toolchains in toolchains.bzl.
-    if not native.existing_rule("com_pjrc_teensy_package"):
-        http_archive(
-            name = "com_pjrc_teensy_package",
-            sha256 = "b9c1ea852bd5ac625559685a864d40803df566650864b415e7c14c9623520c59",
-            urls = [
-                "https://www.pjrc.com/teensy/td_159/teensy-package-1.59.0.tar.zst",
-            ],
-            build_file = "//third_party/arduino/teensyduino:teensy_package.BUILD",
-            patches = ["//third_party/arduino/teensyduino:Time.cpp.patch"],
-        )
+    # if not native.existing_rule("com_pjrc_teensy_package"):
+    #     http_archive(
+    #         name = "com_pjrc_teensy_package",
+    #         sha256 = "b9c1ea852bd5ac625559685a864d40803df566650864b415e7c14c9623520c59",
+    #         urls = [
+    #             "https://www.pjrc.com/teensy/td_159/teensy-package-1.59.0.tar.zst",
+    #         ],
+    #         build_file = "//third_party/arduino/teensyduino:teensy_package.BUILD",
+    #         patches = ["//third_party/arduino/teensyduino:Time.cpp.patch"],
+    #     )
 
     # This package includes the source code for STM32 drivers for various facilities.
     if not native.existing_rule("com_github_stellarcorp_stm32_libraries"):
