@@ -21,7 +21,7 @@ class I2cPeripheral : public Peripheral<I2cPeripheral, I2c> {
                     std::chrono::milliseconds timeout) = 0;
 
   virtual void receive(uint8_t addr, uint8_t* data, uint16_t size,
-                       std::chrono::milliseconds timeout_ms) = 0;
+                       std::chrono::milliseconds timeout) = 0;
 
   friend class I2c;
 
@@ -42,7 +42,7 @@ class I2c final : public Functional<I2cPeripheral, I2c> {
     peripheral_->send(addr, data, size, timeout);
   }
 
-  void receive(uint8_t addr, uint8_t* data, uint16_t size, std::chrono::milliseconds timeout_ms) {
+  void receive(uint8_t addr, uint8_t* data, uint16_t size, std::chrono::milliseconds timeout) {
     peripheral_->receive(addr, data, size, timeout);
   }
 };

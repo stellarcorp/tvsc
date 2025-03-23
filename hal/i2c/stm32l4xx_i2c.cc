@@ -19,8 +19,11 @@ void I2cStm32l4xx::enable() {
     error();
   }
 
-  i2c_.Init.ClockSpeed = 100000;
-  i2c_.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  // The API for specifying the timing field depends on the clock speed for the I2C's bus. This
+  // value was derived for 100 kHz signals with a bus speed of 16 MHz. There is no API to calculate
+  // this value.
+  i2c_.Init.Timing = 0x00702991;
+
   i2c_.Init.OwnAddress1 = 0;
   i2c_.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   i2c_.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -32,7 +35,7 @@ void I2cStm32l4xx::enable() {
 }
 
 void I2cStm32l4xx::disable() {
-  HAL_I2C_Deinit(&i2c_);
+  HAL_I2C_DeInit(&i2c_);
 
   if (i2c_.Instance == I2C1) {
     __HAL_RCC_I2C1_CLK_DISABLE();
@@ -48,10 +51,14 @@ void I2cStm32l4xx::disable() {
 }
 
 void I2cStm32l4xx::send(uint8_t addr, const uint8_t* data, uint16_t size,
-                        std::chrono::milliseconds timeout) {}
+                        std::chrono::milliseconds timeout) {
+  HAL_I2C_Master_Transmit_DMA(&i2c_, addr << 1, const_cast<uint8_t*>(data), size);
+}
 
 void I2cStm32l4xx::receive(uint8_t addr, uint8_t* data, uint16_t size,
-                           std::chrono::milliseconds timeout_ms) {}
+                           std::chrono::milliseconds timeout) {
+  HAL_I2C_Master_Receive_DMA(&i2c_, addr << 1, data, size);
+}
 
 void I2cStm32l4xx::handle_interrupt() {}
 
