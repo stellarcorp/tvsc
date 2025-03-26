@@ -38,6 +38,8 @@ class I2c final : public Functional<I2cPeripheral, I2c> {
   friend class Peripheral<I2cPeripheral, I2c>;
 
  public:
+  I2c() = default;
+
   void send(uint8_t addr, const uint8_t* data, uint16_t size, std::chrono::milliseconds timeout) {
     peripheral_->send(addr, data, size, timeout);
   }
