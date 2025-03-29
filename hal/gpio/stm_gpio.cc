@@ -45,7 +45,16 @@ void GpioStm32xxxx::set_otyper_value(Pin pin, OTYPER_VALUES value) {
                                             static_cast<uint8_t>(pin));
 }
 
-void GpioStm32xxxx::set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) {
+void GpioStm32xxxx::set_alternate_function(Pin pin, uint8_t value) {
+  if (pin >= 0 && pin < 8) {
+    registers_->AFRL.set_bit_field_value<4>(value, 4 * pin);
+  } else {
+    registers_->AFRH.set_bit_field_value<4>(value, 4 * (pin - 8));
+  }
+}
+
+void GpioStm32xxxx::set_pin_mode(Pin pin, PinMode mode, PinSpeed speed,
+                                 uint8_t alternate_function_mapping) {
   switch (mode) {
       // Unused pins get set to the reset state of most pins. Note that the reset state of some
       // pins, especially debug pins, is different.
@@ -128,6 +137,7 @@ void GpioStm32xxxx::set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) {
       set_otyper_value(pin, OTYPER_VALUES::MOSFET_PUSH_PULL);
       set_ospeedr_value(pin, speed);
       set_pupdr_value(pin, OPUPDR_VALUES::BOTH_DISABLED);
+      set_alternate_function(pin, alternate_function_mapping);
       break;
 
     case PinMode::ALTERNATE_FUNCTION_PUSH_PULL_WITH_PULL_UP:
@@ -135,6 +145,7 @@ void GpioStm32xxxx::set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) {
       set_otyper_value(pin, OTYPER_VALUES::MOSFET_PUSH_PULL);
       set_ospeedr_value(pin, speed);
       set_pupdr_value(pin, OPUPDR_VALUES::PULL_UP_ENABLED);
+      set_alternate_function(pin, alternate_function_mapping);
       break;
 
     case PinMode::ALTERNATE_FUNCTION_PUSH_PULL_WITH_PULL_DOWN:
@@ -142,6 +153,7 @@ void GpioStm32xxxx::set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) {
       set_otyper_value(pin, OTYPER_VALUES::MOSFET_PUSH_PULL);
       set_ospeedr_value(pin, speed);
       set_pupdr_value(pin, OPUPDR_VALUES::PULL_DOWN_ENABLED);
+      set_alternate_function(pin, alternate_function_mapping);
       break;
 
     case PinMode::ALTERNATE_FUNCTION_OPEN_DRAIN:
@@ -149,6 +161,7 @@ void GpioStm32xxxx::set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) {
       set_otyper_value(pin, OTYPER_VALUES::MOSFET_OPEN_DRAIN);
       set_ospeedr_value(pin, speed);
       set_pupdr_value(pin, OPUPDR_VALUES::BOTH_DISABLED);
+      set_alternate_function(pin, alternate_function_mapping);
       break;
 
     case PinMode::ALTERNATE_FUNCTION_OPEN_DRAIN_WITH_PULL_UP:
@@ -156,6 +169,7 @@ void GpioStm32xxxx::set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) {
       set_otyper_value(pin, OTYPER_VALUES::MOSFET_OPEN_DRAIN);
       set_ospeedr_value(pin, speed);
       set_pupdr_value(pin, OPUPDR_VALUES::PULL_UP_ENABLED);
+      set_alternate_function(pin, alternate_function_mapping);
       break;
 
     case PinMode::ALTERNATE_FUNCTION_OPEN_DRAIN_WITH_PULL_DOWN:
@@ -163,6 +177,7 @@ void GpioStm32xxxx::set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) {
       set_otyper_value(pin, OTYPER_VALUES::MOSFET_OPEN_DRAIN);
       set_ospeedr_value(pin, speed);
       set_pupdr_value(pin, OPUPDR_VALUES::PULL_DOWN_ENABLED);
+      set_alternate_function(pin, alternate_function_mapping);
       break;
 
       // default:

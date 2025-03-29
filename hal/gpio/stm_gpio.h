@@ -82,10 +82,13 @@ class GpioStm32xxxx final : public GpioPeripheral {
   };
   void set_otyper_value(Pin pin, OTYPER_VALUES value);
 
+  void set_alternate_function(Pin pin, uint8_t value);
+
   void enable() override;
   void disable() override;
 
-  void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) override;
+  void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed,
+                    uint8_t alternate_function_mapping) override;
 
   void write_pin(Pin pin, bool on) override;
   void toggle_pin(Pin pin) override;

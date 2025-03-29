@@ -111,7 +111,8 @@ class GpioPeripheral : public Peripheral<GpioPeripheral, Gpio> {
   virtual void enable() = 0;
   virtual void disable() = 0;
 
-  virtual void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) = 0;
+  virtual void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed,
+                            uint8_t alternate_function_mapping) = 0;
 
   virtual bool read_pin(Pin pin) = 0;
   virtual void write_pin(Pin pin, bool on) = 0;
@@ -133,8 +134,11 @@ class Gpio final : public Functional<GpioPeripheral, Gpio> {
   friend class Peripheral<GpioPeripheral, Gpio>;
 
  public:
-  void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed = PinSpeed::LOW) {
-    peripheral_->set_pin_mode(pin, mode, speed);
+  Gpio() = default;
+
+  void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed = PinSpeed::LOW,
+                    uint8_t alternate_function_mapping = 0) {
+    peripheral_->set_pin_mode(pin, mode, speed, alternate_function_mapping);
   }
 
   bool read_pin(Pin pin) { return peripheral_->read_pin(pin); }
