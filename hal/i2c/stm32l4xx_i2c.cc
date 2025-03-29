@@ -5,12 +5,6 @@
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
-extern "C" {
-
-__attribute__((section(".status.value"))) uint8_t i2c_enabled{};
-
-}  // extern "C"
-
 namespace tvsc::hal::i2c {
 
 void I2cStm32l4xx::enable() {
@@ -48,8 +42,6 @@ void I2cStm32l4xx::enable() {
   i2c_.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
 
   require(HAL_I2C_Init(&i2c_) == HAL_OK);
-
-  i2c_enabled = 1;
 }
 
 void I2cStm32l4xx::disable() {
@@ -77,8 +69,8 @@ bool I2cStm32l4xx::is_device_ready(uint8_t device_address) {
 // Blocking single-register read
 bool I2cStm32l4xx::read(uint8_t device_address, uint8_t register_address, uint8_t* data,
                         size_t length) {
-  return HAL_I2C_Mem_Read(&i2c_, device_address << 1, register_address, I2C_MEMADD_SIZE_8BIT, data,
-                          length, 1000) == HAL_OK;
+  return HAL_I2C_Mem_Read(&i2c_, (device_address << 1), register_address, I2C_MEMADD_SIZE_8BIT,
+                          data, length, 1000) == HAL_OK;
 }
 
 // Blocking single-register write
