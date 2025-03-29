@@ -19,6 +19,8 @@
 #include "hal/imu/imu.h"
 #include "hal/power/power.h"
 #include "hal/power/stm32l4xx_power.h"
+#include "hal/power_monitor/ina260_power_monitor.h"
+#include "hal/power_monitor/power_monitor.h"
 #include "hal/random/rng.h"
 #include "hal/random/stm32xxxx_rng.h"
 #include "hal/rcc/rcc.h"
@@ -101,6 +103,9 @@ class Board final {
 
   imu::Bmi323Imu imu1_{0x68, i2c1_};
   imu::Bmi323Imu imu2_{0x69, i2c2_};
+
+  power_monitor::Ina260PowerMonitor power_monitor1_{0x40, i2c3_};
+  power_monitor::Ina260PowerMonitor power_monitor2_{0x41, i2c3_};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
@@ -202,6 +207,9 @@ class Board final {
 
   imu::ImuPeripheral& imu1() { return imu1_; }
   imu::ImuPeripheral& imu2() { return imu2_; }
+
+  power_monitor::PowerMonitorPeripheral& power_monitor1() { return power_monitor1_; }
+  power_monitor::PowerMonitorPeripheral& power_monitor2() { return power_monitor2_; }
 };
 
 }  // namespace tvsc::hal::board

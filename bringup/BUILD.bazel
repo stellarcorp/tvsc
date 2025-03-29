@@ -24,6 +24,7 @@ cc_library(
     hdrs = [
         "blink.h",
         "dac_demo.h",
+        "monitor_power.h",
         "quit.h",
         "random_blink.h",
     ],
@@ -32,6 +33,7 @@ cc_library(
         "//hal",
         "//hal/board",
         "//hal/gpio",
+        "//hal/power_monitor",
         "//random",
         "//scheduler",
         "//time:embedded_clock",
@@ -79,6 +81,31 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/gpio",
+        "//scheduler",
+        "//time:embedded_clock",
+    ],
+)
+
+cc_binary(
+    name = "monitor_power.elf",
+    srcs = [
+        "monitor_power.cc",
+    ],
+    additional_linker_inputs = [
+        ":linker_script",
+    ],
+    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    target_compatible_with = select({
+        "//platforms:no_gpio": ["@platforms//:incompatible"],
+        "//platforms:no_debug_led": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    deps = [
+        ":tasks",
+        "//base",
+        "//hal",
+        "//hal/board",
+        "//hal/power_monitor",
         "//scheduler",
         "//time:embedded_clock",
     ],

@@ -1,0 +1,43 @@
+cc_library(
+    name = "power_monitor_headers",
+    hdrs = [
+        "power_monitor.h",
+    ],
+    deps = [
+        "//hal",
+    ],
+)
+
+cc_library(
+    name = "power_monitor",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":power_monitor_headers",
+    ] + select({
+        "//platforms:stm32l4xx": [
+            ":ina260_power_monitor",
+        ],
+    }),
+)
+
+cc_library(
+    name = "ina260_power_monitor",
+    srcs = [
+        "ina260_power_monitor.cc",
+    ],
+    hdrs = [
+        "ina260_power_monitor.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32l4xx",
+    ],
+    deps = [
+        ":power_monitor_headers",
+        "//hal",
+        "//hal/i2c",
+    ],
+)
