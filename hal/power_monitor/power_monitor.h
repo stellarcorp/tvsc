@@ -17,6 +17,9 @@ class PowerMonitorPeripheral : public Peripheral<PowerMonitorPeripheral, PowerMo
   virtual void disable() = 0;
 
   virtual bool read_id(uint16_t* result) = 0;
+  virtual bool read_current(float* result_amps) = 0;
+  virtual bool read_voltage(float* result_volts) = 0;
+  virtual bool read_power(float* result_watts) = 0;
 
   friend class PowerMonitor;
 
@@ -33,6 +36,9 @@ class PowerMonitor final : public Functional<PowerMonitorPeripheral, PowerMonito
 
  public:
   bool read_id(uint16_t* result) { return peripheral_->read_id(result); }
+  bool read_current(float* result_amps) { return peripheral_->read_current(result_amps); }
+  bool read_voltage(float* result_volts) { return peripheral_->read_voltage(result_volts); }
+  bool read_power(float* result_watts) { return peripheral_->read_power(result_watts); }
 };
 
 }  // namespace tvsc::hal::power_monitor

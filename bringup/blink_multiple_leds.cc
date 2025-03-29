@@ -20,7 +20,7 @@ static constexpr size_t QUEUE_SIZE{4};
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
-  static constexpr uint64_t BASE_DURATION_MS{200};
+  static constexpr std::chrono::milliseconds BASE_DURATION_MS{200};
   auto& board{BoardType::board()};
 
   auto& clock{ClockType::clock()};

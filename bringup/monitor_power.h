@@ -13,9 +13,9 @@ using namespace std::chrono_literals;
 
 struct alignas(16) PowerUsage final {
   uint16_t device_id{};
-  float current_ma{};
-  float voltage_mv{};
-  float power_mw{};
+  float current_amps{};
+  float voltage_volts{};
+  float power_watts{};
 };
 
 template <typename ClockType>
@@ -28,6 +28,9 @@ tvsc::scheduler::Task<ClockType> monitor_power(
       // we aren't actively reading measurements.
       auto power_monitor{power_monitor_peripheral.access()};
       power_monitor.read_id(&output.device_id);
+      power_monitor.read_current(&output.current_amps);
+      power_monitor.read_voltage(&output.voltage_volts);
+      power_monitor.read_power(&output.power_watts);
     }
 
     co_yield interval;
