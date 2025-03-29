@@ -38,6 +38,7 @@ cc_library(
     deps = [
         ":i2c_headers",
         "//hal",
+        "//hal/gpio",
         "//third_party/stm32",
     ],
 )

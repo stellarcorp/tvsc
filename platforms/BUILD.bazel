@@ -12,6 +12,7 @@ platform(
         ":no_debug_push_button",
         ":no_adc",
         ":no_dac",
+        ":no_i2c",
         ":no_spi",
         ":no_eeprom",
         ":os_networking",
@@ -33,6 +34,7 @@ platform(
         ":teensyduino_adc",
         ":teensyduino_dac",
         ":teensyduino_dma",
+        ":teensyduino_i2c",
         ":teensyduino_spi",
         ":teensyduino_eeprom",
         ":no_networking",
@@ -54,6 +56,7 @@ platform(
         ":teensyduino_adc",
         ":teensyduino_dac",
         ":teensyduino_dma",
+        ":teensyduino_i2c",
         ":teensyduino_spi",
         ":teensyduino_eeprom",
         ":no_networking",
@@ -75,6 +78,7 @@ platform(
         ":stm32l4xx_adc",
         ":no_dac",
         ":stm32l4xx_dma",
+        ":stm32_i2c",
         ":stm32_spi",
         ":stm32_eeprom",
         ":no_networking",
@@ -96,6 +100,7 @@ platform(
         ":stm32l4xx_adc",
         ":stm32l4xx_dac",
         ":stm32l4xx_dma",
+        ":stm32_i2c",
         ":stm32_spi",
         ":stm32_eeprom",
         ":no_networking",
@@ -117,6 +122,7 @@ platform(
         ":stm32l4xx_adc",
         ":stm32l4xx_dac",
         ":stm32l4xx_dma",
+        ":stm32_i2c",
         ":stm32_spi",
         ":stm32_eeprom",
         ":no_networking",
@@ -315,6 +321,24 @@ constraint_value(
 constraint_value(
     name = "no_dma",
     constraint_setting = "dma",
+)
+
+# I2C support.
+constraint_setting(name = "i2c")
+
+constraint_value(
+    name = "teensyduino_i2c",
+    constraint_setting = "i2c",
+)
+
+constraint_value(
+    name = "stm32_i2c",
+    constraint_setting = "i2c",
+)
+
+constraint_value(
+    name = "no_i2c",
+    constraint_setting = "i2c",
 )
 
 # SPI support.
