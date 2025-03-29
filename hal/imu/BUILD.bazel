@@ -1,0 +1,43 @@
+cc_library(
+    name = "imu_headers",
+    hdrs = [
+        "imu.h",
+    ],
+    deps = [
+        "//hal",
+    ],
+)
+
+cc_library(
+    name = "imu",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":imu_headers",
+    ] + select({
+        "//platforms:stm32l4xx": [
+            ":bmi323_imu",
+        ],
+    }),
+)
+
+cc_library(
+    name = "bmi323_imu",
+    srcs = [
+        "bmi323_imu.cc",
+    ],
+    hdrs = [
+        "bmi323_imu.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32l4xx",
+    ],
+    deps = [
+        ":imu_headers",
+        "//hal",
+        "//hal/i2c",
+    ],
+)
