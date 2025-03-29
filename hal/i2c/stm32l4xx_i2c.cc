@@ -34,19 +34,16 @@ void I2cStm32l4xx::enable() {
     error();
   }
 
-  // The API for specifying the timing field depends on the clock speed for the I2C's bus. This
-  // value was derived for 100 kHz signals with a bus speed of 16 MHz. There is no API to calculate
-  // this value.
-  // i2c_.Init.Timing = 0x00702991;
+  // The API for specifying the timing field depends on the clock speed for the I2C's bus. There is
+  // no API to calculate this value.
   // 400 kHz with a bus speed of 16 MHz.
-  i2c_.Init.Timing = 0x00300F33;
-  // 400 kHz with a bus speed of 4 MHz.
-  // i2c_.Init.Timing = 0x00310309;
+  i2c_.Init.Timing = 0x0010061A;
 
   i2c_.Init.OwnAddress1 = 0;
   i2c_.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   i2c_.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   i2c_.Init.OwnAddress2 = 0;
+  i2c_.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
   i2c_.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
   i2c_.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
 
