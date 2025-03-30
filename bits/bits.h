@@ -31,123 +31,134 @@ inline constexpr uint8_t bit_width(std::size_t value) {
   return static_cast<uint8_t>(internal::number_of_bits(value));
 }
 
-template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET>
-inline constexpr uint32_t compute_bit_mask() {
-  static_assert(NUM_BITS + BIT_FIELD_OFFSET <= 32,
+// This method is effectively a typed form of the literal 1. Using this method avoids a number of
+// compiler warnings and allows the compiler to generate code appropriate for the result type
+// without repeating the idiom in several methods below.
+template <typename ResultType>
+inline constexpr ResultType one() {
+  return static_cast<ResultType>(1);
+}
+
+template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET, typename ResultType = uint32_t>
+inline constexpr ResultType compute_bit_mask() {
+  static_assert(NUM_BITS + BIT_FIELD_OFFSET <= sizeof(ResultType) * 8,
                 "Invalid mask parameters. The total number of bits (offset and the number "
-                "of bits in the mask) must be less than or equal to the size of the word "
-                "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
-                "template parameters to call this method.");
-  return ((1UL << NUM_BITS) - 1UL) << BIT_FIELD_OFFSET;
+                "of bits in the mask) must be less than or equal to the size of the ResultType. "
+                "Likely, this is a typo or other scrivener's error in the template parameters to "
+                "call this method.");
+  return ((one<ResultType>() << NUM_BITS) - one<ResultType>()) << BIT_FIELD_OFFSET;
 }
 
-template <uint8_t NUM_BITS>
-inline constexpr uint32_t compute_bit_mask(uint8_t bit_field_offset) {
-  return ((1UL << NUM_BITS) - 1UL) << bit_field_offset;
+template <uint8_t NUM_BITS, typename ResultType = uint32_t>
+inline constexpr ResultType compute_bit_mask(uint8_t bit_field_offset) {
+  return ((one<ResultType>() << NUM_BITS) - one<ResultType>()) << bit_field_offset;
 }
 
-inline constexpr uint32_t compute_bit_mask(uint8_t num_bits, uint8_t bit_field_offset) {
-  return ((1UL << num_bits) - 1UL) << bit_field_offset;
+template <typename ResultType = uint32_t>
+inline constexpr ResultType compute_bit_mask(uint8_t num_bits, uint8_t bit_field_offset) {
+  return ((one<ResultType>() << num_bits) - one<ResultType>()) << bit_field_offset;
 }
 
-template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET>
-inline constexpr uint32_t get_bit_field_value(const uint32_t& value) {
-  static_assert(NUM_BITS + BIT_FIELD_OFFSET <= 32,
+template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET, typename ResultType = uint32_t>
+inline constexpr ResultType get_bit_field_value(const ResultType& value) {
+  static_assert(NUM_BITS + BIT_FIELD_OFFSET <= sizeof(ResultType) * 8,
                 "Invalid bit field parameters. The total number of bits (offset and the number "
                 "of bits in the field) must be less than or equal to the size of the register "
                 "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
                 "template parameters to call this method.");
-  constexpr uint32_t MASK{compute_bit_mask<NUM_BITS, BIT_FIELD_OFFSET>()};
+  constexpr ResultType MASK{compute_bit_mask<NUM_BITS, BIT_FIELD_OFFSET>()};
   return (value & MASK) >> BIT_FIELD_OFFSET;
 }
 
-template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET>
-inline uint32_t get_bit_field_value(const volatile uint32_t& value) {
-  static_assert(NUM_BITS + BIT_FIELD_OFFSET <= 32,
+template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET, typename ResultType = uint32_t>
+inline ResultType get_bit_field_value(const volatile ResultType& value) {
+  static_assert(NUM_BITS + BIT_FIELD_OFFSET <= sizeof(ResultType) * 8,
                 "Invalid bit field parameters. The total number of bits (offset and the number "
                 "of bits in the field) must be less than or equal to the size of the register "
                 "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
                 "template parameters to call this method.");
-  constexpr uint32_t MASK{compute_bit_mask<NUM_BITS, BIT_FIELD_OFFSET>()};
+  constexpr ResultType MASK{compute_bit_mask<NUM_BITS, BIT_FIELD_OFFSET>()};
   return (value & MASK) >> BIT_FIELD_OFFSET;
 }
 
-template <uint8_t NUM_BITS>
-inline constexpr uint32_t get_bit_field_value(const uint32_t& value, uint8_t bit_field_offset) {
-  const uint32_t MASK{compute_bit_mask<NUM_BITS>(bit_field_offset)};
+template <uint8_t NUM_BITS, typename ResultType = uint32_t>
+inline constexpr ResultType get_bit_field_value(const ResultType& value, uint8_t bit_field_offset) {
+  const ResultType MASK{compute_bit_mask<NUM_BITS>(bit_field_offset)};
   return (value & MASK) >> bit_field_offset;
 }
 
-template <uint8_t NUM_BITS>
-inline uint32_t get_bit_field_value(const volatile uint32_t& value, uint8_t bit_field_offset) {
-  const uint32_t MASK{compute_bit_mask<NUM_BITS>(bit_field_offset)};
+template <uint8_t NUM_BITS, typename ResultType = uint32_t>
+inline ResultType get_bit_field_value(const volatile ResultType& value, uint8_t bit_field_offset) {
+  const ResultType MASK{compute_bit_mask<NUM_BITS>(bit_field_offset)};
   return (value & MASK) >> bit_field_offset;
 }
 
 /**
  * Set a particular set of bits in a value, leaving the others unchanged.
  */
-template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET>
-inline constexpr void modify_bit_field(uint32_t& value, uint32_t bit_field_value) {
-  static_assert(NUM_BITS + BIT_FIELD_OFFSET <= 32,
+template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET, typename ResultType = uint32_t>
+inline constexpr void modify_bit_field(ResultType& value, ResultType bit_field_value) {
+  static_assert(NUM_BITS + BIT_FIELD_OFFSET <= sizeof(ResultType) * 8,
                 "Invalid bit field parameters. The total number of bits (offset and the number "
                 "of bits in the field) must be less than or equal to the size of the register "
                 "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
                 "template parameters to call this method.");
-  constexpr uint32_t MASK{compute_bit_mask<NUM_BITS, BIT_FIELD_OFFSET>()};
+  constexpr ResultType MASK{compute_bit_mask<NUM_BITS, BIT_FIELD_OFFSET>()};
   value = ((bit_field_value << BIT_FIELD_OFFSET) & MASK) | (value & ~MASK);
 }
 
 /**
  * Set a particular set of bits in a value, leaving the others unchanged.
  */
-template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET>
-inline void modify_bit_field(volatile uint32_t& value, uint32_t bit_field_value) {
-  static_assert(NUM_BITS + BIT_FIELD_OFFSET <= 32,
+template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET, typename ResultType = uint32_t>
+inline void modify_bit_field(volatile ResultType& value, ResultType bit_field_value) {
+  static_assert(NUM_BITS + BIT_FIELD_OFFSET <= sizeof(ResultType) * 8,
                 "Invalid bit field parameters. The total number of bits (offset and the number "
                 "of bits in the field) must be less than or equal to the size of the register "
                 "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
                 "template parameters to call this method.");
-  constexpr uint32_t MASK{compute_bit_mask<NUM_BITS, BIT_FIELD_OFFSET>()};
+  constexpr ResultType MASK{compute_bit_mask<NUM_BITS, BIT_FIELD_OFFSET>()};
   value = ((bit_field_value << BIT_FIELD_OFFSET) & MASK) | (value & ~MASK);
 }
 
 /**
  * Set a particular set of bits in a value, leaving the others unchanged.
  */
-template <uint8_t NUM_BITS>
-inline constexpr void modify_bit_field(uint32_t& value, uint32_t bit_field_value,
+template <uint8_t NUM_BITS, typename ResultType = uint32_t>
+inline constexpr void modify_bit_field(ResultType& value, ResultType bit_field_value,
                                        uint8_t bit_field_offset) {
-  const uint32_t MASK{compute_bit_mask<NUM_BITS>(bit_field_offset)};
+  const ResultType MASK{compute_bit_mask<NUM_BITS>(bit_field_offset)};
   value = ((bit_field_value << bit_field_offset) & MASK) | (value & ~MASK);
 }
 
 /**
  * Set a particular set of bits in a value, leaving the others unchanged.
  */
-template <uint8_t NUM_BITS>
-inline void modify_bit_field(volatile uint32_t& value, uint32_t bit_field_value,
+template <uint8_t NUM_BITS, typename ResultType = uint32_t>
+inline void modify_bit_field(volatile ResultType& value, ResultType bit_field_value,
                              uint8_t bit_field_offset) {
-  const uint32_t MASK{compute_bit_mask<NUM_BITS>(bit_field_offset)};
+  const ResultType MASK{compute_bit_mask<NUM_BITS>(bit_field_offset)};
   value = ((bit_field_value << bit_field_offset) & MASK) | (value & ~MASK);
 }
 
 /**
  * Set a particular set of bits in a value, leaving the others unchanged.
  */
-inline constexpr void modify_bit_field(uint32_t& value, uint32_t bit_field_value, uint8_t num_bits,
-                                       uint8_t bit_field_offset) {
-  const uint32_t MASK{compute_bit_mask(num_bits, bit_field_offset)};
+template <typename ResultType = uint32_t>
+inline constexpr void modify_bit_field(ResultType& value, ResultType bit_field_value,
+                                       uint8_t num_bits, uint8_t bit_field_offset) {
+  const ResultType MASK{compute_bit_mask<ResultType>(num_bits, bit_field_offset)};
   value = ((bit_field_value << bit_field_offset) & MASK) | (value & ~MASK);
 }
 
 /**
  * Set a particular set of bits in a value, leaving the others unchanged.
  */
-inline void modify_bit_field(volatile uint32_t& value, uint32_t bit_field_value, uint8_t num_bits,
-                             uint8_t bit_field_offset) {
-  const uint32_t MASK{compute_bit_mask(num_bits, bit_field_offset)};
-  uint32_t result = value;
+template <typename ResultType = uint32_t>
+inline void modify_bit_field(volatile ResultType& value, ResultType bit_field_value,
+                             uint8_t num_bits, uint8_t bit_field_offset) {
+  const ResultType MASK{compute_bit_mask<ResultType>(num_bits, bit_field_offset)};
+  ResultType result = value;
   value = ((bit_field_value << bit_field_offset) & MASK) | (result & ~MASK);
 }
 

@@ -23,11 +23,13 @@ TEST(BitWidthTest, VerifyAssortedValues) {
   EXPECT_EQ(11, bit_width(1024));
 }
 
-template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET>
-::testing::AssertionResult CanComputeBitMask(uint32_t expected_value) {
-  static constexpr uint32_t compile_time_value{compute_bit_mask<NUM_BITS, BIT_FIELD_OFFSET>()};
-  const uint32_t partial_compile_time_value{compute_bit_mask<NUM_BITS>(BIT_FIELD_OFFSET)};
-  const uint32_t run_time_value{compute_bit_mask(NUM_BITS, BIT_FIELD_OFFSET)};
+template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET, typename ValueType>
+::testing::AssertionResult CanComputeBitMask(ValueType expected_value) {
+  static constexpr uint32_t compile_time_value{
+      compute_bit_mask<NUM_BITS, BIT_FIELD_OFFSET, ValueType>()};
+  const uint32_t partial_compile_time_value{
+      compute_bit_mask<NUM_BITS, ValueType>(BIT_FIELD_OFFSET)};
+  const uint32_t run_time_value{compute_bit_mask<ValueType>(NUM_BITS, BIT_FIELD_OFFSET)};
 
   if (expected_value != compile_time_value) {
     return ::testing::AssertionFailure();
@@ -40,7 +42,7 @@ template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET>
   }
 }
 
-TEST(BitMaskTest, CanComputeBitMasks) {
+TEST(BitMask32Test, CanComputeBitMasks) {
   ::testing::AssertionResult result{::testing::AssertionSuccess()};
   result = CanComputeBitMask<2, 4>(0b00110000);
   EXPECT_TRUE(result);
@@ -54,34 +56,35 @@ TEST(BitMaskTest, CanComputeBitMasks) {
   EXPECT_TRUE(result);
 }
 
-template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET>
+template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET, typename ValueType = uint32_t>
 ::testing::AssertionResult CanModifyBitField() {
-  static constexpr uint32_t ZEROS{0x00000000};
-  static constexpr uint32_t ONES{0xffffffff};
-  static constexpr uint32_t EVENS{0xaaaaaaaa};
-  static constexpr uint32_t ODDS{0x55555555};
-  static constexpr uint32_t RANDOM{0b1010'0011'1101'1001'1101'1010'1011'0011};
+  static constexpr ValueType ZEROS{static_cast<ValueType>(0x00000000)};
+  static constexpr ValueType ONES{static_cast<ValueType>(0xffffffff)};
+  static constexpr ValueType EVENS{static_cast<ValueType>(0xaaaaaaaa)};
+  static constexpr ValueType ODDS{static_cast<ValueType>(0x55555555)};
+  static constexpr ValueType RANDOM{
+      static_cast<ValueType>(0b1010'0011'1101'1001'1101'1010'1011'0011)};
 
   static_assert(ONES == EVENS + ODDS,
                 "Bug in either EVENS or ODDS. They aren't bit patterns we expect.");
 
-  uint32_t zeros_modified{ZEROS};
-  uint32_t ones_modified{ONES};
-  uint32_t evens_modified{EVENS};
-  uint32_t odds_modified{ODDS};
-  uint32_t random_modified{RANDOM};
+  ValueType zeros_modified{ZEROS};
+  ValueType ones_modified{ONES};
+  ValueType evens_modified{EVENS};
+  ValueType odds_modified{ODDS};
+  ValueType random_modified{RANDOM};
 
   for (int i = 0; i < 5; ++i) {
-    uint32_t temp{zeros_modified};
-    modify_bit_field<NUM_BITS, BIT_FIELD_OFFSET>(
+    ValueType temp{zeros_modified};
+    modify_bit_field<NUM_BITS, BIT_FIELD_OFFSET, ValueType>(
         zeros_modified, get_bit_field_value<NUM_BITS, BIT_FIELD_OFFSET>(random_modified));
-    modify_bit_field<NUM_BITS, BIT_FIELD_OFFSET>(
+    modify_bit_field<NUM_BITS, BIT_FIELD_OFFSET, ValueType>(
         random_modified, get_bit_field_value<NUM_BITS, BIT_FIELD_OFFSET>(odds_modified));
-    modify_bit_field<NUM_BITS, BIT_FIELD_OFFSET>(
+    modify_bit_field<NUM_BITS, BIT_FIELD_OFFSET, ValueType>(
         odds_modified, get_bit_field_value<NUM_BITS, BIT_FIELD_OFFSET>(evens_modified));
-    modify_bit_field<NUM_BITS, BIT_FIELD_OFFSET>(
+    modify_bit_field<NUM_BITS, BIT_FIELD_OFFSET, ValueType>(
         evens_modified, get_bit_field_value<NUM_BITS, BIT_FIELD_OFFSET>(ones_modified));
-    modify_bit_field<NUM_BITS, BIT_FIELD_OFFSET>(
+    modify_bit_field<NUM_BITS, BIT_FIELD_OFFSET, ValueType>(
         ones_modified, get_bit_field_value<NUM_BITS, BIT_FIELD_OFFSET>(temp));
   }
 
@@ -100,7 +103,7 @@ template <uint8_t NUM_BITS, uint8_t BIT_FIELD_OFFSET>
   }
 }
 
-TEST(BitFieldTest, CanModifyBitFields) {
+TEST(BitField32Test, CanModifyBitFields) {
   ::testing::AssertionResult result{::testing::AssertionSuccess()};
   result = CanModifyBitField<1, 0>();
   EXPECT_TRUE(result);
@@ -119,6 +122,30 @@ TEST(BitFieldTest, CanModifyBitFields) {
   result = CanModifyBitField<13, 19>();
   EXPECT_TRUE(result);
   result = CanModifyBitField<3, 27>();
+  EXPECT_TRUE(result);
+}
+
+TEST(BitMask16Test, CanComputeBitMasks) {
+  ::testing::AssertionResult result{::testing::AssertionSuccess()};
+  result = CanComputeBitMask<2, 4, uint16_t>(0b00110000);
+  EXPECT_TRUE(result);
+  result = CanComputeBitMask<1, 4, uint16_t>(0b00010000);
+  EXPECT_TRUE(result);
+  result = CanComputeBitMask<11, 4, uint16_t>(0b111111111110000);
+  EXPECT_TRUE(result);
+}
+
+TEST(BitField16Test, CanModifyBitFields) {
+  ::testing::AssertionResult result{::testing::AssertionSuccess()};
+  result = CanModifyBitField<1, 0, uint16_t>();
+  EXPECT_TRUE(result);
+  result = CanModifyBitField<2, 0, uint16_t>();
+  EXPECT_TRUE(result);
+  result = CanModifyBitField<1, 2, uint16_t>();
+  EXPECT_TRUE(result);
+  result = CanModifyBitField<1, 3, uint16_t>();
+  EXPECT_TRUE(result);
+  result = CanModifyBitField<3, 11, uint16_t>();
   EXPECT_TRUE(result);
 }
 
