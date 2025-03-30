@@ -27,13 +27,14 @@ tvsc::scheduler::Task<ClockType> monitor_power(
       // Create the functional in its own block so that the monitor's resources can be shutdown when
       // we aren't actively reading measurements.
       auto power_monitor{power_monitor_peripheral.access()};
+      co_yield 5ms;
       power_monitor.read_id(&output.device_id);
       power_monitor.read_current(&output.current_amps);
       power_monitor.read_voltage(&output.voltage_volts);
       power_monitor.read_power(&output.power_watts);
     }
 
-    co_yield interval;
+    co_yield interval - 5ms;
   }
 }
 

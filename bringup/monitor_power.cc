@@ -35,8 +35,8 @@ int main(int argc, char* argv[]) {
   auto& clock{ClockType::clock()};
 
   Scheduler<ClockType, QUEUE_SIZE> scheduler{board.rcc()};
-  scheduler.add_task(monitor_power<ClockType>(board.power_monitor1(), power_monitor1, 10ms));
-  scheduler.add_task(monitor_power<ClockType>(board.power_monitor2(), power_monitor2, 10ms));
+  scheduler.add_task(monitor_power<ClockType>(board.power_monitor1(), power_monitor1, 100ms));
+  scheduler.add_task(monitor_power<ClockType>(board.power_monitor2(), power_monitor2, 100ms));
   scheduler.add_task(
       blink(clock, board.gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN, 5s));
   scheduler.add_task(quit(scheduler));
