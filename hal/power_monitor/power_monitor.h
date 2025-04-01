@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 
 #include "hal/peripheral.h"
@@ -17,14 +18,25 @@ class PowerMonitorPeripheral : public Peripheral<PowerMonitorPeripheral, PowerMo
   virtual void disable() = 0;
 
   virtual bool read_id(uint16_t* result) = 0;
-  virtual bool read_current(float* result_amps) = 0;
-  virtual bool read_voltage(float* result_volts) = 0;
-  virtual bool read_power(float* result_watts) = 0;
+  virtual bool read_current(float* result_amps, uint16_t* raw_result = nullptr) = 0;
+  virtual bool read_voltage(float* result_volts, uint16_t* raw_result = nullptr) = 0;
+  virtual bool read_power(float* result_watts, uint16_t* raw_result = nullptr) = 0;
+
+  virtual bool put_in_standby_mode() = 0;
 
   friend class PowerMonitor;
 
  public:
   virtual ~PowerMonitorPeripheral() = default;
+
+  virtual std::chrono::microseconds current_measurement_time() = 0;
+  virtual void set_current_measurement_time_approximate(std::chrono::microseconds duration) = 0;
+
+  virtual std::chrono::microseconds voltage_measurement_time() = 0;
+  virtual void set_voltage_measurement_time_approximate(std::chrono::microseconds duration) = 0;
+
+  virtual uint16_t sample_averaging() = 0;
+  virtual void set_sample_averaging_approximate(uint16_t num_samples) = 0;
 };
 
 class PowerMonitor final : public Functional<PowerMonitorPeripheral, PowerMonitor> {
@@ -36,9 +48,36 @@ class PowerMonitor final : public Functional<PowerMonitorPeripheral, PowerMonito
 
  public:
   bool read_id(uint16_t* result) { return peripheral_->read_id(result); }
-  bool read_current(float* result_amps) { return peripheral_->read_current(result_amps); }
-  bool read_voltage(float* result_volts) { return peripheral_->read_voltage(result_volts); }
-  bool read_power(float* result_watts) { return peripheral_->read_power(result_watts); }
+  bool read_current(float* result_amps, uint16_t* raw_result = nullptr) {
+    return peripheral_->read_current(result_amps, raw_result);
+  }
+  bool read_voltage(float* result_volts, uint16_t* raw_result = nullptr) {
+    return peripheral_->read_voltage(result_volts, raw_result);
+  }
+  bool read_power(float* result_watts, uint16_t* raw_result = nullptr) {
+    return peripheral_->read_power(result_watts, raw_result);
+  }
+
+  std::chrono::microseconds current_measurement_time() {
+    return peripheral_->current_measurement_time();
+  }
+  void set_current_measurement_time_approximate(std::chrono::microseconds duration) {
+    return peripheral_->set_current_measurement_time_approximate(duration);
+  }
+
+  std::chrono::microseconds voltage_measurement_time() {
+    return peripheral_->voltage_measurement_time();
+  }
+  void set_voltage_measurement_time_approximate(std::chrono::microseconds duration) {
+    return peripheral_->set_voltage_measurement_time_approximate(duration);
+  }
+
+  uint16_t sample_averaging() { return peripheral_->sample_averaging(); }
+  void set_sample_averaging_approximate(uint16_t num_samples) {
+    return peripheral_->set_sample_averaging_approximate(num_samples);
+  }
+
+  bool put_in_standby_mode() { return peripheral_->put_in_standby_mode(); }
 };
 
 }  // namespace tvsc::hal::power_monitor

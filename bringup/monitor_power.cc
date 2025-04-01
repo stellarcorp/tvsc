@@ -34,6 +34,14 @@ int main(int argc, char* argv[]) {
   auto& board{BoardType::board()};
   auto& clock{ClockType::clock()};
 
+  board.power_monitor1().set_current_measurement_time_approximate(1ms);
+  board.power_monitor1().set_voltage_measurement_time_approximate(200us);
+  board.power_monitor1().set_sample_averaging_approximate(16);
+
+  board.power_monitor2().set_current_measurement_time_approximate(1ms);
+  board.power_monitor2().set_voltage_measurement_time_approximate(200us);
+  board.power_monitor2().set_sample_averaging_approximate(16);
+
   Scheduler<ClockType, QUEUE_SIZE> scheduler{board.rcc()};
   scheduler.add_task(monitor_power<ClockType>(board.power_monitor1(), power_monitor1, 100ms));
   scheduler.add_task(monitor_power<ClockType>(board.power_monitor2(), power_monitor2, 100ms));

@@ -37,6 +37,7 @@ cc_library(
     ],
     deps = [
         ":power_monitor_headers",
+        "//bits",
         "//hal",
         "//hal/i2c",
     ],

@@ -12,29 +12,67 @@ namespace tvsc::bringup {
 using namespace std::chrono_literals;
 
 struct alignas(16) PowerUsage final {
-  uint16_t device_id{};
+  alignas(4) uint16_t device_id{0xffff};
+  alignas(4) uint16_t current_raw{0xffff};
+  alignas(4) uint16_t voltage_raw{0xffff};
+  alignas(4) uint16_t power_raw{0xffff};
   float current_amps{};
   float voltage_volts{};
   float power_watts{};
+  bool last_read_result{};
+
+  void reset() { *this = PowerUsage{}; }
 };
 
 template <typename ClockType>
 tvsc::scheduler::Task<ClockType> monitor_power(
     tvsc::hal::power_monitor::PowerMonitorPeripheral& power_monitor_peripheral, PowerUsage& output,
-    typename ClockType::duration interval = 1s) {
-  while (true) {
-    {
-      // Create the functional in its own block so that the monitor's resources can be shutdown when
-      // we aren't actively reading measurements.
-      auto power_monitor{power_monitor_peripheral.access()};
-      co_yield 5ms;
-      power_monitor.read_id(&output.device_id);
-      power_monitor.read_current(&output.current_amps);
-      power_monitor.read_voltage(&output.voltage_volts);
-      power_monitor.read_power(&output.power_watts);
-    }
+    typename ClockType::duration interval = 0s) {
+  using namespace std::chrono_literals;
 
-    co_yield interval - 5ms;
+  const auto startup_delay{power_monitor_peripheral.sample_averaging() *
+                               (power_monitor_peripheral.current_measurement_time() +
+                                power_monitor_peripheral.voltage_measurement_time()) +
+                           5ms};
+
+  if (interval > startup_delay) {
+    while (true) {
+      {
+        // Create the functional in its own block so that the monitor's resources can be shutdown
+        // when we aren't actively reading measurements.
+        auto power_monitor{power_monitor_peripheral.access()};
+        co_yield startup_delay;
+        output.reset();
+        bool last_read_result{true};
+        last_read_result &= power_monitor.read_id(&output.device_id);
+        last_read_result &= power_monitor.read_current(&output.current_amps, &output.current_raw);
+        last_read_result &= power_monitor.read_voltage(&output.voltage_volts, &output.voltage_raw);
+        last_read_result &= power_monitor.read_power(&output.power_watts, &output.power_raw);
+        output.last_read_result = last_read_result;
+        power_monitor.put_in_standby_mode();
+      }
+
+      co_yield interval - startup_delay;
+    }
+  } else {
+    // Just leave the functional on all the time, as this function is essentially being asked to
+    // take measurements constantly.
+
+    const auto measurement_time{power_monitor_peripheral.current_measurement_time() +
+                                power_monitor_peripheral.voltage_measurement_time()};
+
+    auto power_monitor{power_monitor_peripheral.access()};
+    co_yield startup_delay;
+    while (true) {
+      bool last_read_result{true};
+      output.reset();
+      last_read_result &= power_monitor.read_id(&output.device_id);
+      last_read_result &= power_monitor.read_current(&output.current_amps, &output.current_raw);
+      last_read_result &= power_monitor.read_voltage(&output.voltage_volts, &output.voltage_raw);
+      last_read_result &= power_monitor.read_power(&output.power_watts, &output.power_raw);
+      output.last_read_result = last_read_result;
+      co_yield measurement_time;
+    }
   }
 }
 
