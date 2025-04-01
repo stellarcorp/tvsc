@@ -25,9 +25,10 @@ class GpioInterceptor final : public simulation::Interceptor<GpioPeripheral, Clo
     return this->call(&GpioPeripheral::disable);
   }
 
-  void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) override {
+  void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed,
+                    uint8_t alternate_function_mapping) override {
     LOG_FN();
-    return this->call(&GpioPeripheral::set_pin_mode, pin, mode, speed);
+    return this->call(&GpioPeripheral::set_pin_mode, pin, mode, speed, alternate_function_mapping);
   }
 
   bool read_pin(Pin pin) override {

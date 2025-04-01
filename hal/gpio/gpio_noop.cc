@@ -6,7 +6,8 @@ void GpioNoop::enable() {}
 
 void GpioNoop::disable() {}
 
-void GpioNoop::set_pin_mode(Pin pin, PinMode mode, PinSpeed speed) {}
+void GpioNoop::set_pin_mode(Pin pin, PinMode mode, PinSpeed speed,
+                            uint8_t alternate_function_mapping) {}
 
 bool GpioNoop::read_pin(Pin pin) { return false; }
 
