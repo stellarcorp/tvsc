@@ -49,6 +49,21 @@ inline constexpr ResultType compute_bit_mask() {
   return ((one<ResultType>() << NUM_BITS) - one<ResultType>()) << BIT_FIELD_OFFSET;
 }
 
+template <>
+inline constexpr uint32_t compute_bit_mask<32, 0, uint32_t>() {
+  return static_cast<uint32_t>(-1);
+}
+
+template <>
+inline constexpr uint16_t compute_bit_mask<16, 0, uint16_t>() {
+  return static_cast<uint16_t>(-1);
+}
+
+template <>
+inline constexpr uint8_t compute_bit_mask<8, 0, uint8_t>() {
+  return static_cast<uint8_t>(-1);
+}
+
 template <uint8_t NUM_BITS, typename ResultType = uint32_t>
 inline constexpr ResultType compute_bit_mask(uint8_t bit_field_offset) {
   return ((one<ResultType>() << NUM_BITS) - one<ResultType>()) << bit_field_offset;
