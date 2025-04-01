@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <chrono>
 #include <cstdint>
 
@@ -27,7 +28,7 @@ struct alignas(16) PowerUsage final {
 template <typename ClockType>
 tvsc::scheduler::Task<ClockType> monitor_power(
     tvsc::hal::power_monitor::PowerMonitorPeripheral& power_monitor_peripheral, PowerUsage& output,
-    typename ClockType::duration interval = 0s) {
+    std::chrono::microseconds interval = 0s) {
   using namespace std::chrono_literals;
 
   const auto startup_delay{power_monitor_peripheral.sample_averaging() *
@@ -71,7 +72,7 @@ tvsc::scheduler::Task<ClockType> monitor_power(
       last_read_result &= power_monitor.read_voltage(&output.voltage_volts, &output.voltage_raw);
       last_read_result &= power_monitor.read_power(&output.power_watts, &output.power_raw);
       output.last_read_result = last_read_result;
-      co_yield measurement_time;
+      co_yield std::max(measurement_time, interval);
     }
   }
 }
