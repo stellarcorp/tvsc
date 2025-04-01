@@ -6,6 +6,7 @@
 
 #include "base/initializer.h"
 #include "bringup/blink.h"
+#include "bringup/watchdog.h"
 #include "hal/board/board.h"
 #include "scheduler/scheduler.h"
 #include "scheduler/task.h"
@@ -46,6 +47,7 @@ int main(int argc, char* argv[]) {
   scheduler.add_task(monitor_power<ClockType>(board.power_monitor2(), power_monitor2, 1000ms));
   scheduler.add_task(
       blink(clock, board.gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN, 500ms));
+  scheduler.add_task(run_watchdog<ClockType>(board.iwdg()));
 
   scheduler.start();
 }
