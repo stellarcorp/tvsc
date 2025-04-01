@@ -27,6 +27,7 @@ cc_library(
         "monitor_power.h",
         "quit.h",
         "random_blink.h",
+        "watchdog.h",
     ],
     deps = [
         "//flags",
