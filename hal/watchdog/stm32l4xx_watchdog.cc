@@ -7,8 +7,6 @@
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
-__attribute__((section(".status.value"))) volatile uint32_t watchdog_reload_value{};
-
 namespace tvsc::hal::watchdog {
 
 void WatchdogStm32l4xx::feed() { HAL_IWDG_Refresh(&watchdog_); }
@@ -26,7 +24,7 @@ void WatchdogStm32l4xx::enable() {
   // method. The prescaler above puts the IWDG counting in milliseconds. If the reset_interval is in
   // a different unit, we will have a mismatch.
   const auto interval{std::chrono::duration_cast<std::chrono::milliseconds>(reset_interval())};
-  watchdog_reload_value = interval.count();
+  uint32_t watchdog_reload_value = interval.count();
   require(watchdog_reload_value <= 0x0fff);
   watchdog_.Init.Reload = watchdog_reload_value;
   watchdog_.Init.Window = 0x0fff;
