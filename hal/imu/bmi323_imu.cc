@@ -5,8 +5,6 @@
 
 #include "hal/error.h"
 
-__attribute__((section(".status.value"))) std::array<uint8_t, 4> bytes_debug{};
-
 namespace tvsc::hal::imu {
 
 void Bmi323Imu::enable() {
@@ -70,8 +68,6 @@ bool Bmi323Imu::configure() {
                   sizeof(configuration_bytes))) {
     return false;
   }
-
-  i2c_.read(addr_, GYRO_CONF_REGISTER, bytes_debug.data(), sizeof(bytes_debug));
 
   return true;
 }
