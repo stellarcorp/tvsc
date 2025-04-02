@@ -4,7 +4,6 @@
 #include <chrono>
 #include <cstdint>
 
-#include "hal/board/board.h"
 #include "hal/power_monitor/power_monitor.h"
 #include "scheduler/task.h"
 
