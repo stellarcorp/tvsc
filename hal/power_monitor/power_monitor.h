@@ -48,33 +48,17 @@ class PowerMonitor final : public Functional<PowerMonitorPeripheral, PowerMonito
 
  public:
   bool read_id(uint16_t* result) { return peripheral_->read_id(result); }
+
   bool read_current(float* result_amps, uint16_t* raw_result = nullptr) {
     return peripheral_->read_current(result_amps, raw_result);
   }
+
   bool read_voltage(float* result_volts, uint16_t* raw_result = nullptr) {
     return peripheral_->read_voltage(result_volts, raw_result);
   }
+
   bool read_power(float* result_watts, uint16_t* raw_result = nullptr) {
     return peripheral_->read_power(result_watts, raw_result);
-  }
-
-  std::chrono::microseconds current_measurement_time() {
-    return peripheral_->current_measurement_time();
-  }
-  void set_current_measurement_time_approximate(std::chrono::microseconds duration) {
-    return peripheral_->set_current_measurement_time_approximate(duration);
-  }
-
-  std::chrono::microseconds voltage_measurement_time() {
-    return peripheral_->voltage_measurement_time();
-  }
-  void set_voltage_measurement_time_approximate(std::chrono::microseconds duration) {
-    return peripheral_->set_voltage_measurement_time_approximate(duration);
-  }
-
-  uint16_t sample_averaging() { return peripheral_->sample_averaging(); }
-  void set_sample_averaging_approximate(uint16_t num_samples) {
-    return peripheral_->set_sample_averaging_approximate(num_samples);
   }
 
   bool put_in_standby_mode() { return peripheral_->put_in_standby_mode(); }
