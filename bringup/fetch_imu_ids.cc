@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
   auto imu2{imu2_peripheral.access()};
 
   while (true) {
-    ids.imu2_read_success = imu2.read_id(&ids.imu2_id);
-    ids.imu1_read_success = imu1.read_id(&ids.imu1_id);
+    ids.imu2_read_success = imu2.read_id(ids.imu2_id);
+    ids.imu1_read_success = imu1.read_id(ids.imu1_id);
   }
 }
