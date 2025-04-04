@@ -7,3 +7,6 @@ bazel-*
 
 # Ignore profiling outputs.
 **/*.prof
+
+# Ignore Python bytecode cache directories.
+**/__pycache__
