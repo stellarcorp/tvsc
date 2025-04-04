@@ -69,7 +69,7 @@ def generate_spiral_trace(
 
         total_steps = int(turns * 2 * math.pi / abs(angle_step))
         for _ in range(total_steps):
-            trace_progress = abs((radius - min_radius) / (max_radius - min_radius))
+            trace_progress = abs((max_radius - radius) / (max_radius - min_radius))
             trace_width = min_trace_width + (max_trace_width - min_trace_width) * (trace_progress ** trace_width_exponent)
 
             x = cx + radius * math.cos(angle)
@@ -100,5 +100,6 @@ def generate_spiral_trace(
 
         # Reverse spiral direction and continue
         direction *= -1
+        angle += math.pi / 2
 
     return trace
