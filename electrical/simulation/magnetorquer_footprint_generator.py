@@ -2,29 +2,39 @@ import argparse
 from .trace_generator import generate_spiral_trace
 from .kicad_footprint_generator import generate_kicad_footprint
 
-# Default parameters for a 10x10 cm, 6-layer FR-4 PCB from JLCPCB
+# Default parameters that match the capabilities of JLCPCB.
+# The final parameters used should be verified against https://jlcpcb.com/capabilities/pcb-capabilities
 DEFAULTS = {
     "size": 0.1,  # meters (10 cm)
-    "layers": 6,
+    "max_radius": -1, # Compute from size
+    "min_radius": 0,
+    "layers": 2,
     "turns": 20,
-    "max_width": 0.5e-3,  # 0.5 mm
-    "min_width": 0.2e-3,  # 0.2 mm
-    "trace_thickness": 35e-6,  # 35 µm (standard 1 oz copper)
-    "spacing": 0.2e-3,  # 0.2 mm clearance
+    "max_trace_width": 1e-3,  # 1.0 mm
+    "min_trace_width": 0.1e-3,  # 0.1 mm
+    "outer_trace_thickness": 35e-6,  # 35 µm (1 oz copper, standard weight of outer layers)
+    "inner_trace_thickness": 17.5e-6,  # 17.5 µm (0.5 oz copper, standard weight of inner layers)
+    "trace_spacing": 0.09e-3,  # 0.09 mm spacing between traces
     "width_exponent": 1.0,
     "output": "magnetorquer.kicad_mod",
 }
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate a KiCad footprint for a spiral magnetorquer")
-    parser.add_argument("--size", type=float, default=DEFAULTS["size"], help="PCB size in meters (square)")
-    parser.add_argument("--layers", type=int, default=DEFAULTS["layers"], help="Number of layers (default: 6)")
+    parser = argparse.ArgumentParser(
+        description="Generate a KiCad footprint for a spiral magnetorquer",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument("--size", type=float, default=DEFAULTS["size"], help="PCB size in meters (square). Ignored if max_radius is specified.")
+    parser.add_argument("--max_radius", type=float, default=DEFAULTS["max_radius"], help="Maximum radius of spiral in meters. Computed from size by default.")
+    parser.add_argument("--min_radius", type=float, default=DEFAULTS["min_radius"], help="Minimum radius of spiral in meters.")
+    parser.add_argument("--layers", type=int, default=DEFAULTS["layers"], help="Number of layers")
     parser.add_argument("--turns", type=int, default=DEFAULTS["turns"], help="Number of spiral turns")
-    parser.add_argument("--max-width", type=float, default=DEFAULTS["max_width"], help="Maximum trace width in meters")
-    parser.add_argument("--min-width", type=float, default=DEFAULTS["min_width"], help="Minimum trace width in meters")
-    parser.add_argument("--thickness", type=float, default=DEFAULTS["trace_thickness"], help="Trace thickness in meters")
-    parser.add_argument("--spacing", type=float, default=DEFAULTS["spacing"], help="Minimum spacing between traces")
+    parser.add_argument("--max-trace-width", type=float, default=DEFAULTS["max_trace_width"], help="Maximum trace width in meters")
+    parser.add_argument("--min-trace-width", type=float, default=DEFAULTS["min_trace_width"], help="Minimum trace width in meters")
+    parser.add_argument("--outer_trace_thickness", type=float, default=DEFAULTS["outer_trace_thickness"], help="Trace thickness of outer layers (F.Cu and B.Cu) in meters")
+    parser.add_argument("--inner_trace_thickness", type=float, default=DEFAULTS["inner_trace_thickness"], help="Trace thickness of inner layers (In*.Cu) in meters")
+    parser.add_argument("--trace-spacing", type=float, default=DEFAULTS["trace_spacing"], help="Minimum spacing between traces")
     parser.add_argument("--width-exp", type=float, default=DEFAULTS["width_exponent"], help="Exponent controlling width variation")
     parser.add_argument("--output", type=str, default=DEFAULTS["output"], help="Output .kicad_mod file")
 
@@ -32,17 +42,23 @@ def main():
 
     # Compute spiral parameters
     center = (0.0, 0.0)
-    max_radius = args.size / 2 * 0.9  # Keep margin inside board
+    if args.max_radius < 0.0:
+        max_radius = args.size / 2 * 0.9  # Keep margin inside board
+    else:
+        max_radius = args.max_radius
+
     trace = generate_spiral_trace(
         center=center,
         max_radius=max_radius,
+        min_radius=args.min_radius,
         turns=args.turns,
         layers=args.layers,
-        max_width=args.max_width,
-        min_width=args.min_width,
-        trace_thickness=args.thickness,
-        spacing=args.spacing,
-        width_exponent=args.width_exp,
+        max_trace_width=args.max_trace_width,
+        min_trace_width=args.min_trace_width,
+        trace_thickness_outer_layers=args.outer_trace_thickness,
+        trace_thickness_inner_layers=args.inner_trace_thickness,
+        trace_spacing=args.trace_spacing,
+        trace_width_exponent=args.width_exp,
     )
 
     # Export as KiCad footprint

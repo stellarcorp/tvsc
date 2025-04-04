@@ -1,85 +1,104 @@
+import math
 import numpy as np
-from .pcb_trace import PCBTrace, Segment, Via
+from .pcb_trace import PCBTrace, TraceSegment, Via
 
-def generate_spiral_trace(center, max_radius, turns, layers, max_width, min_width, trace_thickness, spacing, width_exponent):
+def generate_spiral_trace(
+    center,
+    max_radius,
+    min_radius,
+    turns,
+    layers,
+    max_trace_width,
+    min_trace_width,
+    trace_thickness_outer_layers,
+    trace_thickness_inner_layers,
+    trace_spacing,
+    trace_width_exponent=1.0,
+    start_angle=0.0,
+    angle_step=0.01,
+):
     """
-    Generates a spiral PCB trace that starts at the maximum radius and spirals inward first,
-    then spirals outward to end near the starting point. All layer transitions use thru vias.
+    Generates a spiral PCBTrace that starts at max_radius and spirals inward, 
+    switches layers via a thru-via, and spirals outward, repeating across all layers.
 
     Parameters:
-        center (tuple): (x, y) center of the spiral.
-        max_radius (float): Maximum radius of the spiral.
-        turns (int): Number of turns in the spiral.
-        layers (int): Number of PCB layers used.
-        max_width (float): Maximum trace width.
-        min_width (float): Minimum trace width.
-        trace_thickness (float): Thickness of the copper trace.
-        spacing (float): Minimum spacing between traces.
-        width_exponent (float): Controls how trace width varies along the spiral.
+        center: (x, y) tuple of spiral center (meters)
+        max_radius: outermost spiral radius (meters)
+        min_radius: innermost radius to reverse direction (meters)
+        turns: number of turns in each layer
+        layers: number of copper layers
+        max_trace_width: maximum trace width (meters)
+        min_trace_width: minimum trace width (meters)
+        trace_thickness_outer_layers: copper thickness on the outer layers F.Cu and B.Cu (meters)
+        trace_thickness_inner_layers: copper thickness on the inner layers In*.Cu (meters)
+        spacing: minimum spacing between traces (meters)
+        trace_width_exponent: controls how width varies with radius
+        start_angle: starting angle of spiral (radians)
+        angle_step: angular step for each trace segment (radians)
 
     Returns:
-        PCBTrace
+        PCBTrace instance representing the full spiral magnetorquer
     """
-    segments = []
-    vias = []
-    current_radius = max_radius  # Start at the outermost radius
-    angle = 0
-    delta_angle = np.pi / 8  # Small angle step for smooth spirals
-    current_layer = 0
+    layers = 2 * (layers // 2) # An odd number of layers can't be manufactured.
+    delta_radius_per_turn = (max_radius - min_radius) / turns
+    delta_radius = delta_radius_per_turn * angle_step / (2 * math.pi)
+    cx, cy = center
+    trace = PCBTrace(layers=layers)
+    direction = -1  # -1 for inward, 1 for outward
+    angle = start_angle
+    radius = max_radius
+    prev_point = None
 
-    # Spiral inward
-    for turn in range(turns // 2):
-        while current_radius > max_width / 2:
-            trace_width = min_width + (max_width - min_width) * (current_radius / max_radius) ** width_exponent
-            next_radius = current_radius - (trace_width + spacing)
-            next_angle = angle + delta_angle
+    for layer in range(layers):
+        is_last_layer = (layer == layers - 1)
 
-            x1, y1 = center[0] + current_radius * np.cos(angle), center[1] + current_radius * np.sin(angle)
-            x2, y2 = center[0] + next_radius * np.cos(next_angle), center[1] + next_radius * np.sin(next_angle)
+        if layer == 0 or layer == layers - 1:
+            trace_thickness = trace_thickness_outer_layers
+        else:
+            trace_thickness = trace_thickness_inner_layers
 
-            segments.append(
-                Segment(
-                    start=(x1, y1),
-                    end=(x2, y2),
+        if direction == -1:
+            radius_start = max_radius
+            radius_end = min_radius
+        else:
+            radius_start = min_radius
+            radius_end = max_radius
+
+        radius = radius_start
+        delta_radius *= -1  # Change directions inward/outward
+
+        total_steps = int(turns * 2 * math.pi / abs(angle_step))
+        for _ in range(total_steps):
+            trace_progress = abs((radius - min_radius) / (max_radius - min_radius))
+            trace_width = min_trace_width + (max_trace_width - min_trace_width) * (trace_progress ** trace_width_exponent)
+
+            x = cx + radius * math.cos(angle)
+            y = cy + radius * math.sin(angle)
+            point = (x, y)
+
+            if prev_point is not None:
+                trace.add_segment(TraceSegment(
+                    start=prev_point,
+                    end=point,
                     width=trace_width,
-                    layer=current_layer,
-                )
+                    layer=layer,
+                    thickness=trace_thickness
+                ))
+            prev_point = point
+
+            radius += delta_radius
+            angle += angle_step
+
+        if not is_last_layer:
+            # TODO(james): Insert via offset to prevent short circuits
+            via = Via(
+                position=(prev_point[0], prev_point[1]),
+                start_layer=layer,
+                end_layer=layer + 1
             )
+            trace.add_via(via)
 
-            # Place thru via at layer change
-            if current_layer < layers and turn % layers == 0:
-                vias.append(Via(position=(x2, y2), start_layer=0, end_layer=layers - 1))
-                current_layer = 0 if current_layer == layers - 1 else current_layer + 1
+        # Reverse spiral direction and continue
+        direction *= -1
 
-            current_radius = next_radius
-            angle = next_angle
-
-    # Spiral outward (return to near starting point)
-    for turn in range(turns // 2, turns):
-        while current_radius < max_radius:
-            trace_width = min_width + (max_width - min_width) * (current_radius / max_radius) ** width_exponent
-            next_radius = current_radius + trace_width + spacing
-            next_angle = angle + delta_angle
-
-            x1, y1 = center[0] + current_radius * np.cos(angle), center[1] + current_radius * np.sin(angle)
-            x2, y2 = center[0] + next_radius * np.cos(next_angle), center[1] + next_radius * np.sin(next_angle)
-
-
-            segments.append(
-                Segment(
-                    start=(x1, y1),
-                    end=(x2, y2),
-                    width=trace_width,
-                    layer=current_layer,
-                )
-            )
-
-            # Place thru via at layer change
-            if current_layer < layers and turn % layers == 0:
-                vias.append(Via(position=(x2, y2), start_layer=0, end_layer=layers - 1))
-                current_layer = 0 if current_layer == layers - 1 else current_layer + 1
-
-            current_radius = next_radius
-            angle = next_angle
-
-    return PCBTrace(layers=layers, segments=segments, vias=vias)
+    return trace
