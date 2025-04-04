@@ -8,14 +8,16 @@ class Segment:
     width: float
     layer: int
 
+
 @dataclass
 class Via:
-    x: float
-    y: float
+    position: Tuple[float, float]
     start_layer: int
     end_layer: int
+
 
 @dataclass
 class PCBTrace:
     segments: List[Segment]
     vias: List[Via]
+    layers: int

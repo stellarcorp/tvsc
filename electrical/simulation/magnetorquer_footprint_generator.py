@@ -12,7 +12,7 @@ DEFAULTS = {
     "trace_thickness": 35e-6,  # 35 µm (standard 1 oz copper)
     "spacing": 0.2e-3,  # 0.2 mm clearance
     "width_exponent": 1.0,
-    "output": "magnetorquer.kicad_mod"
+    "output": "magnetorquer.kicad_mod",
 }
 
 
@@ -42,7 +42,7 @@ def main():
         min_width=args.min_width,
         trace_thickness=args.thickness,
         spacing=args.spacing,
-        width_exponent=args.width_exp
+        width_exponent=args.width_exp,
     )
 
     # Export as KiCad footprint

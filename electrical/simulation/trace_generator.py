@@ -1,5 +1,5 @@
 import numpy as np
-from .pcb_trace import PCBTrace
+from .pcb_trace import PCBTrace, Segment, Via
 
 def generate_spiral_trace(center, max_radius, turns, layers, max_width, min_width, trace_thickness, spacing, width_exponent):
     """
@@ -18,14 +18,14 @@ def generate_spiral_trace(center, max_radius, turns, layers, max_width, min_widt
         width_exponent (float): Controls how trace width varies along the spiral.
 
     Returns:
-        list: A list of trace segments and via placements.
+        PCBTrace
     """
     segments = []
     vias = []
     current_radius = max_radius  # Start at the outermost radius
     angle = 0
     delta_angle = np.pi / 8  # Small angle step for smooth spirals
-    current_layer = 1  # Start on layer 1
+    current_layer = 0
 
     # Spiral inward
     for turn in range(turns // 2):
@@ -37,17 +37,19 @@ def generate_spiral_trace(center, max_radius, turns, layers, max_width, min_widt
             x1, y1 = center[0] + current_radius * np.cos(angle), center[1] + current_radius * np.sin(angle)
             x2, y2 = center[0] + next_radius * np.cos(next_angle), center[1] + next_radius * np.sin(next_angle)
 
-            segments.append({
-                "start": (x1, y1),
-                "end": (x2, y2),
-                "width": trace_width,
-                "layer": current_layer,
-            })
+            segments.append(
+                Segment(
+                    start=(x1, y1),
+                    end=(x2, y2),
+                    width=trace_width,
+                    layer=current_layer,
+                )
+            )
 
             # Place thru via at layer change
             if current_layer < layers and turn % layers == 0:
-                vias.append({"position": (x2, y2), "start_layer": 1, "end_layer": layers})
-                current_layer = 1 if current_layer == layers else current_layer + 1
+                vias.append(Via(position=(x2, y2), start_layer=0, end_layer=layers - 1))
+                current_layer = 0 if current_layer == layers - 1 else current_layer + 1
 
             current_radius = next_radius
             angle = next_angle
@@ -62,18 +64,22 @@ def generate_spiral_trace(center, max_radius, turns, layers, max_width, min_widt
             x1, y1 = center[0] + current_radius * np.cos(angle), center[1] + current_radius * np.sin(angle)
             x2, y2 = center[0] + next_radius * np.cos(next_angle), center[1] + next_radius * np.sin(next_angle)
 
-            segments.append({
-                "start": (x1, y1, current_layer),
-                "end": (x2, y2, current_layer),
-                "width": trace_width
-            })
+
+            segments.append(
+                Segment(
+                    start=(x1, y1),
+                    end=(x2, y2),
+                    width=trace_width,
+                    layer=current_layer,
+                )
+            )
 
             # Place thru via at layer change
             if current_layer < layers and turn % layers == 0:
-                vias.append({"position": (x2, y2), "start_layer": 1, "end_layer": layers})
-                current_layer = 1 if current_layer == layers else current_layer + 1
+                vias.append(Via(position=(x2, y2), start_layer=0, end_layer=layers - 1))
+                current_layer = 0 if current_layer == layers - 1 else current_layer + 1
 
             current_radius = next_radius
             angle = next_angle
 
-    return PCBTrace(segments=segments, vias=vias)
+    return PCBTrace(layers=layers, segments=segments, vias=vias)
