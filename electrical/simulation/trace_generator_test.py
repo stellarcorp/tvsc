@@ -1,6 +1,6 @@
 import pytest
-from tvsc.electrical.simulation.trace_generator import generate_spiral_trace
-from tvsc.electrical.simulation.pcb_trace import PCBTrace
+from .trace_generator import generate_spiral_trace
+from .pcb_trace import PCBTrace
 
 def test_basic_spiral():
     """Test a simple spiral on a small PCB"""

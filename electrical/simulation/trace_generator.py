@@ -1,5 +1,5 @@
 import numpy as np
-from tvsc.electrical.simulation.pcb_trace import PCBTrace
+from .pcb_trace import PCBTrace
 
 def generate_spiral_trace(center, max_radius, turns, layers, max_width, min_width, trace_thickness, spacing, width_exponent):
     """
