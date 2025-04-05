@@ -32,12 +32,12 @@ def main():
     parser.add_argument("--pad-angle", type=float, default=DEFAULTS["pad_angle"], help="Angular placement of start and end pads in radians")
     parser.add_argument("--max-trace-width", type=float, default=DEFAULTS["max_trace_width"], help="Maximum trace width in meters")
     parser.add_argument("--min-trace-width", type=float, default=DEFAULTS["min_trace_width"], help="Minimum trace width in meters")
-    parser.add_argument("--outer_trace_thickness", type=float, default=DEFAULTS["outer_trace_thickness"], help="Trace thickness of outer layers (F.Cu and B.Cu) in meters")
-    parser.add_argument("--inner_trace_thickness", type=float, default=DEFAULTS["inner_trace_thickness"], help="Trace thickness of inner layers (In*.Cu) in meters")
+    parser.add_argument("--outer-trace-thickness", type=float, default=DEFAULTS["outer_trace_thickness"], help="Trace thickness of outer layers (F.Cu and B.Cu) in meters")
+    parser.add_argument("--inner-trace-thickness", type=float, default=DEFAULTS["inner_trace_thickness"], help="Trace thickness of inner layers (In*.Cu) in meters")
     parser.add_argument("--trace-spacing", type=float, default=DEFAULTS["trace_spacing"], help="Minimum spacing between traces")
     parser.add_argument("--width-exp", type=float, default=DEFAULTS["width_exponent"], help="Exponent controlling width variation")
     parser.add_argument("--output", type=str, default=DEFAULTS["output"], help="Output .kicad_mod file")
-    parser.add_argument("--show_visualization", action='store_true', default=DEFAULTS["show_visualization"], help="Show a visualization of the PCBTrace after generating")
+    parser.add_argument("--show-visualization", action='store_true', default=DEFAULTS["show_visualization"], help="Show a visualization of the PCBTrace after generating")
 
     args = parser.parse_args()
 
