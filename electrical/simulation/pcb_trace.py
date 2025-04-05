@@ -24,16 +24,12 @@ class TraceSegment:
 @dataclass
 class Via:
     """
-    Represents a via connecting two layers.
+    Represents a thru via in a PCB.
 
     Attributes:
         position: (x, y) coordinate in meters
-        start_layer: starting layer index (0-based)
-        end_layer: ending layer index (0-based)
     """
     position: Tuple[float, float]
-    start_layer: int
-    end_layer: int
 
 
 @dataclass
@@ -51,6 +47,10 @@ class PCBTrace:
 
     def add_segment(self, segment: TraceSegment):
         self.segments.append(segment)
+
+    def concatenate(self, trace):
+        self.segments.append(trace.segments)
+        self.vias.append(trace.vias)
 
     def add_via(self, via: Via):
         self.vias.append(via)
