@@ -1,51 +1,66 @@
+from collections import defaultdict
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+from matplotlib.widgets import CheckButtons
 import numpy as np
 from .pcb_trace import PCBTrace
 
 
-def visualize_pcb_trace(trace: PCBTrace, title="PCB Trace Visualization"):
+def visualize_pcb_trace(trace, figsize=(10, 10)):
     """
-    Visualize a PCBTrace with matplotlib.
-    
+    Visualize a multilayer PCBTrace with interactive layer toggles and zoom.
+    Vias are shown as vertical connections between layers.
+
     Args:
-        trace: An instance of PCBTrace.
-        title: Plot title.
+        trace: PCBTrace instance from tvsc.electrical.simulation.pcb_trace.
+        figsize: Size of the matplotlib figure.
     """
-    if not trace.segments:
-        print("No segments to visualize.")
-        return
+    fig, ax = plt.subplots(figsize=figsize)
+    plt.subplots_adjust(left=0.25)
 
-    # Get all layers used
-    layers = sorted(set(seg.layer for seg in trace.segments))
-    n_layers = max(layers) + 1 if layers else 1
+    # Organize segments by layer
+    layers = defaultdict(list)
+    for segment in trace.segments:
+        layers[segment.layer].append(segment)
 
-    # Assign each layer a color from a colormap
-    colormap = cm.get_cmap('tab10', n_layers)
-    layer_colors = {layer: colormap(layer) for layer in range(n_layers)}
+    # Plot each layer's segments
+    layer_lines = {}
+    colormap = cm.get_cmap('rainbow', len(layers))
+    layer_colors = {layer: colormap(layer) for layer in range(len(layers))}
+    layer_order = sorted(layers.keys())
 
-    fig, ax = plt.subplots(figsize=(8, 8))
-    
-    # Draw all segments
-    for seg in trace.segments:
-        x0, y0 = seg.start
-        x1, y1 = seg.end
-        ax.plot([x0, x1], [y0, y1], color=layer_colors[seg.layer], linewidth=1.5, label=f"Layer {seg.layer}")
+    for i, layer in enumerate(layer_order):
+        xs, ys = [], []
+        for seg in layers[layer]:
+            xs.extend([seg.start[0], seg.end[0], None])
+            ys.extend([seg.start[1], seg.end[1], None])
+        line, = ax.plot(xs, ys, label=f"Layer {layer}", color=layer_colors[layer])
+        layer_lines[layer] = line
 
     # Draw vias
     for via in trace.vias:
-        ax.plot(via.position[0], via.position[1], 'ko', markersize=3)
+        ax.plot(via.position[0], via.position[1], 'ko', markersize=3)  # dot at via location
 
-    # Make legend unique
-    handles, labels = ax.get_legend_handles_labels()
-    seen = set()
-    unique = [(h, l) for h, l in zip(handles, labels) if not (l in seen or seen.add(l))]
-    ax.legend(*zip(*unique), loc='upper right')
-
-    ax.set_title(title)
-    ax.set_xlabel("X (m)")
-    ax.set_ylabel("Y (m)")
-    ax.set_aspect('equal')
+    # Axis settings
+    ax.set_title("PCB Trace Visualization")
+    ax.set_xlabel("X [m]")
+    ax.set_ylabel("Y [m]")
+    ax.set_aspect("equal", "box")
     ax.grid(True)
-    plt.tight_layout()
+
+    # Layer toggle checkboxes
+    layer_names = [f"Layer {l}" for l in layer_order]
+    visibility = [True] * len(layer_order)
+    rax = plt.axes([0.02, 0.4, 0.18, 0.4])
+    check = CheckButtons(rax, layer_names, visibility)
+
+    def toggle_layer(label):
+        idx = layer_names.index(label)
+        layer = layer_order[idx]
+        line = layer_lines[layer]
+        line.set_visible(not line.get_visible())
+        plt.draw()
+
+    check.on_clicked(toggle_layer)
+
     plt.show()
