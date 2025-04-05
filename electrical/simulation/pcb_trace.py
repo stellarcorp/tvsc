@@ -30,6 +30,8 @@ class Via:
         position: (x, y) coordinate in meters
     """
     position: Tuple[float, float]
+    size: float
+    drill_size: float
 
 
 @dataclass
