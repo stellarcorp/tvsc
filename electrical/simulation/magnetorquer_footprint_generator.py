@@ -1,6 +1,7 @@
 import argparse
 from .trace_generator import generate_spiral_trace
 from .kicad_footprint_generator import generate_kicad_footprint
+from .pcb_trace_visualization import visualize_pcb_trace
 
 # Default parameters that match the capabilities of JLCPCB.
 # The final parameters used should be verified against https://jlcpcb.com/capabilities/pcb-capabilities
@@ -16,6 +17,7 @@ DEFAULTS = {
     "trace_spacing": 0.09e-3,  # 0.09 mm spacing between traces
     "width_exponent": 1.0,
     "output": "magnetorquer.kicad_mod",
+    "show_visualization": False,
 }
 
 
@@ -35,6 +37,7 @@ def main():
     parser.add_argument("--trace-spacing", type=float, default=DEFAULTS["trace_spacing"], help="Minimum spacing between traces")
     parser.add_argument("--width-exp", type=float, default=DEFAULTS["width_exponent"], help="Exponent controlling width variation")
     parser.add_argument("--output", type=str, default=DEFAULTS["output"], help="Output .kicad_mod file")
+    parser.add_argument("--show_visualization", action='store_true', default=DEFAULTS["show_visualization"], help="Show a visualization of the PCBTrace after generating")
 
     args = parser.parse_args()
 
@@ -63,6 +66,9 @@ def main():
     # Export as KiCad footprint
     generate_kicad_footprint(trace, args.output)
     print(f"Footprint written to {args.output}")
+
+    if args.show_visualization:
+        visualize_pcb_trace(trace)
 
 
 if __name__ == "__main__":
