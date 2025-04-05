@@ -9,7 +9,7 @@ DEFAULTS = {
     "size": 0.1,  # meters (10 cm)
     "radius": -1, # Compute from size
     "layers": 2,
-    "pad_angle": 0,
+    "pad_angle": 2.35619449019,
     "max_trace_width": 1e-3,  # 1.0 mm
     "min_trace_width": 0.1e-3,  # 0.1 mm
     "outer_trace_thickness": 35e-6,  # 35 µm (1 oz copper, standard weight of outer layers)
@@ -29,7 +29,7 @@ def main():
     parser.add_argument("--size", type=float, default=DEFAULTS["size"], help="PCB size in meters (square). Ignored if max_radius is specified.")
     parser.add_argument("--radius", type=float, default=DEFAULTS["radius"], help="Radius of spiral in meters. Computed from size by default.")
     parser.add_argument("--layers", type=int, default=DEFAULTS["layers"], help="Number of layers")
-    parser.add_argument("--pad_angle", type=int, default=DEFAULTS["pad_angle"], help="Angular placement of start and end pads in radians")
+    parser.add_argument("--pad-angle", type=float, default=DEFAULTS["pad_angle"], help="Angular placement of start and end pads in radians")
     parser.add_argument("--max-trace-width", type=float, default=DEFAULTS["max_trace_width"], help="Maximum trace width in meters")
     parser.add_argument("--min-trace-width", type=float, default=DEFAULTS["min_trace_width"], help="Minimum trace width in meters")
     parser.add_argument("--outer_trace_thickness", type=float, default=DEFAULTS["outer_trace_thickness"], help="Trace thickness of outer layers (F.Cu and B.Cu) in meters")
