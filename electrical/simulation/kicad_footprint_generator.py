@@ -34,7 +34,10 @@ def generate_kicad_footprint(pcb_trace, filename: str, footprint_name: str = "Ma
         "  )",
         "  (fp_text value {} (at 0 -1.5) (layer F.Fab)".format(footprint_name),
         "    (effects (font (size 1 1) (thickness 0.15)))",
-        "  )"
+        "  )",
+        "  (fp_circle (center 0 0) (end 1 0)",
+        "    (stroke (width 0.1) (type default)) (fill none) (layer F.SilkS)",
+        "  )",
     ]
 
     for seg in pcb_trace.segments:
