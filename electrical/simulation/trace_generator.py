@@ -1,3 +1,4 @@
+from itertools import chain
 import math
 import numpy as np
 from typing import List, Tuple
@@ -98,6 +99,76 @@ def generate_spiral_between_points(
         trace.add_segment(TraceSegment(start=prev_point, end=end, width=trace_width, layer=current_layer, thickness=trace_thickness))
 
 
+def place_points_on_circle(
+    n: int,
+    min_radius: float,
+    min_distance: float,
+    start_angle: float = 0,
+) -> List[Tuple[float, float]]:
+    """
+    Evenly places `n` points around a circle with at least `min_distance` between each.
+    The radius is increased if needed to satisfy the minimum spacing.
+
+    Args:
+        n: Number of points to place.
+        min_radius: Minimum radius allowed (meters).
+        min_distance: Minimum linear distance between adjacent points (meters).
+
+    Returns:
+        List of (x, y) coordinates for the points.
+    """
+    if n >= 2:
+        # Calculate the angle between points
+        separation_angle = 2 * math.pi / n
+
+        # Compute the smallest radius that gives at least min_distance between points
+        required_radius = min_distance / (2 * math.sin(separation_angle / 2))
+        radius = max(min_radius, required_radius)
+    else:
+        separation_angle = 0
+        radius = min_radius
+
+    points = []
+    for i in range(n):
+        theta = start_angle + i * separation_angle
+        x = radius * math.cos(theta)
+        y = radius * math.sin(theta)
+        points.append((x, y))
+
+    return points
+
+
+def interleave(*iters):
+    """
+    Given two or more iterables, return a list containing
+    the elements of the input list interleaved.
+
+    >>> x = [1, 2, 3, 4]
+    >>> y = ('a', 'b', 'c', 'd')
+    >>> interleave(x, x)
+    [1, 1, 2, 2, 3, 3, 4, 4]
+    >>> interleave(x, y, x)
+    [1, 'a', 1, 2, 'b', 2, 3, 'c', 3, 4, 'd', 4]
+
+    On a list of lists:
+    >>> interleave(*[x, x])
+    [1, 1, 2, 2, 3, 3, 4, 4]
+
+    Note that inputs of different lengths will cause the
+    result to be truncated at the length of the shortest iterable.
+    >>> z = [9, 8, 7]
+    >>> interleave(x, z)
+    [1, 9, 2, 8, 3, 7]
+
+    On single iterable, or nothing:
+    >>> interleave(x)
+    [1, 2, 3, 4]
+    >>> interleave()
+    []
+    """
+    return list(chain(*zip(*iters)))
+
+
 def generate_spiral_trace(
     center: Tuple[float, float],
     radius: float,
@@ -109,6 +180,9 @@ def generate_spiral_trace(
     trace_spacing: float = 0.2e-3,
     trace_thickness_outer_layers: float = 35e-6,
     trace_thickness_inner_layers: float = 18e-6,
+    via_size: float = 0.000604,
+    via_drill_size: float = 0.00035,
+    pad_to_track_clearance: float = 0.00015,
     angle_step: float = 0.05,
 ) -> PCBTrace:
     """
@@ -133,40 +207,46 @@ def generate_spiral_trace(
     Returns:
         PCBTrace instance with segments and vias.
     """
+    layers = 2 * (layers // 2)
     trace = PCBTrace(layers=layers)
 
-    # Calculate start/end point at max radius
-    x0 = center[0] + radius * math.cos(pad_angle)
-    y0 = center[1] + radius * math.sin(pad_angle)
-    start_point = (x0, y0)
-    current_point = start_point
+    distance_btw_via_centers = via_size + pad_to_track_clearance
+    footprint_pad_angle_offset = 2 * math.asin(distance_btw_via_centers / radius / 2)
+
+    inner_via_points = place_points_on_circle(layers // 2, 0, distance_btw_via_centers, pad_angle)
+    outer_via_points = place_points_on_circle(layers // 2, radius, distance_btw_via_centers, pad_angle)
+    outer_via_points[0] = (radius * math.cos(pad_angle - footprint_pad_angle_offset),
+                           radius * math.sin(pad_angle - footprint_pad_angle_offset))
+
+    # Reverse the outer via points list so that the via from the back to the front, the last via
+    # used, is the one at pad_angle.
+    outer_via_points.reverse()
+
+    # Interleave the via points.
+    all_points = interleave(inner_via_points, outer_via_points)
+
+    # Generate the vias before we add the starting point. The starting point doesn't have a via.
+    trace.vias = list(Via(position=point, size=via_size, drill_size=via_drill_size) for point in all_points)
+
+    # Prepend the starting point.
+    all_points.insert(0, (radius * math.cos(pad_angle + footprint_pad_angle_offset),
+                          radius * math.sin(pad_angle + footprint_pad_angle_offset)))
 
     # Generate spirals for each layer
-    for i in range(layers):
-        next_radius = radius * 0.1  # a small inner radius to spiral toward (then reverse)
-        if i % 2 == 1:
-            # Odd layer: spiral outward
-            next_radius = radius
-            end_point = (
-                center[0] + next_radius * math.cos(pad_angle),
-                center[1] + next_radius * math.sin(pad_angle)
-            )
-        else:
-            # Even layer: spiral inward
-            next_radius = radius * 0.1
-            end_point = (
-                center[0] + next_radius * math.cos(pad_angle),
-                center[1] + next_radius * math.sin(pad_angle)
-            )
+    for layer in range(layers):
+        start_point = all_points[layer]
+        end_point = all_points[layer + 1]
 
-        chirality = "ccw" if i % 2 == 0 else "cw"
-        trace_thickness = (
-            trace_thickness_outer_layers if i == 0 or i == layers - 1 else trace_thickness_inner_layers
-        )
+        chirality = "ccw" if layer % 2 == 0 else "cw"
+
+        if layer == 0 or layer == layers - 1:
+            trace_thickness = trace_thickness_outer_layers
+        else:
+            trace_thickness = trace_thickness_inner_layers
 
         generate_spiral_between_points(
             trace=trace,
-            start=current_point,
+            start=start_point,
             end=end_point,
             center=center,
             trace_spacing=trace_spacing,
@@ -174,21 +254,9 @@ def generate_spiral_trace(
             min_trace_width=min_trace_width,
             trace_width_exponent=trace_width_exponent,
             trace_thickness=trace_thickness,
-            current_layer=i,
+            current_layer=layer,
             chirality=chirality,
             angle_step=angle_step,
         )
-
-        current_point = end_point
-
-        # Add via to next layer (unless on final layer)
-        if i < layers - 1:
-            via = Via(position=current_point)
-            trace.vias.append(via)
-
-    # Connect final point back to start
-    if current_point != start_point:
-        final_via = Via(position=start_point)
-        trace.vias.append(final_via)
 
     return trace
