@@ -6,10 +6,9 @@ from .kicad_footprint_generator import generate_kicad_footprint
 # The final parameters used should be verified against https://jlcpcb.com/capabilities/pcb-capabilities
 DEFAULTS = {
     "size": 0.1,  # meters (10 cm)
-    "max_radius": -1, # Compute from size
-    "min_radius": 0,
+    "radius": -1, # Compute from size
     "layers": 2,
-    "turns": 20,
+    "pad_angle": 0,
     "max_trace_width": 1e-3,  # 1.0 mm
     "min_trace_width": 0.1e-3,  # 0.1 mm
     "outer_trace_thickness": 35e-6,  # 35 µm (1 oz copper, standard weight of outer layers)
@@ -26,10 +25,9 @@ def main():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("--size", type=float, default=DEFAULTS["size"], help="PCB size in meters (square). Ignored if max_radius is specified.")
-    parser.add_argument("--max_radius", type=float, default=DEFAULTS["max_radius"], help="Maximum radius of spiral in meters. Computed from size by default.")
-    parser.add_argument("--min_radius", type=float, default=DEFAULTS["min_radius"], help="Minimum radius of spiral in meters.")
+    parser.add_argument("--radius", type=float, default=DEFAULTS["radius"], help="Radius of spiral in meters. Computed from size by default.")
     parser.add_argument("--layers", type=int, default=DEFAULTS["layers"], help="Number of layers")
-    parser.add_argument("--turns", type=int, default=DEFAULTS["turns"], help="Number of spiral turns")
+    parser.add_argument("--pad_angle", type=int, default=DEFAULTS["pad_angle"], help="Angular placement of start and end pads in radians")
     parser.add_argument("--max-trace-width", type=float, default=DEFAULTS["max_trace_width"], help="Maximum trace width in meters")
     parser.add_argument("--min-trace-width", type=float, default=DEFAULTS["min_trace_width"], help="Minimum trace width in meters")
     parser.add_argument("--outer_trace_thickness", type=float, default=DEFAULTS["outer_trace_thickness"], help="Trace thickness of outer layers (F.Cu and B.Cu) in meters")
@@ -42,24 +40,25 @@ def main():
 
     # Compute spiral parameters
     center = (0.0, 0.0)
-    if args.max_radius < 0.0:
-        max_radius = args.size / 2 * 0.9  # Keep margin inside board
+    if args.radius < 0.0:
+        radius = args.size / 2 * 0.9  # Keep margin inside board
     else:
-        max_radius = args.max_radius
+        radius = args.radius
 
     trace = generate_spiral_trace(
         center=center,
-        max_radius=max_radius,
-        min_radius=args.min_radius,
-        turns=args.turns,
+        radius=radius,
         layers=args.layers,
+        pad_angle=args.pad_angle,
         max_trace_width=args.max_trace_width,
         min_trace_width=args.min_trace_width,
+        trace_width_exponent=args.width_exp,
+        trace_spacing=args.trace_spacing,
         trace_thickness_outer_layers=args.outer_trace_thickness,
         trace_thickness_inner_layers=args.inner_trace_thickness,
-        trace_spacing=args.trace_spacing,
-        trace_width_exponent=args.width_exp,
     )
+
+    print(f"Trace resistance: {trace.total_resistance()}")
 
     # Export as KiCad footprint
     generate_kicad_footprint(trace, args.output)
