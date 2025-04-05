@@ -53,10 +53,8 @@ def generate_kicad_footprint(pcb_trace, filename: str, footprint_name: str = "Ma
         x, y = format_coord(via.position[0]), format_coord(-via.position[1])
         size = 0.6  # mm
         drill = 0.3  # mm
-        layers = f"{get_kicad_layer(via.start_layer, total_layers)} "
-        layers += f"{get_kicad_layer(via.end_layer, total_layers)}"
         lines.append(f"  (pad \"\" thru_hole circle (at {x} {y}) (size {size} {size}) "
-                     f"(drill {drill}) (layers {layers}))")
+                     f"(drill {drill}) (layers F.Cu B.Cu))")
 
     lines.append(")")
 
