@@ -25,7 +25,7 @@ def visualize_pcb_trace(trace, figsize=(10, 10)):
 
     # Plot each layer's segments
     layer_lines = {}
-    colormap = cm.get_cmap('rainbow', len(layers))
+    colormap = cm.get_cmap('prism', len(layers))
     layer_colors = {layer: colormap(layer) for layer in range(len(layers))}
     layer_order = sorted(layers.keys())
 
