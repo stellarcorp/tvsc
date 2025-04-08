@@ -1,6 +1,6 @@
+import numpy as np
 from dataclasses import dataclass, field
-from typing import List, Tuple
-
+from typing import List
 
 @dataclass
 class TraceSegment:
@@ -14,8 +14,8 @@ class TraceSegment:
         layer: integer index of the PCB layer (0-based)
         thickness: copper thickness in meters
     """
-    start: Tuple[float, float]
-    end: Tuple[float, float]
+    start: np.ndarray
+    end: np.ndarray
     width: float
     layer: int
     thickness: float
@@ -29,7 +29,7 @@ class Via:
     Attributes:
         position: (x, y) coordinate in meters
     """
-    position: Tuple[float, float]
+    position: np.ndarray
     size: float
     drill_size: float
 
@@ -58,14 +58,13 @@ class PCBTrace:
         self.vias.append(via)
 
     def total_length(self) -> float:
-        return sum(
-            ((seg.end[0] - seg.start[0]) ** 2 + (seg.end[1] - seg.start[1]) ** 2) ** 0.5
+        return sum(np.linalg.norm(seg.end - seg.start)
             for seg in self.segments
         )
 
-    def total_resistance(self, resistivity: float = 1.68e-8) -> float:
+    def estimate_resistance(self, resistivity: float = 1.68e-8) -> float:
         """
-        Compute the total resistance of the trace.
+        Estimate the total resistance of the trace.
 
         Parameters:
             resistivity: resistivity of trace material in ohm-meters (default is copper)
@@ -75,8 +74,18 @@ class PCBTrace:
         """
         resistance = 0.0
         for seg in self.segments:
-            length = ((seg.end[0] - seg.start[0]) ** 2 + (seg.end[1] - seg.start[1]) ** 2) ** 0.5
+            length = np.linalg.norm(seg.end - seg.start)
             area = seg.width * seg.thickness
             if area > 0:
                 resistance += resistivity * length / area
         return resistance
+
+    def estimate_magnetic_moment(self, current: float) -> np.ndarray:
+        """Estimate magnetic moment vector (A·m²). Assumes loops lie in XY plane."""
+        moment = np.zeros(3)
+        for seg in self.segments:
+            r = (seg.start + seg.end) / 2  # midpoint of segment
+            dl = seg.end - seg.start       # vector of segment
+            area_vec = np.cross(np.append(r, 0), np.append(dl, 0))
+            moment += current * area_vec / 2
+        return moment

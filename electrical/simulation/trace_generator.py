@@ -1,14 +1,14 @@
 from itertools import chain
 import math
 import numpy as np
-from typing import List, Tuple
+from typing import List
 from .pcb_trace import PCBTrace, TraceSegment, Via
 
-def generate_spiral_between_points(
+def add_archimedes_spiral(
     trace: PCBTrace,
-    start: Tuple[float, float],
-    end: Tuple[float, float],
-    center: Tuple[float, float],
+    start: np.ndarray,
+    end: np.ndarray,
+    center: np.ndarray,
     trace_spacing: float,
     max_trace_width: float,
     min_trace_width: float,
@@ -19,7 +19,7 @@ def generate_spiral_between_points(
     angle_step: float,
 ):
     """
-    Generates a smooth spiral trace from start to end around a center point.
+    Generates a PCB trace as an Archimedes spiral from start to end around a center point.
 
     All linear units are meters. All angular units are radians.
 
@@ -88,14 +88,14 @@ def generate_spiral_between_points(
     for _ in range(steps):
         x = cx + r * math.cos(theta)
         y = cy + r * math.sin(theta)
-        curr_point = (x, y)
-        if prev_point != None:
+        curr_point = np.array([x, y])
+        if prev_point is not None:
             trace.add_segment(TraceSegment(start=prev_point, end=curr_point, width=trace_width, layer=current_layer, thickness=trace_thickness))
         theta += dtheta
         r += dr
         prev_point = curr_point
 
-    if prev_point != None:
+    if prev_point is not None:
         trace.add_segment(TraceSegment(start=prev_point, end=end, width=trace_width, layer=current_layer, thickness=trace_thickness))
 
 
@@ -104,7 +104,7 @@ def place_points_on_circle(
     min_radius: float,
     min_distance: float,
     start_angle: float = 0,
-) -> List[Tuple[float, float]]:
+) -> List[np.ndarray]:
     """
     Evenly places `n` points around a circle with at least `min_distance` between each.
     The radius is increased if needed to satisfy the minimum spacing.
@@ -133,7 +133,7 @@ def place_points_on_circle(
         theta = start_angle + i * separation_angle
         x = radius * math.cos(theta)
         y = radius * math.sin(theta)
-        points.append((x, y))
+        points.append(np.array([x, y]))
 
     return points
 
@@ -170,7 +170,7 @@ def interleave(*iters):
 
 
 def generate_spiral_trace(
-    center: Tuple[float, float],
+    center: np.ndarray,
     radius: float,
     layers: int,
     pad_angle: float,
@@ -215,8 +215,8 @@ def generate_spiral_trace(
 
     inner_via_points = place_points_on_circle(layers // 2, 0, distance_btw_via_centers, pad_angle)
     outer_via_points = place_points_on_circle(layers // 2, radius, distance_btw_via_centers, pad_angle)
-    outer_via_points[0] = (radius * math.cos(pad_angle - footprint_pad_angle_offset),
-                           radius * math.sin(pad_angle - footprint_pad_angle_offset))
+    outer_via_points[0] = np.array([radius * math.cos(pad_angle - footprint_pad_angle_offset),
+                                    radius * math.sin(pad_angle - footprint_pad_angle_offset)])
 
     # Reverse the outer via points list so that the via from the back to the front, the last via
     # used, is the one at pad_angle.
@@ -229,8 +229,8 @@ def generate_spiral_trace(
     trace.vias = list(Via(position=point, size=via_size, drill_size=via_drill_size) for point in all_points)
 
     # Prepend the starting point.
-    all_points.insert(0, (radius * math.cos(pad_angle + footprint_pad_angle_offset),
-                          radius * math.sin(pad_angle + footprint_pad_angle_offset)))
+    all_points.insert(0, np.array([radius * math.cos(pad_angle + footprint_pad_angle_offset),
+                                   radius * math.sin(pad_angle + footprint_pad_angle_offset)]))
 
     # Generate spirals for each layer
     for layer in range(layers):
@@ -244,7 +244,7 @@ def generate_spiral_trace(
         else:
             trace_thickness = trace_thickness_inner_layers
 
-        generate_spiral_between_points(
+        add_archimedes_spiral(
             trace=trace,
             start=start_point,
             end=end_point,
