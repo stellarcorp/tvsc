@@ -89,3 +89,36 @@ class PCBTrace:
             area_vec = np.cross(np.append(r, 0), np.append(dl, 0))
             moment += current * area_vec / 2
         return moment
+
+
+@dataclass
+class PCBConstraints:
+    """
+    Represents the manufacturability / cost constraints on a PCB.
+    """
+    max_trace_width: float = 0
+    min_trace_width: float = 0
+    trace_thickness_inner_layers: float = 0
+    trace_thickness_inner_layers: float = 0
+    trace_spacing: float = 0
+    min_via_drill_size: float = 0
+    min_via_diameter: float = 0
+
+
+@dataclass
+class PCB:
+    """
+    Represents a Printed Circuit Board.
+
+    Attributes:
+        size: size, including thickness, of the PCB in meters
+        layers: number of layers in the PCB
+        constraints: manufacturing constraints that need to be met
+    """
+    size: np.ndarray = np.array([0, 0])
+    layers: int = 0
+    constraints: PCBConstraints = PCBConstraints()
+    traces: List[PCBTrace] = field(default_factory=list)
+
+    def add_trace(self, trace: PCBTrace):
+        self.traces.append(trace)

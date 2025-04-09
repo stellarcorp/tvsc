@@ -2,7 +2,7 @@ from itertools import chain
 import math
 import numpy as np
 from typing import List
-from .pcb_trace import PCBTrace, TraceSegment, Via
+from .pcb_trace import PCB, PCBTrace, TraceSegment, Via
 
 def add_archimedes_spiral(
     trace: PCBTrace,
@@ -27,9 +27,9 @@ def add_archimedes_spiral(
 
     Parameters:
         trace: PCBTrace to append to. 
-        start: (x, y) start point.
-        end: (x, y) end point.
-        center: (x, y) spiral center.
+        start: (x, y, z) start point.
+        end: (x, y, z) end point.
+        center: (x, y, z) spiral center.
         trace_spacing: radial distance between spiral arms.
         max_trace_width: Maximum allowed width for the trace.
         min_trace_width: Minimum allowed width for the trace.
@@ -40,9 +40,9 @@ def add_archimedes_spiral(
     """
     assert chirality in ("cw", "ccw"), "Chirality must be 'cw' or 'ccw'."
 
-    cx, cy = center
-    sx, sy = start
-    ex, ey = end
+    cx, cy, cz = center
+    sx, sy, sz = start
+    ex, ey, ez = end
 
     # Start/end in polar coords
     dx0, dy0 = sx - cx, sy - cy
@@ -52,16 +52,7 @@ def add_archimedes_spiral(
     theta0 = math.atan2(dy0, dx0)
     theta1 = math.atan2(dy1, dx1)
 
-    # Determine angular direction
-    delta_theta = theta1 - theta0
-
-    # Unwrap to minimal positively valued angle.
-    while delta_theta <= 0:
-        delta_theta += 2 * math.pi
-    while delta_theta > 2 * math.pi:
-        delta_theta -= 2 * math.pi
-
-    # Set chirality direction
+    # Set direction for the spiral.
     direction = 1 if chirality == "ccw" else -1
 
     # Set up trace_width to be a constant across the entire spiral.
@@ -72,8 +63,11 @@ def add_archimedes_spiral(
     radial_diff = abs(r1 - r0)
     num_turns = max(1, int(radial_diff / (trace_spacing + trace_width)))
 
-    # Total angle to sweep
-    total_angle = 2 * math.pi * num_turns + delta_theta
+    # Compute total angle to sweep
+    angular_difference = direction * (theta1 - theta0)
+    while angular_difference < 0:
+        angular_difference += 2 * math.pi
+    total_angle = 2 * math.pi * num_turns - angular_difference
 
     # Steps and increments
     steps = max(2, int(abs(total_angle / angle_step)))
@@ -88,7 +82,7 @@ def add_archimedes_spiral(
     for _ in range(steps):
         x = cx + x_scale * r * math.cos(theta)
         y = cy + y_scale * r * math.sin(theta)
-        curr_point = np.array([x, y])
+        curr_point = np.array([x, y, 0.0])
         if prev_point is not None:
             trace.add_segment(TraceSegment(start=prev_point, end=curr_point, width=trace_width, layer=current_layer, thickness=trace_thickness))
         theta += dtheta
@@ -96,7 +90,7 @@ def add_archimedes_spiral(
         prev_point = curr_point
 
     if prev_point is not None:
-        trace.add_segment(TraceSegment(start=prev_point, end=np.multiply((x_scale, y_scale), end), width=trace_width, layer=current_layer, thickness=trace_thickness))
+        trace.add_segment(TraceSegment(start=prev_point, end=np.multiply((x_scale, y_scale, 1.0), end), width=trace_width, layer=current_layer, thickness=trace_thickness))
 
 
 def place_points_on_circle(
@@ -104,6 +98,7 @@ def place_points_on_circle(
     min_radius: float,
     min_distance: float,
     start_angle: float = 0,
+    height: float = 0,
 ) -> List[np.ndarray]:
     """
     Evenly places `n` points around a circle with at least `min_distance` between each.
@@ -133,7 +128,7 @@ def place_points_on_circle(
         theta = start_angle + i * separation_angle
         x = radius * math.cos(theta)
         y = radius * math.sin(theta)
-        points.append(np.array([x, y]))
+        points.append(np.array([x, y, height]))
 
     return points
 
@@ -170,22 +165,14 @@ def interleave(*iters):
 
 
 def generate_spiral_trace(
-    center: np.ndarray,
+    pcb: PCB,
     x_radius: float,
     y_radius: float,
-    layers: int,
     pad_angle: float,
-    max_trace_width: float,
-    min_trace_width: float,
     trace_width_exponent: float = 1.0,
-    trace_spacing: float = 0.2e-3,
-    trace_thickness_outer_layers: float = 35e-6,
-    trace_thickness_inner_layers: float = 18e-6,
-    via_size: float = 0.000604,
-    via_drill_size: float = 0.00035,
-    pad_to_track_clearance: float = 0.00015,
+    center: np.ndarray = np.array([0.0, 0.0, 0.0]),
     angle_step: float = 0.05,
-) -> PCBTrace:
+):
     """
     Generate a PCBTrace that spirals inward and outward over multiple layers.
 
@@ -209,21 +196,25 @@ def generate_spiral_trace(
     Returns:
         PCBTrace instance with segments and vias.
     """
-    layers = 2 * (layers // 2)
+    layers = 2 * (pcb.layers // 2)
     trace = PCBTrace(layers=layers)
+
+    # TODO(james): Modify this height concept to track the height of each layer of the PCB.
+    height = 0.0
 
     radius = min(x_radius, y_radius)
     x_scale = x_radius / radius
     y_scale = y_radius / radius
-    scale = np.array([x_scale, y_scale])
+    scale = np.array([x_scale, y_scale, 1.0])
 
-    distance_btw_via_centers = via_size + pad_to_track_clearance
+    distance_btw_via_centers = pcb.constraints.min_via_diameter + pcb.constraints.trace_spacing
     footprint_pad_angle_offset = 2 * math.asin(distance_btw_via_centers / radius / 2)
 
-    inner_via_points = place_points_on_circle(layers // 2, 0, distance_btw_via_centers, pad_angle)
-    outer_via_points = place_points_on_circle(layers // 2, radius, distance_btw_via_centers, pad_angle)
+    inner_via_points = place_points_on_circle(layers // 2, 0, distance_btw_via_centers, pad_angle, height)
+    outer_via_points = place_points_on_circle(layers // 2, radius, distance_btw_via_centers, pad_angle, height)
     outer_via_points[0] = np.array([radius * math.cos(pad_angle - footprint_pad_angle_offset),
-                                    radius * math.sin(pad_angle - footprint_pad_angle_offset)])
+                                    radius * math.sin(pad_angle - footprint_pad_angle_offset),
+                                    height])
 
     # Reverse the outer via points list so that the via from the back to the front, the last via
     # used, is the one at pad_angle.
@@ -233,11 +224,12 @@ def generate_spiral_trace(
     all_points = interleave(inner_via_points, outer_via_points)
 
     # Generate the vias before we add the starting point. The starting point doesn't have a via.
-    trace.vias = list(Via(position=np.multiply(scale, point), size=via_size, drill_size=via_drill_size) for point in all_points)
+    trace.vias = list(Via(position=np.multiply(scale, point), size=pcb.constraints.min_via_diameter, drill_size=pcb.constraints.min_via_drill_size) for point in all_points)
 
     # Prepend the starting point.
     all_points.insert(0, np.array([radius * math.cos(pad_angle + footprint_pad_angle_offset),
-                                   radius * math.sin(pad_angle + footprint_pad_angle_offset)]))
+                                   radius * math.sin(pad_angle + footprint_pad_angle_offset),
+                                   height]))
 
     # Generate spirals for each layer
     for layer in range(layers):
@@ -247,18 +239,18 @@ def generate_spiral_trace(
         chirality = "ccw" if layer % 2 == 0 else "cw"
 
         if layer == 0 or layer == layers - 1:
-            trace_thickness = trace_thickness_outer_layers
+            trace_thickness = pcb.constraints.trace_thickness_outer_layers
         else:
-            trace_thickness = trace_thickness_inner_layers
+            trace_thickness = pcb.constraints.trace_thickness_inner_layers
 
         add_archimedes_spiral(
             trace=trace,
             start=start_point,
             end=end_point,
             center=center,
-            trace_spacing=trace_spacing,
-            max_trace_width=max_trace_width,
-            min_trace_width=min_trace_width,
+            trace_spacing=pcb.constraints.trace_spacing,
+            max_trace_width=pcb.constraints.max_trace_width,
+            min_trace_width=pcb.constraints.min_trace_width,
             trace_width_exponent=trace_width_exponent,
             trace_thickness=trace_thickness,
             current_layer=layer,
@@ -268,4 +260,4 @@ def generate_spiral_trace(
             y_scale=y_scale,
         )
 
-    return trace
+    pcb.add_trace(trace)
