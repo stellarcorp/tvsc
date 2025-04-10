@@ -19,6 +19,7 @@ DEFAULTS = {
     "y_size": 0.1, # 10cm
     "x_radius": 0.04, # 4cm
     "y_radius": 0.04, # 4cm
+    "min_radius": 0.0,
     "layers": 2,
     "pad_angle": 2.35619449019, # Start footprint in upper left corner.
     "width_exponent": 1.0,
@@ -29,7 +30,6 @@ DEFAULTS = {
     "magnetic_field_direction": Direction.Z_AXIS,
     "voltage": 3.3,
     "board_thickness": 0.0016, # 1.6mm
-
 
     # Default parameters that match the capabilities of JLCPCB with some modifications based on cost.
     # The final parameters used should be verified against https://jlcpcb.com/capabilities/pcb-capabilities
@@ -60,6 +60,7 @@ def main():
 
     parser.add_argument("--x-radius", type=float, default=DEFAULTS["x_radius"], help="Radius of spiral in x-direction in meters.")
     parser.add_argument("--y-radius", type=float, default=DEFAULTS["y_radius"], help="Radius of spiral in y-direction meters.")
+    parser.add_argument("--min-radius", type=float, default=DEFAULTS["x_radius"], help="Radius of the innermost spiral (both x- and y-directions) in meters.")
     parser.add_argument("--pad-angle", type=float, default=DEFAULTS["pad_angle"], help="Angular placement of start and end pads in radians")
     parser.add_argument("--width-exp", type=float, default=DEFAULTS["width_exponent"], help="Exponent controlling width variation")
 
@@ -93,6 +94,7 @@ def main():
         pcb,
         x_radius=args.x_radius,
         y_radius=args.y_radius,
+        min_radius=args.min_radius,
         pad_angle=args.pad_angle,
         trace_width_exponent=args.width_exp,
     )
@@ -110,12 +112,13 @@ def main():
         for trace in pcb.traces:
             sim = MagneticFieldSimulation(trace, args.voltage)
             if args.magnetic_field_direction == Direction.X_AXIS:
-                B_ext = np.array([args.magnetic_field_strength, 0, 0])
+                B_ext = np.array([args.magnetic_field_strength, 0., 0.])
             elif args.magnetic_field_direction == Direction.Y_AXIS:
-                B_ext = np.array([0, args.magnetic_field_strength, 0])
+                B_ext = np.array([0., args.magnetic_field_strength, 0.])
             else:
-                B_ext = np.array([0, 0, args.magnetic_field_strength])
-            force, torque = sim.compute_force_and_torque(B_ext)
+                B_ext = np.array([0., 0., args.magnetic_field_strength])
+            force = sim.compute_force(B_ext)
+            torque = sim.compute_torque(B_ext)
         print(f"\nTotal Force on PCB: {force} N")
         print(f"Total Torque on PCB: {torque} N·m")
 
