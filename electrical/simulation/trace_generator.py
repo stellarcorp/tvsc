@@ -198,7 +198,7 @@ def generate_spiral_trace(
         PCBTrace instance with segments and vias.
     """
     layers = 2 * (pcb.layers // 2)
-    trace = PCBTrace(layers=layers)
+    trace = PCBTrace()
 
     # TODO(james): Modify this height concept to track the height of each layer of the PCB.
     height = 0.0

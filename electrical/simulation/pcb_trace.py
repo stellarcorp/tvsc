@@ -51,7 +51,6 @@ class PCBTrace:
     """
     segments: List[TraceSegment] = field(default_factory=list)
     vias: List[Via] = field(default_factory=list)
-    layers: int = field(default_factory=int)
 
     def add_segment(self, segment: TraceSegment):
         self.segments.append(segment)

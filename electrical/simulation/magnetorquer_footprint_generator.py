@@ -26,10 +26,10 @@ DEFAULTS = {
     "output": "magnetorquer.kicad_mod",
     "show_visualization": False,
     "estimate_force": False,
-    "magnetic_field_strength": 25e-6, # 25uT, value of Earth's magnetic field in LEO near the equator.
+    "magnetic_field_strength": 25e-6, # 25uT, lower bound of Earth's magnetic field in LEO near the equator.
     "magnetic_field_direction": Direction.Z_AXIS,
     "voltage": 3.3,
-    "board_thickness": 0.0016, # 1.6mm
+    "board_thickness": 0.00157, # 1.6mm (nominal) is the standard PCB thickness.
 
     # Default parameters that match the capabilities of JLCPCB with some modifications based on cost.
     # The final parameters used should be verified against https://jlcpcb.com/capabilities/pcb-capabilities
@@ -52,7 +52,6 @@ def main():
     parser.add_argument("--output", type=str, default=DEFAULTS["output"], help="Output .kicad_mod file")
     parser.add_argument("--show-visualization", action='store_true', default=DEFAULTS["show_visualization"], help="Show a visualization of the PCBTrace after generating")
     parser.add_argument("--estimate-force", action='store_true', default=DEFAULTS["estimate_force"], help="Estimate the force and torque on the board by a constant magnetic field")
-
     parser.add_argument("--x-size", type=float, default=DEFAULTS["x_size"], help="Size of PCB in x-direction in meters.")
     parser.add_argument("--y-size", type=float, default=DEFAULTS["y_size"], help="Size of PCB in y-direction in meters.")
     parser.add_argument("--board-thickness", type=float, default=DEFAULTS["board_thickness"], help="Thickness of the PCB in meters. 1.57mm is the most common thickness. JLCPCB can manufacture boards from 0.4mm to 4.5mm.")
@@ -100,11 +99,11 @@ def main():
     )
 
     for trace in pcb.traces:
-        print(f"Trace resistance: {trace.estimate_resistance()}")
+        print(f"Trace resistance: {trace.estimate_resistance()} ohm")
+        print(f"Current @{args.voltage} V: {args.voltage / trace.estimate_resistance()} A")
 
     # Export as KiCad footprint
-    for trace in pcb.traces:
-        generate_kicad_footprint(trace, args.output)
+    generate_kicad_footprint(pcb, args.output)
     print(f"Footprint written to {args.output}")
 
     if args.estimate_force:
@@ -123,7 +122,8 @@ def main():
         print(f"Total Torque on PCB: {torque} N·m")
 
     if args.show_visualization:
-        visualize_pcb_trace(trace)
+        for trace in pcb.traces:
+            visualize_pcb_trace(trace)
 
 
 if __name__ == "__main__":

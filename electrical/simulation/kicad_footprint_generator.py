@@ -16,7 +16,7 @@ def get_kicad_layer(layer_index: int, total_layers: int) -> str:
         raise ValueError(f"Invalid layer index {layer_index} for {total_layers} layers.")
 
 
-def generate_kicad_footprint(pcb_trace, filename: str, footprint_name: str = "Magnetorquer"):
+def generate_kicad_footprint(pcb, filename: str, footprint_name: str = "Magnetorquer"):
     """
     Generates a KiCad 6+ compatible footprint (.kicad_mod) for the given PCBTrace.
     """
@@ -25,7 +25,7 @@ def generate_kicad_footprint(pcb_trace, filename: str, footprint_name: str = "Ma
     def format_coord(x):
         return f"{x * 1000:.3f}"  # Convert meters to mm
 
-    total_layers = pcb_trace.layers
+    total_layers = pcb.layers
 
     lines = [
         f"(module {footprint_name} (layer F.Cu) (tedit {datetime.now().strftime('%Y%m%d')}00)",
@@ -40,21 +40,22 @@ def generate_kicad_footprint(pcb_trace, filename: str, footprint_name: str = "Ma
         "  )",
     ]
 
-    for seg in pcb_trace.segments:
-        start_x, start_y = format_coord(seg.start[0]), format_coord(-seg.start[1])
-        end_x, end_y = format_coord(seg.end[0]), format_coord(-seg.end[1])
-        width = seg.width * 1000
-        layer = get_kicad_layer(seg.layer, total_layers)
+    for trace in pcb.traces:
+        for seg in trace.segments:
+            start_x, start_y = format_coord(seg.start[0]), format_coord(-seg.start[1])
+            end_x, end_y = format_coord(seg.end[0]), format_coord(-seg.end[1])
+            width = seg.width * 1000
+            layer = get_kicad_layer(seg.layer, total_layers)
 
-        lines.append(f"  (fp_line (start {start_x} {start_y}) (end {end_x} {end_y}) "
-                     f"(layer {layer}) (width {width:.3f}))")
+            lines.append(f"  (fp_line (start {start_x} {start_y}) (end {end_x} {end_y}) "
+                         f"(layer {layer}) (width {width:.3f}))")
 
-    for via in pcb_trace.vias:
-        x, y = format_coord(via.position[0]), format_coord(-via.position[1])
-        size = 0.6  # mm
-        drill = 0.3  # mm
-        lines.append(f"  (pad \"\" thru_hole circle (at {x} {y}) (size {size} {size}) "
-                     f"(drill {drill}) (layers F.Cu B.Cu))")
+            for via in trace.vias:
+                x, y = format_coord(via.position[0]), format_coord(-via.position[1])
+                size = 0.6  # mm
+                drill = 0.3  # mm
+                lines.append(f"  (pad \"\" thru_hole circle (at {x} {y}) (size {size} {size}) "
+                             f"(drill {drill}) (layers F.Cu B.Cu))")
 
     lines.append(")")
 
