@@ -241,7 +241,7 @@ def generate_spiral_trace(
 
         chirality = "ccw" if layer % 2 == 0 else "cw"
 
-        if layer == 0 or layer == layers - 1:
+        if layer == 0 or layer == pcb.layers - 1:
             trace_thickness = pcb.constraints.trace_thickness_outer_layers
         else:
             trace_thickness = pcb.constraints.trace_thickness_inner_layers
