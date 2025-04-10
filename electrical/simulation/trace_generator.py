@@ -168,10 +168,11 @@ def generate_spiral_trace(
     pcb: PCB,
     x_radius: float,
     y_radius: float,
+    min_radius: float,
     pad_angle: float,
     trace_width_exponent: float = 1.0,
-    center: np.ndarray = np.array([0.0, 0.0, 0.0]),
     angle_step: float = 0.05,
+    center: np.ndarray = np.array([0.0, 0.0, 0.0]),
 ):
     """
     Generate a PCBTrace that spirals inward and outward over multiple layers.
@@ -210,8 +211,10 @@ def generate_spiral_trace(
     distance_btw_via_centers = pcb.constraints.min_via_diameter + pcb.constraints.trace_spacing
     footprint_pad_angle_offset = 2 * math.asin(distance_btw_via_centers / radius / 2)
 
-    inner_via_points = place_points_on_circle(layers // 2, 0, distance_btw_via_centers, pad_angle, height)
+    inner_via_points = place_points_on_circle(layers // 2, min_radius, distance_btw_via_centers, pad_angle, height)
     outer_via_points = place_points_on_circle(layers // 2, radius, distance_btw_via_centers, pad_angle, height)
+
+    # Move the pads at the start/end of the trace so that they do not overlap.
     outer_via_points[0] = np.array([radius * math.cos(pad_angle - footprint_pad_angle_offset),
                                     radius * math.sin(pad_angle - footprint_pad_angle_offset),
                                     height])
