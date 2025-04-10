@@ -20,6 +20,12 @@ class TraceSegment:
     layer: int
     thickness: float
 
+    def __post_init__(self):
+        while self.start.size < 3:
+            self.start = np.concatenate((self.start, np.array([0.])))
+        while self.end.size < 3:
+            self.end = np.concatenate((self.end, np.array([0.])))
+
 
 @dataclass
 class Via:
@@ -81,13 +87,14 @@ class PCBTrace:
         return resistance
 
     def estimate_magnetic_moment(self, current: float) -> np.ndarray:
-        """Estimate magnetic moment vector (A·m²). Assumes loops lie in XY plane."""
+        """Estimate magnetic moment vector (A·m²)."""
         moment = np.zeros(3)
         for seg in self.segments:
             r = (seg.start + seg.end) / 2  # midpoint of segment
             dl = seg.end - seg.start       # vector of segment
-            area_vec = np.cross(np.append(r, 0), np.append(dl, 0))
-            moment += current * area_vec / 2
+            # Compute the directed area swept out by triangle from zero to start and end.
+            area = np.cross(r, dl) / 2
+            moment += current * area
         return moment
 
 
