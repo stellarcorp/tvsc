@@ -4,11 +4,31 @@ import numpy as np
 from typing import List
 from .pcb_trace import PCB, PCBTrace, TraceSegment, Via
 
-def add_archimedes_spiral(
+def project_to_squircle(
+        squareness: float,
+        r: float,
+        theta: float,
+        x_scale: float = 1.,
+        y_scale: float = 1.) -> np.ndarray:
+    rho = r * math.sqrt(2) / (squareness * abs(math.sin(2 * theta))) * math.sqrt(1 - math.sqrt(1 - (squareness * math.sin(2 * theta)) ** 2))
+
+    x = x_scale * rho * math.cos(theta)
+    y = y_scale * rho * math.sin(theta)
+    return np.array([x, y])
+
+
+def convert_to_polar(x: float, y: float):
+    r = math.hypot(x, y)
+    theta = math.atan2(y, x)
+    return r, theta
+
+
+def add_squircle_spiral(
     trace: PCBTrace,
     start: np.ndarray,
     end: np.ndarray,
     center: np.ndarray,
+    squareness: float,
     trace_spacing: float,
     max_trace_width: float,
     min_trace_width: float,
@@ -21,15 +41,21 @@ def add_archimedes_spiral(
     y_scale: float,
 ):
     """
-    Generates a PCB trace as an Archimedes spiral from start to end around a center point.
+    Generates a PCB trace as a squircle spiral from start to end around a center point. This form
+    includes a squareness parameter which allows for a parameterized transition between circle and
+    square.
+
+    See https://en.wikipedia.org/wiki/Squircle#Fern%C3%A1ndez-Guasti_squircle for more information.
 
     All linear units are meters. All angular units are radians.
 
     Parameters:
-        trace: PCBTrace to append to. 
+        trace: PCBTrace to append to.
         start: (x, y, z) start point.
         end: (x, y, z) end point.
         center: (x, y, z) spiral center.
+        squareness: parameter for determining how circle-like (squareness = 0) or square-like
+            (squareness = 1) the squircle will be.
         trace_spacing: radial distance between spiral arms.
         max_trace_width: Maximum allowed width for the trace.
         min_trace_width: Minimum allowed width for the trace.
@@ -47,10 +73,8 @@ def add_archimedes_spiral(
     # Start/end in polar coords
     dx0, dy0 = sx - cx, sy - cy
     dx1, dy1 = ex - cx, ey - cy
-    r0 = math.hypot(dx0, dy0)
-    r1 = math.hypot(dx1, dy1)
-    theta0 = math.atan2(dy0, dx0)
-    theta1 = math.atan2(dy1, dx1)
+    r0, theta0 = convert_to_polar(dx0, dy0)
+    r1, theta1 = convert_to_polar(dx1, dy1)
 
     # Set direction for the spiral.
     direction = 1 if chirality == "ccw" else -1
@@ -58,7 +82,7 @@ def add_archimedes_spiral(
     # Set up trace_width to be a constant across the entire spiral.
     # TODO(james): Modify this code to support a trace_width that changes according to the radius.
     trace_width = min_trace_width
-    
+
     # Calculate total revolutions (ensure spiral, not arc)
     radial_diff = abs(r1 - r0)
     num_turns = max(1, int(radial_diff / (trace_spacing + trace_width)))
@@ -70,7 +94,7 @@ def add_archimedes_spiral(
     total_angle = 2 * math.pi * num_turns - angular_difference
 
     # Steps and increments
-    steps = max(2, int(abs(total_angle / angle_step)))
+    steps = int(abs(total_angle / angle_step))
     dtheta = total_angle / steps
     dr = (r1 - r0) / steps
 
@@ -80,9 +104,7 @@ def add_archimedes_spiral(
     r = r0
     theta = theta0
     for _ in range(steps):
-        x = cx + x_scale * r * math.cos(theta)
-        y = cy + y_scale * r * math.sin(theta)
-        curr_point = np.array([x, y, 0.0])
+        curr_point = project_to_squircle(squareness, r, theta, x_scale, y_scale)
         if prev_point is not None:
             trace.add_segment(TraceSegment(start=prev_point, end=curr_point, width=trace_width, layer=current_layer, thickness=trace_thickness))
         theta += dtheta
@@ -90,7 +112,9 @@ def add_archimedes_spiral(
         prev_point = curr_point
 
     if prev_point is not None:
-        trace.add_segment(TraceSegment(start=prev_point, end=np.multiply((x_scale, y_scale, 1.0), end), width=trace_width, layer=current_layer, thickness=trace_thickness))
+        # Build a segment to the end.
+        curr_point = project_to_squircle(squareness, r1, theta1, x_scale, y_scale)
+        trace.add_segment(TraceSegment(start=prev_point, end=curr_point, width=trace_width, layer=current_layer, thickness=trace_thickness))
 
 
 def place_points_on_circle(
@@ -166,6 +190,7 @@ def interleave(*iters):
 
 def generate_spiral_trace(
     pcb: PCB,
+    squareness: float,
     x_radius: float,
     y_radius: float,
     min_radius: float,
@@ -206,7 +231,6 @@ def generate_spiral_trace(
     radius = min(x_radius, y_radius)
     x_scale = x_radius / radius
     y_scale = y_radius / radius
-    scale = np.array([x_scale, y_scale, 1.0])
 
     distance_btw_via_centers = pcb.constraints.min_via_diameter + pcb.constraints.trace_spacing
     footprint_pad_angle_offset = 2 * math.asin(distance_btw_via_centers / radius / 2)
@@ -219,15 +243,19 @@ def generate_spiral_trace(
                                     radius * math.sin(pad_angle - footprint_pad_angle_offset),
                                     height])
 
-    # Reverse the outer via points list so that the via from the back to the front, the last via
-    # used, is the one at pad_angle.
+    # Reverse the outer via points list so that the vias are ordered from end to start. The last via
+    # is the one at pad_angle.
     outer_via_points.reverse()
 
     # Interleave the via points.
     all_points = interleave(inner_via_points, outer_via_points)
 
-    # Generate the vias before we add the starting point. The starting point doesn't have a via.
-    trace.vias = list(Via(position=np.multiply(scale, point), size=pcb.constraints.min_via_diameter, drill_size=pcb.constraints.min_via_drill_size) for point in all_points)
+    # Generate the vias before we prepend the starting point to the list. The starting point doesn't have a via.
+    for point in all_points:
+        r, theta = convert_to_polar(point[0], point[1])
+        position = project_to_squircle(squareness, r, theta, x_scale, y_scale)
+        via = Via(position=position, size=pcb.constraints.min_via_diameter, drill_size=pcb.constraints.min_via_drill_size)
+        trace.add_via(via)
 
     # Prepend the starting point.
     all_points.insert(0, np.array([radius * math.cos(pad_angle + footprint_pad_angle_offset),
@@ -246,11 +274,12 @@ def generate_spiral_trace(
         else:
             trace_thickness = pcb.constraints.trace_thickness_inner_layers
 
-        add_archimedes_spiral(
+        add_squircle_spiral(
             trace=trace,
             start=start_point,
             end=end_point,
             center=center,
+            squareness=squareness,
             trace_spacing=pcb.constraints.trace_spacing,
             max_trace_width=pcb.constraints.max_trace_width,
             min_trace_width=pcb.constraints.min_trace_width,

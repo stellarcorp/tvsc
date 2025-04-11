@@ -19,6 +19,7 @@ DEFAULTS = {
     "y_size": 0.1, # 10cm
     "x_radius": 0.04, # 4cm
     "y_radius": 0.04, # 4cm
+    "squareness": 0.0, # squircle squareness. 0 -> circle, 1-> square.
     "min_radius": 0.0,
     "layers": 2,
     "pad_angle": 2.35619449019, # Start footprint in upper left corner.
@@ -57,6 +58,7 @@ def main():
     parser.add_argument("--board-thickness", type=float, default=DEFAULTS["board_thickness"], help="Thickness of the PCB in meters. 1.57mm is the most common thickness. JLCPCB can manufacture boards from 0.4mm to 4.5mm.")
     parser.add_argument("--layers", type=int, default=DEFAULTS["layers"], help="Number of layers")
 
+    parser.add_argument("--squareness", type=float, default=DEFAULTS["squareness"], help="Squareness of the squircle.")
     parser.add_argument("--x-radius", type=float, default=DEFAULTS["x_radius"], help="Radius of spiral in x-direction in meters.")
     parser.add_argument("--y-radius", type=float, default=DEFAULTS["y_radius"], help="Radius of spiral in y-direction meters.")
     parser.add_argument("--min-radius", type=float, default=DEFAULTS["x_radius"], help="Radius of the innermost spiral (both x- and y-directions) in meters.")
@@ -91,6 +93,7 @@ def main():
     # Compute spiral parameters
     generate_spiral_trace(
         pcb,
+        squareness=args.squareness,
         x_radius=args.x_radius,
         y_radius=args.y_radius,
         min_radius=args.min_radius,
