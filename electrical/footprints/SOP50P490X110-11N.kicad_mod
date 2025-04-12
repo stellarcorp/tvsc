@@ -46,7 +46,7 @@
   (pad "9" smd rect (at 2.2 -0.5 90) (size 0.3 1.4) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp d7a5af63-75b5-449b-98d2-837b2b6fed54))
   (pad "10" smd rect (at 2.2 -1 90) (size 0.3 1.4) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 66774805-4ed7-45fe-b68a-bbf743a9a275))
   (pad "11" smd rect (at 0 0) (size 1.83 2.1) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 4bba18cf-c4d6-40f6-8f84-a495388a542b))
-  (model "/home/james/git/tvsc/electrical/3dmodels/DRV8830DGQR.stp"
+  (model "${KIPRJMOD}/../../3dmodels/DRV8830DGQR.stp"
     (offset (xyz 0 0 0))
     (scale (xyz 1 1 1))
     (rotate (xyz 0 0 0))

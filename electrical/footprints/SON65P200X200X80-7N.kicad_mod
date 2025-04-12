@@ -42,7 +42,7 @@
   (pad "5" smd rect (at 1.05 0 90) (size 0.35 0.6) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 4336d30f-c1ef-4bc2-be33-50831b4cdad4))
   (pad "6" smd rect (at 1.05 -0.65 90) (size 0.35 0.6) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 1d8322e1-777e-47af-9d31-a41623641db8))
   (pad "7" smd rect (at 0 0) (size 1.1 1.7) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp e3c995e2-5785-417d-ae41-baa9c80e946b))
-  (model "/home/james/git/tvsc/electrical/3dmodels/TLV76733DRVT.stp"
+  (model "${KIPRJMOD}/../../3dmodels/TLV76733DRVT.stp"
     (offset (xyz 0 0 0))
     (scale (xyz 1 1 1))
     (rotate (xyz 0 0 0))
