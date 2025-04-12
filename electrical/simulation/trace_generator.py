@@ -2,14 +2,14 @@ from itertools import chain
 import math
 import numpy as np
 from typing import List
-from .pcb_trace import PCB, PCBTrace, TraceSegment, Via
+from .pcb_trace import Pad, PCB, PCBTrace, TraceSegment, Via
 
 def project_to_squircle(
         squareness: float,
         r: float,
         theta: float,
-        x_scale: float = 1.,
-        y_scale: float = 1.) -> np.ndarray:
+        x_scale: float,
+        y_scale: float) -> np.ndarray:
     rho = r * math.sqrt(2) / (squareness * abs(math.sin(2 * theta))) * math.sqrt(1 - math.sqrt(1 - (squareness * math.sin(2 * theta)) ** 2))
 
     x = x_scale * rho * math.cos(theta)
@@ -21,6 +21,15 @@ def convert_to_polar(x: float, y: float):
     r = math.hypot(x, y)
     theta = math.atan2(y, x)
     return r, theta
+
+
+def project_point_to_squircle(
+        squareness: float,
+        point: np.ndarray,
+        x_scale: float,
+        y_scale: float) -> np.ndarray:
+    r, theta = convert_to_polar(point[0], point[1])
+    return project_to_squircle(squareness, r, theta, x_scale, y_scale)
 
 
 def add_squircle_spiral(
@@ -252,8 +261,7 @@ def generate_spiral_trace(
 
     # Generate the vias before we prepend the starting point to the list. The starting point doesn't have a via.
     for point in all_points:
-        r, theta = convert_to_polar(point[0], point[1])
-        position = project_to_squircle(squareness, r, theta, x_scale, y_scale)
+        position = project_point_to_squircle(squareness, point, x_scale, y_scale)
         via = Via(position=position, size=pcb.constraints.min_via_diameter, drill_size=pcb.constraints.min_via_drill_size)
         trace.add_via(via)
 
@@ -261,6 +269,9 @@ def generate_spiral_trace(
     all_points.insert(0, np.array([radius * math.cos(pad_angle + footprint_pad_angle_offset),
                                    radius * math.sin(pad_angle + footprint_pad_angle_offset),
                                    height]))
+
+    pcb.add_pad(Pad(1, project_point_to_squircle(squareness, all_points[0], x_scale, y_scale), 0.0015, 0.0025))
+    pcb.add_pad(Pad(2, project_point_to_squircle(squareness, all_points[-1], x_scale, y_scale), 0.0015, 0.0025))
 
     # Generate spirals for each layer
     for layer in range(layers):

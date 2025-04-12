@@ -31,13 +31,21 @@ class TraceSegment:
 class Via:
     """
     Represents a thru via in a PCB.
-
-    Attributes:
-        position: (x, y) coordinate in meters
     """
     position: np.ndarray
     size: float
     drill_size: float
+
+
+@dataclass
+class Pad:
+    """
+    Represents a pad on a PCB footprint.
+    """
+    index: int
+    position: np.ndarray
+    x_size: float
+    y_size: float
 
 
 @dataclass
@@ -125,6 +133,10 @@ class PCB:
     layers: int = 0
     constraints: PCBConstraints = PCBConstraints()
     traces: List[PCBTrace] = field(default_factory=list)
+    pads: List[Pad] = field(default_factory=list)
 
     def add_trace(self, trace: PCBTrace):
         self.traces.append(trace)
+
+    def add_pad(self, pad: Pad):
+        self.pads.append(pad)
