@@ -58,8 +58,8 @@ def generate_kicad_footprint(pcb, filename: str, footprint_name: str = "Magnetor
 
         for via in trace.vias:
             x, y = format_coord(via.position[0]), format_coord(-via.position[1])
-            size = 0.6  # mm
-            drill = 0.3  # mm
+            size = format_coord(via.size)
+            drill = format_coord(via.drill_size)
             lines.append(f"  (pad \"\" thru_hole circle (at {x} {y}) (size {size} {size}) "
                          f"(drill {drill}) (layers F.Cu B.Cu))")
 
