@@ -1692,7 +1692,7 @@
   (symbol (lib_id "Jumper:SolderJumper_2_Open") (at 119.38 134.62 270) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 426c67b9-f974-4212-97f9-fda283eb0e8c)
-    (property "Reference" "JP3" (at 121.92 135.89 90)
+    (property "Reference" "JP1" (at 121.92 134.62 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "SolderJumper_2_Open" (at 121.92 133.35 90)
@@ -1712,7 +1712,7 @@
     (instances
       (project "magnetorquer_board"
         (path "/2751c514-35ba-478b-a491-83a8f7626576"
-          (reference "JP3") (unit 1)
+          (reference "JP1") (unit 1)
         )
       )
     )
@@ -1776,7 +1776,7 @@
   (symbol (lib_id "Jumper:SolderJumper_2_Open") (at 107.95 118.11 270) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5f50fada-9293-41c2-a654-5dcd2a89c5aa)
-    (property "Reference" "JP1" (at 110.49 119.38 90)
+    (property "Reference" "JP3" (at 110.49 118.11 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "SolderJumper_2_Open" (at 110.49 116.84 90)
@@ -1796,7 +1796,7 @@
     (instances
       (project "magnetorquer_board"
         (path "/2751c514-35ba-478b-a491-83a8f7626576"
-          (reference "JP1") (unit 1)
+          (reference "JP3") (unit 1)
         )
       )
     )
@@ -2029,7 +2029,7 @@
   (symbol (lib_id "Jumper:SolderJumper_2_Open") (at 119.38 144.78 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid a834e3a2-88dd-4a33-9363-a6aaaa35da4f)
-    (property "Reference" "JP4" (at 125.73 146.05 90)
+    (property "Reference" "JP2" (at 125.73 146.05 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "SolderJumper_2_Open" (at 116.84 143.51 90)
@@ -2049,7 +2049,7 @@
     (instances
       (project "magnetorquer_board"
         (path "/2751c514-35ba-478b-a491-83a8f7626576"
-          (reference "JP4") (unit 1)
+          (reference "JP2") (unit 1)
         )
       )
     )
@@ -2108,7 +2108,7 @@
   (symbol (lib_id "Jumper:SolderJumper_2_Open") (at 107.95 128.27 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid bca153e7-5e15-4432-b657-284dfc9f87ee)
-    (property "Reference" "JP2" (at 114.3 129.54 90)
+    (property "Reference" "JP4" (at 114.3 129.54 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "SolderJumper_2_Open" (at 105.41 127 90)
@@ -2128,7 +2128,7 @@
     (instances
       (project "magnetorquer_board"
         (path "/2751c514-35ba-478b-a491-83a8f7626576"
-          (reference "JP2") (unit 1)
+          (reference "JP4") (unit 1)
         )
       )
     )
