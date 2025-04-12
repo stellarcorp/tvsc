@@ -29,14 +29,15 @@ def generate_kicad_footprint(pcb, filename: str, footprint_name: str = "Magnetor
 
     lines = [
         f"(module {footprint_name} (layer F.Cu) (tedit {datetime.now().strftime('%Y%m%d')}00)",
-        "  (fp_text reference REF** (at 0 0) (layer F.SilkS)",
+        "  (attr through_hole allow_missing_courtyard)",
+        "  (fp_text reference REF** (at 0 0) (layer F.Fab)",
         "    (effects (font (size 1 1) (thickness 0.15)))",
         "  )",
         "  (fp_text value {} (at 0 -1.5) (layer F.Fab)".format(footprint_name),
         "    (effects (font (size 1 1) (thickness 0.15)))",
         "  )",
         "  (fp_circle (center 0 0) (end 1 0)",
-        "    (stroke (width 0.1) (type default)) (fill none) (layer F.SilkS)",
+        "    (stroke (width 0.1) (type default)) (fill none) (layer F.Fab)",
         "  )",
     ]
 
