@@ -26,6 +26,9 @@ class TraceSegment:
         while self.end.size < 3:
             self.end = np.concatenate((self.end, np.array([0.])))
 
+    def reverse(self):
+        self.start, self.end = self.end, self.start
+
 
 @dataclass
 class Via:
@@ -78,6 +81,12 @@ class PCBTrace:
 
     def add_marker(self, marker: Marker):
         self.markers.append(marker)
+
+    def reverse(self):
+        # Reverse the direction of a trace. Traces have an intrinsic direction that is the
+        # direction of current flow under a positive voltage. This method reverses that direction.
+        for seg in self.segments:
+            seg.reverse()
 
     def total_length(self) -> float:
         return sum(np.linalg.norm(seg.end - seg.start) for seg in self.segments)
