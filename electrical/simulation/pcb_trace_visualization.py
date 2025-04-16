@@ -37,6 +37,10 @@ def visualize_pcb_trace(trace, figsize=(10, 10)):
         line, = ax.plot(xs, ys, label=f"Layer {layer}", color=layer_colors[layer])
         layer_lines[layer] = line
 
+    # Draw markers
+    for marker in trace.markers:
+        ax.plot(marker.position[0], marker.position[1], 'rx', markersize=10)  # dot at marker location
+
     # Draw vias
     for via in trace.vias:
         ax.plot(via.position[0], via.position[1], 'ko', markersize=3)  # dot at via location
