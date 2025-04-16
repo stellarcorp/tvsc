@@ -361,8 +361,6 @@ def generate_spiral_trace(
         start_touch_point_index = (start_via_index + 1) % len(start_touch_point_list)
         end_touch_point_index = end_via_index - 1
 
-        print(f"start_via_index: {start_via_index}, end_via_index: {end_via_index}, start_touch_point_index: {start_touch_point_index}, end_touch_point_index: {end_touch_point_index}, len(start_via_list): {len(start_via_list)}, len(start_touch_point_list): {len(start_touch_point_list)}, len(end_via_list): {len(end_via_list)}, len(end_touch_point_list): {len(end_touch_point_list)}")
-
         chirality = "ccw" if layer % 2 == 0 else "cw"
 
         if layer == 0 or layer == pcb.layers - 1:
