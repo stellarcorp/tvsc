@@ -20,7 +20,7 @@ DEFAULTS = {
     "x_radius": 0.04, # 4cm
     "y_radius": 0.04, # 4cm
     "squareness": 0.0, # squircle squareness. 0 -> circle, 1-> square.
-    "min_radius": 0.0,
+    "inner_radius": 0.0,
     "layers": 2,
     "pad_angle": 2.35619449019, # Start footprint in upper left corner.
     "width_exponent": 1.0,
@@ -61,7 +61,7 @@ def main():
     parser.add_argument("--squareness", type=float, default=DEFAULTS["squareness"], help="Squareness of the squircle.")
     parser.add_argument("--x-radius", type=float, default=DEFAULTS["x_radius"], help="Radius of spiral in x-direction in meters.")
     parser.add_argument("--y-radius", type=float, default=DEFAULTS["y_radius"], help="Radius of spiral in y-direction meters.")
-    parser.add_argument("--min-radius", type=float, default=DEFAULTS["x_radius"], help="Radius of the innermost spiral (both x- and y-directions) in meters.")
+    parser.add_argument("--inner-radius", type=float, default=DEFAULTS["inner_radius"], help="Radius of the innermost spiral (both x- and y-directions) in meters.")
     parser.add_argument("--pad-angle", type=float, default=DEFAULTS["pad_angle"], help="Angular placement of start and end pads in radians")
     parser.add_argument("--width-exp", type=float, default=DEFAULTS["width_exponent"], help="Exponent controlling width variation")
 
@@ -96,7 +96,7 @@ def main():
         squareness=args.squareness,
         x_radius=args.x_radius,
         y_radius=args.y_radius,
-        min_radius=args.min_radius,
+        inner_radius=args.inner_radius,
         pad_angle=args.pad_angle,
         trace_width_exponent=args.width_exp,
     )

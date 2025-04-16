@@ -263,7 +263,7 @@ def generate_spiral_trace(
     squareness: float,
     x_radius: float,
     y_radius: float,
-    min_radius: float,
+    inner_radius: float,
     pad_angle: float,
     trace_width_exponent: float = 1.0,
     angle_step: float = 0.05,
@@ -302,8 +302,8 @@ def generate_spiral_trace(
     distance_btw_via_centers = pcb.constraints.min_via_diameter + pcb.constraints.trace_spacing
     footprint_pad_angle_offset = 2 * math.asin(distance_btw_via_centers / radius / 2)
 
-    inner_via_points = place_points_on_circle(layers // 2, min_radius, distance_btw_via_centers, pad_angle)
-    inner_touch_points =  place_points_on_circle(layers // 2, min_radius + distance_btw_via_centers, distance_btw_via_centers, pad_angle)
+    inner_via_points = place_points_on_circle(layers // 2, inner_radius, distance_btw_via_centers, pad_angle)
+    inner_touch_points =  place_points_on_circle(layers // 2, inner_radius + distance_btw_via_centers, distance_btw_via_centers, pad_angle)
     outer_via_points = place_points_on_circle(layers // 2, radius, distance_btw_via_centers, pad_angle)
     outer_touch_points = place_points_on_circle(layers // 2, radius - distance_btw_via_centers, distance_btw_via_centers, pad_angle)
 
