@@ -3,7 +3,7 @@ import math
 import numpy as np
 from scipy.interpolate import CubicHermiteSpline
 from typing import List
-from .pcb_trace import Pad, PCB, PCBTrace, TraceSegment, Via
+from .pcb_trace import Marker, Pad, PCB, PCBTrace, TraceSegment, Via
 
 def project_to_squircle(
         squareness: float,
@@ -165,7 +165,7 @@ def add_squircle_spiral(
     total_angle = 2 * math.pi * num_turns - angular_difference
 
     # Steps and increments
-    steps = int(abs(total_angle / angle_step))
+    steps = max(1, int(abs(total_angle / angle_step)))
     dtheta = total_angle / steps
     dr = (r1 - r0) / steps
 
@@ -332,6 +332,14 @@ def generate_spiral_trace(
                                    radius * math.sin(pad_angle + footprint_pad_angle_offset)]))
     # Also prepend it to the outer_touch_points.
     outer_touch_points.insert(0, outer_via_points[0])
+
+    for touch_point in inner_touch_points:
+        position = project_point_to_squircle(squareness, touch_point, x_scale, y_scale)
+        trace.add_marker(Marker(position=position, radius=0.0005))
+
+    for touch_point in outer_touch_points:
+        position = project_point_to_squircle(squareness, touch_point, x_scale, y_scale)
+        trace.add_marker(Marker(position=position, radius=0.0005))
 
     pcb.add_pad(Pad(1, project_point_to_squircle(squareness, outer_via_points[0], x_scale, y_scale), 0.0015, 0.0025))
     pcb.add_pad(Pad(2, project_point_to_squircle(squareness, outer_via_points[-1], x_scale, y_scale), 0.0015, 0.0025))
