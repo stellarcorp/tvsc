@@ -49,6 +49,15 @@ class Pad:
 
 
 @dataclass
+class Marker:
+    """
+    Represents a marker for debugging or drawing attention to certain areas.
+    """
+    position: np.ndarray
+    radius: float
+
+
+@dataclass
 class PCBTrace:
     """
     Represents a full trace consisting of segments and vias.
@@ -59,21 +68,19 @@ class PCBTrace:
     """
     segments: List[TraceSegment] = field(default_factory=list)
     vias: List[Via] = field(default_factory=list)
+    markers: List[Marker] = field(default_factory=list)
 
     def add_segment(self, segment: TraceSegment):
         self.segments.append(segment)
 
-    def concatenate(self, trace):
-        self.segments.append(trace.segments)
-        self.vias.append(trace.vias)
-
     def add_via(self, via: Via):
         self.vias.append(via)
 
+    def add_marker(self, marker: Marker):
+        self.markers.append(marker)
+
     def total_length(self) -> float:
-        return sum(np.linalg.norm(seg.end - seg.start)
-            for seg in self.segments
-        )
+        return sum(np.linalg.norm(seg.end - seg.start) for seg in self.segments)
 
     def estimate_resistance(self, resistivity: float = 1.68e-8) -> float:
         """
