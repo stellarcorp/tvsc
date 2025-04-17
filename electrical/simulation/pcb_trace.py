@@ -19,12 +19,6 @@ class TraceSegment:
     width: float
     thickness: float
 
-    def __post_init__(self):
-        while self.start.size < 3:
-            self.start = np.concatenate((self.start, np.array([0.])))
-        while self.end.size < 3:
-            self.end = np.concatenate((self.end, np.array([0.])))
-
     def reverse(self):
         self.start, self.end = self.end, self.start
 
