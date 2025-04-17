@@ -11,7 +11,10 @@ def project_to_squircle(
         theta: float,
         x_scale: float,
         y_scale: float) -> np.ndarray:
-    rho = r * math.sqrt(2) / (squareness * abs(math.sin(2 * theta))) * math.sqrt(1 - math.sqrt(1 - (squareness * math.sin(2 * theta)) ** 2))
+    if squareness > 1e-6:
+        rho = r * math.sqrt(2) / (squareness * abs(math.sin(2 * theta))) * math.sqrt(1 - math.sqrt(1 - (squareness * math.sin(2 * theta)) ** 2))
+    else:
+        rho = r
 
     x = x_scale * rho * math.cos(theta)
     y = y_scale * rho * math.sin(theta)
@@ -33,68 +36,7 @@ def project_point_to_squircle(
     return project_to_squircle(squareness, r, theta, x_scale, y_scale)
 
 
-def add_spline(
-        trace: PCBTrace,
-        start: np.ndarray,
-        end: np.ndarray,
-        center: np.ndarray,
-        squareness: float,
-        trace_spacing: float,
-        max_trace_width: float,
-        min_trace_width: float,
-        trace_width_exponent: float,
-        trace_thickness: float,
-        current_layer: int,
-        chirality: str,  # "cw" or "ccw"
-        angle_step: float,
-        x_scale: float,
-        y_scale: float):
-    # Vectors from center to endpoints
-    vec_start = start - center
-    vec_end = end - center
-
-    # Tangent directions are perpendicular to the radius vector
-    if chirality == "ccw":
-        tangent_start = np.array([-vec_start[1], vec_start[0]])
-        tangent_end = np.array([-vec_end[1], vec_end[0]])
-    else:
-        tangent_start = np.array([vec_start[1], -vec_start[0]])
-        tangent_end = np.array([vec_end[1], -vec_end[0]])
-
-    # Parameterization: t in [0, 1]
-    t = np.array([0.0, 1.0])
-    x = np.array([start[0], end[0]])
-    y = np.array([start[1], end[1]])
-    dx = np.array([tangent_start[0], tangent_end[0]])
-    dy = np.array([tangent_start[1], tangent_end[1]])
-
-    # Create Hermite spline functions. When evaluated at a point on the t interval above, they
-    # give spline coordinates.
-    spline_x = CubicHermiteSpline(t, x, dx)
-    spline_y = CubicHermiteSpline(t, y, dy)
-
-    # Evaluate the spline functions to generate the points for the curve.
-    num_points = abs((math.atan2(end[1], end[0]) - math.atan2(start[1], start[0])) / angle_step)
-    t_dense = np.linspace(0, 1, num_points)
-    curve_x = spline_x(t_dense)
-    curve_y = spline_y(t_dense)
-    curve_points = np.stack([curve_x, curve_y], axis=-1)
-
-    max_dist = max(np.linalg.norm(start - center), np.linalg.norm(end - center))
-
-    # Build variable-width trace segments
-    for i in range(len(curve_points) - 1):
-        # Normalize distance for width scaling
-        dist = np.linalg.norm(curve_points[i] - center)
-        normalized_dist = dist / max_dist if max_dist != 0 else 0
-        width = min_trace_width + (max_trace_width - min_trace_width) * (normalized_dist ** trace_width_exponent)
-
-        p0 = project_point_to_squircle(squareness, curve_points[i], x_scale, y_scale)
-        p1 = project_point_to_squircle(squareness, curve_points[i+1], x_scale, y_scale)
-        trace.add_segment(TraceSegment(start=p0, end=p1, width=width, layer=current_layer, thickness=trace_thickness))
-
-
-def add_squircle_spiral(
+def create_squircle_spiral(
     start: np.ndarray,
     end: np.ndarray,
     center: np.ndarray,
@@ -119,9 +61,9 @@ def add_squircle_spiral(
     All linear units are meters. All angular units are radians.
 
     Parameters:
-        start: (x, y, z) start point.
-        end: (x, y, z) end point.
-        center: (x, y, z) spiral center.
+        start: (x, y) start point.
+        end: (x, y) end point.
+        center: (x, y) spiral center.
         squareness: parameter for determining how circle-like (squareness = 0) or square-like
             (squareness = 1) the squircle will be.
         trace_spacing: radial distance between spiral arms.
@@ -367,7 +309,7 @@ def generate_spiral_trace(
         else:
             trace_thickness = pcb.constraints.trace_thickness_inner_layers
 
-        trace = add_squircle_spiral(
+        trace = create_squircle_spiral(
             start=start_via_list[start_via_index],
             end=start_touch_point_list[start_touch_point_index],
             center=center,
@@ -385,7 +327,7 @@ def generate_spiral_trace(
         trace.layer = layer
         pcb.add_trace(trace)
 
-        trace = add_squircle_spiral(
+        trace = create_squircle_spiral(
             start=start_touch_point_list[start_touch_point_index],
             end=end_touch_point_list[end_touch_point_index],
             center=center,
@@ -403,7 +345,7 @@ def generate_spiral_trace(
         trace.layer = layer
         pcb.add_trace(trace)
 
-        trace = add_squircle_spiral(
+        trace = create_squircle_spiral(
             start=end_touch_point_list[end_touch_point_index],
             end=end_via_list[end_via_index],
             center=center,
