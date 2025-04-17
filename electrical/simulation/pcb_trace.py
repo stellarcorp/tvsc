@@ -17,7 +17,6 @@ class TraceSegment:
     start: np.ndarray
     end: np.ndarray
     width: float
-    layer: int
     thickness: float
 
     def __post_init__(self):
@@ -69,18 +68,11 @@ class PCBTrace:
         segments: list of trace segments
         vias: list of vias connecting layers
     """
+    layer: int = 0
     segments: List[TraceSegment] = field(default_factory=list)
-    vias: List[Via] = field(default_factory=list)
-    markers: List[Marker] = field(default_factory=list)
 
     def add_segment(self, segment: TraceSegment):
         self.segments.append(segment)
-
-    def add_via(self, via: Via):
-        self.vias.append(via)
-
-    def add_marker(self, marker: Marker):
-        self.markers.append(marker)
 
     def reverse(self):
         # Reverse the direction of a trace. Traces have an intrinsic direction that is the
@@ -149,6 +141,8 @@ class PCB:
     layers: int = 0
     constraints: PCBConstraints = PCBConstraints()
     traces: List[PCBTrace] = field(default_factory=list)
+    vias: List[Via] = field(default_factory=list)
+    markers: List[Marker] = field(default_factory=list)
     pads: List[Pad] = field(default_factory=list)
 
     def add_trace(self, trace: PCBTrace):
@@ -156,3 +150,9 @@ class PCB:
 
     def add_pad(self, pad: Pad):
         self.pads.append(pad)
+
+    def add_via(self, via: Via):
+        self.vias.append(via)
+
+    def add_marker(self, marker: Marker):
+        self.markers.append(marker)

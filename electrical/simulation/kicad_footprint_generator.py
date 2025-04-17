@@ -48,27 +48,27 @@ def generate_kicad_footprint(pcb, filename: str, footprint_name: str = "Magnetor
         lines.append(f"  (pad {pad.index} smd oval (at {pos_x} {pos_y}) (size {x_size} {y_size}) (layers F.Cu F.Paste F.Mask))")
 
     for trace in pcb.traces:
+        layer = get_kicad_layer(trace.layer, total_layers)
         for seg in trace.segments:
             start_x, start_y = format_coord(seg.start[0]), format_coord(-seg.start[1])
             end_x, end_y = format_coord(seg.end[0]), format_coord(-seg.end[1])
             width = seg.width * 1000
-            layer = get_kicad_layer(seg.layer, total_layers)
 
             lines.append(f"  (fp_line (start {start_x} {start_y}) (end {end_x} {end_y}) "
                          f"(layer {layer}) (width {width:.3f}))")
 
-        for via in trace.vias:
-            x, y = format_coord(via.position[0]), format_coord(-via.position[1])
-            size = format_coord(via.size)
-            drill = format_coord(via.drill_size)
-            lines.append(f"  (pad \"\" thru_hole circle (at {x} {y}) (size {size} {size}) "
-                         f"(drill {drill}) (layers F.Cu B.Cu))")
+    for via in pcb.vias:
+        x, y = format_coord(via.position[0]), format_coord(-via.position[1])
+        size = format_coord(via.size)
+        drill = format_coord(via.drill_size)
+        lines.append(f"  (pad \"\" thru_hole circle (at {x} {y}) (size {size} {size}) "
+                     f"(drill {drill}) (layers F.Cu B.Cu))")
 
-        for marker in trace.markers:
-            pos_x, pos_y = format_coord(marker.position[0]), format_coord(-marker.position[1])
-            end_x = format_coord(marker.position[0] + marker.radius)
-            lines.append(f"  (fp_circle (center {pos_x} {pos_y}) (end {end_x} {pos_y})"
-                         f"    (stroke (width 0.1) (type default)) (fill none) (layer F.Fab))")
+    for marker in pcb.markers:
+        pos_x, pos_y = format_coord(marker.position[0]), format_coord(-marker.position[1])
+        end_x = format_coord(marker.position[0] + marker.radius)
+        lines.append(f"  (fp_circle (center {pos_x} {pos_y}) (end {end_x} {pos_y})"
+                     f"    (stroke (width 0.1) (type default)) (fill none) (layer F.Fab))")
 
     lines.append(")")
 

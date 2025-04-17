@@ -95,7 +95,6 @@ def add_spline(
 
 
 def add_squircle_spiral(
-    trace: PCBTrace,
     start: np.ndarray,
     end: np.ndarray,
     center: np.ndarray,
@@ -105,7 +104,6 @@ def add_squircle_spiral(
     min_trace_width: float,
     trace_width_exponent: float,
     trace_thickness: float,
-    current_layer: int,
     chirality: str,  # "cw" or "ccw"
     angle_step: float,
     x_scale: float,
@@ -121,7 +119,6 @@ def add_squircle_spiral(
     All linear units are meters. All angular units are radians.
 
     Parameters:
-        trace: PCBTrace to append to.
         start: (x, y, z) start point.
         end: (x, y, z) end point.
         center: (x, y, z) spiral center.
@@ -174,10 +171,11 @@ def add_squircle_spiral(
     curr_point = None
     r = r0
     theta = theta0
+    trace = PCBTrace()
     for _ in range(steps):
         curr_point = project_to_squircle(squareness, r, theta, x_scale, y_scale)
         if prev_point is not None:
-            trace.add_segment(TraceSegment(start=prev_point, end=curr_point, width=trace_width, layer=current_layer, thickness=trace_thickness))
+            trace.add_segment(TraceSegment(start=prev_point, end=curr_point, width=trace_width, thickness=trace_thickness))
         theta += dtheta
         r += dr
         prev_point = curr_point
@@ -185,7 +183,9 @@ def add_squircle_spiral(
     if prev_point is not None:
         # Build a segment to the end.
         curr_point = project_to_squircle(squareness, r1, theta1, x_scale, y_scale)
-        trace.add_segment(TraceSegment(start=prev_point, end=curr_point, width=trace_width, layer=current_layer, thickness=trace_thickness))
+        trace.add_segment(TraceSegment(start=prev_point, end=curr_point, width=trace_width, thickness=trace_thickness))
+
+    return trace
 
 
 def place_points_on_circle(
@@ -293,7 +293,6 @@ def generate_spiral_trace(
         PCBTrace instance with segments and vias.
     """
     layers = 2 * (pcb.layers // 2)
-    trace = PCBTrace()
 
     radius = min(x_radius, y_radius)
     x_scale = x_radius / radius
@@ -320,12 +319,12 @@ def generate_spiral_trace(
     for point in inner_via_points:
         position = project_point_to_squircle(squareness, point, x_scale, y_scale)
         via = Via(position=position, size=pcb.constraints.min_via_diameter, drill_size=pcb.constraints.min_via_drill_size)
-        trace.add_via(via)
+        pcb.add_via(via)
 
     for point in outer_via_points:
         position = project_point_to_squircle(squareness, point, x_scale, y_scale)
         via = Via(position=position, size=pcb.constraints.min_via_diameter, drill_size=pcb.constraints.min_via_drill_size)
-        trace.add_via(via)
+        pcb.add_via(via)
 
     # Prepend the starting point. It's not truly a via, but like the vias, it is the start (or end) of a single spiral.
     outer_via_points.insert(0, np.array([radius * math.cos(pad_angle + footprint_pad_angle_offset),
@@ -335,11 +334,11 @@ def generate_spiral_trace(
 
     for touch_point in inner_touch_points:
         position = project_point_to_squircle(squareness, touch_point, x_scale, y_scale)
-        trace.add_marker(Marker(position=position, radius=0.0005))
+        pcb.add_marker(Marker(position=position, radius=0.0005))
 
     for touch_point in outer_touch_points:
         position = project_point_to_squircle(squareness, touch_point, x_scale, y_scale)
-        trace.add_marker(Marker(position=position, radius=0.0005))
+        pcb.add_marker(Marker(position=position, radius=0.0005))
 
     pcb.add_pad(Pad(1, project_point_to_squircle(squareness, outer_via_points[0], x_scale, y_scale), 0.0015, 0.0025))
     pcb.add_pad(Pad(2, project_point_to_squircle(squareness, outer_via_points[-1], x_scale, y_scale), 0.0015, 0.0025))
@@ -368,8 +367,7 @@ def generate_spiral_trace(
         else:
             trace_thickness = pcb.constraints.trace_thickness_inner_layers
 
-        add_squircle_spiral(
-            trace=trace,
+        trace = add_squircle_spiral(
             start=start_via_list[start_via_index],
             end=start_touch_point_list[start_touch_point_index],
             center=center,
@@ -379,15 +377,15 @@ def generate_spiral_trace(
             min_trace_width=pcb.constraints.min_trace_width,
             trace_width_exponent=trace_width_exponent,
             trace_thickness=trace_thickness,
-            current_layer=layer,
             chirality=chirality,
             angle_step=angle_step,
             x_scale=x_scale,
             y_scale=y_scale,
         )
+        trace.layer = layer
+        pcb.add_trace(trace)
 
-        add_squircle_spiral(
-            trace=trace,
+        trace = add_squircle_spiral(
             start=start_touch_point_list[start_touch_point_index],
             end=end_touch_point_list[end_touch_point_index],
             center=center,
@@ -397,15 +395,15 @@ def generate_spiral_trace(
             min_trace_width=pcb.constraints.min_trace_width,
             trace_width_exponent=trace_width_exponent,
             trace_thickness=trace_thickness,
-            current_layer=layer,
             chirality=chirality,
             angle_step=angle_step,
             x_scale=x_scale,
             y_scale=y_scale,
         )
+        trace.layer = layer
+        pcb.add_trace(trace)
 
-        add_squircle_spiral(
-            trace=trace,
+        trace = add_squircle_spiral(
             start=end_touch_point_list[end_touch_point_index],
             end=end_via_list[end_via_index],
             center=center,
@@ -415,16 +413,15 @@ def generate_spiral_trace(
             min_trace_width=pcb.constraints.min_trace_width,
             trace_width_exponent=trace_width_exponent,
             trace_thickness=trace_thickness,
-            current_layer=layer,
             chirality=chirality,
             angle_step=angle_step,
             x_scale=x_scale,
             y_scale=y_scale,
         )
+        trace.layer = layer
+        pcb.add_trace(trace)
 
         start_via_list, end_via_list = end_via_list, start_via_list
         start_touch_point_list, end_touch_point_list = end_touch_point_list, start_touch_point_list
         start_via_index, end_via_index = end_via_index, start_via_index
         end_via_index += 1
-
-    pcb.add_trace(trace)

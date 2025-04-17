@@ -3,7 +3,7 @@ import numpy as np
 from enum import Enum
 from .trace_generator import generate_spiral_trace
 from .kicad_footprint_generator import generate_kicad_footprint
-from .pcb_trace_visualization import visualize_pcb_trace
+from .pcb_trace_visualization import visualize_pcb
 from .magnetic_field_simulation import MagneticFieldSimulation
 from .pcb_trace import PCB
 
@@ -125,8 +125,7 @@ def main():
         print(f"Total Torque on PCB: {torque} N·m")
 
     if args.show_visualization:
-        for trace in pcb.traces:
-            visualize_pcb_trace(trace)
+        visualize_pcb(pcb)
 
 
 if __name__ == "__main__":
