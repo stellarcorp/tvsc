@@ -5,14 +5,13 @@ from scipy.interpolate import CubicHermiteSpline
 from typing import List
 from .pcb_trace import Marker, Pad, PCB, PCBTrace, TraceSegment, Via
 
-def project_to_squircle(
-        squareness: float,
-        r: float,
-        theta: float,
-        x_scale: float,
-        y_scale: float) -> np.ndarray:
+
+def project_to_squircle(squareness: float, r: float, theta: float,
+                        x_scale: float, y_scale: float) -> np.ndarray:
     if squareness > 1e-6:
-        rho = r * math.sqrt(2) / (squareness * abs(math.sin(2 * theta))) * math.sqrt(1 - math.sqrt(1 - (squareness * math.sin(2 * theta)) ** 2))
+        rho = r * math.sqrt(2) / (
+            squareness * abs(math.sin(2 * theta))
+        ) * math.sqrt(1 - math.sqrt(1 - (squareness * math.sin(2 * theta))**2))
     else:
         rho = r
 
@@ -27,11 +26,8 @@ def convert_to_polar(x: float, y: float):
     return r, theta
 
 
-def project_point_to_squircle(
-        squareness: float,
-        point: np.ndarray,
-        x_scale: float,
-        y_scale: float) -> np.ndarray:
+def project_point_to_squircle(squareness: float, point: np.ndarray,
+                              x_scale: float, y_scale: float) -> np.ndarray:
     r, theta = convert_to_polar(point[0], point[1])
     return project_to_squircle(squareness, r, theta, x_scale, y_scale)
 
@@ -87,7 +83,7 @@ def create_squircle_spiral(
     r1, theta1 = convert_to_polar(dx1, dy1)
 
     # Set direction for the spiral.
-    direction = 1 if chirality == "ccw" else -1
+    #direction = -1 if chirality == "ccw" else 1
 
     # Set up trace_width to be a constant across the entire spiral.
     # TODO(james): Modify this code to support a trace_width that changes according to the radius.
@@ -98,7 +94,7 @@ def create_squircle_spiral(
     num_turns = max(1, int(radial_diff / (trace_spacing + trace_width)))
 
     # Compute total angle to sweep
-    angular_difference = direction * (theta1 - theta0)
+    angular_difference = theta0 - theta1 # TODO(james): This is reversed from expected. Debug.
     while angular_difference < 0:
         angular_difference += 2 * math.pi
     total_angle = 2 * math.pi * num_turns - angular_difference
@@ -115,27 +111,35 @@ def create_squircle_spiral(
     theta = theta0
     trace = PCBTrace()
     for _ in range(steps):
-        curr_point = project_to_squircle(squareness, r, theta, x_scale, y_scale)
+        curr_point = project_to_squircle(squareness, r, theta, x_scale,
+                                         y_scale)
         if prev_point is not None:
-            trace.add_segment(TraceSegment(start=prev_point, end=curr_point, width=trace_width, thickness=trace_thickness))
+            trace.add_segment(
+                TraceSegment(start=prev_point,
+                             end=curr_point,
+                             width=trace_width,
+                             thickness=trace_thickness))
         theta += dtheta
         r += dr
         prev_point = curr_point
 
     if prev_point is not None:
         # Build a segment to the end.
-        curr_point = project_to_squircle(squareness, r1, theta1, x_scale, y_scale)
-        trace.add_segment(TraceSegment(start=prev_point, end=curr_point, width=trace_width, thickness=trace_thickness))
+        curr_point = project_to_squircle(squareness, r1, theta1, x_scale,
+                                         y_scale)
+        trace.add_segment(
+            TraceSegment(start=prev_point,
+                         end=curr_point,
+                         width=trace_width,
+                         thickness=trace_thickness))
 
     return trace
 
 
-def place_points_on_circle(
-    n: int,
-    min_radius: float,
-    min_distance: float,
-    start_angle: float = 0
-) -> List[np.ndarray]:
+def place_points_on_circle(n: int,
+                           min_radius: float,
+                           min_distance: float,
+                           start_angle: float = 0) -> List[np.ndarray]:
     """
     Evenly places `n` points around a circle with at least `min_distance` between each.
     The radius is increased if needed to satisfy the minimum spacing.
@@ -241,16 +245,27 @@ def generate_spiral_trace(
     y_scale = y_radius / radius
 
     distance_btw_via_centers = pcb.constraints.min_via_diameter + pcb.constraints.trace_spacing
-    footprint_pad_angle_offset = 2 * math.asin(distance_btw_via_centers / radius / 2)
+    footprint_pad_angle_offset = 2 * math.asin(
+        distance_btw_via_centers / radius / 2)
 
-    inner_via_points = place_points_on_circle(layers // 2, inner_radius, distance_btw_via_centers, pad_angle)
-    inner_touch_points =  place_points_on_circle(layers // 2, inner_radius + distance_btw_via_centers, distance_btw_via_centers, pad_angle)
-    outer_via_points = place_points_on_circle(layers // 2, radius, distance_btw_via_centers, pad_angle)
-    outer_touch_points = place_points_on_circle(layers // 2, radius - distance_btw_via_centers, distance_btw_via_centers, pad_angle)
+    inner_via_points = place_points_on_circle(layers // 2, inner_radius,
+                                              distance_btw_via_centers,
+                                              pad_angle)
+    inner_touch_points = place_points_on_circle(
+        layers // 2, inner_radius + distance_btw_via_centers,
+        distance_btw_via_centers, pad_angle)
+    outer_via_points = place_points_on_circle(layers // 2, radius,
+                                              distance_btw_via_centers,
+                                              pad_angle)
+    outer_touch_points = place_points_on_circle(
+        layers // 2, radius - distance_btw_via_centers,
+        distance_btw_via_centers, pad_angle)
 
     # Move the pad at the end of the trace so that the start and end do not overlap.
-    outer_via_points[0] = np.array([radius * math.cos(pad_angle - footprint_pad_angle_offset),
-                                    radius * math.sin(pad_angle - footprint_pad_angle_offset)])
+    outer_via_points[0] = np.array([
+        radius * math.cos(pad_angle - footprint_pad_angle_offset),
+        radius * math.sin(pad_angle - footprint_pad_angle_offset)
+    ])
 
     # Reverse the outer points lists so that the vias are ordered from end to start. The last via
     # is the one at pad_angle.
@@ -259,31 +274,51 @@ def generate_spiral_trace(
 
     # Generate the vias before we prepend the starting point to the list. The starting point doesn't have a via.
     for point in inner_via_points:
-        position = project_point_to_squircle(squareness, point, x_scale, y_scale)
-        via = Via(position=position, size=pcb.constraints.min_via_diameter, drill_size=pcb.constraints.min_via_drill_size)
+        position = project_point_to_squircle(squareness, point, x_scale,
+                                             y_scale)
+        via = Via(position=position,
+                  size=pcb.constraints.min_via_diameter,
+                  drill_size=pcb.constraints.min_via_drill_size)
         pcb.add_via(via)
 
     for point in outer_via_points:
-        position = project_point_to_squircle(squareness, point, x_scale, y_scale)
-        via = Via(position=position, size=pcb.constraints.min_via_diameter, drill_size=pcb.constraints.min_via_drill_size)
+        position = project_point_to_squircle(squareness, point, x_scale,
+                                             y_scale)
+        via = Via(position=position,
+                  size=pcb.constraints.min_via_diameter,
+                  drill_size=pcb.constraints.min_via_drill_size)
         pcb.add_via(via)
 
     # Prepend the starting point. It's not truly a via, but like the vias, it is the start (or end) of a single spiral.
-    outer_via_points.insert(0, np.array([radius * math.cos(pad_angle + footprint_pad_angle_offset),
-                                   radius * math.sin(pad_angle + footprint_pad_angle_offset)]))
+    outer_via_points.insert(
+        0,
+        np.array([
+            radius * math.cos(pad_angle + footprint_pad_angle_offset),
+            radius * math.sin(pad_angle + footprint_pad_angle_offset)
+        ]))
     # Also prepend it to the outer_touch_points.
     outer_touch_points.insert(0, outer_via_points[0])
 
     for touch_point in inner_touch_points:
-        position = project_point_to_squircle(squareness, touch_point, x_scale, y_scale)
+        position = project_point_to_squircle(squareness, touch_point, x_scale,
+                                             y_scale)
         pcb.add_marker(Marker(position=position, radius=0.0005))
 
     for touch_point in outer_touch_points:
-        position = project_point_to_squircle(squareness, touch_point, x_scale, y_scale)
+        position = project_point_to_squircle(squareness, touch_point, x_scale,
+                                             y_scale)
         pcb.add_marker(Marker(position=position, radius=0.0005))
 
-    pcb.add_pad(Pad(1, project_point_to_squircle(squareness, outer_via_points[0], x_scale, y_scale), 0.0015, 0.0025))
-    pcb.add_pad(Pad(2, project_point_to_squircle(squareness, outer_via_points[-1], x_scale, y_scale), 0.0015, 0.0025))
+    pcb.add_pad(
+        Pad(
+            1,
+            project_point_to_squircle(squareness, outer_via_points[0], x_scale,
+                                      y_scale), 0.0015, 0.0025))
+    pcb.add_pad(
+        Pad(
+            2,
+            project_point_to_squircle(squareness, outer_via_points[-1],
+                                      x_scale, y_scale), 0.0015, 0.0025))
 
     # Generate spirals for each layer. The spiral starts with a spline from the start via to the
     # start touch point. Then, it is a squircle spiral from the start touch point to the end touch
@@ -299,7 +334,8 @@ def generate_spiral_trace(
     start_via_index = 0
     end_via_index = 0
     for layer in range(layers):
-        start_touch_point_index = (start_via_index + 1) % len(start_touch_point_list)
+        start_touch_point_index = (start_via_index +
+                                   1) % len(start_touch_point_list)
         end_touch_point_index = end_via_index - 1
 
         chirality = "ccw" if layer % 2 == 0 else "cw"
