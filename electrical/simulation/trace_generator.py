@@ -108,9 +108,10 @@ def create_squircle_spiral(
     num_turns = max(
         1, int(abs(radial_difference) / (trace_spacing + trace_width)))
 
-    # Compute total angle to sweep. Angular difference will be on [0, 2*pi) so the total angle will
-    # be less than 2*pi * num_turns.
-    angular_difference = compute_angular_separation(theta0, theta1, chirality)
+    # Compute total angle to sweep. The angular difference is the angle from the ending angle
+    # (theta1) to the starting angle (theta0). This angle is removed from the last turn. Angular
+    # difference will be on [0, 2*pi) so the total angle will be less than 2*pi * num_turns.
+    angular_difference = compute_angular_separation(theta1, theta0, chirality)
     total_angle = 2 * math.pi * num_turns - angular_difference
 
     # Steps and increments
@@ -267,12 +268,15 @@ def generate_spiral_trace(
     inner_via_points = place_points_on_circle(layers // 2, inner_radius,
                                               distance_btw_via_centers,
                                               pad_angle)
+
     inner_touch_points = place_points_on_circle(
         layers // 2, inner_radius + distance_btw_via_centers,
         distance_btw_via_centers, pad_angle)
+
     outer_via_points = place_points_on_circle(layers // 2, radius,
                                               distance_btw_via_centers,
                                               pad_angle)
+
     outer_touch_points = place_points_on_circle(
         layers // 2, radius - distance_btw_via_centers,
         distance_btw_via_centers, pad_angle)
