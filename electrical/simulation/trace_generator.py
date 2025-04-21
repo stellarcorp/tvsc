@@ -266,20 +266,20 @@ def generate_spiral_trace(
         distance_btw_via_centers / radius / 2)
 
     inner_via_points = place_points_on_circle(layers // 2, inner_radius,
-                                              distance_btw_via_centers,
+                                              2 * distance_btw_via_centers,
                                               pad_angle)
 
     inner_touch_points = place_points_on_circle(
-        layers // 2, inner_radius + distance_btw_via_centers,
-        distance_btw_via_centers, pad_angle)
+        layers // 2, inner_radius + 2 * distance_btw_via_centers,
+        2 * distance_btw_via_centers, pad_angle)
 
     outer_via_points = place_points_on_circle(layers // 2, radius,
-                                              distance_btw_via_centers,
+                                              2 * distance_btw_via_centers,
                                               pad_angle)
 
     outer_touch_points = place_points_on_circle(
-        layers // 2, radius - distance_btw_via_centers,
-        distance_btw_via_centers, pad_angle)
+        layers // 2, radius - 2 * distance_btw_via_centers,
+        2 * distance_btw_via_centers, pad_angle)
 
     # Move the pad at the end of the trace so that the start and end do not overlap.
     outer_via_points[0] = np.array([
@@ -331,12 +331,12 @@ def generate_spiral_trace(
         Pad(
             1,
             project_point_to_squircle(squareness, outer_via_points[0], x_scale,
-                                      y_scale), 0.0015, 0.0025))
+                                      y_scale), 2 * pcb.constraints.min_trace_width, pcb.constraints.min_trace_width))
     pcb.add_pad(
         Pad(
             2,
             project_point_to_squircle(squareness, outer_via_points[-1],
-                                      x_scale, y_scale), 0.0015, 0.0025))
+                                      x_scale, y_scale), 2 * pcb.constraints.min_trace_width, pcb.constraints.min_trace_width))
 
     # Generate spirals for each layer. The spiral starts with a spline from the start via to the
     # start touch point. Then, it is a squircle spiral from the start touch point to the end touch
