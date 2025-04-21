@@ -41,6 +41,7 @@ DEFAULTS = {
     "trace_spacing": 0.15e-3,  # 0.15 mm spacing between traces
     "min_via_drill_size": 0.0003, # 0.3 mm, chosen for cost
     "min_via_diameter": 0.00045, # 0.45 mm, chosen for cost
+    "max_current": 1., # Max continuous current for the magnetorquer driver IC.
 }
 
 
@@ -76,6 +77,7 @@ def main():
     parser.add_argument("--trace-spacing", type=float, default=DEFAULTS["trace_spacing"], help="Minimum spacing between traces, vias, and pads.")
     parser.add_argument("--min-via-drill-size", type=float, default=DEFAULTS["min_via_drill_size"], help="Minimum drill diameter for vias.")
     parser.add_argument("--min-via-diameter", type=float, default=DEFAULTS["min_via_diameter"], help="Minimum via diameter. Includes both the pad and hole.")
+    parser.add_argument("--max-current", type=float, default=DEFAULTS["max_current"], help="Maximum continuous current that can be handled by the magnetorquer and its driver IC.")
 
     args = parser.parse_args()
 
@@ -89,6 +91,7 @@ def main():
     pcb.constraints.trace_spacing = args.trace_spacing
     pcb.constraints.min_via_drill_size = args.min_via_drill_size
     pcb.constraints.min_via_diameter = args.min_via_diameter
+    pcb.constraints.max_current = args.max_current
 
     # Compute spiral parameters
     generate_spiral_trace(
@@ -102,8 +105,17 @@ def main():
     )
 
     for net in pcb.nets:
-        print(f"Net resistance: {net.estimate_resistance()} ohm")
-        print(f"Current @{args.voltage} V: {args.voltage / net.estimate_resistance()} A")
+        resistance = net.estimate_resistance()
+        voltage = args.voltage
+        calculated_current = voltage / resistance
+        print(f"Net resistance: {resistance} ohm")
+        if calculated_current > pcb.constraints.max_current:
+            current = pcb.constraints.max_current
+            voltage = current * resistance
+            print(f"Current @{voltage} V: {current} A (Note: constrained by magnetorquer current limitations)")
+        else:
+            current = calculated_current
+            print(f"Current @{voltage} V: {current} A")
 
     # Export as KiCad footprint
     generate_kicad_footprint(pcb, args.output)
@@ -112,7 +124,7 @@ def main():
     if args.estimate_force:
         print("Simulating magnetic field")
         for net in pcb.nets:
-            sim = MagneticFieldSimulation(net, args.voltage)
+            sim = MagneticFieldSimulation(net, args.voltage, pcb.constraints.max_current)
             if args.magnetic_field_direction == Direction.X_AXIS:
                 B_ext = np.array([args.magnetic_field_strength, 0., 0.])
             elif args.magnetic_field_direction == Direction.Y_AXIS:

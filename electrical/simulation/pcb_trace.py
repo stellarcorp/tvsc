@@ -123,6 +123,7 @@ class PCBConstraints:
     trace_spacing: float = 0
     min_via_drill_size: float = 0
     min_via_diameter: float = 0
+    max_current: float = float('inf')
 
 
 @dataclass
