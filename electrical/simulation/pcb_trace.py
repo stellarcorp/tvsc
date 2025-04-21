@@ -2,6 +2,7 @@ import numpy as np
 from dataclasses import dataclass, field
 from typing import List
 
+
 @dataclass
 class TraceSegment:
     """
@@ -75,7 +76,8 @@ class PCBTrace:
             seg.reverse()
 
     def total_length(self) -> float:
-        return sum(np.linalg.norm(seg.end - seg.start) for seg in self.segments)
+        return sum(
+            np.linalg.norm(seg.end - seg.start) for seg in self.segments)
 
     def estimate_resistance(self, resistivity: float = 1.68e-8) -> float:
         """
@@ -100,9 +102,11 @@ class PCBTrace:
         moment = np.zeros(3)
         for seg in self.segments:
             r = (seg.start + seg.end) / 2  # midpoint of segment
-            dl = seg.end - seg.start       # vector of segment
+            dl = seg.end - seg.start  # vector of segment
             # Compute the directed area swept out by triangle from zero to start and end.
             area = np.cross(r, dl) / 2
+            if np.shape(area) == ():
+                area = np.array([0., 0., area])
             moment += current * area
         return moment
 
@@ -122,6 +126,29 @@ class PCBConstraints:
 
 
 @dataclass
+class Net:
+    """
+    Represents a net on a PCB.
+    """
+    traces: List[PCBTrace] = field(default_factory=list)
+
+    def add_trace(self, trace: PCBTrace):
+        self.traces.append(trace)
+
+    def estimate_resistance(self):
+        # In reality, computing the resistance of a net is a meaningless concept. At a minimum, we
+        # should specify two points to calculate the resistance between. This codes makes a number
+        # of assumptions that make the code below a reasonable approach. We assume that the net only
+        # has two end points and that we want the resistance between those end points. We also
+        # assume that any traces on different layers are connected with vias and that those vias
+        # have zero resistance. Further, we assume that all traces in the net are in series.
+        resistance = 0
+        for trace in self.traces:
+            resistance += trace.estimate_resistance()
+        return resistance
+
+
+@dataclass
 class PCB:
     """
     Represents a Printed Circuit Board.
@@ -134,13 +161,13 @@ class PCB:
     size: np.ndarray = np.array([0, 0])
     layers: int = 0
     constraints: PCBConstraints = PCBConstraints()
-    traces: List[PCBTrace] = field(default_factory=list)
+    nets: List[Net] = field(default_factory=list)
     vias: List[Via] = field(default_factory=list)
     markers: List[Marker] = field(default_factory=list)
     pads: List[Pad] = field(default_factory=list)
 
-    def add_trace(self, trace: PCBTrace):
-        self.traces.append(trace)
+    def add_net(self, net: Net):
+        self.nets.append(net)
 
     def add_pad(self, pad: Pad):
         self.pads.append(pad)

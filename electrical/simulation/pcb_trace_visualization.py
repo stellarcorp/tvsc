@@ -20,8 +20,9 @@ def visualize_pcb(pcb, figsize=(10, 10)):
 
     # Organize traces by layer
     layers = defaultdict(list)
-    for trace in pcb.traces:
-        layers[trace.layer].append(trace)
+    for net in pcb.nets:
+        for trace in net.traces:
+            layers[trace.layer].append(trace)
 
     # Plot each layer's traces
     layer_lines = {}

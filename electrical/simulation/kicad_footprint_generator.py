@@ -47,15 +47,16 @@ def generate_kicad_footprint(pcb, filename: str, footprint_name: str = "Magnetor
         y_size = format_coord(pad.y_size)
         lines.append(f"  (pad {pad.index} smd oval (at {pos_x} {pos_y}) (size {x_size} {y_size}) (layers F.Cu F.Paste F.Mask))")
 
-    for trace in pcb.traces:
-        layer = get_kicad_layer(trace.layer, total_layers)
-        for seg in trace.segments:
-            start_x, start_y = format_coord(seg.start[0]), format_coord(-seg.start[1])
-            end_x, end_y = format_coord(seg.end[0]), format_coord(-seg.end[1])
-            width = seg.width * 1000
+    for net in pcb.nets:
+        for trace in net.traces:
+            layer = get_kicad_layer(trace.layer, total_layers)
+            for seg in trace.segments:
+                start_x, start_y = format_coord(seg.start[0]), format_coord(-seg.start[1])
+                end_x, end_y = format_coord(seg.end[0]), format_coord(-seg.end[1])
+                width = seg.width * 1000
 
-            lines.append(f"  (fp_line (start {start_x} {start_y}) (end {end_x} {end_y}) "
-                         f"(layer {layer}) (width {width:.3f}))")
+                lines.append(f"  (fp_line (start {start_x} {start_y}) (end {end_x} {end_y}) "
+                             f"(layer {layer}) (width {width:.3f}))")
 
     for via in pcb.vias:
         x, y = format_coord(via.position[0]), format_coord(-via.position[1])

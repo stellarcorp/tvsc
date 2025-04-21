@@ -3,7 +3,7 @@ import math
 import numpy as np
 from scipy.interpolate import CubicHermiteSpline
 from typing import List
-from .pcb_trace import Marker, Pad, PCB, PCBTrace, TraceSegment, Via
+from .pcb_trace import Marker, Net, Pad, PCB, PCBTrace, TraceSegment, Via
 
 
 def project_to_squircle(squareness: float, r: float, theta: float,
@@ -30,6 +30,23 @@ def project_point_to_squircle(squareness: float, point: np.ndarray,
                               x_scale: float, y_scale: float) -> np.ndarray:
     r, theta = convert_to_polar(point[0], point[1])
     return project_to_squircle(squareness, r, theta, x_scale, y_scale)
+
+
+def compute_angular_separation(start_angle: float, end_angle: float,
+                               chirality: str):
+    """
+    Computes the angular separation between two angles, given a particular direction.
+
+    Result is an angle on [0, 2*pi).
+    """
+    angular_separation = end_angle - start_angle
+    if chirality == 'cw':
+        angular_separation *= -1
+    while angular_separation >= 2 * math.pi:
+        angular_separation -= 2 * math.pi
+    while angular_separation < 0:
+        angular_separation += 2 * math.pi
+    return angular_separation
 
 
 def create_squircle_spiral(
@@ -82,27 +99,25 @@ def create_squircle_spiral(
     r0, theta0 = convert_to_polar(dx0, dy0)
     r1, theta1 = convert_to_polar(dx1, dy1)
 
-    # Set direction for the spiral.
-    #direction = -1 if chirality == "ccw" else 1
-
     # Set up trace_width to be a constant across the entire spiral.
     # TODO(james): Modify this code to support a trace_width that changes according to the radius.
     trace_width = min_trace_width
 
     # Calculate total revolutions (ensure spiral, not arc)
-    radial_diff = abs(r1 - r0)
-    num_turns = max(1, int(radial_diff / (trace_spacing + trace_width)))
+    radial_difference = r1 - r0
+    num_turns = max(
+        1, int(abs(radial_difference) / (trace_spacing + trace_width)))
 
-    # Compute total angle to sweep
-    angular_difference = theta0 - theta1 # TODO(james): This is reversed from expected. Debug.
-    while angular_difference < 0:
-        angular_difference += 2 * math.pi
+    # Compute total angle to sweep. Angular difference will be on [0, 2*pi) so the total angle will
+    # be less than 2*pi * num_turns.
+    angular_difference = compute_angular_separation(theta0, theta1, chirality)
     total_angle = 2 * math.pi * num_turns - angular_difference
 
     # Steps and increments
     steps = max(1, int(abs(total_angle / angle_step)))
-    dtheta = total_angle / steps
-    dr = (r1 - r0) / steps
+    direction = 1 if chirality == "ccw" else -1
+    dtheta = direction * total_angle / steps
+    dr = radial_difference / steps
 
     # Generate line segments
     prev_point = None
@@ -124,7 +139,8 @@ def create_squircle_spiral(
         prev_point = curr_point
 
     if prev_point is not None:
-        # Build a segment to the end.
+        # Build a segment directly to the end. We use this direct approach rather than just adding
+        # one to the number of steps to avoid rounding errors.
         curr_point = project_to_squircle(squareness, r1, theta1, x_scale,
                                          y_scale)
         trace.add_segment(
@@ -331,14 +347,19 @@ def generate_spiral_trace(
     end_via_list = inner_via_points
     end_touch_point_list = inner_touch_points
 
+    # All of the traces should go counter-clockwise from start to end so that the current is
+    # going in a consistent direction around the spiral to avoid one layer cancelling the field
+    # of the previous layer.
+    chirality = "ccw"
+
+    # Create a net from spiralling traces.
     start_via_index = 0
     end_via_index = 0
+    net = Net()
     for layer in range(layers):
         start_touch_point_index = (start_via_index +
                                    1) % len(start_touch_point_list)
         end_touch_point_index = end_via_index - 1
-
-        chirality = "ccw" if layer % 2 == 0 else "cw"
 
         if layer == 0 or layer == pcb.layers - 1:
             trace_thickness = pcb.constraints.trace_thickness_outer_layers
@@ -361,7 +382,7 @@ def generate_spiral_trace(
             y_scale=y_scale,
         )
         trace.layer = layer
-        pcb.add_trace(trace)
+        net.add_trace(trace)
 
         trace = create_squircle_spiral(
             start=start_touch_point_list[start_touch_point_index],
@@ -379,7 +400,7 @@ def generate_spiral_trace(
             y_scale=y_scale,
         )
         trace.layer = layer
-        pcb.add_trace(trace)
+        net.add_trace(trace)
 
         trace = create_squircle_spiral(
             start=end_touch_point_list[end_touch_point_index],
@@ -397,9 +418,10 @@ def generate_spiral_trace(
             y_scale=y_scale,
         )
         trace.layer = layer
-        pcb.add_trace(trace)
+        net.add_trace(trace)
 
         start_via_list, end_via_list = end_via_list, start_via_list
         start_touch_point_list, end_touch_point_list = end_touch_point_list, start_touch_point_list
         start_via_index, end_via_index = end_via_index, start_via_index
         end_via_index += 1
+    pcb.add_net(net)

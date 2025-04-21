@@ -101,9 +101,9 @@ def main():
         trace_width_exponent=args.width_exp,
     )
 
-    for trace in pcb.traces:
-        print(f"Trace resistance: {trace.estimate_resistance()} ohm")
-        print(f"Current @{args.voltage} V: {args.voltage / trace.estimate_resistance()} A")
+    for net in pcb.nets:
+        print(f"Net resistance: {net.estimate_resistance()} ohm")
+        print(f"Current @{args.voltage} V: {args.voltage / net.estimate_resistance()} A")
 
     # Export as KiCad footprint
     generate_kicad_footprint(pcb, args.output)
@@ -111,8 +111,8 @@ def main():
 
     if args.estimate_force:
         print("Simulating magnetic field")
-        for trace in pcb.traces:
-            sim = MagneticFieldSimulation(trace, args.voltage)
+        for net in pcb.nets:
+            sim = MagneticFieldSimulation(net, args.voltage)
             if args.magnetic_field_direction == Direction.X_AXIS:
                 B_ext = np.array([args.magnetic_field_strength, 0., 0.])
             elif args.magnetic_field_direction == Direction.Y_AXIS:
