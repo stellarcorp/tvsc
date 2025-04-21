@@ -65,11 +65,11 @@ def generate_kicad_footprint(pcb, filename: str, footprint_name: str = "Magnetor
         lines.append(f"  (pad \"\" thru_hole circle (at {x} {y}) (size {size} {size}) "
                      f"(drill {drill}) (layers F.Cu B.Cu))")
 
-    for marker in pcb.markers:
-        pos_x, pos_y = format_coord(marker.position[0]), format_coord(-marker.position[1])
-        end_x = format_coord(marker.position[0] + marker.radius)
-        lines.append(f"  (fp_circle (center {pos_x} {pos_y}) (end {end_x} {pos_y})"
-                     f"    (stroke (width 0.1) (type default)) (fill none) (layer F.Fab))")
+    # for marker in pcb.markers:
+    #     pos_x, pos_y = format_coord(marker.position[0]), format_coord(-marker.position[1])
+    #     end_x = format_coord(marker.position[0] + marker.radius)
+    #     lines.append(f"  (fp_circle (center {pos_x} {pos_y}) (end {end_x} {pos_y})"
+    #                  f"    (stroke (width 0.1) (type default)) (fill none) (layer F.Fab))")
 
     lines.append(")")
 
