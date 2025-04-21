@@ -316,8 +316,6 @@ def generate_spiral_trace(
             radius * math.cos(pad_angle + footprint_pad_angle_offset),
             radius * math.sin(pad_angle + footprint_pad_angle_offset)
         ]))
-    # Also prepend it to the outer_touch_points.
-    outer_touch_points.insert(0, outer_via_points[0])
 
     for touch_point in inner_touch_points:
         position = project_point_to_squircle(squareness, touch_point, x_scale,
@@ -362,8 +360,9 @@ def generate_spiral_trace(
     net = Net()
     for layer in range(layers):
         start_touch_point_index = (start_via_index +
-                                   1) % len(start_touch_point_list)
-        end_touch_point_index = end_via_index - 1
+                                   (layer % 2)) % len(start_touch_point_list)
+        end_touch_point_index = (end_via_index - 1 +
+                                 (layer % 2)) % len(end_touch_point_list)
 
         if layer == 0 or layer == pcb.layers - 1:
             trace_thickness = pcb.constraints.trace_thickness_outer_layers
