@@ -4769,6 +4769,14 @@
   (gr_text "MAG1" (at 123.875 53.475) (layer "F.SilkS") (tstamp eb17dab2-7836-472a-bc99-2e1de674ba29)
     (effects (font (size 0.8 0.8) (thickness 0.2) bold) (justify bottom))
   )
+  (gr_text_box "Developed with the support of the Hacker Initiative"
+    (start 164.775 126.8) (end 181.75 132.8) (layer "B.SilkS") (tstamp db04dabe-01ff-4d82-834b-89bd8821ed82)
+      (effects (font (size 1 1) (thickness 0.15)) (justify left top mirror))
+    (stroke (width 0.15) (type solid))  )
+  (gr_text_box "Developed with the support of the Hacker Initiative"
+    (start 115.95 126.95) (end 132.925 132.95) (angle 360) (layer "F.SilkS") (tstamp 97c7b907-c848-46f8-931a-62b7a450b17c)
+      (effects (font (size 1 1) (thickness 0.15)) (justify left top))
+    (stroke (width 0.15) (type solid))  )
 
   (segment (start 115.625 64.925) (end 115.625 61.934537) (width 0.2) (layer "F.Cu") (net 1) (tstamp 003d80ca-0575-4295-9195-0fe1795cf635))
   (segment (start 115.625 61.934537) (end 115.625 60.5) (width 0.5) (layer "F.Cu") (net 1) (tstamp 2eb882df-07da-4f13-8f62-947f97eb5ad3))
