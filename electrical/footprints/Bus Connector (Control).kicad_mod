@@ -1,4 +1,4 @@
-(footprint "Molex_504050-1291" (version 20221018) (generator pcbnew)
+(footprint "Bus Connector (Control)" (version 20221018) (generator pcbnew)
   (layer "F.Cu")
   (descr "12-pin Pico-Lock Header")
   (tags "Connector")
@@ -7,11 +7,11 @@
       (effects (font (size 1.27 1.27) (thickness 0.254)) (justify left bottom))
     (tstamp 99bb0d85-5730-473b-b0dd-db785d5720a3)
   )
-  (fp_text value "Molex_504050-1291" (at 0 0.75) (layer "F.SilkS") hide
+  (fp_text value "Bus Connector (Control)" (at 0 0.75) (layer "F.SilkS") hide
       (effects (font (size 1.27 1.27) (thickness 0.254)))
     (tstamp 9c70b015-4cb3-494a-a7e0-8a74596bcd67)
   )
-  (fp_text user "Downstream ↑" (at 0 7.5) (layer "F.SilkS")
+  (fp_text user "Downstream ↑" (at 0 6) (layer "F.SilkS")
       (effects (font (size 1 1) (thickness 0.15)) (justify bottom))
     (tstamp fe7e7b2d-26c1-4da1-8c55-cc885040cb3c)
   )
