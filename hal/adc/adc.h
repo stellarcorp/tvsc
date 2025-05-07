@@ -38,6 +38,10 @@ class AdcPeripheral : public Peripheral<AdcPeripheral, Adc> {
 
   virtual void set_resolution(uint8_t bits_resolution) = 0;
 
+  // Methods to configure data alignment.
+  virtual void use_data_align_left() = 0;
+  virtual void use_data_align_right() = 0;
+
   virtual void calibrate_single_ended_input() = 0;
   virtual void calibrate_differential_input() = 0;
   virtual uint32_t read_calibration_factor() = 0;
@@ -78,6 +82,9 @@ class Adc final : public Functional<AdcPeripheral, Adc> {
   void reset_after_conversion() { peripheral_->reset_after_conversion(); }
 
   void set_resolution(uint8_t bits_resolution) { peripheral_->set_resolution(bits_resolution); }
+
+  void use_data_align_left() { peripheral_->use_data_align_left(); }
+  void use_data_align_right() { peripheral_->use_data_align_right(); }
 
   void calibrate_single_ended_input() { peripheral_->calibrate_single_ended_input(); }
   void calibrate_differential_input() { peripheral_->calibrate_differential_input(); }

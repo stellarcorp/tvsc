@@ -86,7 +86,6 @@ void AdcStm32l4xx::start_conversion_stream(gpio::PortPin pin, uint32_t* destinat
 
   // Configure ADC.
   adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
-  adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   adc_.Init.ScanConvMode = ADC_SCAN_ENABLE;
   adc_.Init.EOCSelection = ADC_EOC_SEQ_CONV;
   adc_.Init.LowPowerAutoWait = DISABLE;
@@ -135,7 +134,6 @@ void AdcStm32l4xx::start_single_conversion(gpio::PortPin pin, uint32_t* destinat
 
   // Configure ADC.
   adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
-  adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   adc_.Init.ScanConvMode = ADC_SCAN_DISABLE;
   adc_.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   adc_.Init.LowPowerAutoWait = DISABLE;
@@ -181,6 +179,10 @@ void AdcStm32l4xx::set_resolution(uint8_t bits_resolution) {
     adc_.Init.Resolution = ADC_RESOLUTION_12B;
   }
 }
+
+void AdcStm32l4xx::use_data_align_left() { adc_.Init.DataAlign = ADC_DATAALIGN_LEFT; }
+
+void AdcStm32l4xx::use_data_align_right() { adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT; }
 
 bool AdcStm32l4xx::is_running() {
   const auto state{HAL_ADC_GetState(&adc_)};

@@ -33,6 +33,9 @@ class AdcStm32l4xx final : public AdcPeripheral {
 
   void set_resolution(uint8_t bits_resolution) override;
 
+  void use_data_align_left() override;
+  void use_data_align_right() override;
+
   void calibrate_single_ended_input() override;
   void calibrate_differential_input() override;
   uint32_t read_calibration_factor() override;
@@ -47,6 +50,7 @@ class AdcStm32l4xx final : public AdcPeripheral {
       : dma_peripheral_(&dma_peripheral) {
     adc_.Instance = adc_instance;
     adc_.Init.Resolution = ADC_RESOLUTION_12B;
+    adc_.Init.DataAlign = ADC_DATAALIGN_RIGHT;
     dma_handle_.Instance = channel;
     dma_handle_.Init.Request = dma_request;
   }
