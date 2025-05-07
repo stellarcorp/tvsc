@@ -49,6 +49,12 @@ class Board final {
   static constexpr gpio::Port GPIO_PORT_E{4};
   static constexpr gpio::Port GPIO_PORT_H{7};
 
+  // Location of the pins to read the board id.
+  static constexpr gpio::Port BOARD_ID_POWER_PORT{GPIO_PORT_A};
+  static constexpr gpio::Port BOARD_ID_SENSE_PORT{GPIO_PORT_A};
+  static constexpr gpio::Pin BOARD_ID_POWER_PIN{6};
+  static constexpr gpio::Pin BOARD_ID_SENSE_PIN{7};
+
   // Location of the LEDs provided by this board.
   static constexpr gpio::Port DEBUG_LED_PORT{GPIO_PORT_B};
   static constexpr gpio::Pin DEBUG_LED_PIN{0};
