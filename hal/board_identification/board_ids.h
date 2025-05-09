@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "hal/board_identification/resistors.h"
+#include "hal/board_identification/tolerance.h"
 
 namespace tvsc::hal::board_identification {
 
