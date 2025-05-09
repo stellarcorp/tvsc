@@ -12,10 +12,13 @@
 
 namespace tvsc::hal::board_identification {
 
-template <uint8_t ADC_RESOLUTION_BITS, uint8_t BOARD_ID_RESOLUTION_BITS,
-          ResistorTolerance TOLERANCE>
+using BoardId = uint8_t;
+
+template <uint8_t ADC_RESOLUTION_BITS, ResistorTolerance TOLERANCE>
 class VoltageDivider final {
  private:
+  static constexpr uint8_t BOARD_ID_RESOLUTION_BITS{8 * sizeof(BoardId)};
+
   static constexpr float compute_voltage_division(float high_resistor_value,
                                                   float low_resistor_value) {
     return low_resistor_value / (high_resistor_value + low_resistor_value);
@@ -64,13 +67,21 @@ class VoltageDivider final {
     return expected_adc_measurement_value(high_resistor_value_, low_resistor_value_);
   }
 
-  constexpr uint8_t id() const {
-    return static_cast<uint8_t>(ideal_adc_measurement_value() >>
-                                (ADC_RESOLUTION_BITS - BOARD_ID_RESOLUTION_BITS));
+  constexpr BoardId id() const {
+    if constexpr (ADC_RESOLUTION_BITS > BOARD_ID_RESOLUTION_BITS) {
+      return static_cast<BoardId>(ideal_adc_measurement_value() >>
+                                  (ADC_RESOLUTION_BITS - BOARD_ID_RESOLUTION_BITS));
+    } else {
+      return static_cast<BoardId>(ideal_adc_measurement_value());
+    }
   }
 
   constexpr float high_resistor_value() const { return high_resistor_value_; }
   constexpr float low_resistor_value() const { return low_resistor_value_; }
+
+  constexpr float source_impedance() const {
+    return 1.f / (1.f / high_resistor_value_ + 1.f / low_resistor_value_);
+  }
 };
 
 }  // namespace tvsc::hal::board_identification

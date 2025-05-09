@@ -3,16 +3,16 @@
 #include <cstdint>
 
 #include "hal/board_identification/tolerance.h"
+#include "hal/board_identification/voltage_divider.h"
 
 namespace tvsc::hal::board_identification {
 
-static constexpr uint8_t BOARD_ID_RESOLUTION_BITS{8};
 static constexpr uint8_t NUM_BOARD_IDS{16};
-static constexpr uint8_t BOARD_ID_ADC_RESOLUTION_BITS{8};
+static constexpr uint8_t BOARD_ID_ADC_RESOLUTION_BITS{12};
 static constexpr ResistorTolerance BOARD_ID_RESISTOR_TOLERANCE{ResistorTolerance::E96_1};
 static constexpr float VOLTAGE_DIVIDER_TOTAL_RESISTANCE{25'000.f};
 
-enum class BoardIds : uint8_t {
+enum class BoardIds : BoardId {
   POWER_BOARD = 128,
   MAGNETORQUER_CONTROL_BOARD_ZENITH = 63,
   MAGNETORQUER_CONTROL_BOARD_NADIR = 192,

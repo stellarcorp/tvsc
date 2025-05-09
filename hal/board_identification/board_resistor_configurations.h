@@ -37,13 +37,10 @@ constexpr void generate_voltage_divider_configurations_iterative(
 
 }  // namespace internal
 
-template <size_t NUM_CONFIGURATIONS, uint8_t ADC_RESOLUTION_BITS, uint8_t BOARD_ID_RESOLUTION_BITS,
-          ResistorTolerance TOLERANCE>
-constexpr std::array<VoltageDivider<ADC_RESOLUTION_BITS, BOARD_ID_RESOLUTION_BITS, TOLERANCE>,
-                     NUM_CONFIGURATIONS>
+template <size_t NUM_CONFIGURATIONS, uint8_t ADC_RESOLUTION_BITS, ResistorTolerance TOLERANCE>
+constexpr std::array<VoltageDivider<ADC_RESOLUTION_BITS, TOLERANCE>, NUM_CONFIGURATIONS>
 generate_voltage_divider_configurations(float sum) {
-  using VoltageDividerType =
-      VoltageDivider<ADC_RESOLUTION_BITS, BOARD_ID_RESOLUTION_BITS, TOLERANCE>;
+  using VoltageDividerType = VoltageDivider<ADC_RESOLUTION_BITS, TOLERANCE>;
   using ResistorSeriesType = ResistorSeries<TOLERANCE>;
 
   std::array<VoltageDividerType, NUM_CONFIGURATIONS> result{};
