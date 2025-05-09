@@ -2,7 +2,7 @@
 
 #include "base/initializer.h"
 #include "hal/board_identification/board_ids.h"
-#include "hal/board_identification/board_resistor_configurations.h"
+#include "hal/board_identification/voltage_divider_configurations.h"
 
 using namespace tvsc::hal::board_identification;
 

@@ -2,10 +2,10 @@ cc_library(
     name = "board_identification",
     hdrs = [
         "board_ids.h",
-        "board_resistor_configurations.h",
         "resistor_series.h",
         "tolerance.h",
         "voltage_divider.h",
+        "voltage_divider_configurations.h",
     ],
     deps = [
         "//hal",
