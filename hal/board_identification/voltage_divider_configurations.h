@@ -29,7 +29,8 @@ constexpr void generate_voltage_divider_configurations_iterative(
         VoltageDividerType{ResistorSeriesType::find_closest_resistor(high_side_resistor_value),
                            ResistorSeriesType::find_closest_resistor(low_side_resistor_value)}};
     const auto end_pos{result.begin() + index};
-    if (std::find(result.begin(), end_pos, voltage_divider) == end_pos) {
+    if (voltage_divider.id() != 0 &&
+        std::find(result.begin(), end_pos, voltage_divider) == end_pos) {
       result[index++] = voltage_divider;
     }
   }
@@ -46,7 +47,9 @@ generate_voltage_divider_configurations(float sum) {
   std::array<VoltageDividerType, NUM_CONFIGURATIONS> result{};
   int level{0};
   size_t index{0};
-  while (index < NUM_CONFIGURATIONS) {
+  size_t prev_index{index - 1};
+  while (index < NUM_CONFIGURATIONS && prev_index != index) {
+    prev_index = index;
     internal::generate_voltage_divider_configurations_iterative<
         NUM_CONFIGURATIONS, ResistorSeriesType, VoltageDividerType>(sum, result, level, index);
     ++level;
