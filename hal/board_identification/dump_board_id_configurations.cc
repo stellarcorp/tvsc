@@ -9,12 +9,15 @@ int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
   for (const auto& configuration : voltage_divider_configurations()) {
-    std::cout << static_cast<int>(configuration.id()) << " -- "
-              << configuration.high_resistor_value() << "Ω, " << configuration.low_resistor_value()
-              << "Ω (adc measurement range: [" << configuration.min_adc_measurement_value() << ", "
-              << configuration.max_adc_measurement_value()
-              << "], source impedance: " << configuration.source_impedance() << "Ω)"
-              << "\n";
+    if (configuration.id() != 0) {
+      std::cout << static_cast<int>(configuration.id()) << " -- "
+                << configuration.high_resistor_value() << "Ω, "
+                << configuration.low_resistor_value() << "Ω (adc measurement range: ["
+                << configuration.min_adc_measurement_value() << ", "
+                << configuration.max_adc_measurement_value()
+                << "], source impedance: " << configuration.source_impedance() << "Ω)"
+                << "\n";
+    }
   }
 
   return 0;

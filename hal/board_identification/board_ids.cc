@@ -4,26 +4,20 @@
 #include <array>
 #include <cstdint>
 #include <optional>
-#include <vector>
 
 #include "hal/board_identification/voltage_divider_configurations.h"
 
 namespace tvsc::hal::board_identification {
 
-std::vector<VoltageDivider<BOARD_ID_ADC_RESOLUTION_BITS, BOARD_ID_RESISTOR_TOLERANCE>>
+const std::array<VoltageDivider<BOARD_ID_ADC_RESOLUTION_BITS, BOARD_ID_RESISTOR_TOLERANCE>,
+                 NUM_BOARD_IDS>&
 voltage_divider_configurations() {
-  using VoltageDividerType =
-      VoltageDivider<BOARD_ID_ADC_RESOLUTION_BITS, BOARD_ID_RESISTOR_TOLERANCE>;
-
   static const auto CONFIGURATIONS{
       generate_voltage_divider_configurations<NUM_BOARD_IDS, BOARD_ID_ADC_RESOLUTION_BITS,
                                               BOARD_ID_RESISTOR_TOLERANCE>(
           VOLTAGE_DIVIDER_TOTAL_RESISTANCE)};
 
-  auto end_pos = std::find_if(CONFIGURATIONS.begin(), CONFIGURATIONS.end(),
-                              [](const VoltageDividerType& divider) { return divider.id() == 0; });
-
-  return std::vector<VoltageDividerType>{CONFIGURATIONS.begin(), end_pos};
+  return CONFIGURATIONS;
 }
 
 std::optional<BoardId> determine_board_id(uint16_t adc_measurement) {

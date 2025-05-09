@@ -25,7 +25,8 @@ enum class CanonicalBoardIds : BoardId {
   COMMS_BOARD_2 = 223,
 };
 
-std::vector<VoltageDivider<BOARD_ID_ADC_RESOLUTION_BITS, BOARD_ID_RESISTOR_TOLERANCE>>
+const std::array<VoltageDivider<BOARD_ID_ADC_RESOLUTION_BITS, BOARD_ID_RESISTOR_TOLERANCE>,
+                 NUM_BOARD_IDS>&
 voltage_divider_configurations();
 
 std::optional<BoardId> determine_board_id(uint16_t adc_measurement);
