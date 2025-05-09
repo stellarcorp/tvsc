@@ -27,3 +27,17 @@ cc_binary(
         "//base",
     ],
 )
+
+cc_binary(
+    name = "determine_board_id",
+    srcs = ["determine_board_id.cc"],
+    target_compatible_with = select({
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    deps = [
+        ":board_identification",
+        "//base",
+        "//third_party/gflags",
+    ],
+)
