@@ -1,3 +1,5 @@
+#pragma once
+
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -114,16 +116,5 @@ generate_voltage_divider_configurations(float sum) {
 
   return result;
 }
-
-static constexpr uint8_t BOARD_ID_RESOLUTION_BITS{8};
-static constexpr uint8_t NUM_BOARD_IDS{64};
-static constexpr uint8_t BOARD_ID_ADC_RESOLUTION_BITS{8};
-static constexpr ResistorTolerance BOARD_ID_RESISTOR_TOLERANCE{ResistorTolerance::E96_1};
-static constexpr float VOLTAGE_DIVIDER_TOTAL_RESISTANCE{25'000.f};
-
-static constexpr auto BOARD_ID_VOLTAGE_DIVIDER_CONFIGURATIONS =
-    generate_voltage_divider_configurations<NUM_BOARD_IDS, BOARD_ID_ADC_RESOLUTION_BITS,
-                                            BOARD_ID_RESOLUTION_BITS, BOARD_ID_RESISTOR_TOLERANCE>(
-        VOLTAGE_DIVIDER_TOTAL_RESISTANCE);
 
 }  // namespace tvsc::hal::board_identification

@@ -1,6 +1,7 @@
 cc_library(
     name = "board_identification",
     hdrs = [
+        "board_ids.h",
         "board_resistor_configurations.h",
         "resistors.h",
     ],
