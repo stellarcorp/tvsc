@@ -1,0 +1,37 @@
+cc_library(
+    name = "board_identification",
+    hdrs = [
+        "board_resistor_configurations.h",
+        "resistors.h",
+    ],
+    deps = [
+        "//hal",
+    ],
+)
+
+cc_binary(
+    name = "dump_board_id_configurations",
+    srcs = ["dump_board_id_configurations.cc"],
+    target_compatible_with = select({
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    deps = [
+        ":board_identification",
+        "//base",
+    ],
+)
+
+cc_binary(
+    name = "compute_resistor_values",
+    srcs = ["compute_resistor_values.cc"],
+    target_compatible_with = select({
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    deps = [
+        ":board_identification",
+        "//base",
+        "//third_party/gflags",
+    ],
+)
