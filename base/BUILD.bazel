@@ -10,6 +10,7 @@ cc_library(
     }),
     hdrs =
         [
+            "enums.h",
             "initializer.h",
         ],
     visibility = ["//visibility:public"],
