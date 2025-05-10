@@ -5,9 +5,11 @@
 #include <cstring>
 #include <limits>
 
+#include "base/enums.h"
 #include "base/initializer.h"
 #include "bits/bits.h"
 #include "hal/board/board.h"
+#include "hal/board_identification/board_ids.h"
 #include "hal/gpio/gpio.h"
 #include "scheduler/scheduler.h"
 #include "scheduler/task.h"
@@ -15,8 +17,9 @@
 
 extern "C" {
 
-alignas(uint32_t) __attribute__((section(".status.value"))) volatile uint8_t board_id{};
-alignas(uint32_t) __attribute__((section(".status.value"))) volatile int16_t id_error{};
+alignas(uint32_t)  //
+    __attribute__((
+        section(".status.value"))) volatile tvsc::hal::board_identification::BoardId board_id{};
 __attribute__((section(".status.value"))) std::array<uint32_t, 1> buffer{};
 __attribute__((section(".status.value"))) volatile bool dma_complete{};
 __attribute__((section(".status.value"))) volatile bool dma_error{};
@@ -28,43 +31,11 @@ void HAL_ADC_ErrorCallback(ADC_HandleTypeDef* adc) { dma_error = true; }
 
 namespace tvsc::bringup {
 
-template <typename T, size_t SIZE, T start = T{}, T delta = T{1}>
-inline static constexpr std::array<T, SIZE> create_array_of_incremented_values() {
-  std::array<T, SIZE> result{};
-  for (size_t i = 0; i < SIZE; ++i) {
-    result[i] = start + i * delta;
-  }
-  return result;
-}
-
-template <uint8_t ADC_RESOLUTION>
-[[nodiscard]] std::tuple<uint8_t, int16_t> find_closest_board_id(uint16_t measured_value) {
-  static constexpr uint8_t MIN_ID{1};
-  static constexpr uint8_t MAX_ID{6};
-  static constexpr uint8_t NUM_IDS{MAX_ID + 1 - MIN_ID};
-  static constexpr uint8_t NUM_ID_BITS{tvsc::bits::bit_width(MAX_ID)};
-  static constexpr std::array<uint8_t, NUM_IDS> BOARD_IDS{
-      create_array_of_incremented_values<uint8_t, NUM_IDS, MIN_ID>()};
-
-  uint8_t result{};
-  int16_t difference{std::numeric_limits<int16_t>::max()};
-  const int16_t signed_adc_value{static_cast<int16_t>(measured_value)};
-  for (auto id : BOARD_IDS) {
-    auto current_difference =
-        std::abs(signed_adc_value - (static_cast<uint16_t>(id) << (ADC_RESOLUTION - NUM_ID_BITS)));
-    if (current_difference < difference) {
-      result = id;
-      difference = current_difference;
-    }
-  }
-  return std::make_tuple(result, difference);
-}
-
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::time::EmbeddedClock;
 
 template <typename ClockType>
-tvsc::scheduler::Task<ClockType> read_board_id(BoardType& board) {
+tvsc::scheduler::Task<ClockType> read_board_id(BoardType& board, int32_t num_iterations = -1) {
   using namespace std::chrono_literals;
   auto& gpio_id_power_peripheral{board.gpio<BoardType::BOARD_ID_POWER_PORT>()};
   auto& gpio_id_sense_peripheral{board.gpio<BoardType::BOARD_ID_SENSE_PORT>()};
@@ -86,12 +57,8 @@ tvsc::scheduler::Task<ClockType> read_board_id(BoardType& board) {
   gpio_debug_led.set_pin_mode(BoardType::DEBUG_LED_PIN, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL,
                               tvsc::hal::gpio::PinSpeed::LOW);
 
-  static constexpr uint8_t RESOLUTION{8};
-  adc.set_resolution(RESOLUTION);
-  adc.use_data_align_left();
-
-  uint32_t iteration_counter{0};
-  while (true) {
+  int32_t iteration_counter{0};
+  while (num_iterations < 0 || iteration_counter < num_iterations) {
     // Recalibrate after a certain number of conversions.
     static constexpr uint32_t CALIBRATION_FREQUENCY{1024};
     if ((iteration_counter % CALIBRATION_FREQUENCY) == 0) {
@@ -106,6 +73,11 @@ tvsc::scheduler::Task<ClockType> read_board_id(BoardType& board) {
       co_yield 500ms;
       gpio_debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
       co_yield 500ms;
+    }
+
+    adc.set_resolution(tvsc::hal::board_identification::BOARD_ID_ADC_RESOLUTION_BITS);
+    if constexpr (tvsc::hal::board_identification::BOARD_ID_ADC_RESOLUTION_BITS < 8) {
+      adc.use_data_align_left();
     }
 
     // Turn on the power to the board id circuitry.
@@ -134,10 +106,12 @@ tvsc::scheduler::Task<ClockType> read_board_id(BoardType& board) {
     gpio_id_power.write_pin(BoardType::BOARD_ID_POWER_PIN, 0);
 
     uint16_t value_read = buffer[0];
-    std::tie(board_id, id_error) = find_closest_board_id<RESOLUTION>(value_read);
 
-    // Clear the LED and pause between iterations.
-    if (id_error < 16) {
+    board_id = tvsc::hal::board_identification::determine_board_id(value_read);
+
+    // Slow blink if we got a board id. Fast blink if we did not.
+    if (board_id !=
+        cast_to_underlying_type(tvsc::hal::board_identification::CanonicalBoardIds::UNKNOWN)) {
       for (uint8_t i = 0; i < 2; ++i) {
         gpio_debug_led.toggle_pin(BoardType::DEBUG_LED_PIN);
         co_yield 250ms;
@@ -153,10 +127,31 @@ tvsc::scheduler::Task<ClockType> read_board_id(BoardType& board) {
       }
     }
 
+    // Clear the LED and pause between iterations.
     gpio_debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
     co_yield 1000ms;
     ++iteration_counter;
   }
+
+  // Slow blink if we got a board id. Fast blink if we did not.
+  if (board_id !=
+      cast_to_underlying_type(tvsc::hal::board_identification::CanonicalBoardIds::UNKNOWN)) {
+    for (uint8_t i = 0; i < 10; ++i) {
+      gpio_debug_led.toggle_pin(BoardType::DEBUG_LED_PIN);
+      co_yield 250ms;
+    }
+  } else {
+    for (uint8_t i = 0; i < 24; ++i) {
+      gpio_debug_led.toggle_pin(BoardType::DEBUG_LED_PIN);
+      co_yield 50ms;
+    }
+  }
+
+  // Turn off the power to the board id circuitry and the debug LED.
+  gpio_id_power.write_pin(BoardType::BOARD_ID_POWER_PIN, 0);
+  gpio_debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
+
+  co_return;
 }
 
 }  // namespace tvsc::bringup
@@ -169,7 +164,7 @@ int main(int argc, char* argv[]) {
 
   BoardType& board{BoardType::board()};
 
-  Scheduler<ClockType, 4 /*QUEUE_SIZE*/> scheduler{board.rcc()};
+  Scheduler<ClockType, 1 /*QUEUE_SIZE*/> scheduler{board.rcc()};
   scheduler.add_task(read_board_id<ClockType>(board));
   scheduler.start();
 }
