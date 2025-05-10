@@ -1,12 +1,6 @@
 #pragma once
 
-#include <algorithm>
-#include <array>
-#include <cmath>
 #include <cstdint>
-#include <limits>
-#include <span>
-#include <type_traits>
 
 #include "hal/board_identification/tolerance.h"
 
@@ -17,7 +11,7 @@ using BoardId = uint8_t;
 template <uint8_t ADC_RESOLUTION_BITS, ResistorTolerance TOLERANCE>
 class VoltageDivider final {
  private:
-  static constexpr float TOLERANCE_FACTOR{3.f};
+  static constexpr float TOLERANCE_FACTOR{5.f};
   static constexpr uint8_t BOARD_ID_RESOLUTION_BITS{8 * sizeof(BoardId)};
 
   static constexpr float compute_voltage_division(float high_resistor_value,

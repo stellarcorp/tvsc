@@ -10,7 +10,9 @@ cc_library(
         "voltage_divider.h",
         "voltage_divider_configurations.h",
     ],
+    visibility = ["//visibility:public"],
     deps = [
+        "//base",
         "//hal",
     ],
 )

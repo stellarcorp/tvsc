@@ -2,12 +2,10 @@
 
 #include <algorithm>
 #include <array>
-#include <cmath>
 #include <cstdint>
-#include <limits>
-#include <span>
-#include <type_traits>
 
+#include "base/enums.h"
+#include "hal/board_identification/board_ids.h"
 #include "hal/board_identification/resistor_series.h"
 #include "hal/board_identification/tolerance.h"
 #include "hal/board_identification/voltage_divider.h"
@@ -29,7 +27,7 @@ constexpr void generate_voltage_divider_configurations_iterative(
         VoltageDividerType{ResistorSeriesType::find_closest_resistor(high_side_resistor_value),
                            ResistorSeriesType::find_closest_resistor(low_side_resistor_value)}};
     const auto end_pos{result.begin() + index};
-    if (voltage_divider.id() != 0 &&
+    if (voltage_divider.id() != cast_to_underlying_type(CanonicalBoardIds::UNKNOWN) &&
         std::find(result.begin(), end_pos, voltage_divider) == end_pos) {
       result[index++] = voltage_divider;
     }
