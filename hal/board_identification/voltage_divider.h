@@ -12,6 +12,7 @@ template <uint8_t ADC_RESOLUTION_BITS, ResistorTolerance TOLERANCE>
 class VoltageDivider final {
  private:
   static constexpr float SAFETY_MARGIN{5.f};
+
   static constexpr uint8_t BOARD_ID_RESOLUTION_BITS{8 * sizeof(BoardId)};
 
   static constexpr float compute_voltage_division(float high_resistor_value,
