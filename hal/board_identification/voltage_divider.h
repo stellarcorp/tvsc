@@ -11,7 +11,7 @@ using BoardId = uint8_t;
 template <uint8_t ADC_RESOLUTION_BITS, ResistorTolerance TOLERANCE>
 class VoltageDivider final {
  private:
-  static constexpr float TOLERANCE_FACTOR{5.f};
+  static constexpr float SAFETY_MARGIN{5.f};
   static constexpr uint8_t BOARD_ID_RESOLUTION_BITS{8 * sizeof(BoardId)};
 
   static constexpr float compute_voltage_division(float high_resistor_value,
@@ -48,17 +48,17 @@ class VoltageDivider final {
 
   constexpr uint16_t min_adc_measurement_value() const {
     const float max_high_resistor_value{high_resistor_value_ *
-                                        (1.f + TOLERANCE_FACTOR * tolerance(TOLERANCE))};
+                                        (1.f + SAFETY_MARGIN * tolerance(TOLERANCE))};
     const float min_low_resistor_value{low_resistor_value_ *
-                                       (1.f - TOLERANCE_FACTOR * tolerance(TOLERANCE))};
+                                       (1.f - SAFETY_MARGIN * tolerance(TOLERANCE))};
     return expected_adc_measurement_value(max_high_resistor_value, min_low_resistor_value);
   }
 
   constexpr uint16_t max_adc_measurement_value() const {
     const float min_high_resistor_value{high_resistor_value_ *
-                                        (1.f - TOLERANCE_FACTOR * tolerance(TOLERANCE))};
+                                        (1.f - SAFETY_MARGIN * tolerance(TOLERANCE))};
     const float max_low_resistor_value{low_resistor_value_ *
-                                       (1.f + TOLERANCE_FACTOR * tolerance(TOLERANCE))};
+                                       (1.f + SAFETY_MARGIN * tolerance(TOLERANCE))};
     return expected_adc_measurement_value(min_high_resistor_value, max_low_resistor_value);
   }
 
