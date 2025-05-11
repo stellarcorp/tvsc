@@ -8,7 +8,7 @@
 
 namespace tvsc::hal::board_identification {
 
-static constexpr BoardId NUM_BOARD_IDS{15};
+static constexpr BoardId NUM_BOARD_IDS{17};
 static constexpr uint8_t BOARD_ID_ADC_RESOLUTION_BITS{12};
 static constexpr ResistorTolerance BOARD_ID_RESISTOR_TOLERANCE{ResistorTolerance::E96_1};
 static constexpr float VOLTAGE_DIVIDER_TOTAL_RESISTANCE{25'000.f};
