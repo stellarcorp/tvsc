@@ -49,6 +49,8 @@ TEST(BoardIdTest, SourceImpedenceBelowThreshold) {
   // ST Micro recommends that the source impedance into an ADC on the STML4 series be less than 10k
   // to ensure that the ADC can measure the value quickly. We can use a higher threshold, since
   // speed doesn't matter in this situation, but this test uses the recommended threshold.
+  // See "Table 78. Maximum ADC RAIN" in the datasheet for the STM32L452
+  // https://www.st.com/resource/en/datasheet/stm32l452ce.pdf.
   for (const auto& configuration : voltage_divider_configurations()) {
     EXPECT_LT(configuration.source_impedance(), 10'000.f);
   }
