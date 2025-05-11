@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <chrono>
 #include <cstdint>
 #include <cstdlib>
 
@@ -9,6 +10,8 @@
 #include "hal/timer/timer.h"
 
 namespace tvsc::hal::adc {
+
+using namespace std::chrono_literals;
 
 class Adc;
 
@@ -33,6 +36,11 @@ class AdcPeripheral : public Peripheral<AdcPeripheral, Adc> {
 
   virtual void start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
                                        size_t destination_buffer_size, timer::Timer& trigger) = 0;
+
+  /**
+   * Measure the voltage on a pin. This method blocks until the conversion is complete.
+   */
+  virtual uint16_t measure_value(gpio::PortPin pin, std::chrono::milliseconds timeout) = 0;
 
   virtual void reset_after_conversion() = 0;
 
@@ -77,6 +85,10 @@ class Adc final : public Functional<AdcPeripheral, Adc> {
   void start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
                                size_t destination_buffer_size, timer::Timer& trigger) {
     peripheral_->start_conversion_stream(pin, destination, destination_buffer_size, trigger);
+  }
+
+  uint16_t measure_value(gpio::PortPin pin, std::chrono::milliseconds timeout = 10ms) {
+    return peripheral_->measure_value(pin, timeout);
   }
 
   void reset_after_conversion() { peripheral_->reset_after_conversion(); }

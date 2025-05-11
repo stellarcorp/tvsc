@@ -1,5 +1,8 @@
 #include "hal/adc/stm32l4xx_adc.h"
 
+#include <chrono>
+#include <cstdint>
+
 #include "hal/error.h"
 #include "hal/gpio/gpio.h"
 #include "hal/peripheral_id.h"
@@ -164,6 +167,40 @@ void AdcStm32l4xx::start_single_conversion(gpio::PortPin pin, uint32_t* destinat
   HAL_ADC_Start_DMA(&adc_, destination, destination_buffer_size);
 }
 
+uint16_t AdcStm32l4xx::measure_value(gpio::PortPin pin, std::chrono::milliseconds timeout) {
+  // Ensure the DMA controller is on.
+  dma_ = dma_peripheral_->access();
+
+  // Configure ADC.
+  adc_.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
+  adc_.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  adc_.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  adc_.Init.LowPowerAutoWait = DISABLE;
+  adc_.Init.ContinuousConvMode = DISABLE;
+  adc_.Init.NbrOfConversion = 1;
+  adc_.Init.DiscontinuousConvMode = DISABLE;
+  adc_.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  adc_.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  adc_.Init.DMAContinuousRequests = DISABLE;
+
+  // Configure an ADC Channel for each pin.
+  channel_config_.Channel = get_channel(pin);
+  channel_config_.Rank = ADC_REGULAR_RANK_1;
+  channel_config_.SamplingTime = ADC_SAMPLETIME_12CYCLES_5;
+  channel_config_.SingleDiff = ADC_SINGLE_ENDED;
+  channel_config_.Offset = 0;
+
+  HAL_ADC_Init(&adc_);
+
+  HAL_ADC_ConfigChannel(&adc_, &channel_config_);
+
+  HAL_ADC_Start(&adc_);
+
+  HAL_ADC_PollForConversion(&adc_, timeout.count());
+
+  return HAL_ADC_GetValue(&adc_);
+}
+
 void AdcStm32l4xx::reset_after_conversion() { stop(); }
 
 void AdcStm32l4xx::set_resolution(uint8_t bits_resolution) {
@@ -242,6 +279,7 @@ void AdcStm32l4xx::enable() {
 }
 
 void AdcStm32l4xx::disable() {
+  stop();
   __HAL_RCC_ADC_CLK_DISABLE();
   dma_.invalidate();
 }

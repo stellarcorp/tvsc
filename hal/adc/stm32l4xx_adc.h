@@ -1,7 +1,7 @@
 #pragma once
 
+#include <chrono>
 #include <cstdint>
-#include <new>
 
 #include "hal/adc/adc.h"
 #include "hal/dma/dma.h"
@@ -28,6 +28,8 @@ class AdcStm32l4xx final : public AdcPeripheral {
 
   void start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
                                size_t destination_buffer_size, timer::Timer& trigger) override;
+
+  uint16_t measure_value(gpio::PortPin pin, std::chrono::milliseconds timeout) override;
 
   void reset_after_conversion() override;
 
