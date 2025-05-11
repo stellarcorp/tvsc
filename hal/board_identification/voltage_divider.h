@@ -67,6 +67,11 @@ class VoltageDivider final {
     return expected_adc_measurement_value(high_resistor_value_, low_resistor_value_);
   }
 
+  constexpr bool is_match(uint16_t adc_measurement_value) const {
+    return min_adc_measurement_value() <= adc_measurement_value &&
+           adc_measurement_value <= max_adc_measurement_value();
+  }
+
   constexpr BoardId id() const {
     if constexpr (ADC_RESOLUTION_BITS > BOARD_ID_RESOLUTION_BITS) {
       return static_cast<BoardId>(ideal_adc_measurement_value() >>

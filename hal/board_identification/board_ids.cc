@@ -23,8 +23,7 @@ voltage_divider_configurations() {
 BoardId determine_board_id(uint16_t adc_measurement) {
   BoardId result{cast_to_underlying_type(CanonicalBoardIds::UNKNOWN)};
   for (const auto& configuration : voltage_divider_configurations()) {
-    if (configuration.min_adc_measurement_value() <= adc_measurement &&
-        adc_measurement <= configuration.max_adc_measurement_value()) {
+    if (configuration.is_match(adc_measurement)) {
       result = configuration.id();
       break;
     }
