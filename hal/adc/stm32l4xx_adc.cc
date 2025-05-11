@@ -101,7 +101,7 @@ void AdcStm32l4xx::start_conversion_stream(gpio::PortPin pin, uint32_t* destinat
   // Configure an ADC Channel for each pin.
   channel_config_.Rank = ADC_REGULAR_RANK_1;
   channel_config_.Channel = get_channel(pin);
-  channel_config_.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
+  channel_config_.SamplingTime = ADC_SAMPLETIME_12CYCLES_5;
   channel_config_.SingleDiff = ADC_SINGLE_ENDED;
   channel_config_.Offset = 0;
 
@@ -147,7 +147,7 @@ void AdcStm32l4xx::start_single_conversion(gpio::PortPin pin, uint32_t* destinat
   // Configure an ADC Channel for each pin.
   channel_config_.Channel = get_channel(pin);
   channel_config_.Rank = ADC_REGULAR_RANK_1;
-  channel_config_.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
+  channel_config_.SamplingTime = ADC_SAMPLETIME_12CYCLES_5;
   channel_config_.SingleDiff = ADC_SINGLE_ENDED;
   channel_config_.Offset = 0;
 
