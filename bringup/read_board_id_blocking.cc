@@ -54,6 +54,6 @@ int main(int argc, char* argv[]) {
 
     board_id = determine_board_id(measured_value);
 
-    ClockType::clock().sleep(1s);
+    ClockType::clock().wait(10ms);
   }
 }
