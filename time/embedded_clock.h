@@ -64,6 +64,16 @@ class EmbeddedClock final {
   }
 
   void sleep(time_point t) noexcept { sleep(t - current_time()); }
+
+  void wait_us(tvsc::hal::TimeType microseconds) noexcept;
+  void wait_ms(tvsc::hal::TimeType milliseconds) noexcept { wait_us(milliseconds * 1000); }
+
+  template <typename Rep, typename Period>
+  void wait(std::chrono::duration<Rep, Period> d) noexcept {
+    wait_us(std::chrono::duration_cast<std::chrono::microseconds>(d).count());
+  }
+
+  void wait(time_point t) noexcept { wait(t - current_time()); }
 };
 
 }  // namespace tvsc::time

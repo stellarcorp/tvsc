@@ -38,6 +38,13 @@ void EmbeddedClock::sleep_us(tvsc::hal::TimeType microseconds) noexcept {
   }
 }
 
+void EmbeddedClock::wait_us(tvsc::hal::TimeType microseconds) noexcept {
+  const auto wait_until_time_us{sys_tick_->current_time_micros() + microseconds};
+  while (sys_tick_->current_time_micros() < wait_until_time_us) {
+    // Do nothing. This is just a busy loop.
+  }
+}
+
 EmbeddedClock::time_point EmbeddedClock::now() noexcept { return clock().current_time(); }
 
 EmbeddedClock& EmbeddedClock::clock() noexcept {
