@@ -43,3 +43,14 @@ cc_binary(
         "//third_party/gflags",
     ],
 )
+
+cc_test(
+    name = "board_id_test",
+    srcs = [
+        "board_id_test.cc",
+    ],
+    deps = [
+        ":board_identification",
+        "//third_party/gtest",
+    ],
+)
