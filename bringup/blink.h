@@ -32,4 +32,44 @@ tvsc::scheduler::Task<ClockType> blink(ClockType& clock,
   co_return;
 }
 
+template <typename ClockType>
+tvsc::scheduler::Task<ClockType> blink_on_success(std::function<bool()> is_success,
+                                                  tvsc::hal::gpio::GpioPeripheral& led_peripheral,
+                                                  tvsc::hal::gpio::Pin led_pin) {
+  tvsc::hal::gpio::Gpio led_gpio{led_peripheral.access()};
+
+  led_gpio.set_pin_mode(led_pin, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
+  led_gpio.write_pin(led_pin, 0);
+  constexpr typename ClockType::duration success_delay{250ms};
+  constexpr typename ClockType::duration fail_delay1{50ms};
+  constexpr typename ClockType::duration fail_delay2{500ms};
+  constexpr int fail_toggle_target{6};
+
+  bool success{is_success()};
+  int fail_toggle_count{0};
+
+  while (true) {
+    while (success) {
+      led_gpio.toggle_pin(led_pin);
+      co_yield success_delay;
+      success = is_success();
+    }
+
+    while (!success) {
+      fail_toggle_count = 0;
+      while (!success && fail_toggle_count < fail_toggle_target) {
+        led_gpio.toggle_pin(led_pin);
+        co_yield fail_delay1;
+        ++fail_toggle_count;
+        success = is_success();
+      }
+      if (!success) {
+        led_gpio.toggle_pin(led_pin);
+        co_yield fail_delay2;
+        success = is_success();
+      }
+    }
+  }
+}
+
 }  // namespace tvsc::bringup
