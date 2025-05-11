@@ -308,6 +308,7 @@ cc_binary(
         "//conditions:default": [],
     }),
     deps = [
+        ":tasks",
         "//base",
         "//hal",
         "//hal/adc",
