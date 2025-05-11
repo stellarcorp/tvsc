@@ -321,6 +321,31 @@ cc_binary(
 )
 
 cc_binary(
+    name = "read_board_id_blocking.elf",
+    srcs = [
+        "read_board_id_blocking.cc",
+    ],
+    additional_linker_inputs = [
+        ":linker_script",
+    ],
+    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    target_compatible_with = select({
+        "//platforms:no_gpio": ["@platforms//:incompatible"],
+        "//platforms:no_adc": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    deps = [
+        "//base",
+        "//hal",
+        "//hal/adc",
+        "//hal/board",
+        "//hal/board_identification",
+        "//hal/gpio",
+        "//time:embedded_clock",
+    ],
+)
+
+cc_binary(
     name = "scan_i2c.elf",
     srcs = [
         "scan_i2c.cc",
