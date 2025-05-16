@@ -12,9 +12,9 @@ void I2cStm32l4xx::enable() {
 
   gpio_ = gpio_peripheral_->access();
   gpio_.set_pin_mode(scl_pin_, PinMode::ALTERNATE_FUNCTION_OPEN_DRAIN_WITH_PULL_UP,
-                     PinSpeed::VERY_HIGH, GPIO_AF4_I2C1);
+                     PinSpeed::HIGH, GPIO_AF4_I2C1);
   gpio_.set_pin_mode(sda_pin_, PinMode::ALTERNATE_FUNCTION_OPEN_DRAIN_WITH_PULL_UP,
-                     PinSpeed::VERY_HIGH, GPIO_AF4_I2C1);
+                     PinSpeed::HIGH, GPIO_AF4_I2C1);
 
   if (i2c_.Instance == I2C1) {
     __HAL_RCC_I2C1_CLK_ENABLE();
