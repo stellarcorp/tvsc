@@ -2,6 +2,7 @@
 
 #include "gtest/gtest.h"
 #include "hal/board_identification/board_ids.h"
+#include "base/enums.h"
 
 namespace tvsc::hal::board_identification {
 
@@ -53,6 +54,28 @@ TEST(BoardIdTest, SourceImpedenceBelowThreshold) {
   // https://www.st.com/resource/en/datasheet/stm32l452ce.pdf.
   for (const auto& configuration : voltage_divider_configurations()) {
     EXPECT_LT(configuration.source_impedance(), 10'000.f);
+  }
+}
+
+TEST(CanonicalBoardIdsTest, AllEnumValuesMatchConfiguration) {
+  static constexpr std::array ALL_CANONICAL_BOARD_IDS = {
+      CanonicalBoardIds::POWER_BOARD,
+      CanonicalBoardIds::MAGNETORQUER_CONTROL_BOARD_ZENITH,
+      CanonicalBoardIds::MAGNETORQUER_CONTROL_BOARD_NADIR,
+      CanonicalBoardIds::MAGNETORQUER_CONTROL_BOARD_PORT,
+      CanonicalBoardIds::MAGNETORQUER_CONTROL_BOARD_STARBOARD,
+      CanonicalBoardIds::COMMS_BOARD_1,
+      CanonicalBoardIds::COMMS_BOARD_2,
+  };
+  for (auto id : ALL_CANONICAL_BOARD_IDS) {
+    bool found_id{false};
+    for (const auto& configuration : voltage_divider_configurations()) {
+      if (cast_to_underlying_type(id) == configuration.id()) {
+        found_id = true;
+        break;
+      }
+    }
+    EXPECT_TRUE(found_id);
   }
 }
 
