@@ -7,16 +7,9 @@
 
 namespace tvsc::hal::can_bus {
 
-enum class TxMailbox : uint8_t {
-  ONE,
-  TWO,
-  THREE,
-};
-
 enum class RxFifo : uint8_t {
-  ONE,
-  TWO,
-  THREE,
+  FIFO_ZERO = 0,
+  FIFO_ONE = 1,
 };
 
 class CanBus;
@@ -24,6 +17,10 @@ class CanBus;
 /**
  * Interface to manage sending and receiving messages over an I2C bus.
  */
+
+// TODO(james): Change the std::array<uint8_t, 8> to a real buffer type, likely a reworked
+// tvsc::buffer::Buffer.
+
 class CanBusPeripheral : public Peripheral<CanBusPeripheral, CanBus> {
  private:
   virtual void enable() = 0;
@@ -31,10 +28,9 @@ class CanBusPeripheral : public Peripheral<CanBusPeripheral, CanBus> {
 
   virtual bool data_available(RxFifo fifo) = 0;
 
-  virtual void transmit(TxMailbox mailbox, uint32_t identifier,
-                        const std::array<uint8_t, 8>& data) = 0;
+  virtual bool receive(RxFifo fifo, uint32_t& identifier, std::array<uint8_t, 8>& data) = 0;
 
-  virtual void receive(RxFifo fifo, uint32_t& identifier, std::array<uint8_t, 8>& data) = 0;
+  virtual bool transmit(uint32_t identifier, const std::array<uint8_t, 8>& data) = 0;
 
   friend class CanBus;
 
@@ -55,12 +51,12 @@ class CanBus final : public Functional<CanBusPeripheral, CanBus> {
 
   bool data_available(RxFifo fifo) { return peripheral_->data_available(fifo); }
 
-  void transmit(TxMailbox mailbox, uint32_t identifier, const std::array<uint8_t, 8>& data) {
-    return peripheral_->transmit(mailbox, identifier, data);
+  bool receive(RxFifo fifo, uint32_t& identifier, std::array<uint8_t, 8>& data) {
+    return peripheral_->receive(fifo, identifier, data);
   }
 
-  void receive(RxFifo fifo, uint32_t& identifier, std::array<uint8_t, 8>& data) {
-    return peripheral_->receive(fifo, identifier, data);
+  bool transmit(uint32_t identifier, const std::array<uint8_t, 8>& data) {
+    return peripheral_->transmit(identifier, data);
   }
 };
 
