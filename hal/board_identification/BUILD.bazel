@@ -18,8 +18,8 @@ cc_library(
 )
 
 cc_binary(
-    name = "dump_board_id_configurations",
-    srcs = ["dump_board_id_configurations.cc"],
+    name = "generate_board_id_configurations",
+    srcs = ["generate_board_id_configurations.cc"],
     target_compatible_with = select({
         "@platforms//os:linux": [],
         "//conditions:default": ["@platforms//:incompatible"],
