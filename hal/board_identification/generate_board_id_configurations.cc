@@ -1,3 +1,4 @@
+#include <iomanip>
 #include <iostream>
 
 #include "base/initializer.h"
@@ -10,9 +11,10 @@ int main(int argc, char* argv[]) {
 
   for (const auto& configuration : voltage_divider_configurations()) {
     if (configuration.id() != 0) {
-      std::cout << static_cast<int>(configuration.id()) << " -- "
+      std::cout << std::showbase << std::hex << static_cast<int>(configuration.id()) << " ("
+                << std::dec << static_cast<int>(configuration.id()) << ") -- "
                 << configuration.high_resistor_value() << "Ω, "
-                << configuration.low_resistor_value() << "Ω (adc measurement range: ["
+                << configuration.low_resistor_value() << "Ω (adc measurement range: [" << std::hex
                 << configuration.min_adc_measurement_value() << ", "
                 << configuration.max_adc_measurement_value()
                 << "], source impedance: " << configuration.source_impedance() << "Ω)"
