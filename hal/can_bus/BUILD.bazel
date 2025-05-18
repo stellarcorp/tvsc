@@ -1,0 +1,44 @@
+cc_library(
+    name = "can_bus_headers",
+    hdrs = [
+        "can_bus.h",
+    ],
+    deps = [
+        "//hal",
+    ],
+)
+
+cc_library(
+    name = "can_bus",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":can_bus_headers",
+    ] + select({
+        "//platforms:stm32l4xx": [
+            ":stm32l4xx_can_bus",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32l4xx_can_bus",
+    srcs = [
+        "stm32l4xx_can_bus.cc",
+    ],
+    hdrs = [
+        "stm32l4xx_can_bus.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32l4xx",
+    ],
+    deps = [
+        ":can_bus_headers",
+        "//hal",
+        "//hal/gpio",
+        "//third_party/stm32",
+    ],
+)
