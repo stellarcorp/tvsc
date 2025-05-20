@@ -16,8 +16,8 @@ class Rcc {
   virtual void set_clock_to_energy_efficient_speed() = 0;
 
   // Restore the clock speed to the last requested setting after waking from stop mode. When exiting
-  // stop mode, the clock defaults to a 4 MHz MSI clock, possibly with no PLL setting. This method
-  // is a shorthand to restore the previous clock setting.
+  // stop mode, the clock defaults to a 4 MHz MSI clock or the 16 MHz HSI, possibly with no PLL
+  // setting. This method is a shorthand to restore the previous clock setting.
   virtual void restore_clock_speed() = 0;
 };
 
