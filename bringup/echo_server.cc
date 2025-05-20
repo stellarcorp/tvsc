@@ -16,7 +16,6 @@ extern "C" {
 __attribute__((section(".status.value"))) volatile uint32_t rx_count{};
 __attribute__((section(".status.value"))) volatile uint32_t loop_count{};
 __attribute__((section(".status.value"))) volatile uint32_t rx_error_count{};
-__attribute__((section(".status.value"))) volatile uint32_t available_message_count{};
 __attribute__((section(".status.value"))) volatile uint32_t error_code{};
 __attribute__((section(".status.value"))) uint32_t identifier{};
 __attribute__((section(".status.value"))) std::array<uint8_t, 8> message{};
@@ -110,8 +109,7 @@ tvsc::scheduler::Task<ClockType> echo_server(BoardType &board) {
   while (true) {
     ++loop_count;
     error_code = can1.error_code();
-    available_message_count = can1.available_message_count(RxFifo::FIFO_ZERO);
-    if (available_message_count > 0) {
+    while (can1.available_message_count(RxFifo::FIFO_ZERO) > 0) {
       if (can1.receive(RxFifo::FIFO_ZERO, identifier, message)) {
         ++rx_count;
         debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
