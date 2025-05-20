@@ -18,6 +18,16 @@ Board::Board() {
   // LPTIM1 interrupt(s).
   HAL_NVIC_SetPriority(LPTIM1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(LPTIM1_IRQn);
+
+  // CAN bus interrupt(s).
+  HAL_NVIC_SetPriority(CAN1_TX_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(CAN1_TX_IRQn);
+  HAL_NVIC_SetPriority(CAN1_RX0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(CAN1_RX0_IRQn);
+  HAL_NVIC_SetPriority(CAN1_RX1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(CAN1_RX1_IRQn);
+  HAL_NVIC_SetPriority(CAN1_SCE_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(CAN1_SCE_IRQn);
 }
 
 }  // namespace tvsc::hal::board
@@ -106,6 +116,26 @@ void LPTIM1_IRQHandler() {
 void SysTick_Handler() {
   tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
   board.sys_tick().handle_interrupt();
+}
+
+void CAN1_TX_IRQHandler(void) {
+  tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
+  board.can1().handle_interrupt();
+}
+
+void CAN1_RX0_IRQHandler(void) {
+  tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
+  board.can1().handle_interrupt();
+}
+
+void CAN1_RX1_IRQHandler(void) {
+  tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
+  board.can1().handle_interrupt();
+}
+
+void CAN1_SCE_IRQHandler(void) {
+  tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
+  board.can1().handle_interrupt();
 }
 
 }  // extern "C"
