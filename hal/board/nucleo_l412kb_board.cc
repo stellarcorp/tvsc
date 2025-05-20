@@ -7,6 +7,10 @@ namespace tvsc::hal::board {
 Board& Board::board() { return board_; }
 
 Board::Board() {
+  // SysTick interrupt(s).
+  HAL_NVIC_SetPriority(SysTick_IRQn, 7, 0);
+  HAL_NVIC_EnableIRQ(SysTick_IRQn);
+
   // DMA interrupt(s).
   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
