@@ -19,6 +19,7 @@ void CanBusStm32l4xx::enable() {
   gpio_.set_pin_mode(silent_pin_, PinMode::OUTPUT_PUSH_PULL_WITH_PULL_DOWN);
 
   __HAL_RCC_CAN1_CLK_ENABLE();
+  __HAL_RCC_CAN1_CLK_SLEEP_ENABLE();  // Keep CAN1 clock active in Stop mode
 
   gpio_.write_pin(shutdown_pin_, 0);
   gpio_.write_pin(silent_pin_, 0);
@@ -86,21 +87,27 @@ void CanBusStm32l4xx::enable() {
     error();
   }
 
-  if (HAL_CAN_ActivateNotification(
-          &can_bus_,                                                       //
-          CAN_IT_TX_MAILBOX_EMPTY |                                        // TX interrupts
-              CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_RX_FIFO1_MSG_PENDING |  // RX interrupts
-              CAN_IT_WAKEUP | CAN_IT_SLEEP_ACK |  // Sleep and wake interrupts
-              CAN_IT_ERROR_WARNING | CAN_IT_ERROR_PASSIVE | CAN_IT_BUSOFF |
-              CAN_IT_LAST_ERROR_CODE  // Error interrupts
-          ) != HAL_OK) {
-    error();
-  }
+  // TODO(james): Expose the notification configuration in the API.
+  uint32_t notification_configuration{};
 
-  // if (HAL_CAN_ActivateNotification(
-  //         &can_bus_, CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_RX_FIFO1_MSG_PENDING | CAN_IT_BUSOFF)
-  //         !=
-  //     HAL_OK) {
+  // RX interrupts.
+  notification_configuration |= CAN_IT_RX_FIFO0_MSG_PENDING;
+  notification_configuration |= CAN_IT_RX_FIFO1_MSG_PENDING;
+
+  // TX interrupts.
+  // notification_configuration |= CAN_IT_TX_MAILBOX_EMPTY;
+
+  // Error interrupts.
+  notification_configuration |= CAN_IT_ERROR_WARNING;
+  notification_configuration |= CAN_IT_ERROR_PASSIVE;
+  notification_configuration |= CAN_IT_BUSOFF;
+  notification_configuration |= CAN_IT_LAST_ERROR_CODE;
+
+  // Sleep and wake interrupts.
+  // notification_configuration |= CAN_IT_WAKEUP;
+  // notification_configuration |= CAN_IT_SLEEP;
+
+  // if (HAL_CAN_ActivateNotification(&can_bus_, notification_configuration) != HAL_OK) {
   //   error();
   // }
 }

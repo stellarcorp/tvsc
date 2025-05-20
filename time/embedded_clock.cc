@@ -29,7 +29,8 @@ void EmbeddedClock::sleep_us(tvsc::hal::TimeType microseconds) noexcept {
     }
   } else {
     while (timer_.is_running()) {
-      power_peripheral_->enter_stop_mode();
+      power_peripheral_->enter_sleep_mode();
+      // power_peripheral_->enter_stop_mode();
     }
     // In stop mode, the SysTick is not running, so we manually update the tick counter with the
     // amount of time we spent in stop mode.
