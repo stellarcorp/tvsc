@@ -14,6 +14,7 @@ platform(
         ":no_dac",
         ":no_i2c",
         ":no_spi",
+        ":no_can_bus",
         ":no_eeprom",
         ":os_networking",
     ],
@@ -36,6 +37,7 @@ platform(
         ":teensyduino_dma",
         ":teensyduino_i2c",
         ":teensyduino_spi",
+        ":teensyduino_can_bus",
         ":teensyduino_eeprom",
         ":no_networking",
         ":teensy40_board",
@@ -58,6 +60,7 @@ platform(
         ":teensyduino_dma",
         ":teensyduino_i2c",
         ":teensyduino_spi",
+        ":teensyduino_can_bus",
         ":teensyduino_eeprom",
         ":no_networking",
         ":teensy41_board",
@@ -80,6 +83,7 @@ platform(
         ":stm32l4xx_dma",
         ":stm32_i2c",
         ":stm32_spi",
+        ":stm32_can_bus",
         ":stm32_eeprom",
         ":no_networking",
         ":nucleo_l412kb_board",
@@ -102,6 +106,7 @@ platform(
         ":stm32l4xx_dma",
         ":stm32_i2c",
         ":stm32_spi",
+        ":stm32_can_bus",
         ":stm32_eeprom",
         ":no_networking",
         ":nucleo_l432kc_board",
@@ -124,6 +129,7 @@ platform(
         ":stm32l4xx_dma",
         ":stm32_i2c",
         ":stm32_spi",
+        ":stm32_can_bus",
         ":stm32_eeprom",
         ":no_networking",
         ":nucleo_l452re_board",
@@ -145,6 +151,7 @@ platform(
         ":stm32l4xx_dac",
         ":stm32l4xx_dma",
         ":stm32_spi",
+        ":stm32_can_bus",
         ":stm32_eeprom",
         ":no_networking",
         ":feature_bringup_board",
@@ -362,6 +369,24 @@ constraint_value(
 constraint_value(
     name = "no_spi",
     constraint_setting = "spi",
+)
+
+# CAN bus support.
+constraint_setting(name = "can_bus")
+
+constraint_value(
+    name = "teensyduino_can_bus",
+    constraint_setting = "can_bus",
+)
+
+constraint_value(
+    name = "stm32_can_bus",
+    constraint_setting = "can_bus",
+)
+
+constraint_value(
+    name = "no_can_bus",
+    constraint_setting = "can_bus",
 )
 
 # EEPROM support.
