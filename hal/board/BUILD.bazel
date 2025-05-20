@@ -126,6 +126,7 @@ cc_library(
     deps = [
         "//hal",
         "//hal/adc",
+        "//hal/can_bus",
         "//hal/dac",
         "//hal/dma",
         "//hal/gpio",
