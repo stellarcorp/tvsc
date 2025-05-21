@@ -119,7 +119,7 @@ tvsc::scheduler::Task<ClockType> echo_server(BoardType &board) {
     }
     clear_debug_flags();
 
-    co_yield 5ms;
+    co_yield 1ms;
   }
 }
 
