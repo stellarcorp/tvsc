@@ -12,8 +12,8 @@ void CanBusStm32l4xx::enable() {
   using namespace tvsc::hal::gpio;
 
   gpio_ = gpio_peripheral_->access();
-  gpio_.set_pin_mode(tx_pin_, PinMode::ALTERNATE_FUNCTION_PUSH_PULL, PinSpeed::HIGH, GPIO_AF9_CAN1);
-  gpio_.set_pin_mode(rx_pin_, PinMode::ALTERNATE_FUNCTION_PUSH_PULL, PinSpeed::HIGH, GPIO_AF9_CAN1);
+  gpio_.set_pin_mode(tx_pin_, PinMode::ALTERNATE_FUNCTION_PUSH_PULL, PinSpeed::MEDIUM, GPIO_AF9_CAN1);
+  gpio_.set_pin_mode(rx_pin_, PinMode::ALTERNATE_FUNCTION_PUSH_PULL, PinSpeed::MEDIUM, GPIO_AF9_CAN1);
 
   gpio_.set_pin_mode(shutdown_pin_, PinMode::OUTPUT_PUSH_PULL_WITH_PULL_DOWN);
   gpio_.set_pin_mode(silent_pin_, PinMode::OUTPUT_PUSH_PULL_WITH_PULL_DOWN);
@@ -35,24 +35,24 @@ void CanBusStm32l4xx::enable() {
    * tq_clock = PCLK1 / Prescaler
    * ------------------------------
    * Example below achieves:
-   *   - tq_clock = 16 MHz / 2 = 8 MHz
-   *   - Bit time = 1 + 13 + 2 = 16 tq
-   *   - Bit rate = 8 MHz / 16 = 500 kbit/s
+   *   - tq_clock = 16 MHz / 1 = 16 MHz
+   *   - Bit time = 1 + 12 + 3 = 16 tq
+   *   - Bit rate = 16 MHz / 16 = 1 Mpbs
    */
 
-  can_bus_.Init.Prescaler = 2;           // Divides PCLK1 (e.g. 32 MHz) to get tq clock (e.g. 8 MHz)
+  can_bus_.Init.Prescaler = 1;           // Divides PCLK1 (e.g. 32 MHz) to get tq clock (e.g. 8 MHz)
   can_bus_.Init.Mode = CAN_MODE_NORMAL;  // Normal operating mode (not loopback or silent)
 
   can_bus_.Init.SyncJumpWidth = CAN_SJW_1TQ;
   // Sync Jump Width: allowed resync adjustment range, in tqs
   // 1 tq is usually sufficient unless your oscillator is unstable
 
-  can_bus_.Init.TimeSeg1 = CAN_BS1_13TQ;
-  // Tseg1: includes Prop_Seg + Phase_Seg1 (13 tq total here)
+  can_bus_.Init.TimeSeg1 = CAN_BS1_12TQ;
+  // Tseg1: includes Prop_Seg + Phase_Seg1 (12 tq total here)
   // Longer Tseg1 helps tolerate propagation delays on longer buses
 
-  can_bus_.Init.TimeSeg2 = CAN_BS2_2TQ;
-  // Tseg2: Phase_Seg2 (2 tq here), must be >= SJW
+  can_bus_.Init.TimeSeg2 = CAN_BS2_3TQ;
+  // Tseg2: Phase_Seg2 (3 tq here), must be >= SJW
   // Allows timing corrections at end of bit
 
   // Optional features (safe defaults shown)
