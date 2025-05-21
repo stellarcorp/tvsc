@@ -57,6 +57,8 @@ tvsc::scheduler::Task<ClockType> echo_client(BoardType& board) {
       error_code = can1.error_code();
       co_yield 2ms;
     }
+
+    co_yield 250ms;
   }
 }
 
