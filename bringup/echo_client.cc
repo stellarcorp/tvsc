@@ -13,6 +13,7 @@
 #include "time/embedded_clock.h"
 
 extern "C" {
+__attribute__((section(".status.value"))) volatile uint32_t identifier{};
 __attribute__((section(".status.value"))) volatile uint32_t tx_count{};
 __attribute__((section(".status.value"))) volatile uint32_t error_count{};
 __attribute__((section(".status.value"))) volatile uint32_t error_code{};
@@ -23,7 +24,7 @@ namespace tvsc::bringup {
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::time::EmbeddedClock;
 
-static constexpr char BASE_MESSAGE[] = "Q:";
+static constexpr char MESSAGE[] = "Hello";
 
 template <typename ClockType>
 tvsc::scheduler::Task<ClockType> echo_client(BoardType& board) {
@@ -46,19 +47,16 @@ tvsc::scheduler::Task<ClockType> echo_client(BoardType& board) {
 
   while (true) {
     using std::to_string;
-    std::string data{BASE_MESSAGE + to_string(tx_count)};
-    if (can1.transmit(0x01, data)) {
+    if (can1.transmit(++identifier, MESSAGE)) {
       ++tx_count;
+      debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
+      co_yield 2ms;
+      debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
     } else {
       ++error_count;
       error_code = can1.error_code();
+      co_yield 2ms;
     }
-
-    debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
-    co_yield 20ms;
-    debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
-
-    co_yield 1s;
   }
 }
 
