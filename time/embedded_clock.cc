@@ -29,8 +29,12 @@ void EmbeddedClock::sleep_us(tvsc::hal::TimeType microseconds) noexcept {
     }
   } else {
     while (timer_.is_running()) {
-      power_peripheral_->enter_sleep_mode();
+      // TODO(james): Issue 23. Fix the CAN bus so that it can wake from stop 1 mode when receiving
+      // a message. Then, remove the next line and replace it with
       // power_peripheral_->enter_stop_mode();
+      // This change puts the MCU in stop mode during a long sleep, rather than just sleep mode, and
+      // should result in substantial power savings.
+      power_peripheral_->enter_sleep_mode();
     }
     // In stop mode, the SysTick is not running, so we manually update the tick counter with the
     // amount of time we spent in stop mode.
