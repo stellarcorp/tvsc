@@ -35,12 +35,12 @@ void CanBusStm32l4xx::enable() {
    * tq_clock = PCLK1 / Prescaler
    * ------------------------------
    * Example below achieves:
-   *   - tq_clock = 32 MHz / 4 = 8 MHz
+   *   - tq_clock = 16 MHz / 2 = 8 MHz
    *   - Bit time = 1 + 13 + 2 = 16 tq
    *   - Bit rate = 8 MHz / 16 = 500 kbit/s
    */
 
-  can_bus_.Init.Prescaler = 8;           // Divides PCLK1 (e.g. 32 MHz) to get tq clock (e.g. 8 MHz)
+  can_bus_.Init.Prescaler = 2;           // Divides PCLK1 (e.g. 32 MHz) to get tq clock (e.g. 8 MHz)
   can_bus_.Init.Mode = CAN_MODE_NORMAL;  // Normal operating mode (not loopback or silent)
 
   can_bus_.Init.SyncJumpWidth = CAN_SJW_1TQ;
@@ -141,11 +141,11 @@ bool CanBusStm32l4xx::receive(RxFifo fifo, uint32_t& identifier, std::array<uint
 bool CanBusStm32l4xx::transmit(uint32_t identifier, const std::array<uint8_t, 8>& data) {
   CAN_TxHeaderTypeDef tx_header = {};
 
-  tx_header.StdId = identifier & 0x7ff;  // Standard 11-bit identifier
-  tx_header.ExtId = 0;                   // Not used for standard ID
-  tx_header.IDE = CAN_ID_STD;            // Standard frame
-  tx_header.RTR = CAN_RTR_DATA;          // Data frame (not remote request)
-  tx_header.DLC = 4;  // data.size();             // Data length (max 8 for bxCAN)
+  tx_header.StdId = identifier & 0x7ff;    // Standard 11-bit identifier
+  tx_header.ExtId = 0;                     // Not used for standard ID
+  tx_header.IDE = CAN_ID_STD;              // Standard frame
+  tx_header.RTR = CAN_RTR_DATA;            // Data frame (not remote request)
+  tx_header.DLC = data.size();             // Data length (max 8 for bxCAN)
   tx_header.TransmitGlobalTime = DISABLE;  // Not using timestamp
 
   uint32_t tx_mailbox;
