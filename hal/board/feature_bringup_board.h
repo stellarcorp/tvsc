@@ -6,8 +6,6 @@
 
 #include "hal/adc/adc.h"
 #include "hal/adc/stm32l4xx_adc.h"
-#include "hal/can_bus/can_bus.h"
-#include "hal/can_bus/stm32l4xx_can_bus.h"
 #include "hal/dac/dac.h"
 #include "hal/dac/stm32xxxx_dac.h"
 #include "hal/dma/dma.h"
@@ -108,8 +106,6 @@ class Board final {
   i2c::I2cStm32l4xx i2c1_{I2C1, gpio_port_b_, /* SCL Pin */ 6, /* SDA Pin */ 7};
   i2c::I2cStm32l4xx i2c2_{I2C2, gpio_port_b_, /* SCL Pin */ 10, /* SDA Pin */ 11};
   i2c::I2cStm32l4xx i2c3_{I2C3, gpio_port_c_, /* SCL Pin */ 0, /* SDA Pin */ 1};
-
-  can_bus::CanBusStm32l4xx can1_{CAN1, gpio_port_a_, /* TX Pin */ 12, /* RX Pin */ 11};
 
   imu::Bmi323Imu imu1_{0x68, i2c1_};
   imu::Bmi323Imu imu2_{0x69, i2c2_};
@@ -214,8 +210,6 @@ class Board final {
   i2c::I2cPeripheral& i2c1() { return i2c1_; }
   i2c::I2cPeripheral& i2c2() { return i2c2_; }
   i2c::I2cPeripheral& i2c3() { return i2c3_; }
-
-  can_bus::CanBusPeripheral& can1() { return can1_; }
 
   imu::ImuPeripheral& imu1() { return imu1_; }
   imu::ImuPeripheral& imu2() { return imu2_; }

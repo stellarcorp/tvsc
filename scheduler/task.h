@@ -7,16 +7,10 @@
 
 namespace tvsc::scheduler {
 
-using namespace std::chrono_literals;
-
 template <typename ClockType>
 class Task final {
  public:
   struct promise_type;
-
-  // When a task yields a ready condition, we will check if that condition is met at this rate. This
-  // constant is how often we poll that condition.
-  static constexpr std::chrono::duration READY_CONDITION_POLLING_RATE{10ms};
 
  private:
   using HandleType = std::coroutine_handle<promise_type>;
@@ -100,7 +94,7 @@ class Task final {
     if (handle_) {
       auto& promise{handle_.promise()};
       if (promise.ready_condition_) {
-        return ClockType::now() + READY_CONDITION_POLLING_RATE;
+        return ClockType::time_point::max();
       } else {
         return promise.wait_until_;
       }
