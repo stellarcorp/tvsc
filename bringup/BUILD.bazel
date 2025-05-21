@@ -387,9 +387,9 @@ cc_binary(
 )
 
 cc_binary(
-    name = "echo_client.elf",
+    name = "can_bus_transmit.elf",
     srcs = [
-        "echo_client.cc",
+        "can_bus_transmit.cc",
     ],
     additional_linker_inputs = [
         ":linker_script",
@@ -413,9 +413,9 @@ cc_binary(
 )
 
 cc_binary(
-    name = "echo_server.elf",
+    name = "can_bus_receive.elf",
     srcs = [
-        "echo_server.cc",
+        "can_bus_receive.cc",
     ],
     additional_linker_inputs = [
         ":linker_script",
