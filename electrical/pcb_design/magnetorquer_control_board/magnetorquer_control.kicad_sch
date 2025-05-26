@@ -1,733 +1,2083 @@
-(kicad_sch (version 20230121) (generator eeschema)
-
-  (uuid 8d8dc789-71a6-4c4e-aa01-8b0536493eda)
-
-  (paper "USLetter")
-
-  (lib_symbols
-    (symbol "TVSC:Molex_504050-0491" (in_bom yes) (on_board yes)
-      (property "Reference" "J" (at 19.05 7.62 0)
-        (effects (font (size 1.27 1.27)) (justify left top))
-      )
-      (property "Value" "Molex_504050-0491" (at 19.05 5.08 0)
-        (effects (font (size 1.27 1.27)) (justify left top))
-      )
-      (property "Footprint" "footprints:Molex_504050-0491" (at 19.05 -94.92 0)
-        (effects (font (size 1.27 1.27)) (justify left top) hide)
-      )
-      (property "Datasheet" "http://www.molex.com/pdm_docs/sd/5040500491_sd.pdf" (at 19.05 -194.92 0)
-        (effects (font (size 1.27 1.27)) (justify left top) hide)
-      )
-      (property "Manufacturer" "Molex" (at 19.05 -494.92 0)
-        (effects (font (size 1.27 1.27)) (justify left top) hide)
-      )
-      (property "Manufacturer Part Number" "504050-0491" (at 19.05 -594.92 0)
-        (effects (font (size 1.27 1.27)) (justify left top) hide)
-      )
-      (property "MPN" "C177235" (at 17.78 -11.43 0)
-        (effects (font (size 1.27 1.27)) (justify right) hide)
-      )
-      (property "ki_description" "4-pin Pico-Lock Header" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (symbol "Molex_504050-0491_1_1"
-        (rectangle (start 5.08 2.54) (end 17.78 -10.16)
-          (stroke (width 0.254) (type default))
-          (fill (type background))
-        )
-        (pin passive line (at 0 -7.62 0) (length 5.08)
-          (name "1" (effects (font (size 1.27 1.27))))
-          (number "1" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 -5.08 0) (length 5.08)
-          (name "2" (effects (font (size 1.27 1.27))))
-          (number "2" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 -2.54 0) (length 5.08)
-          (name "3" (effects (font (size 1.27 1.27))))
-          (number "3" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 0 0) (length 5.08)
-          (name "4" (effects (font (size 1.27 1.27))))
-          (number "4" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 22.86 -2.54 180) (length 5.08)
-          (name "MP1" (effects (font (size 1.27 1.27))))
-          (number "MP1" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 22.86 0 180) (length 5.08)
-          (name "MP2" (effects (font (size 1.27 1.27))))
-          (number "MP2" (effects (font (size 1.27 1.27))))
-        )
-      )
-    )
-    (symbol "TVSC:Molex_504050-1091" (in_bom yes) (on_board yes)
-      (property "Reference" "J" (at 5.08 7.62 0)
-        (effects (font (size 1.27 1.27)) (justify left top))
-      )
-      (property "Value" "Molex_504050-1091" (at 5.08 5.08 0)
-        (effects (font (size 1.27 1.27)) (justify left top))
-      )
-      (property "Footprint" "footprints:Molex_504050-1091" (at 19.05 -94.92 0)
-        (effects (font (size 1.27 1.27)) (justify left top) hide)
-      )
-      (property "Datasheet" "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets_SAMA/78973205e9f4d17ddd54ea229574413e.pdf" (at 19.05 -194.92 0)
-        (effects (font (size 1.27 1.27)) (justify left top) hide)
-      )
-      (property "Manufacturer" "Molex" (at 19.05 -494.92 0)
-        (effects (font (size 1.27 1.27)) (justify left top) hide)
-      )
-      (property "Manufacturer Part Number" "504050-1091" (at 19.05 -594.92 0)
-        (effects (font (size 1.27 1.27)) (justify left top) hide)
-      )
-      (property "MPN" "C5375652" (at 17.78 -26.67 0)
-        (effects (font (size 1.27 1.27)) (justify right))
-      )
-      (property "ki_description" "10-pin Pico-Lock Header" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (symbol "Molex_504050-1091_1_1"
-        (rectangle (start 5.08 2.54) (end 17.78 -25.4)
-          (stroke (width 0.254) (type default))
-          (fill (type background))
-        )
-        (pin passive line (at 0 0 0) (length 5.08)
-          (name "1" (effects (font (size 1.27 1.27))))
-          (number "1" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 -22.86 0) (length 5.08)
-          (name "10" (effects (font (size 1.27 1.27))))
-          (number "10" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 22.86 0 180) (length 5.08)
-          (name "MP1" (effects (font (size 1.27 1.27))))
-          (number "11" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 22.86 -2.54 180) (length 5.08)
-          (name "MP2" (effects (font (size 1.27 1.27))))
-          (number "12" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 -2.54 0) (length 5.08)
-          (name "2" (effects (font (size 1.27 1.27))))
-          (number "2" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 -5.08 0) (length 5.08)
-          (name "3" (effects (font (size 1.27 1.27))))
-          (number "3" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 -7.62 0) (length 5.08)
-          (name "4" (effects (font (size 1.27 1.27))))
-          (number "4" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 -10.16 0) (length 5.08)
-          (name "5" (effects (font (size 1.27 1.27))))
-          (number "5" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 -12.7 0) (length 5.08)
-          (name "6" (effects (font (size 1.27 1.27))))
-          (number "6" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 -15.24 0) (length 5.08)
-          (name "7" (effects (font (size 1.27 1.27))))
-          (number "7" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 -17.78 0) (length 5.08)
-          (name "8" (effects (font (size 1.27 1.27))))
-          (number "8" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 -20.32 0) (length 5.08)
-          (name "9" (effects (font (size 1.27 1.27))))
-          (number "9" (effects (font (size 1.27 1.27))))
-        )
-      )
-    )
-    (symbol "power:GND" (power) (pin_names (offset 0)) (in_bom yes) (on_board yes)
-      (property "Reference" "#PWR" (at 0 -6.35 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "Value" "GND" (at 0 -3.81 0)
-        (effects (font (size 1.27 1.27)))
-      )
-      (property "Footprint" "" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "Datasheet" "" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_keywords" "global power" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_description" "Power symbol creates a global label with name \"GND\" , ground" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (symbol "GND_0_1"
-        (polyline
-          (pts
-            (xy 0 0)
-            (xy 0 -1.27)
-            (xy 1.27 -1.27)
-            (xy 0 -2.54)
-            (xy -1.27 -1.27)
-            (xy 0 -1.27)
-          )
-          (stroke (width 0) (type default))
-          (fill (type none))
-        )
-      )
-      (symbol "GND_1_1"
-        (pin power_in line (at 0 0 270) (length 0) hide
-          (name "GND" (effects (font (size 1.27 1.27))))
-          (number "1" (effects (font (size 1.27 1.27))))
-        )
-      )
-    )
-    (symbol "power:VCC" (power) (pin_names (offset 0)) (in_bom yes) (on_board yes)
-      (property "Reference" "#PWR" (at 0 -3.81 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "Value" "VCC" (at 0 3.81 0)
-        (effects (font (size 1.27 1.27)))
-      )
-      (property "Footprint" "" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "Datasheet" "" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_keywords" "global power" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_description" "Power symbol creates a global label with name \"VCC\"" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (symbol "VCC_0_1"
-        (polyline
-          (pts
-            (xy -0.762 1.27)
-            (xy 0 2.54)
-          )
-          (stroke (width 0) (type default))
-          (fill (type none))
-        )
-        (polyline
-          (pts
-            (xy 0 0)
-            (xy 0 2.54)
-          )
-          (stroke (width 0) (type default))
-          (fill (type none))
-        )
-        (polyline
-          (pts
-            (xy 0 2.54)
-            (xy 0.762 1.27)
-          )
-          (stroke (width 0) (type default))
-          (fill (type none))
-        )
-      )
-      (symbol "VCC_1_1"
-        (pin power_in line (at 0 0 90) (length 0) hide
-          (name "VCC" (effects (font (size 1.27 1.27))))
-          (number "1" (effects (font (size 1.27 1.27))))
-        )
-      )
-    )
-  )
-
-  (junction (at 111.76 96.52) (diameter 0) (color 0 0 0 0)
-    (uuid 0af07db2-4bfa-40c1-9015-a1d68973600c)
-  )
-  (junction (at 213.36 105.41) (diameter 0) (color 0 0 0 0)
-    (uuid 4a648c10-64e5-4c1b-8974-689869adcccb)
-  )
-  (junction (at 111.76 129.54) (diameter 0) (color 0 0 0 0)
-    (uuid 647b4d98-05e5-4c58-a6c1-8d09f760c535)
-  )
-  (junction (at 88.9 76.2) (diameter 0) (color 0 0 0 0)
-    (uuid bff49ebf-6d48-4d8c-9cce-c21e099e4759)
-  )
-  (junction (at 88.9 109.22) (diameter 0) (color 0 0 0 0)
-    (uuid d2793d7e-bce2-48a7-a2ae-1a300aabc7e1)
-  )
-
-  (no_connect (at 111.76 91.44) (uuid 3127c9a8-1a80-496a-81df-b2bd758970d2))
-  (no_connect (at 111.76 124.46) (uuid 98f9784d-9e91-4a6c-aa0e-5515d669f43b))
-
-  (wire (pts (xy 190.5 102.87) (xy 160.02 102.87))
-    (stroke (width 0) (type default))
-    (uuid 0009563a-0c31-4959-81b4-5dd3800a039f)
-  )
-  (wire (pts (xy 111.76 127) (xy 111.76 129.54))
-    (stroke (width 0) (type default))
-    (uuid 086859a9-9668-4cb1-931d-7093e23fe0a5)
-  )
-  (wire (pts (xy 160.02 119.38) (xy 111.76 119.38))
-    (stroke (width 0) (type default))
-    (uuid 0c407677-d058-492d-a290-79da390dc26d)
-  )
-  (wire (pts (xy 88.9 73.66) (xy 88.9 76.2))
-    (stroke (width 0) (type default))
-    (uuid 53d0ca7e-aab7-4dff-a768-73e2db895e4a)
-  )
-  (wire (pts (xy 162.56 97.79) (xy 190.5 97.79))
-    (stroke (width 0) (type default))
-    (uuid 559c30c1-c723-425f-aaeb-8652ea4ba3b2)
-  )
-  (wire (pts (xy 111.76 93.98) (xy 111.76 96.52))
-    (stroke (width 0) (type default))
-    (uuid 5ccdc968-acdd-4f20-8999-e2d38485c7c0)
-  )
-  (wire (pts (xy 111.76 86.36) (xy 160.02 86.36))
-    (stroke (width 0) (type default))
-    (uuid 6818e3f7-077e-42bd-b785-bf4664a18427)
-  )
-  (wire (pts (xy 160.02 86.36) (xy 160.02 100.33))
-    (stroke (width 0) (type default))
-    (uuid 6f2e66fd-32f3-4d9a-bacc-333157dc80d5)
-  )
-  (wire (pts (xy 162.56 88.9) (xy 111.76 88.9))
-    (stroke (width 0) (type default))
-    (uuid 71d60265-25dc-4bc7-b1d4-dc26fd18a7a5)
-  )
-  (wire (pts (xy 190.5 105.41) (xy 162.56 105.41))
-    (stroke (width 0) (type default))
-    (uuid 7a3813ec-b2cc-4319-bab5-4b59f1b885a0)
-  )
-  (wire (pts (xy 213.36 105.41) (xy 213.36 106.68))
-    (stroke (width 0) (type default))
-    (uuid 7ab1dc84-3fcb-47b7-b9f2-5fcd5b34fd4e)
-  )
-  (wire (pts (xy 162.56 105.41) (xy 162.56 121.92))
-    (stroke (width 0) (type default))
-    (uuid a2c2e277-0a58-4613-8376-deffec68b577)
-  )
-  (wire (pts (xy 160.02 102.87) (xy 160.02 119.38))
-    (stroke (width 0) (type default))
-    (uuid a64ed550-367c-46cf-86f4-075e284ee09a)
-  )
-  (wire (pts (xy 88.9 106.68) (xy 88.9 109.22))
-    (stroke (width 0) (type default))
-    (uuid ab46d209-62db-49ac-9cf2-f6b6192b43b1)
-  )
-  (wire (pts (xy 162.56 88.9) (xy 162.56 97.79))
-    (stroke (width 0) (type default))
-    (uuid b7f9feac-756f-407d-8324-72aad68942a7)
-  )
-  (wire (pts (xy 213.36 102.87) (xy 213.36 105.41))
-    (stroke (width 0) (type default))
-    (uuid baf80a55-b3e0-4d06-ad59-a4f091a15ec5)
-  )
-  (wire (pts (xy 190.5 100.33) (xy 160.02 100.33))
-    (stroke (width 0) (type default))
-    (uuid be33cfca-dc21-409a-b226-407eb56c7c53)
-  )
-  (wire (pts (xy 162.56 121.92) (xy 111.76 121.92))
-    (stroke (width 0) (type default))
-    (uuid ce375cb3-1d1c-4ed4-a8fe-8607b57ec581)
-  )
-
-  (text_box "TODO(james): Migrate NMAG_FAULT line from pin 2 to pin 5 and put GND on pin 2. Requires changing the header on the magnetorquer boards on next iteration."
-    (at 96.52 43.18 0) (size 33.02 13.97)
-    (stroke (width 0) (type default))
-    (fill (type none))
-    (effects (font (size 1.27 1.27)) (justify left top))
-    (uuid 438f4b63-e751-4739-b8b1-4987613919e1)
-  )
-
-  (label "VSOLAR_1_2" (at 190.5 102.87 180) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify right bottom))
-    (uuid 41507a13-34da-4959-8138-c70b92cf0f7c)
-  )
-  (label "VSOLAR_1_1" (at 190.5 105.41 180) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify right bottom))
-    (uuid 52c70cd3-c1b4-4c35-8496-c5c9e6a3f450)
-  )
-  (label "VSOLAR_2_2" (at 190.5 100.33 180) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify right bottom))
-    (uuid ed00269c-20b8-49ed-9b67-16ad573fa10e)
-  )
-  (label "VSOLAR_2_1" (at 190.5 97.79 180) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify right bottom))
-    (uuid f86d1fe8-f8a8-49b8-85c6-03eb33b4430c)
-  )
-
-  (global_label "NMAG_FAULT" (shape input) (at 111.76 83.82 0) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify left))
-    (uuid 22a3a324-0bf0-4202-8e27-34068a8c36c5)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 126.3567 83.82 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
-    )
-  )
-  (global_label "I2C2_SDA" (shape input) (at 111.76 111.76 0) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify left))
-    (uuid 29c1ca1a-db64-4378-8925-c90217952372)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 123.5747 111.76 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
-    )
-  )
-  (global_label "I2C1_SDA" (shape input) (at 111.76 78.74 0) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify left))
-    (uuid 6edf94a9-3537-40f8-9073-39933c2a3269)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 123.5747 78.74 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
-    )
-  )
-  (global_label "NMAG_FAULT" (shape input) (at 111.76 76.2 0) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify left))
-    (uuid 7a74698b-3332-4dd2-96c7-f3dd60779965)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 126.3567 76.2 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
-    )
-  )
-  (global_label "NMAG_FAULT" (shape input) (at 111.76 116.84 0) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify left))
-    (uuid ae914e54-c697-464b-881f-e126075d8847)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 126.3567 116.84 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
-    )
-  )
-  (global_label "I2C1_SCL" (shape input) (at 111.76 81.28 0) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify left))
-    (uuid b3f5afac-c032-4af6-993d-2a0e9f0aba76)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 123.5142 81.28 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
-    )
-  )
-  (global_label "I2C2_SCL" (shape input) (at 111.76 114.3 0) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify left))
-    (uuid bf4eeedd-9dc7-4c79-a45b-3450a866ca7c)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 123.5142 114.3 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
-    )
-  )
-  (global_label "NMAG_FAULT" (shape input) (at 111.76 109.22 0) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify left))
-    (uuid e156f75e-1ce6-4f46-8723-cea1d2b647e3)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 126.3567 109.22 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
-    )
-  )
-
-  (symbol (lib_id "power:GND") (at 88.9 109.22 0) (mirror y) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 3e537a69-6fdb-4a62-a8b5-22669cfdfb37)
-    (property "Reference" "#PWR048" (at 88.9 115.57 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "GND" (at 88.9 113.03 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 88.9 109.22 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 88.9 109.22 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid c959343e-fe62-411c-9304-015993d73495))
-    (instances
-      (project "magnetorquer_control_board"
-        (path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
-          (reference "#PWR048") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:GND") (at 88.9 76.2 0) (mirror y) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 44bf8459-9ba7-4d54-840c-2c1391dbe9a9)
-    (property "Reference" "#PWR040" (at 88.9 82.55 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "GND" (at 88.9 80.01 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 88.9 76.2 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 88.9 76.2 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 4a8b24d5-2520-43bc-aad0-573f0c11e815))
-    (instances
-      (project "magnetorquer_control_board"
-        (path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
-          (reference "#PWR040") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "TVSC:Molex_504050-1091") (at 111.76 106.68 0) (mirror y) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 4886eb08-7f53-4ee7-8368-80f2d73a9cf9)
-    (property "Reference" "J6" (at 97.79 118.11 0)
-      (effects (font (size 1.524 1.524)) (justify left))
-    )
-    (property "Value" "Molex_504050-0891" (at 111.76 106.68 0)
-      (effects (font (size 1.524 1.524)) hide)
-    )
-    (property "Footprint" "footprints:Molex_504050-1091" (at 92.71 201.6 0)
-      (effects (font (size 1.27 1.27)) (justify left top) hide)
-    )
-    (property "Datasheet" "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets_SAMA/78973205e9f4d17ddd54ea229574413e.pdf" (at 92.71 301.6 0)
-      (effects (font (size 1.27 1.27)) (justify left top) hide)
-    )
-    (property "MPN" "C5375652" (at 93.98 133.35 0)
-      (effects (font (size 1.27 1.27)) (justify right))
-    )
-    (property "Manufacturer" "Molex" (at 92.71 601.6 0)
-      (effects (font (size 1.27 1.27)) (justify left top) hide)
-    )
-    (property "Manufacturer Part Number" "504050-1091" (at 92.71 701.6 0)
-      (effects (font (size 1.27 1.27)) (justify left top) hide)
-    )
-    (property "Active" "Y" (at 111.76 106.68 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Basic or Extended Component" "Extended" (at 111.76 106.68 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "9" (uuid 2693dd4c-0e86-48b7-abc3-a2ed1d2ef3ef))
-    (pin "8" (uuid 49b22143-02db-4b79-8b42-e1989ea44704))
-    (pin "10" (uuid 81d8d767-cac5-4db1-8270-ac295d45e128))
-    (pin "4" (uuid beb1eb94-2703-4044-a935-2b32dfde2d8b))
-    (pin "3" (uuid 5f6b8389-5c94-459f-b381-29101421eaa4))
-    (pin "5" (uuid 6252e8fb-78cb-452a-9119-c744a5a3821a))
-    (pin "6" (uuid 22a5f7b0-80ad-4341-add2-57f852c42ff7))
-    (pin "2" (uuid ef148dba-1238-45e8-84aa-1d24ac3ae2f0))
-    (pin "7" (uuid 8247a092-7c27-461f-bafd-f1e4faa5a88c))
-    (pin "1" (uuid 991908fe-a0d7-4fd3-affa-73929b083845))
-    (pin "12" (uuid a7c1f8ed-7e8d-466c-98a8-739c267adebd))
-    (pin "11" (uuid 41874bf7-947e-4ec8-97f2-a0a575e762a3))
-    (instances
-      (project "magnetorquer_control_board"
-        (path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
-          (reference "J6") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "TVSC:Molex_504050-0491") (at 190.5 105.41 0) (mirror x) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 5dc4a6c4-10e3-4014-89fb-49322dea2eae)
-    (property "Reference" "J8" (at 201.93 113.03 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Value" "Molex_504050-0491" (at 201.93 110.49 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "footprints:Molex_504050-0491" (at 209.55 10.49 0)
-      (effects (font (size 1.27 1.27)) (justify left top) hide)
-    )
-    (property "Datasheet" "http://www.molex.com/pdm_docs/sd/5040500491_sd.pdf" (at 209.55 -89.51 0)
-      (effects (font (size 1.27 1.27)) (justify left top) hide)
-    )
-    (property "Manufacturer" "Molex" (at 209.55 -389.51 0)
-      (effects (font (size 1.27 1.27)) (justify left top) hide)
-    )
-    (property "Manufacturer Part Number" "504050-0491" (at 209.55 -489.51 0)
-      (effects (font (size 1.27 1.27)) (justify left top) hide)
-    )
-    (property "MPN" "C177235" (at 208.28 93.98 0)
-      (effects (font (size 1.27 1.27)) (justify right) hide)
-    )
-    (property "Active" "Y" (at 190.5 105.41 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Basic or Extended Component" "Extended" (at 190.5 105.41 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "MP1" (uuid c76d6b3b-d0be-4183-98ab-5d6ac106fc9f))
-    (pin "1" (uuid d9fbf1b3-0138-4e11-b4dd-3a42b3c8f1fd))
-    (pin "3" (uuid f05d198c-429a-4c06-883f-8de953b0cf43))
-    (pin "4" (uuid 0048d684-a869-4fd8-b0ad-6b6af5a8832c))
-    (pin "2" (uuid 0394d05a-40e6-45f0-aea6-90948ab14873))
-    (pin "MP2" (uuid c779c202-abf6-4f4d-954f-6c8b9a7f8b97))
-    (instances
-      (project "magnetorquer_control_board"
-        (path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
-          (reference "J8") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:VCC") (at 111.76 96.52 270) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid 66447d72-b3c3-4e89-94a8-829557de05e7)
-    (property "Reference" "#PWR050" (at 107.95 96.52 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "VCC" (at 115.57 96.52 90)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Footprint" "" (at 111.76 96.52 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 111.76 96.52 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 7b6964c3-76aa-412b-88df-e782aaa99095))
-    (instances
-      (project "magnetorquer_control_board"
-        (path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
-          (reference "#PWR050") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "TVSC:Molex_504050-1091") (at 111.76 73.66 0) (mirror y) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 6f8d41bf-b403-47d8-a6b0-38cefa5f5751)
-    (property "Reference" "J7" (at 97.79 85.09 0)
-      (effects (font (size 1.524 1.524)) (justify left))
-    )
-    (property "Value" "Molex_504050-0891" (at 111.76 73.66 0)
-      (effects (font (size 1.524 1.524)) hide)
-    )
-    (property "Footprint" "footprints:Molex_504050-1091" (at 92.71 168.58 0)
-      (effects (font (size 1.27 1.27)) (justify left top) hide)
-    )
-    (property "Datasheet" "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets_SAMA/78973205e9f4d17ddd54ea229574413e.pdf" (at 92.71 268.58 0)
-      (effects (font (size 1.27 1.27)) (justify left top) hide)
-    )
-    (property "MPN" "C5375652" (at 93.98 100.33 0)
-      (effects (font (size 1.27 1.27)) (justify right))
-    )
-    (property "Manufacturer" "Molex" (at 92.71 568.58 0)
-      (effects (font (size 1.27 1.27)) (justify left top) hide)
-    )
-    (property "Manufacturer Part Number" "504050-1091" (at 92.71 668.58 0)
-      (effects (font (size 1.27 1.27)) (justify left top) hide)
-    )
-    (property "Active" "Y" (at 111.76 73.66 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Basic or Extended Component" "Extended" (at 111.76 73.66 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "9" (uuid 74a6856a-d725-4ee7-b522-3a780c8c4281))
-    (pin "8" (uuid 6de1578f-fea8-4bd4-b62c-3cbbd9ea4b98))
-    (pin "10" (uuid 9d4a0b14-1a76-4e0c-9728-32dc03d412cb))
-    (pin "4" (uuid 34f3e7bf-7ce4-41ce-9915-803e873c2b9d))
-    (pin "3" (uuid 1680dd96-79fa-4984-9732-b909bafc0548))
-    (pin "5" (uuid 98a28205-e4eb-48ba-aca9-2507bd50c37b))
-    (pin "6" (uuid 69553a1b-e23d-4b6d-995d-5b5044d4468c))
-    (pin "2" (uuid 591fb89f-3b8c-435c-9bea-01e3a67bb5c5))
-    (pin "7" (uuid e2b9a9a7-a386-483e-bb10-a5af98f827e3))
-    (pin "1" (uuid ec3619f0-9f49-4994-a0bd-94c4bdb6c0a6))
-    (pin "12" (uuid 2e00a363-85d5-4ac7-b7ad-0fb8209c42ff))
-    (pin "11" (uuid a8945962-0a5c-4594-8f66-e676a0910bd2))
-    (instances
-      (project "magnetorquer_control_board"
-        (path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
-          (reference "J7") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:GND") (at 111.76 73.66 0) (mirror x) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 7714b83c-833d-4a4e-a3a9-cf4c9be63f9c)
-    (property "Reference" "#PWR049" (at 111.76 67.31 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "GND" (at 111.76 69.85 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 111.76 73.66 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 111.76 73.66 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 4b9d0f4b-5c16-4dce-b0e2-719593c958c5))
-    (instances
-      (project "magnetorquer_control_board"
-        (path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
-          (reference "#PWR049") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:GND") (at 213.36 106.68 0) (mirror y) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid a1ee6471-56b8-4e5f-9f60-2e1f7c3ea6c7)
-    (property "Reference" "#PWR065" (at 213.36 113.03 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "GND" (at 213.36 110.49 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 213.36 106.68 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 213.36 106.68 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid c613aa35-5e53-4ef0-8d1b-3fb573fd1033))
-    (instances
-      (project "magnetorquer_control_board"
-        (path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
-          (reference "#PWR065") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:GND") (at 111.76 106.68 0) (mirror x) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid e1fad217-7054-4791-a720-47f82bbbac09)
-    (property "Reference" "#PWR064" (at 111.76 100.33 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "GND" (at 111.76 102.87 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 111.76 106.68 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 111.76 106.68 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 2fa081fd-e228-4664-b993-ff8c45b84518))
-    (instances
-      (project "magnetorquer_control_board"
-        (path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
-          (reference "#PWR064") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:VCC") (at 111.76 129.54 270) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid faad64e9-c4ff-4ed1-bf9f-8da59a5edf02)
-    (property "Reference" "#PWR055" (at 107.95 129.54 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "VCC" (at 115.57 129.54 90)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Footprint" "" (at 111.76 129.54 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 111.76 129.54 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid d424feed-a832-4112-9145-b98b3d7f9517))
-    (instances
-      (project "magnetorquer_control_board"
-        (path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
-          (reference "#PWR055") (unit 1)
-        )
-      )
-    )
-  )
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "8d8dc789-71a6-4c4e-aa01-8b0536493eda")
+	(paper "USLetter")
+	(lib_symbols
+		(symbol "TVSC:Molex_504050-0491"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 19.05 7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Value" "Molex_504050-0491"
+				(at 19.05 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Footprint" "footprints:Molex_504050-0491"
+				(at 19.05 -94.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "http://www.molex.com/pdm_docs/sd/5040500491_sd.pdf"
+				(at 19.05 -194.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Description" "4-pin Pico-Lock Header"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer" "Molex"
+				(at 19.05 -494.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer Part Number" "504050-0491"
+				(at 19.05 -594.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "MPN" "C177235"
+				(at 17.78 -11.43 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify right)
+					(hide yes)
+				)
+			)
+			(symbol "Molex_504050-0491_1_1"
+				(rectangle
+					(start 5.08 2.54)
+					(end 17.78 -10.16)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin passive line
+					(at 0 -7.62 0)
+					(length 5.08)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 0)
+					(length 5.08)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 0)
+					(length 5.08)
+					(name "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 0 0)
+					(length 5.08)
+					(name "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 22.86 -2.54 180)
+					(length 5.08)
+					(name "MP1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MP1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 22.86 0 180)
+					(length 5.08)
+					(name "MP2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MP2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "TVSC:Molex_504050-1091"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 5.08 7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Value" "Molex_504050-1091"
+				(at 5.08 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Footprint" "footprints:Molex_504050-1091"
+				(at 19.05 -94.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets_SAMA/78973205e9f4d17ddd54ea229574413e.pdf"
+				(at 19.05 -194.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Description" "10-pin Pico-Lock Header"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer" "Molex"
+				(at 19.05 -494.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer Part Number" "504050-1091"
+				(at 19.05 -594.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "MPN" "C5375652"
+				(at 17.78 -26.67 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify right)
+				)
+			)
+			(symbol "Molex_504050-1091_1_1"
+				(rectangle
+					(start 5.08 2.54)
+					(end 17.78 -25.4)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin passive line
+					(at 0 0 0)
+					(length 5.08)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -22.86 0)
+					(length 5.08)
+					(name "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 22.86 0 180)
+					(length 5.08)
+					(name "MP1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 22.86 -2.54 180)
+					(length 5.08)
+					(name "MP2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 0)
+					(length 5.08)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 0)
+					(length 5.08)
+					(name "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -7.62 0)
+					(length 5.08)
+					(name "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -10.16 0)
+					(length 5.08)
+					(name "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -12.7 0)
+					(length 5.08)
+					(name "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -15.24 0)
+					(length 5.08)
+					(name "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -17.78 0)
+					(length 5.08)
+					(name "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -20.32 0)
+					(length 5.08)
+					(name "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "power:GND"
+			(power)
+			(pin_numbers hide)
+			(pin_names
+				(offset 0) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "GND"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "GND_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 -1.27) (xy 1.27 -1.27) (xy 0 -2.54) (xy -1.27 -1.27) (xy 0 -1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "GND_1_1"
+				(pin power_in line
+					(at 0 0 270)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "power:VCC"
+			(power)
+			(pin_numbers hide)
+			(pin_names
+				(offset 0) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "VCC"
+				(at 0 3.556 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"VCC\""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "VCC_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "VCC_1_1"
+				(pin power_in line
+					(at 0 0 90)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+	(junction
+		(at 111.76 96.52)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0af07db2-4bfa-40c1-9015-a1d68973600c")
+	)
+	(junction
+		(at 213.36 105.41)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4a648c10-64e5-4c1b-8974-689869adcccb")
+	)
+	(junction
+		(at 111.76 129.54)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "647b4d98-05e5-4c58-a6c1-8d09f760c535")
+	)
+	(junction
+		(at 88.9 76.2)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "bff49ebf-6d48-4d8c-9cce-c21e099e4759")
+	)
+	(junction
+		(at 88.9 109.22)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d2793d7e-bce2-48a7-a2ae-1a300aabc7e1")
+	)
+	(no_connect
+		(at 111.76 91.44)
+		(uuid "3127c9a8-1a80-496a-81df-b2bd758970d2")
+	)
+	(no_connect
+		(at 111.76 124.46)
+		(uuid "98f9784d-9e91-4a6c-aa0e-5515d669f43b")
+	)
+	(wire
+		(pts
+			(xy 190.5 102.87) (xy 160.02 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0009563a-0c31-4959-81b4-5dd3800a039f")
+	)
+	(wire
+		(pts
+			(xy 111.76 127) (xy 111.76 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "086859a9-9668-4cb1-931d-7093e23fe0a5")
+	)
+	(wire
+		(pts
+			(xy 160.02 119.38) (xy 111.76 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0c407677-d058-492d-a290-79da390dc26d")
+	)
+	(wire
+		(pts
+			(xy 88.9 73.66) (xy 88.9 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "53d0ca7e-aab7-4dff-a768-73e2db895e4a")
+	)
+	(wire
+		(pts
+			(xy 162.56 97.79) (xy 190.5 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "559c30c1-c723-425f-aaeb-8652ea4ba3b2")
+	)
+	(wire
+		(pts
+			(xy 111.76 93.98) (xy 111.76 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5ccdc968-acdd-4f20-8999-e2d38485c7c0")
+	)
+	(wire
+		(pts
+			(xy 111.76 86.36) (xy 160.02 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6818e3f7-077e-42bd-b785-bf4664a18427")
+	)
+	(wire
+		(pts
+			(xy 160.02 86.36) (xy 160.02 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6f2e66fd-32f3-4d9a-bacc-333157dc80d5")
+	)
+	(wire
+		(pts
+			(xy 162.56 88.9) (xy 111.76 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "71d60265-25dc-4bc7-b1d4-dc26fd18a7a5")
+	)
+	(wire
+		(pts
+			(xy 190.5 105.41) (xy 162.56 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7a3813ec-b2cc-4319-bab5-4b59f1b885a0")
+	)
+	(wire
+		(pts
+			(xy 213.36 105.41) (xy 213.36 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7ab1dc84-3fcb-47b7-b9f2-5fcd5b34fd4e")
+	)
+	(wire
+		(pts
+			(xy 162.56 105.41) (xy 162.56 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a2c2e277-0a58-4613-8376-deffec68b577")
+	)
+	(wire
+		(pts
+			(xy 160.02 102.87) (xy 160.02 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a64ed550-367c-46cf-86f4-075e284ee09a")
+	)
+	(wire
+		(pts
+			(xy 88.9 106.68) (xy 88.9 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ab46d209-62db-49ac-9cf2-f6b6192b43b1")
+	)
+	(wire
+		(pts
+			(xy 162.56 88.9) (xy 162.56 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b7f9feac-756f-407d-8324-72aad68942a7")
+	)
+	(wire
+		(pts
+			(xy 213.36 102.87) (xy 213.36 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "baf80a55-b3e0-4d06-ad59-a4f091a15ec5")
+	)
+	(wire
+		(pts
+			(xy 190.5 100.33) (xy 160.02 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "be33cfca-dc21-409a-b226-407eb56c7c53")
+	)
+	(wire
+		(pts
+			(xy 162.56 121.92) (xy 111.76 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ce375cb3-1d1c-4ed4-a8fe-8607b57ec581")
+	)
+	(text_box "TODO(james): Migrate NMAG_FAULT line from pin 2 to pin 5 and put GND on pin 2. Requires changing the header on the magnetorquer boards on next iteration."
+		(exclude_from_sim no)
+		(at 127 63.5 0)
+		(size 33.02 13.97)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "438f4b63-e751-4739-b8b1-4987613919e1")
+	)
+	(label "VSOLAR_1_2"
+		(at 190.5 102.87 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "41507a13-34da-4959-8138-c70b92cf0f7c")
+	)
+	(label "VSOLAR_1_1"
+		(at 190.5 105.41 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "52c70cd3-c1b4-4c35-8496-c5c9e6a3f450")
+	)
+	(label "VSOLAR_2_2"
+		(at 190.5 100.33 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "ed00269c-20b8-49ed-9b67-16ad573fa10e")
+	)
+	(label "VSOLAR_2_1"
+		(at 190.5 97.79 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f86d1fe8-f8a8-49b8-85c6-03eb33b4430c")
+	)
+	(global_label "NMAG_FAULT"
+		(shape input)
+		(at 111.76 83.82 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "22a3a324-0bf0-4202-8e27-34068a8c36c5")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 126.3567 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "I2C2_SDA"
+		(shape input)
+		(at 111.76 111.76 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "29c1ca1a-db64-4378-8925-c90217952372")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 123.5747 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "I2C1_SDA"
+		(shape input)
+		(at 111.76 78.74 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "6edf94a9-3537-40f8-9073-39933c2a3269")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 123.5747 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "NMAG_FAULT"
+		(shape input)
+		(at 111.76 76.2 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "7a74698b-3332-4dd2-96c7-f3dd60779965")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 126.3567 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "NMAG_FAULT"
+		(shape input)
+		(at 111.76 116.84 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "ae914e54-c697-464b-881f-e126075d8847")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 126.3567 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "I2C1_SCL"
+		(shape input)
+		(at 111.76 81.28 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "b3f5afac-c032-4af6-993d-2a0e9f0aba76")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 123.5142 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "I2C2_SCL"
+		(shape input)
+		(at 111.76 114.3 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "bf4eeedd-9dc7-4c79-a45b-3450a866ca7c")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 123.5142 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "NMAG_FAULT"
+		(shape input)
+		(at 111.76 109.22 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e156f75e-1ce6-4f46-8723-cea1d2b647e3")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 126.3567 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 88.9 109.22 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3e537a69-6fdb-4a62-a8b5-22669cfdfb37")
+		(property "Reference" "#PWR048"
+			(at 88.9 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 88.9 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 88.9 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 88.9 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 88.9 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c959343e-fe62-411c-9304-015993d73495")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
+					(reference "#PWR048")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 88.9 76.2 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "44bf8459-9ba7-4d54-840c-2c1391dbe9a9")
+		(property "Reference" "#PWR040"
+			(at 88.9 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 88.9 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 88.9 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 88.9 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 88.9 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4a8b24d5-2520-43bc-aad0-573f0c11e815")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
+					(reference "#PWR040")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "TVSC:Molex_504050-1091")
+		(at 111.76 106.68 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4886eb08-7f53-4ee7-8368-80f2d73a9cf9")
+		(property "Reference" "J6"
+			(at 97.79 118.11 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Molex_504050-0891"
+			(at 111.76 106.68 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "footprints:Molex_504050-1091"
+			(at 92.71 201.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets_SAMA/78973205e9f4d17ddd54ea229574413e.pdf"
+			(at 92.71 301.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 111.76 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C5375652"
+			(at 93.98 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Manufacturer" "Molex"
+			(at 92.71 601.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "504050-1091"
+			(at 92.71 701.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 111.76 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Extended"
+			(at 111.76 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "9"
+			(uuid "2693dd4c-0e86-48b7-abc3-a2ed1d2ef3ef")
+		)
+		(pin "8"
+			(uuid "49b22143-02db-4b79-8b42-e1989ea44704")
+		)
+		(pin "10"
+			(uuid "81d8d767-cac5-4db1-8270-ac295d45e128")
+		)
+		(pin "4"
+			(uuid "beb1eb94-2703-4044-a935-2b32dfde2d8b")
+		)
+		(pin "3"
+			(uuid "5f6b8389-5c94-459f-b381-29101421eaa4")
+		)
+		(pin "5"
+			(uuid "6252e8fb-78cb-452a-9119-c744a5a3821a")
+		)
+		(pin "6"
+			(uuid "22a5f7b0-80ad-4341-add2-57f852c42ff7")
+		)
+		(pin "2"
+			(uuid "ef148dba-1238-45e8-84aa-1d24ac3ae2f0")
+		)
+		(pin "7"
+			(uuid "8247a092-7c27-461f-bafd-f1e4faa5a88c")
+		)
+		(pin "1"
+			(uuid "991908fe-a0d7-4fd3-affa-73929b083845")
+		)
+		(pin "12"
+			(uuid "a7c1f8ed-7e8d-466c-98a8-739c267adebd")
+		)
+		(pin "11"
+			(uuid "41874bf7-947e-4ec8-97f2-a0a575e762a3")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
+					(reference "J6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "TVSC:Molex_504050-0491")
+		(at 190.5 105.41 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5dc4a6c4-10e3-4014-89fb-49322dea2eae")
+		(property "Reference" "J8"
+			(at 201.93 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Molex_504050-0491"
+			(at 201.93 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:Molex_504050-0491"
+			(at 209.55 10.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.molex.com/pdm_docs/sd/5040500491_sd.pdf"
+			(at 209.55 -89.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 190.5 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Molex"
+			(at 209.55 -389.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "504050-0491"
+			(at 209.55 -489.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C177235"
+			(at 208.28 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 190.5 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Extended"
+			(at 190.5 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "MP1"
+			(uuid "c76d6b3b-d0be-4183-98ab-5d6ac106fc9f")
+		)
+		(pin "1"
+			(uuid "d9fbf1b3-0138-4e11-b4dd-3a42b3c8f1fd")
+		)
+		(pin "3"
+			(uuid "f05d198c-429a-4c06-883f-8de953b0cf43")
+		)
+		(pin "4"
+			(uuid "0048d684-a869-4fd8-b0ad-6b6af5a8832c")
+		)
+		(pin "2"
+			(uuid "0394d05a-40e6-45f0-aea6-90948ab14873")
+		)
+		(pin "MP2"
+			(uuid "c779c202-abf6-4f4d-954f-6c8b9a7f8b97")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
+					(reference "J8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 111.76 96.52 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "66447d72-b3c3-4e89-94a8-829557de05e7")
+		(property "Reference" "#PWR050"
+			(at 107.95 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VCC"
+			(at 115.57 96.52 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 111.76 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 111.76 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 111.76 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7b6964c3-76aa-412b-88df-e782aaa99095")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
+					(reference "#PWR050")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "TVSC:Molex_504050-1091")
+		(at 111.76 73.66 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6f8d41bf-b403-47d8-a6b0-38cefa5f5751")
+		(property "Reference" "J7"
+			(at 97.79 85.09 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Molex_504050-0891"
+			(at 111.76 73.66 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "footprints:Molex_504050-1091"
+			(at 92.71 168.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets_SAMA/78973205e9f4d17ddd54ea229574413e.pdf"
+			(at 92.71 268.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 111.76 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C5375652"
+			(at 93.98 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Manufacturer" "Molex"
+			(at 92.71 568.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "504050-1091"
+			(at 92.71 668.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 111.76 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Extended"
+			(at 111.76 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "9"
+			(uuid "74a6856a-d725-4ee7-b522-3a780c8c4281")
+		)
+		(pin "8"
+			(uuid "6de1578f-fea8-4bd4-b62c-3cbbd9ea4b98")
+		)
+		(pin "10"
+			(uuid "9d4a0b14-1a76-4e0c-9728-32dc03d412cb")
+		)
+		(pin "4"
+			(uuid "34f3e7bf-7ce4-41ce-9915-803e873c2b9d")
+		)
+		(pin "3"
+			(uuid "1680dd96-79fa-4984-9732-b909bafc0548")
+		)
+		(pin "5"
+			(uuid "98a28205-e4eb-48ba-aca9-2507bd50c37b")
+		)
+		(pin "6"
+			(uuid "69553a1b-e23d-4b6d-995d-5b5044d4468c")
+		)
+		(pin "2"
+			(uuid "591fb89f-3b8c-435c-9bea-01e3a67bb5c5")
+		)
+		(pin "7"
+			(uuid "e2b9a9a7-a386-483e-bb10-a5af98f827e3")
+		)
+		(pin "1"
+			(uuid "ec3619f0-9f49-4994-a0bd-94c4bdb6c0a6")
+		)
+		(pin "12"
+			(uuid "2e00a363-85d5-4ac7-b7ad-0fb8209c42ff")
+		)
+		(pin "11"
+			(uuid "a8945962-0a5c-4594-8f66-e676a0910bd2")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
+					(reference "J7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 111.76 73.66 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "7714b83c-833d-4a4e-a3a9-cf4c9be63f9c")
+		(property "Reference" "#PWR049"
+			(at 111.76 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 111.76 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 111.76 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 111.76 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 111.76 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4b9d0f4b-5c16-4dce-b0e2-719593c958c5")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
+					(reference "#PWR049")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 213.36 106.68 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a1ee6471-56b8-4e5f-9f60-2e1f7c3ea6c7")
+		(property "Reference" "#PWR065"
+			(at 213.36 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 213.36 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 213.36 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 213.36 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 213.36 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c613aa35-5e53-4ef0-8d1b-3fb573fd1033")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
+					(reference "#PWR065")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 111.76 106.68 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e1fad217-7054-4791-a720-47f82bbbac09")
+		(property "Reference" "#PWR064"
+			(at 111.76 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 111.76 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 111.76 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 111.76 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 111.76 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2fa081fd-e228-4664-b993-ff8c45b84518")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
+					(reference "#PWR064")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 111.76 129.54 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "faad64e9-c4ff-4ed1-bf9f-8da59a5edf02")
+		(property "Reference" "#PWR055"
+			(at 107.95 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VCC"
+			(at 115.57 129.54 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 111.76 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 111.76 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 111.76 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d424feed-a832-4112-9145-b98b3d7f9517")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
+					(reference "#PWR055")
+					(unit 1)
+				)
+			)
+		)
+	)
 )
