@@ -1,0 +1,15 @@
+cc_library(
+    name = "serial_wire",
+    srcs = [
+        "serial_wire.cc",
+    ],
+    hdrs = [
+        "serial_wire.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//bits",
+        "//hal/programmer",
+        "//time:embedded_clock",
+    ],
+)
