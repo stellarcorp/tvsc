@@ -201,7 +201,7 @@ void GpioStm32xxxx::toggle_pin(Pin pin) {
                              (~current_value & (1U << pin)));
 }
 
-bool GpioStm32xxxx::read_pin(Pin pin) { return registers_->IDR.bit_field_value<1>(1U << pin); }
+bool GpioStm32xxxx::read_pin(Pin pin) { return registers_->IDR.bit_field_value<1>(pin); }
 
 void GpioStm32xxxx::disable() {
   if (port_ == 0) {
