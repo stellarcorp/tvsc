@@ -124,8 +124,10 @@ class Board final {
   power_monitor::Ina260PowerMonitor power_monitor1_{0x40, i2c3_};
   power_monitor::Ina260PowerMonitor power_monitor2_{0x41, i2c3_};
 
-  programmer::ProgrammerStm32l4xx programmer_{gpio_port_b_, /* NRST_CONTROL Pin */ 14,
-                                              /* BOOT0_CONTROL Pin */ 9};
+  programmer::ProgrammerStm32l4xx programmer_{gpio_port_b_,                //
+                                              /* SWDIO_CONTROL Pin */ 15,  //
+                                              /* SWCLK_CONTROL Pin */ 13,  //
+                                              /* NRST_CONTROL Pin */ 14};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
