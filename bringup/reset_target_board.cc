@@ -22,29 +22,28 @@ tvsc::scheduler::Task<ClockType> reset_target(BoardType &board) {
 
   // Turn on clocks for the peripherals that we want.
   auto debug_led{debug_led_peripheral.access()};
-  auto programmer{programmer_peripheral.access()};
 
   debug_led.set_pin_mode(BoardType::DEBUG_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
   while (true) {
     co_yield 2s;
 
-    debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
-    co_yield 10ms;
-    debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
-    co_yield 10ms;
-    debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
-    co_yield 10ms;
-    debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
-    co_yield 10ms;
-    debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
-    co_yield 10ms;
-    debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
-    co_yield 10ms;
+    {
+      for (int i = 0; i < 5; ++i) {
+        debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
+        co_yield 25ms;
+        debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
+        co_yield 25ms;
+      }
 
-    programmer.initiate_target_reset();
-    co_yield programmer.RESET_HOLD_TIME;
-    programmer.conclude_target_reset();
+      auto programmer{programmer_peripheral.access()};
+      programmer.initiate_target_board_reset();
+      // The following value should be sufficient to cause a reset of the target board.
+      co_yield programmer.RESET_HOLD_TIME;
+      // But we add this extra delay to make the effect more obvious.
+      co_yield 750ms;
+      programmer.conclude_target_board_reset();
+    }
 
     co_yield 3s;
   }
