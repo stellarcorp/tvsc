@@ -1,48 +1,227 @@
-(footprint "Keystone_5004" (version 20221018) (generator pcbnew)
-  (layer "F.Cu")
-  (descr "5004-1")
-  (tags "Hardware")
-  (attr through_hole)
-  (fp_text reference "H**" (at 0 0) (layer "F.SilkS")
-      (effects (font (size 1.27 1.27) (thickness 0.254)))
-    (tstamp ecfd815d-6d81-46cf-8a6c-5d7286e8ce3f)
-  )
-  (fp_text value "5004" (at 0 0) (layer "F.SilkS") hide
-      (effects (font (size 1.27 1.27) (thickness 0.254)))
-    (tstamp 08c5b14e-145e-40d3-afce-9fbaed772fd6)
-  )
-  (fp_text user "${REFERENCE}" (at 0 0) (layer "F.Fab")
-      (effects (font (size 1.27 1.27) (thickness 0.254)))
-    (tstamp 5a188e13-6582-4bf2-a6ad-843ca4d836c5)
-  )
-  (fp_line (start -1.27 0) (end -1.27 0)
-    (stroke (width 0.1) (type solid)) (layer "F.SilkS") (tstamp cf156565-b0f3-455b-85fd-8d4a6da7a27a))
-  (fp_line (start 1.27 0) (end 1.27 0)
-    (stroke (width 0.1) (type solid)) (layer "F.SilkS") (tstamp 310bb9cf-4d41-435e-88b4-086d47c9e792))
-  (fp_arc (start -1.27 0) (mid 0 -1.27) (end 1.27 0)
-    (stroke (width 0.1) (type solid)) (layer "F.SilkS") (tstamp a0fa3438-91e8-46fe-9111-3fcd702c9e06))
-  (fp_arc (start 1.27 0) (mid 0 1.27) (end -1.27 0)
-    (stroke (width 0.1) (type solid)) (layer "F.SilkS") (tstamp 5704c874-48a6-4315-a364-da59ac63510e))
-  (fp_line (start -2 -2) (end 2 -2)
-    (stroke (width 0.1) (type solid)) (layer "F.CrtYd") (tstamp ae963e5b-f61b-4502-a9ff-c7dc102dd9e2))
-  (fp_line (start -2 2) (end -2 -2)
-    (stroke (width 0.1) (type solid)) (layer "F.CrtYd") (tstamp 090ce091-b9fe-45d5-b7b4-71eb3bd61695))
-  (fp_line (start 2 -2) (end 2 2)
-    (stroke (width 0.1) (type solid)) (layer "F.CrtYd") (tstamp 731fc4eb-39cb-4936-b75b-59e14eb041dc))
-  (fp_line (start 2 2) (end -2 2)
-    (stroke (width 0.1) (type solid)) (layer "F.CrtYd") (tstamp c67e99b3-02c1-4184-81ea-79287284e21c))
-  (fp_line (start -1.27 0) (end -1.27 0)
-    (stroke (width 0.2) (type solid)) (layer "F.Fab") (tstamp eba19de7-7d78-4497-9411-3a1157e19d82))
-  (fp_line (start 1.27 0) (end 1.27 0)
-    (stroke (width 0.2) (type solid)) (layer "F.Fab") (tstamp 17ffc33b-6e28-4312-a599-1957af13eda5))
-  (fp_arc (start -1.27 0) (mid 0 -1.27) (end 1.27 0)
-    (stroke (width 0.2) (type solid)) (layer "F.Fab") (tstamp 71e0ae31-70da-4221-b2c4-35edc7a2a861))
-  (fp_arc (start 1.27 0) (mid 0 1.27) (end -1.27 0)
-    (stroke (width 0.2) (type solid)) (layer "F.Fab") (tstamp 72eb7eb3-0aec-43fd-896f-9867b166067a))
-  (pad "1" thru_hole circle (at 0 0) (size 1.53 1.53) (drill 1.02) (layers "*.Cu" "*.Mask") (tstamp 8d18f647-b639-4a57-909f-3587b4ac58b6))
-  (model "${KIPRJMOD}/../../3dmodels/Keystone_5004.step"
-    (offset (xyz 0 0 0))
-    (scale (xyz 1 1 1))
-    (rotate (xyz -90 0 0))
-  )
+(footprint "Keystone_5004"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "5004-1")
+	(tags "Hardware")
+	(property "Reference" "H**"
+		(at 0 0 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "ecfd815d-6d81-46cf-8a6c-5d7286e8ce3f")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Value" "5004"
+		(at 5 0 0)
+		(layer "F.SilkS")
+		(uuid "08c5b14e-145e-40d3-afce-9fbaed772fd6")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "4eb74303-cacf-498e-b69a-09cc9a68e2d0")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "665c85b5-654e-4591-a77b-114174a3edb3")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "d6d8864c-64bc-4d99-979e-a3e8feef01ec")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_line
+		(start -1.27 0)
+		(end -1.27 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "cf156565-b0f3-455b-85fd-8d4a6da7a27a")
+	)
+	(fp_line
+		(start 1.27 0)
+		(end 1.27 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "310bb9cf-4d41-435e-88b4-086d47c9e792")
+	)
+	(fp_arc
+		(start -1.27 0)
+		(mid 0 -1.27)
+		(end 1.27 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "a0fa3438-91e8-46fe-9111-3fcd702c9e06")
+	)
+	(fp_arc
+		(start 1.27 0)
+		(mid 0 1.27)
+		(end -1.27 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "5704c874-48a6-4315-a364-da59ac63510e")
+	)
+	(fp_line
+		(start -2 -2)
+		(end 2 -2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "ae963e5b-f61b-4502-a9ff-c7dc102dd9e2")
+	)
+	(fp_line
+		(start -2 2)
+		(end -2 -2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "090ce091-b9fe-45d5-b7b4-71eb3bd61695")
+	)
+	(fp_line
+		(start 2 -2)
+		(end 2 2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "731fc4eb-39cb-4936-b75b-59e14eb041dc")
+	)
+	(fp_line
+		(start 2 2)
+		(end -2 2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "c67e99b3-02c1-4184-81ea-79287284e21c")
+	)
+	(fp_line
+		(start -1.27 0)
+		(end -1.27 0)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "eba19de7-7d78-4497-9411-3a1157e19d82")
+	)
+	(fp_line
+		(start 1.27 0)
+		(end 1.27 0)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "17ffc33b-6e28-4312-a599-1957af13eda5")
+	)
+	(fp_arc
+		(start -1.27 0)
+		(mid 0 -1.27)
+		(end 1.27 0)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "71e0ae31-70da-4221-b2c4-35edc7a2a861")
+	)
+	(fp_arc
+		(start 1.27 0)
+		(mid 0 1.27)
+		(end -1.27 0)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "72eb7eb3-0aec-43fd-896f-9867b166067a")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "5a188e13-6582-4bf2-a6ad-843ca4d836c5")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(pad "1" thru_hole circle
+		(at 0 0)
+		(size 1.53 1.53)
+		(drill 1.02)
+		(layers "*.Cu" "*.Mask" "In1.Cu" "In2.Cu" "In3.Cu" "In4.Cu" "In5.Cu" "In6.Cu"
+			"In7.Cu" "In8.Cu" "In9.Cu" "In10.Cu" "In11.Cu" "In12.Cu" "In13.Cu" "In14.Cu"
+			"In15.Cu" "In16.Cu" "In17.Cu" "In18.Cu" "In19.Cu" "In20.Cu" "In21.Cu"
+			"In22.Cu" "In23.Cu" "In24.Cu" "In25.Cu" "In26.Cu" "In27.Cu" "In28.Cu"
+			"In29.Cu" "In30.Cu"
+		)
+		(remove_unused_layers no)
+		(uuid "8d18f647-b639-4a57-909f-3587b4ac58b6")
+	)
+	(model "${KIPRJMOD}/../../3dmodels/Keystone_5004.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -90 0 0)
+		)
+	)
 )
