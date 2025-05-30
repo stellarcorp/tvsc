@@ -42,7 +42,7 @@ class Logger final {
     Function* fn = msg.mutable_fn();
     fn->set_name(location.function_name());
     fn->set_source_file(location.file_name());
-    fn->set_line_number(location.line_number());
+    fn->set_line_number(location.line());
     writer_.write_message(msg);
   }
 
