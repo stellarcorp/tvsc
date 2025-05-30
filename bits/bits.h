@@ -81,7 +81,7 @@ inline constexpr ResultType get_bit_field_value(const ResultType& value) {
                 "of bits in the field) must be less than or equal to the size of the register "
                 "which is 32 bits. Likely, this is a typo or other scrivener's error in the "
                 "template parameters to call this method.");
-  constexpr ResultType MASK{compute_bit_mask<NUM_BITS, BIT_FIELD_OFFSET>()};
+  constexpr ResultType MASK{compute_bit_mask<NUM_BITS, BIT_FIELD_OFFSET, ResultType>()};
   return (value & MASK) >> BIT_FIELD_OFFSET;
 }
 
