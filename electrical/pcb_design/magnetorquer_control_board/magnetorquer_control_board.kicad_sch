@@ -2533,16 +2533,8 @@
 		(uuid "5674986d-37f9-4a49-9d11-ee90cff90d21")
 	)
 	(no_connect
-		(at 121.92 118.11)
-		(uuid "5925c8af-75a6-4c37-9312-dd03161488a8")
-	)
-	(no_connect
 		(at 157.48 113.03)
 		(uuid "71ddd5fc-29d2-468c-8bdb-0c98434ead5c")
-	)
-	(no_connect
-		(at 121.92 90.17)
-		(uuid "730b074e-a1c7-4eb4-82a4-b036acfc730d")
 	)
 	(no_connect
 		(at 157.48 80.01)
@@ -2571,10 +2563,6 @@
 	(no_connect
 		(at 157.48 115.57)
 		(uuid "a4fe8c7a-588a-46b1-94bd-1041f3434a8b")
-	)
-	(no_connect
-		(at 121.92 115.57)
-		(uuid "aa1a4585-5f07-4ac1-999d-b144e0d8318b")
 	)
 	(no_connect
 		(at 157.48 72.39)
@@ -3582,7 +3570,7 @@
 	)
 	(global_label "IMU_MAG_SPI_CS"
 		(shape input)
-		(at 86.36 90.17 180)
+		(at 121.92 115.57 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -3592,7 +3580,7 @@
 		)
 		(uuid "6a2aca96-4332-4b2f-b2c1-6566188e5abd")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 67.7115 90.17 0)
+			(at 103.2715 115.57 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3758,7 +3746,7 @@
 	)
 	(global_label "IMU_MAG_INT2"
 		(shape input)
-		(at 86.36 95.25 180)
+		(at 121.92 90.17 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -3768,7 +3756,7 @@
 		)
 		(uuid "a39f9e84-9663-45a9-bc2e-a00d6b442e69")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 70.1305 95.25 0)
+			(at 105.6905 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3890,7 +3878,7 @@
 	)
 	(global_label "IMU_MAG_INT1"
 		(shape input)
-		(at 86.36 92.71 180)
+		(at 121.92 118.11 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -3900,7 +3888,7 @@
 		)
 		(uuid "cf2b4d5c-943c-49cb-b76d-7b5f3c5b7873")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 70.1305 92.71 0)
+			(at 105.6905 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
