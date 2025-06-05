@@ -3580,6 +3580,28 @@
 			)
 		)
 	)
+	(global_label "IMU_MAG_SPI_CS"
+		(shape input)
+		(at 86.36 90.17 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "6a2aca96-4332-4b2f-b2c1-6566188e5abd")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 67.7115 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "IMU1_INT2"
 		(shape input)
 		(at 121.92 97.79 180)
@@ -3734,6 +3756,28 @@
 			)
 		)
 	)
+	(global_label "IMU_MAG_INT2"
+		(shape input)
+		(at 86.36 95.25 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a39f9e84-9663-45a9-bc2e-a00d6b442e69")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 70.1305 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "I2C2_SDA"
 		(shape input)
 		(at 157.48 130.81 0)
@@ -3840,6 +3884,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "IMU_MAG_INT1"
+		(shape input)
+		(at 86.36 92.71 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "cf2b4d5c-943c-49cb-b76d-7b5f3c5b7873")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 70.1305 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 				(hide yes)
 			)
 		)
