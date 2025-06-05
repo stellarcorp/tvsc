@@ -1214,12 +1214,6 @@
 		(uuid "8ec79891-a329-4708-8a2d-3d1d1ef2343a")
 	)
 	(junction
-		(at 219.71 144.78)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "909e593f-f9e5-4310-9107-0acaaf51889d")
-	)
-	(junction
 		(at 222.25 41.91)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1295,16 +1289,6 @@
 	)
 	(wire
 		(pts
-			(xy 243.84 144.78) (xy 219.71 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0285f509-d12c-4765-8294-25967418f8d3")
-	)
-	(wire
-		(pts
 			(xy 168.91 107.95) (xy 171.45 107.95)
 		)
 		(stroke
@@ -1315,16 +1299,6 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 142.24) (xy 76.2 142.24)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "124455a3-c426-4d28-9b48-ed8460df14df")
-	)
-	(wire
-		(pts
 			(xy 67.31 43.18) (xy 91.44 43.18)
 		)
 		(stroke
@@ -1332,16 +1306,6 @@
 			(type default)
 		)
 		(uuid "12753061-ca64-43f8-9295-44b4523b31ef")
-	)
-	(wire
-		(pts
-			(xy 219.71 147.32) (xy 219.71 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "12eb8f70-d383-438a-bce2-88a6abaf2b27")
 	)
 	(wire
 		(pts
@@ -1605,16 +1569,6 @@
 	)
 	(wire
 		(pts
-			(xy 165.1 144.78) (xy 219.71 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "569c8e53-f018-4ffe-b408-820c812ed5e0")
-	)
-	(wire
-		(pts
 			(xy 57.15 81.28) (xy 59.69 81.28)
 		)
 		(stroke
@@ -1735,16 +1689,6 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 142.24) (xy 76.2 165.1)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "844d64e2-cc7b-4013-ab31-3be601fb6ae8")
-	)
-	(wire
-		(pts
 			(xy 222.25 36.83) (xy 222.25 41.91)
 		)
 		(stroke
@@ -1792,16 +1736,6 @@
 			(type default)
 		)
 		(uuid "9a71693f-6d93-46c6-a4de-72624da00584")
-	)
-	(wire
-		(pts
-			(xy 76.2 165.1) (xy 165.1 165.1)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9b40bf5b-4e8e-4321-bddc-393a74047ee2")
 	)
 	(wire
 		(pts
@@ -1995,16 +1929,6 @@
 	)
 	(wire
 		(pts
-			(xy 219.71 154.94) (xy 219.71 157.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c8cb980e-1218-44be-96a0-a9fe8152785d")
-	)
-	(wire
-		(pts
 			(xy 165.1 118.11) (xy 165.1 142.24)
 		)
 		(stroke
@@ -2082,16 +2006,6 @@
 			(type default)
 		)
 		(uuid "ddacdf51-0f7a-460a-9790-426940e80558")
-	)
-	(wire
-		(pts
-			(xy 165.1 165.1) (xy 165.1 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "de1a42b2-5291-49e1-8476-3516701d3450")
 	)
 	(wire
 		(pts
@@ -2421,28 +2335,6 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "IMU_MAG_INT2"
-		(shape input)
-		(at 243.84 144.78 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "f3cfff32-893b-4a8b-b7d5-4e2de590cf45")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 260.0695 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
 				(hide yes)
 			)
 		)
@@ -3345,6 +3237,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 99.06 142.24 270)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2d120a49-44e5-4f43-9337-44eae2ad0833")
+		(property "Reference" "#PWR88"
+			(at 92.71 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 95.25 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 99.06 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 99.06 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 99.06 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b4053a5e-ca67-43d5-967d-010eddf9b9ce")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "#PWR88")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3V3")
 		(at 99.06 144.78 90)
 		(mirror x)
@@ -4124,121 +4082,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 219.71 151.13 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "5bb2c06f-1737-442b-806d-c402755336d8")
-		(property "Reference" "R47"
-			(at 222.25 149.86 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "9k31"
-			(at 222.25 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 217.932 151.13 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 219.71 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 219.71 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "C270572"
-			(at 219.71 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 219.71 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF9311TCE"
-			(at 219.71 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 219.71 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" "Basic"
-			(at 219.71 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "eff62267-7998-4064-a305-31021909c2b3")
-		)
-		(pin "1"
-			(uuid "7be3f0d8-ba52-4451-8b8e-bff05046c9e8")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R47")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 194.31 110.49 0)
 		(mirror y)
@@ -4365,72 +4208,6 @@
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
 					(reference "#PWR82")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 219.71 157.48 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "74ff098f-e4ee-4071-9a61-b0127d546039")
-		(property "Reference" "#PWR88"
-			(at 219.71 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 219.71 161.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 219.71 157.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 219.71 157.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 219.71 157.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "114b40fa-c561-4185-ae18-da1a66101c88")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR88")
 					(unit 1)
 				)
 			)
