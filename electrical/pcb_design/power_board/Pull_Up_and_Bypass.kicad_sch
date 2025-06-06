@@ -575,6 +575,16 @@
 	)
 	(wire
 		(pts
+			(xy 270.51 149.86) (xy 267.97 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "06a19e44-1c26-44ea-8988-ab0376a7e782")
+	)
+	(wire
+		(pts
 			(xy 213.36 50.8) (xy 200.66 50.8)
 		)
 		(stroke
@@ -712,6 +722,16 @@
 			(type default)
 		)
 		(uuid "80348efe-b6b1-4a83-8dac-c3089b9a893c")
+	)
+	(wire
+		(pts
+			(xy 270.51 148.59) (xy 270.51 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "94e32455-aedb-4017-b866-5af2342ed9ba")
 	)
 	(wire
 		(pts
@@ -865,6 +885,16 @@
 	)
 	(wire
 		(pts
+			(xy 270.51 130.81) (xy 270.51 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dba87118-21c1-4b45-997c-f3844fc35e74")
+	)
+	(wire
+		(pts
 			(xy 191.77 130.81) (xy 191.77 129.54)
 		)
 		(stroke
@@ -893,6 +923,16 @@
 		)
 		(uuid "f636cfb6-3946-46fb-8172-9ba4e89d1319")
 	)
+	(wire
+		(pts
+			(xy 267.97 130.81) (xy 270.51 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fbafd80e-a338-4aa7-86e6-84e4fbffc860")
+	)
 	(rectangle
 		(start 190.5 17.78)
 		(end 260.35 68.58)
@@ -919,7 +959,7 @@
 	)
 	(rectangle
 		(start 168.91 113.03)
-		(end 264.16 158.75)
+		(end 280.67 158.75)
 		(stroke
 			(width 0)
 			(type default)
@@ -1084,6 +1124,28 @@
 		)
 		(uuid "e4f460cf-147d-42d6-903b-3a1b31a2d3b0")
 	)
+	(global_label "I2C4_SCL"
+		(shape input)
+		(at 267.97 149.86 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "3e893d60-4951-4808-90cb-4016f1ec003d")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 256.2158 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "I2C2_SDA"
 		(shape input)
 		(at 218.44 130.81 180)
@@ -1185,6 +1247,28 @@
 		(uuid "ce4d8dfa-d7d4-41a3-8c5f-a41a6c90ffd0")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 206.6858 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "I2C4_SDA"
+		(shape input)
+		(at 267.97 130.81 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "d4c2c1f1-cfb2-4edb-a76f-21bbb6b66357")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 256.1553 130.81 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1391,6 +1475,71 @@
 			(project "power_board"
 				(path "/d324a1a4-7fb6-454a-a3df-93208b9871d9/71054650-2329-4cd1-8ee0-ae9a4d5dd9a1"
 					(reference "#PWR063")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 270.51 140.97 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0d3086fe-bad6-4354-a509-048b9bf6d87b")
+		(property "Reference" "#PWR093"
+			(at 270.51 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 270.51 137.414 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 270.51 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 270.51 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 270.51 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c76ab1a4-7a2a-4b77-a54e-9c08ff439838")
+		)
+		(instances
+			(project "power_board"
+				(path "/d324a1a4-7fb6-454a-a3df-93208b9871d9/71054650-2329-4cd1-8ee0-ae9a4d5dd9a1"
+					(reference "#PWR093")
 					(unit 1)
 				)
 			)
@@ -2531,6 +2680,121 @@
 		)
 		(pin "1"
 			(uuid "556a597c-9f7a-4ac0-b24d-6e2c7584a3cf")
+		)
+		(instances
+			(project "power_board"
+				(path "/d324a1a4-7fb6-454a-a3df-93208b9871d9/71054650-2329-4cd1-8ee0-ae9a4d5dd9a1"
+					(reference "R?")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 270.51 125.73 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "65e71070-9f57-4a72-8307-49daa7238406")
+		(property "Reference" "R?"
+			(at 273.05 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "9k31"
+			(at 273.05 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
+			(at 268.732 125.73 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 270.51 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 270.51 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C270572"
+			(at 270.51 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 270.51 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "0402WGF9311TCE"
+			(at 270.51 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 270.51 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 270.51 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "501e5aca-bf41-4087-aa2f-9e90058aa776")
+		)
+		(pin "1"
+			(uuid "84a8aa25-79fd-4768-9253-aec830ec2398")
 		)
 		(instances
 			(project "power_board"
@@ -4646,6 +4910,186 @@
 			(project "power_board"
 				(path "/d324a1a4-7fb6-454a-a3df-93208b9871d9/71054650-2329-4cd1-8ee0-ae9a4d5dd9a1"
 					(reference "C?")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 270.51 121.92 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cd7ad00b-fa79-4263-808d-c4274d90df68")
+		(property "Reference" "#PWR092"
+			(at 270.51 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 270.51 118.364 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 270.51 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 270.51 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 270.51 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "428a5332-4bc6-485c-af01-d6b7dcc7d9f9")
+		)
+		(instances
+			(project "power_board"
+				(path "/d324a1a4-7fb6-454a-a3df-93208b9871d9/71054650-2329-4cd1-8ee0-ae9a4d5dd9a1"
+					(reference "#PWR092")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 270.51 144.78 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d144b4b8-bafe-4526-a88d-a60cbb4a9935")
+		(property "Reference" "R?"
+			(at 273.05 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "9k31"
+			(at 273.05 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
+			(at 268.732 144.78 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 270.51 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 270.51 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C270572"
+			(at 270.51 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 270.51 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "0402WGF9311TCE"
+			(at 270.51 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 270.51 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 270.51 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "4651c104-2e57-4f0d-9a18-78e60795f7ae")
+		)
+		(pin "1"
+			(uuid "46decf8e-b886-452a-bcd2-139b6a5189b7")
+		)
+		(instances
+			(project "power_board"
+				(path "/d324a1a4-7fb6-454a-a3df-93208b9871d9/71054650-2329-4cd1-8ee0-ae9a4d5dd9a1"
+					(reference "R?")
 					(unit 1)
 				)
 			)
