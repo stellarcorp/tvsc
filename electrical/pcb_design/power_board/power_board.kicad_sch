@@ -2237,6 +2237,12 @@
 		(uuid "2881fb2c-df8a-463c-815d-9dbf37e71dbd")
 	)
 	(junction
+		(at 119.38 88.9)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "48f4229d-9805-4bd8-8cb6-54e687c46012")
+	)
+	(junction
 		(at 213.36 72.39)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2277,6 +2283,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e3f0908b-0d67-472f-8fb3-e4d4a54c2053")
+	)
+	(junction
+		(at 119.38 86.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ed01ed0b-61e7-4c8e-a06d-b7c40db03928")
 	)
 	(junction
 		(at 96.52 49.53)
@@ -2333,10 +2345,6 @@
 		(uuid "22272b9a-11b6-4693-9493-2d23d5967cf1")
 	)
 	(no_connect
-		(at 119.38 88.9)
-		(uuid "2370f5b4-5a77-4ffc-a4a5-1dc75c2b8c83")
-	)
-	(no_connect
 		(at 154.94 43.18)
 		(uuid "2bf027ad-1fb1-4580-987c-4a8db6ef1ec0")
 	)
@@ -2369,10 +2377,6 @@
 		(uuid "90192cd5-b9ec-4601-bbbb-f38eb8e3c149")
 	)
 	(no_connect
-		(at 154.94 30.48)
-		(uuid "9ee8189b-3f63-44da-9c9b-3ebda29970d0")
-	)
-	(no_connect
 		(at 154.94 35.56)
 		(uuid "dcb0dd6e-d19e-4abb-a4f2-44598e15e3c1")
 	)
@@ -2380,19 +2384,25 @@
 		(at 154.94 83.82)
 		(uuid "e2cd3270-6e24-4b2b-af4a-c948c0a77c02")
 	)
-	(no_connect
-		(at 119.38 86.36)
-		(uuid "f72c349c-4a6a-48f1-9e8f-f7aefd650bf3")
-	)
 	(wire
 		(pts
-			(xy 95.25 83.82) (xy 119.38 83.82)
+			(xy 86.36 83.82) (xy 119.38 83.82)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "0524d1d7-f3f1-41ad-887e-48d0936afd4c")
+	)
+	(wire
+		(pts
+			(xy 116.84 71.12) (xy 119.38 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "13b1a3a6-25ea-45f0-8ed2-e0c4d04a8501")
 	)
 	(wire
 		(pts
@@ -2433,6 +2443,16 @@
 			(type default)
 		)
 		(uuid "25efce11-7a53-4fec-b565-cefbb9940afb")
+	)
+	(wire
+		(pts
+			(xy 45.72 177.8) (xy 49.53 177.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2610b97f-1811-4712-9a12-4f0cfb8e08c5")
 	)
 	(wire
 		(pts
@@ -2486,13 +2506,23 @@
 	)
 	(wire
 		(pts
-			(xy 77.47 83.82) (xy 80.01 83.82)
+			(xy 68.58 83.82) (xy 71.12 83.82)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "2f8956af-2521-4bdd-8547-0be126df455b")
+	)
+	(wire
+		(pts
+			(xy 45.72 180.34) (xy 49.53 180.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "366924ac-44c9-45b8-aecb-7dac89751859")
 	)
 	(wire
 		(pts
@@ -2526,6 +2556,16 @@
 	)
 	(wire
 		(pts
+			(xy 95.25 180.34) (xy 99.06 180.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "392596ef-9399-43f4-a67b-3411de027e32")
+	)
+	(wire
+		(pts
 			(xy 137.16 22.86) (xy 139.7 22.86)
 		)
 		(stroke
@@ -2553,6 +2593,16 @@
 			(type default)
 		)
 		(uuid "439c2a54-3474-4dae-a36a-9cc9eed28504")
+	)
+	(wire
+		(pts
+			(xy 116.84 66.04) (xy 119.38 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "48b62b1a-ac66-4b8a-8cab-4611227480a3")
 	)
 	(wire
 		(pts
@@ -2586,6 +2636,16 @@
 	)
 	(wire
 		(pts
+			(xy 116.84 86.36) (xy 119.38 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "52c3bd7c-1812-40c4-88fe-73b869590dd2")
+	)
+	(wire
+		(pts
 			(xy 134.62 22.86) (xy 137.16 22.86)
 		)
 		(stroke
@@ -2593,6 +2653,26 @@
 			(type default)
 		)
 		(uuid "55dda591-fb21-404b-9c35-2685861e3a66")
+	)
+	(wire
+		(pts
+			(xy 120.65 88.9) (xy 119.38 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5bf66192-5781-45ae-8d97-87c80cdcfafb")
+	)
+	(wire
+		(pts
+			(xy 116.84 76.2) (xy 119.38 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d6b82cc-10f5-404b-b156-9b3b653ed21a")
 	)
 	(wire
 		(pts
@@ -2623,6 +2703,16 @@
 			(type default)
 		)
 		(uuid "63aa3c7b-9aa9-45d0-bd13-ea330b45434a")
+	)
+	(wire
+		(pts
+			(xy 120.65 86.36) (xy 119.38 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "648fbca8-e347-42ee-bbd7-5ea2a7c42730")
 	)
 	(wire
 		(pts
@@ -2676,6 +2766,16 @@
 	)
 	(wire
 		(pts
+			(xy 45.72 185.42) (xy 49.53 185.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "83b1b74d-bdf5-4ec7-8c97-1969bb2f1200")
+	)
+	(wire
+		(pts
 			(xy 92.71 41.91) (xy 92.71 40.64)
 		)
 		(stroke
@@ -2706,7 +2806,17 @@
 	)
 	(wire
 		(pts
-			(xy 77.47 83.82) (xy 77.47 86.36)
+			(xy 116.84 81.28) (xy 119.38 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8f2ed0b6-b052-49bd-bf8a-abddef0d1dd8")
+	)
+	(wire
+		(pts
+			(xy 68.58 83.82) (xy 68.58 86.36)
 		)
 		(stroke
 			(width 0)
@@ -2763,6 +2873,26 @@
 			(type default)
 		)
 		(uuid "9f4065f7-1086-465a-a141-40c8eb8995e0")
+	)
+	(wire
+		(pts
+			(xy 95.25 182.88) (xy 99.06 182.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a251cced-ec36-4666-9fd5-20891e146a0e")
+	)
+	(wire
+		(pts
+			(xy 45.72 182.88) (xy 49.53 182.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a36b9869-fe2a-4d8a-bdb6-7a5b6a44ae3c")
 	)
 	(wire
 		(pts
@@ -2836,6 +2966,26 @@
 	)
 	(wire
 		(pts
+			(xy 116.84 78.74) (xy 119.38 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b88af5af-3396-4b76-8271-6cd4493266d3")
+	)
+	(wire
+		(pts
+			(xy 95.25 177.8) (xy 99.06 177.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c6bda675-80ac-4851-b076-9bb105e1b1cb")
+	)
+	(wire
+		(pts
 			(xy 154.94 109.22) (xy 165.1 109.22)
 		)
 		(stroke
@@ -2886,6 +3036,16 @@
 	)
 	(wire
 		(pts
+			(xy 116.84 68.58) (xy 119.38 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "de3f1ffb-a889-4350-a4d8-80d9ccf6a46b")
+	)
+	(wire
+		(pts
 			(xy 167.64 106.68) (xy 167.64 114.3)
 		)
 		(stroke
@@ -2896,6 +3056,26 @@
 	)
 	(wire
 		(pts
+			(xy 95.25 185.42) (xy 99.06 185.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e2bddca2-f74c-4b28-9849-dcbf1db458d7")
+	)
+	(wire
+		(pts
+			(xy 116.84 73.66) (xy 119.38 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e9e04bde-45cc-4c57-b3f1-6a90f3e6e0c4")
+	)
+	(wire
+		(pts
 			(xy 170.18 120.65) (xy 165.1 120.65)
 		)
 		(stroke
@@ -2903,6 +3083,16 @@
 			(type default)
 		)
 		(uuid "ec32e77b-54a1-462c-b089-7a9247a175ac")
+	)
+	(wire
+		(pts
+			(xy 95.25 187.96) (xy 99.06 187.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f11d27b6-72c6-43bc-a7f4-44f82ffac48d")
 	)
 	(wire
 		(pts
@@ -2936,6 +3126,16 @@
 	)
 	(wire
 		(pts
+			(xy 116.84 88.9) (xy 119.38 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb72f23f-f788-4717-b80d-d0e7557a9152")
+	)
+	(wire
+		(pts
 			(xy 228.6 120.65) (xy 177.8 120.65)
 		)
 		(stroke
@@ -2954,6 +3154,166 @@
 		)
 		(uuid "fe6d0051-ad7b-4f32-83a1-2831406e2785")
 	)
+	(label "MPPT_1_STATUS"
+		(at 99.06 182.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "0f72b734-6433-470b-9c84-c108f0727cd1")
+	)
+	(label "MPPT_CLK"
+		(at 45.72 182.88 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2e63b54e-885a-41bd-8ea0-3afdf0c89375")
+	)
+	(label "CHRG_STATUS"
+		(at 99.06 177.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "51df8d0e-ee18-43b0-8231-55c52d933742")
+	)
+	(label "MPPT_2_STATUS"
+		(at 116.84 73.66 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5fd7ca34-3fd4-4752-a54a-aae4eaab0939")
+	)
+	(label "BATT_CHRG_EN"
+		(at 116.84 81.28 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "62c2beeb-7aa2-4d47-96b5-2c076cd94c5b")
+	)
+	(label "MPPT_2_STATUS"
+		(at 99.06 185.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "63a882ec-debe-4002-b0fb-fddcadb3ca5f")
+	)
+	(label "MPPT_3_STATUS"
+		(at 116.84 76.2 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6914f6a0-a993-482f-bcdf-e1920d5dff62")
+	)
+	(label "POWER_MONITOR_MPPT_ON"
+		(at 45.72 185.42 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "7efa2f3f-b8a4-41a1-81d0-64ca3f1e2175")
+	)
+	(label "SYSOFF"
+		(at 116.84 78.74 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "9316214d-354b-473e-b1db-ee3b36689f61")
+	)
+	(label "PWR_STATUS"
+		(at 99.06 180.34 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ab0cfd77-e577-4a90-b9e5-547b141a73b9")
+	)
+	(label "MPPT_3_STATUS"
+		(at 99.06 187.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ac6a33b5-b2e4-4b2b-aabc-2a5004adf6e8")
+	)
+	(label "CHRG_STATUS"
+		(at 116.84 66.04 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "aef792fe-fa74-4407-939a-ce4932032bb9")
+	)
+	(label "POWER_MONITOR_MPPT_ON"
+		(at 116.84 88.9 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "b4652106-d3c5-463a-bb43-7558a6ddbb86")
+	)
+	(label "MPPT_CLK"
+		(at 116.84 86.36 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "b686260c-e638-495f-afc4-93400b78b6a7")
+	)
+	(label "PWR_STATUS"
+		(at 116.84 68.58 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "bd40e638-f624-4e87-9dfa-7f2f15c49f69")
+	)
+	(label "MPPT_1_STATUS"
+		(at 116.84 71.12 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d4f36d97-57ab-4e61-981a-d9d20c5a5bb1")
+	)
 	(label "DEBUG_LED"
 		(at 95.25 83.82 0)
 		(effects
@@ -2963,6 +3323,26 @@
 			(justify left bottom)
 		)
 		(uuid "db4d5278-2dae-4125-9848-c02fa03df521")
+	)
+	(label "BATT_CHRG_EN"
+		(at 45.72 180.34 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "e6243059-1a02-4c13-841c-34b21f0ef00c")
+	)
+	(label "SYSOFF"
+		(at 45.72 177.8 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fa523f73-5e3a-4b60-82de-83cb7e26d4a9")
 	)
 	(global_label "I2C2_SCL"
 		(shape input)
@@ -3004,6 +3384,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "I2C4_SCL"
+		(shape input)
+		(at 119.38 55.88 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "2a067888-d205-4a2a-b93a-c4b2e391935e")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 107.6258 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 				(hide yes)
 			)
 		)
@@ -3290,6 +3692,50 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "POWER_MONITOR_BATT_ON"
+		(shape input)
+		(at 154.94 30.48 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "b3b8048f-1add-4ca8-be96-63949d237789")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 182.539 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "I2C4_SDA"
+		(shape input)
+		(at 119.38 58.42 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "b8ae1ada-4f91-4334-9e5f-44ff9e864659")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 107.5653 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 				(hide yes)
 			)
 		)
@@ -3830,7 +4276,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 83.82 83.82 270)
+		(at 74.93 83.82 270)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3839,7 +4285,7 @@
 		(dnp no)
 		(uuid "3f2f237d-3ac2-4829-a6ca-08dafdabc3ca")
 		(property "Reference" "R?"
-			(at 83.82 78.994 90)
+			(at 74.93 78.994 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3847,7 +4293,7 @@
 			)
 		)
 		(property "Value" "33"
-			(at 83.82 81.28 90)
+			(at 74.93 81.28 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3855,7 +4301,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 83.82 85.598 90)
+			(at 74.93 85.598 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3864,7 +4310,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 83.82 83.82 0)
+			(at 74.93 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3873,7 +4319,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 83.82 83.82 0)
+			(at 74.93 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3882,7 +4328,7 @@
 			)
 		)
 		(property "MPN" "C25105"
-			(at 83.82 83.82 0)
+			(at 74.93 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3891,7 +4337,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 83.82 83.82 0)
+			(at 74.93 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3900,7 +4346,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 83.82 83.82 0)
+			(at 74.93 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3909,7 +4355,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 83.82 83.82 0)
+			(at 74.93 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3918,7 +4364,7 @@
 			)
 		)
 		(property "Purpose" ""
-			(at 83.82 83.82 0)
+			(at 74.93 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3927,7 +4373,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 83.82 83.82 0)
+			(at 74.93 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4292,7 +4738,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 77.47 86.36 0)
+		(at 68.58 86.36 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4300,7 +4746,7 @@
 		(dnp no)
 		(uuid "55032597-af38-478c-91bd-14160d169a9a")
 		(property "Reference" "#PWR014"
-			(at 77.47 92.71 0)
+			(at 68.58 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4309,7 +4755,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 77.47 90.17 0)
+			(at 68.58 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4317,7 +4763,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 77.47 86.36 0)
+			(at 68.58 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4326,7 +4772,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 77.47 86.36 0)
+			(at 68.58 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4335,7 +4781,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 77.47 86.36 0)
+			(at 68.58 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4972,7 +5418,7 @@
 	)
 	(symbol
 		(lib_id "Device:LED")
-		(at 91.44 83.82 0)
+		(at 82.55 83.82 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4980,7 +5426,7 @@
 		(dnp no)
 		(uuid "af05c646-a521-48d9-82de-281565f592a8")
 		(property "Reference" "D?"
-			(at 90.17 90.17 0)
+			(at 81.28 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4988,7 +5434,7 @@
 			)
 		)
 		(property "Value" "Blue LED"
-			(at 90.17 87.63 0)
+			(at 81.28 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4996,7 +5442,7 @@
 			)
 		)
 		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
-			(at 91.44 83.82 0)
+			(at 82.55 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5005,7 +5451,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 91.44 83.82 0)
+			(at 82.55 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5014,7 +5460,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 91.44 83.82 0)
+			(at 82.55 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5023,7 +5469,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 91.44 83.82 0)
+			(at 82.55 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5032,7 +5478,7 @@
 			)
 		)
 		(property "MPN" "C72041"
-			(at 91.44 83.82 0)
+			(at 82.55 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5041,7 +5487,7 @@
 			)
 		)
 		(property "Manufacturer" "Everlight Elec"
-			(at 91.44 83.82 0)
+			(at 82.55 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5050,7 +5496,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "19-217/BHC-ZL1M2RY/3T"
-			(at 91.44 83.82 0)
+			(at 82.55 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5059,7 +5505,7 @@
 			)
 		)
 		(property "Purpose" "+3.3V Power Indicator"
-			(at 91.44 83.82 0)
+			(at 82.55 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5068,7 +5514,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Extended"
-			(at 91.44 83.82 0)
+			(at 82.55 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5898,8 +6344,8 @@
 		)
 	)
 	(sheet
-		(at 30.48 166.37)
-		(size 30.48 10.16)
+		(at 49.53 175.26)
+		(size 45.72 15.24)
 		(fields_autoplaced yes)
 		(stroke
 			(width 0.1524)
@@ -5910,7 +6356,7 @@
 		)
 		(uuid "978ad03a-2e74-40b7-bfb4-5e1c1e8dadd3")
 		(property "Sheetname" "Charger"
-			(at 30.48 165.6584 0)
+			(at 49.53 174.5484 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5919,13 +6365,103 @@
 			)
 		)
 		(property "Sheetfile" "Charger_Sub.kicad_sch"
-			(at 30.48 177.1146 0)
+			(at 49.53 191.0846 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left top)
 			)
+		)
+		(pin "CHRG_STATUS" input
+			(at 95.25 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "76d8df43-ab09-4cab-874f-2599ef0576c7")
+		)
+		(pin "SYSOFF" input
+			(at 49.53 177.8 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "3a5978a0-a15d-484c-893e-d511df530da5")
+		)
+		(pin "BATT_CHRG_EN" input
+			(at 49.53 180.34 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "12be048b-72c7-434d-909e-33d2105b0d18")
+		)
+		(pin "PWR_STATUS" input
+			(at 95.25 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "f4ec1885-0c50-428d-bd91-110490f0cdf7")
+		)
+		(pin "MPPT_CLK" input
+			(at 49.53 182.88 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "2d45968d-529e-4a80-9d1b-97c29458af29")
+		)
+		(pin "MPPT_1_STATUS" input
+			(at 95.25 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "ffd2b650-a1a3-4688-82ee-6a1f44c77204")
+		)
+		(pin "MPPT_3_STATUS" input
+			(at 95.25 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "53c802d7-7620-4a6c-83f1-c490c4d20d97")
+		)
+		(pin "MPPT_2_STATUS" input
+			(at 95.25 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "b3c709e5-6645-44cf-951a-fcb2cf5064d0")
+		)
+		(pin "POWER_MONITOR_MPPT_ON" input
+			(at 49.53 185.42 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "545fc3de-bd07-40c9-b1b0-2ec292368c8a")
 		)
 		(instances
 			(project "power_board"
