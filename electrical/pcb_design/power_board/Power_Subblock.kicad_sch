@@ -1759,6 +1759,12 @@
 		(uuid "79c823f9-c1d8-426a-8e30-9de8e8197495")
 	)
 	(junction
+		(at 140.97 146.05)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "86c43605-a139-42d3-9c5e-573bfddb605d")
+	)
+	(junction
 		(at 128.27 88.9)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1838,13 +1844,13 @@
 	)
 	(wire
 		(pts
-			(xy 132.08 148.59) (xy 162.56 148.59)
+			(xy 140.97 146.05) (xy 140.97 148.59)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "08959007-ab84-408b-89ac-bc56ede980bc")
+		(uuid "15a4aa1c-02c6-4d8f-9e12-c4a7eec7d27d")
 	)
 	(wire
 		(pts
@@ -2138,6 +2144,16 @@
 	)
 	(wire
 		(pts
+			(xy 140.97 148.59) (xy 132.08 148.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d71b1ec7-9335-4a0c-bc7d-b784f7a3ee99")
+	)
+	(wire
+		(pts
 			(xy 111.76 66.04) (xy 251.46 66.04)
 		)
 		(stroke
@@ -2155,6 +2171,26 @@
 			(type default)
 		)
 		(uuid "e4ec123a-4f6a-44af-b758-2335f68781e4")
+	)
+	(wire
+		(pts
+			(xy 140.97 143.51) (xy 140.97 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ea07d534-549c-4f42-854a-3f6435d9b7e7")
+	)
+	(wire
+		(pts
+			(xy 132.08 146.05) (xy 140.97 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ea99ad00-82f6-474d-b246-c0ec0b727f42")
 	)
 	(wire
 		(pts
@@ -2383,28 +2419,6 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "POWER_MONITOR_BATT_ON"
-		(shape input)
-		(at 132.08 146.05 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "f7e61e70-4ac7-4501-9aae-00ac3d49c464")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 159.679 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
 				(hide yes)
 			)
 		)
@@ -3975,7 +3989,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 162.56 148.59 0)
+		(at 140.97 143.51 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3984,7 +3998,7 @@
 		(fields_autoplaced yes)
 		(uuid "99737172-bb0a-4511-97fe-83d192d12b31")
 		(property "Reference" "#PWR096"
-			(at 162.56 152.4 0)
+			(at 140.97 147.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3993,7 +4007,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 162.56 143.51 0)
+			(at 140.97 138.43 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4001,7 +4015,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 162.56 148.59 0)
+			(at 140.97 143.51 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4010,7 +4024,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 162.56 148.59 0)
+			(at 140.97 143.51 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4019,7 +4033,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 162.56 148.59 0)
+			(at 140.97 143.51 0)
 			(effects
 				(font
 					(size 1.27 1.27)
