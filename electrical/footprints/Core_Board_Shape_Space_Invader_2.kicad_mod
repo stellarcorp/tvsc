@@ -555,11 +555,7 @@
 		(at 5 -77.5)
 		(size 3.6 3.6)
 		(drill 3.2)
-		(layers "*.Cu" "*.Mask" "In3.Cu" "In4.Cu" "In5.Cu" "In6.Cu" "In7.Cu" "In8.Cu"
-			"In9.Cu" "In10.Cu" "In11.Cu" "In12.Cu" "In13.Cu" "In14.Cu" "In15.Cu" "In16.Cu"
-			"In17.Cu" "In18.Cu" "In19.Cu" "In20.Cu" "In21.Cu" "In22.Cu" "In23.Cu"
-			"In24.Cu" "In25.Cu" "In26.Cu" "In27.Cu" "In28.Cu" "In29.Cu" "In30.Cu"
-		)
+		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
 		(uuid "754a71ab-b475-4fd9-9f53-3040ca79e804")
 	)
@@ -579,11 +575,7 @@
 		(at 77.5 -77.5)
 		(size 3.6 3.6)
 		(drill 3.2)
-		(layers "*.Cu" "*.Mask" "In3.Cu" "In4.Cu" "In5.Cu" "In6.Cu" "In7.Cu" "In8.Cu"
-			"In9.Cu" "In10.Cu" "In11.Cu" "In12.Cu" "In13.Cu" "In14.Cu" "In15.Cu" "In16.Cu"
-			"In17.Cu" "In18.Cu" "In19.Cu" "In20.Cu" "In21.Cu" "In22.Cu" "In23.Cu"
-			"In24.Cu" "In25.Cu" "In26.Cu" "In27.Cu" "In28.Cu" "In29.Cu" "In30.Cu"
-		)
+		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
 		(uuid "9e0b11ae-d02e-40b5-a3ad-5692302a9cd5")
 	)
@@ -603,11 +595,7 @@
 		(at 77.5 -5)
 		(size 3.6 3.6)
 		(drill 3.2)
-		(layers "*.Cu" "*.Mask" "In3.Cu" "In4.Cu" "In5.Cu" "In6.Cu" "In7.Cu" "In8.Cu"
-			"In9.Cu" "In10.Cu" "In11.Cu" "In12.Cu" "In13.Cu" "In14.Cu" "In15.Cu" "In16.Cu"
-			"In17.Cu" "In18.Cu" "In19.Cu" "In20.Cu" "In21.Cu" "In22.Cu" "In23.Cu"
-			"In24.Cu" "In25.Cu" "In26.Cu" "In27.Cu" "In28.Cu" "In29.Cu" "In30.Cu"
-		)
+		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
 		(uuid "33328896-9781-4d2d-a851-d66cfc3e8d8a")
 	)
@@ -627,11 +615,7 @@
 		(at 5 -5)
 		(size 3.6 3.6)
 		(drill 3.2)
-		(layers "*.Cu" "*.Mask" "In3.Cu" "In4.Cu" "In5.Cu" "In6.Cu" "In7.Cu" "In8.Cu"
-			"In9.Cu" "In10.Cu" "In11.Cu" "In12.Cu" "In13.Cu" "In14.Cu" "In15.Cu" "In16.Cu"
-			"In17.Cu" "In18.Cu" "In19.Cu" "In20.Cu" "In21.Cu" "In22.Cu" "In23.Cu"
-			"In24.Cu" "In25.Cu" "In26.Cu" "In27.Cu" "In28.Cu" "In29.Cu" "In30.Cu"
-		)
+		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
 		(uuid "f8d9ff6b-fcbd-4e68-be6c-228b9b741ff4")
 	)
@@ -646,5 +630,27 @@
 		(size 5.7 5.7)
 		(layers "B.Cu" "B.Mask")
 		(uuid "4e540474-4d9f-45c5-ba4c-fa562ab4429d")
+	)
+	(model "/home/james/git/tvsc/electrical/3dmodels/ERF8-020-05.0-L-DV-K-TR.step"
+		(offset
+			(xyz 40.25 3.5 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -90 0 0)
+		)
+	)
+	(model "/home/james/git/tvsc/electrical/3dmodels/ERM8-020-02.0-L-DV-P.step"
+		(offset
+			(xyz 40.75 3 -1.6)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 90 0 0)
+		)
 	)
 )
