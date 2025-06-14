@@ -1873,12 +1873,6 @@
 		(uuid "451b1ad2-e3ef-43f6-b1fc-6e4292e28488")
 	)
 	(junction
-		(at 67.31 91.44)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "4c81999f-1009-44cb-83c7-4936759204a5")
-	)
-	(junction
 		(at 67.31 99.06)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1889,12 +1883,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "66bfdab4-9bdd-47b1-8e47-9971a99069b5")
-	)
-	(junction
-		(at 67.31 93.98)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "73f2b42a-965c-4538-9f08-6cf237c9cfc1")
 	)
 	(junction
 		(at 138.43 88.9)
@@ -2630,16 +2618,6 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 91.44) (xy 67.31 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cff3998b-0f32-4c53-bbf9-eb28ff219931")
-	)
-	(wire
-		(pts
 			(xy 146.05 93.98) (xy 154.94 93.98)
 		)
 		(stroke
@@ -2949,7 +2927,7 @@
 		)
 		(uuid "187716ed-c7c6-4286-9e37-eff5f61d1093")
 	)
-	(hierarchical_label "VOUT_1"
+	(hierarchical_label "VOUT"
 		(shape input)
 		(at 252.73 99.06 0)
 		(effects
@@ -2960,7 +2938,7 @@
 		)
 		(uuid "1e55934b-a523-4644-96cb-8f4ce6d725ef")
 	)
-	(hierarchical_label "Solar_Sense_1_-"
+	(hierarchical_label "Solar_Sense_a_-"
 		(shape input)
 		(at 114.3 86.36 180)
 		(effects
@@ -2970,6 +2948,17 @@
 			(justify right)
 		)
 		(uuid "2f79785b-60f2-4aa9-9370-03679d8e7923")
+	)
+	(hierarchical_label "Solar_Sense_b_+"
+		(shape input)
+		(at 67.31 93.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "3da3444a-2c22-42e0-a850-3359d9eed70f")
 	)
 	(hierarchical_label "SDA"
 		(shape input)
@@ -2982,7 +2971,7 @@
 		)
 		(uuid "98ff0de2-318a-46db-a5c2-6396854ad37d")
 	)
-	(hierarchical_label "MPPT_1_STATUS"
+	(hierarchical_label "MPPT_STATUS"
 		(shape input)
 		(at 220.98 101.6 0)
 		(effects
@@ -2993,7 +2982,7 @@
 		)
 		(uuid "b9a06e1d-359d-4306-8f7f-f9b7ab22a54e")
 	)
-	(hierarchical_label "Solar_Sense_1_+"
+	(hierarchical_label "Solar_Sense_a_+"
 		(shape input)
 		(at 67.31 86.36 0)
 		(effects
@@ -3003,6 +2992,17 @@
 			(justify left)
 		)
 		(uuid "d46d89fd-0e95-474a-90b8-8f91c137b64a")
+	)
+	(hierarchical_label "Solar_Sense_b_-"
+		(shape input)
+		(at 67.31 91.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fde3d00d-0179-4d1c-9b64-fb8ea99e2cb8")
 	)
 	(symbol
 		(lib_id "Device:C_Small")
@@ -3308,7 +3308,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2ec011da-b383-4eb3-a5f1-0ae37f64cbf0")
-		(property "Reference" "#PWR?"
+		(property "Reference" "#PWR0102"
 			(at 33.02 167.64 0)
 			(effects
 				(font
@@ -3358,7 +3358,7 @@
 		(instances
 			(project "power_board"
 				(path "/d324a1a4-7fb6-454a-a3df-93208b9871d9/978ad03a-2e74-40b7-bfb4-5e1c1e8dadd3/092d2312-d45f-43f7-851a-7fa3bbb168f5"
-					(reference "#PWR?")
+					(reference "#PWR0102")
 					(unit 1)
 				)
 			)
@@ -3566,7 +3566,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4ba3c39e-cbd0-402b-aaac-86fb5c62557b")
-		(property "Reference" "#PWR?"
+		(property "Reference" "#PWR0103"
 			(at 81.28 140.97 0)
 			(effects
 				(font
@@ -3616,7 +3616,7 @@
 		(instances
 			(project "power_board"
 				(path "/d324a1a4-7fb6-454a-a3df-93208b9871d9/978ad03a-2e74-40b7-bfb4-5e1c1e8dadd3/092d2312-d45f-43f7-851a-7fa3bbb168f5"
-					(reference "#PWR?")
+					(reference "#PWR0103")
 					(unit 1)
 				)
 			)
@@ -3814,7 +3814,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "63786b7d-5f2e-4ef8-9113-f37eb2ebfe78")
-		(property "Reference" "#PWR?"
+		(property "Reference" "#PWR0101"
 			(at 97.79 163.83 0)
 			(effects
 				(font
@@ -3864,7 +3864,7 @@
 		(instances
 			(project "power_board"
 				(path "/d324a1a4-7fb6-454a-a3df-93208b9871d9/978ad03a-2e74-40b7-bfb4-5e1c1e8dadd3/092d2312-d45f-43f7-851a-7fa3bbb168f5"
-					(reference "#PWR?")
+					(reference "#PWR0101")
 					(unit 1)
 				)
 			)
