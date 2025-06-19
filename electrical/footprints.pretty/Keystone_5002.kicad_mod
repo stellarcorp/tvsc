@@ -1,0 +1,227 @@
+(footprint "Keystone_5002"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "5002-1")
+	(tags "Hardware")
+	(property "Reference" "H**"
+		(at 0 0 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "c0a3aa71-45b4-496d-b457-3c2fb00ef7b8")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Value" "5002"
+		(at 5 0 0)
+		(layer "F.SilkS")
+		(uuid "bbc2e5e5-d47c-4dfa-ab59-019745c9067f")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "7aed1a9a-2cfc-462e-b191-f7d6fea56160")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "107844fe-736a-44f5-a8ba-9b7a3a9af054")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "aadd5f4e-81cd-47a5-b7d1-e71bf5079b52")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_line
+		(start -1.27 0)
+		(end -1.27 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "1e122d8d-ea30-4013-ba88-3cf4a505966d")
+	)
+	(fp_line
+		(start 1.27 0)
+		(end 1.27 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "e301b06b-23bd-481c-a233-a23fd3c790c8")
+	)
+	(fp_arc
+		(start -1.27 0)
+		(mid 0 -1.27)
+		(end 1.27 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "95240dfe-277e-4f8a-98fc-a5b68ed5b43c")
+	)
+	(fp_arc
+		(start 1.27 0)
+		(mid 0 1.27)
+		(end -1.27 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "523daee1-cd35-4773-9569-8a7faa60c0f6")
+	)
+	(fp_line
+		(start -2 -2)
+		(end 2 -2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "e699f4d3-91a7-4c50-8d5e-7448648f4032")
+	)
+	(fp_line
+		(start -2 2)
+		(end -2 -2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "acea5b87-c262-4377-a840-5b0978c9e7cd")
+	)
+	(fp_line
+		(start 2 -2)
+		(end 2 2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "719a4a9d-93bc-46e2-9b15-90cf2fce8d16")
+	)
+	(fp_line
+		(start 2 2)
+		(end -2 2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "7ad09183-0f1d-4f95-bca3-b272f9d9912c")
+	)
+	(fp_line
+		(start -1.27 0)
+		(end -1.27 0)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "886b564e-0807-41b7-bb0a-7b85c5c50c38")
+	)
+	(fp_line
+		(start 1.27 0)
+		(end 1.27 0)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "a8c453fa-e3b1-43a8-a8b3-ae894cad3513")
+	)
+	(fp_arc
+		(start -1.27 0)
+		(mid 0 -1.27)
+		(end 1.27 0)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "49b35b3f-9b4b-4107-a068-0b8e2657949d")
+	)
+	(fp_arc
+		(start 1.27 0)
+		(mid 0 1.27)
+		(end -1.27 0)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "cddefe53-803f-4ce8-a2e9-613f4546a391")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "5f1e886f-be73-4bdf-b74a-cca099d48f41")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(pad "1" thru_hole circle
+		(at 0 0)
+		(size 1.53 1.53)
+		(drill 1.02)
+		(layers "*.Cu" "*.Mask" "In1.Cu" "In2.Cu" "In3.Cu" "In4.Cu" "In5.Cu" "In6.Cu"
+			"In7.Cu" "In8.Cu" "In9.Cu" "In10.Cu" "In11.Cu" "In12.Cu" "In13.Cu" "In14.Cu"
+			"In15.Cu" "In16.Cu" "In17.Cu" "In18.Cu" "In19.Cu" "In20.Cu" "In21.Cu"
+			"In22.Cu" "In23.Cu" "In24.Cu" "In25.Cu" "In26.Cu" "In27.Cu" "In28.Cu"
+			"In29.Cu" "In30.Cu"
+		)
+		(remove_unused_layers no)
+		(uuid "81a71f51-753f-46bb-8ecf-0bbb12e5b788")
+	)
+	(model "${KIPRJMOD}/../../3dmodels/Keystone_5002.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -90 0 0)
+		)
+	)
+)
