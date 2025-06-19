@@ -2229,12 +2229,160 @@
 				)
 			)
 		)
+		(symbol "tvsc_symbols:Four_Mounting_Hole_PCB"
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "PCB"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" ""
+				(at 0 6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Footprint" "footprints:Core_Board_Shape_Space_Invader_2"
+				(at 0 -7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Four_Mounting_Hole_PCB_0_1"
+				(rectangle
+					(start -8.89 5.08)
+					(end 8.89 -5.08)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Four_Mounting_Hole_PCB_1_1"
+				(pin power_in line
+					(at -11.43 2.54 0)
+					(length 2.54)
+					(name "MH1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MH1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 11.43 2.54 180)
+					(length 2.54)
+					(name "MH2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MH2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -11.43 -2.54 0)
+					(length 2.54)
+					(name "MH3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MH3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 11.43 -2.54 180)
+					(length 2.54)
+					(name "MH4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MH4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+	(junction
+		(at 280.67 24.13)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0e698347-986d-40fe-a7b6-b84861f270f4")
 	)
 	(junction
 		(at 96.52 48.26)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "17afe015-fa88-4b56-ab5a-13a701bd7eb0")
+	)
+	(junction
+		(at 257.81 24.13)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1812b43b-2782-4fde-b65e-26c3d9f6ecbb")
 	)
 	(junction
 		(at 92.71 39.37)
@@ -2283,6 +2431,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "df4191c9-6574-4321-9a86-781d5625b3df")
+	)
+	(junction
+		(at 269.24 31.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f132d204-4849-4305-ae94-09d43fb580ff")
 	)
 	(junction
 		(at 137.16 21.59)
@@ -2516,6 +2670,16 @@
 	)
 	(wire
 		(pts
+			(xy 269.24 31.75) (xy 280.67 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "266a1585-42e5-4abb-a9ae-e8af4e5d15c9")
+	)
+	(wire
+		(pts
 			(xy 45.72 133.35) (xy 45.72 134.62)
 		)
 		(stroke
@@ -2543,6 +2707,16 @@
 			(type default)
 		)
 		(uuid "2a98c45b-638b-45d6-b599-d0cbbc484b26")
+	)
+	(wire
+		(pts
+			(xy 280.67 19.05) (xy 280.67 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2d199ecb-60ef-4ccc-96ff-51e86eb38616")
 	)
 	(wire
 		(pts
@@ -2623,6 +2797,16 @@
 			(type default)
 		)
 		(uuid "54ce9efb-fa26-485d-a5b7-136c12aea6d4")
+	)
+	(wire
+		(pts
+			(xy 280.67 31.75) (xy 280.67 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5530daf0-27d2-47e1-9bb8-c04678a79c1d")
 	)
 	(wire
 		(pts
@@ -2816,6 +3000,16 @@
 	)
 	(wire
 		(pts
+			(xy 257.81 31.75) (xy 269.24 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a514639a-4700-46f6-8260-b7f04dc60d60")
+	)
+	(wire
+		(pts
 			(xy 96.52 48.26) (xy 100.33 48.26)
 		)
 		(stroke
@@ -2946,6 +3140,16 @@
 	)
 	(wire
 		(pts
+			(xy 257.81 19.05) (xy 257.81 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e069e086-4744-4e2e-9fd0-10c83ac3b45c")
+	)
+	(wire
+		(pts
 			(xy 77.47 82.55) (xy 80.01 82.55)
 		)
 		(stroke
@@ -3003,6 +3207,16 @@
 			(type default)
 		)
 		(uuid "f1b13978-333b-4a9d-81c6-f5e8b4fc46d3")
+	)
+	(wire
+		(pts
+			(xy 257.81 24.13) (xy 257.81 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fcf530e1-3319-4671-85f3-b0800cf1fbc9")
 	)
 	(wire
 		(pts
@@ -3584,7 +3798,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "020d583a-472b-478a-b987-242b89c57447")
-		(property "Reference" "R?"
+		(property "Reference" "R2"
 			(at 102.87 43.18 0)
 			(effects
 				(font
@@ -3683,7 +3897,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "R?")
+					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -3698,7 +3912,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0827958b-2aa9-424b-a08e-11da55cc6c69")
-		(property "Reference" "D?"
+		(property "Reference" "D1"
 			(at 90.17 88.9 0)
 			(effects
 				(font
@@ -3804,7 +4018,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "D?")
+					(reference "D1")
 					(unit 1)
 				)
 			)
@@ -3820,7 +4034,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0d5629d6-cbb4-4dcc-a94d-e1659fb38101")
-		(property "Reference" "R?"
+		(property "Reference" "R1"
 			(at 113.03 22.86 0)
 			(effects
 				(font
@@ -3919,7 +4133,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "R?")
+					(reference "R1")
 					(unit 1)
 				)
 			)
@@ -3935,7 +4149,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "25c82655-3885-4d39-a345-1dc49dba724c")
-		(property "Reference" "C?"
+		(property "Reference" "C1"
 			(at 68.58 31.75 0)
 			(effects
 				(font
@@ -4034,7 +4248,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "C?")
+					(reference "C1")
 					(unit 1)
 				)
 			)
@@ -4049,7 +4263,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "26b9387d-93bb-43c6-ade6-21ace4a30b04")
-		(property "Reference" "#PWR012"
+		(property "Reference" "#PWR02"
 			(at 115.57 24.13 0)
 			(effects
 				(font
@@ -4099,7 +4313,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "#PWR012")
+					(reference "#PWR02")
 					(unit 1)
 				)
 			)
@@ -4114,7 +4328,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "43867024-b3f4-466b-be60-add3051c4a25")
-		(property "Reference" "#PWR09"
+		(property "Reference" "#PWR04"
 			(at 64.77 43.18 0)
 			(effects
 				(font
@@ -4164,7 +4378,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "#PWR09")
+					(reference "#PWR04")
 					(unit 1)
 				)
 			)
@@ -4181,7 +4395,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4514a958-1123-48a6-8dd0-680752101cf2")
-		(property "Reference" "C?"
+		(property "Reference" "C2"
 			(at 88.9 43.18 0)
 			(effects
 				(font
@@ -4280,7 +4494,148 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "C?")
+					(reference "C2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 269.24 31.75 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4aa0b4da-b117-4d7c-b58c-4ee377744cfa")
+		(property "Reference" "#PWR03"
+			(at 269.24 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 269.24 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 269.24 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 269.24 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 269.24 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "9c98b90b-a3b5-4152-bcc1-ebfc11398bc3")
+		)
+		(instances
+			(project ""
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
+					(reference "#PWR03")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "tvsc_symbols:Four_Mounting_Hole_PCB")
+		(at 269.24 21.59 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "64a37255-329c-40ab-9b84-ce8b01536d2d")
+		(property "Reference" "PCB1"
+			(at 269.24 13.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "~"
+			(at 269.24 15.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "footprints:Core_Board_Shape_Space_Invader_2"
+			(at 269.24 29.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 269.24 15.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 269.24 21.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "MH2"
+			(uuid "461f33dc-3e97-4561-8d5b-c451e2d251c4")
+		)
+		(pin "MH4"
+			(uuid "50e20535-2927-45e0-8109-dd33b29a8580")
+		)
+		(pin "MH1"
+			(uuid "55b84c38-61c9-465b-b6ae-3324e39d67c4")
+		)
+		(pin "MH3"
+			(uuid "66be6f1d-23da-4220-8965-dd84b2812d34")
+		)
+		(instances
+			(project ""
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
+					(reference "PCB1")
 					(unit 1)
 				)
 			)
@@ -4296,7 +4651,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "72dc1ccb-2075-4535-b808-f517be2fd333")
-		(property "Reference" "R?"
+		(property "Reference" "R5"
 			(at 83.82 77.724 90)
 			(effects
 				(font
@@ -4402,7 +4757,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "R?")
+					(reference "R5")
 					(unit 1)
 				)
 			)
@@ -4417,7 +4772,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "7c582af2-3fd2-4b2d-83aa-6a6f0603f3f3")
-		(property "Reference" "#PWR010"
+		(property "Reference" "#PWR07"
 			(at 77.47 91.44 0)
 			(effects
 				(font
@@ -4467,7 +4822,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "#PWR010")
+					(reference "#PWR07")
 					(unit 1)
 				)
 			)
@@ -4483,7 +4838,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "93a96c2d-7943-4989-8fc4-5e38af1eca19")
-		(property "Reference" "R?"
+		(property "Reference" "R9"
 			(at 181.61 130.81 90)
 			(effects
 				(font
@@ -4580,7 +4935,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "R?")
+					(reference "R9")
 					(unit 1)
 				)
 			)
@@ -4595,7 +4950,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "95bea762-3446-4e35-bdc4-ba8dae7d731d")
-		(property "Reference" "R?"
+		(property "Reference" "R6"
 			(at 181.61 95.25 90)
 			(effects
 				(font
@@ -4692,7 +5047,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "R?")
+					(reference "R6")
 					(unit 1)
 				)
 			)
@@ -4708,7 +5063,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "97e59f11-0d7a-4c1e-955c-a27182c7177c")
-		(property "Reference" "R?"
+		(property "Reference" "R4"
 			(at 172.72 81.28 90)
 			(effects
 				(font
@@ -4805,7 +5160,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "R?")
+					(reference "R4")
 					(unit 1)
 				)
 			)
@@ -4821,7 +5176,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9e7370db-6c79-44e9-acc7-3d813ba1cf82")
-		(property "Reference" "U?"
+		(property "Reference" "U1"
 			(at 141.8941 118.11 0)
 			(effects
 				(font
@@ -5062,7 +5417,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "U?")
+					(reference "U1")
 					(unit 1)
 				)
 			)
@@ -5078,7 +5433,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9edbbdb4-65e8-4899-96c2-5a7112473f37")
-		(property "Reference" "R?"
+		(property "Reference" "R3"
 			(at 215.9 64.77 0)
 			(effects
 				(font
@@ -5177,7 +5532,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "R?")
+					(reference "R3")
 					(unit 1)
 				)
 			)
@@ -5193,7 +5548,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "9f4b3927-8307-4567-b95b-f7bbdf1ccbd6")
-		(property "Reference" "R?"
+		(property "Reference" "R7"
 			(at 181.61 107.95 90)
 			(effects
 				(font
@@ -5290,7 +5645,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "R?")
+					(reference "R7")
 					(unit 1)
 				)
 			)
@@ -5305,7 +5660,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a170d00a-9fc1-4663-8cd1-4c8638992c7f")
-		(property "Reference" "#PWR016"
+		(property "Reference" "#PWR06"
 			(at 213.36 66.04 0)
 			(effects
 				(font
@@ -5355,7 +5710,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "#PWR016")
+					(reference "#PWR06")
 					(unit 1)
 				)
 			)
@@ -5370,7 +5725,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a3d46a1a-954c-4a52-95c4-e61740d1a605")
-		(property "Reference" "#PWR013"
+		(property "Reference" "#PWR01"
 			(at 134.62 22.86 0)
 			(effects
 				(font
@@ -5420,7 +5775,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "#PWR013")
+					(reference "#PWR01")
 					(unit 1)
 				)
 			)
@@ -5436,7 +5791,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b2724153-a3ba-4969-ab97-8039d9d09951")
-		(property "Reference" "R?"
+		(property "Reference" "R8"
 			(at 173.99 124.46 90)
 			(effects
 				(font
@@ -5533,7 +5888,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "R?")
+					(reference "R8")
 					(unit 1)
 				)
 			)
@@ -5548,7 +5903,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b39d4472-15a1-438c-88ce-4909981c655a")
-		(property "Reference" "#PWR011"
+		(property "Reference" "#PWR05"
 			(at 96.52 54.61 0)
 			(effects
 				(font
@@ -5598,7 +5953,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "#PWR011")
+					(reference "#PWR05")
 					(unit 1)
 				)
 			)
@@ -5613,7 +5968,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "cf5c32dd-b508-47e8-9b64-fa1c843468dc")
-		(property "Reference" "#PWR014"
+		(property "Reference" "#PWR08"
 			(at 137.16 124.46 0)
 			(effects
 				(font
@@ -5663,7 +6018,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
-					(reference "#PWR014")
+					(reference "#PWR08")
 					(unit 1)
 				)
 			)

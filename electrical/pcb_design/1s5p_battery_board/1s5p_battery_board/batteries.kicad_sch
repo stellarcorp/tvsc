@@ -5,15 +5,15 @@
 	(uuid "76f48529-771c-4ad4-b109-947aa681306b")
 	(paper "A4")
 	(lib_symbols
-		(symbol "Device:Battery_Cell"
+		(symbol "Battery_Cell_1"
 			(pin_numbers hide)
 			(pin_names
 				(offset 0) hide)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "BT"
-				(at 2.54 2.54 0)
+			(property "Reference" "BT1"
+				(at 3.81 3.1116 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -22,7 +22,7 @@
 				)
 			)
 			(property "Value" "Battery_Cell"
-				(at 2.54 0 0)
+				(at 3.81 0.5716 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -30,7 +30,7 @@
 					(justify left)
 				)
 			)
-			(property "Footprint" ""
+			(property "Footprint" "footprints:BAT_1043"
 				(at 0 1.524 90)
 				(effects
 					(font
@@ -66,7 +66,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "Battery_Cell_0_1"
+			(symbol "Battery_Cell_1_0_1"
 				(rectangle
 					(start -2.286 1.778)
 					(end 2.286 1.524)
@@ -138,25 +138,7 @@
 					)
 				)
 			)
-			(symbol "Battery_Cell_1_1"
-				(pin passive line
-					(at 0 5.08 270)
-					(length 2.54)
-					(name "+"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
+			(symbol "Battery_Cell_1_1_1"
 				(pin passive line
 					(at 0 -2.54 90)
 					(length 2.54)
@@ -167,7 +149,25 @@
 							)
 						)
 					)
-					(number "2"
+					(number "N"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name "+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -306,7 +306,7 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "U"
+			(property "Reference" "U3"
 				(at 30.48 10.16 0)
 				(effects
 					(font
@@ -606,7 +606,117 @@
 						)
 					)
 				)
-				(pin power_out line
+				(pin input line
+					(at 0 -7.62 0)
+					(length 7.62)
+					(name "SM_CLK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 0 -10.16 0)
+					(length 7.62)
+					(name "SM_DATA"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 0 -12.7 0)
+					(length 7.62)
+					(name "ADDRSEL"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 0 -15.24 0)
+					(length 7.62)
+					(name "SENSE3-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 0 -17.78 0)
+					(length 7.62)
+					(name "SENSE3+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 60.96 -20.32 180)
+					(length 7.62)
+					(name "SENSE4-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "PAC1932T-I_JQ_1_1"
+				(pin passive line
 					(at 0 -5.08 0)
 					(length 7.62)
 					(name "GND"
@@ -617,6 +727,315 @@
 						)
 					)
 					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "PAC1932T-I_JQ_1"
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U2"
+				(at 30.48 10.16 0)
+				(effects
+					(font
+						(size 1.524 1.524)
+					)
+				)
+			)
+			(property "Value" "PAC1932T-I/JQ"
+				(at 30.48 7.62 0)
+				(effects
+					(font
+						(size 1.524 1.524)
+					)
+				)
+			)
+			(property "Footprint" "UQFN16_JQ_MCH"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(italic yes)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "PAC1932T-I/JQ"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(italic yes)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_locked" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "PAC1932T-I/JQ"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "UQFN16_JQ_MCH UQFN16_JQ_MCH-M UQFN16_JQ_MCH-L"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "PAC1932T-I_JQ_1_0_1"
+				(polyline
+					(pts
+						(xy 7.62 -25.4) (xy 53.34 -25.4)
+					)
+					(stroke
+						(width 0.127)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 7.62 5.08) (xy 7.62 -25.4)
+					)
+					(stroke
+						(width 0.127)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 53.34 -25.4) (xy 53.34 5.08)
+					)
+					(stroke
+						(width 0.127)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 53.34 5.08) (xy 7.62 5.08)
+					)
+					(stroke
+						(width 0.127)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin bidirectional line
+					(at 0 0 0)
+					(length 7.62)
+					(name "SLOW/*ALERT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 60.96 -17.78 180)
+					(length 7.62)
+					(name "SENSE4+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 60.96 -15.24 180)
+					(length 7.62)
+					(name "SENSE1+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 60.96 -12.7 180)
+					(length 7.62)
+					(name "SENSE1-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 60.96 -10.16 180)
+					(length 7.62)
+					(name "SENSE2+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 60.96 -7.62 180)
+					(length 7.62)
+					(name "SENSE2-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 60.96 -5.08 180)
+					(length 7.62)
+					(name "VDDI/O"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 60.96 -2.54 180)
+					(length 7.62)
+					(name "*PWRDN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 60.96 0 180)
+					(length 7.62)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "17"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 -2.54 0)
+					(length 7.62)
+					(name "VDD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -725,6 +1144,26 @@
 						)
 					)
 					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "PAC1932T-I_JQ_1_1_1"
+				(pin passive line
+					(at 0 -5.08 0)
+					(length 7.62)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1644,16 +2083,6 @@
 	)
 	(wire
 		(pts
-			(xy 71.12 120.65) (xy 71.12 128.27)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2d19d88a-ef3f-498d-b28c-4b94a6c1c6ca")
-	)
-	(wire
-		(pts
 			(xy 234.95 133.35) (xy 227.33 133.35)
 		)
 		(stroke
@@ -1671,6 +2100,16 @@
 			(type default)
 		)
 		(uuid "305ab886-cb92-4a51-9c1d-bfbc34a8ebd8")
+	)
+	(wire
+		(pts
+			(xy 71.12 120.65) (xy 71.12 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "31fe8028-5b3d-4c2c-99a5-21c7615b16e0")
 	)
 	(wire
 		(pts
@@ -2714,7 +3153,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "008c586d-0c5c-4de2-a29d-a4adc239ed80")
-		(property "Reference" "R?"
+		(property "Reference" "R15"
 			(at 62.23 72.39 90)
 			(effects
 				(font
@@ -2730,7 +3169,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 62.23 77.47 0)
 			(effects
 				(font
@@ -2766,7 +3205,7 @@
 		(instances
 			(project ""
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R15")
 					(unit 1)
 				)
 			)
@@ -2782,7 +3221,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "047ecaeb-b298-4184-8e99-6c199f0157c9")
-		(property "Reference" "R?"
+		(property "Reference" "R17"
 			(at 140.97 72.39 90)
 			(effects
 				(font
@@ -2798,7 +3237,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 140.97 77.47 0)
 			(effects
 				(font
@@ -2834,7 +3273,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R17")
 					(unit 1)
 				)
 			)
@@ -2850,7 +3289,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0a2540e7-055c-46a3-9d42-e791000267d6")
-		(property "Reference" "R?"
+		(property "Reference" "R10"
 			(at 77.47 50.7999 0)
 			(effects
 				(font
@@ -2859,7 +3298,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R_Small"
+		(property "Value" "10m"
 			(at 77.47 53.3399 0)
 			(effects
 				(font
@@ -2868,7 +3307,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0603_1608Metric"
 			(at 74.93 52.07 0)
 			(effects
 				(font
@@ -2904,7 +3343,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R10")
 					(unit 1)
 				)
 			)
@@ -2920,7 +3359,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0cae35e1-ca4b-4789-9b28-419801b36b96")
-		(property "Reference" "#PWR08"
+		(property "Reference" "#PWR014"
 			(at 234.95 127 0)
 			(effects
 				(font
@@ -2970,77 +3409,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "#PWR08")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Battery_Cell")
-		(at 114.3 62.23 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "0cf05224-8663-4d25-9fe9-1bd38713c031")
-		(property "Reference" "BT?"
-			(at 118.11 59.1184 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Battery_Cell"
-			(at 118.11 61.6584 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 114.3 60.706 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 114.3 60.706 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Single-cell battery"
-			(at 114.3 62.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "91237d5a-a381-4241-a6e5-3e8009ae6c65")
-		)
-		(pin "1"
-			(uuid "15282c03-dca1-4453-a08e-493ccbfbf862")
-		)
-		(instances
-			(project "1s5p_battery_board"
-				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "BT?")
+					(reference "#PWR014")
 					(unit 1)
 				)
 			)
@@ -3056,7 +3425,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1045c386-9fce-435c-9e74-112e2084fcde")
-		(property "Reference" "R?"
+		(property "Reference" "R24"
 			(at 222.25 81.2799 0)
 			(effects
 				(font
@@ -3074,7 +3443,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 224.79 82.55 0)
 			(effects
 				(font
@@ -3110,7 +3479,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R24")
 					(unit 1)
 				)
 			)
@@ -3126,7 +3495,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1aa28fa3-ce2d-49e8-9967-517d5ea0ce56")
-		(property "Reference" "#PWR04"
+		(property "Reference" "#PWR011"
 			(at 71.12 124.46 0)
 			(effects
 				(font
@@ -3176,7 +3545,7 @@
 		(instances
 			(project ""
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "#PWR04")
+					(reference "#PWR011")
 					(unit 1)
 				)
 			)
@@ -3192,7 +3561,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2d904608-56aa-4229-9b77-229ef9244a32")
-		(property "Reference" "R?"
+		(property "Reference" "R21"
 			(at 104.14 81.2799 0)
 			(effects
 				(font
@@ -3210,7 +3579,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 106.68 82.55 0)
 			(effects
 				(font
@@ -3246,7 +3615,78 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R21")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_name "Battery_Cell_1")
+		(lib_id "Device:Battery_Cell")
+		(at 232.41 62.23 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "31627b9e-355c-4533-b51c-bff85a1bd3c3")
+		(property "Reference" "BT5"
+			(at 236.22 59.1184 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Battery_Cell"
+			(at 236.22 61.6584 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:BAT_1043"
+			(at 232.41 60.706 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 232.41 60.706 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 232.41 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "N"
+			(uuid "1ea99ae5-218e-4905-9784-351f01618d45")
+		)
+		(pin "P"
+			(uuid "f19df712-a05f-4dbb-a317-241168e277d2")
+		)
+		(instances
+			(project "1s5p_battery_board"
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
+					(reference "BT5")
 					(unit 1)
 				)
 			)
@@ -3262,7 +3702,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "32b1f688-0b6a-4f30-bd09-37912da6b91d")
-		(property "Reference" "Q?"
+		(property "Reference" "Q3"
 			(at 157.48 76.1999 0)
 			(effects
 				(font
@@ -3280,7 +3720,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_TO_SOT_SMD:TO-263-3_TabPin2"
 			(at 156.21 74.93 0)
 			(effects
 				(font
@@ -3346,7 +3786,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "Q?")
+					(reference "Q3")
 					(unit 1)
 				)
 			)
@@ -3362,7 +3802,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "38e9dc2a-b59c-4737-a9b5-e3e97eb0317e")
-		(property "Reference" "#PWR06"
+		(property "Reference" "#PWR012"
 			(at 157.48 124.46 0)
 			(effects
 				(font
@@ -3412,7 +3852,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "#PWR06")
+					(reference "#PWR012")
 					(unit 1)
 				)
 			)
@@ -3428,7 +3868,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4088e6a6-0e25-4c16-999e-293a83e61747")
-		(property "Reference" "#PWR05"
+		(property "Reference" "#PWR013"
 			(at 148.59 127 0)
 			(effects
 				(font
@@ -3478,7 +3918,7 @@
 		(instances
 			(project ""
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "#PWR05")
+					(reference "#PWR013")
 					(unit 1)
 				)
 			)
@@ -3494,7 +3934,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "45b11f50-f170-4f5c-a1b3-f4d4f02f3256")
-		(property "Reference" "R?"
+		(property "Reference" "R19"
 			(at 219.71 72.39 90)
 			(effects
 				(font
@@ -3510,7 +3950,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 219.71 77.47 0)
 			(effects
 				(font
@@ -3546,7 +3986,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R19")
 					(unit 1)
 				)
 			)
@@ -3562,7 +4002,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "49876501-356f-41b7-983d-6d155253ed18")
-		(property "Reference" "R?"
+		(property "Reference" "R18"
 			(at 180.34 72.39 90)
 			(effects
 				(font
@@ -3578,7 +4018,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 180.34 77.47 0)
 			(effects
 				(font
@@ -3614,77 +4054,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Battery_Cell")
-		(at 153.67 62.23 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "4be05810-c774-418b-8150-1ec9640836e7")
-		(property "Reference" "BT?"
-			(at 157.48 59.1184 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Battery_Cell"
-			(at 157.48 61.6584 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 153.67 60.706 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 153.67 60.706 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Single-cell battery"
-			(at 153.67 62.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "6767d859-3a87-4faa-a6dd-4ff6a5d78d72")
-		)
-		(pin "1"
-			(uuid "5266f2af-184e-48b2-9073-468a5ccb0fef")
-		)
-		(instances
-			(project "1s5p_battery_board"
-				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "BT?")
+					(reference "R18")
 					(unit 1)
 				)
 			)
@@ -3700,7 +4070,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "51f4f11c-9bc6-400a-a83f-3b9fbbd8d6cb")
-		(property "Reference" "Q?"
+		(property "Reference" "Q5"
 			(at 236.22 76.1999 0)
 			(effects
 				(font
@@ -3718,7 +4088,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_TO_SOT_SMD:TO-263-3_TabPin2"
 			(at 234.95 74.93 0)
 			(effects
 				(font
@@ -3784,7 +4154,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "Q?")
+					(reference "Q5")
 					(unit 1)
 				)
 			)
@@ -3800,7 +4170,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5e44baeb-a959-4966-946e-f38e66e66e05")
-		(property "Reference" "Q?"
+		(property "Reference" "Q2"
 			(at 118.11 76.1999 0)
 			(effects
 				(font
@@ -3818,7 +4188,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_TO_SOT_SMD:TO-263-3_TabPin2"
 			(at 116.84 74.93 0)
 			(effects
 				(font
@@ -3884,7 +4254,78 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "Q?")
+					(reference "Q2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_name "Battery_Cell_1")
+		(lib_id "Device:Battery_Cell")
+		(at 153.67 62.23 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "61304160-1ecc-4981-a19f-4c037851a514")
+		(property "Reference" "BT3"
+			(at 157.48 59.1184 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Battery_Cell"
+			(at 157.48 61.6584 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:BAT_1043"
+			(at 153.67 60.706 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 153.67 60.706 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 153.67 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "N"
+			(uuid "6db40c32-5184-4eb4-ae96-ad02637f5658")
+		)
+		(pin "P"
+			(uuid "c825d66a-db4b-4e49-a118-09e7f99dc61e")
+		)
+		(instances
+			(project "1s5p_battery_board"
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
+					(reference "BT3")
 					(unit 1)
 				)
 			)
@@ -3900,7 +4341,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7a568916-2f94-47b5-a604-1f7ee6dda24d")
-		(property "Reference" "R?"
+		(property "Reference" "R25"
 			(at 77.47 123.19 90)
 			(effects
 				(font
@@ -3916,7 +4357,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 77.47 128.27 0)
 			(effects
 				(font
@@ -3952,7 +4393,7 @@
 		(instances
 			(project ""
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R25")
 					(unit 1)
 				)
 			)
@@ -3968,7 +4409,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7c9da93a-6292-46f1-82ed-c7b7634860f2")
-		(property "Reference" "R?"
+		(property "Reference" "R14"
 			(at 234.95 50.7999 0)
 			(effects
 				(font
@@ -3977,7 +4418,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R_Small"
+		(property "Value" "10m"
 			(at 234.95 53.3399 0)
 			(effects
 				(font
@@ -3986,7 +4427,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0603_1608Metric"
 			(at 232.41 52.07 0)
 			(effects
 				(font
@@ -4022,7 +4463,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R14")
 					(unit 1)
 				)
 			)
@@ -4038,7 +4479,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7f0c5331-c7c2-4dad-88df-f2180f8d4ed5")
-		(property "Reference" "R?"
+		(property "Reference" "R26"
 			(at 163.83 123.19 90)
 			(effects
 				(font
@@ -4054,7 +4495,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 163.83 128.27 0)
 			(effects
 				(font
@@ -4090,7 +4531,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R26")
 					(unit 1)
 				)
 			)
@@ -4106,7 +4547,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7ff1bf5a-33e1-464e-9c50-e06840925dec")
-		(property "Reference" "#PWR07"
+		(property "Reference" "#PWR016"
 			(at 157.48 153.67 0)
 			(effects
 				(font
@@ -4156,7 +4597,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "#PWR07")
+					(reference "#PWR016")
 					(unit 1)
 				)
 			)
@@ -4172,7 +4613,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8171ed95-9e51-4758-bdab-fc6e4a05ab62")
-		(property "Reference" "R?"
+		(property "Reference" "R11"
 			(at 116.84 50.7999 0)
 			(effects
 				(font
@@ -4181,7 +4622,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R_Small"
+		(property "Value" "10m"
 			(at 116.84 53.3399 0)
 			(effects
 				(font
@@ -4190,7 +4631,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0603_1608Metric"
 			(at 114.3 52.07 0)
 			(effects
 				(font
@@ -4226,7 +4667,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R11")
 					(unit 1)
 				)
 			)
@@ -4242,7 +4683,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8191cd45-570f-4ec7-97e9-9a3473aab523")
-		(property "Reference" "#PWR01"
+		(property "Reference" "#PWR015"
 			(at 71.12 153.67 0)
 			(effects
 				(font
@@ -4292,77 +4733,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "#PWR01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Battery_Cell")
-		(at 193.04 62.23 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "8a24f570-2155-41ff-a1b7-41c117544671")
-		(property "Reference" "BT?"
-			(at 196.85 59.1184 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Battery_Cell"
-			(at 196.85 61.6584 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 193.04 60.706 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 193.04 60.706 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Single-cell battery"
-			(at 193.04 62.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "2efd411b-7201-4f94-a6f0-4e73426dfc40")
-		)
-		(pin "1"
-			(uuid "602bd1e2-2bb4-4d67-bf0c-f838986439a2")
-		)
-		(instances
-			(project "1s5p_battery_board"
-				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "BT?")
+					(reference "#PWR015")
 					(unit 1)
 				)
 			)
@@ -4378,7 +4749,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9c9f173c-d325-47f7-b4f2-a9f7122c1b17")
-		(property "Reference" "#PWR02"
+		(property "Reference" "#PWR09"
 			(at 153.67 41.91 0)
 			(effects
 				(font
@@ -4428,7 +4799,7 @@
 		(instances
 			(project ""
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "#PWR02")
+					(reference "#PWR09")
 					(unit 1)
 				)
 			)
@@ -4444,7 +4815,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a8ed02d9-a56f-4541-a5db-ef194c9ae3b0")
-		(property "Reference" "#PWR03"
+		(property "Reference" "#PWR010"
 			(at 153.67 102.87 0)
 			(effects
 				(font
@@ -4494,7 +4865,7 @@
 		(instances
 			(project ""
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "#PWR03")
+					(reference "#PWR010")
 					(unit 1)
 				)
 			)
@@ -4510,7 +4881,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "af108796-32d8-49f6-8137-9b938965f894")
-		(property "Reference" "R?"
+		(property "Reference" "R20"
 			(at 64.77 81.2799 0)
 			(effects
 				(font
@@ -4528,7 +4899,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 67.31 82.55 0)
 			(effects
 				(font
@@ -4564,7 +4935,7 @@
 		(instances
 			(project ""
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R20")
 					(unit 1)
 				)
 			)
@@ -4579,7 +4950,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b5ae32b0-692f-4a32-b753-c616595fb2e6")
-		(property "Reference" "U?"
+		(property "Reference" "U3"
 			(at 196.85 118.11 0)
 			(effects
 				(font
@@ -4595,7 +4966,7 @@
 				)
 			)
 		)
-		(property "Footprint" "UQFN16_JQ_MCH"
+		(property "Footprint" "footprints:QFN16"
 			(at 166.37 128.27 0)
 			(effects
 				(font
@@ -4678,7 +5049,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "U?")
+					(reference "U3")
 					(unit 1)
 				)
 			)
@@ -4694,7 +5065,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ba7894fd-d34a-4fb1-b335-ca0a0ac6f39b")
-		(property "Reference" "R?"
+		(property "Reference" "R12"
 			(at 156.21 50.7999 0)
 			(effects
 				(font
@@ -4703,7 +5074,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R_Small"
+		(property "Value" "10m"
 			(at 156.21 53.3399 0)
 			(effects
 				(font
@@ -4712,7 +5083,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0603_1608Metric"
 			(at 153.67 52.07 0)
 			(effects
 				(font
@@ -4748,77 +5119,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Battery_Cell")
-		(at 232.41 62.23 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "c018a5a0-77b8-44b5-b71e-c90667952092")
-		(property "Reference" "BT?"
-			(at 236.22 59.1184 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Battery_Cell"
-			(at 236.22 61.6584 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 232.41 60.706 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 232.41 60.706 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Single-cell battery"
-			(at 232.41 62.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "4ef10c8d-4c9d-4a93-ad60-24928f8391ca")
-		)
-		(pin "1"
-			(uuid "eb68c1e6-9d81-45c9-8e33-ae1edfddfc73")
-		)
-		(instances
-			(project "1s5p_battery_board"
-				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "BT?")
+					(reference "R12")
 					(unit 1)
 				)
 			)
@@ -4834,7 +5135,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c12fe4f0-36f4-4ac7-a31c-57293cb94c1c")
-		(property "Reference" "Q?"
+		(property "Reference" "Q1"
 			(at 78.74 76.1999 0)
 			(effects
 				(font
@@ -4852,7 +5153,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_TO_SOT_SMD:TO-263-3_TabPin2"
 			(at 77.47 74.93 0)
 			(effects
 				(font
@@ -4918,7 +5219,7 @@
 		(instances
 			(project ""
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "Q?")
+					(reference "Q1")
 					(unit 1)
 				)
 			)
@@ -4934,7 +5235,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c41c981b-20e5-4077-8708-68b792b0d106")
-		(property "Reference" "R?"
+		(property "Reference" "R22"
 			(at 143.51 81.2799 0)
 			(effects
 				(font
@@ -4952,7 +5253,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 146.05 82.55 0)
 			(effects
 				(font
@@ -4988,13 +5289,85 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R22")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
+		(lib_name "Battery_Cell_1")
+		(lib_id "Device:Battery_Cell")
+		(at 114.3 62.23 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d84896e7-fe31-4bf9-a438-c73040daa0ca")
+		(property "Reference" "BT2"
+			(at 118.11 59.1184 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Battery_Cell"
+			(at 118.11 61.6584 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:BAT_1043"
+			(at 114.3 60.706 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 114.3 60.706 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 114.3 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "N"
+			(uuid "47ce54da-a814-4a21-8515-c389a6909a94")
+		)
+		(pin "P"
+			(uuid "cccab7a1-7806-4a36-ae48-6574dd6ea2d3")
+		)
+		(instances
+			(project "1s5p_battery_board"
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
+					(reference "BT2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_name "Battery_Cell_1")
 		(lib_id "Device:Battery_Cell")
 		(at 74.93 62.23 0)
 		(unit 1)
@@ -5004,7 +5377,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "dba64331-85de-4a56-a870-b78e7ff37480")
-		(property "Reference" "BT?"
+		(property "Reference" "BT1"
 			(at 78.74 59.1184 0)
 			(effects
 				(font
@@ -5022,7 +5395,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:BAT_1043"
 			(at 74.93 60.706 90)
 			(effects
 				(font
@@ -5049,16 +5422,16 @@
 				(hide yes)
 			)
 		)
-		(pin "2"
+		(pin "N"
 			(uuid "23d54631-b6f0-4600-8bed-0c94bd5c8777")
 		)
-		(pin "1"
+		(pin "P"
 			(uuid "d1846d4b-df59-4e16-b725-4ad6945a21c5")
 		)
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "BT?")
+					(reference "BT1")
 					(unit 1)
 				)
 			)
@@ -5074,7 +5447,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f3d07916-49cc-48ec-8b7d-bd6bedd1210f")
-		(property "Reference" "R?"
+		(property "Reference" "R13"
 			(at 195.58 50.7999 0)
 			(effects
 				(font
@@ -5083,7 +5456,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R_Small"
+		(property "Value" "10m"
 			(at 195.58 53.3399 0)
 			(effects
 				(font
@@ -5092,7 +5465,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0603_1608Metric"
 			(at 193.04 52.07 0)
 			(effects
 				(font
@@ -5128,13 +5501,14 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R13")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
+		(lib_name "PAC1932T-I_JQ_1")
 		(lib_id "PAC1932:PAC1932T-I_JQ")
 		(at 80.01 128.27 0)
 		(unit 1)
@@ -5143,7 +5517,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "fa41633c-d780-4391-99ff-7f015ddefa2f")
-		(property "Reference" "U?"
+		(property "Reference" "U2"
 			(at 110.49 118.11 0)
 			(effects
 				(font
@@ -5159,7 +5533,7 @@
 				)
 			)
 		)
-		(property "Footprint" "UQFN16_JQ_MCH"
+		(property "Footprint" "footprints:QFN16"
 			(at 80.01 128.27 0)
 			(effects
 				(font
@@ -5242,7 +5616,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "U?")
+					(reference "U2")
 					(unit 1)
 				)
 			)
@@ -5258,7 +5632,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "faad0db5-260c-46a5-bf12-3b8c28206be4")
-		(property "Reference" "Q?"
+		(property "Reference" "Q4"
 			(at 196.85 76.1999 0)
 			(effects
 				(font
@@ -5276,7 +5650,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_TO_SOT_SMD:TO-263-3_TabPin2"
 			(at 195.58 74.93 0)
 			(effects
 				(font
@@ -5342,7 +5716,78 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "Q?")
+					(reference "Q4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_name "Battery_Cell_1")
+		(lib_id "Device:Battery_Cell")
+		(at 193.04 62.23 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fae16837-a8e0-4513-b476-cc81e3cdd9ec")
+		(property "Reference" "BT4"
+			(at 196.85 59.1184 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Battery_Cell"
+			(at 196.85 61.6584 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:BAT_1043"
+			(at 193.04 60.706 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 193.04 60.706 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 193.04 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "N"
+			(uuid "06e6bb0a-70cd-4f56-af02-4508864de02e")
+		)
+		(pin "P"
+			(uuid "e4a3e0a1-0eb7-456d-a565-8058d0f3e3cd")
+		)
+		(instances
+			(project "1s5p_battery_board"
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
+					(reference "BT4")
 					(unit 1)
 				)
 			)
@@ -5358,7 +5803,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ff46685e-e809-43fe-a926-4baa843063b6")
-		(property "Reference" "R?"
+		(property "Reference" "R16"
 			(at 101.6 72.39 90)
 			(effects
 				(font
@@ -5374,7 +5819,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 101.6 77.47 0)
 			(effects
 				(font
@@ -5410,7 +5855,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R16")
 					(unit 1)
 				)
 			)
@@ -5426,7 +5871,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ffc18c68-0759-45a0-873e-ac0f12df39af")
-		(property "Reference" "R?"
+		(property "Reference" "R23"
 			(at 182.88 81.2799 0)
 			(effects
 				(font
@@ -5444,7 +5889,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 185.42 82.55 0)
 			(effects
 				(font
@@ -5480,7 +5925,7 @@
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "R?")
+					(reference "R23")
 					(unit 1)
 				)
 			)
