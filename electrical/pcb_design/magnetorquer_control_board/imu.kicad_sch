@@ -5,6 +5,142 @@
 	(uuid "08945176-7803-434b-b47b-1d03ecfe3c1d")
 	(paper "USLetter")
 	(lib_symbols
+		(symbol "Device:C"
+			(pin_numbers hide)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C"
+				(at 0.635 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Unpolarized capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "C_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "C_0_1"
+				(polyline
+					(pts
+						(xy -2.032 -0.762) (xy 2.032 -0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 0.762) (xy 2.032 0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "Device:R"
 			(pin_numbers hide)
 			(pin_names
@@ -1118,228 +1254,192 @@
 		)
 	)
 	(junction
-		(at 144.78 139.7)
+		(at 162.56 132.08)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "1898ef0e-cc43-4236-9e8c-51d21c61d019")
 	)
 	(junction
-		(at 237.49 83.82)
+		(at 189.23 142.24)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "18e5c4df-8ccc-4a1d-a83b-343012188664")
+	)
+	(junction
+		(at 38.1 46.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "259f7553-f874-4613-ba45-dfeb32ab68ce")
+	)
+	(junction
+		(at 227.33 39.37)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "31689f6c-e72e-4114-84fb-d7943e9c423e")
 	)
 	(junction
-		(at 64.77 63.5)
+		(at 45.72 69.85)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "399d6214-e918-4459-8456-8da2226f213b")
+		(uuid "3e318244-4fc3-4221-8a05-bb1c9ff708ba")
 	)
 	(junction
-		(at 91.44 43.18)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "3b8c237c-7925-474a-a45e-560c7f4f75f7")
-	)
-	(junction
-		(at 194.31 110.49)
+		(at 201.93 66.04)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "411e42f2-88f4-4bcd-b7c3-41b1f8f94e80")
 	)
 	(junction
-		(at 146.05 26.67)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "41bebb25-9cdc-4648-9e71-d177ce5d877a")
-	)
-	(junction
-		(at 91.44 88.9)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "429abcf4-5c72-47c3-9250-5b1f32396046")
-	)
-	(junction
-		(at 76.2 63.5)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "50e71dfd-9af5-495e-86a3-f5c773971fbf")
-	)
-	(junction
-		(at 232.41 142.24)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "580dac5e-6aef-49ea-921a-214a07edff70")
-	)
-	(junction
-		(at 133.35 63.5)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5d6eb89f-29a5-4b96-a61e-54c9c77737ee")
-	)
-	(junction
-		(at 124.46 160.02)
+		(at 142.24 152.4)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5f1f0cdf-bf47-4c80-b3bd-0b99c6a6ce5d")
 	)
 	(junction
-		(at 121.92 35.56)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5f898367-f6c5-4afe-9f1b-dbbc8f138425")
-	)
-	(junction
-		(at 121.92 160.02)
+		(at 139.7 152.4)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "750e6504-0c96-41df-ad3b-b73287e7034c")
 	)
 	(junction
-		(at 184.15 81.28)
+		(at 189.23 134.62)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "816381c6-1860-4db2-b85a-82dcdf572600")
+		(uuid "82c85443-fe85-4f64-a3e5-40a03b979307")
 	)
 	(junction
-		(at 144.78 147.32)
+		(at 162.56 139.7)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8e844ed4-332e-471e-9ee4-28e712449def")
 	)
 	(junction
-		(at 171.45 107.95)
+		(at 154.94 63.5)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "8ec79891-a329-4708-8a2d-3d1d1ef2343a")
+		(uuid "8fac9712-4816-4bff-98f9-16c18ece4e90")
 	)
 	(junction
-		(at 222.25 41.91)
+		(at 106.68 40.64)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "91a5b5c7-5b86-4846-a528-9a51684d7b0c")
 	)
 	(junction
-		(at 76.2 92.71)
+		(at 154.94 71.12)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "9525061f-8c30-4874-ab93-9f98466d79a2")
+		(uuid "9a7bac8c-7f2e-4c85-8749-2dc942c77851")
 	)
 	(junction
-		(at 121.92 85.09)
+		(at 181.61 113.03)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "a53ecbcf-04c6-46c7-b438-1fbf6413acdb")
+		(uuid "9c95a8bf-355c-484e-8ef7-7e7015caa7f7")
 	)
 	(junction
-		(at 156.21 66.04)
+		(at 54.61 69.85)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "afd56bba-5dd7-4b5f-8884-d94b48d76980")
+	)
+	(junction
+		(at 88.9 147.32)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ba9ea746-4ab8-4010-87b2-71d72c732932")
+	)
+	(junction
+		(at 45.72 62.23)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "cb5326aa-60ec-4ad3-a9f1-cebd3c614cd5")
+	)
+	(junction
+		(at 165.1 71.12)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d50142cd-d974-42a1-8718-62a71b843c17")
+	)
+	(junction
+		(at 95.25 64.77)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e238df60-6d8e-47c0-95e7-aa83bbb3dec6")
 	)
 	(junction
-		(at 224.79 86.36)
+		(at 214.63 41.91)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e77549dc-587c-4128-8609-d24d412d9591")
 	)
 	(junction
-		(at 127 160.02)
+		(at 144.78 152.4)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ec48c455-7edf-482d-a9d8-fa3e07eeb5bd")
 	)
 	(junction
-		(at 234.95 39.37)
+		(at 119.38 38.1)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "fdfe1837-fe89-466b-8d40-ee24de651866")
 	)
 	(no_connect
-		(at 148.59 76.2)
+		(at 87.63 74.93)
 		(uuid "0c5ef2cd-edb9-42d6-b4e6-dd2b51cc5d87")
 	)
 	(no_connect
-		(at 186.69 120.65)
+		(at 194.31 76.2)
 		(uuid "0e668cde-7ebe-429d-beab-75c0c8507bf5")
 	)
 	(no_connect
-		(at 140.97 76.2)
+		(at 80.01 74.93)
 		(uuid "1e687fc7-0c13-4039-b2c3-602f3e741f74")
 	)
 	(no_connect
-		(at 143.51 76.2)
+		(at 82.55 74.93)
 		(uuid "26804add-3268-4c3a-917d-b582f3ba5148")
 	)
 	(no_connect
-		(at 146.05 76.2)
+		(at 85.09 74.93)
 		(uuid "66c5e0e6-4e45-472c-9a4f-2b9e9474a64f")
 	)
 	(no_connect
-		(at 181.61 120.65)
+		(at 189.23 76.2)
 		(uuid "69233d49-8147-4af8-944a-25b112c0c5ab")
 	)
 	(no_connect
-		(at 179.07 120.65)
+		(at 186.69 76.2)
 		(uuid "a4e5eb85-f225-4024-b03c-dffcd12026c4")
 	)
 	(no_connect
-		(at 184.15 120.65)
+		(at 191.77 76.2)
 		(uuid "d9949a11-7b9b-4ea1-840d-02a437bfc765")
 	)
 	(wire
 		(pts
-			(xy 168.91 107.95) (xy 171.45 107.95)
+			(xy 142.24 110.49) (xy 151.13 110.49)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "0a84fe7a-110f-4864-9c4e-1d9058ccb1cf")
+		(uuid "08114aee-efc1-4bb7-851e-6bc646d91c93")
 	)
 	(wire
 		(pts
-			(xy 67.31 43.18) (xy 91.44 43.18)
+			(xy 63.5 64.77) (xy 72.39 64.77)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "12753061-ca64-43f8-9295-44b4523b31ef")
+		(uuid "16455482-7406-46ed-989b-a54b5dd88c84")
 	)
 	(wire
 		(pts
-			(xy 91.44 88.9) (xy 91.44 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "144f29af-6e2b-4b89-9eb3-dce4eeba3321")
-	)
-	(wire
-		(pts
-			(xy 59.69 35.56) (xy 57.15 35.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1486d1db-00c2-4567-ab54-9e8d0a128395")
-	)
-	(wire
-		(pts
-			(xy 91.44 43.18) (xy 91.44 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "18494e93-10c3-4c2e-8070-91a933b5cf60")
-	)
-	(wire
-		(pts
-			(xy 99.06 139.7) (xy 88.9 139.7)
+			(xy 116.84 132.08) (xy 106.68 132.08)
 		)
 		(stroke
 			(width 0)
@@ -1349,27 +1449,17 @@
 	)
 	(wire
 		(pts
-			(xy 184.15 80.01) (xy 184.15 81.28)
+			(xy 88.9 147.32) (xy 116.84 147.32)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "1b42f708-d32d-42a7-843a-551f758f72d7")
+		(uuid "1c8d7f98-a9a0-4024-8362-7e3bf13c3ede")
 	)
 	(wire
 		(pts
-			(xy 121.92 85.09) (xy 181.61 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1e0c1503-dc02-4a80-94aa-05de71f7555b")
-	)
-	(wire
-		(pts
-			(xy 143.51 35.56) (xy 143.51 53.34)
+			(xy 82.55 36.83) (xy 82.55 52.07)
 		)
 		(stroke
 			(width 0)
@@ -1379,7 +1469,7 @@
 	)
 	(wire
 		(pts
-			(xy 184.15 81.28) (xy 184.15 97.79)
+			(xy 191.77 36.83) (xy 191.77 53.34)
 		)
 		(stroke
 			(width 0)
@@ -1389,17 +1479,7 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 63.5) (xy 76.2 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "25077163-ff6b-4c6a-ad1f-db45535ecb2b")
-	)
-	(wire
-		(pts
-			(xy 144.78 137.16) (xy 144.78 139.7)
+			(xy 162.56 129.54) (xy 162.56 132.08)
 		)
 		(stroke
 			(width 0)
@@ -1409,7 +1489,7 @@
 	)
 	(wire
 		(pts
-			(xy 237.49 81.28) (xy 237.49 83.82)
+			(xy 227.33 36.83) (xy 227.33 39.37)
 		)
 		(stroke
 			(width 0)
@@ -1419,7 +1499,7 @@
 	)
 	(wire
 		(pts
-			(xy 189.23 86.36) (xy 189.23 97.79)
+			(xy 196.85 41.91) (xy 196.85 53.34)
 		)
 		(stroke
 			(width 0)
@@ -1429,27 +1509,27 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 92.71) (xy 76.2 139.7)
+			(xy 154.94 71.12) (xy 142.24 71.12)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "3115e5b3-dfdc-4e33-a0c7-5342d1a8173f")
+		(uuid "30c6b637-81dd-4734-b156-d9f908f5de0e")
 	)
 	(wire
 		(pts
-			(xy 179.07 88.9) (xy 179.07 97.79)
+			(xy 173.99 71.12) (xy 165.1 71.12)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "374744b8-49bd-416d-aecd-2ed638841167")
+		(uuid "373d5a5c-b4a0-472b-90f9-2d4405b0525d")
 	)
 	(wire
 		(pts
-			(xy 121.92 160.02) (xy 124.46 160.02)
+			(xy 139.7 152.4) (xy 142.24 152.4)
 		)
 		(stroke
 			(width 0)
@@ -1459,7 +1539,7 @@
 	)
 	(wire
 		(pts
-			(xy 124.46 124.46) (xy 124.46 118.11)
+			(xy 142.24 110.49) (xy 142.24 116.84)
 		)
 		(stroke
 			(width 0)
@@ -1469,17 +1549,7 @@
 	)
 	(wire
 		(pts
-			(xy 232.41 147.32) (xy 232.41 142.24)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "39983504-8d34-4ddb-b087-67d4b3d3d1df")
-	)
-	(wire
-		(pts
-			(xy 186.69 83.82) (xy 191.77 83.82)
+			(xy 194.31 39.37) (xy 199.39 39.37)
 		)
 		(stroke
 			(width 0)
@@ -1489,67 +1559,37 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 118.11) (xy 124.46 118.11)
+			(xy 179.07 66.04) (xy 173.99 66.04)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "42f89ea4-2ea5-4633-9717-8e30fd317be2")
+		(uuid "3f1f1bd0-c06a-4791-b9e9-9c14f3fca02c")
 	)
 	(wire
 		(pts
-			(xy 171.45 107.95) (xy 171.45 110.49)
+			(xy 88.9 146.05) (xy 88.9 147.32)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "44582541-9ef5-47dd-b5c0-3bb6cf13214a")
+		(uuid "3f63a80e-c633-4a3a-a193-c421c0c3dcf7")
 	)
 	(wire
 		(pts
-			(xy 91.44 137.16) (xy 99.06 137.16)
+			(xy 54.61 68.58) (xy 54.61 69.85)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "468ec261-9c3b-4a76-a3c1-6090df27b5f0")
+		(uuid "445de2a0-cf40-47fb-89dc-aa1eb9b22d1a")
 	)
 	(wire
 		(pts
-			(xy 232.41 154.94) (xy 232.41 157.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "48c22dbe-1ab3-41dc-a2ec-1b2f92aa2684")
-	)
-	(wire
-		(pts
-			(xy 76.2 63.5) (xy 81.28 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "49742da6-8a79-496a-a8ea-96963982d8ca")
-	)
-	(wire
-		(pts
-			(xy 165.1 142.24) (xy 232.41 142.24)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4a317836-841a-4e62-8329-c6b8514f1d4e")
-	)
-	(wire
-		(pts
-			(xy 237.49 83.82) (xy 248.92 83.82)
+			(xy 227.33 39.37) (xy 238.76 39.37)
 		)
 		(stroke
 			(width 0)
@@ -1559,7 +1599,7 @@
 	)
 	(wire
 		(pts
-			(xy 186.69 83.82) (xy 186.69 97.79)
+			(xy 194.31 39.37) (xy 194.31 53.34)
 		)
 		(stroke
 			(width 0)
@@ -1569,17 +1609,37 @@
 	)
 	(wire
 		(pts
-			(xy 57.15 81.28) (xy 59.69 81.28)
+			(xy 93.98 129.54) (xy 116.84 129.54)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "57aa9be1-fac6-4bee-b5e5-f0c75c9f25b8")
+		(uuid "53adb4b1-9e14-456e-9571-99a71db5a783")
 	)
 	(wire
 		(pts
-			(xy 148.59 39.37) (xy 148.59 53.34)
+			(xy 201.93 134.62) (xy 189.23 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5456a7b2-6eeb-4f87-a010-7e7868d4486d")
+	)
+	(wire
+		(pts
+			(xy 189.23 142.24) (xy 201.93 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "57a070b6-3720-48c2-b6a6-15b848615eb0")
+	)
+	(wire
+		(pts
+			(xy 87.63 38.1) (xy 87.63 52.07)
 		)
 		(stroke
 			(width 0)
@@ -1589,17 +1649,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 63.5) (xy 76.2 92.71)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "595fd2f9-815a-403d-beae-1a610fbaace6")
-	)
-	(wire
-		(pts
-			(xy 248.92 86.36) (xy 224.79 86.36)
+			(xy 238.76 41.91) (xy 214.63 41.91)
 		)
 		(stroke
 			(width 0)
@@ -1609,7 +1659,7 @@
 	)
 	(wire
 		(pts
-			(xy 138.43 53.34) (xy 138.43 49.53)
+			(xy 77.47 52.07) (xy 77.47 46.99)
 		)
 		(stroke
 			(width 0)
@@ -1619,37 +1669,7 @@
 	)
 	(wire
 		(pts
-			(xy 91.44 43.18) (xy 140.97 43.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "637df6f6-95f2-4ee9-a2ca-64ad45745f58")
-	)
-	(wire
-		(pts
-			(xy 130.81 63.5) (xy 130.81 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "63b62486-3a33-46f7-a782-f7e12103df55")
-	)
-	(wire
-		(pts
-			(xy 133.35 63.5) (xy 133.35 66.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "68f03a91-0ff2-4804-8189-9a43b526c49a")
-	)
-	(wire
-		(pts
-			(xy 234.95 36.83) (xy 234.95 39.37)
+			(xy 119.38 35.56) (xy 119.38 38.1)
 		)
 		(stroke
 			(width 0)
@@ -1659,7 +1679,17 @@
 	)
 	(wire
 		(pts
-			(xy 57.15 63.5) (xy 64.77 63.5)
+			(xy 170.18 36.83) (xy 191.77 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6bc81623-b3a1-49d1-ae05-c0510bfa8e8a")
+	)
+	(wire
+		(pts
+			(xy 31.75 46.99) (xy 38.1 46.99)
 		)
 		(stroke
 			(width 0)
@@ -1669,17 +1699,37 @@
 	)
 	(wire
 		(pts
-			(xy 146.05 26.67) (xy 67.31 26.67)
+			(xy 45.72 69.85) (xy 33.02 69.85)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7c30bc04-23b9-4f39-be9e-b5c721626daf")
+		(uuid "70c1ffcc-ae83-4016-ab24-4fd335d43dad")
 	)
 	(wire
 		(pts
-			(xy 224.79 81.28) (xy 224.79 86.36)
+			(xy 189.23 133.35) (xy 189.23 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "764f6b7c-bba3-4642-a6cb-b5c7cfd289f8")
+	)
+	(wire
+		(pts
+			(xy 165.1 69.85) (xy 165.1 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "812efc56-c6e6-47f4-aed2-380c65e090b5")
+	)
+	(wire
+		(pts
+			(xy 214.63 36.83) (xy 214.63 41.91)
 		)
 		(stroke
 			(width 0)
@@ -1689,7 +1739,37 @@
 	)
 	(wire
 		(pts
-			(xy 222.25 36.83) (xy 222.25 41.91)
+			(xy 134.62 110.49) (xy 139.7 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8407ef3b-bbf1-4dfa-8fe5-21e847a71161")
+	)
+	(wire
+		(pts
+			(xy 189.23 40.64) (xy 189.23 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8638cb0d-1b56-4b63-9458-3f1b5d0be5b8")
+	)
+	(wire
+		(pts
+			(xy 186.69 44.45) (xy 186.69 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "881f0f22-363b-4a1b-ba18-20645db5d389")
+	)
+	(wire
+		(pts
+			(xy 106.68 35.56) (xy 106.68 40.64)
 		)
 		(stroke
 			(width 0)
@@ -1699,17 +1779,7 @@
 	)
 	(wire
 		(pts
-			(xy 121.92 85.09) (xy 121.92 124.46)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "888c597e-423e-416a-95cf-41f5cc654f20")
-	)
-	(wire
-		(pts
-			(xy 251.46 39.37) (xy 234.95 39.37)
+			(xy 129.54 38.1) (xy 119.38 38.1)
 		)
 		(stroke
 			(width 0)
@@ -1719,7 +1789,17 @@
 	)
 	(wire
 		(pts
-			(xy 199.39 86.36) (xy 224.79 86.36)
+			(xy 162.56 134.62) (xy 189.23 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8f9846d2-769a-4ebe-bbbe-dfd8b6e63888")
+	)
+	(wire
+		(pts
+			(xy 207.01 41.91) (xy 214.63 41.91)
 		)
 		(stroke
 			(width 0)
@@ -1729,7 +1809,47 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 92.71) (xy 176.53 97.79)
+			(xy 139.7 110.49) (xy 139.7 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "90659b83-7cc8-4d94-a03c-ee322119f056")
+	)
+	(wire
+		(pts
+			(xy 45.72 60.96) (xy 45.72 62.23)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "94744f68-2c00-4f08-9d67-19db67244441")
+	)
+	(wire
+		(pts
+			(xy 142.24 63.5) (xy 154.94 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "94b16b1d-97ad-4769-9c38-ce79f1f3de69")
+	)
+	(wire
+		(pts
+			(xy 154.94 62.23) (xy 154.94 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "99709bcb-a2a3-400e-92f0-30866246921e")
+	)
+	(wire
+		(pts
+			(xy 184.15 48.26) (xy 184.15 53.34)
 		)
 		(stroke
 			(width 0)
@@ -1739,27 +1859,17 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 49.53) (xy 81.28 63.5)
+			(xy 170.18 44.45) (xy 186.69 44.45)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "a3393eda-2b33-4109-9f24-c71231b190d8")
+		(uuid "a6a10162-10ee-44ae-bb73-a95c4e5def4f")
 	)
 	(wire
 		(pts
-			(xy 91.44 88.9) (xy 179.07 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a39413c6-6f8c-4a66-9730-630748e7f1a7")
-	)
-	(wire
-		(pts
-			(xy 232.41 142.24) (xy 243.84 142.24)
+			(xy 181.61 113.03) (xy 193.04 113.03)
 		)
 		(stroke
 			(width 0)
@@ -1769,7 +1879,7 @@
 	)
 	(wire
 		(pts
-			(xy 173.99 92.71) (xy 176.53 92.71)
+			(xy 181.61 48.26) (xy 184.15 48.26)
 		)
 		(stroke
 			(width 0)
@@ -1779,7 +1889,7 @@
 	)
 	(wire
 		(pts
-			(xy 57.15 26.67) (xy 59.69 26.67)
+			(xy 63.5 31.75) (xy 85.09 31.75)
 		)
 		(stroke
 			(width 0)
@@ -1789,17 +1899,7 @@
 	)
 	(wire
 		(pts
-			(xy 57.15 118.11) (xy 59.69 118.11)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "aa6ec9e5-9f18-41f3-b40e-b22f4ae1e8cd")
-	)
-	(wire
-		(pts
-			(xy 153.67 41.91) (xy 151.13 41.91)
+			(xy 92.71 40.64) (xy 90.17 40.64)
 		)
 		(stroke
 			(width 0)
@@ -1809,27 +1909,17 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 92.71) (xy 166.37 92.71)
+			(xy 181.61 113.03) (xy 181.61 114.3)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b143228f-8944-4817-86c0-b1797052134a")
+		(uuid "aef91bc5-f901-4f34-9a68-b33372ceee84")
 	)
 	(wire
 		(pts
-			(xy 133.35 63.5) (xy 130.81 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b21bea30-fb3e-41e0-b525-f797b934d98b")
-	)
-	(wire
-		(pts
-			(xy 127 118.11) (xy 127 124.46)
+			(xy 144.78 113.03) (xy 144.78 116.84)
 		)
 		(stroke
 			(width 0)
@@ -1839,17 +1929,27 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 63.5) (xy 64.77 62.23)
+			(xy 116.84 137.16) (xy 116.84 147.32)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b3f2e5ff-6a16-4901-a79e-d13dd34100c4")
+		(uuid "b75f9ae4-2945-4986-ac5c-36879dc14866")
 	)
 	(wire
 		(pts
-			(xy 127 118.11) (xy 165.1 118.11)
+			(xy 170.18 40.64) (xy 189.23 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b892e749-8cbf-4c88-bd83-f84ba3f6951a")
+	)
+	(wire
+		(pts
+			(xy 144.78 113.03) (xy 181.61 113.03)
 		)
 		(stroke
 			(width 0)
@@ -1859,7 +1959,7 @@
 	)
 	(wire
 		(pts
-			(xy 121.92 35.56) (xy 143.51 35.56)
+			(xy 63.5 36.83) (xy 82.55 36.83)
 		)
 		(stroke
 			(width 0)
@@ -1869,7 +1969,7 @@
 	)
 	(wire
 		(pts
-			(xy 199.39 83.82) (xy 237.49 83.82)
+			(xy 207.01 39.37) (xy 227.33 39.37)
 		)
 		(stroke
 			(width 0)
@@ -1879,7 +1979,7 @@
 	)
 	(wire
 		(pts
-			(xy 151.13 41.91) (xy 151.13 53.34)
+			(xy 90.17 40.64) (xy 90.17 52.07)
 		)
 		(stroke
 			(width 0)
@@ -1889,7 +1989,17 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 39.37) (xy 148.59 39.37)
+			(xy 33.02 62.23) (xy 45.72 62.23)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c2f19783-6741-40c9-bf0e-f0866c76c3bd")
+	)
+	(wire
+		(pts
+			(xy 92.71 38.1) (xy 87.63 38.1)
 		)
 		(stroke
 			(width 0)
@@ -1899,7 +2009,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 139.7) (xy 81.28 139.7)
+			(xy 93.98 132.08) (xy 99.06 132.08)
 		)
 		(stroke
 			(width 0)
@@ -1909,7 +2019,7 @@
 	)
 	(wire
 		(pts
-			(xy 140.97 43.18) (xy 140.97 53.34)
+			(xy 80.01 40.64) (xy 80.01 52.07)
 		)
 		(stroke
 			(width 0)
@@ -1919,7 +2029,7 @@
 	)
 	(wire
 		(pts
-			(xy 156.21 63.5) (xy 156.21 66.04)
+			(xy 95.25 62.23) (xy 95.25 64.77)
 		)
 		(stroke
 			(width 0)
@@ -1929,27 +2039,7 @@
 	)
 	(wire
 		(pts
-			(xy 165.1 118.11) (xy 165.1 142.24)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c8cf7531-44f8-4184-ad18-01d5ebf98de9")
-	)
-	(wire
-		(pts
-			(xy 81.28 49.53) (xy 128.27 49.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c900338f-0f5b-485a-a94a-d5761d0ab2a3")
-	)
-	(wire
-		(pts
-			(xy 124.46 160.02) (xy 127 160.02)
+			(xy 142.24 152.4) (xy 144.78 152.4)
 		)
 		(stroke
 			(width 0)
@@ -1959,7 +2049,7 @@
 	)
 	(wire
 		(pts
-			(xy 189.23 86.36) (xy 191.77 86.36)
+			(xy 196.85 41.91) (xy 199.39 41.91)
 		)
 		(stroke
 			(width 0)
@@ -1969,27 +2059,47 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 35.56) (xy 121.92 35.56)
+			(xy 38.1 46.99) (xy 66.04 46.99)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ce103bea-d01b-4b4d-926c-2314b26c2aaa")
+		(uuid "caf6d14d-0e13-49da-b06c-6779e2f68f20")
 	)
 	(wire
 		(pts
-			(xy 121.92 35.56) (xy 121.92 85.09)
+			(xy 170.18 48.26) (xy 173.99 48.26)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "cedf9e09-010b-403d-a700-ecdbadf633e9")
+		(uuid "cb6560aa-da4e-4727-9d96-27d167d1ccea")
 	)
 	(wire
 		(pts
-			(xy 194.31 107.95) (xy 194.31 110.49)
+			(xy 181.61 123.19) (xy 181.61 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cd63dd0f-2105-4add-8e74-029d0318904d")
+	)
+	(wire
+		(pts
+			(xy 173.99 66.04) (xy 173.99 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d0619b80-d1b8-41a4-a60f-76f0f98a73fa")
+	)
+	(wire
+		(pts
+			(xy 201.93 63.5) (xy 201.93 66.04)
 		)
 		(stroke
 			(width 0)
@@ -1999,7 +2109,7 @@
 	)
 	(wire
 		(pts
-			(xy 161.29 41.91) (xy 222.25 41.91)
+			(xy 100.33 40.64) (xy 106.68 40.64)
 		)
 		(stroke
 			(width 0)
@@ -2009,7 +2119,17 @@
 	)
 	(wire
 		(pts
-			(xy 251.46 41.91) (xy 222.25 41.91)
+			(xy 154.94 63.5) (xy 179.07 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dfe5c8ea-20a6-49c7-acf8-c5309b3fc84a")
+	)
+	(wire
+		(pts
+			(xy 129.54 40.64) (xy 106.68 40.64)
 		)
 		(stroke
 			(width 0)
@@ -2019,7 +2139,17 @@
 	)
 	(wire
 		(pts
-			(xy 161.29 39.37) (xy 234.95 39.37)
+			(xy 63.5 64.77) (xy 63.5 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e2b65a7b-a2d8-4215-ae12-c5ba5f65c92c")
+	)
+	(wire
+		(pts
+			(xy 100.33 38.1) (xy 119.38 38.1)
 		)
 		(stroke
 			(width 0)
@@ -2029,7 +2159,7 @@
 	)
 	(wire
 		(pts
-			(xy 138.43 49.53) (xy 135.89 49.53)
+			(xy 77.47 46.99) (xy 73.66 46.99)
 		)
 		(stroke
 			(width 0)
@@ -2039,7 +2169,17 @@
 	)
 	(wire
 		(pts
-			(xy 146.05 26.67) (xy 146.05 53.34)
+			(xy 63.5 69.85) (xy 54.61 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "efe0f14d-fff6-461c-802e-7477df44993a")
+	)
+	(wire
+		(pts
+			(xy 85.09 31.75) (xy 85.09 52.07)
 		)
 		(stroke
 			(width 0)
@@ -2049,7 +2189,17 @@
 	)
 	(wire
 		(pts
-			(xy 144.78 144.78) (xy 144.78 147.32)
+			(xy 45.72 62.23) (xy 72.39 62.23)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f318aa4f-ac97-4548-97f0-b974e8af8ddb")
+	)
+	(wire
+		(pts
+			(xy 162.56 137.16) (xy 162.56 139.7)
 		)
 		(stroke
 			(width 0)
@@ -2059,7 +2209,7 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 160.02) (xy 121.92 160.02)
+			(xy 137.16 152.4) (xy 139.7 152.4)
 		)
 		(stroke
 			(width 0)
@@ -2069,17 +2219,7 @@
 	)
 	(wire
 		(pts
-			(xy 181.61 85.09) (xy 181.61 97.79)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f68c252c-6697-4e8a-bdc8-c84b8b61ef14")
-	)
-	(wire
-		(pts
-			(xy 57.15 43.18) (xy 59.69 43.18)
+			(xy 63.5 40.64) (xy 80.01 40.64)
 		)
 		(stroke
 			(width 0)
@@ -2089,267 +2229,212 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 81.28) (xy 184.15 81.28)
+			(xy 38.1 45.72) (xy 38.1 46.99)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ff1b44e8-6e6a-4b27-b67e-902f64bb1cee")
+		(uuid "f9dd4552-b40a-437b-aec8-df9ff23599f2")
 	)
-	(global_label "IMU1_SPI_CS"
+	(hierarchical_label "IMU2_INT2"
 		(shape input)
-		(at 57.15 26.67 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "206b8d38-29a9-43ec-8644-eb780684d7ad")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 42.0696 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "IMU2_INT1"
-		(shape input)
-		(at 248.92 83.82 0)
-		(fields_autoplaced yes)
+		(at 238.76 41.91 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "5bdf950d-c57b-40b4-a77a-1d461e635abd")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 261.5814 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
+		(uuid "0dc7ca67-b2c4-4deb-9e52-e938e9ca6781")
 	)
-	(global_label "IMU1_INT1"
+	(hierarchical_label "SPI_MISO"
 		(shape input)
-		(at 251.46 39.37 0)
-		(fields_autoplaced yes)
+		(at 31.75 46.99 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "0eedb769-52de-420a-92c3-1d18186c576a")
+	)
+	(hierarchical_label "IMU2_INT1"
+		(shape input)
+		(at 238.76 39.37 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "65c23c83-f867-47d0-ae10-0a2620167242")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 264.1214 39.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
+		(uuid "1419b104-aa6a-4825-aa91-c5c61486abcc")
 	)
-	(global_label "SPI3_MOSI"
+	(hierarchical_label "IMU_MAG_INT1"
 		(shape input)
-		(at 57.15 43.18 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "6c3a6f8a-76fe-428c-987f-fa526dc1c2ac")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 44.3072 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "IMU2_SPI_CS"
-		(shape input)
-		(at 57.15 81.28 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "6e0e632d-ee73-4380-979e-d44dac639bcf")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 42.0696 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "IMU_MAG_SPI_CS"
-		(shape input)
-		(at 57.15 118.11 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "771306cd-7c13-4603-87a7-367696349320")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 38.5015 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "IMU2_INT2"
-		(shape input)
-		(at 248.92 86.36 0)
-		(fields_autoplaced yes)
+		(at 193.04 113.03 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "90a46ae6-54b4-4b01-9cac-e34e8d06ada2")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 261.5814 86.36 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
+		(uuid "2e98db5c-bab1-41e3-9e8a-f0bcf7e53148")
 	)
-	(global_label "IMU_MAG_INT1"
+	(hierarchical_label "IMU1_SPI_CS"
 		(shape input)
-		(at 243.84 142.24 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "c64decb5-1965-4bcd-bff5-609973db5e8a")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 260.0695 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "SPI3_SCK"
-		(shape input)
-		(at 57.15 35.56 180)
-		(fields_autoplaced yes)
+		(at 63.5 31.75 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "d49ac484-d1b4-4334-ac51-2b93547e3d84")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 45.1539 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
+		(uuid "3d4dda48-127e-41a0-b707-c99639a3ba12")
 	)
-	(global_label "IMU1_INT2"
+	(hierarchical_label "SPI_MOSI"
 		(shape input)
-		(at 251.46 41.91 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "ea5bb452-2837-446c-9e2e-e39722e7682f")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 264.1214 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "SPI3_MISO"
-		(shape input)
-		(at 57.15 63.5 180)
-		(fields_autoplaced yes)
+		(at 63.5 40.64 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "eceb3b72-99e5-4b69-a59a-035c13d64110")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 44.3072 63.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
+		(uuid "4bb1182c-3b9a-4092-b8ec-5e0cca7554cb")
+	)
+	(hierarchical_label "SPI_SCK"
+		(shape input)
+		(at 63.5 36.83 180)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
+			(justify right)
 		)
+		(uuid "5131d0cd-fc84-420e-97ef-ba98533af0dd")
+	)
+	(hierarchical_label "IMU2_SPI_CS"
+		(shape input)
+		(at 170.18 36.83 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "55ec7fcb-50e6-4a7b-b70b-b53f5a9b71ac")
+	)
+	(hierarchical_label "SPI_MISO"
+		(shape input)
+		(at 170.18 48.26 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "579950b4-0774-496f-9664-f482b8c37aa2")
+	)
+	(hierarchical_label "SPI_SCK"
+		(shape input)
+		(at 134.62 110.49 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "6fd3e2e6-de7d-4ef4-9dd2-fc614391920d")
+	)
+	(hierarchical_label "SPI_MISO"
+		(shape input)
+		(at 93.98 132.08 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "832c4656-fc92-419e-b7cc-e6c6a93aba85")
+	)
+	(hierarchical_label "IMU_MAG_SPI_CS"
+		(shape input)
+		(at 151.13 110.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "97ef6922-241f-411f-bd9d-77a604231a6a")
+	)
+	(hierarchical_label "IMU1_INT1"
+		(shape input)
+		(at 129.54 38.1 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "a752340c-6389-44c5-abd8-b01e9ff0730d")
+	)
+	(hierarchical_label "SPI_MOSI"
+		(shape input)
+		(at 93.98 129.54 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "b195aa1d-2808-4543-84d9-9c1469a14ddd")
+	)
+	(hierarchical_label "SPI_MOSI"
+		(shape input)
+		(at 170.18 44.45 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "f39b0aaf-5f84-4604-abba-332895af237a")
+	)
+	(hierarchical_label "IMU1_INT2"
+		(shape input)
+		(at 129.54 40.64 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb5adac8-e0f3-4389-a765-501f1d709455")
+	)
+	(hierarchical_label "SPI_SCK"
+		(shape input)
+		(at 170.18 40.64 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "fc418527-445a-43c3-9f2b-dbac3b0b5806")
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 224.79 73.66 0)
+		(at 214.63 29.21 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "04b43478-9e2d-4c5e-a847-dd14a0b41a13")
-		(property "Reference" "#PWR076"
-			(at 224.79 77.47 0)
+		(property "Reference" "#PWR67"
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2358,7 +2443,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 224.79 70.104 0)
+			(at 214.63 25.654 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2366,7 +2451,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 224.79 73.66 0)
+			(at 214.63 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2375,7 +2460,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 224.79 73.66 0)
+			(at 214.63 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2384,7 +2469,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 224.79 73.66 0)
+			(at 214.63 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2398,39 +2483,23 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR076")
+					(reference "#PWR67")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 63.5 81.28 90)
+		(lib_id "power:+3V3")
+		(at 189.23 133.35 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "097d5e95-df6e-4748-9c13-1fa62ade48dc")
-		(property "Reference" "R33"
-			(at 63.5 76.2 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "33"
-			(at 63.5 78.74 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 63.5 83.058 90)
+		(uuid "0546244b-fd33-4a70-99bb-c7444228315b")
+		(property "Reference" "#PWR44"
+			(at 189.23 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2438,105 +2507,8 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
-			(at 63.5 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 63.5 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 63.5 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" "Basic"
-			(at 63.5 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "C25105"
-			(at 63.5 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 63.5 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 63.5 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "b78e894a-d9c2-4ec6-bdc9-e22734be7de4")
-		)
-		(pin "1"
-			(uuid "49da6008-60b4-4ac5-8c4b-e961dae5566e")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R33")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 119.38 124.46 270)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "0d77d030-390a-4db1-a039-7fa7497195b3")
-		(property "Reference" "#PWR83"
-			(at 113.03 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 115.57 124.46 0)
+		(property "Value" "+3V3"
+			(at 189.23 129.794 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2544,7 +2516,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 119.38 124.46 0)
+			(at 189.23 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2553,7 +2525,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 119.38 124.46 0)
+			(at 189.23 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2562,7 +2534,188 @@
 			)
 		)
 		(property "Description" ""
-			(at 119.38 124.46 0)
+			(at 189.23 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7e0ad903-c771-408b-80e8-fe6988501547")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "#PWR44")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 165.1 74.93 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0c25dc31-9c4c-44dc-803a-828e3c9f9de2")
+		(property "Reference" "C22"
+			(at 168.91 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n"
+			(at 168.91 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_C_0402_1005Metric"
+			(at 166.0652 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 165.1 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 165.1 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 165.1 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C1525"
+			(at 165.1 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 165.1 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CL05B104KO5NNNC"
+			(at 165.1 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 165.1 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f8d2b1d5-f3ea-463e-833d-f99b4a330ee1")
+		)
+		(pin "2"
+			(uuid "e5ff969f-4e2f-4fa2-9ef1-2f66d0d67fdb")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "C22")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 137.16 116.84 270)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0d77d030-390a-4db1-a039-7fa7497195b3")
+		(property "Reference" "#PWR55"
+			(at 130.81 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 133.35 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 137.16 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 137.16 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 137.16 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2576,7 +2729,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR83")
+					(reference "#PWR55")
 					(unit 1)
 				)
 			)
@@ -2584,7 +2737,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 232.41 157.48 0)
+		(at 181.61 123.19 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -2592,8 +2745,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0dab7032-5e3b-4cda-a3ee-1b5c64388fec")
-		(property "Reference" "#PWR89"
-			(at 232.41 163.83 0)
+		(property "Reference" "#PWR68"
+			(at 181.61 129.54 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2602,7 +2755,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 232.41 161.29 0)
+			(at 181.61 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2610,7 +2763,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 232.41 157.48 0)
+			(at 181.61 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2619,7 +2772,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 232.41 157.48 0)
+			(at 181.61 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2628,7 +2781,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 232.41 157.48 0)
+			(at 181.61 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2642,73 +2795,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR89")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3V3")
-		(at 146.05 19.05 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "0e567b91-953d-4ace-944e-e7588e0d7b54")
-		(property "Reference" "#PWR011"
-			(at 146.05 22.86 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 146.05 15.494 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 146.05 19.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 146.05 19.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 146.05 19.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "ca3430e1-712f-4195-a7f2-704adcea45fd")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR011")
+					(reference "#PWR68")
 					(unit 1)
 				)
 			)
@@ -2716,7 +2803,7 @@
 	)
 	(symbol
 		(lib_id "Sensor_Motion:BMI160")
-		(at 181.61 110.49 90)
+		(at 189.23 66.04 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -2725,8 +2812,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "168eacfd-6ee1-4c6f-aa53-f11b18db8daf")
-		(property "Reference" "U2"
-			(at 196.85 101.0219 90)
+		(property "Reference" "U7"
+			(at 204.47 56.5719 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2734,7 +2821,7 @@
 			)
 		)
 		(property "Value" "BMI323"
-			(at 196.85 103.5619 90)
+			(at 204.47 59.1119 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2742,7 +2829,7 @@
 			)
 		)
 		(property "Footprint" "Package_LGA:Bosch_LGA-14_3x2.5mm_P0.5mm"
-			(at 181.61 110.49 0)
+			(at 189.23 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2751,7 +2838,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi160-ds000.pdf"
-			(at 160.02 92.71 0)
+			(at 167.64 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2760,7 +2847,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 181.61 110.49 0)
+			(at 189.23 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2769,7 +2856,7 @@
 			)
 		)
 		(property "MPN" "C5368700"
-			(at 181.61 110.49 0)
+			(at 189.23 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2778,7 +2865,7 @@
 			)
 		)
 		(property "Manufacturer" "Bosch Sensortec"
-			(at 181.61 110.49 0)
+			(at 189.23 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2787,7 +2874,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "BMI323"
-			(at 181.61 110.49 0)
+			(at 189.23 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2796,7 +2883,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 181.61 110.49 0)
+			(at 189.23 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2805,7 +2892,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Extended"
-			(at 181.61 110.49 0)
+			(at 189.23 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2858,7 +2945,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "U2")
+					(reference "U7")
 					(unit 1)
 				)
 			)
@@ -2866,7 +2953,7 @@
 	)
 	(symbol
 		(lib_id "TVSC:MLX90393ELW-ABA-011-RE")
-		(at 127 124.46 270)
+		(at 144.78 116.84 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2874,8 +2961,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "17d468d8-d9d8-42f9-a859-d81e0675c390")
-		(property "Reference" "U7"
-			(at 130.0165 124.46 90)
+		(property "Reference" "U5"
+			(at 147.7965 116.84 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2884,7 +2971,7 @@
 			)
 		)
 		(property "Value" "MLX90393ELW-ABA-011-RE"
-			(at 130.0165 127 90)
+			(at 147.7965 119.38 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2893,7 +2980,7 @@
 			)
 		)
 		(property "Footprint" "footprints:QFN50P300X300X100-17N-D"
-			(at 42.24 156.21 0)
+			(at 60.02 148.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2903,7 +2990,7 @@
 			)
 		)
 		(property "Datasheet" "https://componentsearchengine.com/Datasheets/1/MLX90393ELW-ABA-011-RE.pdf"
-			(at -57.76 156.21 0)
+			(at -39.98 148.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2913,7 +3000,7 @@
 			)
 		)
 		(property "Description" "Board Mount Hall Effect / Magnetic Sensors Triaxis Magnetic node - Micropower Magnetometer ft. SPI/I2C Output - I2C_address 0x03h - Consumer Grade (Gen.III)"
-			(at 127 124.46 0)
+			(at 144.78 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2922,7 +3009,7 @@
 			)
 		)
 		(property "Height" "1"
-			(at -257.76 156.21 0)
+			(at -239.98 148.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2932,7 +3019,7 @@
 			)
 		)
 		(property "Arrow Part Number" "MLX90393ELW-ABA-011-RE"
-			(at -757.76 156.21 0)
+			(at -739.98 148.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2942,7 +3029,7 @@
 			)
 		)
 		(property "Arrow Price/Stock" "https://www.arrow.com/en/products/mlx90393elw-aba-011-re/melexis?utm_currency=USD&region=nac"
-			(at -857.76 156.21 0)
+			(at -839.98 148.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2952,7 +3039,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 127 124.46 0)
+			(at 144.78 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2961,7 +3048,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Extended"
-			(at 127 124.46 0)
+			(at 144.78 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2970,7 +3057,7 @@
 			)
 		)
 		(property "MPN" "C2654971"
-			(at 127 124.46 0)
+			(at 144.78 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2979,7 +3066,7 @@
 			)
 		)
 		(property "Manufacturer" "Melexis"
-			(at 127 124.46 0)
+			(at 144.78 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2988,7 +3075,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "MLX90393ELW-ABA-011-RE"
-			(at 127 124.46 0)
+			(at 144.78 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3050,7 +3137,7 @@
 		(instances
 			(project ""
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "U7")
+					(reference "U5")
 					(unit 1)
 				)
 			)
@@ -3058,7 +3145,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 232.41 151.13 0)
+		(at 181.61 118.11 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3066,8 +3153,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "20515f3b-0638-4a7b-b7cf-a4a505418c48")
-		(property "Reference" "R48"
-			(at 234.95 149.86 0)
+		(property "Reference" "R34"
+			(at 184.15 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3076,7 +3163,7 @@
 			)
 		)
 		(property "Value" "9k31"
-			(at 234.95 152.4 0)
+			(at 184.15 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3085,7 +3172,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 230.632 151.13 90)
+			(at 179.832 118.11 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3094,7 +3181,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 232.41 151.13 0)
+			(at 181.61 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3103,7 +3190,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 232.41 151.13 0)
+			(at 181.61 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3112,7 +3199,7 @@
 			)
 		)
 		(property "MPN" "C270572"
-			(at 232.41 151.13 0)
+			(at 181.61 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3121,7 +3208,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 232.41 151.13 0)
+			(at 181.61 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3130,7 +3217,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF9311TCE"
-			(at 232.41 151.13 0)
+			(at 181.61 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3139,7 +3226,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 232.41 151.13 0)
+			(at 181.61 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3148,7 +3235,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 232.41 151.13 0)
+			(at 181.61 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3165,7 +3252,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R48")
+					(reference "R34")
 					(unit 1)
 				)
 			)
@@ -3173,15 +3260,15 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 237.49 73.66 0)
+		(at 227.33 29.21 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "28c1fa7f-fe73-4f79-b13d-dcd1664c9194")
-		(property "Reference" "#PWR077"
-			(at 237.49 77.47 0)
+		(property "Reference" "#PWR70"
+			(at 227.33 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3190,7 +3277,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 237.49 70.104 0)
+			(at 227.33 25.654 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3198,7 +3285,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 237.49 73.66 0)
+			(at 227.33 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3207,7 +3294,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 237.49 73.66 0)
+			(at 227.33 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3216,7 +3303,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 237.49 73.66 0)
+			(at 227.33 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3230,24 +3317,24 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR077")
+					(reference "#PWR70")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 99.06 142.24 270)
-		(mirror x)
+		(lib_id "power:+3V3")
+		(at 45.72 60.96 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "2d120a49-44e5-4f43-9337-44eae2ad0833")
-		(property "Reference" "#PWR88"
-			(at 92.71 142.24 0)
+		(uuid "2bd7d05a-dca6-48d6-8c27-0aeedc6aa5bf")
+		(property "Reference" "#PWR34"
+			(at 45.72 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3255,8 +3342,8 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "GND"
-			(at 95.25 142.24 0)
+		(property "Value" "+3V3"
+			(at 45.72 57.404 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3264,7 +3351,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 99.06 142.24 0)
+			(at 45.72 60.96 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3273,7 +3360,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 99.06 142.24 0)
+			(at 45.72 60.96 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3282,7 +3369,73 @@
 			)
 		)
 		(property "Description" ""
-			(at 99.06 142.24 0)
+			(at 45.72 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "950d2559-98df-4e77-b186-083f761d85a5")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "#PWR34")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 116.84 134.62 270)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2d120a49-44e5-4f43-9337-44eae2ad0833")
+		(property "Reference" "#PWR53"
+			(at 110.49 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 113.03 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 116.84 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 116.84 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 116.84 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3296,24 +3449,24 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR88")
+					(reference "#PWR53")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "power:+3V3")
-		(at 99.06 144.78 90)
-		(mirror x)
+		(lib_id "power:GND")
+		(at 45.72 69.85 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "2df0ffb1-1ce1-4adc-b1e5-b225667ad209")
-		(property "Reference" "#PWR78"
-			(at 102.87 144.78 0)
+		(uuid "2ea3a67b-8ce2-40df-8a50-c96600d1b17b")
+		(property "Reference" "#PWR35"
+			(at 45.72 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3321,8 +3474,8 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "+3V3"
-			(at 93.472 144.78 90)
+		(property "Value" "GND"
+			(at 45.72 73.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3330,7 +3483,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 99.06 144.78 0)
+			(at 45.72 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3339,7 +3492,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 99.06 144.78 0)
+			(at 45.72 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3348,7 +3501,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 99.06 144.78 0)
+			(at 45.72 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3357,44 +3510,244 @@
 			)
 		)
 		(pin "1"
-			(uuid "b6a3eb39-df6f-449e-82fe-248f0e1d2b77")
+			(uuid "6b3aaa19-39a8-4375-90be-0aae43e7ce65")
 		)
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR78")
+					(reference "#PWR35")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 63.5 26.67 90)
+		(lib_id "power:GND")
+		(at 54.61 77.47 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "2df80ccf-fa86-4bd1-ba13-2710254f024d")
-		(property "Reference" "R32"
-			(at 63.5 21.59 90)
+		(uuid "3186fcb4-1c9c-42e1-84fb-63b2df5f0179")
+		(property "Reference" "#PWR41"
+			(at 54.61 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 54.61 81.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "33"
-			(at 63.5 24.13 90)
+		(property "Footprint" ""
+			(at 54.61 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 54.61 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 54.61 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f0d580ad-27f3-4710-9687-6399b906300b")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "#PWR41")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 54.61 68.58 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3375760b-18ae-4c01-92a4-c171add24b15")
+		(property "Reference" "#PWR40"
+			(at 54.61 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 54.61 65.024 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 63.5 28.448 90)
+		(property "Footprint" ""
+			(at 54.61 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 54.61 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 54.61 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "64034ea2-844f-44e4-a5cf-c6b4903bee47")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "#PWR40")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 154.94 71.12 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "37364fc9-5a4e-439b-9a81-98fdaa2d78bc")
+		(property "Reference" "#PWR37"
+			(at 154.94 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 154.94 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 154.94 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 154.94 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 154.94 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1380e6fe-fd68-4084-bbfb-93e3657149b8")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "#PWR37")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 142.24 67.31 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3aed1963-569c-40a7-b756-b5fd69cd3d05")
+		(property "Reference" "C20"
+			(at 138.43 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u"
+			(at 138.43 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_C_0402_1005Metric"
+			(at 141.2748 71.12 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3403,7 +3756,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 63.5 26.67 0)
+			(at 142.24 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3412,7 +3765,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 63.5 26.67 0)
+			(at 142.24 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3421,7 +3774,34 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 63.5 26.67 0)
+			(at 142.24 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C52923"
+			(at 142.24 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 142.24 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CL05A105KA5NQNC"
+			(at 142.24 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3430,7 +3810,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 63.5 26.67 0)
+			(at 142.24 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3438,109 +3818,16 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "C25105"
-			(at 63.5 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 63.5 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 63.5 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
+		(pin "1"
+			(uuid "039c03ba-466e-496b-b3b7-14c6d5a21b15")
 		)
 		(pin "2"
-			(uuid "de2b552e-7b4c-4656-93fd-60303a8ca1d3")
-		)
-		(pin "1"
-			(uuid "1d22f0f5-7bd7-4b62-b145-c606925c4380")
+			(uuid "14eedd97-26e3-4a11-878c-c6bc2923d224")
 		)
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R32")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3V3")
-		(at 184.15 72.39 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "38504c0a-987d-4c44-b722-f1382414734a")
-		(property "Reference" "#PWR012"
-			(at 184.15 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 184.15 68.834 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 184.15 72.39 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 184.15 72.39 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 184.15 72.39 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "199fb2d6-79c6-47c2-a20a-b23682a39307")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR012")
+					(reference "C20")
 					(unit 1)
 				)
 			)
@@ -3548,7 +3835,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 224.79 77.47 0)
+		(at 214.63 33.02 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3556,8 +3843,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3c15f5d2-2c98-4acb-adcb-a0ec774c0da4")
-		(property "Reference" "R38"
-			(at 227.33 76.2 0)
+		(property "Reference" "R33"
+			(at 217.17 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3566,7 +3853,7 @@
 			)
 		)
 		(property "Value" "9k31"
-			(at 227.33 78.74 0)
+			(at 217.17 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3575,7 +3862,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 223.012 77.47 90)
+			(at 212.852 33.02 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3584,7 +3871,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 224.79 77.47 0)
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3593,7 +3880,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 224.79 77.47 0)
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3602,7 +3889,7 @@
 			)
 		)
 		(property "MPN" "C270572"
-			(at 224.79 77.47 0)
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3611,7 +3898,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 224.79 77.47 0)
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3620,7 +3907,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF9311TCE"
-			(at 224.79 77.47 0)
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3629,7 +3916,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 224.79 77.47 0)
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3638,7 +3925,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 224.79 77.47 0)
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3655,119 +3942,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R38")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 63.5 43.18 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "3d7f787c-6175-445e-96a5-2e4f51cfb7c3")
-		(property "Reference" "R20"
-			(at 63.5 38.1 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "33"
-			(at 63.5 40.64 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 63.5 44.958 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 63.5 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 63.5 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 63.5 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" "Basic"
-			(at 63.5 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "C25105"
-			(at 63.5 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 63.5 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 63.5 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "29e6119a-3ef1-4f2d-a813-a0acdbbc7272")
-		)
-		(pin "1"
-			(uuid "baee3eb6-d0d2-4c20-ba5a-759e26d90a0c")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R20")
+					(reference "R33")
 					(unit 1)
 				)
 			)
@@ -3775,192 +3950,15 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 144.78 142.24 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "3db78e3c-664b-4e02-80b4-165f8333ba86")
-		(property "Reference" "#PWR80"
-			(at 140.97 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 150.368 142.24 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 144.78 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 144.78 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 144.78 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4bd76257-b0aa-4b30-add8-92bea3e924aa")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR80")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 63.5 35.56 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "3f3e96f3-b84c-4dbc-8ff9-626fd122599e")
-		(property "Reference" "R19"
-			(at 63.5 30.48 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "33"
-			(at 63.5 33.02 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 63.5 37.338 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 63.5 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 63.5 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 63.5 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" "Basic"
-			(at 63.5 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "C25105"
-			(at 63.5 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 63.5 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 63.5 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "7c2db1a6-d5bd-4b98-a92b-e2a4b57b86b9")
-		)
-		(pin "1"
-			(uuid "b7f743d6-1d31-470e-ba6c-f9349c17f1cf")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R19")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3V3")
-		(at 234.95 29.21 0)
+		(at 119.38 27.94 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "42846651-717a-403c-a9a3-5d645a5701e4")
-		(property "Reference" "#PWR070"
-			(at 234.95 33.02 0)
+		(property "Reference" "#PWR69"
+			(at 119.38 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3969,7 +3967,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 234.95 25.654 0)
+			(at 119.38 24.384 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3977,7 +3975,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 234.95 29.21 0)
+			(at 119.38 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3986,7 +3984,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 234.95 29.21 0)
+			(at 119.38 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3995,7 +3993,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 234.95 29.21 0)
+			(at 119.38 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4009,24 +4007,42 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR070")
+					(reference "#PWR69")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 144.78 147.32 0)
-		(mirror y)
+		(lib_id "Device:C")
+		(at 54.61 73.66 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "59f7a6ab-333f-438e-ac6b-f979c489d08f")
-		(property "Reference" "#PWR79"
-			(at 144.78 153.67 0)
+		(fields_autoplaced yes)
+		(uuid "434edf27-7375-4a57-be94-f1ded4a3f5a5")
+		(property "Reference" "C21"
+			(at 58.42 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n"
+			(at 58.42 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_C_0402_1005Metric"
+			(at 55.5752 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4034,25 +4050,8 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "GND"
-			(at 144.78 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 144.78 147.32 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 144.78 147.32 0)
+		(property "Datasheet" "~"
+			(at 54.61 73.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4061,7 +4060,186 @@
 			)
 		)
 		(property "Description" ""
-			(at 144.78 147.32 0)
+			(at 54.61 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 54.61 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C1525"
+			(at 54.61 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 54.61 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CL05B104KO5NNNC"
+			(at 54.61 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 54.61 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "fceae13f-2155-43fb-a3ed-d02e4ccd3d76")
+		)
+		(pin "2"
+			(uuid "0cfa4fd0-952a-465b-84fd-fa6e8111c8ad")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "C21")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 88.9 146.05 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4f8c8718-3704-4b41-a78a-2a84528dd78c")
+		(property "Reference" "#PWR48"
+			(at 88.9 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 88.9 142.494 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 88.9 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 88.9 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 88.9 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "562224ab-3d6b-4958-bb7e-4bad0cb59321")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "#PWR48")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 162.56 139.7 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "59f7a6ab-333f-438e-ac6b-f979c489d08f")
+		(property "Reference" "#PWR60"
+			(at 162.56 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 162.56 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 162.56 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 162.56 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 162.56 139.7 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4075,7 +4253,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR79")
+					(reference "#PWR60")
 					(unit 1)
 				)
 			)
@@ -4083,7 +4261,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 194.31 110.49 0)
+		(at 201.93 66.04 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -4091,8 +4269,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "65b694fe-7e76-4344-847a-7caaed35ae48")
-		(property "Reference" "#PWR013"
-			(at 194.31 116.84 0)
+		(property "Reference" "#PWR65"
+			(at 201.93 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4101,7 +4279,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 194.31 114.3 0)
+			(at 201.93 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4109,7 +4287,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 194.31 110.49 0)
+			(at 201.93 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4118,7 +4296,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 194.31 110.49 0)
+			(at 201.93 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4127,7 +4305,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 194.31 110.49 0)
+			(at 201.93 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4141,7 +4319,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR013")
+					(reference "#PWR65")
 					(unit 1)
 				)
 			)
@@ -4149,7 +4327,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 144.78 139.7 90)
+		(at 162.56 132.08 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -4157,8 +4335,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "690bb0c7-c20e-40a3-bf78-cb31aae7cb31")
-		(property "Reference" "#PWR82"
-			(at 151.13 139.7 0)
+		(property "Reference" "#PWR58"
+			(at 168.91 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4167,7 +4345,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 148.59 139.7 0)
+			(at 166.37 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4175,7 +4353,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 144.78 139.7 0)
+			(at 162.56 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4184,7 +4362,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 144.78 139.7 0)
+			(at 162.56 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4193,7 +4371,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 144.78 139.7 0)
+			(at 162.56 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4207,7 +4385,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR82")
+					(reference "#PWR58")
 					(unit 1)
 				)
 			)
@@ -4215,15 +4393,15 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 222.25 29.21 0)
+		(at 106.68 27.94 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "771662f6-fc17-4082-bc5f-d53020407c77")
-		(property "Reference" "#PWR075"
-			(at 222.25 33.02 0)
+		(property "Reference" "#PWR66"
+			(at 106.68 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4232,7 +4410,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 222.25 25.654 0)
+			(at 106.68 24.384 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4240,7 +4418,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 222.25 29.21 0)
+			(at 106.68 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4249,7 +4427,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 222.25 29.21 0)
+			(at 106.68 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4258,7 +4436,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 222.25 29.21 0)
+			(at 106.68 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4272,7 +4450,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR075")
+					(reference "#PWR66")
 					(unit 1)
 				)
 			)
@@ -4280,7 +4458,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 127 160.02 0)
+		(at 144.78 152.4 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -4288,8 +4466,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "7a19b431-a9e9-4db8-80aa-eb5be2f3dd29")
-		(property "Reference" "#PWR81"
-			(at 127 166.37 0)
+		(property "Reference" "#PWR56"
+			(at 144.78 158.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4298,7 +4476,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 127 163.83 0)
+			(at 144.78 156.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4306,7 +4484,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 127 160.02 0)
+			(at 144.78 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4315,7 +4493,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 127 160.02 0)
+			(at 144.78 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4324,7 +4502,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 127 160.02 0)
+			(at 144.78 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4338,7 +4516,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR81")
+					(reference "#PWR56")
 					(unit 1)
 				)
 			)
@@ -4346,7 +4524,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 156.21 66.04 0)
+		(at 95.25 64.77 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -4354,8 +4532,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "7ae92b31-2f34-4e1e-a1e9-18f0418650c0")
-		(property "Reference" "#PWR014"
-			(at 156.21 72.39 0)
+		(property "Reference" "#PWR62"
+			(at 95.25 71.12 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4364,7 +4542,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 156.21 69.85 0)
+			(at 95.25 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4372,7 +4550,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 156.21 66.04 0)
+			(at 95.25 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4381,7 +4559,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 156.21 66.04 0)
+			(at 95.25 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4390,7 +4568,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 156.21 66.04 0)
+			(at 95.25 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4404,7 +4582,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR014")
+					(reference "#PWR62")
 					(unit 1)
 				)
 			)
@@ -4412,7 +4590,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 64.77 58.42 0)
+		(at 38.1 41.91 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4421,7 +4599,7 @@
 		(fields_autoplaced yes)
 		(uuid "84169615-3eb0-4948-ab86-13f1fdad0935")
 		(property "Reference" "R22"
-			(at 67.31 57.15 0)
+			(at 40.64 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4430,7 +4608,7 @@
 			)
 		)
 		(property "Value" "9k31"
-			(at 67.31 59.69 0)
+			(at 40.64 43.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4439,7 +4617,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 62.992 58.42 90)
+			(at 36.322 41.91 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4448,7 +4626,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 64.77 58.42 0)
+			(at 38.1 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4457,7 +4635,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 64.77 58.42 0)
+			(at 38.1 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4466,7 +4644,7 @@
 			)
 		)
 		(property "MPN" "C270572"
-			(at 64.77 58.42 0)
+			(at 38.1 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4475,7 +4653,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 64.77 58.42 0)
+			(at 38.1 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4484,7 +4662,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF9311TCE"
-			(at 64.77 58.42 0)
+			(at 38.1 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4493,7 +4671,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 64.77 58.42 0)
+			(at 38.1 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4502,7 +4680,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 64.77 58.42 0)
+			(at 38.1 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4527,16 +4705,15 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 85.09 139.7 270)
-		(mirror x)
+		(at 102.87 132.08 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "8581d031-be1c-4c72-9eda-8013c814bb0f")
-		(property "Reference" "R46"
-			(at 85.09 133.35 90)
+		(property "Reference" "R23"
+			(at 102.87 138.43 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4544,7 +4721,7 @@
 			)
 		)
 		(property "Value" "33"
-			(at 85.09 135.89 90)
+			(at 102.87 135.89 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4552,7 +4729,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 85.09 141.478 90)
+			(at 102.87 130.302 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4561,7 +4738,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 85.09 139.7 0)
+			(at 102.87 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4570,7 +4747,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 85.09 139.7 0)
+			(at 102.87 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4579,7 +4756,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 85.09 139.7 0)
+			(at 102.87 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4588,7 +4765,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 85.09 139.7 0)
+			(at 102.87 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4597,7 +4774,7 @@
 			)
 		)
 		(property "MPN" "C25105"
-			(at 85.09 139.7 0)
+			(at 102.87 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4606,7 +4783,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 85.09 139.7 0)
+			(at 102.87 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4615,7 +4792,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 85.09 139.7 0)
+			(at 102.87 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4632,7 +4809,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R46")
+					(reference "R23")
 					(unit 1)
 				)
 			)
@@ -4640,16 +4817,16 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 130.81 62.23 0)
+		(at 154.94 62.23 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "8f0f0567-4bb1-46bf-bfbd-dc0707dc9e64")
-		(property "Reference" "#PWR017"
-			(at 130.81 66.04 0)
+		(uuid "89903a7f-1543-4a89-8614-42c469cb712d")
+		(property "Reference" "#PWR36"
+			(at 154.94 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4658,7 +4835,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 130.81 58.674 0)
+			(at 154.94 58.674 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4666,7 +4843,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 130.81 62.23 0)
+			(at 154.94 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4675,7 +4852,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 130.81 62.23 0)
+			(at 154.94 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4684,7 +4861,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 130.81 62.23 0)
+			(at 154.94 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4693,78 +4870,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "403edb0c-8a63-4656-86b4-e36555a6fdad")
+			(uuid "9c754184-f7f2-4c3a-8eba-1d4db9fecc48")
 		)
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR017")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3V3")
-		(at 168.91 107.95 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "91e145d5-9e45-407b-8f19-63b77e5ceb4e")
-		(property "Reference" "#PWR09"
-			(at 168.91 111.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 168.91 104.394 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 168.91 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 168.91 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 168.91 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "3bb77fd4-a21b-4bcb-a12c-45a3526aa1c7")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR09")
+					(reference "#PWR36")
 					(unit 1)
 				)
 			)
@@ -4772,7 +4883,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 237.49 77.47 0)
+		(at 227.33 33.02 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4780,8 +4891,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "92c56f50-5324-494f-b0bc-f203fb1f0554")
-		(property "Reference" "R39"
-			(at 240.03 76.2 0)
+		(property "Reference" "R36"
+			(at 229.87 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4790,7 +4901,7 @@
 			)
 		)
 		(property "Value" "9k31"
-			(at 240.03 78.74 0)
+			(at 229.87 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4799,7 +4910,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 235.712 77.47 90)
+			(at 225.552 33.02 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4808,7 +4919,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 237.49 77.47 0)
+			(at 227.33 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4817,7 +4928,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 237.49 77.47 0)
+			(at 227.33 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4826,7 +4937,7 @@
 			)
 		)
 		(property "MPN" "C270572"
-			(at 237.49 77.47 0)
+			(at 227.33 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4835,7 +4946,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 237.49 77.47 0)
+			(at 227.33 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4844,7 +4955,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF9311TCE"
-			(at 237.49 77.47 0)
+			(at 227.33 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4853,7 +4964,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 237.49 77.47 0)
+			(at 227.33 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4862,7 +4973,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 237.49 77.47 0)
+			(at 227.33 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4879,24 +4990,25 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R39")
+					(reference "R36")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 184.15 76.2 0)
+		(lib_id "Device:C")
+		(at 154.94 67.31 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "96700e8c-e3d3-4faa-81e7-5d93373e6e2f")
-		(property "Reference" "R17"
-			(at 186.69 74.93 0)
+		(uuid "9f4a30da-d6bb-4310-a567-d85b3818a700")
+		(property "Reference" "C18"
+			(at 151.13 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4904,8 +5016,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "9k31"
-			(at 186.69 77.47 0)
+		(property "Value" "100n"
+			(at 151.13 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4913,8 +5025,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 182.372 76.2 90)
+		(property "Footprint" "footprints:Nondescript_C_0402_1005Metric"
+			(at 153.9748 71.12 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4923,7 +5035,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 184.15 76.2 0)
+			(at 154.94 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4932,34 +5044,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 184.15 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "C270572"
-			(at 184.15 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 184.15 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF9311TCE"
-			(at 184.15 76.2 0)
+			(at 154.94 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4968,7 +5053,34 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 184.15 76.2 0)
+			(at 154.94 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C1525"
+			(at 154.94 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 154.94 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CL05B104KO5NNNC"
+			(at 154.94 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4977,7 +5089,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 184.15 76.2 0)
+			(at 154.94 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4985,48 +5097,52 @@
 				(hide yes)
 			)
 		)
-		(pin "2"
-			(uuid "6cc93438-0b5a-4404-8f5a-a82907020aec")
-		)
 		(pin "1"
-			(uuid "49565f9f-964e-443f-9a16-866dea34954e")
+			(uuid "ccfe38c2-1c5c-4992-b2ad-4af12e62147e")
+		)
+		(pin "2"
+			(uuid "7dd85ef7-0aaa-41c6-a002-985b0d010ff9")
 		)
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R17")
+					(reference "C18")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 63.5 118.11 90)
+		(lib_id "Device:C")
+		(at 33.02 66.04 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "a26f6e43-6746-4e43-8980-45e8024283f3")
-		(property "Reference" "R45"
-			(at 63.5 113.03 90)
+		(fields_autoplaced yes)
+		(uuid "a823d38e-3eba-463a-9869-0490e92400d2")
+		(property "Reference" "C19"
+			(at 29.21 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "33"
-			(at 63.5 115.57 90)
+		(property "Value" "1u"
+			(at 29.21 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 63.5 119.888 90)
+		(property "Footprint" "footprints:Nondescript_C_0402_1005Metric"
+			(at 32.0548 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5035,7 +5151,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 63.5 118.11 0)
+			(at 33.02 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5044,7 +5160,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 63.5 118.11 0)
+			(at 33.02 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5053,7 +5169,34 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 63.5 118.11 0)
+			(at 33.02 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C52923"
+			(at 33.02 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 33.02 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CL05A105KA5NQNC"
+			(at 33.02 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5062,51 +5205,24 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 63.5 118.11 0)
+			(at 33.02 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
 			)
-		)
-		(property "MPN" "C25105"
-			(at 63.5 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 63.5 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 63.5 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "0d1ecc33-eede-4edc-aa3d-02244fc02355")
 		)
 		(pin "1"
-			(uuid "58866644-8067-4b07-8e85-a01173e5c221")
+			(uuid "a72c1f62-d523-46d3-944b-a1523381d858")
+		)
+		(pin "2"
+			(uuid "ae33afad-e9e2-4bd9-9b69-e3e5372a1f0c")
 		)
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R45")
+					(reference "C19")
 					(unit 1)
 				)
 			)
@@ -5114,7 +5230,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 222.25 33.02 0)
+		(at 106.68 31.75 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5122,8 +5238,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a8d0a67b-88d5-4909-b65f-7c3186da5a5b")
-		(property "Reference" "R37"
-			(at 224.79 31.75 0)
+		(property "Reference" "R32"
+			(at 109.22 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5132,7 +5248,7 @@
 			)
 		)
 		(property "Value" "9k31"
-			(at 224.79 34.29 0)
+			(at 109.22 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5141,7 +5257,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 220.472 33.02 90)
+			(at 104.902 31.75 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5150,7 +5266,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 222.25 33.02 0)
+			(at 106.68 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5159,7 +5275,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 222.25 33.02 0)
+			(at 106.68 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5168,7 +5284,7 @@
 			)
 		)
 		(property "MPN" "C270572"
-			(at 222.25 33.02 0)
+			(at 106.68 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5177,7 +5293,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 222.25 33.02 0)
+			(at 106.68 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5186,7 +5302,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF9311TCE"
-			(at 222.25 33.02 0)
+			(at 106.68 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5195,7 +5311,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 222.25 33.02 0)
+			(at 106.68 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5204,7 +5320,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 222.25 33.02 0)
+			(at 106.68 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5221,40 +5337,43 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R37")
+					(reference "R32")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 132.08 49.53 90)
-		(mirror x)
+		(lib_id "Device:C")
+		(at 45.72 66.04 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "b4407c01-7dcb-409f-9b09-fa506814a155")
-		(property "Reference" "R18"
-			(at 132.08 55.118 90)
+		(fields_autoplaced yes)
+		(uuid "aceab9f7-d887-4c9c-a776-df852331a34e")
+		(property "Reference" "C17"
+			(at 41.91 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "33"
-			(at 132.08 52.578 90)
+		(property "Value" "100n"
+			(at 41.91 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 132.08 47.752 90)
+		(property "Footprint" "footprints:Nondescript_C_0402_1005Metric"
+			(at 44.7548 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5263,7 +5382,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 132.08 49.53 0)
+			(at 45.72 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5272,7 +5391,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 132.08 49.53 0)
+			(at 45.72 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5281,7 +5400,34 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 132.08 49.53 0)
+			(at 45.72 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C1525"
+			(at 45.72 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 45.72 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CL05B104KO5NNNC"
+			(at 45.72 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5290,7 +5436,223 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 132.08 49.53 0)
+			(at 45.72 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8c02d13c-fe8d-4e3d-a0c2-b013bb159537")
+		)
+		(pin "2"
+			(uuid "c991481f-bab0-4703-9f59-fc7f4c6e66ff")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "C17")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 165.1 69.85 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ad083aaa-45b3-4412-a2fd-096510ea02d2")
+		(property "Reference" "#PWR42"
+			(at 165.1 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 165.1 66.294 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 165.1 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 165.1 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 165.1 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3f115de3-10b8-41a4-b7b9-c10082e968be")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "#PWR42")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 189.23 142.24 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b315b516-94ba-4390-90bb-2f9495330ea8")
+		(property "Reference" "#PWR45"
+			(at 189.23 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 189.23 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 189.23 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 189.23 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 189.23 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2c3574ea-bf63-4e14-b238-db0dcd060361")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "#PWR45")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 69.85 46.99 90)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b4407c01-7dcb-409f-9b09-fa506814a155")
+		(property "Reference" "R24"
+			(at 69.85 52.578 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "33"
+			(at 69.85 50.038 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
+			(at 69.85 45.212 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 69.85 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 69.85 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 69.85 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 69.85 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5299,7 +5661,7 @@
 			)
 		)
 		(property "MPN" "C25105"
-			(at 132.08 49.53 0)
+			(at 69.85 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5308,7 +5670,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 132.08 49.53 0)
+			(at 69.85 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5317,7 +5679,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 132.08 49.53 0)
+			(at 69.85 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5334,24 +5696,24 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R18")
+					(reference "R24")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 146.05 22.86 0)
+		(lib_id "Device:C")
+		(at 88.9 151.13 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "c04ccfd3-8de5-46c4-87d8-4e0ecb903a0a")
-		(property "Reference" "R16"
-			(at 148.59 21.59 0)
+		(uuid "b5c12c90-9559-4f78-b992-11b6408fe5de")
+		(property "Reference" "C25"
+			(at 92.71 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5359,8 +5721,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "9k31"
-			(at 148.59 24.13 0)
+		(property "Value" "100n"
+			(at 92.71 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5368,8 +5730,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 144.272 22.86 90)
+		(property "Footprint" "footprints:Nondescript_C_0402_1005Metric"
+			(at 89.8652 154.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5378,7 +5740,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 146.05 22.86 0)
+			(at 88.9 151.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5387,34 +5749,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 146.05 22.86 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "C270572"
-			(at 146.05 22.86 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 146.05 22.86 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF9311TCE"
-			(at 146.05 22.86 0)
+			(at 88.9 151.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5423,7 +5758,34 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 146.05 22.86 0)
+			(at 88.9 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C1525"
+			(at 88.9 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 88.9 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CL05B104KO5NNNC"
+			(at 88.9 151.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5432,7 +5794,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 146.05 22.86 0)
+			(at 88.9 151.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5440,16 +5802,16 @@
 				(hide yes)
 			)
 		)
-		(pin "2"
-			(uuid "3c4e1a5b-8116-4bdc-9547-2ff3430b7f8f")
-		)
 		(pin "1"
-			(uuid "21b33287-e5b6-4ac3-9b18-fb296e550ae5")
+			(uuid "6bd65dd7-8251-4bab-ba64-3643b31dc5db")
+		)
+		(pin "2"
+			(uuid "bdcd507c-566f-4f72-bc1b-b53fb796d890")
 		)
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R16")
+					(reference "C25")
 					(unit 1)
 				)
 			)
@@ -5457,15 +5819,15 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 170.18 92.71 270)
+		(at 177.8 48.26 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "c7658dcf-88ff-4d7a-9f81-b9198a09a16b")
-		(property "Reference" "R21"
-			(at 170.18 99.06 90)
+		(property "Reference" "R28"
+			(at 177.8 54.61 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5473,7 +5835,7 @@
 			)
 		)
 		(property "Value" "33"
-			(at 170.18 96.52 90)
+			(at 177.8 52.07 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5481,7 +5843,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 170.18 90.932 90)
+			(at 177.8 46.482 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5490,7 +5852,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 170.18 92.71 0)
+			(at 177.8 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5499,7 +5861,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 170.18 92.71 0)
+			(at 177.8 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5508,7 +5870,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 170.18 92.71 0)
+			(at 177.8 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5517,7 +5879,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 170.18 92.71 0)
+			(at 177.8 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5526,7 +5888,7 @@
 			)
 		)
 		(property "MPN" "C25105"
-			(at 170.18 92.71 0)
+			(at 177.8 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5535,7 +5897,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 170.18 92.71 0)
+			(at 177.8 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5544,7 +5906,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 170.18 92.71 0)
+			(at 177.8 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5561,23 +5923,42 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R21")
+					(reference "R28")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "power:+3V3")
-		(at 64.77 54.61 0)
+		(lib_id "Device:C")
+		(at 189.23 138.43 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "c8726cf5-30b1-4b24-839c-465bd752dd1e")
-		(property "Reference" "#PWR015"
-			(at 64.77 58.42 0)
+		(fields_autoplaced yes)
+		(uuid "c781ba8c-dfb6-4cb4-ac8f-e8b87524d46a")
+		(property "Reference" "C23"
+			(at 193.04 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n"
+			(at 193.04 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_C_0402_1005Metric"
+			(at 190.1952 142.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5585,25 +5966,8 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "+3V3"
-			(at 64.77 51.054 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 64.77 54.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 64.77 54.61 0)
+		(property "Datasheet" "~"
+			(at 189.23 138.43 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5612,7 +5976,120 @@
 			)
 		)
 		(property "Description" ""
-			(at 64.77 54.61 0)
+			(at 189.23 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 189.23 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C1525"
+			(at 189.23 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 189.23 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CL05B104KO5NNNC"
+			(at 189.23 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 189.23 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "077c70fc-2531-4cdb-8f9d-46cd10ae80c0")
+		)
+		(pin "2"
+			(uuid "55ec13eb-fae4-43fa-9332-9bddb709c996")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "C23")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 38.1 38.1 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c8726cf5-30b1-4b24-839c-465bd752dd1e")
+		(property "Reference" "#PWR52"
+			(at 38.1 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 38.1 34.544 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 38.1 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 38.1 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 38.1 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5626,7 +6103,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "#PWR015")
+					(reference "#PWR52")
 					(unit 1)
 				)
 			)
@@ -5634,7 +6111,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 157.48 41.91 90)
+		(at 96.52 40.64 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5642,8 +6119,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "cd985a2a-76df-4081-a6b1-c6a18119f9c3")
-		(property "Reference" "R35"
-			(at 157.48 48.26 90)
+		(property "Reference" "R27"
+			(at 96.52 46.99 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5651,7 +6128,7 @@
 			)
 		)
 		(property "Value" "33"
-			(at 157.48 45.72 90)
+			(at 96.52 44.45 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5659,7 +6136,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 157.48 40.132 90)
+			(at 96.52 38.862 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5668,7 +6145,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 157.48 41.91 0)
+			(at 96.52 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5677,7 +6154,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 157.48 41.91 0)
+			(at 96.52 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5686,7 +6163,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 157.48 41.91 0)
+			(at 96.52 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5695,7 +6172,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 157.48 41.91 0)
+			(at 96.52 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5704,7 +6181,7 @@
 			)
 		)
 		(property "MPN" "C25105"
-			(at 157.48 41.91 0)
+			(at 96.52 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5713,7 +6190,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 157.48 41.91 0)
+			(at 96.52 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5722,7 +6199,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 157.48 41.91 0)
+			(at 96.52 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5739,39 +6216,23 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R35")
+					(reference "R27")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 157.48 39.37 90)
+		(lib_id "power:GND")
+		(at 88.9 154.94 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "e08eab9f-f262-4de9-a0bb-a8ea4a6e651f")
-		(property "Reference" "R34"
-			(at 157.48 33.02 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "33"
-			(at 157.48 35.56 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 157.48 41.148 90)
+		(uuid "d4dd08f8-5756-4a33-ae67-88295dfd6996")
+		(property "Reference" "#PWR49"
+			(at 88.9 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5779,8 +6240,25 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
-			(at 157.48 39.37 0)
+		(property "Value" "GND"
+			(at 88.9 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 88.9 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 88.9 154.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5789,7 +6267,71 @@
 			)
 		)
 		(property "Description" ""
-			(at 157.48 39.37 0)
+			(at 88.9 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d801fc48-a8e0-446d-87e5-febd69053be1")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "#PWR49")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 96.52 38.1 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e08eab9f-f262-4de9-a0bb-a8ea4a6e651f")
+		(property "Reference" "R26"
+			(at 96.52 31.75 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "33"
+			(at 96.52 34.29 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
+			(at 96.52 39.878 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 96.52 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 96.52 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5798,7 +6340,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 157.48 39.37 0)
+			(at 96.52 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5807,7 +6349,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 157.48 39.37 0)
+			(at 96.52 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5816,7 +6358,7 @@
 			)
 		)
 		(property "MPN" "C25105"
-			(at 157.48 39.37 0)
+			(at 96.52 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5825,7 +6367,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 157.48 39.37 0)
+			(at 96.52 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5834,7 +6376,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 157.48 39.37 0)
+			(at 96.52 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5851,7 +6393,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R34")
+					(reference "R26")
 					(unit 1)
 				)
 			)
@@ -5859,7 +6401,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 195.58 86.36 90)
+		(at 203.2 41.91 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5867,8 +6409,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "e663e538-2250-4a6e-9fab-c89083647c7c")
-		(property "Reference" "R40"
-			(at 195.58 92.71 90)
+		(property "Reference" "R31"
+			(at 203.2 48.26 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5876,7 +6418,7 @@
 			)
 		)
 		(property "Value" "33"
-			(at 195.58 90.17 90)
+			(at 203.2 45.72 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5884,7 +6426,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 195.58 84.582 90)
+			(at 203.2 40.132 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5893,7 +6435,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 195.58 86.36 0)
+			(at 203.2 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5902,7 +6444,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 195.58 86.36 0)
+			(at 203.2 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5911,7 +6453,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 195.58 86.36 0)
+			(at 203.2 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5920,7 +6462,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 195.58 86.36 0)
+			(at 203.2 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5929,7 +6471,7 @@
 			)
 		)
 		(property "MPN" "C25105"
-			(at 195.58 86.36 0)
+			(at 203.2 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5938,7 +6480,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 195.58 86.36 0)
+			(at 203.2 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5947,7 +6489,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 195.58 86.36 0)
+			(at 203.2 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5964,41 +6506,42 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R40")
+					(reference "R31")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Sensor_Motion:BMI160")
-		(at 143.51 66.04 90)
-		(mirror x)
+		(lib_id "Device:C")
+		(at 201.93 138.43 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "e7b3e563-5cee-4860-9335-40bb740b55db")
-		(property "Reference" "U3"
-			(at 158.75 56.5719 90)
+		(uuid "e762bea3-0659-4e8f-b1ba-11edeb955110")
+		(property "Reference" "C24"
+			(at 205.74 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "BMI323"
-			(at 158.75 59.1119 90)
+		(property "Value" "1u"
+			(at 205.74 139.7 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Footprint" "Package_LGA:Bosch_LGA-14_3x2.5mm_P0.5mm"
-			(at 143.51 66.04 0)
+		(property "Footprint" "footprints:Nondescript_C_0402_1005Metric"
+			(at 202.8952 142.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6006,8 +6549,8 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi160-ds000.pdf"
-			(at 121.92 48.26 0)
+		(property "Datasheet" "~"
+			(at 201.93 138.43 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6016,34 +6559,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 143.51 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "C5368700"
-			(at 143.51 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "Bosch Sensortec"
-			(at 143.51 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "BMI323"
-			(at 143.51 66.04 0)
+			(at 201.93 138.43 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6052,7 +6568,148 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 143.51 66.04 0)
+			(at 201.93 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C52923"
+			(at 201.93 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 201.93 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CL05A105KA5NQNC"
+			(at 201.93 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 201.93 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6d2f38a5-399e-4722-87d5-521f3fa6b6e7")
+		)
+		(pin "2"
+			(uuid "c518da51-d776-4a82-85ad-95806f2a38b6")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "C24")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Sensor_Motion:BMI160")
+		(at 82.55 64.77 90)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e7b3e563-5cee-4860-9335-40bb740b55db")
+		(property "Reference" "U6"
+			(at 97.79 55.3019 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "BMI323"
+			(at 97.79 57.8419 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_LGA:Bosch_LGA-14_3x2.5mm_P0.5mm"
+			(at 82.55 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi160-ds000.pdf"
+			(at 60.96 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 82.55 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C5368700"
+			(at 82.55 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Bosch Sensortec"
+			(at 82.55 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "BMI323"
+			(at 82.55 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 82.55 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6061,7 +6718,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Extended"
-			(at 143.51 66.04 0)
+			(at 82.55 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6114,7 +6771,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "U3")
+					(reference "U6")
 					(unit 1)
 				)
 			)
@@ -6122,15 +6779,15 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 195.58 83.82 90)
+		(at 203.2 39.37 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "f385d53d-f0f9-427d-b473-e8ad96597b16")
-		(property "Reference" "R41"
-			(at 195.58 77.47 90)
+		(property "Reference" "R30"
+			(at 203.2 33.02 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6138,7 +6795,7 @@
 			)
 		)
 		(property "Value" "33"
-			(at 195.58 80.01 90)
+			(at 203.2 35.56 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6146,7 +6803,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 195.58 85.598 90)
+			(at 203.2 41.148 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6155,7 +6812,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 195.58 83.82 0)
+			(at 203.2 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6164,7 +6821,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 195.58 83.82 0)
+			(at 203.2 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6173,7 +6830,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 195.58 83.82 0)
+			(at 203.2 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6182,7 +6839,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 195.58 83.82 0)
+			(at 203.2 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6191,7 +6848,7 @@
 			)
 		)
 		(property "MPN" "C25105"
-			(at 195.58 83.82 0)
+			(at 203.2 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6200,7 +6857,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 195.58 83.82 0)
+			(at 203.2 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6209,7 +6866,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 195.58 83.82 0)
+			(at 203.2 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6226,7 +6883,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R41")
+					(reference "R30")
 					(unit 1)
 				)
 			)
@@ -6234,7 +6891,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 234.95 33.02 0)
+		(at 119.38 31.75 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6242,8 +6899,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fc48eaca-ce36-49f4-8c3f-0acea530ebc5")
-		(property "Reference" "R36"
-			(at 237.49 31.75 0)
+		(property "Reference" "R35"
+			(at 121.92 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6252,7 +6909,7 @@
 			)
 		)
 		(property "Value" "9k31"
-			(at 237.49 34.29 0)
+			(at 121.92 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6261,7 +6918,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 233.172 33.02 90)
+			(at 117.602 31.75 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6270,7 +6927,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 234.95 33.02 0)
+			(at 119.38 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6279,7 +6936,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 234.95 33.02 0)
+			(at 119.38 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6288,7 +6945,7 @@
 			)
 		)
 		(property "MPN" "C270572"
-			(at 234.95 33.02 0)
+			(at 119.38 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6297,7 +6954,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 234.95 33.02 0)
+			(at 119.38 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6306,7 +6963,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "0402WGF9311TCE"
-			(at 234.95 33.02 0)
+			(at 119.38 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6315,7 +6972,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 234.95 33.02 0)
+			(at 119.38 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6324,7 +6981,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 234.95 33.02 0)
+			(at 119.38 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6341,7 +6998,72 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
-					(reference "R36")
+					(reference "R35")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 165.1 78.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "fee3a4cc-f1ff-4e71-ae23-bbaa025fb9af")
+		(property "Reference" "#PWR43"
+			(at 165.1 85.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 165.1 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 165.1 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 165.1 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 165.1 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6b8bd447-27ef-46df-b69b-09dfb24e280d")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/aff82028-42f2-4a55-8071-6c88cca6e6b5"
+					(reference "#PWR43")
 					(unit 1)
 				)
 			)
