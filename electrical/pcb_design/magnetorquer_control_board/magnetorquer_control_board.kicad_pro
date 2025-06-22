@@ -179,9 +179,12 @@
       ],
       "track_widths": [
         0.0,
+        0.2,
         0.3,
         0.5,
-        1.0
+        1.0,
+        2.0,
+        5.0
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -215,8 +218,8 @@
           "drill": 0.0
         },
         {
-          "diameter": 0.5,
-          "drill": 0.3
+          "diameter": 0.55,
+          "drill": 0.35
         }
       ],
       "zones_allow_external_fillets": false
@@ -678,20 +681,16 @@
       "Root"
     ],
     [
-      "d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3",
-      "CAN bus"
+      "8e27c7c2-0d25-45f6-9c1b-87f643b528a8",
+      "MCU"
+    ],
+    [
+      "81ef42a1-fd75-4c6f-89d3-3386bd4f4866",
+      "Board Identification"
     ],
     [
       "7f8fc7f5-7f1e-476b-9e93-5575de1d6778",
       "Power Monitoring and Voltage Regulation"
-    ],
-    [
-      "c5796389-2733-44d1-b9d7-8ec15576859b",
-      "Pullup resistors and bypass and bulk capacitors"
-    ],
-    [
-      "aff82028-42f2-4a55-8071-6c88cca6e6b5",
-      "IMU"
     ],
     [
       "f171a806-abd3-4855-8959-e516dfbdf78d",
@@ -702,12 +701,16 @@
       "System Bus"
     ],
     [
-      "08ed5ceb-bd82-4dd9-9e08-8d214739dbcb",
-      "Magnetorquer Control"
+      "d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3",
+      "CAN bus"
     ],
     [
-      "81ef42a1-fd75-4c6f-89d3-3386bd4f4866",
-      "Board Identification"
+      "aff82028-42f2-4a55-8071-6c88cca6e6b5",
+      "IMU"
+    ],
+    [
+      "08ed5ceb-bd82-4dd9-9e08-8d214739dbcb",
+      "Magnetorquer Control"
     ]
   ],
   "text_variables": {
