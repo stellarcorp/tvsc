@@ -1,8 +1,8 @@
 #include <limits>
 
+#include "base/enums.h"
 #include "gtest/gtest.h"
 #include "hal/board_identification/board_ids.h"
-#include "base/enums.h"
 
 namespace tvsc::hal::board_identification {
 
@@ -60,12 +60,14 @@ TEST(BoardIdTest, SourceImpedenceBelowThreshold) {
 TEST(CanonicalBoardIdsTest, AllEnumValuesMatchConfiguration) {
   static constexpr std::array ALL_CANONICAL_BOARD_IDS = {
       CanonicalBoardIds::POWER_BOARD,
-      CanonicalBoardIds::MAGNETORQUER_CONTROL_BOARD_ZENITH,
-      CanonicalBoardIds::MAGNETORQUER_CONTROL_BOARD_NADIR,
-      CanonicalBoardIds::MAGNETORQUER_CONTROL_BOARD_PORT,
-      CanonicalBoardIds::MAGNETORQUER_CONTROL_BOARD_STARBOARD,
+      CanonicalBoardIds::MAGNETORQUER_CONTROL_BOARD_1,
+      CanonicalBoardIds::MAGNETORQUER_CONTROL_BOARD_2,
+      CanonicalBoardIds::MAGNETORQUER_CONTROL_BOARD_3,
+      CanonicalBoardIds::MAGNETORQUER_CONTROL_BOARD_4,
       CanonicalBoardIds::COMMS_BOARD_1,
       CanonicalBoardIds::COMMS_BOARD_2,
+      CanonicalBoardIds::BATTERY_BOARD_1,
+      CanonicalBoardIds::BATTERY_BOARD_2,
   };
   for (auto id : ALL_CANONICAL_BOARD_IDS) {
     bool found_id{false};
