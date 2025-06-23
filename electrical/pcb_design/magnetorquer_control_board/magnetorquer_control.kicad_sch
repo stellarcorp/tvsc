@@ -1978,7 +1978,7 @@
 		)
 		(uuid "fcc7d77e-3c40-4cba-80ef-f531244ff46a")
 	)
-	(hierarchical_label "I2C1_SCL"
+	(hierarchical_label "MAG3_I2C_SCL"
 		(shape input)
 		(at 111.76 149.86 0)
 		(effects
@@ -2044,7 +2044,7 @@
 		)
 		(uuid "80aa57ea-f86a-4f1c-b779-d8ce6b6acc53")
 	)
-	(hierarchical_label "I2C1_SDA"
+	(hierarchical_label "MAG3_I2C_SDA"
 		(shape input)
 		(at 111.76 147.32 0)
 		(effects
@@ -2055,7 +2055,7 @@
 		)
 		(uuid "c0a81db3-b6be-4f9c-895c-5668eed8d28c")
 	)
-	(hierarchical_label "I2C2_SCL"
+	(hierarchical_label "MAG2_I2C_SCL"
 		(shape input)
 		(at 111.76 114.3 0)
 		(effects
@@ -2066,7 +2066,7 @@
 		)
 		(uuid "cfd3b5d8-01ab-43d4-91af-c8fb9d541acb")
 	)
-	(hierarchical_label "I2C2_SDA"
+	(hierarchical_label "MAG2_I2C_SDA"
 		(shape input)
 		(at 111.76 111.76 0)
 		(effects
@@ -2077,7 +2077,7 @@
 		)
 		(uuid "d4d05a42-a666-47ac-b2fd-c52b16d3e4ce")
 	)
-	(hierarchical_label "I2C3_SCL"
+	(hierarchical_label "MAG1_I2C_SCL"
 		(shape input)
 		(at 111.76 78.74 0)
 		(effects
@@ -2088,7 +2088,7 @@
 		)
 		(uuid "dea414bb-ed84-42be-8fdf-6f6f5013a2b9")
 	)
-	(hierarchical_label "I2C3_SDA"
+	(hierarchical_label "MAG1_I2C_SDA"
 		(shape input)
 		(at 111.76 76.2 0)
 		(effects
@@ -2318,7 +2318,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "4886eb08-7f53-4ee7-8368-80f2d73a9cf9")
-		(property "Reference" "J7"
+		(property "Reference" "J6"
 			(at 97.79 118.11 0)
 			(effects
 				(font
@@ -2451,7 +2451,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
-					(reference "J7")
+					(reference "J6")
 					(unit 1)
 				)
 			)
@@ -2534,7 +2534,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "6f8d41bf-b403-47d8-a6b0-38cefa5f5751")
-		(property "Reference" "J6"
+		(property "Reference" "J7"
 			(at 97.79 153.67 0)
 			(effects
 				(font
@@ -2667,7 +2667,7 @@
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/08ed5ceb-bd82-4dd9-9e08-8d214739dbcb"
-					(reference "J6")
+					(reference "J7")
 					(unit 1)
 				)
 			)

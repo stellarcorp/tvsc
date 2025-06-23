@@ -3821,7 +3821,7 @@
 		)
 		(uuid "34f7d6e0-0e8a-4ea6-a864-da87fa0d627f")
 	)
-	(hierarchical_label "IMU1_INT2"
+	(hierarchical_label "IMU2_INT1"
 		(shape input)
 		(at 105.41 91.44 180)
 		(effects
@@ -3887,17 +3887,6 @@
 		)
 		(uuid "4ccc62ca-86b6-4773-9e66-6a8cb30a6939")
 	)
-	(hierarchical_label "IMU1_SPI_CS"
-		(shape input)
-		(at 27.94 93.98 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "54d8fd1a-9474-434f-adca-eb37b3785a3c")
-	)
 	(hierarchical_label "CAN1_SHUTDOWN"
 		(shape input)
 		(at 140.97 76.2 0)
@@ -3909,7 +3898,7 @@
 		)
 		(uuid "5879e524-1e65-49fd-8207-43bd390abe1e")
 	)
-	(hierarchical_label "IMU2_INT1"
+	(hierarchical_label "IMU1_INT2"
 		(shape input)
 		(at 105.41 81.28 180)
 		(effects
@@ -3975,17 +3964,6 @@
 		)
 		(uuid "7f6fddb7-1c26-4c8e-ba7d-5559aa0fc91f")
 	)
-	(hierarchical_label "IMU_MAG_SPI_CS"
-		(shape input)
-		(at 33.02 179.07 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "8aeac8ca-d567-487b-b440-f252b188b1af")
-	)
 	(hierarchical_label "SWDIO"
 		(shape input)
 		(at 254 50.8 0)
@@ -4018,6 +3996,17 @@
 			(justify right)
 		)
 		(uuid "a7a9c97c-df42-421a-9a36-56abcfee7087")
+	)
+	(hierarchical_label "IMU_MAG_SPI_CS"
+		(shape input)
+		(at 27.94 93.98 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a96e2d29-def2-4402-b056-ed853f03b69b")
 	)
 	(hierarchical_label "I2C2_SDA"
 		(shape input)
@@ -4084,6 +4073,17 @@
 			(justify left)
 		)
 		(uuid "da4cbec3-e98c-4c41-91ca-aca2f37e80a5")
+	)
+	(hierarchical_label "IMU1_SPI_CS"
+		(shape input)
+		(at 33.02 179.07 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "ecfad3bf-4ba1-4b7c-8fbc-a5b14abdc076")
 	)
 	(hierarchical_label "SPI3_MOSI"
 		(shape input)
