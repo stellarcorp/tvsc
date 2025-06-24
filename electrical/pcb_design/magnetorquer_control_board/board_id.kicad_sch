@@ -526,16 +526,16 @@
 		(uuid "055ddda7-8d5b-4129-ade5-767d2e373634")
 	)
 	(junction
-		(at 163.83 60.96)
+		(at 196.85 60.96)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "0c17775d-291d-4432-8f40-4661cd4972b4")
+		(uuid "0d8d80d0-bcf5-4763-ba36-db5edd278772")
 	)
 	(junction
 		(at 180.34 60.96)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "165f386f-be80-4dd3-8574-7de3e5be73cc")
+		(uuid "10046958-ea08-4c92-ad7f-889bf18ede7d")
 	)
 	(junction
 		(at 147.32 60.96)
@@ -574,6 +574,12 @@
 		(uuid "61bb4c92-48b1-42ea-91c9-9ef3d48b4762")
 	)
 	(junction
+		(at 163.83 60.96)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "739996a7-c091-4698-89e5-303efe929c64")
+	)
+	(junction
 		(at 121.92 91.44)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -584,12 +590,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "aef800cf-a82e-4428-a86b-8c13aa111c21")
-	)
-	(junction
-		(at 196.85 60.96)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "dcdad201-6b21-472f-8f15-bfd3529aca5e")
 	)
 	(wire
 		(pts
@@ -603,16 +603,6 @@
 	)
 	(wire
 		(pts
-			(xy 163.83 60.96) (xy 180.34 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0c9344c4-f86c-472a-86c3-66678967207c")
-	)
-	(wire
-		(pts
 			(xy 121.92 121.92) (xy 124.46 121.92)
 		)
 		(stroke
@@ -623,13 +613,33 @@
 	)
 	(wire
 		(pts
-			(xy 180.34 60.96) (xy 196.85 60.96)
+			(xy 147.32 60.96) (xy 163.83 60.96)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "1f033ed9-caf3-457c-bd93-f4982a04614e")
+	)
+	(wire
+		(pts
+			(xy 180.34 60.96) (xy 196.85 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "337ef904-0606-4777-a6fd-3401d47d458b")
+	)
+	(wire
+		(pts
+			(xy 163.83 60.96) (xy 180.34 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "35391cb7-d74a-43d3-8490-0a79a6d9f843")
 	)
 	(wire
 		(pts
@@ -640,16 +650,6 @@
 			(type default)
 		)
 		(uuid "4605ae56-1d1b-4699-b8a8-f223205b39b8")
-	)
-	(wire
-		(pts
-			(xy 147.32 60.96) (xy 163.83 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "48eaba4f-cd1d-44b4-ae88-be533d28e656")
 	)
 	(wire
 		(pts
@@ -781,10 +781,10 @@
 		)
 		(uuid "ffaee824-cc09-418c-9703-772b22942f41")
 	)
-	(text_box "Board ID 63"
+	(text_box "Board ID 0x3F"
 		(exclude_from_sim no)
-		(at 124.46 81.28 0)
-		(size 15.24 3.81)
+		(at 123.19 69.85 0)
+		(size 16.51 3.81)
 		(stroke
 			(width 0)
 			(type default)
@@ -800,10 +800,10 @@
 		)
 		(uuid "62c846ef-6577-4fb8-b774-64264218adcc")
 	)
-	(text_box "Board ID 192"
+	(text_box "Board ID 0xC0"
 		(exclude_from_sim no)
-		(at 124.46 96.52 0)
-		(size 15.24 3.81)
+		(at 123.19 85.09 0)
+		(size 16.51 3.81)
 		(stroke
 			(width 0)
 			(type default)
@@ -819,10 +819,10 @@
 		)
 		(uuid "665660df-3f19-427b-a932-8cedd04644df")
 	)
-	(text_box "Board ID 94"
+	(text_box "Board ID 0x5E"
 		(exclude_from_sim no)
-		(at 124.46 127 0)
-		(size 15.24 3.81)
+		(at 123.19 115.57 0)
+		(size 16.51 3.81)
 		(stroke
 			(width 0)
 			(type default)
@@ -838,10 +838,10 @@
 		)
 		(uuid "7a6b1c00-9299-4265-a929-06a20c2d8b5b")
 	)
-	(text_box "Board ID 161"
+	(text_box "Board ID 0xA1"
 		(exclude_from_sim no)
-		(at 124.46 111.76 0)
-		(size 15.24 3.81)
+		(at 123.19 100.33 0)
+		(size 16.51 3.81)
 		(stroke
 			(width 0)
 			(type default)
@@ -941,103 +941,6 @@
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
 					(reference "#PWR89")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 163.83 64.77 270)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "2789dc97-bbea-4479-95ea-737d46b150fb")
-		(property "Reference" "JP12"
-			(at 160.02 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Value" "SolderJumper_2_Open"
-			(at 161.29 63.5 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 163.83 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 163.83 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 163.83 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 163.83 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "NA"
-			(at 163.83 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" ""
-			(at 163.83 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "2a6d814d-d608-40ba-b205-e9075bf11478")
-		)
-		(pin "1"
-			(uuid "33a26034-d83d-41a0-934f-a68576705545")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "JP12")
 					(unit 1)
 				)
 			)
@@ -1387,6 +1290,100 @@
 	)
 	(symbol
 		(lib_id "Jumper:SolderJumper_2_Open")
+		(at 163.83 64.77 270)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "3bc5c06b-62e4-44c2-97da-a83483a0d60d")
+		(property "Reference" "JP12"
+			(at 158.496 64.008 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0xC0"
+			(at 158.496 66.04 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+			(at 163.83 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 163.83 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 163.83 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 163.83 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "NA"
+			(at 163.83 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" ""
+			(at 163.83 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "38ed9229-a4e8-466a-a562-a33b6d61274b")
+		)
+		(pin "1"
+			(uuid "1b57e514-ad1d-41b2-ad6c-086230899953")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+					(reference "JP12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:SolderJumper_2_Open")
 		(at 128.27 76.2 0)
 		(unit 1)
 		(exclude_from_sim yes)
@@ -1403,14 +1400,13 @@
 				(justify bottom)
 			)
 		)
-		(property "Value" "SolderJumper_2_Open"
-			(at 127 78.74 90)
+		(property "Value" "0x3F"
+			(at 128.27 82.042 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
-				(hide yes)
+				(justify bottom)
 			)
 		)
 		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
@@ -1665,34 +1661,31 @@
 	)
 	(symbol
 		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 128.27 91.44 0)
+		(at 180.34 64.77 270)
 		(unit 1)
 		(exclude_from_sim yes)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
-		(uuid "5a008352-37e3-4072-a8fa-be19651dcd53")
-		(property "Reference" "JP8"
-			(at 128.27 95.25 0)
+		(uuid "5a173b0f-c912-4b45-b094-4764eb155c5e")
+		(property "Reference" "JP13"
+			(at 175.006 64.008 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify bottom)
 			)
 		)
-		(property "Value" "SolderJumper_2_Open"
-			(at 127 93.98 90)
+		(property "Value" "0xA1"
+			(at 175.006 66.04 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 128.27 91.44 0)
+			(at 180.34 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1701,7 +1694,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 128.27 91.44 0)
+			(at 180.34 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1710,7 +1703,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 128.27 91.44 0)
+			(at 180.34 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1719,7 +1712,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 128.27 91.44 0)
+			(at 180.34 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1728,7 +1721,7 @@
 			)
 		)
 		(property "MPN" "NA"
-			(at 128.27 91.44 0)
+			(at 180.34 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1737,7 +1730,7 @@
 			)
 		)
 		(property "Basic or Extended Component" ""
-			(at 128.27 91.44 0)
+			(at 180.34 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1746,15 +1739,109 @@
 			)
 		)
 		(pin "2"
-			(uuid "2d922a05-bcb7-4f32-a17d-9b79b908e2f1")
+			(uuid "3ea09ab0-ebb5-46d6-9c17-5e004badbf48")
 		)
 		(pin "1"
-			(uuid "e4755512-267e-455e-ac1e-e8c8f3df1d31")
+			(uuid "0bd47573-be87-4ee3-a641-017d306eed8f")
 		)
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "JP8")
+					(reference "JP13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:SolderJumper_2_Open")
+		(at 196.85 64.77 270)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "6bee0f87-547f-432c-9aae-b624d1f45dc2")
+		(property "Reference" "JP14"
+			(at 191.516 64.008 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0x5E"
+			(at 191.516 66.04 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+			(at 196.85 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 196.85 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 196.85 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 196.85 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "NA"
+			(at 196.85 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" ""
+			(at 196.85 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "1e4702f3-33e7-4c1f-856e-00f0579d10dd")
+		)
+		(pin "1"
+			(uuid "0a115d19-33b3-4013-8791-e93b7a504771")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+					(reference "JP14")
 					(unit 1)
 				)
 			)
@@ -2091,6 +2178,102 @@
 		)
 	)
 	(symbol
+		(lib_id "Jumper:SolderJumper_2_Open")
+		(at 128.27 91.44 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "8d1751bc-deed-4318-a849-25de119b01c3")
+		(property "Reference" "JP8"
+			(at 128.27 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Value" "0xC0"
+			(at 128.27 97.282 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+			(at 128.27 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 128.27 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 128.27 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 128.27 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "NA"
+			(at 128.27 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" ""
+			(at 128.27 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "bc2456f4-f3c8-45d5-ab37-17c74cd0c505")
+		)
+		(pin "1"
+			(uuid "dc610cf7-136c-41aa-8d1c-84bc98a0731d")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+					(reference "JP8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:TestPoint_Probe")
 		(at 121.92 121.92 90)
 		(unit 1)
@@ -2167,103 +2350,6 @@
 			(project ""
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
 					(reference "TP5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 128.27 106.68 0)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "b410352f-4ed9-4bb0-b4fc-f10cff54ad50")
-		(property "Reference" "JP9"
-			(at 128.27 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Value" "SolderJumper_2_Open"
-			(at 127 109.22 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 128.27 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 128.27 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 128.27 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 128.27 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "NA"
-			(at 128.27 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" ""
-			(at 128.27 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "fefa75d0-829f-4189-b8a1-4472c3937a2e")
-		)
-		(pin "1"
-			(uuid "b76f6d4d-b2c9-4a68-9a2c-932b313849f6")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "JP9")
 					(unit 1)
 				)
 			)
@@ -2498,103 +2584,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 180.34 64.77 270)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "bb8028d9-bc11-4e44-a4cb-95458921a48e")
-		(property "Reference" "JP13"
-			(at 176.53 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Value" "SolderJumper_2_Open"
-			(at 177.8 63.5 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 180.34 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 180.34 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 180.34 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 180.34 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "NA"
-			(at 180.34 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" ""
-			(at 180.34 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "2772d614-5112-4b1f-bba4-d69b322cdc55")
-		)
-		(pin "1"
-			(uuid "4e490f5a-c436-4cb9-8bf7-3aa6e4f5a62e")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "JP13")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 196.85 125.73 0)
 		(mirror x)
@@ -2710,13 +2699,109 @@
 	)
 	(symbol
 		(lib_id "Jumper:SolderJumper_2_Open")
+		(at 128.27 106.68 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "f9a95eba-5e18-41e2-9858-043351b5a988")
+		(property "Reference" "JP9"
+			(at 128.27 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Value" "0xA1"
+			(at 128.27 112.522 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+			(at 128.27 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 128.27 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 128.27 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 128.27 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "NA"
+			(at 128.27 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" ""
+			(at 128.27 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "ca2ffdf1-36c4-416d-abde-cabf71bcce8e")
+		)
+		(pin "1"
+			(uuid "2202086b-f0ce-4e26-b816-52ed7fc74072")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+					(reference "JP9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:SolderJumper_2_Open")
 		(at 128.27 121.92 0)
 		(unit 1)
 		(exclude_from_sim yes)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
-		(uuid "c890d92d-3896-4509-9a65-d78715bc8453")
+		(uuid "fda3de4e-924d-4be9-9412-a0ac42a4bcf4")
 		(property "Reference" "JP10"
 			(at 128.27 125.73 0)
 			(effects
@@ -2726,96 +2811,8 @@
 				(justify bottom)
 			)
 		)
-		(property "Value" "SolderJumper_2_Open"
-			(at 127 124.46 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 128.27 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 128.27 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 128.27 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 128.27 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "NA"
-			(at 128.27 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" ""
-			(at 128.27 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "d3f59bac-f77e-48e3-abf5-8da27f6119d9")
-		)
-		(pin "1"
-			(uuid "f0455f5f-cb12-4911-88f8-5660957defcb")
-		)
-		(instances
-			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "JP10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 196.85 64.77 270)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "cd301323-47cb-4077-96a6-976c2ac31c85")
-		(property "Reference" "JP14"
-			(at 193.04 64.77 0)
+		(property "Value" "0x5E"
+			(at 128.27 127.762 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2823,18 +2820,8 @@
 				(justify bottom)
 			)
 		)
-		(property "Value" "SolderJumper_2_Open"
-			(at 194.31 63.5 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
 		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 196.85 64.77 0)
+			(at 128.27 121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2843,7 +2830,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 196.85 64.77 0)
+			(at 128.27 121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2852,7 +2839,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 196.85 64.77 0)
+			(at 128.27 121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2861,7 +2848,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 196.85 64.77 0)
+			(at 128.27 121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2870,7 +2857,7 @@
 			)
 		)
 		(property "MPN" "NA"
-			(at 196.85 64.77 0)
+			(at 128.27 121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2879,7 +2866,7 @@
 			)
 		)
 		(property "Basic or Extended Component" ""
-			(at 196.85 64.77 0)
+			(at 128.27 121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2888,15 +2875,15 @@
 			)
 		)
 		(pin "2"
-			(uuid "a107447e-598f-463b-8111-ae5f94c06601")
+			(uuid "f7d2110a-7e01-431d-a53f-08a7ac279cd3")
 		)
 		(pin "1"
-			(uuid "7670204f-5649-495a-9158-9da896395f24")
+			(uuid "4b6b27a0-9938-4b03-b3b7-63b243086852")
 		)
 		(instances
 			(project "magnetorquer_control_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "JP14")
+					(reference "JP10")
 					(unit 1)
 				)
 			)
@@ -2912,22 +2899,19 @@
 		(dnp no)
 		(uuid "fe49b9f8-56c8-4123-b31b-ad91d21d6d88")
 		(property "Reference" "JP11"
-			(at 143.51 64.77 0)
+			(at 141.986 64.008 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify bottom)
 			)
 		)
-		(property "Value" "SolderJumper_2_Open"
-			(at 144.78 63.5 90)
+		(property "Value" "0x3F"
+			(at 141.986 66.04 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
