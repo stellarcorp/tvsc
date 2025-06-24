@@ -921,12 +921,6 @@
 		(uuid "00f7ec56-cb84-4a06-b994-712df2c24a82")
 	)
 	(junction
-		(at 55.88 60.96)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "07fe8735-0ca1-4fa2-8035-f1ce926746aa")
-	)
-	(junction
 		(at 158.75 132.08)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -945,22 +939,28 @@
 		(uuid "6b877c2f-a974-44e3-b384-4f9e91367c9b")
 	)
 	(junction
+		(at 80.01 60.96)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6cf63f56-9e8a-4e12-9aa9-7cd5d79651f6")
+	)
+	(junction
 		(at 168.91 85.09)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c0817cb8-6d8c-4be9-9624-577f326eabdd")
 	)
 	(junction
-		(at 55.88 68.58)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "c097fa4b-b2f6-45d1-b21d-09cd167a8058")
-	)
-	(junction
 		(at 68.58 60.96)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "cf474784-760f-406e-b5f5-f3227db7b5b6")
+	)
+	(junction
+		(at 68.58 68.58)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e66474ca-9f3f-435d-8538-1ded4e972d5d")
 	)
 	(wire
 		(pts
@@ -981,16 +981,6 @@
 			(type default)
 		)
 		(uuid "0f5ee568-cde3-4d5b-b6a8-375485739061")
-	)
-	(wire
-		(pts
-			(xy 55.88 68.58) (xy 68.58 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "11d25dd6-b484-494b-b5fb-e4d51386487b")
 	)
 	(wire
 		(pts
@@ -1031,6 +1021,16 @@
 			(type default)
 		)
 		(uuid "2578a922-7dc2-4839-bc25-4bc4d376f15f")
+	)
+	(wire
+		(pts
+			(xy 80.01 60.96) (xy 97.79 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "25892dc1-dc6f-4a2a-9d26-738d2838452a")
 	)
 	(wire
 		(pts
@@ -1104,7 +1104,7 @@
 	)
 	(wire
 		(pts
-			(xy 68.58 60.96) (xy 97.79 60.96)
+			(xy 68.58 60.96) (xy 80.01 60.96)
 		)
 		(stroke
 			(width 0)
@@ -1194,16 +1194,6 @@
 	)
 	(wire
 		(pts
-			(xy 55.88 60.96) (xy 68.58 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "873cb8ff-4c25-4c77-9429-603cf8576d13")
-	)
-	(wire
-		(pts
 			(xy 91.44 50.8) (xy 91.44 52.07)
 		)
 		(stroke
@@ -1221,6 +1211,16 @@
 			(type default)
 		)
 		(uuid "a03f61ed-6482-448d-8b12-473a78c844aa")
+	)
+	(wire
+		(pts
+			(xy 80.01 68.58) (xy 68.58 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a2b8bb85-5598-4ac6-acd3-cb701e783911")
 	)
 	(wire
 		(pts
@@ -1294,7 +1294,7 @@
 	)
 	(wire
 		(pts
-			(xy 49.53 60.96) (xy 55.88 60.96)
+			(xy 49.53 60.96) (xy 68.58 60.96)
 		)
 		(stroke
 			(width 0)
@@ -2227,7 +2227,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 55.88 68.58 0)
+		(at 68.58 68.58 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2235,7 +2235,7 @@
 		(dnp no)
 		(uuid "7c2f4b44-ce0d-4d75-abdb-e59e1bd37123")
 		(property "Reference" "#PWR25"
-			(at 55.88 74.93 0)
+			(at 68.58 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2244,7 +2244,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 55.88 72.39 0)
+			(at 68.58 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2252,7 +2252,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 55.88 68.58 0)
+			(at 68.58 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2261,7 +2261,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 55.88 68.58 0)
+			(at 68.58 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2270,7 +2270,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 55.88 68.58 0)
+			(at 68.58 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2714,7 +2714,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 55.88 64.77 0)
+		(at 80.01 64.77 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2723,7 +2723,7 @@
 		(fields_autoplaced yes)
 		(uuid "d1ce5776-f6d3-4b5b-bb82-0f000b6f3aff")
 		(property "Reference" "C7"
-			(at 59.69 63.5 0)
+			(at 83.82 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2732,7 +2732,7 @@
 			)
 		)
 		(property "Value" "100n"
-			(at 59.69 66.04 0)
+			(at 83.82 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2741,7 +2741,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_C_0402_1005Metric"
-			(at 56.8452 68.58 0)
+			(at 80.9752 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2750,7 +2750,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 55.88 64.77 0)
+			(at 80.01 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2759,7 +2759,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 55.88 64.77 0)
+			(at 80.01 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2768,7 +2768,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 55.88 64.77 0)
+			(at 80.01 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2777,7 +2777,7 @@
 			)
 		)
 		(property "MPN" "C1525"
-			(at 55.88 64.77 0)
+			(at 80.01 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2786,7 +2786,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung Electro-Mechanics"
-			(at 55.88 64.77 0)
+			(at 80.01 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2795,7 +2795,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "CL05B104KO5NNNC"
-			(at 55.88 64.77 0)
+			(at 80.01 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2804,7 +2804,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 55.88 64.77 0)
+			(at 80.01 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
