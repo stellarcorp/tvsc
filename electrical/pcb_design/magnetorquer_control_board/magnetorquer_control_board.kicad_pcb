@@ -36495,6 +36495,42 @@
 			(justify left bottom)
 		)
 	)
+	(gr_text_box "TVSC Magnetorquer Control Board v${PCB_VERSION}"
+		(start 129.492 121.15)
+		(end 146.992 125.9)
+		(layer "F.SilkS")
+		(uuid "ba808eb4-4474-45ba-a9cd-1eba47374c81")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left top)
+		)
+		(border yes)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+	)
+	(gr_text_box "Developed with the support of the Hacker Initiative"
+		(start 129.492 125.9)
+		(end 146.992 131.9)
+		(layer "F.SilkS")
+		(uuid "d8cb12a0-dfea-4eb9-bcd4-c38bda210303")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left top)
+		)
+		(border yes)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+	)
 	(segment
 		(start 177.687 111.88)
 		(end 177.742 111.935)
