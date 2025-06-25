@@ -150,7 +150,7 @@
 			(outputdirectory "")
 		)
 	)
-	(property "PCB_VERSION" "0.9")
+	(property "PCB_VERSION" "Cheerful Coffee")
 	(net 0 "")
 	(net 1 "GND")
 	(net 2 "Net-(C3-Pad2)")
@@ -36497,7 +36497,7 @@
 			)
 		)
 		(property "Value" "STLINK"
-			(at 4.5 0 360)
+			(at 4.5 0 0)
 			(layer "F.SilkS")
 			(uuid "73db401c-5cd3-4032-8a81-586006068f6b")
 			(effects
@@ -37149,9 +37149,9 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text_box "TVSC Magnetorquer Control Board v${PCB_VERSION}"
-		(start 129.492 121.15)
-		(end 146.992 125.9)
+	(gr_text_box "TVSC Magnetorquer Control Board ${PCB_VERSION} edition"
+		(start 125.742 121.15)
+		(end 146.992 127.15)
 		(layer "F.SilkS")
 		(uuid "ba808eb4-4474-45ba-a9cd-1eba47374c81")
 		(effects
@@ -37168,8 +37168,8 @@
 		)
 	)
 	(gr_text_box "Developed with the support of the Hacker Initiative"
-		(start 129.492 125.9)
-		(end 146.992 131.9)
+		(start 125.742 127.15)
+		(end 146.992 132.9)
 		(layer "F.SilkS")
 		(uuid "d8cb12a0-dfea-4eb9-bcd4-c38bda210303")
 		(effects
