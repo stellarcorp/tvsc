@@ -1702,6 +1702,102 @@
 				)
 			)
 		)
+		(symbol "power:PWR_FLAG"
+			(power)
+			(pin_numbers hide)
+			(pin_names
+				(offset 0) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#FLG"
+				(at 0 1.905 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "PWR_FLAG"
+				(at 0 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Special symbol for telling ERC where power comes from"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "flag power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "PWR_FLAG_0_0"
+				(pin power_out line
+					(at 0 0 90)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "PWR_FLAG_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+		)
 		(symbol "power:VBUS"
 			(power)
 			(pin_numbers hide)
@@ -1822,6 +1918,209 @@
 				)
 			)
 		)
+		(symbol "tvsc_symbols:Molex_504050-0491"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 19.05 7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Value" "Molex_504050-0491"
+				(at 19.05 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Footprint" "footprints:Molex_504050-0491"
+				(at 19.05 -94.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "http://www.molex.com/pdm_docs/sd/5040500491_sd.pdf"
+				(at 19.05 -194.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Description" "4-pin Pico-Lock Header"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer" "Molex"
+				(at 19.05 -494.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer Part Number" "504050-0491"
+				(at 19.05 -594.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "MPN" "C177235"
+				(at 17.78 -11.43 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify right)
+					(hide yes)
+				)
+			)
+			(symbol "Molex_504050-0491_1_1"
+				(rectangle
+					(start 5.08 2.54)
+					(end 17.78 -10.16)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin passive line
+					(at 0 -7.62 0)
+					(length 5.08)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 0)
+					(length 5.08)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 0)
+					(length 5.08)
+					(name "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 0 0)
+					(length 5.08)
+					(name "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 22.86 -2.54 180)
+					(length 5.08)
+					(name "MP1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MP1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 22.86 0 180)
+					(length 5.08)
+					(name "MP2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MP2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 	)
 	(junction
 		(at 157.48 130.81)
@@ -1866,6 +2165,12 @@
 		(uuid "4987d24c-4ba9-4f27-aaab-54e8c3cfa1c6")
 	)
 	(junction
+		(at 254 30.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4cf7d4af-f427-4b60-b6d7-0572b74f1e49")
+	)
+	(junction
 		(at 114.3 85.09)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1878,10 +2183,22 @@
 		(uuid "5e5c3758-18fc-4eed-a68e-63e3f250bb4e")
 	)
 	(junction
+		(at 223.52 27.94)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5ea3b45d-39d2-4ae5-808d-cce6ea1518c0")
+	)
+	(junction
 		(at 114.3 93.98)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5f555abf-f32e-44f0-93e2-dfe80470003d")
+	)
+	(junction
+		(at 223.52 33.02)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "67fa86bc-e540-4457-b3f3-140c0cb51ba3")
 	)
 	(junction
 		(at 185.42 77.47)
@@ -1924,6 +2241,18 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c5c3d4b8-308d-429b-ab8e-3816cff1482c")
+	)
+	(junction
+		(at 223.52 35.56)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c7f100a9-fbcf-45ab-b3a7-121384387c3b")
+	)
+	(junction
+		(at 223.52 30.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d0bacd13-1013-4c76-bd65-644abe77d429")
 	)
 	(junction
 		(at 153.67 39.37)
@@ -1997,6 +2326,16 @@
 	)
 	(wire
 		(pts
+			(xy 223.52 30.48) (xy 223.52 33.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2039c3f5-5ce3-43fd-a83a-18c98462ffaa")
+	)
+	(wire
+		(pts
 			(xy 157.48 133.35) (xy 157.48 147.32)
 		)
 		(stroke
@@ -2067,6 +2406,16 @@
 	)
 	(wire
 		(pts
+			(xy 223.52 35.56) (xy 227.33 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "39575f17-b191-4c98-8046-2565aae8b30c")
+	)
+	(wire
+		(pts
 			(xy 59.69 128.27) (xy 63.5 128.27)
 		)
 		(stroke
@@ -2114,6 +2463,16 @@
 			(type default)
 		)
 		(uuid "42e501c6-4743-4c95-bda3-c076aae7b182")
+	)
+	(wire
+		(pts
+			(xy 254 30.48) (xy 254 27.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "47dae0ec-e19d-4e2c-86cc-cbcb46af82f9")
 	)
 	(wire
 		(pts
@@ -2184,6 +2543,16 @@
 			(type default)
 		)
 		(uuid "55c26074-e22c-45a2-b674-2aa23b58bf03")
+	)
+	(wire
+		(pts
+			(xy 223.52 33.02) (xy 227.33 33.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "56fe555d-5be8-4df8-b936-b4033c3deba4")
 	)
 	(wire
 		(pts
@@ -2337,6 +2706,16 @@
 	)
 	(wire
 		(pts
+			(xy 223.52 30.48) (xy 227.33 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "95d6c890-15a9-498e-b792-9898aa2502b6")
+	)
+	(wire
+		(pts
 			(xy 74.93 54.61) (xy 74.93 57.15)
 		)
 		(stroke
@@ -2344,6 +2723,16 @@
 			(type default)
 		)
 		(uuid "96441ba5-2a8b-4d2f-9a4d-a05e97e0165d")
+	)
+	(wire
+		(pts
+			(xy 254 33.02) (xy 254 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96bedc1f-054a-4df8-9010-c22321ac2da4")
 	)
 	(wire
 		(pts
@@ -2467,6 +2856,16 @@
 	)
 	(wire
 		(pts
+			(xy 223.52 33.02) (xy 223.52 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bc5b2500-902d-4118-9222-f1017e114f86")
+	)
+	(wire
+		(pts
 			(xy 146.05 77.47) (xy 146.05 80.01)
 		)
 		(stroke
@@ -2517,6 +2916,16 @@
 	)
 	(wire
 		(pts
+			(xy 254 30.48) (xy 250.19 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cc585baa-cb0e-4500-90a3-de81fe246ee8")
+	)
+	(wire
+		(pts
 			(xy 55.88 77.47) (xy 59.69 77.47)
 		)
 		(stroke
@@ -2524,6 +2933,16 @@
 			(type default)
 		)
 		(uuid "d11fadc2-5112-49cd-b587-baca102ee2a6")
+	)
+	(wire
+		(pts
+			(xy 223.52 27.94) (xy 227.33 27.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d4e390eb-90cd-49ea-9324-712cf5136017")
 	)
 	(wire
 		(pts
@@ -2587,6 +3006,16 @@
 	)
 	(wire
 		(pts
+			(xy 254 27.94) (xy 250.19 27.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ef32dca6-d529-40b8-9d98-29a706922805")
+	)
+	(wire
+		(pts
 			(xy 146.05 85.09) (xy 153.67 85.09)
 		)
 		(stroke
@@ -2594,6 +3023,16 @@
 			(type default)
 		)
 		(uuid "f47ec983-7ed2-4e80-8ac5-e84652ee6164")
+	)
+	(wire
+		(pts
+			(xy 223.52 27.94) (xy 223.52 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f6b37574-b5d5-4b25-b35e-61252846f6a1")
 	)
 	(wire
 		(pts
@@ -3846,6 +4285,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 254 33.02 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7768b8ee-e825-4d02-888f-20b4e0be247e")
+		(property "Reference" "#PWR055"
+			(at 254 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 254 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 254 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 254 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 254 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1d7f0ec1-26e0-46b8-bc45-7c1fe97b8693")
+		)
+		(instances
+			(project ""
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
+					(reference "#PWR055")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R_Small")
 		(at 66.04 128.27 270)
 		(unit 1)
@@ -4048,6 +4553,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:VBUS")
+		(at 153.67 38.1 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "805c27e9-fc8c-49f1-9e1d-13ce766954b0")
+		(property "Reference" "#PWR09"
+			(at 153.67 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VBATT"
+			(at 153.67 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 153.67 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 153.67 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VBUS\""
+			(at 153.67 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "51eac0f0-623a-4298-b516-3c87c0ce0ff7")
+		)
+		(instances
+			(project ""
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
+					(reference "#PWR09")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R_Small")
 		(at 114.3 52.07 0)
 		(unit 1)
@@ -4184,17 +4755,17 @@
 		)
 	)
 	(symbol
-		(lib_id "power:VBUS")
-		(at 153.67 38.1 0)
+		(lib_id "power:PWR_FLAG")
+		(at 223.52 35.56 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "9c9f173c-d325-47f7-b4f2-a9f7122c1b17")
-		(property "Reference" "#PWR09"
-			(at 153.67 41.91 0)
+		(uuid "90dfea44-909d-4862-8b7a-7fe49d8ee6a8")
+		(property "Reference" "#FLG05"
+			(at 221.615 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4202,16 +4773,17 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "VBUS"
-			(at 153.67 33.02 0)
+		(property "Value" "PWR_FLAG"
+			(at 219.71 35.5599 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" ""
-			(at 153.67 38.1 0)
+			(at 223.52 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4219,8 +4791,8 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
-			(at 153.67 38.1 0)
+		(property "Datasheet" "~"
+			(at 223.52 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4228,8 +4800,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Power symbol creates a global label with name \"VBUS\""
-			(at 153.67 38.1 0)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 223.52 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4238,12 +4810,78 @@
 			)
 		)
 		(pin "1"
-			(uuid "62180aba-883a-43d2-9c6d-7d11743e3917")
+			(uuid "3410a742-3769-45b2-8d06-602c0fda3463")
 		)
 		(instances
 			(project ""
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
-					(reference "#PWR09")
+					(reference "#FLG05")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VBUS")
+		(at 223.52 27.94 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "96574137-abff-48ea-85f8-2c7f177db6cc")
+		(property "Reference" "#PWR054"
+			(at 223.52 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VBATT"
+			(at 223.52 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 223.52 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 223.52 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VBUS\""
+			(at 223.52 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "80740c75-7184-4ac5-93ca-6dde655c4fd8")
+		)
+		(instances
+			(project "1s5p_battery_board"
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
+					(reference "#PWR054")
 					(unit 1)
 				)
 			)
@@ -4380,6 +5018,118 @@
 			(project ""
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
 					(reference "R20")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "tvsc_symbols:Molex_504050-0491")
+		(at 227.33 27.94 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b06849ab-cc34-4f27-98ca-f47ded5a9ee6")
+		(property "Reference" "J5"
+			(at 238.76 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Molex_504050-0491"
+			(at 238.76 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:Molex_504050-0491"
+			(at 246.38 122.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.molex.com/pdm_docs/sd/5040500491_sd.pdf"
+			(at 246.38 222.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "4-pin Pico-Lock Header"
+			(at 227.33 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Molex"
+			(at 246.38 522.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "504050-0491"
+			(at 246.38 622.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C177235"
+			(at 245.11 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "ae996454-2556-4597-9260-eb9769460ea9")
+		)
+		(pin "MP2"
+			(uuid "141c334a-b144-4602-a7c8-eef7b85df330")
+		)
+		(pin "1"
+			(uuid "93e3b11c-51b9-4571-95e7-8bac5c56d689")
+		)
+		(pin "4"
+			(uuid "d630e6f8-a0ca-47ed-ac6b-64cca60a7f6c")
+		)
+		(pin "MP1"
+			(uuid "fceb25a3-e794-4596-9deb-1d804e4a06f6")
+		)
+		(pin "3"
+			(uuid "32c56ed7-cd18-472c-b865-2544d3728642")
+		)
+		(instances
+			(project ""
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/74ec7192-0e53-4880-9945-213354d82986"
+					(reference "J5")
 					(unit 1)
 				)
 			)
