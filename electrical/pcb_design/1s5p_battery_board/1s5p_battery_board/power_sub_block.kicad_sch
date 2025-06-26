@@ -256,49 +256,30 @@
 				)
 			)
 		)
-		(symbol "TVSC:B2B-PH-K-S__LF__SN_"
-			(exclude_from_sim no)
-			(in_bom yes)
+		(symbol "Jumper:SolderJumper_2_Open"
+			(pin_numbers hide)
+			(pin_names
+				(offset 0) hide)
+			(exclude_from_sim yes)
+			(in_bom no)
 			(on_board yes)
-			(property "Reference" "J"
-				(at 16.51 7.62 0)
+			(property "Reference" "JP"
+				(at 0 2.032 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left top)
 				)
 			)
-			(property "Value" "B2B-PH-K-S__LF__SN_"
-				(at 16.51 5.08 0)
+			(property "Value" "SolderJumper_2_Open"
+				(at 0 -2.54 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left top)
 				)
 			)
-			(property "Footprint" "footprints:B2BPHKSLFSN"
-				(at 16.51 -94.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "http://www.jst-mfg.com/product/pdf/eng/ePH.pdf"
-				(at 16.51 -194.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Description" "2mm pitch disconnectable crimp style connectors"
+			(property "Footprint" ""
 				(at 0 0 0)
 				(effects
 					(font
@@ -307,28 +288,8 @@
 					(hide yes)
 				)
 			)
-			(property "Manufacturer" "JST (JAPAN SOLDERLESS TERMINALS)"
-				(at 16.51 -494.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Manufacturer Part Number" "B2B-PH-K-S (LF)(SN)"
-				(at 16.51 -594.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "MPN" "C131337"
-				(at 10.16 -7.62 0)
+			(property "Datasheet" "~"
+				(at 0 0 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -336,22 +297,112 @@
 					(hide yes)
 				)
 			)
-			(symbol "B2B-PH-K-S__LF__SN__1_1"
-				(rectangle
-					(start 5.08 2.54)
-					(end 15.24 -5.08)
+			(property "Description" "Solder Jumper, 2-pole, open"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "solder jumper SPST"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "SolderJumper*Open*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "SolderJumper_2_Open_0_1"
+				(arc
+					(start -0.254 1.016)
+					(mid -1.2656 0)
+					(end -0.254 -1.016)
 					(stroke
-						(width 0.254)
+						(width 0)
 						(type default)
 					)
 					(fill
-						(type background)
+						(type none)
 					)
 				)
+				(arc
+					(start -0.254 1.016)
+					(mid -1.2656 0)
+					(end -0.254 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.254 1.016) (xy -0.254 -1.016)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.254 1.016) (xy 0.254 -1.016)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0.254 -1.016)
+					(mid 1.2656 0)
+					(end 0.254 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0.254 -1.016)
+					(mid 1.2656 0)
+					(end 0.254 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "SolderJumper_2_Open_1_1"
 				(pin passive line
-					(at 0 -2.54 0)
-					(length 5.08)
-					(name "1"
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "A"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -367,9 +418,9 @@
 					)
 				)
 				(pin passive line
-					(at 0 0 0)
-					(length 5.08)
-					(name "2"
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "B"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1178,22 +1229,22 @@
 		(uuid "41a093f7-fc8a-433c-8601-5668c9cbf31a")
 	)
 	(junction
+		(at 146.05 91.44)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5ebf6703-1630-433b-a743-4b2fe4ab390f")
+	)
+	(junction
 		(at 133.35 74.93)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6138b84c-385d-4518-8334-eb6ee4d8155f")
 	)
 	(junction
-		(at 76.2 69.85)
+		(at 106.68 69.85)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "82bef7a5-33d8-4cb5-83ed-13a6cffc9687")
-	)
-	(junction
-		(at 58.42 69.85)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "8797e497-34a1-429b-a423-ab2fca6494c5")
+		(uuid "7b82605b-c8c7-41ca-b814-881fbc70bcea")
 	)
 	(junction
 		(at 176.53 69.85)
@@ -1243,6 +1294,16 @@
 	)
 	(wire
 		(pts
+			(xy 146.05 91.44) (xy 154.94 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20c36e50-cea8-4fe1-ab13-820d8a6b26f0")
+	)
+	(wire
+		(pts
 			(xy 93.98 69.85) (xy 104.14 69.85)
 		)
 		(stroke
@@ -1260,16 +1321,6 @@
 			(type default)
 		)
 		(uuid "2b6dda43-bea1-41f7-abc8-58f8a9f1ab00")
-	)
-	(wire
-		(pts
-			(xy 76.2 69.85) (xy 93.98 69.85)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "48409529-1578-4428-83a3-1f4dc2eb3d92")
 	)
 	(wire
 		(pts
@@ -1353,16 +1404,6 @@
 	)
 	(wire
 		(pts
-			(xy 58.42 69.85) (xy 68.58 69.85)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b127cd5a-a445-422a-9816-4ee5515a2586")
-	)
-	(wire
-		(pts
 			(xy 133.35 69.85) (xy 139.7 69.85)
 		)
 		(stroke
@@ -1383,7 +1424,7 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 91.44) (xy 154.94 91.44)
+			(xy 133.35 91.44) (xy 146.05 91.44)
 		)
 		(stroke
 			(width 0)
@@ -1441,16 +1482,6 @@
 		)
 		(uuid "d39c2fa8-80dd-4cb9-b3c8-de1098039761")
 	)
-	(wire
-		(pts
-			(xy 71.12 69.85) (xy 76.2 69.85)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "dde5b646-51aa-4c11-99db-a8793cd1c62c")
-	)
 	(text_box "Power monitoring is one with the battery power monitors"
 		(exclude_from_sim no)
 		(at 101.6 96.52 0)
@@ -1469,6 +1500,25 @@
 			(justify left top)
 		)
 		(uuid "0dd89a99-ffad-44d0-9cb6-bc85f8e77c4b")
+	)
+	(text_box "A way to bridge the battery + terminal with VBUS in the case that power board is not done by cubesat"
+		(exclude_from_sim no)
+		(at 107.95 21.59 0)
+		(size 26.67 12.7)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "31d4203f-98ae-4c3e-85f1-b43c78e0bf2d")
 	)
 	(global_label "BOARD_LOAD_-"
 		(shape input)
@@ -1656,72 +1706,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 58.42 69.85 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "112c41dd-6cbf-4a8c-9d1a-a113478f2eb0")
-		(property "Reference" "#FLG02"
-			(at 58.42 67.945 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 66.04 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 58.42 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 58.42 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 58.42 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "340e9d53-78d6-43bf-af21-4fc74ec62725")
-		)
-		(instances
-			(project "1s5p_battery_board"
-				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/d9777162-8470-481f-b203-c6b6f7c38061"
-					(reference "#FLG02")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 154.94 91.44 0)
 		(unit 1)
@@ -1846,6 +1830,73 @@
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/d9777162-8470-481f-b203-c6b6f7c38061"
 					(reference "#PWR050")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 106.68 69.85 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1295e603-7b68-43ec-a91c-1742857b9774")
+		(property "Reference" "#FLG02"
+			(at 108.585 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 110.49 69.8499 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 106.68 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 106.68 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 106.68 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6f3cafba-4c5a-4c64-812a-2a915f4cf5ef")
+		)
+		(instances
+			(project ""
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/d9777162-8470-481f-b203-c6b6f7c38061"
+					(reference "#FLG02")
 					(unit 1)
 				)
 			)
@@ -2146,6 +2197,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:VBUS")
+		(at 88.9 27.94 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8d605efa-16ac-4a6d-bd51-06b0cf382224")
+		(property "Reference" "#PWR056"
+			(at 88.9 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VBUS"
+			(at 88.9 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 88.9 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 88.9 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VBUS\""
+			(at 88.9 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2f1f1224-1909-45dd-a594-0cd80894567d")
+		)
+		(instances
+			(project ""
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/d9777162-8470-481f-b203-c6b6f7c38061"
+					(reference "#PWR056")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:PWR_FLAG")
 		(at 116.84 52.07 0)
 		(unit 1)
@@ -2372,6 +2489,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 146.05 91.44 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ab521796-39dc-40b9-85ef-fbe694f02805")
+		(property "Reference" "#FLG03"
+			(at 146.05 93.345 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 146.05 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 146.05 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 146.05 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 146.05 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b2274e41-3902-4269-b19c-4c60f1d79693")
+		)
+		(instances
+			(project ""
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/d9777162-8470-481f-b203-c6b6f7c38061"
+					(reference "#FLG03")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:VBUS")
 		(at 93.98 69.85 0)
 		(unit 1)
@@ -2432,152 +2615,6 @@
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/d9777162-8470-481f-b203-c6b6f7c38061"
 					(reference "#PWR046")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "TVSC:B2B-PH-K-S__LF__SN_")
-		(at 68.58 69.85 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "c7ed3ac1-4783-4987-bebd-aba4d6474f30")
-		(property "Reference" "J4"
-			(at 71.12 53.34 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "External Power"
-			(at 76.2 50.8 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "footprints:B2BPHKSLFSN"
-			(at 163.5 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.jst-mfg.com/product/pdf/eng/ePH.pdf"
-			(at 263.5 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 68.58 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Height" "6"
-			(at 463.5 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "JST (JAPAN SOLDERLESS TERMINALS)"
-			(at 563.5 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "B2B-PH-K-S (LF)(SN)"
-			(at 663.5 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "MPN" "C131337"
-			(at 68.58 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "JST (JAPAN SOLDERLESS TERMINALS)"
-			(at 68.58 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "B2B-PH-K-S (LF)(SN)"
-			(at 68.58 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 68.58 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" "Extended"
-			(at 68.58 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "b902c11f-067f-4b48-bfce-b639b9fd5758")
-		)
-		(pin "2"
-			(uuid "ebdc2fcb-05cc-4066-981d-a99ee6991e8a")
-		)
-		(instances
-			(project "1s5p_battery_board"
-				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/d9777162-8470-481f-b203-c6b6f7c38061"
-					(reference "J4")
 					(unit 1)
 				)
 			)
@@ -2649,34 +2686,32 @@
 		)
 	)
 	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 76.2 69.85 0)
+		(lib_id "Jumper:SolderJumper_2_Open")
+		(at 92.71 27.94 180)
 		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
+		(exclude_from_sim yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
-		(uuid "cf742440-445b-4849-9c01-176df886688f")
-		(property "Reference" "#FLG03"
-			(at 76.2 67.945 0)
+		(uuid "d9446fbf-a978-49b4-93db-f9512d1390c9")
+		(property "Reference" "JP16"
+			(at 92.71 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Value" "PWR_FLAG"
-			(at 83.82 66.04 0)
+		(property "Value" "SolderJumper_2_Open"
+			(at 92.71 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
 			)
 		)
-		(property "Footprint" ""
-			(at 76.2 69.85 0)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+			(at 92.71 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2685,7 +2720,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 76.2 69.85 0)
+			(at 92.71 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2693,8 +2728,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 76.2 69.85 0)
+		(property "Description" "Solder Jumper, 2-pole, open"
+			(at 92.71 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2703,12 +2738,81 @@
 			)
 		)
 		(pin "1"
-			(uuid "e0b12974-0246-4e37-b3f2-05dfbc25dda8")
+			(uuid "60f12e59-c45e-4364-a8fd-6fab5a1bb558")
+		)
+		(pin "2"
+			(uuid "eb8a1e29-3b29-4dd4-bd5f-65063e254a14")
 		)
 		(instances
-			(project "1s5p_battery_board"
+			(project ""
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/d9777162-8470-481f-b203-c6b6f7c38061"
-					(reference "#FLG03")
+					(reference "JP16")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VBUS")
+		(at 96.52 27.94 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "dd0d1670-1a31-4961-8089-bcf600fc701f")
+		(property "Reference" "#PWR057"
+			(at 96.52 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VBATT"
+			(at 96.52 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 96.52 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 96.52 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VBUS\""
+			(at 96.52 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b083a271-fab4-4b23-9807-3a54969454d1")
+		)
+		(instances
+			(project ""
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/d9777162-8470-481f-b203-c6b6f7c38061"
+					(reference "#PWR057")
 					(unit 1)
 				)
 			)
@@ -2908,72 +3012,6 @@
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/d9777162-8470-481f-b203-c6b6f7c38061"
 					(reference "C15")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 58.42 69.85 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "ed37fe1b-eb63-48ac-91f0-cbcb50832816")
-		(property "Reference" "#PWR045"
-			(at 58.42 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 58.42 77.47 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 58.42 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 58.42 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 58.42 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "19884d63-3287-4b09-81d4-6d58b8a360ff")
-		)
-		(instances
-			(project "1s5p_battery_board"
-				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/d9777162-8470-481f-b203-c6b6f7c38061"
-					(reference "#PWR045")
 					(unit 1)
 				)
 			)

@@ -5,26 +5,29 @@
 	(uuid "153e6a90-85a7-4a19-8990-a8b9fbcb0ace")
 	(paper "A4")
 	(lib_symbols
-		(symbol "Connector_Generic:Conn_01x03"
+		(symbol "Device:R_Small"
+			(pin_numbers hide)
 			(pin_names
-				(offset 1.016) hide)
+				(offset 0.254) hide)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "J"
-				(at 0 5.08 0)
+			(property "Reference" "R"
+				(at 0.762 0.508 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
-			(property "Value" "Conn_01x03"
-				(at 0 -5.08 0)
+			(property "Value" "R_Small"
+				(at 0.762 -1.016 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
 			(property "Footprint" ""
@@ -45,7 +48,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(property "Description" "Resistor, small symbol"
 				(at 0 0 0)
 				(effects
 					(font
@@ -54,7 +57,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "connector"
+			(property "ki_keywords" "R resistor"
 				(at 0 0 0)
 				(effects
 					(font
@@ -63,7 +66,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_fp_filters" "Connector*:*_1x??_*"
+			(property "ki_fp_filters" "R_*"
 				(at 0 0 0)
 				(effects
 					(font
@@ -72,55 +75,24 @@
 					(hide yes)
 				)
 			)
-			(symbol "Conn_01x03_1_1"
+			(symbol "R_Small_0_1"
 				(rectangle
-					(start -1.27 -2.413)
-					(end 0 -2.667)
+					(start -0.762 1.778)
+					(end 0.762 -1.778)
 					(stroke
-						(width 0.1524)
+						(width 0.2032)
 						(type default)
 					)
 					(fill
 						(type none)
 					)
 				)
-				(rectangle
-					(start -1.27 0.127)
-					(end 0 -0.127)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start -1.27 2.667)
-					(end 0 2.413)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start -1.27 3.81)
-					(end 1.27 -3.81)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
+			)
+			(symbol "R_Small_1_1"
 				(pin passive line
-					(at -5.08 2.54 0)
-					(length 3.81)
-					(name "Pin_1"
+					(at 0 2.54 270)
+					(length 0.762)
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -136,9 +108,9 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 0 0)
-					(length 3.81)
-					(name "Pin_2"
+					(at 0 -2.54 90)
+					(length 0.762)
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -146,234 +118,6 @@
 						)
 					)
 					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -5.08 -2.54 0)
-					(length 3.81)
-					(name "Pin_3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-		)
-		(symbol "Device:R_Potentiometer_Trim_US"
-			(pin_names
-				(offset 1.016) hide)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "RV"
-				(at -4.445 0 90)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "R_Potentiometer_Trim_US"
-				(at -2.54 0 90)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Trim-potentiometer, US symbol"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "resistor variable trimpot trimmer"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "Potentiometer*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "R_Potentiometer_Trim_US_0_1"
-				(polyline
-					(pts
-						(xy 0 -2.286) (xy 0 -2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 2.286) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.524 0.762) (xy 1.524 -0.762)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 0) (xy 1.524 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -0.762) (xy 1.016 -1.143) (xy 0 -1.524) (xy -1.016 -1.905) (xy 0 -2.286)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 0.762) (xy 1.016 0.381) (xy 0 0) (xy -1.016 -0.381) (xy 0 -0.762)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 2.286) (xy 1.016 1.905) (xy 0 1.524) (xy -1.016 1.143) (xy 0 0.762)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "R_Potentiometer_Trim_US_1_1"
-				(pin passive line
-					(at 0 3.81 270)
-					(length 1.27)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 3.81 0 180)
-					(length 1.27)
-					(name "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 1.27)
-					(name "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -637,31 +381,16 @@
 				)
 			)
 		)
-		(symbol "TVSC:TestPoint_Keystone_5002"
+		(symbol "power:+3V3"
+			(power)
 			(pin_numbers hide)
 			(pin_names
-				(offset 0.762) hide)
+				(offset 0) hide)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "TP"
-				(at 0 6.858 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "TestPoint"
-				(at 0 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" "footprints:Keystone_5002"
-				(at 5.08 0 0)
+			(property "Reference" "#PWR"
+				(at 0 -3.81 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -669,16 +398,15 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" "https://www.keyelco.com/product.cfm/product_id/1311"
-				(at 5.08 0 0)
+			(property "Value" "+3V3"
+				(at 0 3.556 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(hide yes)
 				)
 			)
-			(property "Description" "test point"
+			(property "Footprint" ""
 				(at 0 0 0)
 				(effects
 					(font
@@ -687,16 +415,7 @@
 					(hide yes)
 				)
 			)
-			(property "Color" "White"
-				(at 5.08 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Manufacturer" "Keystone"
+			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects
 					(font
@@ -705,7 +424,7 @@
 					(hide yes)
 				)
 			)
-			(property "Manufacturer Part Number" "5002"
+			(property "Description" "Power symbol creates a global label with name \"+3V3\""
 				(at 0 0 0)
 				(effects
 					(font
@@ -714,7 +433,7 @@
 					(hide yes)
 				)
 			)
-			(property "MPN" "C238123"
+			(property "ki_keywords" "global power"
 				(at 0 0 0)
 				(effects
 					(font
@@ -723,37 +442,35 @@
 					(hide yes)
 				)
 			)
-			(property "Active" "Y"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
+			(symbol "+3V3_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27) (xy 0 2.54)
 					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "test point tp"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
+					(stroke
+						(width 0)
+						(type default)
 					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "TestPoint_Keystone_5002 Keystone_5002 TestPoint_Keystone_500* TestPoint_Keystone* TestPoint* Keystone_500*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
+					(fill
+						(type none)
 					)
-					(hide yes)
 				)
-			)
-			(symbol "TestPoint_Keystone_5002_0_1"
-				(circle
-					(center 0 3.302)
-					(radius 0.762)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0.762 1.27)
+					)
 					(stroke
 						(width 0)
 						(type default)
@@ -763,11 +480,11 @@
 					)
 				)
 			)
-			(symbol "TestPoint_Keystone_5002_1_1"
-				(pin passive line
+			(symbol "+3V3_1_1"
+				(pin power_in line
 					(at 0 0 90)
-					(length 2.54)
-					(name "1"
+					(length 0)
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -882,162 +599,54 @@
 		)
 	)
 	(junction
-		(at 130.81 83.82)
+		(at 173.99 121.92)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "1970060a-4ee8-467a-8f98-edc4055f2349")
-	)
-	(junction
-		(at 179.07 83.82)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "28d832c9-0542-4d3a-b6dd-b8a67a15b2bd")
-	)
-	(junction
-		(at 179.07 97.79)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b90c956e-c3eb-4ed3-b6ef-762da7cd4bc0")
-	)
-	(no_connect
-		(at 123.19 86.36)
-		(uuid "2a8dd71a-a4ab-4689-babb-181174f203df")
+		(uuid "894e7a08-de64-419c-aec4-f344cdc5e2ad")
 	)
 	(wire
 		(pts
-			(xy 146.05 74.93) (xy 146.05 80.01)
+			(xy 173.99 125.73) (xy 173.99 121.92)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "51cb7516-36d8-4b5b-90e9-6cb206745a93")
+		(uuid "5aec146b-c585-440b-bd9c-533b739a9bd2")
 	)
 	(wire
 		(pts
-			(xy 130.81 80.01) (xy 130.81 83.82)
+			(xy 173.99 121.92) (xy 173.99 119.38)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "78f91351-67de-45bf-b82a-26085e7aa7e0")
+		(uuid "774c2dbd-0a26-4686-895b-1f83126a170d")
 	)
 	(wire
 		(pts
-			(xy 179.07 83.82) (xy 179.07 80.01)
+			(xy 173.99 121.92) (xy 177.8 121.92)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7cc2b6ca-329c-4cf1-be1b-56750bf2f7b9")
+		(uuid "c494b3cb-1e67-4515-9238-5a402886688d")
 	)
 	(wire
 		(pts
-			(xy 130.81 83.82) (xy 130.81 90.17)
+			(xy 173.99 133.35) (xy 173.99 134.62)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7e51bc02-386c-439b-b602-f40168e4cafb")
-	)
-	(wire
-		(pts
-			(xy 123.19 93.98) (xy 123.19 97.79)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "83cbf717-5481-4ec5-9b6d-28814f173f3a")
-	)
-	(wire
-		(pts
-			(xy 123.19 97.79) (xy 179.07 97.79)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a070552e-cb6f-4377-b83c-3cf4979bf6c7")
-	)
-	(wire
-		(pts
-			(xy 179.07 80.01) (xy 148.59 80.01)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c5f6c074-ab7a-4caa-a299-e1e0fee8f839")
-	)
-	(wire
-		(pts
-			(xy 199.39 74.93) (xy 146.05 74.93)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e88aa027-b80a-4881-b4e3-fbb0879ef92d")
-	)
-	(wire
-		(pts
-			(xy 130.81 80.01) (xy 143.51 80.01)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f0f1d0cf-c33f-48a7-a895-fd82c365081b")
-	)
-	(wire
-		(pts
-			(xy 130.81 90.17) (xy 127 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f17b1f45-e8a3-4a20-bc5c-1342be9170ba")
-	)
-	(wire
-		(pts
-			(xy 179.07 83.82) (xy 179.07 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f554f8f2-1ae1-4e65-be64-47fb715161a3")
-	)
-	(wire
-		(pts
-			(xy 179.07 97.79) (xy 179.07 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f734dac5-9d0c-4b36-b2f1-4a3fe167f2ef")
-	)
-	(rectangle
-		(start 82.55 71.12)
-		(end 223.52 106.68)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(fill
-			(type none)
-		)
-		(uuid 9c63ebb0-5222-4e97-bf5e-5fb16c823b0b)
+		(uuid "d6ffad9d-754c-4ccb-8467-5d87f154feee")
 	)
 	(text_box "Thermistor for measuring battery temperature. This temperature determines how and when batteries are charged according to the JEITA guidelines."
 		(exclude_from_sim no)
-		(at 198.12 81.28 0)
+		(at 201.93 116.84 0)
 		(size 20.32 24.13)
 		(stroke
 			(width 0)
@@ -1054,30 +663,9 @@
 		)
 		(uuid "3b366cc4-8b18-45af-81a9-dc684e4be963")
 	)
-	(text "Battery temperature monitoring"
-		(exclude_from_sim no)
-		(at 82.55 69.85 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "73b0ebbb-b971-44de-b635-857e8e7dd81d")
-	)
-	(label "THERMISTOR_REAL_+"
-		(at 156.21 80.01 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "6c6af2ba-6ea9-4be2-bb03-c5e95492648f")
-	)
 	(hierarchical_label "TEMPERATURE +"
 		(shape input)
-		(at 199.39 74.93 0)
+		(at 177.8 121.92 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1087,433 +675,17 @@
 		(uuid "59c3f5f4-13a5-4557-875f-01407e07a8e9")
 	)
 	(symbol
-		(lib_id "Device:R_Potentiometer_Trim_US")
-		(at 123.19 90.17 0)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "0510ba91-5ae3-49b7-9924-53ed875e7f2b")
-		(property "Reference" "RV3"
-			(at 120.65 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "R50k"
-			(at 120.65 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Potentiometer_SMD:Potentiometer_Bourns_3314J_Vertical"
-			(at 123.19 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 123.19 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 123.19 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Resistance" ""
-			(at 123.19 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 123.19 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "C50895"
-			(at 123.19 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "BOURNS"
-			(at 123.19 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "3314J-1-503E"
-			(at 123.19 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Specs" "0-50k Ohm"
-			(at 123.19 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "ed356d44-b1e3-4f2b-afd4-60bd7f9a52fd")
-		)
-		(pin "1"
-			(uuid "3c31718e-c424-4dcd-8825-7c5c911683cb")
-		)
-		(pin "3"
-			(uuid "7fcf51de-3bcc-4b2d-a2bb-b42d53cf9f83")
-		)
-		(instances
-			(project "1s5p_battery_board"
-				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/398c3f2f-0399-4e13-a257-28572b9082d7"
-					(reference "RV3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "TVSC:TestPoint_Keystone_5002")
-		(at 130.81 83.82 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "19580b64-f3f3-4184-94ae-df45bb9980f8")
-		(property "Reference" "TP7"
-			(at 125.73 81.28 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Thermistor Bypass Pot"
-			(at 125.73 83.82 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "footprints:TestPoint_Pad_D1.5mm"
-			(at 130.81 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.keyelco.com/product.cfm/product_id/1311"
-			(at 130.81 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 130.81 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "NA"
-			(at 130.81 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" ""
-			(at 130.81 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Purpose" ""
-			(at 130.81 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" ""
-			(at 130.81 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 130.81 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "deb508fc-2b3a-4bf5-82f5-8c3aeee0dcf9")
-		)
-		(instances
-			(project "1s5p_battery_board"
-				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/398c3f2f-0399-4e13-a257-28572b9082d7"
-					(reference "TP7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "TVSC:TestPoint_Keystone_5002")
-		(at 179.07 83.82 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "38b83d39-fa5c-4f26-810c-334da7876e3f")
-		(property "Reference" "TP8"
-			(at 184.15 82.55 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Thermistor"
-			(at 184.15 85.09 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "footprints:TestPoint_Pad_D1.5mm"
-			(at 179.07 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.keyelco.com/product.cfm/product_id/1311"
-			(at 179.07 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 179.07 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "NA"
-			(at 179.07 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" ""
-			(at 179.07 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Purpose" ""
-			(at 179.07 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" ""
-			(at 179.07 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 179.07 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "af5db961-570a-412a-9967-a24d0f51b9ae")
-		)
-		(instances
-			(project "1s5p_battery_board"
-				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/398c3f2f-0399-4e13-a257-28572b9082d7"
-					(reference "TP8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 179.07 97.79 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "536c1a54-0c7a-4b24-bcd9-86d73f7dceb2")
-		(property "Reference" "#PWR052"
-			(at 179.07 104.14 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 179.07 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 179.07 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 179.07 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 179.07 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4a5125ed-f5f3-46f5-9bc8-09c918003e42")
-		)
-		(instances
-			(project "1s5p_battery_board"
-				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/398c3f2f-0399-4e13-a257-28572b9082d7"
-					(reference "#PWR052")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:Thermistor_NTC")
-		(at 179.07 92.71 0)
+		(at 173.99 129.54 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "7f44c594-7157-4856-bcc4-acf76bed5d5d")
+		(uuid "0aef89cc-8173-4db5-bc34-4a47109dfa6c")
 		(property "Reference" "TH1"
-			(at 181.61 91.7575 0)
+			(at 176.53 128.5875 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1522,7 +694,7 @@
 			)
 		)
 		(property "Value" "10k NTC"
-			(at 181.61 94.2975 0)
+			(at 176.53 131.1275 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1531,7 +703,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 179.07 91.44 0)
+			(at 173.99 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1540,7 +712,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 179.07 91.44 0)
+			(at 173.99 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1549,7 +721,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 179.07 92.71 0)
+			(at 173.99 129.54 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1558,7 +730,7 @@
 			)
 		)
 		(property "Specs" "103AT-2 10kΩ NTC, but using an SMD component"
-			(at 179.07 92.71 0)
+			(at 173.99 129.54 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1567,7 +739,7 @@
 			)
 		)
 		(property "MPN" "C336815"
-			(at 179.07 92.71 0)
+			(at 173.99 129.54 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1576,7 +748,7 @@
 			)
 		)
 		(property "Manufacturer" "PANASONIC"
-			(at 179.07 92.71 0)
+			(at 173.99 129.54 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1585,7 +757,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "ERTJ0EG103GA"
-			(at 179.07 92.71 0)
+			(at 173.99 129.54 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1594,7 +766,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 179.07 92.71 0)
+			(at 173.99 129.54 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1603,7 +775,7 @@
 			)
 		)
 		(property "Purpose" ""
-			(at 179.07 92.71 0)
+			(at 173.99 129.54 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1612,10 +784,10 @@
 			)
 		)
 		(pin "2"
-			(uuid "55be6184-63c6-46cd-bda6-8f886eaf19a0")
+			(uuid "90200092-ea6e-4c97-b19a-e3fb0ad2e773")
 		)
 		(pin "1"
-			(uuid "805e922e-79d7-44c8-ae48-4fa9aceac944")
+			(uuid "b432b418-d30b-4bfe-af22-5d3a53837c92")
 		)
 		(instances
 			(project "1s5p_battery_board"
@@ -1627,24 +799,17 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
-		(at 146.05 85.09 270)
+		(lib_id "power:+3V3")
+		(at 173.99 114.3 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "a42b5ab2-3532-4e69-9033-2b4c6e01b26f")
-		(property "Reference" "JP15"
-			(at 152.4 85.09 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Conn_01x03"
-			(at 151.13 93.98 0)
+		(fields_autoplaced yes)
+		(uuid "379a68a1-f9c4-4550-8344-03ff51885f87")
+		(property "Reference" "#PWR053"
+			(at 173.99 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1652,28 +817,16 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "footprints:HDRV3W64P0X254_1X3_762X254X869P"
-			(at 51.13 101.6 0)
+		(property "Value" "+3V3"
+			(at 173.99 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left top)
-				(hide yes)
 			)
 		)
-		(property "Datasheet" "http://katalog.we-online.de/em/datasheet/6130xx11121.pdf"
-			(at -48.87 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 146.05 85.09 0)
+		(property "Footprint" ""
+			(at 173.99 114.3 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1681,17 +834,8 @@
 				(hide yes)
 			)
 		)
-		(property "Purpose" "Thermistor Bypass"
-			(at 160.02 88.9 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "MPN" "C2915006"
-			(at 146.05 85.09 0)
+		(property "Datasheet" ""
+			(at 173.99 114.3 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1699,46 +843,158 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Wurth Elektronik"
-			(at 146.05 85.09 0)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 173.99 114.3 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
 			)
-		)
-		(property "Manufacturer Part Number" "61300311121"
-			(at 146.05 85.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 146.05 85.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "a64fd509-4290-4e4d-a6a7-8c8201a25d33")
 		)
 		(pin "1"
-			(uuid "7c578d0e-0a66-4c09-acb7-c53e2ae6a1d0")
-		)
-		(pin "2"
-			(uuid "85a64e1b-3f27-4bfd-85bb-acbba91bcfbb")
+			(uuid "e7755ca8-bc80-4d40-8840-8cc14c9aa94f")
 		)
 		(instances
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/398c3f2f-0399-4e13-a257-28572b9082d7"
-					(reference "JP15")
+					(reference "#PWR053")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 173.99 134.62 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "74968da9-61a5-4bfa-a3a6-3aaa643b6cb7")
+		(property "Reference" "#PWR045"
+			(at 173.99 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 173.99 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 173.99 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 173.99 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 173.99 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "98b36cd2-22d4-4e28-a5fe-3d17f3ebb847")
+		)
+		(instances
+			(project "1s5p_battery_board"
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/398c3f2f-0399-4e13-a257-28572b9082d7"
+					(reference "#PWR045")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Small")
+		(at 173.99 116.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f15cbecf-6bb5-42d9-9471-c4d28bf25771")
+		(property "Reference" "R14"
+			(at 176.53 115.5699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 176.53 118.1099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
+			(at 173.99 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 173.99 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, small symbol"
+			(at 173.99 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "dbd361a6-e812-4709-b610-e35c39608c02")
+		)
+		(pin "1"
+			(uuid "96b73ce5-1ad7-47e3-aa3b-892ce90107ce")
+		)
+		(instances
+			(project "1s5p_battery_board"
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059/398c3f2f-0399-4e13-a257-28572b9082d7"
+					(reference "R14")
 					(unit 1)
 				)
 			)
