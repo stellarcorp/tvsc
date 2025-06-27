@@ -2465,10 +2465,6 @@
 		(uuid "156221ca-2772-45a6-ad5c-f896c8642493")
 	)
 	(no_connect
-		(at 154.94 34.29)
-		(uuid "23a0f7b1-ade3-4c4b-8d52-2b75754afc2d")
-	)
-	(no_connect
 		(at 154.94 100.33)
 		(uuid "2799069a-27a0-4e4b-9ba4-0c847c52c6c2")
 	)
@@ -2867,6 +2863,16 @@
 			(type default)
 		)
 		(uuid "6490f14a-b52e-4183-bd64-d28875145ac5")
+	)
+	(wire
+		(pts
+			(xy 154.94 34.29) (xy 158.75 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "68a905c0-4c39-4fd3-8831-3dc0d5c4fb0c")
 	)
 	(wire
 		(pts
@@ -6019,6 +6025,72 @@
 			(project "1s5p_battery_board"
 				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
 					(reference "#PWR08")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 158.75 34.29 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d3913d1c-6e3b-45ad-a8cb-259981558c7c")
+		(property "Reference" "#PWR026"
+			(at 158.75 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 158.75 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 158.75 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 158.75 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 158.75 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3144b78f-8c40-4223-83fc-7420faedb044")
+		)
+		(instances
+			(project ""
+				(path "/4447b8ba-2ae9-4ff2-bb5c-b43a54dd7059"
+					(reference "#PWR026")
 					(unit 1)
 				)
 			)
