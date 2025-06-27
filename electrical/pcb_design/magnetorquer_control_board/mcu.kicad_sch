@@ -2441,10 +2441,6 @@
 		(uuid "74c9975f-74c9-435e-9823-c69d6d18ffa2")
 	)
 	(no_connect
-		(at 143.51 59.69)
-		(uuid "7a9596fc-dbfa-444e-99eb-9488cfdc48a8")
-	)
-	(no_connect
 		(at 143.51 100.33)
 		(uuid "890eced5-8d89-43be-a073-9a38aa9a55c5")
 	)
@@ -4040,6 +4036,17 @@
 			(justify right)
 		)
 		(uuid "c4edbf2c-381e-42c4-810f-fa24190624fc")
+	)
+	(hierarchical_label "BOARD_ID_VERSION"
+		(shape input)
+		(at 143.51 59.69 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "c542c075-fa48-49a0-8376-7757cd9aafd7")
 	)
 	(hierarchical_label "CAN1_SILENT"
 		(shape input)

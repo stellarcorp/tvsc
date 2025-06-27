@@ -643,6 +643,16 @@
 	)
 	(wire
 		(pts
+			(xy 106.68 140.97) (xy 111.76 140.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "42c5669a-9736-486c-bdf4-25a324cc488b")
+	)
+	(wire
+		(pts
 			(xy 132.08 91.44) (xy 163.83 91.44)
 		)
 		(stroke
@@ -680,6 +690,16 @@
 			(type default)
 		)
 		(uuid "546c05f5-ddb3-481b-af9a-3dd4a871230b")
+	)
+	(wire
+		(pts
+			(xy 111.76 140.97) (xy 111.76 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5b524299-edfe-49e8-a73c-6634f54261ca")
 	)
 	(wire
 		(pts
@@ -838,6 +858,25 @@
 		)
 		(uuid "7a6b1c00-9299-4265-a929-06a20c2d8b5b")
 	)
+	(text_box "Pin reserved for future expansion. This signal will be used to help the software stack maintain backwards compatibility."
+		(exclude_from_sim no)
+		(at 128.27 137.16 0)
+		(size 27.94 12.7)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "ab2172af-d0b6-447e-afa1-7127fa0a34db")
+	)
 	(text_box "Board ID 0xA1"
 		(exclude_from_sim no)
 		(at 123.19 100.33 0)
@@ -868,6 +907,17 @@
 		)
 		(uuid "89bda8cd-27fc-4680-935b-2c6713488001")
 	)
+	(hierarchical_label "BOARD_ID_VERSION"
+		(shape input)
+		(at 106.68 140.97 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "c04ebc7c-7591-47c4-b15a-5f763fc90eb0")
+	)
 	(hierarchical_label "BOARD_ID_SENSE"
 		(shape input)
 		(at 107.95 76.2 180)
@@ -889,7 +939,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "149c3d61-e522-4c40-93fa-df98cf769a9c")
-		(property "Reference" "#PWR89"
+		(property "Reference" "#PWR59"
 			(at 147.32 90.17 0)
 			(effects
 				(font
@@ -935,12 +985,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "137fcbeb-95ec-446e-b4bf-fd65fe2e6c36")
+			(uuid "6f402d56-d26b-470c-a8e1-a3e9502acc6e")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "#PWR89")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
+					(reference "#PWR59")
 					(unit 1)
 				)
 			)
@@ -1046,14 +1096,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "82bc9997-bbb2-4149-863f-2d1cfd03dc5a")
+			(uuid "aa9fa0d7-fadb-435e-a162-5977613a4f22")
 		)
 		(pin "1"
-			(uuid "2f8d2972-d6cc-485c-8c19-83382f0ee271")
+			(uuid "db5d4310-f282-4446-873b-2e1225f0cc78")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "R46")
 					(unit 1)
 				)
@@ -1160,14 +1210,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "7a1b1e11-2656-4e99-ae77-b277c8306d0f")
+			(uuid "44f542da-0722-41fe-89bb-e993b1dbfc7d")
 		)
 		(pin "1"
-			(uuid "e80f733b-8521-4483-8b0c-dc59f1f052bf")
+			(uuid "b364a72b-4c58-43c7-b124-cbbb71b2eb76")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "R43")
 					(unit 1)
 				)
@@ -1274,14 +1324,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "fa8681cc-3163-49cc-b46a-a5e3b713e02c")
+			(uuid "65887862-0846-4b86-99ab-6af3f2fbcd01")
 		)
 		(pin "1"
-			(uuid "628b33e5-158c-43d2-9cba-fb2c1596c1de")
+			(uuid "45e562bb-a969-4327-9aa6-212258fddc8b")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "R42")
 					(unit 1)
 				)
@@ -1368,15 +1418,82 @@
 			)
 		)
 		(pin "2"
-			(uuid "38ed9229-a4e8-466a-a562-a33b6d61274b")
+			(uuid "91f00490-b95c-4c3f-b2a8-106fed62d095")
 		)
 		(pin "1"
-			(uuid "1b57e514-ad1d-41b2-ad6c-086230899953")
+			(uuid "8a9fa22e-c279-4bc5-b607-f191fa9f2b80")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "JP12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 111.76 142.24 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4a5f2c82-042b-4214-b14c-f30c1e1d97ec")
+		(property "Reference" "#PWR57"
+			(at 111.76 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 114.3 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 111.76 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 111.76 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 111.76 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5eab4f72-067b-4092-93ba-568ea0b1c429")
+		)
+		(instances
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
+					(reference "#PWR57")
 					(unit 1)
 				)
 			)
@@ -1464,14 +1581,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "270450b2-157e-4c3f-8e21-a9c05dd2199b")
+			(uuid "c28425f9-3961-4ea8-b68f-d36bd9f0c75e")
 		)
 		(pin "1"
-			(uuid "2236a98c-a9a1-4810-9ff0-18ffd7627655")
+			(uuid "57d9ab0b-8dae-4f3b-ae11-c82ed9e27344")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "JP7")
 					(unit 1)
 				)
@@ -1578,14 +1695,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "101575ec-608e-41a2-a91f-855bfce09a49")
+			(uuid "6c151bed-517b-40c0-820b-8e153e96ac6c")
 		)
 		(pin "1"
-			(uuid "d2b10e08-40d1-4450-b275-f57ff73df046")
+			(uuid "f38a6b33-0ce2-44a5-ba71-9795519a3922")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "R44")
 					(unit 1)
 				)
@@ -1602,7 +1719,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "596edb3b-82d7-45e7-9839-40792979c9eb")
-		(property "Reference" "#PWR92"
+		(property "Reference" "#PWR64"
 			(at 196.85 135.89 0)
 			(effects
 				(font
@@ -1648,12 +1765,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "3f18660d-975c-474f-bc38-c2cf5fe1101e")
+			(uuid "7dab0323-e0a6-459e-9d90-62b997989308")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "#PWR92")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
+					(reference "#PWR64")
 					(unit 1)
 				)
 			)
@@ -1739,14 +1856,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "3ea09ab0-ebb5-46d6-9c17-5e004badbf48")
+			(uuid "5461c78f-2a9d-4659-858d-ded8553d8866")
 		)
 		(pin "1"
-			(uuid "0bd47573-be87-4ee3-a641-017d306eed8f")
+			(uuid "a51115d3-1bba-47d7-808c-408ad5a52433")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "JP13")
 					(unit 1)
 				)
@@ -1833,14 +1950,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "1e4702f3-33e7-4c1f-856e-00f0579d10dd")
+			(uuid "a8cda376-b103-462f-b3e7-30cba9e4f4cf")
 		)
 		(pin "1"
-			(uuid "0a115d19-33b3-4013-8791-e93b7a504771")
+			(uuid "94a3db3f-e9c1-4127-8d88-bcc7a2d9a474")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "JP14")
 					(unit 1)
 				)
@@ -1857,7 +1974,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "6cac690e-f51b-474f-82d6-c5c490e703f3")
-		(property "Reference" "#PWR91"
+		(property "Reference" "#PWR63"
 			(at 180.34 120.65 0)
 			(effects
 				(font
@@ -1903,12 +2020,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "ea5e05ae-40e0-42c2-aa95-6b740c93092c")
+			(uuid "6a707c4b-4f4e-44f3-95d3-08c195fb09ea")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "#PWR91")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
+					(reference "#PWR63")
 					(unit 1)
 				)
 			)
@@ -1924,7 +2041,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "7994e65b-b5de-4ea3-aeb2-68b5d0b0a970")
-		(property "Reference" "#PWR90"
+		(property "Reference" "#PWR61"
 			(at 163.83 105.41 0)
 			(effects
 				(font
@@ -1970,12 +2087,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "f6d60646-e691-4a19-b0aa-74e72ee422b8")
+			(uuid "3f03fd4c-4628-45f7-bd01-b19093bdffe7")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "#PWR90")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
+					(reference "#PWR61")
 					(unit 1)
 				)
 			)
@@ -2081,14 +2198,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "8fbd90d2-542d-4b1f-a8c2-dab6f750779d")
+			(uuid "27d4f995-e45d-4062-a358-b3989f55e323")
 		)
 		(pin "1"
-			(uuid "486cf484-b2ef-48cc-bf0e-a3ef5f0a0c6b")
+			(uuid "0a19c77a-abd5-40da-a602-814e4b27ea77")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "R45")
 					(unit 1)
 				)
@@ -2166,11 +2283,11 @@
 			)
 		)
 		(pin "1"
-			(uuid "4b4d9177-38b5-4649-ac74-f10fbb0d35f9")
+			(uuid "e4586c95-b2eb-421f-8b3d-51264481dac6")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "TP6")
 					(unit 1)
 				)
@@ -2259,14 +2376,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "bc2456f4-f3c8-45d5-ab37-17c74cd0c505")
+			(uuid "06e502b1-162d-4a48-8d30-4bb2cce1a4fb")
 		)
 		(pin "1"
-			(uuid "dc610cf7-136c-41aa-8d1c-84bc98a0731d")
+			(uuid "c74948ca-e111-4a71-b0d9-6894d1609c70")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "JP8")
 					(unit 1)
 				)
@@ -2344,11 +2461,11 @@
 			)
 		)
 		(pin "1"
-			(uuid "1a3cbc9b-b138-4917-8fd3-35ae456f3596")
+			(uuid "c9521004-1fc0-4e5b-bd3c-44b46abf0c6a")
 		)
 		(instances
-			(project ""
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+			(project "magnetorquer_control_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "TP5")
 					(unit 1)
 				)
@@ -2455,14 +2572,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "7f7ae42a-7751-4f79-9bc8-a86d66b2ed62")
+			(uuid "05d5b3e8-4d25-43d3-ac51-aa5de834e9a1")
 		)
 		(pin "1"
-			(uuid "2717c126-c73d-4048-ad01-e031db1b2746")
+			(uuid "22ec5d3c-08cb-46c0-8817-8b858852a55f")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "R41")
 					(unit 1)
 				)
@@ -2569,14 +2686,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "6c82d023-9455-4460-bc75-6e380fb68fc6")
+			(uuid "8e2624e2-d1ca-4c5b-9611-a49fd5cf1a87")
 		)
 		(pin "1"
-			(uuid "c8420420-dc57-4669-8795-1981b1d3bd7e")
+			(uuid "4b9138a3-c76d-4c74-a150-fae75ebd2f56")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "R40")
 					(unit 1)
 				)
@@ -2683,14 +2800,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "114c1713-e80a-4fc7-8477-9dca6ec3e1ec")
+			(uuid "de0ca849-56f1-490a-abb5-606f324de918")
 		)
 		(pin "1"
-			(uuid "fa72d583-9c5d-449c-8e93-41960acff792")
+			(uuid "11a2d58f-ab14-40d3-a776-2ade41f37f06")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "R47")
 					(unit 1)
 				)
@@ -2779,14 +2896,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "ca2ffdf1-36c4-416d-abde-cabf71bcce8e")
+			(uuid "08493c86-6e4d-4034-9ca5-fcfe28f94df9")
 		)
 		(pin "1"
-			(uuid "2202086b-f0ce-4e26-b816-52ed7fc74072")
+			(uuid "8fffa0fc-0716-4c99-98c9-ccb3cc942bd9")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "JP9")
 					(unit 1)
 				)
@@ -2875,14 +2992,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "f7d2110a-7e01-431d-a53f-08a7ac279cd3")
+			(uuid "7a6a108d-2050-45c1-941c-3c9d27d550f8")
 		)
 		(pin "1"
-			(uuid "4b6b27a0-9938-4b03-b3b7-63b243086852")
+			(uuid "3517c51c-974f-4dad-9f44-582f4659efd5")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "JP10")
 					(unit 1)
 				)
@@ -2969,14 +3086,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "d7119db3-70b1-4243-b3f1-d4afb8b12957")
+			(uuid "56259037-e039-4854-930c-1bb89320c1b0")
 		)
 		(pin "1"
-			(uuid "fd8555a3-6db2-497b-9524-3073d492785a")
+			(uuid "c8b7c8fa-de3f-4d3e-a7fa-a188b007f4cd")
 		)
 		(instances
 			(project "magnetorquer_control_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "JP11")
 					(unit 1)
 				)
