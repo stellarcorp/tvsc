@@ -557,6 +557,16 @@
 	)
 	(wire
 		(pts
+			(xy 107.95 116.84) (xy 113.03 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11fbf96e-a2e7-46a7-bfd5-0e8db346a8b8")
+	)
+	(wire
+		(pts
 			(xy 147.32 60.96) (xy 163.83 60.96)
 		)
 		(stroke
@@ -614,6 +624,16 @@
 			(type default)
 		)
 		(uuid "85902357-7d4e-4b49-b3b9-01b82a88b107")
+	)
+	(wire
+		(pts
+			(xy 113.03 116.84) (xy 113.03 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8abb527c-527f-49bb-9bf6-54a16fb05cd8")
 	)
 	(wire
 		(pts
@@ -683,6 +703,36 @@
 		)
 		(uuid "665660df-3f19-427b-a932-8cedd04644df")
 	)
+	(text_box "Pin reserved for future expansion. This signal will be used to help the software stack maintain backwards compatibility."
+		(exclude_from_sim no)
+		(at 129.54 113.03 0)
+		(size 27.94 12.7)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "e5cfef25-74f2-46e5-904b-5da7b55468e4")
+	)
+	(hierarchical_label "BOARD_ID_VERSION"
+		(shape input)
+		(at 107.95 116.84 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "4aff1d8c-57ae-45f8-bb4d-22181f4ef5e2")
+	)
 	(hierarchical_label "BOARD_ID_POWER"
 		(shape input)
 		(at 107.95 60.96 180)
@@ -715,7 +765,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "149c3d61-e522-4c40-93fa-df98cf769a9c")
-		(property "Reference" "#PWR89"
+		(property "Reference" "#PWR20"
 			(at 147.32 90.17 0)
 			(effects
 				(font
@@ -751,7 +801,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 			(at 147.32 83.82 0)
 			(effects
 				(font
@@ -761,12 +811,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "137fcbeb-95ec-446e-b4bf-fd65fe2e6c36")
+			(uuid "febed9d9-52fb-4bff-bf4f-8fbb21881a81")
 		)
 		(instances
 			(project "comms_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "#PWR89")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
+					(reference "#PWR20")
 					(unit 1)
 				)
 			)
@@ -782,7 +832,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2ccb2e60-4178-4a8f-8ef3-dd602f3a12ac")
-		(property "Reference" "R43"
+		(property "Reference" "R16"
 			(at 165.735 94.615 0)
 			(effects
 				(font
@@ -817,7 +867,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 163.83 95.25 0)
 			(effects
 				(font
@@ -890,15 +940,15 @@
 			)
 		)
 		(pin "2"
-			(uuid "7a1b1e11-2656-4e99-ae77-b277c8306d0f")
+			(uuid "17e5d4cd-831c-4b76-8d2b-d7d9cf1ee226")
 		)
 		(pin "1"
-			(uuid "e80f733b-8521-4483-8b0c-dc59f1f052bf")
+			(uuid "82e557b7-109f-43f0-a581-1be81dc52f74")
 		)
 		(instances
 			(project "comms_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "R43")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
+					(reference "R16")
 					(unit 1)
 				)
 			)
@@ -914,7 +964,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2f443ce4-7b36-4634-90cb-316a1ebfa29d")
-		(property "Reference" "R42"
+		(property "Reference" "R15"
 			(at 165.735 86.995 0)
 			(effects
 				(font
@@ -949,7 +999,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 163.83 87.63 0)
 			(effects
 				(font
@@ -1022,15 +1072,15 @@
 			)
 		)
 		(pin "2"
-			(uuid "fa8681cc-3163-49cc-b46a-a5e3b713e02c")
+			(uuid "93f59999-e798-4494-bd44-02ce195dc508")
 		)
 		(pin "1"
-			(uuid "628b33e5-158c-43d2-9cba-fb2c1596c1de")
+			(uuid "2fbe3f85-4249-45f0-b6a9-decc086b894e")
 		)
 		(instances
 			(project "comms_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "R42")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
+					(reference "R15")
 					(unit 1)
 				)
 			)
@@ -1045,7 +1095,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "3bc5c06b-62e4-44c2-97da-a83483a0d60d")
-		(property "Reference" "JP12"
+		(property "Reference" "JP10"
 			(at 158.496 64.008 90)
 			(effects
 				(font
@@ -1079,7 +1129,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Solder Jumper, 2-pole, open"
 			(at 163.83 64.77 0)
 			(effects
 				(font
@@ -1134,15 +1184,82 @@
 			)
 		)
 		(pin "2"
-			(uuid "38ed9229-a4e8-466a-a562-a33b6d61274b")
+			(uuid "ad2e896c-f308-4767-a949-709225a826b8")
 		)
 		(pin "1"
-			(uuid "1b57e514-ad1d-41b2-ad6c-086230899953")
+			(uuid "92861b4d-b5e4-4ff9-ba39-0b9a9a582bb6")
 		)
 		(instances
 			(project "comms_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "JP12")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
+					(reference "JP10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 113.03 118.11 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3e1a5b4f-a2a1-4dba-acb9-8df71ccb7fd4")
+		(property "Reference" "#PWR19"
+			(at 113.03 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 115.57 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 113.03 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 113.03 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 113.03 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3245bfec-7613-4569-a6ed-a6f12d44c1b7")
+		)
+		(instances
+			(project "comms_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
+					(reference "#PWR19")
 					(unit 1)
 				)
 			)
@@ -1193,7 +1310,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Solder Jumper, 2-pole, open"
 			(at 128.27 76.2 0)
 			(effects
 				(font
@@ -1248,14 +1365,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "270450b2-157e-4c3f-8e21-a9c05dd2199b")
+			(uuid "2c798344-b8e0-4a6c-86b8-435f35c394a8")
 		)
 		(pin "1"
-			(uuid "2236a98c-a9a1-4810-9ff0-18ffd7627655")
+			(uuid "ccfc8e6a-1bf2-477a-9466-2ce39911b0e4")
 		)
 		(instances
 			(project "comms_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
 					(reference "JP7")
 					(unit 1)
 				)
@@ -1272,7 +1389,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "7994e65b-b5de-4ea3-aeb2-68b5d0b0a970")
-		(property "Reference" "#PWR90"
+		(property "Reference" "#PWR21"
 			(at 163.83 105.41 0)
 			(effects
 				(font
@@ -1308,7 +1425,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 			(at 163.83 99.06 0)
 			(effects
 				(font
@@ -1318,12 +1435,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "f6d60646-e691-4a19-b0aa-74e72ee422b8")
+			(uuid "88dfc726-efff-4451-9e7f-d409dc032dcd")
 		)
 		(instances
 			(project "comms_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "#PWR90")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
+					(reference "#PWR21")
 					(unit 1)
 				)
 			)
@@ -1418,11 +1535,11 @@
 			)
 		)
 		(pin "1"
-			(uuid "4b4d9177-38b5-4649-ac74-f10fbb0d35f9")
+			(uuid "6480d2f1-3353-4564-9343-f565a78e9b39")
 		)
 		(instances
 			(project "comms_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
 					(reference "TP6")
 					(unit 1)
 				)
@@ -1474,7 +1591,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Solder Jumper, 2-pole, open"
 			(at 128.27 91.44 0)
 			(effects
 				(font
@@ -1529,14 +1646,14 @@
 			)
 		)
 		(pin "2"
-			(uuid "bc2456f4-f3c8-45d5-ab37-17c74cd0c505")
+			(uuid "fb3fef0d-822e-4902-8ee1-838291dcc0a6")
 		)
 		(pin "1"
-			(uuid "dc610cf7-136c-41aa-8d1c-84bc98a0731d")
+			(uuid "e08f2800-86bd-4c69-bd78-673668ee1532")
 		)
 		(instances
 			(project "comms_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
 					(reference "JP8")
 					(unit 1)
 				)
@@ -1632,11 +1749,11 @@
 			)
 		)
 		(pin "1"
-			(uuid "1a3cbc9b-b138-4917-8fd3-35ae456f3596")
+			(uuid "a2aa39a9-3e20-4e0c-b903-13e508006865")
 		)
 		(instances
-			(project ""
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
+			(project "comms_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
 					(reference "TP5")
 					(unit 1)
 				)
@@ -1653,7 +1770,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b71469f9-0ef6-483b-9123-de39adf35882")
-		(property "Reference" "R41"
+		(property "Reference" "R14"
 			(at 149.225 79.375 0)
 			(effects
 				(font
@@ -1688,7 +1805,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 147.32 80.01 0)
 			(effects
 				(font
@@ -1761,15 +1878,15 @@
 			)
 		)
 		(pin "2"
-			(uuid "7f7ae42a-7751-4f79-9bc8-a86d66b2ed62")
+			(uuid "0f472d85-c2c4-47d9-9c2d-ef3ff2b33124")
 		)
 		(pin "1"
-			(uuid "2717c126-c73d-4048-ad01-e031db1b2746")
+			(uuid "f8f7e78b-8949-4514-b3ed-64e3fa0cf643")
 		)
 		(instances
 			(project "comms_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "R41")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
+					(reference "R14")
 					(unit 1)
 				)
 			)
@@ -1785,7 +1902,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ba64e8aa-40a9-40f5-b33f-2797678ea8b6")
-		(property "Reference" "R40"
+		(property "Reference" "R13"
 			(at 149.225 71.755 0)
 			(effects
 				(font
@@ -1820,7 +1937,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 147.32 72.39 0)
 			(effects
 				(font
@@ -1893,15 +2010,15 @@
 			)
 		)
 		(pin "2"
-			(uuid "6c82d023-9455-4460-bc75-6e380fb68fc6")
+			(uuid "239da5d0-4ee3-4ecb-b21f-720ce379ec7b")
 		)
 		(pin "1"
-			(uuid "c8420420-dc57-4669-8795-1981b1d3bd7e")
+			(uuid "983a1f13-eff8-4c53-95c1-01219d4e84ad")
 		)
 		(instances
 			(project "comms_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "R40")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
+					(reference "R13")
 					(unit 1)
 				)
 			)
@@ -1916,7 +2033,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "fe49b9f8-56c8-4123-b31b-ad91d21d6d88")
-		(property "Reference" "JP11"
+		(property "Reference" "JP9"
 			(at 141.986 64.008 90)
 			(effects
 				(font
@@ -1950,7 +2067,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Solder Jumper, 2-pole, open"
 			(at 147.32 64.77 0)
 			(effects
 				(font
@@ -2005,15 +2122,15 @@
 			)
 		)
 		(pin "2"
-			(uuid "d7119db3-70b1-4243-b3f1-d4afb8b12957")
+			(uuid "db03102b-6500-463c-8610-331aef5f0b5b")
 		)
 		(pin "1"
-			(uuid "fd8555a3-6db2-497b-9524-3073d492785a")
+			(uuid "f62e3d60-a624-429d-9d80-a99a936079e1")
 		)
 		(instances
 			(project "comms_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81ef42a1-fd75-4c6f-89d3-3386bd4f4866"
-					(reference "JP11")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d476de5a-07b1-40f2-8ffe-3a83bc7d6ffb"
+					(reference "JP9")
 					(unit 1)
 				)
 			)
