@@ -1387,21 +1387,21 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "J"
-				(at 8.89 6.35 0)
+			(property "Reference" "J4"
+				(at 13.97 -11.4299 0)
 				(effects
 					(font
 						(size 1.524 1.524)
 					)
+					(justify left)
 				)
 			)
-			(property "Value" "Molex_504050-0891"
-				(at 0 0 0)
+			(property "Value" "Power Interconnect"
+				(at 24.892 -13.97 0)
 				(effects
 					(font
 						(size 1.524 1.524)
 					)
-					(hide yes)
 				)
 			)
 			(property "Footprint" "footprints:Molex_504050-0891"
@@ -1887,7 +1887,7 @@
 						(type none)
 					)
 				)
-				(pin unspecified line
+				(pin power_in line
 					(at 0 0 0)
 					(length 5.08)
 					(name "1"
@@ -1905,7 +1905,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin power_in line
 					(at 0 -22.86 0)
 					(length 5.08)
 					(name "10"
@@ -1923,7 +1923,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin power_in line
 					(at 0 -2.54 0)
 					(length 5.08)
 					(name "2"
@@ -1941,7 +1941,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin power_in line
 					(at 0 -5.08 0)
 					(length 5.08)
 					(name "3"
@@ -1959,7 +1959,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin power_in line
 					(at 0 -7.62 0)
 					(length 5.08)
 					(name "4"
@@ -1977,7 +1977,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin power_in line
 					(at 0 -10.16 0)
 					(length 5.08)
 					(name "5"
@@ -1995,7 +1995,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin power_in line
 					(at 0 -12.7 0)
 					(length 5.08)
 					(name "6"
@@ -2013,7 +2013,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin power_in line
 					(at 0 -15.24 0)
 					(length 5.08)
 					(name "7"
@@ -2031,7 +2031,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin power_in line
 					(at 0 -17.78 0)
 					(length 5.08)
 					(name "8"
@@ -2049,7 +2049,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin power_in line
 					(at 0 -20.32 0)
 					(length 5.08)
 					(name "9"
