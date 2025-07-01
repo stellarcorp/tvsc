@@ -1192,6 +1192,309 @@
 				)
 			)
 		)
+		(symbol "Switch:SW_SPDT"
+			(pin_names
+				(offset 0) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "SW"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SW_SPDT"
+				(at 0 -5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 -7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Switch, single pole double throw"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "switch single-pole double-throw spdt ON-ON"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "SW_SPDT_0_1"
+				(circle
+					(center -2.032 0)
+					(radius 0.4572)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.651 0.254) (xy 1.651 2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.032 -2.54)
+					(radius 0.4572)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.032 2.54)
+					(radius 0.4572)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "SW_SPDT_1_1"
+				(rectangle
+					(start -3.175 3.81)
+					(end 3.175 -3.81)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin passive line
+					(at 5.08 2.54 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 -2.54 180)
+					(length 2.54)
+					(name "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "TVSC:B2B-PH-K-S__LF__SN_"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 16.51 7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Value" "B2B-PH-K-S__LF__SN_"
+				(at 16.51 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Footprint" "footprints:B2BPHKSLFSN"
+				(at 16.51 -94.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "http://www.jst-mfg.com/product/pdf/eng/ePH.pdf"
+				(at 16.51 -194.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Description" "2mm pitch disconnectable crimp style connectors"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer" "JST (JAPAN SOLDERLESS TERMINALS)"
+				(at 16.51 -494.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer Part Number" "B2B-PH-K-S (LF)(SN)"
+				(at 16.51 -594.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "MPN" "C131337"
+				(at 10.16 -7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "B2B-PH-K-S__LF__SN__1_1"
+				(rectangle
+					(start 5.08 2.54)
+					(end 15.24 -5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 0)
+					(length 5.08)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 0 0)
+					(length 5.08)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "power:+3V3"
 			(power)
 			(pin_numbers hide)
@@ -1818,6 +2121,12 @@
 		(uuid "d7c847f6-ae31-4bf2-a0fd-a6d82124825c")
 	)
 	(junction
+		(at 76.2 71.12)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "dc9b28d2-ae27-4088-8c18-94f5915e97e7")
+	)
+	(junction
 		(at 151.13 71.12)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1834,6 +2143,10 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f89842bb-ff20-46e0-9b9c-42791dbe47c4")
+	)
+	(no_connect
+		(at 59.69 73.66)
+		(uuid "189779f8-60b7-4808-aab8-ac4a04576bdc")
 	)
 	(no_connect
 		(at 101.6 96.52)
@@ -1941,6 +2254,16 @@
 	)
 	(wire
 		(pts
+			(xy 69.85 71.12) (xy 76.2 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "384e1739-55e1-4a06-ab1a-4f917a0ed388")
+	)
+	(wire
+		(pts
 			(xy 95.25 86.36) (xy 95.25 85.09)
 		)
 		(stroke
@@ -1958,6 +2281,16 @@
 			(type default)
 		)
 		(uuid "47d36f11-2847-49e4-98ef-508f7041c052")
+	)
+	(wire
+		(pts
+			(xy 40.64 68.58) (xy 59.69 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4a1053db-c53d-40e7-b00d-ceccb8a00209")
 	)
 	(wire
 		(pts
@@ -2171,6 +2504,16 @@
 	)
 	(wire
 		(pts
+			(xy 38.1 69.85) (xy 38.1 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e95cc3f6-08e3-4cbc-b29e-24dc38dd669f")
+	)
+	(wire
+		(pts
 			(xy 161.29 107.95) (xy 161.29 101.6)
 		)
 		(stroke
@@ -2201,7 +2544,7 @@
 	)
 	(wire
 		(pts
-			(xy 55.88 71.12) (xy 88.9 71.12)
+			(xy 76.2 71.12) (xy 88.9 71.12)
 		)
 		(stroke
 			(width 0)
@@ -2248,9 +2591,28 @@
 		)
 		(uuid "3821b6f7-f48a-4d69-91e6-32d514c6cc11")
 	)
+	(text_box "Optional external power connector for a battery, along with a simple on-off switch. These parts should only be populated when using as a standalone module, such as for a remote control."
+		(exclude_from_sim no)
+		(at 44.45 30.48 0)
+		(size 34.29 16.51)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "49ca3707-36f9-49ae-923f-af42c7bf0043")
+	)
 	(text_box "Note that the precision of the INA260 does not allow us to make small enough measurements for most of our applications. Consider replacing the INA260 with the MAX40080 from Maxim or the PAC1932 / PAC1934 from Microchip."
 		(exclude_from_sim no)
-		(at 41.91 19.05 0)
+		(at 92.71 118.11 0)
 		(size 38.1 16.51)
 		(stroke
 			(width 0)
@@ -2277,6 +2639,16 @@
 			(justify left bottom)
 		)
 		(uuid "5b6ae183-adfc-47f7-af81-2464a86dae32")
+	)
+	(label "EXT_POWER+"
+		(at 40.64 68.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a0bfa64e-069a-4815-ab9c-acdb3347732b")
 	)
 	(hierarchical_label "I2C_SCL"
 		(shape input)
@@ -2527,6 +2899,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 38.1 69.85 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "182af779-f95b-4c31-90e1-b3dfcc49dbc3")
+		(property "Reference" "#PWR63"
+			(at 38.1 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 38.1 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 38.1 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 38.1 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 38.1 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "56b1d4d9-6440-47dd-8f9a-fd943d41e6dc")
+		)
+		(instances
+			(project "comms_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
+					(reference "#PWR63")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 88.9 74.93 0)
 		(mirror y)
@@ -2738,6 +3176,95 @@
 			(project "comms_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
 					(reference "#PWR18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Switch:SW_SPDT")
+		(at 64.77 71.12 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "2ae7ecba-7710-4793-ad20-053412ae3489")
+		(property "Reference" "SW1"
+			(at 64.77 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SW_SPDT"
+			(at 64.77 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Button_Switch_THT:SW_Slide_SPDT_Straight_CK_OS102011MS2Q"
+			(at 64.77 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 64.77 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Switch, single pole double throw"
+			(at 64.77 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "C&K"
+			(at 64.77 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "OS102011MS2QN1"
+			(at 64.77 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "b5e8d2e0-f60e-4454-85f8-a7323dd77bfc")
+		)
+		(pin "1"
+			(uuid "4017b38c-1eea-4858-982e-1e9de4d34ef1")
+		)
+		(pin "3"
+			(uuid "d7d9da44-4677-418b-be05-61fea1732022")
+		)
+		(instances
+			(project ""
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
+					(reference "SW1")
 					(unit 1)
 				)
 			)
@@ -3296,8 +3823,145 @@
 		)
 	)
 	(symbol
+		(lib_id "TVSC:B2B-PH-K-S__LF__SN_")
+		(at 38.1 68.58 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp yes)
+		(uuid "81170d21-5128-450c-bff6-ed74cdb91a2f")
+		(property "Reference" "J4"
+			(at 40.64 52.07 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "External Power"
+			(at 45.72 49.53 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_JST:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal"
+			(at 133.02 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.jst-mfg.com/product/pdf/eng/ePH.pdf"
+			(at 233.02 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 38.1 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "6"
+			(at 433.02 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "JST (JAPAN SOLDERLESS TERMINALS)"
+			(at 533.02 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "S2B-PH-K-S"
+			(at 633.02 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
+			(at 38.1 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "JST (JAPAN SOLDERLESS TERMINALS)"
+			(at 38.1 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "B2B-PH-K-S (LF)(SN)"
+			(at 38.1 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 38.1 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "38908b85-8b5b-43f9-8107-49278baeded4")
+		)
+		(pin "2"
+			(uuid "f0dc3e01-e54d-45e3-9859-c7ecdd595b3b")
+		)
+		(instances
+			(project "comms_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
+					(reference "J4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:VBUS")
-		(at 55.88 71.12 0)
+		(at 76.2 71.12 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3306,7 +3970,7 @@
 		(fields_autoplaced yes)
 		(uuid "81b0da6f-6020-43ad-a76e-b8627d76f4eb")
 		(property "Reference" "#PWR14"
-			(at 55.88 74.93 0)
+			(at 76.2 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3315,7 +3979,7 @@
 			)
 		)
 		(property "Value" "VBUS"
-			(at 55.88 66.04 0)
+			(at 76.2 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3323,7 +3987,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 55.88 71.12 0)
+			(at 76.2 71.12 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3332,7 +3996,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 55.88 71.12 0)
+			(at 76.2 71.12 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3341,7 +4005,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VBUS\""
-			(at 55.88 71.12 0)
+			(at 76.2 71.12 0)
 			(effects
 				(font
 					(size 1.27 1.27)
