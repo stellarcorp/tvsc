@@ -12811,7 +12811,7 @@
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R2"
-			(at 0 1.17 360)
+			(at 0 1.17 0)
 			(layer "B.SilkS")
 			(hide yes)
 			(uuid "dcb496d6-8834-4ff7-92b6-cae40ef7eaa1")
@@ -12824,7 +12824,7 @@
 			)
 		)
 		(property "Value" "33"
-			(at 0 -1.17 360)
+			(at 0 -1.17 0)
 			(layer "B.Fab")
 			(uuid "cbd044b1-a8c1-4a85-b438-92fa001c595a")
 			(effects
@@ -12836,7 +12836,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
 			(uuid "bfacd8d7-0eff-4c13-a7e1-c66e81322f42")
@@ -12849,7 +12849,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
 			(uuid "e1fc1076-8343-46eb-a63d-86eb5de52990")
@@ -12862,7 +12862,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
 			(uuid "a4d2ee01-767c-44dd-8dc0-9821f19e6fc4")
@@ -13126,7 +13126,7 @@
 			(uuid "42f71650-dddd-42e5-a1a1-76834f5ab7ed")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "B.Fab")
 			(uuid "103c9d3e-a815-4ae6-8266-fba7f5d4ac61")
 			(effects
@@ -23487,7 +23487,7 @@
 		(descr "LED SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: http://www.tortai-tech.com/upload/download/2011102023233369053.pdf), generated with kicad-footprint-generator")
 		(tags "LED")
 		(property "Reference" "D1"
-			(at 0 1.43 360)
+			(at 0 1.43 0)
 			(layer "B.SilkS")
 			(hide yes)
 			(uuid "041233c9-6d2e-48f9-8462-c1c7ad874960")
@@ -23500,7 +23500,7 @@
 			)
 		)
 		(property "Value" "Blue LED"
-			(at 0 -1.4 360)
+			(at 0 -1.4 0)
 			(layer "B.SilkS")
 			(uuid "dc111b02-d5c0-4cc3-a6d7-efa588bd499b")
 			(effects
@@ -23805,7 +23805,7 @@
 			(uuid "4b8f2530-ede7-4b14-914f-7a3983be2f67")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "B.Fab")
 			(uuid "237e62da-4e95-4ff7-afa6-450bf839abdb")
 			(effects
