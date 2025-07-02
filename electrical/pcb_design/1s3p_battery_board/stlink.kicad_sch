@@ -1164,10 +1164,10 @@
 		)
 		(uuid "6ea38f83-7118-40fe-b663-5214fab103f5")
 	)
-	(text_box "From this symbol, we have two Tag-Connect headers in the footprint. One header goes on the top of the board, and one on the bottom. The top header will preferred most of the time on the bench, since the debug LED, CPU, and most other headers are on this side of the board. But when installed in the chassis, the top header will be on the inside of the satellite, so it will be inaccessible. The header on the bottom of the board will point towards the outside of the satellite and will be accessible if the magnetorquer board isn't installed."
+	(text_box "From this symbol, we have only one Tag-Connect header in the footprint. The battery board is more space-limited than other boards, so this compromise makes layout easier/possible."
 		(exclude_from_sim no)
-		(at 172.72 85.09 0)
-		(size 54.61 25.4)
+		(at 165.1 68.58 0)
+		(size 30.48 19.05)
 		(stroke
 			(width 0)
 			(type default)
@@ -1534,7 +1534,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "footprints:Double-Sided_Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical"
+		(property "Footprint" "Connector:Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical"
 			(at 152.4 93.98 0)
 			(effects
 				(font
