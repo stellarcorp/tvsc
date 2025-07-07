@@ -46,16 +46,15 @@ class SerialWire final {
              std::chrono::nanoseconds clock_period = 100us)
       : programmer_(programmer_peripheral.access()) {
     programmer_.set_clock_period(clock_period);
-    initialize_swd();
   }
 
   uint32_t read_id_code() {
     uint32_t id{};
-    if (!swd_dp_read(0x00, id)) {
-      // id = 0;
-    }
+    swd_dp_read(0x00, id);
     return id;
   }
+
+  void reset_target();
 
   /**
    * Initialize, or re-initialize, the target to accept SWD commands.

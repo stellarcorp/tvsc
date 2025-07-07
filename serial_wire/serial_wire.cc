@@ -45,21 +45,24 @@ using namespace std::chrono_literals;
 }
 
 /**
+ * Reset the target board.
+ */
+void SerialWire::reset_target() {
+  programmer_.initiate_target_board_reset();
+  time::EmbeddedClock::clock().wait(programmer_.RESET_HOLD_TIME);
+  programmer_.conclude_target_board_reset();
+}
+
+/**
  * Initialize, or re-initialize, the target to accept SWD commands.
  */
 uint32_t SerialWire::initialize_swd() {
-  using namespace std::chrono_literals;
-
   // Special value to switch from JTAG to SWD. This value is part of the SWD specification. It can
   // also be found on page 1577 of the datasheet
   // https://www.st.com/resource/en/reference_manual/rm0394-stm32l41xxx42xxx43xxx44xxx45xxx46xxx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf.
   // Note that the datasheet gives the bits in an order such that the MSB needs to be sent first.
   // Our send routines send the LSB first. This value is reversed from the one in the datasheet.
   static constexpr uint16_t JTAG_SWD_SWITCHING_SEQUENCE{0xe79e};
-
-  programmer_.initiate_target_board_reset();
-  time::EmbeddedClock::clock().wait(programmer_.RESET_HOLD_TIME);
-  programmer_.conclude_target_board_reset();
 
   // The SWD spec requires at least 50 clock cycles with SWDIO high to trigger the JTAG/SWD switch
   // sequence. We send multiple 32-bit values of all ones to accomplish this reset.
