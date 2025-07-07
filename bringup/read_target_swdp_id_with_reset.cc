@@ -43,6 +43,7 @@ tvsc::scheduler::Task<ClockType> read_target_swdp_id(BoardType &board) {
 
       tvsc::serial_wire::SerialWire swd{programmer_peripheral};
 
+      swd.reset_target();
       swd.initialize_swd();
 
       target_swdp_id = swd.read_id_code();
