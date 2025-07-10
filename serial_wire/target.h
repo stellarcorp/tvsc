@@ -39,7 +39,7 @@ class Target final {
   SerialWire* swd_;
   bool swd_initialized_{false};
 
-  bool initialize_target() {
+  [[nodiscard]] bool initialize_target() {
     fail_step = 0;
     initialized_idcode = swd_->initialize_swd();
     if (initialized_idcode == 0) {
@@ -123,7 +123,7 @@ class Target final {
     return true;
   }
 
-  bool ensure_initialized() {
+  [[nodiscard]] bool ensure_initialized() {
     if (!swd_initialized_) {
       if (!initialize_target()) {
         return false;
@@ -136,7 +136,7 @@ class Target final {
  public:
   Target(SerialWire& swd) : swd_(&swd) {}
 
-  bool read_dp_idcode(uint32_t& id) {
+  [[nodiscard]] bool read_dp_idcode(uint32_t& id) {
     if (!ensure_initialized()) {
       return false;
     }
@@ -148,7 +148,7 @@ class Target final {
     return true;
   }
 
-  bool read_ap_idr(uint32_t& id) {
+  [[nodiscard]] bool read_ap_idr(uint32_t& id) {
     if (!ensure_initialized()) {
       return false;
     }
