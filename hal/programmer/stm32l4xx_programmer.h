@@ -64,6 +64,8 @@ class ProgrammerStm32l4xx final : public ProgrammerPeripheral {
         swdio_pin_(swdio_pin),
         swclk_pin_(swclk_pin),
         reset_pin_(reset_pin) {}
+
+  void idle(uint32_t num_cycles) override;
 };
 
 }  // namespace tvsc::hal::programmer

@@ -46,6 +46,9 @@ class ProgrammerPeripheral : public Peripheral<ProgrammerPeripheral, Programmer>
   // if the parity matches the data received.
   virtual bool receive(uint32_t& data, uint8_t bits_to_receive) = 0;
 
+  // Cycle the clock the given number of cycles while leaving the output line to float.
+  virtual void idle(uint32_t num_cycles) = 0;
+
  public:
   virtual ~ProgrammerPeripheral() = default;
 };
@@ -83,6 +86,8 @@ class Programmer final : public Functional<ProgrammerPeripheral, Programmer> {
   bool receive(uint32_t& data, uint8_t bits_to_receive) {
     return peripheral_->receive(data, bits_to_receive);
   }
+
+  void idle(uint32_t num_cycles) { return peripheral_->idle(num_cycles); }
 };
 
 }  // namespace tvsc::hal::programmer

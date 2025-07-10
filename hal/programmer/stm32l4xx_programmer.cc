@@ -12,14 +12,30 @@ using namespace tvsc::hal::gpio;
 
 void ProgrammerStm32l4xx::enable() {
   gpio_ = gpio_peripheral_->access();
-  gpio_.set_pin_mode(reset_pin_, PinMode::OUTPUT_PUSH_PULL_WITH_PULL_UP, PinSpeed::LOW);
   gpio_.set_pin_mode(swclk_pin_, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 }
 
-void ProgrammerStm32l4xx::disable() { gpio_.invalidate(); }
+void ProgrammerStm32l4xx::disable() {
+  idle(1);
 
-void ProgrammerStm32l4xx::initiate_target_board_reset() { gpio_.write_pin(reset_pin_, 0); }
-void ProgrammerStm32l4xx::conclude_target_board_reset() { gpio_.write_pin(reset_pin_, 1); }
+  gpio_.set_pin_mode(reset_pin_, PinMode::UNUSED);
+  gpio_.set_pin_mode(swclk_pin_, PinMode::UNUSED);
+  gpio_.set_pin_mode(swdio_pin_, PinMode::UNUSED);
+
+  gpio_.invalidate();
+}
+
+void ProgrammerStm32l4xx::initiate_target_board_reset() {
+  gpio_.set_pin_mode(reset_pin_, PinMode::OUTPUT_OPEN_DRAIN, PinSpeed::LOW);
+  gpio_.write_pin(reset_pin_, 0);
+}
+
+void ProgrammerStm32l4xx::conclude_target_board_reset() {
+  gpio_.write_pin(reset_pin_, 1);
+  half_period_delay();
+  half_period_delay();
+  gpio_.set_pin_mode(reset_pin_, PinMode::UNUSED);
+}
 
 void ProgrammerStm32l4xx::set_clock_period(std::chrono::nanoseconds clock_period) {
   half_clock_period_cycles_ = SystemCoreClock * clock_period.count() / (2 * 1e9);
@@ -44,7 +60,7 @@ void ProgrammerStm32l4xx::turnaround(SwdioDriveState state) {
   __asm__("" ::: "memory");
   gpio_.write_pin(swclk_pin_, 0);
 
-  if (state == SwdioDriveState::FLOAT) {
+  if (state == SwdioDriveState::DRIVE) {
     gpio_.set_pin_mode(swdio_pin_, swdio_output_mode_, PinSpeed::LOW);
   }
 }
@@ -127,6 +143,16 @@ bool ProgrammerStm32l4xx::receive(uint32_t& data, uint8_t bits_to_receive) {
 
   const uint8_t parity{static_cast<uint8_t>(__builtin_parity(data))};
   return (parity & 0x01) == bit_value;
+}
+
+void ProgrammerStm32l4xx::idle(uint32_t num_cycles) {
+  turnaround(SwdioDriveState::FLOAT);
+  for (uint32_t i = 0; i < num_cycles; ++i) {
+    half_period_delay();
+    gpio_.write_pin(swclk_pin_, 1);
+    half_period_delay();
+    gpio_.write_pin(swclk_pin_, 0);
+  }
 }
 
 }  // namespace tvsc::hal::programmer
