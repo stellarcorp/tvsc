@@ -1,0 +1,39 @@
+genrule(
+    name = "generate_build_time_files",
+    srcs = [
+        "build_time.cc.tpl",
+        "build_time.h.tpl",
+    ],
+    outs = [
+        "build_time.cc",
+        "build_time.h",
+    ],
+    cmd = """
+      BUILD_TIME_STR=$$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+      BUILD_TIME_EPOCH=$$(date -u +%s)
+
+      sed -e "s|@BUILD_TIME_STR@|$$BUILD_TIME_STR|g" \
+          -e "s|@BUILD_TIME_EPOCH@|$$BUILD_TIME_EPOCH|g" \
+          $(location build_time.cc.tpl) > $(location build_time.cc)
+
+      sed -e "s|@BUILD_TIME_STR@|$$BUILD_TIME_STR|g" \
+          -e "s|@BUILD_TIME_EPOCH@|$$BUILD_TIME_EPOCH|g" \
+          $(location build_time.h.tpl) > $(location build_time.h)
+    """,
+)
+
+cc_library(
+    name = "build_time",
+    srcs = ["build_time.cc"],
+    hdrs = ["build_time.h"],
+    visibility = ["//visibility:public"],
+    deps = [":generate_build_time_files"],
+    alwayslink = True,
+)
+
+cc_library(
+    name = "firmware",
+    srcs = ["firmware.cc"],
+    hdrs = ["firmware.h"],
+    visibility = ["//visibility:public"],
+)

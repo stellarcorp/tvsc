@@ -61,6 +61,12 @@ SECTIONS
     . = ALIGN(4);
   } >FLASH
 
+  .build_time :
+  {
+    . = ALIGN(4);
+    KEEP(*(.build_time)) /* Build timestamp for version detection */
+  } >FLASH
+
   /* The program code and other data into "FLASH" Rom type memory */
   .text :
   {
@@ -161,6 +167,10 @@ SECTIONS
     _edata = .;        /* define a global symbol at data end */
 
   } >RAM AT> FLASH
+
+  __flash_used_start__ = ORIGIN(FLASH);
+  __flash_used_end__ = LOADADDR(.data) + SIZEOF(.data);
+  __flash_used_size__ = __flash_used_end__ - __flash_used_start__;
 
   /* Uninitialized data section into "RAM" Ram type memory */
   . = ALIGN(4);
