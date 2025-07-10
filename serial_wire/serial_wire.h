@@ -29,8 +29,8 @@ class SerialWire final {
   }
 
   static inline void add_address(uint8_t& command, uint8_t addr) {
-    command |= ((addr & 0x03) << 3);
-    // command |= (addr << 1) & (0x03 << 2);
+    addr = addr >> 2;
+    bits::modify_bit_field<2, 3>(command, addr);
   }
 
   static inline uint8_t create_command(uint8_t command_template, uint8_t addr) {
@@ -61,22 +61,12 @@ class SerialWire final {
   // [On DPv2+] Replaces IDCODE.
   static constexpr uint8_t DP_TARGETID{0x00};
 
-  // Access port registers.
-  static constexpr uint8_t AP_CSW{0x00};
-  static constexpr uint8_t AP_TAR{0x04};
-  static constexpr uint8_t AP_DRW{0x0C};
-  static constexpr uint8_t AP_IDR{0xFC};
+  static constexpr uint32_t EXPECTED_SW_DP_IDCODE{0x2BA01477};
 
   SerialWire(tvsc::hal::programmer::ProgrammerPeripheral& programmer_peripheral,
              std::chrono::nanoseconds clock_period = 100us)
       : programmer_(programmer_peripheral.access()) {
     programmer_.set_clock_period(clock_period);
-  }
-
-  uint32_t read_id_code() {
-    uint32_t id{};
-    swd_dp_read(0x00, id);
-    return id;
   }
 
   void reset_target();
@@ -86,9 +76,7 @@ class SerialWire final {
    */
   [[nodiscard]] uint32_t initialize_swd();
 
-  [[nodiscard]] bool clear_dp_state() {
-    return swd_dp_write(DP_ABORT, 0x1E) && swd_dp_write(DP_SELECT, 0x00);
-  }
+  bool clear_dp_state() { return swd_dp_write(DP_ABORT, 0x1E) && swd_dp_write(DP_SELECT, 0x00); }
 
   [[nodiscard]] bool swd_ap_read(uint8_t addr, uint32_t& data) {
     return read(create_command(BLANK_ACCESS_PORT_READ_COMMAND, addr), data);

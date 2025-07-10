@@ -5,6 +5,7 @@ cc_library(
     ],
     hdrs = [
         "serial_wire.h",
+        "target.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
