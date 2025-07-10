@@ -50,14 +50,12 @@ void ProgrammerStm32l4xx::turnaround(SwdioDriveState state) {
   if (state == SwdioDriveState::FLOAT) {
     gpio_.set_pin_mode(swdio_pin_, swdio_input_mode_, PinSpeed::LOW);
   }
-  __asm__("" ::: "memory");
   half_period_delay();
 
   gpio_.write_pin(swclk_pin_, 1);
 
   half_period_delay();
 
-  __asm__("" ::: "memory");
   gpio_.write_pin(swclk_pin_, 0);
 
   if (state == SwdioDriveState::DRIVE) {
@@ -69,7 +67,6 @@ void ProgrammerStm32l4xx::turnaround(SwdioDriveState state) {
 void ProgrammerStm32l4xx::send_no_parity(uint32_t data, uint8_t bits_to_send) {
   turnaround(SwdioDriveState::DRIVE);
   for (uint8_t i = 0; i < bits_to_send; ++i) {
-    __asm__("" ::: "memory");
     gpio_.write_pin(swdio_pin_, bits::get_bit_field_value<1>(data, i));
 
     half_period_delay();
@@ -78,7 +75,6 @@ void ProgrammerStm32l4xx::send_no_parity(uint32_t data, uint8_t bits_to_send) {
 
     half_period_delay();
 
-    __asm__("" ::: "memory");
     gpio_.write_pin(swclk_pin_, 0);
   }
 }
@@ -89,7 +85,6 @@ void ProgrammerStm32l4xx::send(uint32_t data, uint8_t bits_to_send) {
   send_no_parity(data, bits_to_send);
 
   // Send the parity.
-  __asm__("" ::: "memory");
   gpio_.write_pin(swdio_pin_, parity & 0x01);
 
   half_period_delay();
@@ -98,7 +93,6 @@ void ProgrammerStm32l4xx::send(uint32_t data, uint8_t bits_to_send) {
 
   half_period_delay();
 
-  __asm__("" ::: "memory");
   gpio_.write_pin(swclk_pin_, 0);
 }
 
@@ -119,9 +113,7 @@ void ProgrammerStm32l4xx::receive_no_parity(uint32_t& data, uint8_t bits_to_rece
 
     half_period_delay();
 
-    __asm__("" ::: "memory");
     gpio_.write_pin(swclk_pin_, 0);
-    __asm__("" ::: "memory");
   }
 }
 
