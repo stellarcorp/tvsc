@@ -6,19 +6,36 @@
 #include "time/embedded_clock.h"
 
 extern "C" {
-__attribute__((section(".status.value"))) volatile uint32_t swd_target_id{};
-__attribute__((section(".status.value"))) volatile uint32_t trace_fail{};
+__attribute__((section(".status.value"))) uint32_t swd_target_idcode{};
 __attribute__((section(".status.value"))) uint32_t serial_wire_ack{};
+__attribute__((section(".status.value"))) uint32_t attempt_count{};
 }
 
 namespace tvsc::serial_wire {
 
 using namespace std::chrono_literals;
 
+[[nodiscard]] bool SerialWire::send_command(uint8_t command) {
+  static constexpr uint8_t MAX_ATTEMPTS{16};
+
+  // uint8_t attempt_count{0};
+  for (attempt_count = 0; attempt_count < MAX_ATTEMPTS; ++attempt_count) {
+    programmer_.send_no_parity(command, 8);
+    programmer_.receive_no_parity(serial_wire_ack, 3);
+    if (serial_wire_ack == ACK_OK) {
+      return true;
+    } else if (serial_wire_ack == ACK_RETRY) {
+      programmer_.idle(2 * attempt_count + 8);
+    } else {
+      return false;
+    }
+  }
+
+  return false;
+}
+
 [[nodiscard]] bool SerialWire::read(uint8_t command, uint32_t& data) {
-  programmer_.send_no_parity(command, 8);
-  programmer_.receive_no_parity(serial_wire_ack, 3);
-  if (serial_wire_ack != ACK_OK) {
+  if (!send_command(command)) {
     return false;
   }
 
@@ -26,21 +43,15 @@ using namespace std::chrono_literals;
     return false;
   }
 
-  programmer_.send_no_parity(0, 8);
-
   return true;
 }
 
 [[nodiscard]] bool SerialWire::write(uint8_t command, uint32_t data) {
-  programmer_.send_no_parity(command, 8);
-  programmer_.receive_no_parity(serial_wire_ack, 3);
-  if (serial_wire_ack != ACK_OK) {
+  if (!send_command(command)) {
     return false;
   }
 
   programmer_.send(data, 32);
-  programmer_.send_no_parity(0, 8);
-
   return true;
 }
 
@@ -72,15 +83,24 @@ uint32_t SerialWire::initialize_swd() {
   // Send the magic value to switch from JTAG to SWD.
   programmer_.send_no_parity(JTAG_SWD_SWITCHING_SEQUENCE, 8 * sizeof(JTAG_SWD_SWITCHING_SEQUENCE));
 
-  // Again, clock the SWCLK line for at least 50 clock cycles with SWDIO high followed by 4 idle
-  // cycles.
+  // Again, clock the SWCLK line for at least 50 clock cycles with SWDIO high followed by 4 cycles
+  // with SWDIO driven low.
   programmer_.send_no_parity(std::numeric_limits<uint32_t>::max(), 32);
-  programmer_.send_no_parity(0x0fffffffU, 32);
+  programmer_.send_no_parity(std::numeric_limits<uint32_t>::max(), 32);
+  programmer_.send_no_parity(0x00U, 4);
 
   // The serial wire specification requires reading the id before the target device is fully
   // switched from JTAG to SWD.
-  swd_target_id = read_id_code();
-  return swd_target_id;
+
+  if (swd_dp_read(DP_IDCODE, swd_target_idcode)) {
+    if (!clear_dp_state()) {
+      swd_target_idcode = 0;
+    }
+  } else {
+    swd_target_idcode = 0;
+  }
+
+  return swd_target_idcode;
 }
 
 }  // namespace tvsc::serial_wire
