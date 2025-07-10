@@ -139,7 +139,6 @@ bool ProgrammerStm32l4xx::receive(uint32_t& data, uint8_t bits_to_receive) {
   half_period_delay();
 
   gpio_.write_pin(swclk_pin_, 0);
-  turnaround(SwdioDriveState::DRIVE);
 
   const uint8_t parity{static_cast<uint8_t>(__builtin_parity(data))};
   return (parity & 0x01) == bit_value;
