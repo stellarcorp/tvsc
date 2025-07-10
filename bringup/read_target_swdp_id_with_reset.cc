@@ -36,8 +36,6 @@ tvsc::scheduler::Task<ClockType> read_target_swdp_id(BoardType &board) {
   debug_led.set_pin_mode(BoardType::DEBUG_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
   while (true) {
-    co_yield 2s;
-
     {
       target_swdp_id = 0;
 
@@ -65,6 +63,8 @@ tvsc::scheduler::Task<ClockType> read_target_swdp_id(BoardType &board) {
         }
       }
     }
+
+    co_yield 2s;
   }
 }
 
