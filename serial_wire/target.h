@@ -21,8 +21,6 @@ class Target final {
   // Access port registers.
   // Control/Status Word.
   static constexpr uint8_t CSW{0x00};
-  // 32-bit access.
-  static constexpr uint32_t CSW_VALUE{0x02};
 
   // Transfer Address Register
   static constexpr uint8_t TAR{0x04};
@@ -32,9 +30,6 @@ class Target final {
 
   // ID Register (IDR)
   static constexpr uint8_t IDR{0xfc};
-
-  // Read buffer in the debug port.
-  static constexpr uint8_t RDBUFF{0x00};
 
   SerialWire* swd_;
   bool swd_initialized_{false};
@@ -115,7 +110,7 @@ class Target final {
       fail_step = 120;
       return false;
     }
-    if (!swd_->swd_ap_write(CSW, 0x23000012)) {
+    if (!swd_->swd_ap_write(CSW, 0x02)) {
       fail_step = 125;
       return false;
     }
@@ -153,20 +148,20 @@ class Target final {
       return false;
     }
 
+    bool success{true};
+
     // Read AP register 0xfc.
     // Select AP bank 0xf0.
-    if (!swd_->swd_dp_write(SerialWire::DP_SELECT, 0xf0)) {
-      swd_->clear_dp_state();
-      return false;
+    if (success && !swd_->swd_dp_write(SerialWire::DP_SELECT, 0xf0)) {
+      success = false;
     }
 
     // Read AP IDR.
-    if (!swd_->swd_ap_read(IDR, id)) {
-      swd_->clear_dp_state();
-      return false;
+    if (success && !swd_->swd_ap_read(IDR, id)) {
+      success = false;
     }
 
-    return swd_->clear_dp_state();
+    return swd_->clear_dp_state() && success;
   }
 };
 
