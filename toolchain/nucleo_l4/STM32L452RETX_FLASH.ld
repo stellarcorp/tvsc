@@ -47,7 +47,7 @@ MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 160K
   RAM2    (xrw)    : ORIGIN = 0x10000000,   LENGTH = 32K
-  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 512K
+  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 256K
 }
 
 /* Sections */
@@ -59,6 +59,12 @@ SECTIONS
     . = ALIGN(4);
     KEEP(*(.isr_vector)) /* Startup code */
     . = ALIGN(4);
+  } >FLASH
+
+  .build_time :
+  {
+    . = ALIGN(4);
+    KEEP(*(.build_time)) /* Build timestamp for version detection */
   } >FLASH
 
   /* The program code and other data into "FLASH" Rom type memory */
@@ -161,6 +167,9 @@ SECTIONS
     _edata = .;        /* define a global symbol at data end */
 
   } >RAM AT> FLASH
+
+  FIRMWARE_BEGIN = ORIGIN(FLASH);
+  FIRMWARE_END = LOADADDR(.data) + SIZEOF(.data);
 
   /* Uninitialized data section into "RAM" Ram type memory */
   . = ALIGN(4);
