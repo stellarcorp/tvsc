@@ -15,6 +15,7 @@
 
 extern "C" {
 __attribute__((section(".status.value"))) tvsc::meta::BuildTime target_build_time{};
+__attribute__((section(".status.value"))) uint32_t target_systick{};
 __attribute__((section(".status.value"))) uint32_t result_dp_idcode{};
 __attribute__((section(".status.value"))) uint32_t result_ap_idr{};
 }
@@ -54,26 +55,15 @@ tvsc::scheduler::Task<ClockType> flash_target(BoardType &board) {
         success = target.read_ap_idr(result_ap_idr);
       }
 
-      // Write target address to TAR.
-      // Write to AP register at 0x04.
-      // if (success && !swd.swd_ap_write(0x04, tvsc::meta::BUILD_TIME_ADDR)) {
-      //   success = false;
-      //   step = 35;
+      // if (success) {
+      //   success = target.read_target_mem(0x20000000, target_systick);
       // }
 
-      // // Read from DRW to trigger memory read.
-      // if (success && !swd.swd_ap_read(0x0c, dummy)) {
-      //   success = false;
-      //   step = 40;
+      // if (success) {
+      //   success = target.read_target_mem(tvsc::meta::BUILD_TIME_ADDR,
+      //   target_build_time.timestamp);
       // }
 
-      // // // Read result.
-      // if (success && !swd.swd_dp_read(0x00, target_build_time.timestamp)) {
-      //   success = false;
-      //   step = 50;
-      // }
-
-      // If we get a successful read of IDCODE, read the build time of the target.
       if (success) {
         for (int i = 0; i < 5; ++i) {
           debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
