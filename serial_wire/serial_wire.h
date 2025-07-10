@@ -55,7 +55,7 @@ class SerialWire final {
   // Select AP and AP register bank.
   static constexpr uint8_t DP_SELECT{0x08};
   // Read buffer (for AP read result).
-  static constexpr uint8_t DP_RDBUFF{0x0C};
+  static constexpr uint8_t DP_RDBUF{0x0C};
   // [On DPv1] ID register (overlaps with ABORT).
   static constexpr uint8_t DP_IDCODE{0x00};
   // [On DPv2+] Replaces IDCODE.
