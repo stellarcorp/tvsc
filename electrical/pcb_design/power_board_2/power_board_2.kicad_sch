@@ -629,6 +629,16 @@
 	)
 	(wire
 		(pts
+			(xy 165.1 109.855) (xy 177.165 109.855)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0537f924-39b9-4525-959f-74bbf771e02b")
+	)
+	(wire
+		(pts
 			(xy 128.27 195.58) (xy 140.97 195.58)
 		)
 		(stroke
@@ -1869,7 +1879,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "43246e31-5a67-499e-a41a-c6eead07ca87")
-		(property "Reference" "#PWR9"
+		(property "Reference" "#PWR01"
 			(at 140.97 201.93 0)
 			(effects
 				(font
@@ -1920,7 +1930,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db"
-					(reference "#PWR9")
+					(reference "#PWR01")
 					(unit 1)
 				)
 			)
@@ -2047,8 +2057,8 @@
 		)
 	)
 	(sheet
-		(at 177.165 110.49)
-		(size 33.655 38.735)
+		(at 177.165 108.585)
+		(size 33.655 40.64)
 		(fields_autoplaced yes)
 		(stroke
 			(width 0.1524)
@@ -2059,7 +2069,7 @@
 		)
 		(uuid "32d5be2b-4044-4e5b-a8fe-10ad872a185a")
 		(property "Sheetname" "Charger"
-			(at 177.165 109.7784 0)
+			(at 177.165 107.8734 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2205,6 +2215,16 @@
 				(justify right)
 			)
 			(uuid "2a559cd7-c877-4da1-b4be-2e77175965b8")
+		)
+		(pin "WP" input
+			(at 177.165 109.855 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d3496d7d-c495-41a2-910a-d4468c5d458f")
 		)
 		(instances
 			(project "power_board_2"
@@ -2792,6 +2812,16 @@
 				(justify right)
 			)
 			(uuid "d1671a8c-dc93-4c90-af43-a48a1ce38a79")
+		)
+		(pin "WP" input
+			(at 165.1 109.855 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "8b9c724a-5e41-4acd-aa27-d23b63596e64")
 		)
 		(instances
 			(project "power_board_2"

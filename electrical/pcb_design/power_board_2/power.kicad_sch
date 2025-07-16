@@ -1921,7 +1921,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "157f5677-f2e2-4c5b-abcb-cce2df149f17")
-		(property "Reference" "U8"
+		(property "Reference" "U2"
 			(at 132.08 69.85 0)
 			(effects
 				(font
@@ -2072,7 +2072,7 @@
 		(instances
 			(project ""
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "U8")
+					(reference "U2")
 					(unit 1)
 				)
 			)
@@ -2087,7 +2087,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "244426e2-9785-4434-ae0a-5174671bae31")
-		(property "Reference" "R51"
+		(property "Reference" "R23"
 			(at 146.05 82.55 90)
 			(effects
 				(font
@@ -2211,7 +2211,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "R51")
+					(reference "R23")
 					(unit 1)
 				)
 			)
@@ -2227,7 +2227,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2be2528f-c36d-4b90-bcd1-9a35f4e59554")
-		(property "Reference" "TP1"
+		(property "Reference" "TP3"
 			(at 107.95 74.6125 0)
 			(effects
 				(font
@@ -2333,7 +2333,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "TP1")
+					(reference "TP3")
 					(unit 1)
 				)
 			)
@@ -2348,7 +2348,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "45be3ef4-dde8-479c-8fb2-ebd7552dd4a6")
-		(property "Reference" "#PWR23"
+		(property "Reference" "#PWR026"
 			(at 218.44 77.47 0)
 			(effects
 				(font
@@ -2398,7 +2398,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "#PWR23")
+					(reference "#PWR026")
 					(unit 1)
 				)
 			)
@@ -2534,7 +2534,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "4c8a166d-f072-44ee-9b65-c729fe516f81")
-		(property "Reference" "TP6"
+		(property "Reference" "TP5"
 			(at 195.58 73.66 0)
 			(effects
 				(font
@@ -2640,7 +2640,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "TP6")
+					(reference "TP5")
 					(unit 1)
 				)
 			)
@@ -2656,7 +2656,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "588803f9-ec9c-4f50-92fa-d66f17087809")
-		(property "Reference" "R10"
+		(property "Reference" "R22"
 			(at 189.865 80.6449 90)
 			(effects
 				(font
@@ -2782,7 +2782,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "R10")
+					(reference "R22")
 					(unit 1)
 				)
 			)
@@ -2798,7 +2798,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "5f72a0a9-4e73-4d3f-80f2-3065d72da401")
-		(property "Reference" "TP3"
+		(property "Reference" "TP6"
 			(at 128.27 105.0925 0)
 			(effects
 				(font
@@ -2904,7 +2904,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "TP3")
+					(reference "TP6")
 					(unit 1)
 				)
 			)
@@ -2919,7 +2919,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "805f3d2c-d0f5-46a8-b149-68c4691ab56c")
-		(property "Reference" "#PWR88"
+		(property "Reference" "#PWR028"
 			(at 132.08 120.65 0)
 			(effects
 				(font
@@ -2969,7 +2969,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "#PWR88")
+					(reference "#PWR028")
 					(unit 1)
 				)
 			)
@@ -2985,7 +2985,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "81b0da6f-6020-43ad-a76e-b8627d76f4eb")
-		(property "Reference" "#PWR14"
+		(property "Reference" "#PWR025"
 			(at 73.66 81.28 0)
 			(effects
 				(font
@@ -3035,7 +3035,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "#PWR14")
+					(reference "#PWR025")
 					(unit 1)
 				)
 			)
@@ -3051,7 +3051,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a156a996-988a-46e0-9368-98f9b89d0537")
-		(property "Reference" "#FLG3"
+		(property "Reference" "#FLG01"
 			(at 210.82 75.565 0)
 			(effects
 				(font
@@ -3101,7 +3101,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "#FLG3")
+					(reference "#FLG01")
 					(unit 1)
 				)
 			)
@@ -3117,7 +3117,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "aac7586b-593b-48d6-9e28-45cad0930004")
-		(property "Reference" "C27"
+		(property "Reference" "C11"
 			(at 97.79 83.82 0)
 			(effects
 				(font
@@ -3261,7 +3261,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "C27")
+					(reference "C11")
 					(unit 1)
 				)
 			)
@@ -3277,7 +3277,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "d3c432cd-f319-45cd-875b-9b7a48f88c8e")
-		(property "Reference" "C4"
+		(property "Reference" "C12"
 			(at 107.95 83.82 0)
 			(effects
 				(font
@@ -3421,7 +3421,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "C4")
+					(reference "C12")
 					(unit 1)
 				)
 			)
@@ -3436,7 +3436,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "e860cc90-80e9-4ec8-b20c-0958dc861ab7")
-		(property "Reference" "#PWR89"
+		(property "Reference" "#PWR027"
 			(at 149.86 105.41 0)
 			(effects
 				(font
@@ -3486,7 +3486,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "#PWR89")
+					(reference "#PWR027")
 					(unit 1)
 				)
 			)
@@ -3502,7 +3502,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ff17705f-59a6-4858-a0e8-e1480e11ff18")
-		(property "Reference" "C5"
+		(property "Reference" "C13"
 			(at 163.83 83.82 0)
 			(effects
 				(font
@@ -3646,7 +3646,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "C5")
+					(reference "C13")
 					(unit 1)
 				)
 			)
