@@ -17,6 +17,7 @@ void ProgrammerStm32l4xx::enable() {
 
 void ProgrammerStm32l4xx::disable() {
   idle(1);
+  turnaround(SwdioDriveState::FLOAT);
 
   gpio_.set_pin_mode(reset_pin_, PinMode::UNUSED);
   gpio_.set_pin_mode(swclk_pin_, PinMode::UNUSED);
@@ -137,12 +138,14 @@ bool ProgrammerStm32l4xx::receive(uint32_t& data, uint8_t bits_to_receive) {
 }
 
 void ProgrammerStm32l4xx::idle(uint32_t num_cycles) {
-  turnaround(SwdioDriveState::FLOAT);
-  for (uint32_t i = 0; i < num_cycles; ++i) {
-    half_period_delay();
-    gpio_.write_pin(swclk_pin_, 1);
-    half_period_delay();
-    gpio_.write_pin(swclk_pin_, 0);
+  while (num_cycles > 0) {
+    if (num_cycles < 32) {
+      send_no_parity(0x0, num_cycles);
+      num_cycles = 0;
+    } else {
+      send_no_parity(0x0, 32);
+      num_cycles -= 32;
+    }
   }
 }
 
