@@ -44,6 +44,8 @@ tvsc::scheduler::Task<ClockType> flash_target(BoardType &board) {
   debug_led.set_pin_mode(BoardType::DEBUG_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
   while (true) {
+    co_yield 50ms;
+
     tvsc::serial_wire::Result success{};
     {
       result_dp_idr = 0;
