@@ -77,7 +77,7 @@ class Programmer final : public Functional<ProgrammerPeripheral, Programmer> {
 
   void send(uint32_t data, uint8_t bits_to_send) { return peripheral_->send(data, bits_to_send); }
 
-  void idle(SwdioDriveState state) { return peripheral_->turnaround(state); }
+  void turnaround(SwdioDriveState state) { return peripheral_->turnaround(state); }
 
   void receive_no_parity(uint32_t& data, uint8_t bits_to_receive) {
     return peripheral_->receive_no_parity(data, bits_to_receive);
