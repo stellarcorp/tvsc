@@ -39,6 +39,7 @@ cc_library(
         "//hal/board",
         "//hal/gpio",
         "//hal/power_monitor",
+        "//meta:build_time",
         "//random",
         "//scheduler",
         "//time:embedded_clock",
