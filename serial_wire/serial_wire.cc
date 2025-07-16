@@ -6,7 +6,6 @@
 #include "time/embedded_clock.h"
 
 extern "C" {
-__attribute__((section(".status.value"))) uint32_t swd_target_idcode{};
 __attribute__((section(".status.value"))) uint32_t serial_wire_ack{};
 __attribute__((section(".status.value"))) uint32_t attempt_count{};
 }
@@ -15,44 +14,43 @@ namespace tvsc::serial_wire {
 
 using namespace std::chrono_literals;
 
-[[nodiscard]] bool SerialWire::send_command(uint8_t command) {
-  static constexpr uint8_t MAX_ATTEMPTS{16};
+[[nodiscard]] Ack SerialWire::send_command(uint8_t command, bool retry) {
+  static constexpr uint32_t MAX_ATTEMPTS{8};
 
   // uint8_t attempt_count{0};
   for (attempt_count = 0; attempt_count < MAX_ATTEMPTS; ++attempt_count) {
     programmer_.send_no_parity(command, 8);
     programmer_.receive_no_parity(serial_wire_ack, 3);
-    if (serial_wire_ack == ACK_OK) {
-      return true;
-    } else if (serial_wire_ack == ACK_RETRY) {
+    if (retry && serial_wire_ack == ACK_RETRY) {
       programmer_.idle(2 * attempt_count + 8);
     } else {
-      return false;
+      break;
     }
   }
 
-  return false;
+  return static_cast<Ack>(serial_wire_ack);
 }
 
-[[nodiscard]] bool SerialWire::read(uint8_t command, uint32_t& data) {
-  if (!send_command(command)) {
-    return false;
+[[nodiscard]] Ack SerialWire::read(uint8_t command, uint32_t& data, bool retry) {
+  Ack result = send_command(command, retry);
+
+  if (result == Ack::OK) {
+    if (!programmer_.receive(data, 32)) {
+      result = Ack::PARITY_FAIL;
+    }
   }
 
-  if (!programmer_.receive(data, 32)) {
-    return false;
-  }
-
-  return true;
+  return result;
 }
 
-[[nodiscard]] bool SerialWire::write(uint8_t command, uint32_t data) {
-  if (!send_command(command)) {
-    return false;
+[[nodiscard]] Ack SerialWire::write(uint8_t command, uint32_t data, bool retry) {
+  Ack result = send_command(command, retry);
+
+  if (result == Ack::OK) {
+    programmer_.send(data, 32);
   }
 
-  programmer_.send(data, 32);
-  return true;
+  return result;
 }
 
 /**
@@ -92,11 +90,8 @@ uint32_t SerialWire::initialize_swd() {
   // The serial wire specification requires reading the id before the target device is fully
   // switched from JTAG to SWD.
 
-  if (swd_dp_read(DP_IDCODE, swd_target_idcode)) {
-    if (!clear_dp_state()) {
-      swd_target_idcode = 0;
-    }
-  } else {
+  uint32_t swd_target_idcode{0};
+  if (swd_dp_read(0x00, swd_target_idcode) != Ack::OK) {
     swd_target_idcode = 0;
   }
 

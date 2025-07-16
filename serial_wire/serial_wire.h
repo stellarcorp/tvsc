@@ -9,6 +9,49 @@ namespace tvsc::serial_wire {
 
 using namespace std::chrono_literals;
 
+enum class Ack {
+  OK = 1,
+  WAIT = 2,
+  ERROR = 4,
+  FAIL = 7,
+  PARITY_FAIL = 8,
+  ID_MISMATCH = 9,
+  INITIALIZATION_ERROR = 10,
+  TOO_MANY_ATTEMPTS = 11,
+};
+
+class Result final {
+ public:
+  Ack ack{Ack::OK};
+
+  Result() = default;
+  Result(Ack a) : ack(a) {}
+  Result(const Result& rhs) : ack(rhs.ack) {}
+  Result(Result&& rhs) : ack(rhs.ack) {}
+
+  Result& operator=(const Result& rhs) {
+    ack = rhs.ack;
+    return *this;
+  }
+  Result& operator=(Result&& rhs) {
+    ack = rhs.ack;
+    return *this;
+  }
+
+  Result& operator=(Ack a) {
+    ack = a;
+    return *this;
+  }
+
+  explicit operator bool() const { return ack == Ack::OK; }
+
+  bool operator==(const Result& rhs) const { return ack == rhs.ack; }
+  bool operator==(Ack rhs) const { return ack == rhs; }
+
+  bool operator!=(const Result& rhs) const { return ack != rhs.ack; }
+  bool operator!=(Ack rhs) const { return ack != rhs; }
+};
+
 class SerialWire final {
  private:
   tvsc::hal::programmer::Programmer programmer_;
@@ -40,31 +83,14 @@ class SerialWire final {
     return command;
   }
 
-  [[nodiscard]] bool send_command(uint8_t command);
+  [[nodiscard]] Ack send_command(uint8_t command, bool retry);
 
-  [[nodiscard]] bool read(uint8_t command, uint32_t& data);
-  [[nodiscard]] bool write(uint8_t command, uint32_t data);
+  [[nodiscard]] Ack read(uint8_t command, uint32_t& data, bool retry);
+  [[nodiscard]] Ack write(uint8_t command, uint32_t data, bool retry);
 
  public:
-  // Debug port registers.
-
-  // Clear sticky error flags.
-  static constexpr uint8_t DP_ABORT{0x00};
-  // Control/status flags and power requests.
-  static constexpr uint8_t DP_CTRL_STAT{0x04};
-  // Select AP and AP register bank.
-  static constexpr uint8_t DP_SELECT{0x08};
-  // Read buffer (for AP read result).
-  static constexpr uint8_t DP_RDBUF{0x0C};
-  // [On DPv1] ID register (overlaps with ABORT).
-  static constexpr uint8_t DP_IDCODE{0x00};
-  // [On DPv2+] Replaces IDCODE.
-  static constexpr uint8_t DP_TARGETID{0x00};
-
-  static constexpr uint32_t EXPECTED_SW_DP_IDCODE{0x2BA01477};
-
   SerialWire(tvsc::hal::programmer::ProgrammerPeripheral& programmer_peripheral,
-             std::chrono::nanoseconds clock_period = 100us)
+             std::chrono::nanoseconds clock_period = 1us)
       : programmer_(programmer_peripheral.access()) {
     programmer_.set_clock_period(clock_period);
   }
@@ -76,22 +102,20 @@ class SerialWire final {
    */
   [[nodiscard]] uint32_t initialize_swd();
 
-  bool clear_dp_state() { return swd_dp_write(DP_ABORT, 0x1E) && swd_dp_write(DP_SELECT, 0x00); }
-
-  [[nodiscard]] bool swd_ap_read(uint8_t addr, uint32_t& data) {
-    return read(create_command(BLANK_ACCESS_PORT_READ_COMMAND, addr), data);
+  [[nodiscard]] Result swd_ap_read(uint8_t addr, uint32_t& data, bool retry = true) {
+    return read(create_command(BLANK_ACCESS_PORT_READ_COMMAND, addr), data, retry);
   }
 
-  [[nodiscard]] bool swd_ap_write(uint8_t addr, uint32_t data) {
-    return write(create_command(BLANK_ACCESS_PORT_WRITE_COMMAND, addr), data);
+  [[nodiscard]] Result swd_ap_write(uint8_t addr, uint32_t data, bool retry = true) {
+    return write(create_command(BLANK_ACCESS_PORT_WRITE_COMMAND, addr), data, retry);
   }
 
-  [[nodiscard]] bool swd_dp_read(uint8_t addr, uint32_t& data) {
-    return read(create_command(BLANK_DEBUG_PORT_READ_COMMAND, addr), data);
+  [[nodiscard]] Result swd_dp_read(uint8_t addr, uint32_t& data, bool retry = true) {
+    return read(create_command(BLANK_DEBUG_PORT_READ_COMMAND, addr), data, retry);
   }
 
-  [[nodiscard]] bool swd_dp_write(uint8_t addr, uint32_t data) {
-    return write(create_command(BLANK_DEBUG_PORT_WRITE_COMMAND, addr), data);
+  [[nodiscard]] Result swd_dp_write(uint8_t addr, uint32_t data, bool retry = true) {
+    return write(create_command(BLANK_DEBUG_PORT_WRITE_COMMAND, addr), data, retry);
   }
 };
 
