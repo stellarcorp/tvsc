@@ -1,5 +1,7 @@
+#include <array>
 #include <chrono>
 #include <cstdint>
+#include <span>
 
 #include "base/initializer.h"
 #include "bits/bits.h"
@@ -13,11 +15,14 @@
 #include "serial_wire/target.h"
 #include "time/embedded_clock.h"
 
+static constexpr uint32_t READ_BASE_ADDRESS{0x2000'0000};
+
 extern "C" {
 __attribute__((section(".status.value"))) tvsc::meta::BuildTime target_build_time{};
-__attribute__((section(".status.value"))) uint32_t target_systick{};
-__attribute__((section(".status.value"))) uint32_t result_dp_idcode{};
+__attribute__((section(".status.value"))) uint32_t result_dp_idr{};
 __attribute__((section(".status.value"))) uint32_t result_ap_idr{};
+__attribute__((section(".status.value"))) std::array<uint32_t, 16> target_mem{};
+__attribute__((section(".status.value"))) uint32_t ctrl_stat_errors{};
 }
 
 namespace tvsc::bringup {
@@ -39,45 +44,47 @@ tvsc::scheduler::Task<ClockType> flash_target(BoardType &board) {
   debug_led.set_pin_mode(BoardType::DEBUG_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
   while (true) {
+    tvsc::serial_wire::Result success{};
     {
-      result_dp_idcode = 0;
+      result_dp_idr = 0;
       result_ap_idr = 0;
 
       tvsc::serial_wire::SerialWire swd{programmer_peripheral};
       tvsc::serial_wire::Target target{swd};
-      bool success{true};
 
       if (success) {
-        success = target.read_dp_idcode(result_dp_idcode);
+        success = target.read_idr(result_dp_idr);
       }
 
       if (success) {
-        success = target.read_ap_idr(result_ap_idr);
+        success = target.initialize_ap_connection(0);
       }
 
-      // if (success) {
-      //   success = target.read_target_mem(0x20000000, target_systick);
-      // }
-
-      // if (success) {
-      //   success = target.read_target_mem(tvsc::meta::BUILD_TIME_ADDR,
-      //   target_build_time.timestamp);
-      // }
+      if (success) {
+        success = target.read_ap_id(result_ap_idr);
+      }
 
       if (success) {
-        for (int i = 0; i < 5; ++i) {
-          debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
-          co_yield 250ms;
-          debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
-          co_yield 250ms;
-        }
-      } else {
-        for (int i = 0; i < 5; ++i) {
-          debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
-          co_yield 50ms;
-          debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
-          co_yield 50ms;
-        }
+        std::span destination{target_mem};
+        success = target.ap_read_mem(READ_BASE_ADDRESS, destination);
+      }
+
+      (void)target.power_off();
+    }
+
+    if (success) {
+      for (int i = 0; i < 5; ++i) {
+        debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
+        co_yield 250ms;
+        debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
+        co_yield 250ms;
+      }
+    } else {
+      for (int i = 0; i < 5; ++i) {
+        debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
+        co_yield 50ms;
+        debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
+        co_yield 50ms;
       }
     }
 
