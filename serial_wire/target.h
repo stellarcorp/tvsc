@@ -491,6 +491,49 @@ class Target final {
 
     return success;
   }
+
+  [[nodiscard]] Result ap_read_mem(uint32_t addr, uint32_t* destination, size_t size) {
+    Result success{};
+    mem_addr = addr;
+    if (success) {
+      success = ap_write_register(AP_CSW, 0x23000052);
+      if (!success) {
+        fail_step = 8000;
+      }
+    }
+
+    if (success) {
+      success = ap_write_register(AP_TAR, addr);
+      if (!success) {
+        fail_step = 8010;
+      }
+    }
+
+    if (success) {
+      success = ap_read_register(AP_DRW, dummy);
+      if (!success) {
+        fail_step = 8030;
+      }
+    }
+
+    for (size_t i = 0; i < size - 1; ++i) {
+      if (success) {
+        success = ap_read_register(AP_DRW, *(destination + i));
+        if (!success) {
+          fail_step = 8040;
+        }
+      }
+    }
+
+    if (success) {
+      success = read_rdbuff(*(destination + size - 1));
+      if (!success) {
+        fail_step = 8070;
+      }
+    }
+
+    return success;
+  }
 };
 
 }  // namespace tvsc::serial_wire
