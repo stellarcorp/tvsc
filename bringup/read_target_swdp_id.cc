@@ -43,10 +43,8 @@ tvsc::scheduler::Task<ClockType> read_target_swdp_id(BoardType &board) {
       tvsc::serial_wire::SerialWire swd{programmer_peripheral};
       tvsc::serial_wire::Target target{swd};
 
-      bool success{true};
-      if (success) {
-        success = target.read_dp_idcode(target_swdp_id);
-      }
+      tvsc::serial_wire::Result success{};
+      success = target.read_idr(target_swdp_id);
 
       // Successful read.
       if (success && target_swdp_id == EXPECTED_SW_DP_IDCODE) {
