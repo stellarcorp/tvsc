@@ -2393,6 +2393,10 @@
 		(uuid "1ad52625-907e-4257-b56a-a9a757b603a9")
 	)
 	(no_connect
+		(at 143.51 67.31)
+		(uuid "2f041185-40e8-4eb3-a7ac-3c4b95eb96d9")
+	)
+	(no_connect
 		(at 143.51 54.61)
 		(uuid "50dcc131-d7ab-4e40-9190-c86bcb4cc7df")
 	)
@@ -2419,10 +2423,6 @@
 	(no_connect
 		(at 107.95 95.25)
 		(uuid "934500c3-9221-47bd-a202-b7dbd6ce9a2f")
-	)
-	(no_connect
-		(at 143.51 97.79)
-		(uuid "95a2dfb4-eae8-4b56-b5ba-48c8ec3f004a")
 	)
 	(no_connect
 		(at 143.51 57.15)
@@ -2459,14 +2459,6 @@
 	(no_connect
 		(at 107.95 92.71)
 		(uuid "e2f9e3ac-f611-4c22-951a-b9209515d4bb")
-	)
-	(no_connect
-		(at 143.51 102.87)
-		(uuid "eab680fe-460d-4bf5-aded-ff295f2d303a")
-	)
-	(no_connect
-		(at 143.51 100.33)
-		(uuid "f31a3427-61bb-494d-a7c5-c77231443256")
 	)
 	(no_connect
 		(at 107.95 69.85)
@@ -3666,7 +3658,7 @@
 		)
 		(uuid "4ccc62ca-86b6-4773-9e66-6a8cb30a6939")
 	)
-	(hierarchical_label "BATTERY_2_EN"
+	(hierarchical_label "MPPT_2_STATUS"
 		(shape input)
 		(at 143.51 110.49 0)
 		(effects
@@ -3710,6 +3702,17 @@
 		)
 		(uuid "5fdcbb80-b4be-49e6-b64a-fbb70e43abbc")
 	)
+	(hierarchical_label "CHRG_STATUS"
+		(shape input)
+		(at 143.51 97.79 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "66fb0730-48b3-4d55-8737-aee6004b3d24")
+	)
 	(hierarchical_label "BOARD_ID_SENS"
 		(shape input)
 		(at 143.51 72.39 0)
@@ -3721,18 +3724,7 @@
 		)
 		(uuid "754b7353-7f79-4a13-beb1-6d93c8663809")
 	)
-	(hierarchical_label "TEMPERATURE_SENSE"
-		(shape input)
-		(at 143.51 67.31 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "79c83a9b-bc55-41ed-8279-b805f7a2f767")
-	)
-	(hierarchical_label "BATTERY_1_EN"
+	(hierarchical_label "MPPT_1_STATUS"
 		(shape input)
 		(at 143.51 118.11 0)
 		(effects
@@ -3776,7 +3768,7 @@
 		)
 		(uuid "a34a2efe-6309-4f4b-a3cf-ad876db992b3")
 	)
-	(hierarchical_label "BATTERY_3_EN"
+	(hierarchical_label "MPPT_3_STATUS"
 		(shape input)
 		(at 143.51 107.95 0)
 		(effects
@@ -3786,6 +3778,17 @@
 			(justify left)
 		)
 		(uuid "ab715a61-2fcc-4f42-80ee-916c357c6b26")
+	)
+	(hierarchical_label "PWR_STATUS"
+		(shape input)
+		(at 143.51 102.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "bcbd44c7-ca78-49ad-89cc-572806c28ac2")
 	)
 	(hierarchical_label "I2C2_SDA"
 		(shape input)
@@ -3852,6 +3855,17 @@
 			(justify left)
 		)
 		(uuid "cd9d83f1-2dbf-453a-ac99-477e7f3a8782")
+	)
+	(hierarchical_label "BATT_CHRG_EN"
+		(shape input)
+		(at 143.51 100.33 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "d90eefd7-d918-40e6-99f9-43db94d3aa66")
 	)
 	(hierarchical_label "I2C2_SCL"
 		(shape input)
