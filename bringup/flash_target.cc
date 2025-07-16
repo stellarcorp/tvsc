@@ -65,8 +65,14 @@ tvsc::scheduler::Task<ClockType> flash_target(BoardType &board) {
       }
 
       if (success) {
-        std::span destination{target_mem};
+        std::span<uint32_t> destination{target_mem};
         success = target.ap_read_mem(READ_BASE_ADDRESS, destination);
+      }
+
+      if (success) {
+        success = target.ap_read_mem(tvsc::meta::BUILD_TIME_ADDR,
+                                     reinterpret_cast<uint32_t *>(&target_build_time),
+                                     sizeof(tvsc::meta::BuildTime) / sizeof(uint32_t));
       }
 
       (void)target.power_off();
