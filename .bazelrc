@@ -50,6 +50,12 @@ build:feature_bringup --copt -DEMBEDDED_PLATFORM
 build:feature_bringup --copt -DSTM32L452xx
 build:feature_bringup --copt -DFEATURE_BRINGUP
 
+build:satellite --platforms=//platforms:satellite
+build:satellite --cpu=armv7e-mf-stm32-l452 --crosstool_top=//toolchain/nucleo_l4:gcc_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:satellite --copt -DEMBEDDED_PLATFORM
+build:satellite --copt -DSTM32L452xx
+build:satellite --copt -DSATELLITE
+
 # Profiling
 # Install these tools:
 #   apt install google-perftools libgoogle-perftools-dev

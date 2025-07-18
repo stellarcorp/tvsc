@@ -27,6 +27,9 @@ cc_library(
         "//platforms:feature_bringup_board": [
             ":feature_bringup_board",
         ],
+        "//platforms:satellite_board": [
+            ":satellite_board",
+        ],
         "@platforms//os:linux": [
             ":simulation",
         ],
@@ -122,6 +125,37 @@ cc_library(
     ],
     target_compatible_with = [
         "//platforms:feature_bringup_board",
+    ],
+    deps = [
+        "//hal",
+        "//hal/adc",
+        "//hal/can_bus",
+        "//hal/dac",
+        "//hal/dma",
+        "//hal/gpio",
+        "//hal/i2c",
+        "//hal/imu",
+        "//hal/power",
+        "//hal/power_monitor",
+        "//hal/programmer",
+        "//hal/random",
+        "//hal/rcc",
+        "//hal/systick",
+        "//hal/watchdog",
+        "//third_party/stm32",
+    ],
+)
+
+cc_library(
+    name = "satellite_board",
+    srcs = [
+        "satellite_board.cc",
+    ],
+    hdrs = [
+        "satellite_board.h",
+    ],
+    target_compatible_with = [
+        "//platforms:satellite_board",
     ],
     deps = [
         "//hal",

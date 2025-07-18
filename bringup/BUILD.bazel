@@ -13,6 +13,9 @@ filegroup(
         "//platforms:feature_bringup_board": [
             "//toolchain/nucleo_l4:stm32l452xx_flash_linker_script",
         ],
+        "//platforms:satellite_board": [
+            "//toolchain/nucleo_l4:stm32l452xx_flash_linker_script",
+        ],
     }),
     target_compatible_with = [
         "@platforms//os:none",
