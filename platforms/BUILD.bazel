@@ -158,6 +158,28 @@ platform(
     ],
 )
 
+platform(
+    name = "satellite",
+    constraint_values = [
+        "@platforms//cpu:armv7e-mf",
+        "@platforms//os:none",
+        ":stm32l4xx",
+        ":stm32l452xx_mcu",
+        ":stm32_core",
+        ":stm32_gpio",
+        ":one_debug_led",
+        ":debug_push_button",
+        ":stm32l4xx_adc",
+        ":stm32l4xx_dac",
+        ":stm32l4xx_dma",
+        ":stm32_spi",
+        ":stm32_can_bus",
+        ":stm32_eeprom",
+        ":no_networking",
+        ":satellite_board",
+    ],
+)
+
 # CPU series.
 constraint_setting(name = "cpu_series")
 
@@ -441,6 +463,11 @@ constraint_value(
 
 constraint_value(
     name = "feature_bringup_board",
+    constraint_setting = "board_type",
+)
+
+constraint_value(
+    name = "satellite_board",
     constraint_setting = "board_type",
 )
 
