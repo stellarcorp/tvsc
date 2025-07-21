@@ -6,10 +6,11 @@
 namespace tvsc::meta {
 
 extern "C" {
-extern const char* const FIRMWARE_BEGIN;
-extern const char* const FIRMWARE_END;
+extern const char FIRMWARE_BEGIN;
+extern const char FIRMWARE_END;
 }
 
-const std::string_view firmware{FIRMWARE_BEGIN, static_cast<size_t>(FIRMWARE_END - FIRMWARE_BEGIN)};
+const uint32_t* const firmware_start{reinterpret_cast<const uint32_t*>(&FIRMWARE_BEGIN)};
+const size_t firmware_size{static_cast<size_t>(&FIRMWARE_END - &FIRMWARE_BEGIN)};
 
 }  // namespace tvsc::meta
