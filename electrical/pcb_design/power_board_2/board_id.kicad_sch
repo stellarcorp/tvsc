@@ -679,76 +679,6 @@
 		(uuid "ff751381-3acc-4235-b540-22d95b279d6d")
 	)
 	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 146.05 64.77 270)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "30d940d1-f32f-4f62-b46c-244fc2a48e58")
-		(property "Reference" "JP1"
-			(at 142.24 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Value" "0x10"
-			(at 143.51 63.5 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" ""
-			(at 146.05 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 146.05 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Solder Jumper, 2-pole, open"
-			(at 146.05 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "41836aec-0814-41b5-940e-4f9a5219d146")
-		)
-		(pin "1"
-			(uuid "6f36bef4-ae22-4b56-8df2-f90b16385457")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
-					(reference "JP1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 111.76 142.24 0)
 		(mirror y)
@@ -1146,6 +1076,76 @@
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
 					(reference "TP2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:SolderJumper_2_Open")
+		(at 146.05 64.77 90)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "bb99be87-9c16-452c-8d45-e20efcafb4bc")
+		(property "Reference" "JP1"
+			(at 149.86 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Value" "SolderJumper_2_Open"
+			(at 148.59 66.04 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 146.05 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 146.05 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Solder Jumper, 2-pole, open"
+			(at 146.05 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "bc6ff4ad-3b1e-49ba-bc9a-c74d67d019d7")
+		)
+		(pin "1"
+			(uuid "cf5f719f-af74-4802-8cde-a8861448cd00")
+		)
+		(instances
+			(project "power_board_2"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/c53c57dc-7222-49b0-892b-f2107402104f"
+					(reference "JP1")
 					(unit 1)
 				)
 			)
