@@ -2,7 +2,7 @@
 	(version 20231120)
 	(generator "kicad_symbol_editor")
 	(generator_version "8.0")
-	(symbol "PAC1932T-I_JQ"
+	(symbol "LTC3130EUDC-PBF"
 		(pin_names
 			(offset 0.254)
 		)
@@ -10,22 +10,22 @@
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "U"
-			(at 30.48 10.16 0)
+			(at 25.4 10.16 0)
 			(effects
 				(font
 					(size 1.524 1.524)
 				)
 			)
 		)
-		(property "Value" "PAC1932T-I/JQ"
-			(at 30.48 7.62 0)
+		(property "Value" "LTC3130EUDC-PBF"
+			(at 25.4 7.62 0)
 			(effects
 				(font
 					(size 1.524 1.524)
 				)
 			)
 		)
-		(property "Footprint" "UQFN16_JQ_MCH"
+		(property "Footprint" "UDC_20_ADI"
 			(at 0 0 0)
 			(effects
 				(font
@@ -35,7 +35,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "PAC1932T-I/JQ"
+		(property "Datasheet" "LTC3130EUDC-PBF"
 			(at 0 0 0)
 			(effects
 				(font
@@ -62,7 +62,7 @@
 				)
 			)
 		)
-		(property "ki_keywords" "PAC1932T-I/JQ"
+		(property "ki_keywords" "LTC3130EUDC#PBF"
 			(at 0 0 0)
 			(effects
 				(font
@@ -71,7 +71,7 @@
 				(hide yes)
 			)
 		)
-		(property "ki_fp_filters" "UQFN16_JQ_MCH UQFN16_JQ_MCH-M UQFN16_JQ_MCH-L"
+		(property "ki_fp_filters" "UDC_20_ADI UDC_20_ADI-M UDC_20_ADI-L"
 			(at 0 0 0)
 			(effects
 				(font
@@ -80,10 +80,10 @@
 				(hide yes)
 			)
 		)
-		(symbol "PAC1932T-I_JQ_0_1"
+		(symbol "LTC3130EUDC-PBF_0_1"
 			(polyline
 				(pts
-					(xy 7.62 -25.4) (xy 53.34 -25.4)
+					(xy 7.62 -27.94) (xy 43.18 -27.94)
 				)
 				(stroke
 					(width 0.127)
@@ -95,7 +95,7 @@
 			)
 			(polyline
 				(pts
-					(xy 7.62 5.08) (xy 7.62 -25.4)
+					(xy 7.62 5.08) (xy 7.62 -27.94)
 				)
 				(stroke
 					(width 0.127)
@@ -107,7 +107,7 @@
 			)
 			(polyline
 				(pts
-					(xy 53.34 -25.4) (xy 53.34 5.08)
+					(xy 43.18 -27.94) (xy 43.18 5.08)
 				)
 				(stroke
 					(width 0.127)
@@ -119,7 +119,7 @@
 			)
 			(polyline
 				(pts
-					(xy 53.34 5.08) (xy 7.62 5.08)
+					(xy 43.18 5.08) (xy 7.62 5.08)
 				)
 				(stroke
 					(width 0.127)
@@ -129,10 +129,10 @@
 					(type none)
 				)
 			)
-			(pin bidirectional line
+			(pin unspecified line
 				(at 0 0 0)
 				(length 7.62)
-				(name "SLOW/*ALERT"
+				(name "BST1"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -147,17 +147,17 @@
 					)
 				)
 			)
-			(pin power_in line
-				(at 60.96 -5.08 180)
+			(pin bidirectional line
+				(at 0 -22.86 0)
 				(length 7.62)
-				(name "VDDI/O"
+				(name "VS1/ILIM"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "15"
+				(number "10"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -166,9 +166,63 @@
 				)
 			)
 			(pin input line
-				(at 60.96 -2.54 180)
+				(at 50.8 -20.32 180)
 				(length 7.62)
-				(name "*PWRDN"
+				(name "EXTVCC"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "12"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 50.8 -17.78 180)
+				(length 7.62)
+				(name "PGOOD"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "13"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 50.8 -15.24 180)
+				(length 7.62)
+				(name "VOUT"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "14"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin unspecified line
+				(at 50.8 -10.16 180)
+				(length 7.62)
+				(name "BST2"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -184,7 +238,7 @@
 				)
 			)
 			(pin no_connect line
-				(at 60.96 0 180)
+				(at 50.8 -7.62 180)
 				(length 7.62)
 				(name "NC"
 					(effects
@@ -201,10 +255,10 @@
 					)
 				)
 			)
-			(pin power_in line
+			(pin input line
 				(at 0 -2.54 0)
 				(length 7.62)
-				(name "VDD"
+				(name "PVIN"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -220,9 +274,27 @@
 				)
 			)
 			(pin input line
+				(at 0 -5.08 0)
+				(length 7.62)
+				(name "VIN"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
 				(at 0 -7.62 0)
 				(length 7.62)
-				(name "SM_CLK"
+				(name "RUN"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -238,16 +310,16 @@
 				)
 			)
 			(pin bidirectional line
-				(at 0 -10.16 0)
+				(at 0 -20.32 0)
 				(length 7.62)
-				(name "SM_DATA"
+				(name "VS2/FB"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "5"
+				(number "9"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -256,29 +328,11 @@
 				)
 			)
 		)
-		(symbol "PAC1932T-I_JQ_1_1"
+		(symbol "LTC3130EUDC-PBF_1_1"
 			(pin passive line
-				(at 60.96 -17.78 180)
+				(at 50.8 -22.86 180)
 				(length 7.62)
-				(name "SENSE4+"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "10"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin passive line
-				(at 60.96 -15.24 180)
-				(length 7.62)
-				(name "SENSE1+"
+				(name "MODE"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -294,16 +348,16 @@
 				)
 			)
 			(pin passive line
-				(at 60.96 -12.7 180)
+				(at 50.8 -12.7 180)
 				(length 7.62)
-				(name "SENSE1-"
+				(name "SW2"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "12"
+				(number "15"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -312,16 +366,16 @@
 				)
 			)
 			(pin passive line
-				(at 60.96 -10.16 180)
+				(at 50.8 -5.08 180)
 				(length 7.62)
-				(name "SENSE2+"
+				(name "PGND"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "13"
+				(number "18"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -330,16 +384,16 @@
 				)
 			)
 			(pin passive line
-				(at 60.96 -7.62 180)
+				(at 50.8 -2.54 180)
 				(length 7.62)
-				(name "SENSE2-"
+				(name "PGND"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "14"
+				(number "19"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -348,16 +402,34 @@
 				)
 			)
 			(pin passive line
-				(at 0 -5.08 0)
+				(at 50.8 0 180)
 				(length 7.62)
-				(name "GND"
+				(name "SW1"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "3"
+				(number "20"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -10.16 0)
+				(length 7.62)
+				(name "VCC"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "5"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -368,7 +440,7 @@
 			(pin passive line
 				(at 0 -12.7 0)
 				(length 7.62)
-				(name "ADDRSEL"
+				(name "MPPC"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -386,7 +458,7 @@
 			(pin passive line
 				(at 0 -15.24 0)
 				(length 7.62)
-				(name "SENSE3-"
+				(name "GND"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -404,7 +476,7 @@
 			(pin passive line
 				(at 0 -17.78 0)
 				(length 7.62)
-				(name "SENSE3+"
+				(name "GND"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -412,24 +484,6 @@
 					)
 				)
 				(number "8"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin passive line
-				(at 60.96 -20.32 180)
-				(length 7.62)
-				(name "SENSE4-"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "9"
 					(effects
 						(font
 							(size 1.27 1.27)
