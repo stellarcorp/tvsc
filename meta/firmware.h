@@ -4,6 +4,7 @@
 
 namespace tvsc::meta {
 
-extern const std::string_view firmware;
+extern const uint32_t* const firmware_start;
+extern const size_t firmware_size;
 
 }  // namespace tvsc::meta
