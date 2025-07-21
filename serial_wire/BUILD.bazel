@@ -2,8 +2,10 @@ cc_library(
     name = "serial_wire",
     srcs = [
         "serial_wire.cc",
+        "target.cc",
     ],
     hdrs = [
+        "flash.h",
         "serial_wire.h",
         "target.h",
     ],
