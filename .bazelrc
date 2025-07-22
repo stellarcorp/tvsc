@@ -2,6 +2,10 @@
 build --enable_platform_specific_config
 build --config=platform_build
 build --config=c++20
+
+# Enable use of timestamps in builds.
+build --stamp
+
 # Turn off this warning, especially in C++20. C++20 deprecated bitwise assignment operators on
 # volatile variables. Unfortunately, these operators are used extensively in many embedded
 # libraries. This deprecation was undone in C++23. For more information, see
