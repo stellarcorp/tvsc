@@ -209,6 +209,11 @@ class Target final {
     return ap_write_mem(/*DHCSR address*/ 0xE000EDF0, 0xa05f0001);
   }
 
+  [[nodiscard]] Result halt() {
+    // Enable debug and halt the processor.
+    return ap_write_mem(/*DHCSR address*/ 0xE000EDF0, 0xa05f0003);
+  }
+
   [[nodiscard]] Result disable_debug() {
     return ap_write_mem(/*DHCSR address*/ 0xE000EDF0, 0xa05f0000);
   }
