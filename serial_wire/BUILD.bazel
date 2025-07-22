@@ -1,6 +1,7 @@
 cc_library(
     name = "serial_wire",
     srcs = [
+        "flash.cc",
         "serial_wire.cc",
         "target.cc",
     ],
