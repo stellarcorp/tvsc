@@ -28,13 +28,8 @@ extern "C" {
 __attribute__((section(".status.value"))) tvsc::meta::BuildTime target_build_time{};
 __attribute__((section(".status.value"))) uint32_t result_dp_idr{};
 __attribute__((section(".status.value"))) uint32_t result_ap_idr{};
-__attribute__((section(".status.value"))) std::array<uint32_t, 16> target_mem{};
 __attribute__((section(".status.value"))) uint32_t ctrl_stat_errors{};
-__attribute__((section(".status.value"))) uint32_t *first_different{};
 __attribute__((section(".status.value"))) bool target_initialized{};
-__attribute__((section(".status.value")))
-std::array<uint32_t, NUM_PAGES * tvsc::meta::FLASH_PAGE_SIZE_BYTES / sizeof(uint32_t)>
-    read_back{};
 }
 
 namespace tvsc::bringup {
@@ -99,31 +94,11 @@ tvsc::scheduler::Task<ClockType> flash_target(BoardType &board) {
           success = target.halt();
         }
 
-        static constexpr uint32_t TEST_VALUE_OFFSET{0xabcd1234};
-        std::array<uint32_t, NUM_PAGES * tvsc::meta::FLASH_PAGE_SIZE_BYTES / sizeof(uint32_t)>
-            test_pages{};
-        for (size_t i = 0; i < test_pages.size(); ++i) {
-          test_pages[i] = i + TEST_VALUE_OFFSET;
-        }
         if (success) {
           debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
           success = flash.write_pages(FLASH_WRITE_START_PAGE, tvsc::meta::firmware_size_pages,
                                       tvsc::meta::firmware_start);
-          // success = flash.write_pages(FLASH_WRITE_START_PAGE, NUM_PAGES, &test_pages[0]);
           debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
-        }
-
-        if (success) {
-          success = target.ap_read_mem(WRITE_BASE_ADDRESS, &read_back[0], read_back.size());
-        }
-
-        if (success) {
-          for (size_t i = 0; i < read_back.size(); ++i) {
-            if (read_back[i] != test_pages[i]) {
-              first_different = &read_back[i];
-              break;
-            }
-          }
         }
 
         (void)target.disable_debug();
