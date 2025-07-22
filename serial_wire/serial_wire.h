@@ -90,7 +90,7 @@ class SerialWire final {
 
  public:
   SerialWire(tvsc::hal::programmer::ProgrammerPeripheral& programmer_peripheral,
-             std::chrono::nanoseconds clock_period = 500ns)
+             std::chrono::nanoseconds clock_period = 1us)
       : programmer_(programmer_peripheral.access()) {
     programmer_.set_clock_period(clock_period);
   }
