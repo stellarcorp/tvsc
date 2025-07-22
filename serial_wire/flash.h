@@ -49,15 +49,22 @@ class Flash final {
   // Position of the page number field within FLASH_CR (bits 10:3)
   // static constexpr uint32_t FLASH_CR_PAGE_SHIFT{3};
 
+  [[nodiscard]] Result wait_while_busy();
+
+  [[nodiscard]] Result mass_erase_unlocked();
+  [[nodiscard]] Result erase_page_unlocked(uint8_t page);
+
+  [[nodiscard]] Result lock_flash();
+  [[nodiscard]] Result unlock_flash();
+
  public:
   Flash(Target& target) : target_(&target) {}
 
-  /**
-   * Erase a range of flash memory pages on the target device over SWD.
-   */
-  [[nodiscard]] Result erase_flash(uint32_t address, uint32_t length);
+  [[nodiscard]] Result mass_erase();
+  [[nodiscard]] Result erase_page(uint8_t page);
 
-  [[nodiscard]] Result write_flash(uint32_t address, const uint32_t* source, uint32_t length);
+  [[nodiscard]] Result write_entire_flash(const uint32_t* source, uint32_t length);
+  [[nodiscard]] Result write_pages(uint8_t page, uint8_t num_pages, const uint32_t* source);
 };
 
 }  // namespace tvsc::serial_wire
