@@ -27,6 +27,7 @@ cc_library(
     hdrs = [
         "blink.h",
         "dac_demo.h",
+        "flash_target.h",
         "monitor_imu.h",
         "monitor_power.h",
         "quit.h",
@@ -39,9 +40,13 @@ cc_library(
         "//hal/board",
         "//hal/gpio",
         "//hal/power_monitor",
+        "//hal/programmer",
         "//meta:build_time",
+        "//meta:firmware",
+        "//meta:flash",
         "//random",
         "//scheduler",
+        "//serial_wire",
         "//time:embedded_clock",
     ],
 )
@@ -458,6 +463,36 @@ cc_binary(
         "//conditions:default": [],
     }),
     deps = [
+        ":tasks",
+        "//base",
+        "//hal",
+        "//hal/board",
+        "//hal/gpio",
+        "//hal/programmer",
+        "//meta:build_time",
+        "//meta:firmware",
+        "//meta:flash",
+        "//scheduler",
+        "//serial_wire",
+        "//time:embedded_clock",
+    ],
+)
+
+cc_binary(
+    name = "satellite.elf",
+    srcs = [
+        "satellite.cc",
+    ],
+    additional_linker_inputs = [
+        ":linker_script",
+    ],
+    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    target_compatible_with = select({
+        "//platforms:no_gpio": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    deps = [
+        ":tasks",
         "//base",
         "//hal",
         "//hal/board",
