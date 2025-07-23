@@ -80,6 +80,7 @@ tvsc::scheduler::Task<ClockType> flash_target(
           }
 
           (void)target.disable_debug();
+          (void)target.power_off();
           swd.reset_target();
 
           if (success) {
