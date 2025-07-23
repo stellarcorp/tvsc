@@ -12,8 +12,8 @@ namespace tvsc::bringup {
 
 using namespace std::chrono_literals;
 
-template <typename ClockType,
-          uint64_t DURATION_MS = 365UL * 24 * 60 * 60 * 1000 /* one year in milliseconds */>
+template <typename ClockType, tvsc::hal::TimeType DURATION_MS =
+                                  /* one year in milliseconds */ 365LL * 24 * 60 * 60 * 1000>
 tvsc::scheduler::Task<ClockType> blink(ClockType& clock,
                                        tvsc::hal::gpio::GpioPeripheral& gpio_peripheral,
                                        tvsc::hal::gpio::Pin pin,
@@ -21,10 +21,10 @@ tvsc::scheduler::Task<ClockType> blink(ClockType& clock,
   tvsc::hal::gpio::Gpio gpio{gpio_peripheral.access()};
 
   gpio.set_pin_mode(pin, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
-  const uint64_t stop_time_ms{clock.current_time_millis() + DURATION_MS};
+  const auto stop_time{clock.current_time() + std::chrono::milliseconds(DURATION_MS)};
 
   gpio.write_pin(pin, 0);
-  while (clock.current_time_millis() < stop_time_ms) {
+  while (clock.current_time() < stop_time) {
     gpio.toggle_pin(pin);
     co_yield delay;
   }

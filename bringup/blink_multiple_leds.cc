@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 
   Scheduler<ClockType, QUEUE_SIZE> scheduler{board.rcc()};
 
-  static constexpr uint64_t DURATION_MULTIPLES[] = {4, 3, 2};
+  static constexpr int DURATION_MULTIPLES[] = {4, 3, 2};
   static_assert(BoardType::NUM_DEBUG_LEDS < 4, "Need to implement blink for more LEDs");
 
   for (size_t i = 0; i < BoardType::NUM_DEBUG_LEDS; ++i) {

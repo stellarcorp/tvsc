@@ -4,6 +4,6 @@
 
 namespace tvsc::hal {
 
-using TimeType = uint64_t;
+using TimeType = int64_t;
 
 }  // namespace tvsc::hal
