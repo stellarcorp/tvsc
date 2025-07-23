@@ -37,8 +37,6 @@ tvsc::scheduler::Task<ClockType> flash_target(
   using namespace tvsc::serial_wire;
 
   while (true) {
-    co_yield 50ms;
-
     tvsc::serial_wire::Result success{};
     {
       tvsc::serial_wire::SerialWire swd{programmer_peripheral};
@@ -103,7 +101,7 @@ tvsc::scheduler::Task<ClockType> flash_target(
       }
     }
 
-    co_yield 10s;
+    co_yield 60s;
   }
 }
 
