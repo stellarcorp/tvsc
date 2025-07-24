@@ -2413,8 +2413,8 @@
 		(uuid "765ae8da-31ce-47b1-b54f-7f84ae62015c")
 	)
 	(no_connect
-		(at 107.95 97.79)
-		(uuid "8e54391c-51d4-4b32-8097-2b7e1945b060")
+		(at 143.51 97.79)
+		(uuid "7a2cdb0b-fb24-48cc-8019-4d5e62e6e5d2")
 	)
 	(no_connect
 		(at 107.95 95.25)
@@ -2437,10 +2437,6 @@
 		(uuid "9f8500f0-6e99-4b81-a8e6-78fc55d03a7e")
 	)
 	(no_connect
-		(at 143.51 74.93)
-		(uuid "a0276c82-4427-49ea-ac92-e0743626d369")
-	)
-	(no_connect
 		(at 107.95 87.63)
 		(uuid "a497e674-b582-40a7-956a-a48c1135c5ce")
 	)
@@ -2453,12 +2449,16 @@
 		(uuid "ada5c470-4099-42f6-bda6-d139d6f4cf66")
 	)
 	(no_connect
+		(at 143.51 100.33)
+		(uuid "b286b958-b4cc-4e2c-b848-431faddd4931")
+	)
+	(no_connect
 		(at 107.95 92.71)
 		(uuid "e2f9e3ac-f611-4c22-951a-b9209515d4bb")
 	)
 	(no_connect
-		(at 107.95 69.85)
-		(uuid "f5fa04c8-8432-49bb-9b92-e1db518a661f")
+		(at 143.51 102.87)
+		(uuid "f563e64a-874d-42c3-bcbf-932603dab88c")
 	)
 	(no_connect
 		(at 107.95 85.09)
@@ -3656,7 +3656,7 @@
 	)
 	(hierarchical_label "MPPT_2_STATUS"
 		(shape input)
-		(at 143.51 110.49 0)
+		(at 143.51 74.93 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3711,12 +3711,12 @@
 	)
 	(hierarchical_label "CHRG_STATUS"
 		(shape input)
-		(at 143.51 97.79 0)
+		(at 107.95 69.85 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "66fb0730-48b3-4d55-8737-aee6004b3d24")
 	)
@@ -3733,12 +3733,12 @@
 	)
 	(hierarchical_label "MPPT_1_STATUS"
 		(shape input)
-		(at 143.51 118.11 0)
+		(at 107.95 97.79 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "7b444c30-7fc7-4120-8d87-b9d011c81e43")
 	)
@@ -3777,7 +3777,7 @@
 	)
 	(hierarchical_label "MPPT_3_STATUS"
 		(shape input)
-		(at 143.51 107.95 0)
+		(at 143.51 118.11 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3788,7 +3788,7 @@
 	)
 	(hierarchical_label "PWR_STATUS"
 		(shape input)
-		(at 143.51 102.87 0)
+		(at 143.51 110.49 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3865,7 +3865,7 @@
 	)
 	(hierarchical_label "BATT_CHRG_EN"
 		(shape input)
-		(at 143.51 100.33 0)
+		(at 143.51 107.95 0)
 		(effects
 			(font
 				(size 1.27 1.27)

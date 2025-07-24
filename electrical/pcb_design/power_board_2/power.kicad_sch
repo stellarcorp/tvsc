@@ -11,121 +11,6 @@
 		(company "TVSC")
 	)
 	(lib_symbols
-		(symbol "Connector:TestPoint_Probe"
-			(pin_numbers hide)
-			(pin_names
-				(offset 0.762) hide)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "TP"
-				(at 1.651 5.842 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "TestPoint_Probe"
-				(at 1.651 4.064 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 5.08 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 5.08 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "test point (alternative probe-style design)"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "test point tp"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "Pin* Test*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "TestPoint_Probe_0_1"
-				(polyline
-					(pts
-						(xy 1.27 0.762) (xy 0 0) (xy 0.762 1.27) (xy 1.27 0.762)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.397 0.635) (xy 0.635 1.397) (xy 2.413 3.175) (xy 3.175 2.413) (xy 1.397 0.635)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(symbol "TestPoint_Probe_1_1"
-				(pin passive line
-					(at 0 0 90)
-					(length 0)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-		)
 		(symbol "Device:C"
 			(pin_numbers hide)
 			(pin_names
@@ -1432,12 +1317,6 @@
 		(uuid "cf25b6b6-5a6e-4720-9d42-1ec4b100a245")
 	)
 	(junction
-		(at 196.85 77.47)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d809b8c1-c237-478e-a296-09e70535517f")
-	)
-	(junction
 		(at 173.99 77.47)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1591,7 +1470,7 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 77.47) (xy 196.85 77.47)
+			(xy 190.5 77.47) (xy 210.82 77.47)
 		)
 		(stroke
 			(width 0)
@@ -1638,16 +1517,6 @@
 			(type default)
 		)
 		(uuid "aa422cea-ed33-41ea-a4cf-750967039264")
-	)
-	(wire
-		(pts
-			(xy 196.85 77.47) (xy 210.82 77.47)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ab90fc66-6b86-4c2f-982b-475d098c2480")
 	)
 	(wire
 		(pts
@@ -2002,74 +1871,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:TestPoint_Probe")
-		(at 111.76 77.47 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "2be2528f-c36d-4b90-bcd1-9a35f4e59554")
-		(property "Reference" "TP3"
-			(at 107.95 74.6125 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "VBUS"
-			(at 107.95 77.1525 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "footprints:TestPoint_Pad_D1.5mm"
-			(at 106.68 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 106.68 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "test point (alternative probe-style design)"
-			(at 111.76 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "de2b60c0-d4bf-4074-86e6-400d3e2f4a48")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "TP3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+3V3")
 		(at 222.25 77.47 270)
 		(unit 1)
@@ -2129,140 +1930,6 @@
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
 					(reference "#PWR026")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint_Probe")
-		(at 160.02 77.47 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "4688c26c-9f53-4682-83ea-b72e2977679d")
-		(property "Reference" "TP4"
-			(at 158.75 73.66 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "BOARD_LOAD_+"
-			(at 163.83 77.1525 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "footprints:TestPoint_Pad_D1.5mm"
-			(at 165.1 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 165.1 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "test point (alternative probe-style design)"
-			(at 160.02 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "d2c8db01-ddff-4d59-9ad5-43395b17377a")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "TP4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint_Probe")
-		(at 196.85 77.47 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "4c8a166d-f072-44ee-9b65-c729fe516f81")
-		(property "Reference" "TP5"
-			(at 195.58 73.66 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 200.66 77.1525 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "footprints:TestPoint_Pad_D1.5mm"
-			(at 201.93 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 201.93 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "test point (alternative probe-style design)"
-			(at 196.85 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "2cdc0c59-d628-4502-9fdf-2248cb8fd8a6")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "TP5")
 					(unit 1)
 				)
 			)
@@ -2333,74 +2000,6 @@
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
 					(reference "R22")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint_Probe")
-		(at 132.08 107.95 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "5f72a0a9-4e73-4d3f-80f2-3065d72da401")
-		(property "Reference" "TP6"
-			(at 128.27 105.0925 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "GND"
-			(at 128.27 107.6325 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "footprints:TestPoint_Pad_D1.5mm"
-			(at 127 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 127 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "test point (alternative probe-style design)"
-			(at 132.08 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "6e7f5f49-164b-412f-be33-f0ae9d85d84d")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "TP6")
 					(unit 1)
 				)
 			)
