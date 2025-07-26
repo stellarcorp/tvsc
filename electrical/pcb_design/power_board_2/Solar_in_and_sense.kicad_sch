@@ -3450,7 +3450,7 @@
 		(uuid "1422b3d5-3e07-49ed-b7c0-4d6e2396e147")
 	)
 	(label "Solar_z2+"
-		(at 264.16 149.225 0)
+		(at 122.555 151.765 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3460,7 +3460,7 @@
 		(uuid "243d67b8-1c67-437c-ae09-a2acb43e5074")
 	)
 	(label "SSz2"
-		(at 264.16 146.685 0)
+		(at 122.555 154.305 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3540,7 +3540,7 @@
 		(uuid "54a86cc0-5b90-4c98-ba53-a858f2472b12")
 	)
 	(label "SSx2"
-		(at 122.555 146.685 0)
+		(at 264.16 141.605 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3550,12 +3550,12 @@
 		(uuid "558ea83d-7240-4529-93ee-312d8b92c552")
 	)
 	(label "Solar_z1+"
-		(at 264.16 144.145 0)
+		(at 61.595 151.765 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "57b8e629-a6cf-4ad4-932c-00bf9d0552f7")
 	)
@@ -3590,12 +3590,12 @@
 		(uuid "7193d22d-00e9-4359-988e-1b6614f7eeb4")
 	)
 	(label "SSz1"
-		(at 264.16 141.605 0)
+		(at 61.595 149.225 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "7dc990a2-095e-4314-abdf-b813dc395a8c")
 	)
@@ -3610,12 +3610,12 @@
 		(uuid "7f1c1ec9-8739-4909-a7f8-e9ee62fffcf5")
 	)
 	(label "Solar_y2+"
-		(at 61.595 151.765 180)
+		(at 122.555 144.145 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "8b39a215-ecfd-44ba-8d5a-f1b7d7c9e0b0")
 	)
@@ -3630,7 +3630,7 @@
 		(uuid "8bb0623e-9999-418f-946e-a99a5ad54087")
 	)
 	(label "Solar_x2+"
-		(at 122.555 149.225 0)
+		(at 264.16 144.145 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3650,7 +3650,7 @@
 		(uuid "9c902991-dbe8-4023-a72d-b35a780acda1")
 	)
 	(label "SSy1"
-		(at 122.555 154.305 0)
+		(at 122.555 146.685 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3660,12 +3660,12 @@
 		(uuid "9f1dbaad-b640-4d37-9e6a-d768c6e03b57")
 	)
 	(label "SSy2"
-		(at 61.595 149.225 180)
+		(at 122.555 141.605 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "a44e40dd-0786-45a0-9f86-cbb2ccf186ee")
 	)
@@ -3690,22 +3690,22 @@
 		(uuid "b4699733-4092-41d5-810c-82b3b202c460")
 	)
 	(label "SSx1"
-		(at 122.555 141.605 0)
+		(at 203.2 149.225 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "b92911a2-e293-4afa-b73f-7a96e1383e2d")
 	)
 	(label "Solar_x1+"
-		(at 122.555 144.145 0)
+		(at 203.2 151.765 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "ba8fe9df-0552-46b0-bf60-d00921f5fe65")
 	)
@@ -3780,7 +3780,7 @@
 		(uuid "e1b02e97-8151-4432-bf59-f44352c53386")
 	)
 	(label "Solar_y1+"
-		(at 122.555 151.765 0)
+		(at 122.555 149.225 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3822,12 +3822,12 @@
 	)
 	(hierarchical_label "BUS_Load+"
 		(shape input)
-		(at 203.2 151.765 180)
+		(at 264.16 149.225 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "21faffcc-22e3-4b7c-9ef1-b9b378b0c3bd")
 	)
@@ -3844,12 +3844,12 @@
 	)
 	(hierarchical_label "BUS_Load-"
 		(shape input)
-		(at 203.2 149.225 180)
+		(at 264.16 146.685 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "251977d3-8d43-4c91-b068-2ae366909b00")
 	)
@@ -3899,7 +3899,7 @@
 	)
 	(hierarchical_label "I2C1_SLC"
 		(shape input)
-		(at 166.37 40.64 180)
+		(at 166.37 66.04 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3910,7 +3910,7 @@
 	)
 	(hierarchical_label "I2C1_SDA"
 		(shape input)
-		(at 166.37 38.1 180)
+		(at 166.37 63.5 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3976,7 +3976,7 @@
 	)
 	(hierarchical_label "I2C2_SDA"
 		(shape input)
-		(at 166.37 63.5 180)
+		(at 166.37 38.1 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3987,7 +3987,7 @@
 	)
 	(hierarchical_label "I2C2_SLC"
 		(shape input)
-		(at 166.37 66.04 180)
+		(at 166.37 40.64 180)
 		(effects
 			(font
 				(size 1.27 1.27)
