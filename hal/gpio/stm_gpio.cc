@@ -243,4 +243,6 @@ void GpioStm32xxxx::enable() {
   }
 }
 
+Port GpioStm32xxxx::port() const { return port_; }
+
 }  // namespace tvsc::hal::gpio

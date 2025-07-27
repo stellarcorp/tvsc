@@ -125,6 +125,8 @@ class GpioPeripheral : public Peripheral<GpioPeripheral, Gpio> {
 
  public:
   virtual ~GpioPeripheral() = default;
+
+  virtual Port port() const = 0;
 };
 
 class Gpio final : public Functional<GpioPeripheral, Gpio> {
@@ -144,6 +146,8 @@ class Gpio final : public Functional<GpioPeripheral, Gpio> {
   bool read_pin(Pin pin) { return peripheral_->read_pin(pin); }
   void write_pin(Pin pin, bool on) { peripheral_->write_pin(pin, on); }
   void toggle_pin(Pin pin) { peripheral_->toggle_pin(pin); }
+
+  Port port() const { return peripheral_->port(); }
 };
 
 }  // namespace tvsc::hal::gpio

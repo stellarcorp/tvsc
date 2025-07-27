@@ -100,6 +100,8 @@ class GpioStm32xxxx final : public GpioPeripheral {
 
   GpioStm32xxxx(void* base_address, Port port)
       : registers_(new (base_address) GpioRegisterBank), port_(port) {}
+
+  Port port() const override;
 };
 
 }  // namespace tvsc::hal::gpio
