@@ -32,12 +32,14 @@ cc_library(
         "monitor_power.h",
         "quit.h",
         "random_blink.h",
+        "read_board_id.h",
         "watchdog.h",
     ],
     deps = [
         "//flags",
         "//hal",
         "//hal/board",
+        "//hal/board_identification",
         "//hal/gpio",
         "//hal/power_monitor",
         "//hal/programmer",
@@ -344,6 +346,7 @@ cc_binary(
         "//conditions:default": [],
     }),
     deps = [
+        ":tasks",
         "//base",
         "//hal",
         "//hal/adc",

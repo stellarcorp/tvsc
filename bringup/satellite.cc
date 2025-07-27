@@ -1,7 +1,9 @@
 #include "base/initializer.h"
 #include "bringup/blink.h"
 #include "bringup/flash_target.h"
+#include "bringup/read_board_id.h"
 #include "hal/board/board.h"
+#include "hal/board_identification/board_ids.h"
 #include "scheduler/scheduler.h"
 #include "time/embedded_clock.h"
 
@@ -11,11 +13,27 @@ using ClockType = tvsc::time::EmbeddedClock;
 using namespace tvsc::bringup;
 using namespace tvsc::scheduler;
 
+extern "C" {
+alignas(uint32_t)  //
+    __attribute__((
+        section(".status.value"))) volatile tvsc::hal::board_identification::BoardId board_id{};
+}
+
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
   auto& board{BoardType::board()};
   auto& clock{ClockType::clock()};
+
+  {
+    auto& gpio_id_power_peripheral{board.gpio<BoardType::BOARD_ID_POWER_PORT>()};
+    auto& gpio_id_sense_peripheral{board.gpio<BoardType::BOARD_ID_SENSE_PORT>()};
+    auto& adc_peripheral{board.adc()};
+
+    board_id =
+        read_board_id(gpio_id_power_peripheral, BoardType::BOARD_ID_POWER_PIN,
+                      gpio_id_sense_peripheral, BoardType::BOARD_ID_SENSE_PIN, adc_peripheral);
+  }
 
   static constexpr size_t QUEUE_SIZE{4};
   Scheduler<ClockType, QUEUE_SIZE> scheduler{board.rcc()};
