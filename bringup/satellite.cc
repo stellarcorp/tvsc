@@ -19,6 +19,8 @@ alignas(uint32_t)  //
     __attribute__((section(".status.value"))) tvsc::hal::board_identification::BoardId board_id{};
 
 __attribute__((section(".status.value"))) tvsc::hal::mcu::McuId mcu_id{};
+
+__attribute__((section(".status.value"))) uint8_t hashed_mcu_id{};
 }
 
 int main(int argc, char* argv[]) {
@@ -37,6 +39,7 @@ int main(int argc, char* argv[]) {
                       gpio_id_sense_peripheral, BoardType::BOARD_ID_SENSE_PIN, adc_peripheral);
 
     board.mcu().read_id(mcu_id);
+    hashed_mcu_id = board.mcu().hashed_id();
   }
 
   static constexpr size_t QUEUE_SIZE{4};
