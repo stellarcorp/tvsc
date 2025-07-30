@@ -4,6 +4,7 @@
 #include "bringup/read_board_id.h"
 #include "hal/board/board.h"
 #include "hal/board_identification/board_ids.h"
+#include "hal/mcu/mcu.h"
 #include "scheduler/scheduler.h"
 #include "time/embedded_clock.h"
 
@@ -15,8 +16,9 @@ using namespace tvsc::scheduler;
 
 extern "C" {
 alignas(uint32_t)  //
-    __attribute__((
-        section(".status.value"))) volatile tvsc::hal::board_identification::BoardId board_id{};
+    __attribute__((section(".status.value"))) tvsc::hal::board_identification::BoardId board_id{};
+
+__attribute__((section(".status.value"))) tvsc::hal::mcu::McuId mcu_id{};
 }
 
 int main(int argc, char* argv[]) {
@@ -33,6 +35,8 @@ int main(int argc, char* argv[]) {
     board_id =
         read_board_id(gpio_id_power_peripheral, BoardType::BOARD_ID_POWER_PIN,
                       gpio_id_sense_peripheral, BoardType::BOARD_ID_SENSE_PIN, adc_peripheral);
+
+    board.mcu().read_id(mcu_id);
   }
 
   static constexpr size_t QUEUE_SIZE{4};
