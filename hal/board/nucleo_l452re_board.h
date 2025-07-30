@@ -15,6 +15,8 @@
 #include "hal/gpio/stm_gpio.h"
 #include "hal/i2c/i2c.h"
 #include "hal/i2c/stm32l4xx_i2c.h"
+#include "hal/mcu/mcu.h"
+#include "hal/mcu/stm32l4xx_mcu.h"
 #include "hal/power/power.h"
 #include "hal/power/stm32l4xx_power.h"
 #include "hal/random/rng.h"
@@ -100,6 +102,8 @@ class Board final {
   i2c::I2cStm32l4xx i2c1_{I2C1, gpio_port_b_, /* SCL Pin */ 6, /* SDA Pin */ 7};
   i2c::I2cStm32l4xx i2c2_{I2C2, gpio_port_b_, /* SCL Pin */ 10, /* SDA Pin */ 11};
   i2c::I2cStm32l4xx i2c3_{I2C3, gpio_port_c_, /* SCL Pin */ 0, /* SDA Pin */ 1};
+
+  mcu::McuStm32l4xx mcu_{};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
@@ -198,6 +202,8 @@ class Board final {
   i2c::I2cPeripheral& i2c1() { return i2c1_; }
   i2c::I2cPeripheral& i2c2() { return i2c2_; }
   i2c::I2cPeripheral& i2c3() { return i2c3_; }
+
+  mcu::Mcu& mcu() { return mcu_; }
 };
 
 }  // namespace tvsc::hal::board

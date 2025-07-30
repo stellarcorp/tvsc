@@ -1,0 +1,44 @@
+cc_library(
+    name = "mcu_headers",
+    hdrs = [
+        "mcu.h",
+    ],
+    deps = [
+        "//hal",
+    ],
+)
+
+cc_library(
+    name = "mcu",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":mcu_headers",
+    ] + select({
+        "//platforms:stm32l4xx": [
+            ":stm32l4xx_mcu",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32l4xx_mcu",
+    srcs = [
+        "stm32l4xx_mcu.cc",
+    ],
+    hdrs = [
+        "stm32l4xx_mcu.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32l4xx",
+    ],
+    deps = [
+        ":mcu_headers",
+        "//base",
+        "//hal",
+        "//third_party/stm32",
+    ],
+)

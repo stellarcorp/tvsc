@@ -19,6 +19,8 @@
 #include "hal/i2c/stm32l4xx_i2c.h"
 #include "hal/imu/bmi323_imu.h"
 #include "hal/imu/imu.h"
+#include "hal/mcu/mcu.h"
+#include "hal/mcu/stm32l4xx_mcu.h"
 #include "hal/power/power.h"
 #include "hal/power/stm32l4xx_power.h"
 #include "hal/power_monitor/ina260_power_monitor.h"
@@ -129,6 +131,8 @@ class Board final {
                                               /* SWCLK_CONTROL Pin */ 13,  //
                                               /* NRST_CONTROL Pin */ 14};
 
+  mcu::McuStm32l4xx mcu_{};
+
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
   static constexpr gpio::Port GPIO_PORT_F{5};
@@ -236,6 +240,8 @@ class Board final {
   power_monitor::PowerMonitorPeripheral& power_monitor2() { return power_monitor2_; }
 
   programmer::ProgrammerPeripheral& programmer() { return programmer_; }
+
+  mcu::Mcu& mcu() { return mcu_; }
 };
 
 }  // namespace tvsc::hal::board
