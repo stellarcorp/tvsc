@@ -1,8 +1,10 @@
 #include <chrono>
 #include <cstdint>
 
+#include "base/enums.h"
 #include "base/initializer.h"
 #include "bringup/blink.h"
+#include "bringup/can_rx.h"
 #include "bringup/can_tx.h"
 #include "bringup/flash_target.h"
 #include "bringup/read_board_id.h"
@@ -20,6 +22,7 @@ using ClockType = tvsc::time::EmbeddedClock;
 using namespace tvsc::bringup;
 using namespace tvsc::scheduler;
 using namespace std::chrono_literals;
+using namespace tvsc::hal::board_identification;
 
 extern "C" {
 alignas(uint32_t)  //
@@ -58,10 +61,11 @@ int main(int argc, char* argv[]) {
   scheduler.add_task(flash_target<ClockType>(
       board.programmer(), board.gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN));
 
-  scheduler.add_task(periodic_transmit<ClockType>(board.can1(), 10s, announce_msg));
+  scheduler.add_task(periodic_transmit<ClockType>(board.can1(), 1s, announce_msg));
 
-  scheduler.add_task(
-      blink(clock, board.gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN));
+  scheduler.add_task(can_bus_receive<ClockType>(board.can1() /* Add Queue Here */,
+                                                board.gpio<BoardType::DEBUG_LED_PORT>(),
+                                                BoardType::DEBUG_LED_PIN));
 
   scheduler.start();
 }
