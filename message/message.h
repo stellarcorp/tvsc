@@ -4,10 +4,13 @@
 #include <cstdint>
 #include <cstring>
 
+#include "base/enums.h"
+
 namespace tvsc::message {
 
-enum class Type : uint8_t {
-  // Lower id numbers have highest priority.
+enum class Type {
+  // Type is used as the identifier in the Message structure below. Lower id numbers have highest
+  // priority to match CAN bus design.
   EMERGENCY = 0,
   PING,      // Used for keep-alive.
   COMMAND,   // Used to issue commands to the satellite or boards in the satellite.
@@ -21,25 +24,33 @@ class Message final {
   using Payload = std::array<uint8_t, PAYLOAD_SIZE>;
 
  private:
-  Type type_{};
+  uint32_t identifier_{};
   size_t size_{};
   Payload payload_{};
 
  public:
   Message() = default;
-  Message(Type type) : type_(type) {}
+  Message(Type type) : identifier_(cast_to_underlying_type(type)) {}
 
-  Message(const Message& rhs) : type_(rhs.type_), size_(rhs.size_), payload_(rhs.payload_) {}
+  Message(const Message& rhs)
+      : identifier_(rhs.identifier_), size_(rhs.size_), payload_(rhs.payload_) {}
 
   Message& operator=(const Message& rhs) {
-    type_ = rhs.type_;
+    identifier_ = rhs.identifier_;
     size_ = rhs.size_;
     payload_ = rhs.payload_;
     return *this;
   }
 
-  Type type() const { return type_; }
-  void set_type(Type type) { type_ = type; }
+  const uint32_t& identifier() const { return identifier_; }
+  uint32_t& identifier() { return identifier_; }
+
+  Type retrieve_type() const {
+    auto integral_type{static_cast<std::underlying_type_t<Type>>(identifier_)};
+    return static_cast<Type>(integral_type);
+  }
+
+  void set_type(Type type) { identifier_ = cast_to_underlying_type(type); }
 
   size_t size() const { return size_; }
   void set_size(size_t size) { size_ = size; }
