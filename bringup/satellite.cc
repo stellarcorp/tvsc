@@ -5,6 +5,8 @@
 #include "hal/board/board.h"
 #include "hal/board_identification/board_ids.h"
 #include "hal/mcu/mcu.h"
+#include "message/announce.h"
+#include "message/message.h"
 #include "scheduler/scheduler.h"
 #include "time/embedded_clock.h"
 
@@ -21,6 +23,7 @@ alignas(uint32_t)  //
 __attribute__((section(".status.value"))) tvsc::hal::mcu::McuId mcu_id{};
 
 __attribute__((section(".status.value"))) uint8_t hashed_mcu_id{};
+__attribute__((section(".status.value"))) tvsc::message::CanBusMessage announce_msg{};
 }
 
 int main(int argc, char* argv[]) {
@@ -40,6 +43,8 @@ int main(int argc, char* argv[]) {
 
     board.mcu().read_id(mcu_id);
     hashed_mcu_id = board.mcu().hashed_id();
+
+    tvsc::message::create_announce_message(announce_msg, hashed_mcu_id, board_id);
   }
 
   static constexpr size_t QUEUE_SIZE{4};
