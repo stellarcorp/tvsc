@@ -1,0 +1,8 @@
+cc_library(
+    name = "message",
+    hdrs = [
+        "announce.h",
+        "message.h",
+    ],
+    visibility = ["//visibility:public"],
+)
