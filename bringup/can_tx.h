@@ -19,7 +19,7 @@ tvsc::scheduler::Task<ClockType> periodic_transmit(
   while (true) {
     {
       auto can{can_peripheral.access()};
-      can.transmit(cast_to_underlying_type(msg.type()), msg.payload());
+      can.transmit(msg);
     }
     co_yield period;
   }
