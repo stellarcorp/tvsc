@@ -96,7 +96,7 @@ tvsc::scheduler::Task<ClockType> read_board_id(BoardType& board, int32_t num_ite
     board_id = tvsc::hal::board_identification::determine_board_id(value_read);
 
     // Pause between iterations.
-    co_yield 100ms;
+    co_yield 50ms;
     ++iteration_counter;
   }
 
