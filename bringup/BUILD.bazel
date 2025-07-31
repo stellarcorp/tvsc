@@ -26,6 +26,7 @@ cc_library(
     name = "tasks",
     hdrs = [
         "blink.h",
+        "can_tx.h",
         "dac_demo.h",
         "flash_target.h",
         "monitor_imu.h",
@@ -40,6 +41,7 @@ cc_library(
         "//hal",
         "//hal/board",
         "//hal/board_identification",
+        "//hal/can_bus",
         "//hal/gpio",
         "//hal/power_monitor",
         "//hal/programmer",
