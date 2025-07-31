@@ -5,6 +5,10 @@
 #include "hal/board_identification/board_ids.h"
 #include "hal/gpio/gpio.h"
 
+extern "C" {
+__attribute__((section(".status.value"))) uint16_t measured_board_id_value;
+}
+
 namespace tvsc::bringup {
 
 /**
@@ -35,11 +39,11 @@ tvsc::hal::board_identification::BoardId read_board_id(
 
   id_power.write_pin(power_pin, 1);
 
-  const auto measured_value{adc.measure_value({id_sense.port(), sense_pin})};
-
   id_power.write_pin(power_pin, 0);
 
-  return determine_board_id(measured_value);
+  measured_board_id_value = adc.measure_value({id_sense.port(), sense_pin});
+
+  return determine_board_id(measured_board_id_value);
 }
 
 }  // namespace tvsc::bringup
