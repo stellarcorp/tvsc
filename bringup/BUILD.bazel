@@ -26,6 +26,7 @@ cc_library(
     name = "tasks",
     hdrs = [
         "blink.h",
+        "can_rx.h",
         "can_tx.h",
         "dac_demo.h",
         "flash_target.h",
