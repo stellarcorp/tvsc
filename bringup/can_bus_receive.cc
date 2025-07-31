@@ -17,7 +17,7 @@ __attribute__((section(".status.value"))) volatile uint32_t rx_count{};
 __attribute__((section(".status.value"))) volatile uint32_t rx_error_count{};
 __attribute__((section(".status.value"))) volatile uint32_t error_code{};
 __attribute__((section(".status.value"))) uint32_t identifier{};
-__attribute__((section(".status.value"))) std::array<uint8_t, 8> message{};
+__attribute__((section(".status.value"))) std::array<uint8_t, 8> message_payload{};
 
 __attribute__((section(".status.value"))) volatile bool can_tx_complete_flag{false};
 __attribute__((section(".status.value"))) volatile bool can_rx_fifo0_msg_pending_flag{false};
@@ -108,7 +108,8 @@ tvsc::scheduler::Task<ClockType> echo_server(BoardType &board) {
   while (true) {
     error_code = can1.error_code();
     while (can1.available_message_count(RxFifo::FIFO_ZERO) > 0) {
-      if (can1.receive(RxFifo::FIFO_ZERO, identifier, message)) {
+      const bool success{can1.receive_raw(RxFifo::FIFO_ZERO, identifier, message_payload)};
+      if (success) {
         ++rx_count;
         debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
         co_yield 2ms;
