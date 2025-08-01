@@ -1,5 +1,3 @@
-// Auto-generated file — do not edit manually
-
 #include "meta/build_time.h"
 
 #include <cstdint>
