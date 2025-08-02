@@ -4,13 +4,15 @@
 
 #include "hal/can_bus/can_bus.h"
 #include "message/message.h"
+#include "message/queue.h"
 #include "scheduler/task.h"
 
 namespace tvsc::bringup {
 
-template <typename ClockType>
+template <typename ClockType, size_t QUEUE_SIZE, size_t NUM_HANDLERS>
 tvsc::scheduler::Task<ClockType> can_bus_receive(
     tvsc::hal::can_bus::CanBusPeripheral& can_peripheral,
+    tvsc::message::CanBusMessageQueue<QUEUE_SIZE, NUM_HANDLERS>& queue,
     tvsc::hal::gpio::GpioPeripheral& gpio_peripheral, tvsc::hal::gpio::Pin pin) {
   using namespace std::chrono_literals;
   using namespace tvsc::hal::can_bus;
@@ -39,7 +41,13 @@ tvsc::scheduler::Task<ClockType> can_bus_receive(
       led.set_pin_mode(pin, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
 
       tvsc::message::CanBusMessage message{};
-      if (can.receive(RxFifo::FIFO_ZERO, message)) {
+      if (can.receive(RxFifo::FIFO_ZERO, message) /*&& queue.enqueue(message)*/) {
+        // Ignore return value on the enqueue for the moment.
+        // TODO(james): Use the result of the enqueue once we have some message handlers in place in
+        // order to indicate success/failure by removing next line and uncommenting expression in if
+        // statement. Right now, no messages ever get removed from the queue, so at some point, the
+        // enqueue fails because the queue is full.
+        (void)queue.enqueue(message);
         led.write_pin(pin, 1);
         co_yield 100ms;
         led.write_pin(pin, 0);

@@ -13,6 +13,7 @@
 #include "hal/mcu/mcu.h"
 #include "message/announce.h"
 #include "message/message.h"
+#include "message/queue.h"
 #include "scheduler/scheduler.h"
 #include "time/embedded_clock.h"
 
@@ -38,8 +39,6 @@ int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
   auto& board{BoardType::board()};
-  auto& clock{ClockType::clock()};
-
   {
     auto& gpio_id_power_peripheral{board.gpio<BoardType::BOARD_ID_POWER_PORT>()};
     auto& gpio_id_sense_peripheral{board.gpio<BoardType::BOARD_ID_SENSE_PORT>()};
@@ -55,15 +54,19 @@ int main(int argc, char* argv[]) {
     tvsc::message::create_announce_message(announce_msg, hashed_mcu_id, board_id);
   }
 
-  static constexpr size_t QUEUE_SIZE{4};
-  Scheduler<ClockType, QUEUE_SIZE> scheduler{board.rcc()};
+  static constexpr size_t NUM_TASKS{5};
+  Scheduler<ClockType, NUM_TASKS> scheduler{board.rcc()};
+
+  static constexpr size_t QUEUE_SIZE{5};
+  static constexpr size_t NUM_HANDLERS{2};
+  tvsc::message::CanBusMessageQueue<QUEUE_SIZE, NUM_HANDLERS> can_bus_message_queue{};
 
   scheduler.add_task(flash_target<ClockType>(
       board.programmer(), board.gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN));
 
   scheduler.add_task(periodic_transmit<ClockType>(board.can1(), 1s, announce_msg));
 
-  scheduler.add_task(can_bus_receive<ClockType>(board.can1() /* Add Queue Here */,
+  scheduler.add_task(can_bus_receive<ClockType>(board.can1(), can_bus_message_queue,
                                                 board.gpio<BoardType::DEBUG_LED_PORT>(),
                                                 BoardType::DEBUG_LED_PIN));
 
