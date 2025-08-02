@@ -18,9 +18,10 @@ enum class Type {
   TELEMETRY,
 };
 
-template <size_t PAYLOAD_SIZE>
+template <size_t PAYLOAD_SIZE_VALUE>
 class Message final {
  public:
+  static constexpr size_t PAYLOAD_SIZE{PAYLOAD_SIZE_VALUE};
   using Payload = std::array<uint8_t, PAYLOAD_SIZE>;
 
  private:
@@ -40,6 +41,10 @@ class Message final {
     size_ = rhs.size_;
     payload_ = rhs.payload_;
     return *this;
+  }
+
+  bool operator==(const Message& rhs) const {
+    return identifier_ == rhs.identifier_ && size_ == rhs.size_ && payload_ == rhs.payload_;
   }
 
   const uint32_t& identifier() const { return identifier_; }
