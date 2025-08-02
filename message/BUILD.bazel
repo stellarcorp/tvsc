@@ -2,7 +2,20 @@ cc_library(
     name = "message",
     hdrs = [
         "announce.h",
+        "handler.h",
         "message.h",
+        "queue.h",
     ],
     visibility = ["//visibility:public"],
+)
+
+cc_test(
+    name = "queue_test",
+    srcs = [
+        "queue_test.cc",
+    ],
+    deps = [
+        ":message",
+        "//third_party/gtest",
+    ],
 )
