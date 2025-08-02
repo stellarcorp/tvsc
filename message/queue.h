@@ -8,6 +8,17 @@
 
 namespace tvsc::message {
 
+/**
+ * Simple fixed size message queue.
+ *
+ * This message queue is implemented as a ring buffer, using begin and end pointers (indices) and an
+ * array for storage.
+ *
+ * A fixed number of handlers for the messages can be added, but once added, they cannot be removed.
+ * The idea is to configure the handlers early on and never change them. Currently, we do not see
+ * any need to change the handlers configuration once it has been set up.
+ */
+
 template <size_t PAYLOAD_SIZE, size_t MAX_QUEUE_SIZE, size_t MAX_HANDLERS>
 class Queue final {
  public:
@@ -64,12 +75,15 @@ class Queue final {
       const auto& msg{messages_[begin_ % messages_.size()]};
       for (auto handler : handlers_) {
         if (handler == nullptr) {
+          // We are out of handlers.
           break;
         }
         if (handler->handle(msg)) {
+          // This handler handled the message, so no other handlers need be invoked.
           break;
         }
       }
+      // Whether it was handled or not, this message gets dropped from the queue.
       ++begin_;
     }
   }
