@@ -41,13 +41,7 @@ tvsc::scheduler::Task<ClockType> can_bus_receive(
       led.set_pin_mode(pin, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
 
       tvsc::message::CanBusMessage message{};
-      if (can.receive(RxFifo::FIFO_ZERO, message) /*&& queue.enqueue(message)*/) {
-        // Ignore return value on the enqueue for the moment.
-        // TODO(james): Use the result of the enqueue once we have some message handlers in place in
-        // order to indicate success/failure by removing next line and uncommenting expression in if
-        // statement. Right now, no messages ever get removed from the queue, so at some point, the
-        // enqueue fails because the queue is full.
-        (void)queue.enqueue(message);
+      if (can.receive(RxFifo::FIFO_ZERO, message) && queue.enqueue(message)) {
         led.write_pin(pin, 1);
         co_yield 100ms;
         led.write_pin(pin, 0);
