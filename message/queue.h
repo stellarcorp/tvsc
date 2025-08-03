@@ -5,6 +5,7 @@
 
 #include "message/handler.h"
 #include "message/message.h"
+#include "message/ring_buffer.h"
 
 namespace tvsc::message {
 
@@ -26,9 +27,7 @@ class Queue final {
   using MessageType = Message<PAYLOAD_SIZE>;
 
  private:
-  size_t begin_{};
-  size_t end_{};
-  std::array<MessageType, MAX_QUEUE_SIZE> messages_{};
+  RingBuffer<MessageType, MAX_QUEUE_SIZE> messages_{};
   std::array<HandlerType*, MAX_HANDLERS> handlers_{};
 
  public:
@@ -51,28 +50,18 @@ class Queue final {
     return handlers_.size();
   }
 
-  size_t size() const { return end_ - begin_; }
-  size_t capacity() const { return messages_.size(); }
+  size_t size() const { return messages_.size(); }
+  constexpr size_t capacity() const { return messages_.capacity(); }
 
-  [[nodiscard]] bool enqueue(const MessageType& msg) {
-    if (end_ - begin_ < messages_.size()) {
-      messages_[end_ % messages_.size()] = msg;
-      ++end_;
-      return true;
-    } else {
-      return false;
-    }
-  }
+  [[nodiscard]] bool enqueue(const MessageType& msg) { return messages_.push(msg); }
 
-  bool has_message() const { return end_ > begin_; }
+  bool has_message() const { return !messages_.is_empty(); }
 
-  const auto& peek(size_t index = 0) const {
-    return messages_[(begin_ + index) % messages_.size()];
-  }
+  const auto& peek(size_t index = 0) const { return messages_.peek(index); }
 
   void process_next_message() {
-    if (end_ - begin_ > 0) {
-      const auto& msg{messages_[begin_ % messages_.size()]};
+    if (!messages_.is_empty()) {
+      const auto& msg{messages_.peek()};
       for (auto handler : handlers_) {
         if (handler == nullptr) {
           // We are out of handlers.
@@ -84,7 +73,7 @@ class Queue final {
         }
       }
       // Whether it was handled or not, this message gets dropped from the queue.
-      ++begin_;
+      messages_.pop();
     }
   }
 };

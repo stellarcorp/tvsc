@@ -5,6 +5,7 @@ cc_library(
         "handler.h",
         "message.h",
         "queue.h",
+        "ring_buffer.h",
     ],
     visibility = ["//visibility:public"],
 )
