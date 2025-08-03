@@ -39,9 +39,9 @@ tvsc::hal::board_identification::BoardId read_board_id(
 
   id_power.write_pin(power_pin, 1);
 
-  id_power.write_pin(power_pin, 0);
-
   measured_board_id_value = adc.measure_value({id_sense.port(), sense_pin});
+
+  id_power.write_pin(power_pin, 0);
 
   return determine_board_id(measured_board_id_value);
 }
