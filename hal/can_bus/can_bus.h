@@ -62,7 +62,12 @@ class CanBus final : public Functional<CanBusPeripheral, CanBus> {
   }
 
   bool receive(RxFifo fifo, message::CanBusMessage& message) {
-    return peripheral_->receive(fifo, message.identifier(), message.payload());
+    if (peripheral_->receive(fifo, message.identifier(), message.payload())) {
+      message.set_size(message::CanBusMessage::PAYLOAD_SIZE);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   bool transmit_raw(uint32_t identifier, const std::array<uint8_t, 8>& data) {
