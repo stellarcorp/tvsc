@@ -8,7 +8,7 @@
 
 namespace tvsc::message {
 
-enum class Type {
+enum class Type : uint8_t {
   // Type is used as the identifier in the Message structure below. Lower id numbers have highest
   // priority to match CAN bus design.
   EMERGENCY = 0,
@@ -16,6 +16,11 @@ enum class Type {
   COMMAND,   // Used to issue commands to the satellite or boards in the satellite.
   ANNOUNCE,  // Used to indicate existence.
   TELEMETRY,
+};
+
+enum class Subsystem : uint8_t {
+  LED = 1,
+  MAGNETORQUER = 2,
 };
 
 template <size_t PAYLOAD_SIZE_VALUE>
