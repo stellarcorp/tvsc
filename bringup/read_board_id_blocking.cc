@@ -20,15 +20,16 @@ int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
   BoardType& board{BoardType::board()};
+  auto& clock{ClockType::clock()};
 
   auto& gpio_id_power_peripheral{board.gpio<BoardType::BOARD_ID_POWER_PORT>()};
   auto& gpio_id_sense_peripheral{board.gpio<BoardType::BOARD_ID_SENSE_PORT>()};
   auto& adc_peripheral{board.adc()};
 
   while (true) {
-    board_id = tvsc::bringup::read_board_id(gpio_id_power_peripheral, BoardType::BOARD_ID_POWER_PIN,
-                                            gpio_id_sense_peripheral, BoardType::BOARD_ID_SENSE_PIN,
-                                            adc_peripheral);
+    board_id = tvsc::bringup::read_board_id(clock, gpio_id_power_peripheral,
+                                            BoardType::BOARD_ID_POWER_PIN, gpio_id_sense_peripheral,
+                                            BoardType::BOARD_ID_SENSE_PIN, adc_peripheral);
 
     ClockType::clock().wait(10ms);
   }
