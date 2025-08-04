@@ -22,10 +22,16 @@ voltage_divider_configurations() {
 
 BoardId determine_board_id(uint16_t adc_measurement) {
   BoardId result{cast_to_underlying_type(CanonicalBoardIds::UNKNOWN)};
-  for (const auto& configuration : voltage_divider_configurations()) {
-    if (configuration.is_match(adc_measurement)) {
-      result = configuration.id();
-      break;
+  if (adc_measurement < 0x0072) {
+    result = cast_to_underlying_type(CanonicalBoardIds::COMMS_BOARD_1);
+  } else if (adc_measurement > 0x0f15) {
+    result = cast_to_underlying_type(CanonicalBoardIds::COMMS_BOARD_2);
+  } else {
+    for (const auto& configuration : voltage_divider_configurations()) {
+      if (configuration.is_match(adc_measurement)) {
+        result = configuration.id();
+        break;
+      }
     }
   }
   return result;
