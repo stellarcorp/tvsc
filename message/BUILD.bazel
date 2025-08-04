@@ -3,6 +3,7 @@ cc_library(
     hdrs = [
         "announce.h",
         "handler.h",
+        "leds.h",
         "message.h",
         "queue.h",
         "ring_buffer.h",
