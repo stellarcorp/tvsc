@@ -23,11 +23,12 @@ enum class Subsystem : uint8_t {
   MAGNETORQUER = 2,
 };
 
-template <size_t PAYLOAD_SIZE_VALUE>
+template <size_t MTU>
 class Message final {
  public:
-  static constexpr size_t PAYLOAD_SIZE{PAYLOAD_SIZE_VALUE};
-  using Payload = std::array<uint8_t, PAYLOAD_SIZE>;
+  using Payload = std::array<uint8_t, MTU>;
+
+  static constexpr size_t mtu() { return MTU; }
 
  private:
   uint32_t identifier_{};
@@ -69,7 +70,7 @@ class Message final {
   Payload& payload() { return payload_; }
 
   size_t append_payload(size_t size, const uint8_t* data) {
-    const size_t amount_to_copy{std::min(PAYLOAD_SIZE - size_, size)};
+    const size_t amount_to_copy{std::min(MTU - size_, size)};
     std::memcpy(reinterpret_cast<void*>(payload_.data() + size_),
                 reinterpret_cast<const void*>(data), amount_to_copy);
     size_ += amount_to_copy;
@@ -78,7 +79,7 @@ class Message final {
 
   void clear_payload() {
     size_ = 0;
-    std::memset(reinterpret_cast<void*>(payload_.data()), 0, PAYLOAD_SIZE);
+    std::memset(reinterpret_cast<void*>(payload_.data()), 0, MTU);
   }
 };
 

@@ -13,9 +13,9 @@
 #include "hal/board_identification/board_ids.h"
 #include "hal/mcu/mcu.h"
 #include "message/announce.h"
-#include "message/handler.h"
 #include "message/leds.h"
 #include "message/message.h"
+#include "message/processor.h"
 #include "message/queue.h"
 #include "message/ring_buffer.h"
 #include "scheduler/scheduler.h"
@@ -43,16 +43,15 @@ tvsc::message::RingBuffer<tvsc::message::CanBusMessage, 16, /*PRIORITIZE_EXISTIN
     latest_can_bus_messages{};
 }
 
-class CanBusSniffer final
-    : public tvsc::message::Handler<tvsc::message::CanBusMessage::PAYLOAD_SIZE> {
+class CanBusSniffer final : public tvsc::message::Processor<tvsc::message::CanBusMessage> {
  public:
-  bool handle(const tvsc::message::CanBusMessage& msg) override {
+  bool process(const tvsc::message::CanBusMessage& msg) override {
     (void)latest_can_bus_messages.push(msg);
     return false;
   }
 };
 
-class LedControl final : public tvsc::message::Handler<tvsc::message::CanBusMessage::PAYLOAD_SIZE> {
+class LedControl final : public tvsc::message::Processor<tvsc::message::CanBusMessage> {
  private:
   tvsc::hal::gpio::GpioPeripheral* led_gpio_peripheral_;
   tvsc::hal::gpio::Pin led_pin_;
@@ -62,7 +61,7 @@ class LedControl final : public tvsc::message::Handler<tvsc::message::CanBusMess
   LedControl(tvsc::hal::gpio::GpioPeripheral& led_gpio_peripheral, tvsc::hal::gpio::Pin led_pin)
       : led_gpio_peripheral_(&led_gpio_peripheral), led_pin_(led_pin) {}
 
-  bool handle(const tvsc::message::CanBusMessage& msg) override {
+  bool process(const tvsc::message::CanBusMessage& msg) override {
     const tvsc::message::Type type{msg.retrieve_type()};
     if (type == tvsc::message::Type::COMMAND) {
       const tvsc::message::Subsystem subsystem{
@@ -110,10 +109,10 @@ int main(int argc, char* argv[]) {
   Scheduler<ClockType, NUM_TASKS> scheduler{board.rcc()};
 
   static constexpr size_t QUEUE_SIZE{5};
-  static constexpr size_t NUM_HANDLERS{2};
-  tvsc::message::CanBusMessageQueue<QUEUE_SIZE, NUM_HANDLERS> can_bus_message_queue{};
+  static constexpr size_t NUM_PROCESSORS{2};
+  tvsc::message::CanBusMessageQueue<QUEUE_SIZE, NUM_PROCESSORS> can_bus_message_queue{};
   CanBusSniffer can_bus_sniffer{};
-  (void)can_bus_message_queue.attach_handler(can_bus_sniffer);
+  (void)can_bus_message_queue.attach_processor(can_bus_sniffer);
 
   scheduler.add_task(flash_target<ClockType>(
       board.programmer(), board.gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN));
@@ -130,8 +129,8 @@ int main(int argc, char* argv[]) {
                       tvsc::hal::board_identification::CanonicalBoardIds::COMMS_BOARD_1)) {
     scheduler.add_task(periodic_transmit<ClockType>(
         board.can1(), 500ms,  //
-        tvsc::message::led_on_command<tvsc::message::CanBusMessage::PAYLOAD_SIZE>(),
-        tvsc::message::led_off_command<tvsc::message::CanBusMessage::PAYLOAD_SIZE>()));
+        tvsc::message::led_on_command<tvsc::message::CanBusMessage::mtu()>(),
+        tvsc::message::led_off_command<tvsc::message::CanBusMessage::mtu()>()));
   }
 
   scheduler.start();

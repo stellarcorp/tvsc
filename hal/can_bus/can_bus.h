@@ -63,7 +63,7 @@ class CanBus final : public Functional<CanBusPeripheral, CanBus> {
 
   bool receive(RxFifo fifo, message::CanBusMessage& message) {
     if (peripheral_->receive(fifo, message.identifier(), message.payload())) {
-      message.set_size(message::CanBusMessage::PAYLOAD_SIZE);
+      message.set_size(message::CanBusMessage::mtu());
       return true;
     } else {
       return false;
