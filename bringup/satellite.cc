@@ -14,6 +14,7 @@
 #include "hal/mcu/mcu.h"
 #include "message/announce.h"
 #include "message/handler.h"
+#include "message/leds.h"
 #include "message/message.h"
 #include "message/queue.h"
 #include "message/ring_buffer.h"
@@ -51,17 +52,52 @@ class CanBusSniffer final
   }
 };
 
+class LedControl final : public tvsc::message::Handler<tvsc::message::CanBusMessage::PAYLOAD_SIZE> {
+ private:
+  tvsc::hal::gpio::GpioPeripheral* led_gpio_peripheral_;
+  tvsc::hal::gpio::Pin led_pin_;
+  tvsc::hal::gpio::Gpio led_gpio_{};
+
+ public:
+  LedControl(tvsc::hal::gpio::GpioPeripheral& led_gpio_peripheral, tvsc::hal::gpio::Pin led_pin)
+      : led_gpio_peripheral_(&led_gpio_peripheral), led_pin_(led_pin) {}
+
+  bool handle(const tvsc::message::CanBusMessage& msg) override {
+    const tvsc::message::Type type{msg.retrieve_type()};
+    if (type == tvsc::message::Type::COMMAND) {
+      const tvsc::message::Subsystem subsystem{
+          static_cast<tvsc::message::Subsystem>(msg.payload()[0])};
+      if (subsystem == tvsc::message::Subsystem::LED) {
+        if (msg.payload()[1] == 0x01) {
+          if (!led_gpio_.is_valid()) {
+            led_gpio_ = led_gpio_peripheral_->access();
+            led_gpio_.set_pin_mode(led_pin_, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
+          }
+          led_gpio_.write_pin(led_pin_, 1);
+        } else if (msg.payload()[1] == 0x00) {
+          if (led_gpio_.is_valid()) {
+            led_gpio_.write_pin(led_pin_, 0);
+          }
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+};
+
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
   auto& board{BoardType::board()};
+  auto& clock{ClockType::clock()};
   {
     auto& gpio_id_power_peripheral{board.gpio<BoardType::BOARD_ID_POWER_PORT>()};
     auto& gpio_id_sense_peripheral{board.gpio<BoardType::BOARD_ID_SENSE_PORT>()};
     auto& adc_peripheral{board.adc()};
 
     board_id =
-        read_board_id(gpio_id_power_peripheral, BoardType::BOARD_ID_POWER_PIN,
+        read_board_id(clock, gpio_id_power_peripheral, BoardType::BOARD_ID_POWER_PIN,
                       gpio_id_sense_peripheral, BoardType::BOARD_ID_SENSE_PIN, adc_peripheral);
 
     board.mcu().read_id(mcu_id);
@@ -70,7 +106,7 @@ int main(int argc, char* argv[]) {
     tvsc::message::create_announce_message(announce_msg, hashed_mcu_id, board_id);
   }
 
-  static constexpr size_t NUM_TASKS{4};
+  static constexpr size_t NUM_TASKS{5};
   Scheduler<ClockType, NUM_TASKS> scheduler{board.rcc()};
 
   static constexpr size_t QUEUE_SIZE{5};
@@ -82,13 +118,21 @@ int main(int argc, char* argv[]) {
   scheduler.add_task(flash_target<ClockType>(
       board.programmer(), board.gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN));
 
-  scheduler.add_task(periodic_transmit<ClockType>(board.can1(), 1s, announce_msg));
+  scheduler.add_task(periodic_transmit<ClockType>(board.can1(), 10s, announce_msg));
 
   scheduler.add_task(can_bus_receive<ClockType>(board.can1(), can_bus_message_queue,
                                                 board.gpio<BoardType::DEBUG_LED_PORT>(),
                                                 BoardType::DEBUG_LED_PIN));
 
   scheduler.add_task(process_messages<ClockType>(can_bus_message_queue));
+
+  if (board_id == static_cast<tvsc::hal::board_identification::BoardId>(
+                      tvsc::hal::board_identification::CanonicalBoardIds::POWER_BOARD)) {
+    scheduler.add_task(periodic_transmit<ClockType>(
+        board.can1(), 500ms,  //
+        tvsc::message::led_on_command<tvsc::message::CanBusMessage::PAYLOAD_SIZE>(),
+        tvsc::message::led_off_command<tvsc::message::CanBusMessage::PAYLOAD_SIZE>()));
+  }
 
   scheduler.start();
 }
