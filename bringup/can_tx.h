@@ -25,4 +25,26 @@ tvsc::scheduler::Task<ClockType> periodic_transmit(
   }
 }
 
+/**
+ * Transmit the two messages periodically, ping-ponging between the two. This is useful for LED
+ * control.
+ */
+template <typename ClockType>
+tvsc::scheduler::Task<ClockType> periodic_transmit(
+    tvsc::hal::can_bus::CanBusPeripheral& can_peripheral, std::chrono::milliseconds period,
+    const message::CanBusMessage& msg1, const message::CanBusMessage& msg2) {
+  while (true) {
+    {
+      auto can{can_peripheral.access()};
+      can.transmit(msg1);
+    }
+    co_yield period;
+    {
+      auto can{can_peripheral.access()};
+      can.transmit(msg2);
+    }
+    co_yield period;
+  }
+}
+
 }  // namespace tvsc::bringup
