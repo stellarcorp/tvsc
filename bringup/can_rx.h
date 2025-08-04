@@ -43,7 +43,7 @@ tvsc::scheduler::Task<ClockType> can_bus_receive(
       tvsc::message::CanBusMessage message{};
       if (can.receive(RxFifo::FIFO_ZERO, message) && queue.enqueue(message)) {
         led.write_pin(pin, 1);
-        co_yield 100ms;
+        co_yield 50ms;
         led.write_pin(pin, 0);
       } else {
         for (int i = 0; i < 5; ++i) {
@@ -54,7 +54,7 @@ tvsc::scheduler::Task<ClockType> can_bus_receive(
         }
       }
     }
-    co_yield 50ms;
+    co_yield 10ms;
   }
 }
 
