@@ -14,12 +14,14 @@ namespace tvsc::bringup {
 /**
  * Blocking function to read the board id from the ID power and sense pins using an ADC.
  */
+template <typename ClockType>
 tvsc::hal::board_identification::BoardId read_board_id(
-    tvsc::hal::gpio::GpioPeripheral& id_power_peripheral, tvsc::hal::gpio::Pin power_pin,
-    tvsc::hal::gpio::GpioPeripheral& id_sense_peripheral, tvsc::hal::gpio::Pin sense_pin,
-    tvsc::hal::adc::AdcPeripheral& adc_peripheral) {
+    ClockType& clock, tvsc::hal::gpio::GpioPeripheral& id_power_peripheral,
+    tvsc::hal::gpio::Pin power_pin, tvsc::hal::gpio::GpioPeripheral& id_sense_peripheral,
+    tvsc::hal::gpio::Pin sense_pin, tvsc::hal::adc::AdcPeripheral& adc_peripheral) {
   using namespace tvsc::hal::board_identification;
   using namespace tvsc::hal::gpio;
+  using namespace std::chrono_literals;
 
   // Turn on clocks for the peripherals that we want.
   auto id_power{id_power_peripheral.access()};
@@ -38,6 +40,9 @@ tvsc::hal::board_identification::BoardId read_board_id(
   id_sense.set_pin_mode(sense_pin, PinMode::ANALOG);
 
   id_power.write_pin(power_pin, 1);
+
+  // Give the power and sense pins time to turn on and settle.
+  clock.wait(10ms);
 
   measured_board_id_value = adc.measure_value({id_sense.port(), sense_pin});
 
