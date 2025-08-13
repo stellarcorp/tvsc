@@ -31,19 +31,19 @@ tvsc::scheduler::Task<ClockType> periodic_transmit(
  */
 template <typename ClockType>
 tvsc::scheduler::Task<ClockType> periodic_transmit(
-    tvsc::hal::can_bus::CanBusPeripheral& can_peripheral, std::chrono::milliseconds period,
+    tvsc::hal::can_bus::CanBusPeripheral& can_peripheral, std::chrono::milliseconds period1, std::chrono::milliseconds period2,
     const message::CanBusMessage& msg1, const message::CanBusMessage& msg2) {
   while (true) {
     {
       auto can{can_peripheral.access()};
       can.transmit(msg1);
     }
-    co_yield period;
+    co_yield period1;
     {
       auto can{can_peripheral.access()};
       can.transmit(msg2);
     }
-    co_yield period;
+    co_yield period2;
   }
 }
 

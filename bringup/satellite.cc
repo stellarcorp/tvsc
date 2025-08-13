@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
   if (board_id == static_cast<tvsc::hal::board_identification::BoardId>(
                       tvsc::hal::board_identification::CanonicalBoardIds::COMMS_BOARD_1)) {
     scheduler.add_task(periodic_transmit<ClockType>(
-        board.can1(), 500ms,  //
+						    board.can1(), 500ms, 100ms,
         tvsc::message::led_on_command<tvsc::message::CanBusMessage::mtu()>(),
         tvsc::message::led_off_command<tvsc::message::CanBusMessage::mtu()>()));
   }
