@@ -45,6 +45,11 @@ class GpioInterceptor final : public simulation::Interceptor<GpioPeripheral, Clo
     LOG_FN();
     return this->call(&GpioPeripheral::toggle_pin, pin);
   }
+
+  Port port() const override {
+    LOG_FN();
+    return this->call(&GpioPeripheral::port);
+  }
 };
 
 }  // namespace tvsc::hal::gpio

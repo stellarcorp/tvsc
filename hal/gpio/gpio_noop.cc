@@ -15,4 +15,6 @@ void GpioNoop::write_pin(Pin pin, bool on) {}
 
 void GpioNoop::toggle_pin(Pin pin) {}
 
+Port GpioNoop::port() const { return port_; }
+
 }  // namespace tvsc::hal::gpio

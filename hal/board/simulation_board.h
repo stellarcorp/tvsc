@@ -70,7 +70,7 @@ class Board final {
   // We initialize these GPIO ports with the addresses where their registers are bound.
   // Note that the STM32L4xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
   // for the first few here, but this can be expanded if necessary.
-  gpio::GpioNoop gpio_{};
+  gpio::GpioNoop gpio_{GPIO_PORT_A};
   gpio::GpioInterceptor<SimulationClockType> gpio_interceptor_{gpio_, logger_};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
