@@ -25,15 +25,20 @@ class Interceptor : public InterfaceType {
     return std::invoke(std::forward<Fn>(fn), instance_, std::forward<Args>(args)...);
   }
 
+  template <typename Fn, typename... Args>
+  auto call(Fn&& fn, Args&&... args) const {
+    return std::invoke(std::forward<Fn>(fn), instance_, std::forward<Args>(args)...);
+  }
+
 #if __cpp_lib_source_location >= 201907L
 
-  void log_fn(const std::source_location& location = std::source_location::current()) {
+  void log_fn(const std::source_location& location = std::source_location::current()) const {
     logger_->log_fn(location);
   }
 
 #else
 
-  void log_fn(const char* filename, uint32_t line_number, const char* function_name) {
+  void log_fn(const char* filename, uint32_t line_number, const char* function_name) const {
     logger_->log_fn(filename, line_number, function_name);
   }
 
