@@ -68,13 +68,13 @@ class Scheduler final {
     for (size_t i = 0; i < QUEUE_SIZE; ++i) {
       TaskType& task{task_queue_[i]};
       if (task.is_valid()) {
-        if (task.is_ready(clock_->current_time())) {
+        if (task.is_runnable(clock_->current_time())) {
           task.run();
         }
         if (task.is_complete()) {
           task_queue_[i] = {};
         }
-        next_wakeup_time = std::min(next_wakeup_time, task.estimate_ready_at());
+        next_wakeup_time = std::min(next_wakeup_time, task.estimate_runnable_at());
       }
     }
     return next_wakeup_time;

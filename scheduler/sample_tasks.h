@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <coroutine>
 #include <cstdint>
 
@@ -17,10 +18,11 @@ Task<ClockType> just_return() {
 
 template <typename ClockType>
 Task<ClockType> run_forever(int& run_count) {
+  using namespace std::chrono_literals;
   while (true) {
     ++run_count;
     // Return a lambda indicating that this Task is always ready to run.
-    co_yield []() { return true; };
+    co_yield 0ms;
   }
 }
 
@@ -29,26 +31,19 @@ Task<ClockType> do_something(int& run_count) {
   for (unsigned i = 0; i < num_iterations; ++i) {
     ++run_count;
     const auto wake_time{ClockType::now() + std::chrono::microseconds{wake_interval_us}};
-    if (i % 2) {
-      // Return a lambda indicating that this Task will be ready to run at a certain time.
-      co_yield [wake_time]() -> bool { return ClockType::now() >= wake_time; };
-    } else {
-      // As above, but using the shorthand of just returning a uint64_t representing the time in
-      // microseconds when it will be ready.
-      co_yield wake_time;
-    }
+    co_yield wake_time;
   }
   co_return;
 }
 
 template <typename ClockType, size_t QUEUE_SIZE, size_t SUBTASK_CREATION_RATE = 10>
 Task<ClockType> creates_subtask(Scheduler<ClockType, QUEUE_SIZE>& scheduler, int& run_count) {
+  using namespace std::chrono_literals;
   while (true) {
     scheduler.add_task(run_forever<ClockType>(run_count));
     for (size_t i = 0; i < SUBTASK_CREATION_RATE; ++i) {
       ++run_count;
-      // Return a lambda indicating that this Task is always ready to run.
-      co_yield []() { return true; };
+      co_yield 0ms;
     }
   }
 }
