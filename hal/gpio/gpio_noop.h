@@ -8,7 +8,12 @@
 namespace tvsc::hal::gpio {
 
 class GpioNoop final : public GpioPeripheral {
- public:
+private:
+  Port port_;
+
+public:
+  GpioNoop(Port port) : port_(port) {}
+
   void enable() override;
   void disable() override;
 
@@ -18,6 +23,8 @@ class GpioNoop final : public GpioPeripheral {
   bool read_pin(Pin pin) override;
   void write_pin(Pin pin, bool on) override;
   void toggle_pin(Pin pin) override;
+
+  Port port() const override;
 };
 
 }  // namespace tvsc::hal::gpio
