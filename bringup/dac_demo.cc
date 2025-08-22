@@ -4,14 +4,14 @@
 
 #include "base/initializer.h"
 #include "hal/board/board.h"
-#include "scheduler/scheduler.h"
+#include "system/scheduler.h"
 #include "time/embedded_clock.h"
 
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::time::EmbeddedClock;
 
 using namespace tvsc::bringup;
-using namespace tvsc::scheduler;
+using namespace tvsc::system;
 
 static constexpr size_t QUEUE_SIZE{BoardType::NUM_DAC_CHANNELS};
 

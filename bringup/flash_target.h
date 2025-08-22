@@ -7,8 +7,8 @@
 #include "meta/build_time.h"
 #include "meta/firmware.h"
 #include "meta/flash.h"
-#include "scheduler/scheduler.h"
-#include "scheduler/task.h"
+#include "system/scheduler.h"
+#include "system/task.h"
 #include "serial_wire/flash.h"
 #include "serial_wire/serial_wire.h"
 #include "serial_wire/target.h"
@@ -29,7 +29,7 @@ __attribute__((section(".status.value"))) bool target_initialized{};
 namespace tvsc::bringup {
 
 template <typename ClockType>
-tvsc::scheduler::Task<ClockType> flash_target(
+tvsc::system::Task<ClockType> flash_target(
     tvsc::hal::programmer::ProgrammerPeripheral &programmer_peripheral,
     tvsc::hal::gpio::GpioPeripheral &debug_led_peripheral, tvsc::hal::gpio::Pin debug_led_pin) {
   using namespace std::chrono_literals;

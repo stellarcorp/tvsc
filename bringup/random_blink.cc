@@ -6,15 +6,15 @@
 #include "base/initializer.h"
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
-#include "scheduler/scheduler.h"
-#include "scheduler/task.h"
+#include "system/scheduler.h"
+#include "system/task.h"
 #include "time/embedded_clock.h"
 
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::time::EmbeddedClock;
 
 using namespace tvsc::bringup;
-using namespace tvsc::scheduler;
+using namespace tvsc::system;
 
 static constexpr size_t QUEUE_SIZE{1};
 

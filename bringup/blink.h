@@ -5,8 +5,8 @@
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
 #include "hal/time_type.h"
-#include "scheduler/scheduler.h"
-#include "scheduler/task.h"
+#include "system/scheduler.h"
+#include "system/task.h"
 
 namespace tvsc::bringup {
 
@@ -14,7 +14,7 @@ using namespace std::chrono_literals;
 
 template <typename ClockType, tvsc::hal::TimeType DURATION_MS =
                                   /* one year in milliseconds */ 365LL * 24 * 60 * 60 * 1000>
-tvsc::scheduler::Task<ClockType> blink(ClockType& clock,
+tvsc::system::Task<ClockType> blink(ClockType& clock,
                                        tvsc::hal::gpio::GpioPeripheral& gpio_peripheral,
                                        tvsc::hal::gpio::Pin pin,
                                        typename ClockType::duration delay = 500ms) {
@@ -33,7 +33,7 @@ tvsc::scheduler::Task<ClockType> blink(ClockType& clock,
 }
 
 template <typename ClockType>
-tvsc::scheduler::Task<ClockType> blink_on_success(std::function<bool()> is_success,
+tvsc::system::Task<ClockType> blink_on_success(std::function<bool()> is_success,
                                                   tvsc::hal::gpio::GpioPeripheral& led_peripheral,
                                                   tvsc::hal::gpio::Pin led_pin) {
   tvsc::hal::gpio::Gpio led_gpio{led_peripheral.access()};

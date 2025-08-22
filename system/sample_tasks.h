@@ -5,11 +5,11 @@
 #include <cstdint>
 
 #include "gtest/gtest.h"
-#include "scheduler/scheduler.h"
-#include "scheduler/task.h"
+#include "system/scheduler.h"
+#include "system/task.h"
 #include "time/mock_clock.h"
 
-namespace tvsc::scheduler {
+namespace tvsc::system {
 
 template <typename ClockType>
 Task<ClockType> just_return() {
@@ -48,4 +48,4 @@ Task<ClockType> creates_subtask(Scheduler<ClockType, QUEUE_SIZE>& scheduler, int
   }
 }
 
-}  // namespace tvsc::scheduler
+}  // namespace tvsc::system

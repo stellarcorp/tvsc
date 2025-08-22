@@ -8,9 +8,9 @@
 
 #include "hal/error.h"
 #include "hal/rcc/rcc.h"
-#include "scheduler/task.h"
+#include "system/task.h"
 
-namespace tvsc::scheduler {
+namespace tvsc::system {
 
 template <typename ClockType, size_t QUEUE_SIZE>
 class Scheduler;
@@ -121,4 +121,4 @@ std::string to_string(const Scheduler<ClockType, QUEUE_SIZE>& scheduler) {
   return result;
 }
 
-}  // namespace tvsc::scheduler
+}  // namespace tvsc::system

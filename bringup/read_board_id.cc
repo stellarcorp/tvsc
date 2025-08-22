@@ -12,8 +12,8 @@
 #include "hal/board/board.h"
 #include "hal/board_identification/board_ids.h"
 #include "hal/gpio/gpio.h"
-#include "scheduler/scheduler.h"
-#include "scheduler/task.h"
+#include "system/scheduler.h"
+#include "system/task.h"
 #include "time/embedded_clock.h"
 
 extern "C" {
@@ -36,7 +36,7 @@ using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::time::EmbeddedClock;
 
 template <typename ClockType>
-tvsc::scheduler::Task<ClockType> read_board_id(BoardType& board, int32_t num_iterations = -1) {
+tvsc::system::Task<ClockType> read_board_id(BoardType& board, int32_t num_iterations = -1) {
   using namespace std::chrono_literals;
   auto& gpio_id_power_peripheral{board.gpio<BoardType::BOARD_ID_POWER_PORT>()};
   auto& gpio_id_sense_peripheral{board.gpio<BoardType::BOARD_ID_SENSE_PORT>()};
@@ -108,7 +108,7 @@ tvsc::scheduler::Task<ClockType> read_board_id(BoardType& board, int32_t num_ite
 }  // namespace tvsc::bringup
 
 using namespace tvsc::bringup;
-using namespace tvsc::scheduler;
+using namespace tvsc::system;
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);

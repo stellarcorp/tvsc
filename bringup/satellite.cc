@@ -18,16 +18,14 @@
 #include "message/processor.h"
 #include "message/queue.h"
 #include "message/ring_buffer.h"
-#include "scheduler/scheduler.h"
+#include "system/scheduler.h"
+#include "system/system.h"
 #include "time/embedded_clock.h"
 
-using BoardType = tvsc::hal::board::Board;
-using ClockType = tvsc::time::EmbeddedClock;
-
-using namespace tvsc::bringup;
-using namespace tvsc::scheduler;
 using namespace std::chrono_literals;
+using namespace tvsc::bringup;
 using namespace tvsc::hal::board_identification;
+using namespace tvsc::system;
 
 extern "C" {
 alignas(uint32_t)  //
@@ -88,25 +86,22 @@ class LedControl final : public tvsc::message::Processor<tvsc::message::CanBusMe
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
-  auto& board{BoardType::board()};
-  auto& clock{ClockType::clock()};
+  auto& system{System::get()};
+
   {
-    auto& gpio_id_power_peripheral{board.gpio<BoardType::BOARD_ID_POWER_PORT>()};
-    auto& gpio_id_sense_peripheral{board.gpio<BoardType::BOARD_ID_SENSE_PORT>()};
-    auto& adc_peripheral{board.adc()};
+    auto& gpio_id_power_peripheral{system.board().gpio<System::BoardType::BOARD_ID_POWER_PORT>()};
+    auto& gpio_id_sense_peripheral{system.board().gpio<System::BoardType::BOARD_ID_SENSE_PORT>()};
+    auto& adc_peripheral{system.board().adc()};
 
-    board_id =
-        read_board_id(clock, gpio_id_power_peripheral, BoardType::BOARD_ID_POWER_PIN,
-                      gpio_id_sense_peripheral, BoardType::BOARD_ID_SENSE_PIN, adc_peripheral);
+    board_id = read_board_id(system.clock(), gpio_id_power_peripheral,
+                             System::BoardType::BOARD_ID_POWER_PIN, gpio_id_sense_peripheral,
+                             System::BoardType::BOARD_ID_SENSE_PIN, adc_peripheral);
 
-    board.mcu().read_id(mcu_id);
-    hashed_mcu_id = board.mcu().hashed_id();
+    system.board().mcu().read_id(mcu_id);
+    hashed_mcu_id = system.board().mcu().hashed_id();
 
     tvsc::message::create_announce_message(announce_msg, hashed_mcu_id, board_id);
   }
-
-  static constexpr size_t NUM_TASKS{5};
-  Scheduler<ClockType, NUM_TASKS> scheduler{board.rcc()};
 
   static constexpr size_t QUEUE_SIZE{5};
   static constexpr size_t NUM_PROCESSORS{2};
@@ -114,24 +109,26 @@ int main(int argc, char* argv[]) {
   CanBusSniffer can_bus_sniffer{};
   (void)can_bus_message_queue.attach_processor(can_bus_sniffer);
 
-  scheduler.add_task(flash_target<ClockType>(
-      board.programmer(), board.gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN));
+  system.scheduler().add_task(flash_target<System::ClockType>(
+      system.board().programmer(), system.board().gpio<System::BoardType::DEBUG_LED_PORT>(),
+      System::BoardType::DEBUG_LED_PIN));
 
-  scheduler.add_task(periodic_transmit<ClockType>(board.can1(), 10s, announce_msg));
+  system.scheduler().add_task(
+      periodic_transmit<System::ClockType>(system.board().can1(), 10s, announce_msg));
 
-  scheduler.add_task(can_bus_receive<ClockType>(board.can1(), can_bus_message_queue,
-                                                board.gpio<BoardType::DEBUG_LED_PORT>(),
-                                                BoardType::DEBUG_LED_PIN));
+  system.scheduler().add_task(can_bus_receive<System::ClockType>(
+      system.board().can1(), can_bus_message_queue,
+      system.board().gpio<System::BoardType::DEBUG_LED_PORT>(), System::BoardType::DEBUG_LED_PIN));
 
-  scheduler.add_task(process_messages<ClockType>(can_bus_message_queue));
+  system.scheduler().add_task(process_messages<System::ClockType>(can_bus_message_queue));
 
   if (board_id == static_cast<tvsc::hal::board_identification::BoardId>(
                       tvsc::hal::board_identification::CanonicalBoardIds::COMMS_BOARD_1)) {
-    scheduler.add_task(periodic_transmit<ClockType>(
-						    board.can1(), 500ms, 100ms,
+    system.scheduler().add_task(periodic_transmit<System::ClockType>(
+        system.board().can1(), 500ms, 100ms,
         tvsc::message::led_on_command<tvsc::message::CanBusMessage::mtu()>(),
         tvsc::message::led_off_command<tvsc::message::CanBusMessage::mtu()>()));
   }
 
-  scheduler.start();
+  system.scheduler().start();
 }

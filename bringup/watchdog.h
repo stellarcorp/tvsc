@@ -1,12 +1,12 @@
 #pragma once
 
 #include "hal/watchdog/watchdog.h"
-#include "scheduler/task.h"
+#include "system/task.h"
 
 namespace tvsc::bringup {
 
 template <typename ClockType>
-tvsc::scheduler::Task<ClockType> run_watchdog(
+tvsc::system::Task<ClockType> run_watchdog(
     tvsc::hal::watchdog::WatchdogPeripheral& watchdog_peripheral) {
   const auto feed_interval{watchdog_peripheral.reset_interval() / 4};
 

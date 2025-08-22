@@ -4,7 +4,7 @@
 #include <coroutine>
 #include <cstdint>
 
-namespace tvsc::scheduler {
+namespace tvsc::system {
 
 template <typename ClockType>
 class Task final {
@@ -98,4 +98,4 @@ class Task final {
   void run() noexcept { handle_(); }
 };
 
-}  // namespace tvsc::scheduler
+}  // namespace tvsc::system
