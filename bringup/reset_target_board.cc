@@ -3,8 +3,8 @@
 #include "base/initializer.h"
 #include "hal/board/board.h"
 #include "hal/programmer/programmer.h"
-#include "scheduler/scheduler.h"
-#include "scheduler/task.h"
+#include "system/scheduler.h"
+#include "system/task.h"
 #include "time/embedded_clock.h"
 
 namespace tvsc::bringup {
@@ -13,7 +13,7 @@ using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::time::EmbeddedClock;
 
 template <typename ClockType>
-tvsc::scheduler::Task<ClockType> reset_target(BoardType &board) {
+tvsc::system::Task<ClockType> reset_target(BoardType &board) {
   using namespace std::chrono_literals;
   using namespace tvsc::hal::gpio;
 
@@ -52,7 +52,7 @@ tvsc::scheduler::Task<ClockType> reset_target(BoardType &board) {
 }  // namespace tvsc::bringup
 
 using namespace tvsc::bringup;
-using namespace tvsc::scheduler;
+using namespace tvsc::system;
 
 int main(int argc, char *argv[]) {
   tvsc::initialize(&argc, &argv);

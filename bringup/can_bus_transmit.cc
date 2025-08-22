@@ -8,8 +8,8 @@
 #include "base/initializer.h"
 #include "hal/board/board.h"
 #include "hal/can_bus/can_bus.h"
-#include "scheduler/scheduler.h"
-#include "scheduler/task.h"
+#include "system/scheduler.h"
+#include "system/task.h"
 #include "time/embedded_clock.h"
 
 extern "C" {
@@ -27,7 +27,7 @@ using ClockType = tvsc::time::EmbeddedClock;
 static constexpr char MESSAGE[] = "Hello";
 
 template <typename ClockType>
-tvsc::scheduler::Task<ClockType> echo_client(BoardType& board) {
+tvsc::system::Task<ClockType> echo_client(BoardType& board) {
   using namespace std::chrono_literals;
   using namespace tvsc::hal::can_bus;
   using namespace tvsc::hal::gpio;
@@ -65,7 +65,7 @@ tvsc::scheduler::Task<ClockType> echo_client(BoardType& board) {
 }  // namespace tvsc::bringup
 
 using namespace tvsc::bringup;
-using namespace tvsc::scheduler;
+using namespace tvsc::system;
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);

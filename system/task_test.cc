@@ -1,9 +1,9 @@
-#include "scheduler/task.h"
+#include "system/task.h"
 
 #include "gtest/gtest.h"
-#include "scheduler/sample_tasks.h"
+#include "system/sample_tasks.h"
 
-namespace tvsc::scheduler {
+namespace tvsc::system {
 
 using ClockType = tvsc::time::MockClock;
 using TaskType = Task<ClockType>;
@@ -28,4 +28,4 @@ TEST(TaskTest, CanDetectInvalidTasksInCollection) {
   EXPECT_FALSE(tasks[2].is_valid());
 }
 
-}  // namespace tvsc::scheduler
+}  // namespace tvsc::system

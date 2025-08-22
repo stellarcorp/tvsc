@@ -51,8 +51,8 @@ cc_library(
         "//meta:firmware",
         "//meta:flash",
         "//random",
-        "//scheduler",
         "//serial_wire",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -73,7 +73,7 @@ cc_binary(
         "//hal/board",
         "//hal/gpio",
         "//profile",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -98,7 +98,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/gpio",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -123,7 +123,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/imu",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -148,7 +148,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/power_monitor",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -173,7 +173,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/gpio",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -199,7 +199,7 @@ cc_binary(
         "//hal/board",
         "//hal/gpio",
         "//random",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -226,7 +226,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/gpio",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -253,7 +253,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/gpio",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -279,7 +279,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/gpio",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -330,7 +330,7 @@ cc_binary(
         "//hal/board",
         "//hal/board_identification",
         "//hal/gpio",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -424,7 +424,7 @@ cc_binary(
         "//hal/can_bus",
         "//hal/gpio",
         "//meta:build_time",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -451,7 +451,7 @@ cc_binary(
         "//hal/can_bus",
         "//hal/gpio",
         "//meta:build_time",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -479,8 +479,8 @@ cc_binary(
         "//meta:build_time",
         "//meta:firmware",
         "//meta:flash",
-        "//scheduler",
         "//serial_wire",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -493,6 +493,7 @@ cc_binary(
     additional_linker_inputs = [
         ":linker_script",
     ],
+    defines = ["CONFIG_SCHEDULER_QUEUE_SIZE=6"],
     linkopts = ["-Wl,-T$(execpath :linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
@@ -510,8 +511,8 @@ cc_binary(
         "//meta:build_time",
         "//meta:firmware",
         "//meta:flash",
-        "//scheduler",
         "//serial_wire",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -536,8 +537,8 @@ cc_binary(
         "//hal/gpio",
         "//hal/programmer",
         "//meta:build_time",
-        "//scheduler",
         "//serial_wire",
+        "//system",
         "//time:embedded_clock",
     ],
 )
@@ -561,7 +562,7 @@ cc_binary(
         "//hal/board",
         "//hal/gpio",
         "//hal/programmer",
-        "//scheduler",
+        "//system",
         "//time:embedded_clock",
     ],
 )

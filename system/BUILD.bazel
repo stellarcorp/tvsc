@@ -1,12 +1,17 @@
 cc_library(
-    name = "scheduler",
+    name = "system",
+    srcs = [
+        "system.cc",
+    ],
     hdrs = [
         "scheduler.h",
+        "system.h",
         "task.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//hal/rcc",
+        "//hal/board",
+        "//time:embedded_clock",
     ],
 )
 
@@ -17,7 +22,7 @@ cc_library(
         "sample_tasks.h",
     ],
     deps = [
-        ":scheduler",
+        ":system",
     ],
 )
 
@@ -25,7 +30,7 @@ cc_test(
     name = "scheduler_test",
     srcs = ["scheduler_test.cc"],
     deps = [
-        ":scheduler",
+        ":system",
         ":testing",
         "//hal/rcc",
         "//third_party/glog",
@@ -38,7 +43,7 @@ cc_test(
     name = "task_test",
     srcs = ["task_test.cc"],
     deps = [
-        ":scheduler",
+        ":system",
         ":testing",
         "//third_party/glog",
         "//third_party/gtest",

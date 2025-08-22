@@ -5,12 +5,12 @@
 
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
-#include "scheduler/task.h"
+#include "system/task.h"
 
 namespace tvsc::bringup {
 
 template <typename ClockType, uint8_t DAC_CHANNEL = 0>
-tvsc::scheduler::Task<ClockType> run_dac_demo(tvsc::hal::board::Board& board,
+tvsc::system::Task<ClockType> run_dac_demo(tvsc::hal::board::Board& board,
                                                    uint32_t& output_value,
                                                    uint64_t initial_delay_ms = 0) {
   using namespace std::chrono_literals;

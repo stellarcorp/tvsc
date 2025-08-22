@@ -8,15 +8,15 @@
 #include "bringup/blink.h"
 #include "bringup/watchdog.h"
 #include "hal/board/board.h"
-#include "scheduler/scheduler.h"
-#include "scheduler/task.h"
+#include "system/scheduler.h"
+#include "system/task.h"
 #include "time/embedded_clock.h"
 
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::time::EmbeddedClock;
 
 using namespace tvsc::bringup;
-using namespace tvsc::scheduler;
+using namespace tvsc::system;
 using namespace std::chrono_literals;
 
 extern "C" {

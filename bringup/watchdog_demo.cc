@@ -5,14 +5,14 @@
 #include "bringup/quit.h"
 #include "bringup/watchdog.h"
 #include "hal/board/board.h"
-#include "scheduler/scheduler.h"
+#include "system/scheduler.h"
 #include "time/embedded_clock.h"
 
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::time::EmbeddedClock;
 
 using namespace tvsc::bringup;
-using namespace tvsc::scheduler;
+using namespace tvsc::system;
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);

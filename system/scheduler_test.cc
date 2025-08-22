@@ -1,4 +1,4 @@
-#include "scheduler/scheduler.h"
+#include "system/scheduler.h"
 
 #include <coroutine>
 #include <cstdint>
@@ -6,11 +6,11 @@
 
 #include "gtest/gtest.h"
 #include "hal/rcc/rcc_noop.h"
-#include "scheduler/sample_tasks.h"
-#include "scheduler/task.h"
+#include "system/sample_tasks.h"
+#include "system/task.h"
 #include "time/mock_clock.h"
 
-namespace tvsc::scheduler {
+namespace tvsc::system {
 
 using ClockType = tvsc::time::MockClock;
 using TaskType = Task<ClockType>;
@@ -217,4 +217,4 @@ TEST(SchedulerTest, CanRunTaskThatSleepsMultipleTimes) {
   EXPECT_EQ(NUM_ITERATIONS, run_count);
 }
 
-}  // namespace tvsc::scheduler
+}  // namespace tvsc::system

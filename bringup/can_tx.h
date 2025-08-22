@@ -5,7 +5,7 @@
 #include "base/enums.h"
 #include "hal/can_bus/can_bus.h"
 #include "message/message.h"
-#include "scheduler/task.h"
+#include "system/task.h"
 
 namespace tvsc::bringup {
 
@@ -13,7 +13,7 @@ namespace tvsc::bringup {
  * Transmit the same message periodically. This is useful for heartbeat and announce messages.
  */
 template <typename ClockType>
-tvsc::scheduler::Task<ClockType> periodic_transmit(
+tvsc::system::Task<ClockType> periodic_transmit(
     tvsc::hal::can_bus::CanBusPeripheral& can_peripheral, std::chrono::milliseconds period,
     const message::CanBusMessage& msg) {
   while (true) {
@@ -30,7 +30,7 @@ tvsc::scheduler::Task<ClockType> periodic_transmit(
  * control.
  */
 template <typename ClockType>
-tvsc::scheduler::Task<ClockType> periodic_transmit(
+tvsc::system::Task<ClockType> periodic_transmit(
     tvsc::hal::can_bus::CanBusPeripheral& can_peripheral, std::chrono::milliseconds period1, std::chrono::milliseconds period2,
     const message::CanBusMessage& msg1, const message::CanBusMessage& msg2) {
   while (true) {
