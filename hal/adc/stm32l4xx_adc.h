@@ -23,13 +23,13 @@ class AdcStm32l4xx final : public AdcPeripheral {
   void enable() override;
   void disable() override;
 
-  void start_single_conversion(gpio::PortPin pin, uint32_t* destination,
+  void start_single_conversion(gpio::PinRef pin, uint32_t* destination,
                                size_t destination_buffer_size) override;
 
-  void start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
+  void start_conversion_stream(gpio::PinRef pin, uint32_t* destination,
                                size_t destination_buffer_size, timer::Timer& trigger) override;
 
-  uint16_t measure_value(gpio::PortPin pin, std::chrono::milliseconds timeout) override;
+  uint16_t measure_value(gpio::PinRef pin, std::chrono::milliseconds timeout) override;
 
   void reset_after_conversion() override;
 

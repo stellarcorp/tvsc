@@ -31,16 +31,16 @@ class AdcPeripheral : public Peripheral<AdcPeripheral, Adc> {
    * want begin/end iterators as parameters. (Note: can't use std::array as it would require
    * templating on the size of the array, and template functions can't be virtual.
    */
-  virtual void start_single_conversion(gpio::PortPin pin, uint32_t* destination,
+  virtual void start_single_conversion(gpio::PinRef pin, uint32_t* destination,
                                        size_t destination_buffer_size) = 0;
 
-  virtual void start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
+  virtual void start_conversion_stream(gpio::PinRef pin, uint32_t* destination,
                                        size_t destination_buffer_size, timer::Timer& trigger) = 0;
 
   /**
    * Measure the voltage on a pin. This method blocks until the conversion is complete.
    */
-  virtual uint16_t measure_value(gpio::PortPin pin, std::chrono::milliseconds timeout) = 0;
+  virtual uint16_t measure_value(gpio::PinRef pin, std::chrono::milliseconds timeout) = 0;
 
   virtual void reset_after_conversion() = 0;
 
@@ -77,17 +77,17 @@ class Adc final : public Functional<AdcPeripheral, Adc> {
   friend class Peripheral<AdcPeripheral, Adc>;
 
  public:
-  void start_single_conversion(gpio::PortPin pin, uint32_t* destination,
+  void start_single_conversion(gpio::PinRef pin, uint32_t* destination,
                                size_t destination_buffer_size) {
     peripheral_->start_single_conversion(pin, destination, destination_buffer_size);
   }
 
-  void start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
+  void start_conversion_stream(gpio::PinRef pin, uint32_t* destination,
                                size_t destination_buffer_size, timer::Timer& trigger) {
     peripheral_->start_conversion_stream(pin, destination, destination_buffer_size, trigger);
   }
 
-  uint16_t measure_value(gpio::PortPin pin, std::chrono::milliseconds timeout = 10ms) {
+  uint16_t measure_value(gpio::PinRef pin, std::chrono::milliseconds timeout = 10ms) {
     return peripheral_->measure_value(pin, timeout);
   }
 
