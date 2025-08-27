@@ -1,30 +1,27 @@
 #pragma once
 
-#include <chrono>
-
 #include "hal/gpio/gpio.h"
-#include "hal/peripheral.h"
 
 namespace tvsc::hal::gpio {
 
 class GpioNoop final : public GpioPeripheral {
-private:
-  Port port_;
+ private:
+  PortNumber port_;
 
-public:
-  GpioNoop(Port port) : port_(port) {}
+ public:
+  GpioNoop(PortNumber port) : port_(port) {}
 
   void enable() override;
   void disable() override;
 
-  void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed,
+  void set_pin_mode(PinNumber pin, PinMode mode, PinSpeed speed,
                     uint8_t alternate_function_mapping) override;
 
-  bool read_pin(Pin pin) override;
-  void write_pin(Pin pin, bool on) override;
-  void toggle_pin(Pin pin) override;
+  bool read_pin(PinNumber pin) override;
+  void write_pin(PinNumber pin, bool on) override;
+  void toggle_pin(PinNumber pin) override;
 
-  Port port() const override;
+  PortNumber port() const override;
 };
 
 }  // namespace tvsc::hal::gpio

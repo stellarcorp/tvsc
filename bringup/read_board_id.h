@@ -17,8 +17,8 @@ namespace tvsc::bringup {
 template <typename ClockType>
 tvsc::hal::board_identification::BoardId read_board_id(
     ClockType& clock, tvsc::hal::gpio::GpioPeripheral& id_power_peripheral,
-    tvsc::hal::gpio::Pin power_pin, tvsc::hal::gpio::GpioPeripheral& id_sense_peripheral,
-    tvsc::hal::gpio::Pin sense_pin, tvsc::hal::adc::AdcPeripheral& adc_peripheral) {
+    tvsc::hal::gpio::PinNumber power_pin, tvsc::hal::gpio::GpioPeripheral& id_sense_peripheral,
+    tvsc::hal::gpio::PinNumber sense_pin, tvsc::hal::adc::AdcPeripheral& adc_peripheral) {
   using namespace tvsc::hal::board_identification;
   using namespace tvsc::hal::gpio;
   using namespace std::chrono_literals;

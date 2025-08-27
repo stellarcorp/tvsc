@@ -13,7 +13,7 @@ template <size_t QUEUE_SIZE, size_t NUM_HANDLERS>
 tvsc::system::System::Task can_bus_receive(
     tvsc::hal::can_bus::CanBusPeripheral& can_peripheral,
     tvsc::message::CanBusMessageQueue<QUEUE_SIZE, NUM_HANDLERS>& queue,
-    tvsc::hal::gpio::GpioPeripheral& gpio_peripheral, tvsc::hal::gpio::Pin pin) {
+    tvsc::hal::gpio::GpioPeripheral& gpio_peripheral, tvsc::hal::gpio::PinNumber pin) {
   using namespace std::chrono_literals;
   using namespace tvsc::hal::can_bus;
 

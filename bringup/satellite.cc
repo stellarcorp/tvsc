@@ -52,11 +52,11 @@ class CanBusSniffer final : public tvsc::message::Processor<tvsc::message::CanBu
 class LedControl final : public tvsc::message::Processor<tvsc::message::CanBusMessage> {
  private:
   tvsc::hal::gpio::GpioPeripheral* led_gpio_peripheral_;
-  tvsc::hal::gpio::Pin led_pin_;
+  tvsc::hal::gpio::PinNumber led_pin_;
   tvsc::hal::gpio::Gpio led_gpio_{};
 
  public:
-  LedControl(tvsc::hal::gpio::GpioPeripheral& led_gpio_peripheral, tvsc::hal::gpio::Pin led_pin)
+  LedControl(tvsc::hal::gpio::GpioPeripheral& led_gpio_peripheral, tvsc::hal::gpio::PinNumber led_pin)
       : led_gpio_peripheral_(&led_gpio_peripheral), led_pin_(led_pin) {}
 
   bool process(const tvsc::message::CanBusMessage& msg) override {

@@ -36,33 +36,33 @@ namespace tvsc::hal::board {
 
 class Board final {
  public:
-  static constexpr gpio::Port NUM_GPIO_PORTS{6};
+  static constexpr gpio::PortNumber NUM_GPIO_PORTS{6};
   static constexpr size_t NUM_DAC_CHANNELS{1};
   static constexpr size_t NUM_DEBUG_LEDS{1};
 
-  static constexpr gpio::Port GPIO_PORT_A{0};
-  static constexpr gpio::Port GPIO_PORT_B{1};
-  static constexpr gpio::Port GPIO_PORT_C{2};
-  static constexpr gpio::Port GPIO_PORT_D{3};
-  static constexpr gpio::Port GPIO_PORT_E{4};
-  static constexpr gpio::Port GPIO_PORT_H{7};
+  static constexpr gpio::PortNumber GPIO_PORT_A{0};
+  static constexpr gpio::PortNumber GPIO_PORT_B{1};
+  static constexpr gpio::PortNumber GPIO_PORT_C{2};
+  static constexpr gpio::PortNumber GPIO_PORT_D{3};
+  static constexpr gpio::PortNumber GPIO_PORT_E{4};
+  static constexpr gpio::PortNumber GPIO_PORT_H{7};
 
   // Location of the LEDs provided by this board.
-  static constexpr gpio::Port DEBUG_LED_PORT{GPIO_PORT_A};
-  static constexpr gpio::Pin DEBUG_LED_PIN{5};
+  static constexpr gpio::PortNumber DEBUG_LED_PORT{GPIO_PORT_A};
+  static constexpr gpio::PinNumber DEBUG_LED_PIN{5};
 
-  static constexpr std::array<gpio::Port, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{DEBUG_LED_PORT};
-  static constexpr std::array<gpio::Pin, NUM_DEBUG_LEDS> DEBUG_LED_PINS{DEBUG_LED_PIN};
+  static constexpr std::array<gpio::PortNumber, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{DEBUG_LED_PORT};
+  static constexpr std::array<gpio::PinNumber, NUM_DEBUG_LEDS> DEBUG_LED_PINS{DEBUG_LED_PIN};
 
   // Location of the push button on this board.
-  static constexpr gpio::Port BLUE_PUSH_BUTTON_PORT{GPIO_PORT_C};
-  static constexpr gpio::Pin BLUE_PUSH_BUTTON_PIN{13};
+  static constexpr gpio::PortNumber BLUE_PUSH_BUTTON_PORT{GPIO_PORT_C};
+  static constexpr gpio::PinNumber BLUE_PUSH_BUTTON_PIN{13};
 
-  static constexpr gpio::Port DAC_CHANNEL_1_PORT{GPIO_PORT_A};
-  static constexpr gpio::Pin DAC_CHANNEL_1_PIN{4};
+  static constexpr gpio::PortNumber DAC_CHANNEL_1_PORT{GPIO_PORT_A};
+  static constexpr gpio::PinNumber DAC_CHANNEL_1_PIN{4};
 
-  static constexpr std::array<gpio::Port, NUM_DAC_CHANNELS> DAC_PORTS{DAC_CHANNEL_1_PORT};
-  static constexpr std::array<gpio::Pin, NUM_DAC_CHANNELS> DAC_PINS{DAC_CHANNEL_1_PIN};
+  static constexpr std::array<gpio::PortNumber, NUM_DAC_CHANNELS> DAC_PORTS{DAC_CHANNEL_1_PORT};
+  static constexpr std::array<gpio::PinNumber, NUM_DAC_CHANNELS> DAC_PINS{DAC_CHANNEL_1_PIN};
 
  private:
   rcc::RccStm32L4xx rcc_{};
@@ -107,8 +107,8 @@ class Board final {
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
-  static constexpr gpio::Port GPIO_PORT_F{5};
-  static constexpr gpio::Port GPIO_PORT_G{6};
+  static constexpr gpio::PortNumber GPIO_PORT_F{5};
+  static constexpr gpio::PortNumber GPIO_PORT_G{6};
   static constexpr size_t NUM_DISALLOWED_PORTS{2};
 
   static Board board_;
@@ -120,7 +120,7 @@ class Board final {
   // One board per executable.
   static Board& board();
 
-  template <gpio::Port GPIO_PORT>
+  template <gpio::PortNumber GPIO_PORT>
   gpio::GpioPeripheral& gpio() {
     static_assert(
         GPIO_PORT < NUM_GPIO_PORTS + NUM_DISALLOWED_PORTS,
@@ -165,7 +165,7 @@ class Board final {
    * only be used as to lookup GPIO ports using integer values that can be evaluated at
    * compile-time; these integer values will mainly come from STM's HAL.
    */
-  gpio::GpioPeripheral& gpio(gpio::Port port) {
+  gpio::GpioPeripheral& gpio(gpio::PortNumber port) {
     if (port == 0) {
       return gpio_port_a_;
     } else if (port == 1) {

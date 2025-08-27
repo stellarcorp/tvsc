@@ -7,7 +7,7 @@
 namespace tvsc::bringup {
 
 tvsc::system::System::Task blink_randomly(tvsc::hal::gpio::GpioPeripheral& gpio_peripheral,
-                                          tvsc::hal::gpio::Pin pin) {
+                                          tvsc::hal::gpio::PinNumber pin) {
   auto gpio{gpio_peripheral.access()};
   gpio.set_pin_mode(pin, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
   gpio.write_pin(pin, 0);

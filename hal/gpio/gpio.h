@@ -11,16 +11,16 @@ namespace tvsc::hal::gpio {
 /**
  * Type used to identify a GPIO port (specific peripheral) on an processor.
  */
-using Port = uint8_t;
+using PortNumber = uint8_t;
 
 /**
  * Type used to identify a Pin on a GPIO port.
  */
-using Pin = uint8_t;
+using PinNumber = uint8_t;
 
 struct PortPin final {
-  Port port{};
-  Pin pin{};
+  PortNumber port{};
+  PinNumber pin{};
 };
 
 /**
@@ -111,12 +111,12 @@ class GpioPeripheral : public Peripheral<GpioPeripheral, Gpio> {
   virtual void enable() = 0;
   virtual void disable() = 0;
 
-  virtual void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed,
+  virtual void set_pin_mode(PinNumber pin, PinMode mode, PinSpeed speed,
                             uint8_t alternate_function_mapping) = 0;
 
-  virtual bool read_pin(Pin pin) = 0;
-  virtual void write_pin(Pin pin, bool on) = 0;
-  virtual void toggle_pin(Pin pin) = 0;
+  virtual bool read_pin(PinNumber pin) = 0;
+  virtual void write_pin(PinNumber pin, bool on) = 0;
+  virtual void toggle_pin(PinNumber pin) = 0;
 
   friend class Gpio;
 
@@ -126,7 +126,7 @@ class GpioPeripheral : public Peripheral<GpioPeripheral, Gpio> {
  public:
   virtual ~GpioPeripheral() = default;
 
-  virtual Port port() const = 0;
+  virtual PortNumber port() const = 0;
 };
 
 class Gpio final : public Functional<GpioPeripheral, Gpio> {
@@ -138,16 +138,16 @@ class Gpio final : public Functional<GpioPeripheral, Gpio> {
  public:
   Gpio() = default;
 
-  void set_pin_mode(Pin pin, PinMode mode, PinSpeed speed = PinSpeed::LOW,
+  void set_pin_mode(PinNumber pin, PinMode mode, PinSpeed speed = PinSpeed::LOW,
                     uint8_t alternate_function_mapping = 0) {
     peripheral_->set_pin_mode(pin, mode, speed, alternate_function_mapping);
   }
 
-  bool read_pin(Pin pin) { return peripheral_->read_pin(pin); }
-  void write_pin(Pin pin, bool on) { peripheral_->write_pin(pin, on); }
-  void toggle_pin(Pin pin) { peripheral_->toggle_pin(pin); }
+  bool read_pin(PinNumber pin) { return peripheral_->read_pin(pin); }
+  void write_pin(PinNumber pin, bool on) { peripheral_->write_pin(pin, on); }
+  void toggle_pin(PinNumber pin) { peripheral_->toggle_pin(pin); }
 
-  Port port() const { return peripheral_->port(); }
+  PortNumber port() const { return peripheral_->port(); }
 };
 
 }  // namespace tvsc::hal::gpio

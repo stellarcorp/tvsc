@@ -17,8 +17,8 @@ class I2cStm32l4xx final : public I2cPeripheral {
   Callback pending_callback_;
   gpio::GpioPeripheral* gpio_peripheral_;
   gpio::Gpio gpio_{};
-  gpio::Pin scl_pin_;
-  gpio::Pin sda_pin_;
+  gpio::PinNumber scl_pin_;
+  gpio::PinNumber sda_pin_;
 
   void enable() override;
   void disable() override;
@@ -58,8 +58,8 @@ class I2cStm32l4xx final : public I2cPeripheral {
                         size_t length, Callback callback) override;
 
  public:
-  I2cStm32l4xx(I2C_TypeDef* i2c_instance, gpio::GpioPeripheral& gpio_peripheral, gpio::Pin scl_pin,
-               gpio::Pin sda_pin)
+  I2cStm32l4xx(I2C_TypeDef* i2c_instance, gpio::GpioPeripheral& gpio_peripheral, gpio::PinNumber scl_pin,
+               gpio::PinNumber sda_pin)
       : gpio_peripheral_(&gpio_peripheral), scl_pin_(scl_pin), sda_pin_(sda_pin) {
     i2c_.Instance = i2c_instance;
   }

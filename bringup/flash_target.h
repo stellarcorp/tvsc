@@ -29,7 +29,7 @@ namespace tvsc::bringup {
 
 tvsc::system::System::Task flash_target(
     tvsc::hal::programmer::ProgrammerPeripheral &programmer_peripheral,
-    tvsc::hal::gpio::GpioPeripheral &debug_led_peripheral, tvsc::hal::gpio::Pin debug_led_pin) {
+    tvsc::hal::gpio::GpioPeripheral &debug_led_peripheral, tvsc::hal::gpio::PinNumber debug_led_pin) {
   using namespace std::chrono_literals;
   using namespace tvsc::hal::gpio;
   using namespace tvsc::serial_wire;

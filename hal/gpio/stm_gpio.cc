@@ -1,5 +1,6 @@
 #include "hal/gpio/stm_gpio.h"
 
+#include <cstdint>
 #include <new>
 
 #include "hal/gpio/gpio.h"
@@ -9,7 +10,7 @@
 
 namespace tvsc::hal::gpio {
 
-void GpioStm32xxxx::set_ospeedr_value(Pin pin, PinSpeed speed) {
+void GpioStm32xxxx::set_ospeedr_value(PinNumber pin, PinSpeed speed) {
   uint8_t speed_value{};
   switch (speed) {
     case PinSpeed::LOW:
@@ -30,22 +31,22 @@ void GpioStm32xxxx::set_ospeedr_value(Pin pin, PinSpeed speed) {
   registers_->OSPEEDR.set_bit_field_value<2>(speed_value, static_cast<uint8_t>(2 * pin));
 }
 
-void GpioStm32xxxx::set_moder_value(Pin pin, MODER_VALUES value) {
+void GpioStm32xxxx::set_moder_value(PinNumber pin, MODER_VALUES value) {
   registers_->MODER.set_bit_field_value<2>(static_cast<uint32_t>(value),
                                            static_cast<uint8_t>(2 * pin));
 }
 
-void GpioStm32xxxx::set_pupdr_value(Pin pin, OPUPDR_VALUES value) {
+void GpioStm32xxxx::set_pupdr_value(PinNumber pin, OPUPDR_VALUES value) {
   registers_->OPUPDR.set_bit_field_value<2>(static_cast<uint32_t>(value),
                                             static_cast<uint8_t>(2 * pin));
 }
 
-void GpioStm32xxxx::set_otyper_value(Pin pin, OTYPER_VALUES value) {
+void GpioStm32xxxx::set_otyper_value(PinNumber pin, OTYPER_VALUES value) {
   registers_->OTYPER.set_bit_field_value<1>(static_cast<uint32_t>(value),
                                             static_cast<uint8_t>(pin));
 }
 
-void GpioStm32xxxx::set_alternate_function(Pin pin, uint8_t value) {
+void GpioStm32xxxx::set_alternate_function(PinNumber pin, uint8_t value) {
   if (pin >= 0 && pin < 8) {
     registers_->AFRL.set_bit_field_value<4>(value, 4 * pin);
   } else {
@@ -53,7 +54,7 @@ void GpioStm32xxxx::set_alternate_function(Pin pin, uint8_t value) {
   }
 }
 
-void GpioStm32xxxx::set_pin_mode(Pin pin, PinMode mode, PinSpeed speed,
+void GpioStm32xxxx::set_pin_mode(PinNumber pin, PinMode mode, PinSpeed speed,
                                  uint8_t alternate_function_mapping) {
   switch (mode) {
       // Unused pins get set to the reset state of most pins. Note that the reset state of some
@@ -185,7 +186,7 @@ void GpioStm32xxxx::set_pin_mode(Pin pin, PinMode mode, PinSpeed speed,
   }
 }
 
-void GpioStm32xxxx::write_pin(Pin pin, bool on) {
+void GpioStm32xxxx::write_pin(PinNumber pin, bool on) {
   // Atomically turn on or off the pin. Setting a one in the lower 16-bits turns ON the pin.
   // Setting a one in the upper 16-bits turns OFF the pin.
   if (on) {
@@ -195,13 +196,13 @@ void GpioStm32xxxx::write_pin(Pin pin, bool on) {
   }
 }
 
-void GpioStm32xxxx::toggle_pin(Pin pin) {
+void GpioStm32xxxx::toggle_pin(PinNumber pin) {
   const uint32_t current_value{registers_->ODR.value()};
   registers_->BSRR.set_value(((current_value & (1U << pin)) << NUM_PINS) |
                              (~current_value & (1U << pin)));
 }
 
-bool GpioStm32xxxx::read_pin(Pin pin) { return registers_->IDR.bit_field_value<1>(pin); }
+bool GpioStm32xxxx::read_pin(PinNumber pin) { return registers_->IDR.bit_field_value<1>(pin); }
 
 void GpioStm32xxxx::disable() {
   if (port_ == 0) {
@@ -243,6 +244,6 @@ void GpioStm32xxxx::enable() {
   }
 }
 
-Port GpioStm32xxxx::port() const { return port_; }
+PortNumber GpioStm32xxxx::port() const { return port_; }
 
 }  // namespace tvsc::hal::gpio

@@ -16,10 +16,10 @@ class CanBusStm32l4xx final : public CanBusPeripheral {
   CAN_HandleTypeDef can_bus_{};
   gpio::GpioPeripheral* gpio_peripheral_;
   gpio::Gpio gpio_{};
-  gpio::Pin tx_pin_;
-  gpio::Pin rx_pin_;
-  gpio::Pin shutdown_pin_;
-  gpio::Pin silent_pin_;
+  gpio::PinNumber tx_pin_;
+  gpio::PinNumber rx_pin_;
+  gpio::PinNumber shutdown_pin_;
+  gpio::PinNumber silent_pin_;
 
   void enable() override;
   void disable() override;
@@ -34,7 +34,7 @@ class CanBusStm32l4xx final : public CanBusPeripheral {
 
  public:
   CanBusStm32l4xx(CAN_TypeDef* can_bus_instance, gpio::GpioPeripheral& gpio_peripheral,
-                  gpio::Pin tx_pin, gpio::Pin rx_pin, gpio::Pin shutdown_pin, gpio::Pin silent_pin)
+                  gpio::PinNumber tx_pin, gpio::PinNumber rx_pin, gpio::PinNumber shutdown_pin, gpio::PinNumber silent_pin)
       : gpio_peripheral_(&gpio_peripheral),
         tx_pin_(tx_pin),
         rx_pin_(rx_pin),

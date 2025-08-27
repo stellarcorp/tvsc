@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <cstdlib>
 
 #include "hal/gpio/gpio.h"
 #include "hal/peripheral.h"
