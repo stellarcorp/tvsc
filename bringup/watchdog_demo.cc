@@ -21,8 +21,7 @@ int main(int argc, char* argv[]) {
   System::clock().sleep(CYCLE_TIME);
 
   System::scheduler().add_task(run_watchdog(System::board().iwdg()));
-  System::scheduler().add_task(
-      blink(System::board().gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN));
+  System::scheduler().add_task(blink(System::board().debug_led()));
   System::scheduler().add_task(quit(CYCLE_TIME));
   System::scheduler().start();
 }

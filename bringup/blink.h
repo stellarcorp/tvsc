@@ -14,21 +14,20 @@ using namespace std::chrono_literals;
 
 template <tvsc::hal::TimeType DURATION_MS =
               /* one year in milliseconds */ 365LL * 24 * 60 * 60 * 1000>
-tvsc::system::System::Task blink(tvsc::hal::gpio::GpioPeripheral& gpio_peripheral,
-                                 tvsc::hal::gpio::PinNumber pin,
+tvsc::system::System::Task blink(tvsc::hal::gpio::PinPeripheral led_peripheral,
                                  typename system::System::ClockType::duration delay = 500ms) {
-  tvsc::hal::gpio::Gpio gpio{gpio_peripheral.access()};
+  tvsc::hal::gpio::Pin led{led_peripheral.access()};
 
-  gpio.set_pin_mode(pin, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
+  led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
   const auto stop_time{system::System::clock().current_time() +
                        std::chrono::milliseconds(DURATION_MS)};
 
-  gpio.write_pin(pin, 0);
+  led.write_pin(0);
   while (system::System::clock().current_time() < stop_time) {
-    gpio.toggle_pin(pin);
+    led.toggle_pin();
     co_yield delay;
   }
-  gpio.write_pin(pin, 0);
+  led.write_pin(0);
   co_return;
 }
 

@@ -153,4 +153,54 @@ class Gpio final : public Functional<GpioPeripheral, Gpio> {
   PortNumber port() const { return peripheral_->port(); }
 };
 
+class Pin;
+
+class PinPeripheral final : public Peripheral<PinPeripheral, Pin> {
+ private:
+  GpioPeripheral* gpio_peripheral_;
+  const PinNumber pin_number_;
+  Gpio gpio_{};
+
+  void enable() override { gpio_.ensure_valid(*gpio_peripheral_); }
+
+  void disable() override { gpio_.invalidate(); }
+
+  void set_pin_mode(PinMode mode, PinSpeed speed, uint8_t alternate_function_mapping) {
+    gpio_.set_pin_mode(pin_number_, mode, speed, alternate_function_mapping);
+  }
+
+  bool read_pin() { return gpio_.read_pin(pin_number_); }
+  void write_pin(bool on) { gpio_.write_pin(pin_number_, on); }
+  void toggle_pin() { gpio_.toggle_pin(pin_number_); }
+
+  friend class Pin;
+
+ public:
+  PinPeripheral(GpioPeripheral& gpio_peripheral, PinNumber pin_number)
+      : gpio_peripheral_(&gpio_peripheral), pin_number_(pin_number) {}
+
+  PortNumber port() const { return gpio_peripheral_->port(); }
+  PinNumber pin() const { return pin_number_; }
+};
+
+class Pin final : public Functional<PinPeripheral, Pin> {
+ private:
+  friend class Peripheral<PinPeripheral, Pin>;
+
+  explicit Pin(PinPeripheral& peripheral) : Functional<PinPeripheral, Pin>(peripheral) {}
+
+ public:
+  void set_pin_mode(PinMode mode, PinSpeed speed = PinSpeed::LOW,
+                    uint8_t alternate_function_mapping = 0) {
+    peripheral_->set_pin_mode(mode, speed, alternate_function_mapping);
+  }
+
+  bool read_pin() { return peripheral_->read_pin(); }
+  void write_pin(bool on) { peripheral_->write_pin(on); }
+  void toggle_pin() { peripheral_->toggle_pin(); }
+
+  PortNumber port() const { return peripheral_->port(); }
+  PinNumber pin() const { return peripheral_->pin(); }
+};
+
 }  // namespace tvsc::hal::gpio

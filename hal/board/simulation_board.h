@@ -119,6 +119,10 @@ class Board final {
     error();
   }
 
+  gpio::PinPeripheral debug_led() {
+    return gpio::PinPeripheral{gpio<DEBUG_LED_PORT>(), DEBUG_LED_PIN};
+  }
+
   watchdog::WatchdogPeripheral& iwdg() { return iwdg_interceptor_; }
   power::Power& power() { return power_interceptor_; };
   rcc::Rcc& rcc() { return rcc_interceptor_; };

@@ -56,7 +56,8 @@ class LedControl final : public tvsc::message::Processor<tvsc::message::CanBusMe
   tvsc::hal::gpio::Gpio led_gpio_{};
 
  public:
-  LedControl(tvsc::hal::gpio::GpioPeripheral& led_gpio_peripheral, tvsc::hal::gpio::PinNumber led_pin)
+  LedControl(tvsc::hal::gpio::GpioPeripheral& led_gpio_peripheral,
+             tvsc::hal::gpio::PinNumber led_pin)
       : led_gpio_peripheral_(&led_gpio_peripheral), led_pin_(led_pin) {}
 
   bool process(const tvsc::message::CanBusMessage& msg) override {
@@ -115,9 +116,8 @@ int main(int argc, char* argv[]) {
 
   system.scheduler().add_task(periodic_transmit(system.board().can1(), 10s, announce_msg));
 
-  system.scheduler().add_task(can_bus_receive(
-      system.board().can1(), can_bus_message_queue,
-      system.board().gpio<System::BoardType::DEBUG_LED_PORT>(), System::BoardType::DEBUG_LED_PIN));
+  system.scheduler().add_task(
+      can_bus_receive(system.board().can1(), can_bus_message_queue, system.board().debug_led()));
 
   system.scheduler().add_task(process_messages(can_bus_message_queue));
 
