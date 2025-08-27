@@ -2,12 +2,12 @@
 
 #include <chrono>
 
-#include "system/task.h"
+#include "system/system.h"
 
 namespace tvsc::bringup {
 
-template <typename ClockType, typename QueueType>
-tvsc::system::Task<ClockType> process_messages(QueueType& queue) {
+template <typename QueueType>
+tvsc::system::System::Task process_messages(QueueType& queue) {
   using namespace std::chrono_literals;
   while (true) {
     queue.process_next_message();

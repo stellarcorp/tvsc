@@ -5,7 +5,7 @@
 #include <cstdint>
 
 #include "hal/power_monitor/power_monitor.h"
-#include "system/task.h"
+#include "system/system.h"
 
 namespace tvsc::bringup {
 
@@ -24,8 +24,7 @@ struct alignas(16) PowerUsage final {
   void reset() { *this = PowerUsage{}; }
 };
 
-template <typename ClockType>
-tvsc::system::Task<ClockType> monitor_power(
+tvsc::system::System::Task monitor_power(
     tvsc::hal::power_monitor::PowerMonitorPeripheral& power_monitor_peripheral, PowerUsage& output,
     std::chrono::microseconds interval = 0s) {
   using namespace std::chrono_literals;

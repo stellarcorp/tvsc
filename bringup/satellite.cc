@@ -109,25 +109,24 @@ int main(int argc, char* argv[]) {
   CanBusSniffer can_bus_sniffer{};
   (void)can_bus_message_queue.attach_processor(can_bus_sniffer);
 
-  system.scheduler().add_task(flash_target<System::ClockType>(
-      system.board().programmer(), system.board().gpio<System::BoardType::DEBUG_LED_PORT>(),
-      System::BoardType::DEBUG_LED_PIN));
+  system.scheduler().add_task(flash_target(system.board().programmer(),
+                                           system.board().gpio<System::BoardType::DEBUG_LED_PORT>(),
+                                           System::BoardType::DEBUG_LED_PIN));
 
-  system.scheduler().add_task(
-      periodic_transmit<System::ClockType>(system.board().can1(), 10s, announce_msg));
+  system.scheduler().add_task(periodic_transmit(system.board().can1(), 10s, announce_msg));
 
-  system.scheduler().add_task(can_bus_receive<System::ClockType>(
+  system.scheduler().add_task(can_bus_receive(
       system.board().can1(), can_bus_message_queue,
       system.board().gpio<System::BoardType::DEBUG_LED_PORT>(), System::BoardType::DEBUG_LED_PIN));
 
-  system.scheduler().add_task(process_messages<System::ClockType>(can_bus_message_queue));
+  system.scheduler().add_task(process_messages(can_bus_message_queue));
 
   if (board_id == static_cast<tvsc::hal::board_identification::BoardId>(
                       tvsc::hal::board_identification::CanonicalBoardIds::COMMS_BOARD_1)) {
-    system.scheduler().add_task(periodic_transmit<System::ClockType>(
-        system.board().can1(), 500ms, 100ms,
-        tvsc::message::led_on_command<tvsc::message::CanBusMessage::mtu()>(),
-        tvsc::message::led_off_command<tvsc::message::CanBusMessage::mtu()>()));
+    system.scheduler().add_task(
+        periodic_transmit(system.board().can1(), 500ms, 100ms,
+                          tvsc::message::led_on_command<tvsc::message::CanBusMessage::mtu()>(),
+                          tvsc::message::led_off_command<tvsc::message::CanBusMessage::mtu()>()));
   }
 
   system.scheduler().start();

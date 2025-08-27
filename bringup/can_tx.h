@@ -5,17 +5,16 @@
 #include "base/enums.h"
 #include "hal/can_bus/can_bus.h"
 #include "message/message.h"
-#include "system/task.h"
+#include "system/system.h"
 
 namespace tvsc::bringup {
 
 /**
  * Transmit the same message periodically. This is useful for heartbeat and announce messages.
  */
-template <typename ClockType>
-tvsc::system::Task<ClockType> periodic_transmit(
-    tvsc::hal::can_bus::CanBusPeripheral& can_peripheral, std::chrono::milliseconds period,
-    const message::CanBusMessage& msg) {
+tvsc::system::System::Task periodic_transmit(tvsc::hal::can_bus::CanBusPeripheral& can_peripheral,
+                                             std::chrono::milliseconds period,
+                                             const message::CanBusMessage& msg) {
   while (true) {
     {
       auto can{can_peripheral.access()};
@@ -27,12 +26,13 @@ tvsc::system::Task<ClockType> periodic_transmit(
 
 /**
  * Transmit the two messages periodically, ping-ponging between the two. This is useful for LED
- * control.
+ * control where the first message commands the LEDs to be turned on, the second to be turned off.
  */
-template <typename ClockType>
-tvsc::system::Task<ClockType> periodic_transmit(
-    tvsc::hal::can_bus::CanBusPeripheral& can_peripheral, std::chrono::milliseconds period1, std::chrono::milliseconds period2,
-    const message::CanBusMessage& msg1, const message::CanBusMessage& msg2) {
+tvsc::system::System::Task periodic_transmit(tvsc::hal::can_bus::CanBusPeripheral& can_peripheral,
+                                             std::chrono::milliseconds period1,
+                                             std::chrono::milliseconds period2,
+                                             const message::CanBusMessage& msg1,
+                                             const message::CanBusMessage& msg2) {
   while (true) {
     {
       auto can{can_peripheral.access()};

@@ -6,7 +6,7 @@
 namespace tvsc::system {
 
 using ClockType = tvsc::time::MockClock;
-using TaskType = Task<ClockType>;
+using TaskType = TaskT<ClockType>;
 
 TEST(TaskTest, DefaultTaskIsInvalid) { EXPECT_FALSE(TaskType{}.is_valid()); }
 

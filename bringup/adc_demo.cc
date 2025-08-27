@@ -27,12 +27,11 @@ void HAL_ADC_ErrorCallback(ADC_HandleTypeDef* adc) { dma_error = true; }
 
 namespace tvsc::bringup {
 
-using BoardType = tvsc::hal::board::Board;
-using ClockType = tvsc::time::EmbeddedClock;
-
-template <typename ClockType, uint8_t DAC_CHANNEL = 0>
-tvsc::system::Task<ClockType> run_adc_demo(BoardType& board) {
+template <uint8_t DAC_CHANNEL = 0>
+tvsc::system::System::Task run_adc_demo() {
+  using BoardType = tvsc::system::System::BoardType;
   using namespace std::chrono_literals;
+  auto& board{tvsc::system::System::board()};
   auto& gpio_peripheral{board.gpio<BoardType::DEBUG_LED_PORT>()};
   auto& adc_peripheral{board.adc()};
   auto& dac_peripheral{board.dac()};
@@ -137,9 +136,6 @@ using namespace tvsc::system;
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
-  BoardType& board{BoardType::board()};
-
-  Scheduler<ClockType, 4 /*QUEUE_SIZE*/> scheduler{board.rcc()};
-  scheduler.add_task(run_adc_demo<ClockType>(board));
-  scheduler.start();
+  System::scheduler().add_task(run_adc_demo());
+  System::scheduler().start();
 }

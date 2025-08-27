@@ -12,12 +12,12 @@
 namespace tvsc::system {
 
 template <typename ClockType>
-Task<ClockType> just_return() {
+TaskT<ClockType> just_return() {
   co_return;
 }
 
 template <typename ClockType>
-Task<ClockType> run_forever(int& run_count) {
+TaskT<ClockType> run_forever(int& run_count) {
   using namespace std::chrono_literals;
   while (true) {
     ++run_count;
@@ -27,7 +27,7 @@ Task<ClockType> run_forever(int& run_count) {
 }
 
 template <typename ClockType, size_t num_iterations, uint64_t wake_interval_us>
-Task<ClockType> do_something(int& run_count) {
+TaskT<ClockType> do_something(int& run_count) {
   for (unsigned i = 0; i < num_iterations; ++i) {
     ++run_count;
     const auto wake_time{ClockType::now() + std::chrono::microseconds{wake_interval_us}};
@@ -37,7 +37,7 @@ Task<ClockType> do_something(int& run_count) {
 }
 
 template <typename ClockType, size_t QUEUE_SIZE, size_t SUBTASK_CREATION_RATE = 10>
-Task<ClockType> creates_subtask(Scheduler<ClockType, QUEUE_SIZE>& scheduler, int& run_count) {
+TaskT<ClockType> creates_subtask(SchedulerT<ClockType, QUEUE_SIZE>& scheduler, int& run_count) {
   using namespace std::chrono_literals;
   while (true) {
     scheduler.add_task(run_forever<ClockType>(run_count));

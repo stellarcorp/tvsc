@@ -1,18 +1,13 @@
 #include <chrono>
-#include <cstring>
-#include <limits>
 
-#include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
 #include "random/random.h"
-#include "system/scheduler.h"
-#include "system/task.h"
+#include "system/system.h"
 
 namespace tvsc::bringup {
 
-template <typename ClockType>
-tvsc::system::Task<ClockType> blink_randomly(tvsc::hal::gpio::GpioPeripheral& gpio_peripheral,
-                                                tvsc::hal::gpio::Pin pin) {
+tvsc::system::System::Task blink_randomly(tvsc::hal::gpio::GpioPeripheral& gpio_peripheral,
+                                          tvsc::hal::gpio::Pin pin) {
   auto gpio{gpio_peripheral.access()};
   gpio.set_pin_mode(pin, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
   gpio.write_pin(pin, 0);

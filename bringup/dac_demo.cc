@@ -1,35 +1,25 @@
 #include "bringup/dac_demo.h"
 
-#include <cstddef>
+#include <cstdint>
 
 #include "base/initializer.h"
-#include "hal/board/board.h"
-#include "system/scheduler.h"
-#include "time/embedded_clock.h"
+#include "system/system.h"
 
-using BoardType = tvsc::hal::board::Board;
-using ClockType = tvsc::time::EmbeddedClock;
-
-using namespace tvsc::bringup;
-using namespace tvsc::system;
-
-static constexpr size_t QUEUE_SIZE{BoardType::NUM_DAC_CHANNELS};
+using BoardType = tvsc::system::System::BoardType;
 
 __attribute__((section(".status.value"))) uint32_t dac1_value;
 __attribute__((section(".status.value"))) uint32_t dac2_value;
 
+using namespace tvsc::bringup;
+using namespace tvsc::system;
+
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
-
-  auto& board{BoardType::board()};
-
-  Scheduler<ClockType, QUEUE_SIZE> scheduler{board.rcc()};
-
   if constexpr (BoardType::NUM_DAC_CHANNELS >= 1) {
-    scheduler.add_task(run_dac_demo<ClockType, 0>(board, dac1_value));
+    System::scheduler().add_task(run_dac_demo<0>(dac1_value));
   }
   if constexpr (BoardType::NUM_DAC_CHANNELS >= 2) {
-    scheduler.add_task(run_dac_demo<ClockType, 1>(board, dac2_value, 1250));
+    System::scheduler().add_task(run_dac_demo<1>(dac2_value, 1250));
   }
-  scheduler.start();
+  System::scheduler().start();
 }

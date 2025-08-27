@@ -3,13 +3,11 @@
 
 #include "base/initializer.h"
 #include "bits/bits.h"
-#include "hal/board/board.h"
+#include "hal/gpio/gpio.h"
 #include "hal/programmer/programmer.h"
-#include "system/scheduler.h"
-#include "system/task.h"
 #include "serial_wire/serial_wire.h"
 #include "serial_wire/target.h"
-#include "time/embedded_clock.h"
+#include "system/system.h"
 
 extern "C" {
 __attribute__((section(".status.value"))) uint32_t target_swdp_id{};
@@ -17,19 +15,17 @@ __attribute__((section(".status.value"))) uint32_t target_swdp_id{};
 
 namespace tvsc::bringup {
 
-using BoardType = tvsc::hal::board::Board;
-using ClockType = tvsc::time::EmbeddedClock;
-
-template <typename ClockType>
-tvsc::system::Task<ClockType> read_target_swdp_id(BoardType &board) {
+tvsc::system::System::Task read_target_swdp_id() {
+  using BoardType = tvsc::system::System::BoardType;
   using namespace std::chrono_literals;
   using namespace tvsc::hal::gpio;
   using namespace tvsc::serial_wire;
+  using namespace tvsc::system;
 
   static constexpr uint32_t EXPECTED_SW_DP_IDCODE{0x2BA01477};
 
-  auto &debug_led_peripheral{board.gpio<BoardType::DEBUG_LED_PORT>()};
-  auto &programmer_peripheral{board.programmer()};
+  auto &debug_led_peripheral{System::board().gpio<BoardType::DEBUG_LED_PORT>()};
+  auto &programmer_peripheral{System::board().programmer()};
 
   // Turn on clocks for the peripherals that we want.
   auto debug_led{debug_led_peripheral.access()};
@@ -76,9 +72,6 @@ using namespace tvsc::system;
 int main(int argc, char *argv[]) {
   tvsc::initialize(&argc, &argv);
 
-  BoardType &board{BoardType::board()};
-
-  Scheduler<ClockType, 1 /*QUEUE_SIZE*/> scheduler{board.rcc()};
-  scheduler.add_task(read_target_swdp_id<ClockType>(board));
-  scheduler.start();
+  System::scheduler().add_task(read_target_swdp_id());
+  System::scheduler().start();
 }

@@ -7,7 +7,7 @@
 namespace tvsc::system {
 
 template <typename ClockType>
-class Task final {
+class TaskT final {
  public:
   struct promise_type;
 
@@ -20,7 +20,7 @@ class Task final {
     // is currently using, and when it might need access to the CPU again.
     ClockType::time_point wait_until_{};
 
-    Task get_return_object() noexcept { return Task{HandleType::from_promise(*this)}; }
+    TaskT get_return_object() noexcept { return TaskT{HandleType::from_promise(*this)}; }
 
     std::suspend_always initial_suspend() noexcept { return {}; }
 
@@ -45,18 +45,18 @@ class Task final {
 
   friend class promise_type;
 
-  Task(HandleType handle) noexcept : handle_(handle) {}
+  TaskT(HandleType handle) noexcept : handle_(handle) {}
 
  public:
-  Task() noexcept = default;
-  Task(Task&& rhs) noexcept : handle_(rhs.handle_) { rhs.handle_ = nullptr; }
-  ~Task() noexcept {
+  TaskT() noexcept = default;
+  TaskT(TaskT&& rhs) noexcept : handle_(rhs.handle_) { rhs.handle_ = nullptr; }
+  ~TaskT() noexcept {
     if (handle_) {
       handle_.destroy();
     }
   }
 
-  Task& operator=(Task&& rhs) noexcept {
+  TaskT& operator=(TaskT&& rhs) noexcept {
     if (handle_) {
       handle_.destroy();
     }
@@ -65,7 +65,7 @@ class Task final {
     return *this;
   }
 
-  bool operator==(const Task& rhs) const noexcept { return handle_ == rhs.handle_; }
+  bool operator==(const TaskT& rhs) const noexcept { return handle_ == rhs.handle_; }
 
   bool is_runnable(ClockType::time_point now) const noexcept {
     if (handle_) {
