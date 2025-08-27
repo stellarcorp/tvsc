@@ -19,33 +19,33 @@ namespace tvsc::hal::board {
 
 class Board final {
  public:
-  static constexpr gpio::Port NUM_GPIO_PORTS{5};
-  static constexpr gpio::Port NUM_DAC_CHANNELS{2};
+  static constexpr gpio::PortNumber NUM_GPIO_PORTS{5};
+  static constexpr gpio::PortNumber NUM_DAC_CHANNELS{2};
   static constexpr size_t NUM_DEBUG_LEDS{3};
 
-  static constexpr gpio::Port GPIO_PORT_A{0};
-  static constexpr gpio::Port GPIO_PORT_B{1};
-  static constexpr gpio::Port GPIO_PORT_C{2};
-  static constexpr gpio::Port GPIO_PORT_D{3};
-  static constexpr gpio::Port GPIO_PORT_E{4};
+  static constexpr gpio::PortNumber GPIO_PORT_A{0};
+  static constexpr gpio::PortNumber GPIO_PORT_B{1};
+  static constexpr gpio::PortNumber GPIO_PORT_C{2};
+  static constexpr gpio::PortNumber GPIO_PORT_D{3};
+  static constexpr gpio::PortNumber GPIO_PORT_E{4};
 
   // Location of the LEDs provided by this board.
   static constexpr size_t NUM_USER_LEDS{3};
-  static constexpr gpio::Port RED_LED_PORT{GPIO_PORT_B};
-  static constexpr gpio::Pin RED_LED_PIN{14};
-  static constexpr gpio::Port YELLOW_LED_PORT{GPIO_PORT_E};
-  static constexpr gpio::Pin YELLOW_LED_PIN{1};
-  static constexpr gpio::Port DEBUG_LED_PORT{GPIO_PORT_B};
-  static constexpr gpio::Pin DEBUG_LED_PIN{0};
+  static constexpr gpio::PortNumber RED_LED_PORT{GPIO_PORT_B};
+  static constexpr gpio::PinNumber RED_LED_PIN{14};
+  static constexpr gpio::PortNumber YELLOW_LED_PORT{GPIO_PORT_E};
+  static constexpr gpio::PinNumber YELLOW_LED_PIN{1};
+  static constexpr gpio::PortNumber DEBUG_LED_PORT{GPIO_PORT_B};
+  static constexpr gpio::PinNumber DEBUG_LED_PIN{0};
 
-  static constexpr std::array<gpio::Port, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{
+  static constexpr std::array<gpio::PortNumber, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{
       RED_LED_PORT, YELLOW_LED_PORT, DEBUG_LED_PORT};
-  static constexpr std::array<gpio::Pin, NUM_DEBUG_LEDS> DEBUG_LED_PINS{RED_LED_PIN, YELLOW_LED_PIN,
+  static constexpr std::array<gpio::PinNumber, NUM_DEBUG_LEDS> DEBUG_LED_PINS{RED_LED_PIN, YELLOW_LED_PIN,
                                                                         DEBUG_LED_PIN};
 
   // Location of the push button on this board.
-  static constexpr gpio::Port BLUE_PUSH_BUTTON_PORT{GPIO_PORT_C};
-  static constexpr gpio::Pin BLUE_PUSH_BUTTON_PIN{13};
+  static constexpr gpio::PortNumber BLUE_PUSH_BUTTON_PORT{GPIO_PORT_C};
+  static constexpr gpio::PinNumber BLUE_PUSH_BUTTON_PIN{13};
 
  private:
   rcc::RccStm32h7xx rcc_{reinterpret_cast<void*>(RCC_BASE), reinterpret_cast<void*>(SysTick_BASE),
@@ -66,7 +66,7 @@ class Board final {
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
 
  public:
-  template <gpio::Port GPIO_PORT>
+  template <gpio::PortNumber GPIO_PORT>
   gpio::Gpio& gpio() {
     static_assert(
         GPIO_PORT < NUM_GPIO_PORTS,
@@ -90,7 +90,7 @@ class Board final {
     }
   }
 
-  gpio::Gpio& gpio(gpio::Port port) {
+  gpio::Gpio& gpio(gpio::PortNumber port) {
     if (port == 0) {
       return gpio_port_a_;
     } else if (port == 1) {

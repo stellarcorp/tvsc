@@ -33,18 +33,18 @@ namespace tvsc::hal::board {
 
 class Board final {
  public:
-  static constexpr gpio::Port NUM_GPIO_PORTS{1};
+  static constexpr gpio::PortNumber NUM_GPIO_PORTS{1};
   static constexpr size_t NUM_DAC_CHANNELS{0};
   static constexpr size_t NUM_DEBUG_LEDS{1};
 
-  static constexpr gpio::Port GPIO_PORT_A{0};
+  static constexpr gpio::PortNumber GPIO_PORT_A{0};
 
   // Location of the LEDs provided by this board.
-  static constexpr gpio::Port DEBUG_LED_PORT{GPIO_PORT_A};
-  static constexpr gpio::Pin DEBUG_LED_PIN{5};
+  static constexpr gpio::PortNumber DEBUG_LED_PORT{GPIO_PORT_A};
+  static constexpr gpio::PinNumber DEBUG_LED_PIN{5};
 
-  static constexpr std::array<gpio::Port, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{DEBUG_LED_PORT};
-  static constexpr std::array<gpio::Pin, NUM_DEBUG_LEDS> DEBUG_LED_PINS{DEBUG_LED_PIN};
+  static constexpr std::array<gpio::PortNumber, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{DEBUG_LED_PORT};
+  static constexpr std::array<gpio::PinNumber, NUM_DEBUG_LEDS> DEBUG_LED_PINS{DEBUG_LED_PIN};
 
   // We use a simulation clock that gives one millisecond of time in the simulation for every
   // microsecond on the running system's steady_clock. This ratio simulates a much slower CPU than
@@ -94,7 +94,7 @@ class Board final {
 
   io::SessionDirectory& log_directory() noexcept { return log_directory_; }
 
-  template <gpio::Port GPIO_PORT>
+  template <gpio::PortNumber GPIO_PORT>
   gpio::GpioPeripheral& gpio() {
     static_assert(
         GPIO_PORT < NUM_GPIO_PORTS,
@@ -112,7 +112,7 @@ class Board final {
    * only be used as to lookup GPIO ports using integer values that can be evaluated at
    * compile-time; these integer values will mainly come from STM's HAL.
    */
-  gpio::GpioPeripheral& gpio(gpio::Port port) {
+  gpio::GpioPeripheral& gpio(gpio::PortNumber port) {
     if (port == 0) {
       return gpio_interceptor_;
     }

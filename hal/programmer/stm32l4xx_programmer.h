@@ -25,9 +25,9 @@ class ProgrammerStm32l4xx final : public ProgrammerPeripheral {
  private:
   gpio::GpioPeripheral* gpio_peripheral_;
   gpio::Gpio gpio_{};
-  gpio::Pin swdio_pin_;
-  gpio::Pin swclk_pin_;
-  gpio::Pin reset_pin_;
+  gpio::PinNumber swdio_pin_;
+  gpio::PinNumber swclk_pin_;
+  gpio::PinNumber reset_pin_;
   uint32_t half_clock_period_cycles_{};
   SwdioDriveState current_swdio_drive_state_{SwdioDriveState::FLOAT};
 
@@ -58,8 +58,8 @@ class ProgrammerStm32l4xx final : public ProgrammerPeripheral {
   bool receive(uint32_t& data, uint8_t bits_to_receive) override;
 
  public:
-  ProgrammerStm32l4xx(gpio::GpioPeripheral& gpio_peripheral, gpio::Pin swdio_pin,
-                      gpio::Pin swclk_pin, gpio::Pin reset_pin)
+  ProgrammerStm32l4xx(gpio::GpioPeripheral& gpio_peripheral, gpio::PinNumber swdio_pin,
+                      gpio::PinNumber swclk_pin, gpio::PinNumber reset_pin)
       : gpio_peripheral_(&gpio_peripheral),
         swdio_pin_(swdio_pin),
         swclk_pin_(swclk_pin),

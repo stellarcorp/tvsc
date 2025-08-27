@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 
   tvsc::hal::gpio::GpioPeripheral& gpio_peripheral{board.gpio<BoardType::DEBUG_LED_PORT>()};
   tvsc::hal::gpio::Gpio gpio{gpio_peripheral.access()};
-  tvsc::hal::gpio::Pin pin{BoardType::DEBUG_LED_PIN};
+  tvsc::hal::gpio::PinNumber pin{BoardType::DEBUG_LED_PIN};
 
   gpio.set_pin_mode(pin, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
 
