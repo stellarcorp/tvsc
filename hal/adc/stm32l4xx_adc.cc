@@ -29,7 +29,7 @@ uint32_t trigger_flag(PeripheralId trigger_id) {
   error();
 }
 
-static constexpr uint32_t get_channel(gpio::PortPin pin) {
+static constexpr uint32_t get_channel(gpio::PinRef pin) {
   if (pin.port == 0) {
     if (pin.pin == 0) {
       // ADC1_IN5
@@ -67,7 +67,7 @@ static constexpr uint32_t get_channel(gpio::PortPin pin) {
   error();
 }
 
-void AdcStm32l4xx::start_conversion_stream(gpio::PortPin pin, uint32_t* destination,
+void AdcStm32l4xx::start_conversion_stream(gpio::PinRef pin, uint32_t* destination,
                                            size_t destination_buffer_size, timer::Timer& trigger) {
   // Ensure the DMA controller is on.
   dma_ = dma_peripheral_->access();
@@ -117,7 +117,7 @@ void AdcStm32l4xx::start_conversion_stream(gpio::PortPin pin, uint32_t* destinat
   HAL_ADC_Start_DMA(&adc_, destination, destination_buffer_size);
 }
 
-void AdcStm32l4xx::start_single_conversion(gpio::PortPin pin, uint32_t* destination,
+void AdcStm32l4xx::start_single_conversion(gpio::PinRef pin, uint32_t* destination,
                                            size_t destination_buffer_size) {
   // Ensure the DMA controller is on.
   dma_ = dma_peripheral_->access();
@@ -167,7 +167,7 @@ void AdcStm32l4xx::start_single_conversion(gpio::PortPin pin, uint32_t* destinat
   HAL_ADC_Start_DMA(&adc_, destination, destination_buffer_size);
 }
 
-uint16_t AdcStm32l4xx::measure_value(gpio::PortPin pin, std::chrono::milliseconds timeout) {
+uint16_t AdcStm32l4xx::measure_value(gpio::PinRef pin, std::chrono::milliseconds timeout) {
   // Ensure the DMA controller is on.
   dma_ = dma_peripheral_->access();
 

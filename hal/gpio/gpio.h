@@ -18,7 +18,10 @@ using PortNumber = uint8_t;
  */
 using PinNumber = uint8_t;
 
-struct PortPin final {
+/**
+ * Reference to a specific pin on a specific GPIO port.
+ */
+struct PinRef final {
   PortNumber port{};
   PinNumber pin{};
 };
