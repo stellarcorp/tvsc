@@ -6,7 +6,7 @@
 #include <cstdint>
 
 #include "hal/imu/imu.h"
-#include "system/task.h"
+#include "system/system.h"
 
 namespace tvsc::bringup {
 
@@ -25,10 +25,9 @@ struct alignas(16) ImuReading final {
   void reset() { *this = ImuReading{}; }
 };
 
-template <typename ClockType>
-tvsc::system::Task<ClockType> monitor_imu(tvsc::hal::imu::ImuPeripheral& imu_peripheral,
-                                             ImuReading& output,
-                                             std::chrono::microseconds interval = 0s) {
+tvsc::system::System::Task monitor_imu(tvsc::hal::imu::ImuPeripheral& imu_peripheral,
+                                       ImuReading& output,
+                                       std::chrono::microseconds interval = 0s) {
   using namespace std::chrono_literals;
 
   const std::chrono::microseconds startup_delay{5ms};

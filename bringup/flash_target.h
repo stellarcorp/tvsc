@@ -7,11 +7,10 @@
 #include "meta/build_time.h"
 #include "meta/firmware.h"
 #include "meta/flash.h"
-#include "system/scheduler.h"
-#include "system/task.h"
 #include "serial_wire/flash.h"
 #include "serial_wire/serial_wire.h"
 #include "serial_wire/target.h"
+#include "system/system.h"
 
 static constexpr uint32_t NUM_PAGES{2};
 static constexpr uint32_t WRITE_BASE_ADDRESS{0x0800'0000};
@@ -28,8 +27,7 @@ __attribute__((section(".status.value"))) bool target_initialized{};
 
 namespace tvsc::bringup {
 
-template <typename ClockType>
-tvsc::system::Task<ClockType> flash_target(
+tvsc::system::System::Task flash_target(
     tvsc::hal::programmer::ProgrammerPeripheral &programmer_peripheral,
     tvsc::hal::gpio::GpioPeripheral &debug_led_peripheral, tvsc::hal::gpio::Pin debug_led_pin) {
   using namespace std::chrono_literals;

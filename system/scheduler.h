@@ -13,16 +13,16 @@
 namespace tvsc::system {
 
 template <typename ClockType, size_t QUEUE_SIZE>
-class Scheduler;
+class SchedulerT;
 
 template <typename ClockType, size_t QUEUE_SIZE>
-std::string to_string(const Scheduler<ClockType, QUEUE_SIZE>& scheduler);
+std::string to_string(const SchedulerT<ClockType, QUEUE_SIZE>& scheduler);
 
 template <typename ClockT, size_t QUEUE_SIZE>
-class Scheduler final {
+class SchedulerT final {
  public:
   using ClockType = ClockT;
-  using TaskType = Task<ClockType>;
+  using TaskType = TaskT<ClockType>;
 
  private:
   ClockType* clock_{&ClockType::clock()};
@@ -30,10 +30,10 @@ class Scheduler final {
   std::array<TaskType, QUEUE_SIZE> task_queue_{};
   bool stop_requested_{false};
 
-  friend std::string to_string<ClockType, QUEUE_SIZE>(const Scheduler&);
+  friend std::string to_string<ClockType, QUEUE_SIZE>(const SchedulerT&);
 
  public:
-  Scheduler(tvsc::hal::rcc::Rcc& rcc) : rcc_(&rcc) {}
+  SchedulerT(tvsc::hal::rcc::Rcc& rcc) : rcc_(&rcc) {}
 
   size_t add_task(TaskType&& task) {
     for (size_t i = 0; i < QUEUE_SIZE; ++i) {
@@ -107,7 +107,7 @@ class Scheduler final {
 };
 
 template <typename ClockType, size_t QUEUE_SIZE>
-std::string to_string(const Scheduler<ClockType, QUEUE_SIZE>& scheduler) {
+std::string to_string(const SchedulerT<ClockType, QUEUE_SIZE>& scheduler) {
   using std::to_string;
 
   std::string result{};

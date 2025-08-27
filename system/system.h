@@ -19,14 +19,14 @@ class System final {
 
   using ClockType = tvsc::time::EmbeddedClock;
   using BoardType = tvsc::hal::board::Board;
-  using SchedulerType = Scheduler<ClockType, SCHEDULER_QUEUE_SIZE>;
-  using TaskType = Task<ClockType>;
+  using Scheduler = SchedulerT<ClockType, SCHEDULER_QUEUE_SIZE>;
+  using Task = TaskT<ClockType>;
 
  private:
   BoardType& board_{BoardType::board()};
   ClockType& clock_{ClockType::clock()};
 
-  SchedulerType scheduler_{board_.rcc()};
+  Scheduler scheduler_{board_.rcc()};
 
   // Singleton with instance held in static accessor function.
   System() = default;
@@ -34,7 +34,7 @@ class System final {
  public:
   static ClockType& clock();
   static BoardType& board();
-  static SchedulerType& scheduler();
+  static Scheduler& scheduler();
 
   static System& get();
 };

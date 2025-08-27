@@ -35,9 +35,11 @@ namespace tvsc::bringup {
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::time::EmbeddedClock;
 
-template <typename ClockType>
-tvsc::system::Task<ClockType> read_board_id(BoardType& board, int32_t num_iterations = -1) {
+tvsc::system::System::Task read_board_id(int32_t num_iterations = -1) {
+  using BoardType = tvsc::system::System::BoardType;
   using namespace std::chrono_literals;
+
+  auto& board{tvsc::system::System::board()};
   auto& gpio_id_power_peripheral{board.gpio<BoardType::BOARD_ID_POWER_PORT>()};
   auto& gpio_id_sense_peripheral{board.gpio<BoardType::BOARD_ID_SENSE_PORT>()};
   auto& adc_peripheral{board.adc()};
@@ -113,15 +115,12 @@ using namespace tvsc::system;
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
-  BoardType& board{BoardType::board()};
-
-  Scheduler<ClockType, 2 /*QUEUE_SIZE*/> scheduler{board.rcc()};
-  scheduler.add_task(read_board_id<ClockType>(board));
-  scheduler.add_task(blink_on_success<ClockType>(
+  System::scheduler().add_task(read_board_id());
+  System::scheduler().add_task(blink_on_success(
       []() {
         return board_id != tvsc::cast_to_underlying_type(
                                tvsc::hal::board_identification::CanonicalBoardIds::UNKNOWN);
       },
-      board.gpio<BoardType::DEBUG_LED_PORT>(), board.DEBUG_LED_PIN));
-  scheduler.start();
+      System::board().gpio<BoardType::DEBUG_LED_PORT>(), System::board().DEBUG_LED_PIN));
+  System::scheduler().start();
 }

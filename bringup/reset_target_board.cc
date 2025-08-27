@@ -3,22 +3,20 @@
 #include "base/initializer.h"
 #include "hal/board/board.h"
 #include "hal/programmer/programmer.h"
-#include "system/scheduler.h"
+#include "system/system.h"
 #include "system/task.h"
 #include "time/embedded_clock.h"
 
 namespace tvsc::bringup {
 
-using BoardType = tvsc::hal::board::Board;
-using ClockType = tvsc::time::EmbeddedClock;
+using BoardType = tvsc::system::System::BoardType;
 
-template <typename ClockType>
-tvsc::system::Task<ClockType> reset_target(BoardType &board) {
+tvsc::system::System::Task reset_target() {
   using namespace std::chrono_literals;
   using namespace tvsc::hal::gpio;
 
-  auto &debug_led_peripheral{board.gpio<BoardType::DEBUG_LED_PORT>()};
-  auto &programmer_peripheral{board.programmer()};
+  auto &debug_led_peripheral{system::System::board().gpio<BoardType::DEBUG_LED_PORT>()};
+  auto &programmer_peripheral{system::System::board().programmer()};
 
   // Turn on clocks for the peripherals that we want.
   auto debug_led{debug_led_peripheral.access()};
@@ -57,9 +55,6 @@ using namespace tvsc::system;
 int main(int argc, char *argv[]) {
   tvsc::initialize(&argc, &argv);
 
-  BoardType &board{BoardType::board()};
-
-  Scheduler<ClockType, 1 /*QUEUE_SIZE*/> scheduler{board.rcc()};
-  scheduler.add_task(reset_target<ClockType>(board));
-  scheduler.start();
+  System::scheduler().add_task(reset_target());
+  System::scheduler().start();
 }

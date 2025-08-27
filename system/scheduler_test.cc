@@ -13,9 +13,9 @@
 namespace tvsc::system {
 
 using ClockType = tvsc::time::MockClock;
-using TaskType = Task<ClockType>;
+using TaskType = TaskT<ClockType>;
 static constexpr size_t DEFAULT_QUEUE_SIZE{4};
-using SchedulerType = Scheduler<ClockType, DEFAULT_QUEUE_SIZE>;
+using SchedulerType = SchedulerT<ClockType, DEFAULT_QUEUE_SIZE>;
 
 TEST(SchedulerTest, QueueIsEmptyAfterCreation) {
   tvsc::hal::rcc::RccNoop rcc{};
@@ -86,7 +86,7 @@ TEST(SchedulerTest, CanRunNeverendingTaskTwice) {
   TaskType task{};
 
   tvsc::hal::rcc::RccNoop rcc{};
-  Scheduler<ClockType, 1> scheduler{rcc};
+  SchedulerT<ClockType, 1> scheduler{rcc};
   size_t task_index{scheduler.add_task(run_forever<ClockType>(run_count))};
 
   for (size_t i = 0; i < NUM_ITERATIONS; ++i) {
@@ -102,7 +102,7 @@ TEST(SchedulerTest, CanRunNeverendingTaskMultipleTimes) {
   int run_count{};
 
   tvsc::hal::rcc::RccNoop rcc{};
-  Scheduler<ClockType, 1> scheduler{rcc};
+  SchedulerT<ClockType, 1> scheduler{rcc};
   size_t task_index{scheduler.add_task(run_forever<ClockType>(run_count))};
 
   for (size_t i = 0; i < NUM_ITERATIONS; ++i) {
