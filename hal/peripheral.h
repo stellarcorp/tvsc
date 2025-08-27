@@ -125,6 +125,13 @@ class Functional {
     return *this;
   }
 
+  void ensure_valid(PeripheralType& peripheral) {
+    if (peripheral_ == nullptr) {
+      peripheral_ = &peripheral;
+      peripheral_->inc_ref_count();
+    }
+  }
+
   void invalidate() {
     if (peripheral_ != nullptr) {
       peripheral_->dec_ref_count();

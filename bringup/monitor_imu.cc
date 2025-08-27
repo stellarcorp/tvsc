@@ -27,8 +27,7 @@ int main(int argc, char* argv[]) {
   scheduler.add_task(monitor_imu(board.imu1(), imu1_reading, 1ms));
   // scheduler.add_task(monitor_imu<ClockType>(board.imu2(), imu2_reading,
   // 1ms));
-  scheduler.add_task(blink(board.gpio<System::BoardType::DEBUG_LED_PORT>(),
-                           System::BoardType::DEBUG_LED_PIN, 500ms));
+  scheduler.add_task(blink(board.debug_led()));
   scheduler.add_task(run_watchdog(board.iwdg()));
 
   scheduler.start();

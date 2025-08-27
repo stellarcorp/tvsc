@@ -225,6 +225,14 @@ class Board final {
 
   random::RngPeripheral& rng() { return rng_; }
 
+  gpio::PinPeripheral debug_led() {
+    return gpio::PinPeripheral{gpio<DEBUG_LED_PORT>(), DEBUG_LED_PIN};
+  }
+
+  gpio::PinPeripheral debug_led(size_t led_number) {
+    return gpio::PinPeripheral{gpio(DEBUG_LED_PORTS[led_number]), DEBUG_LED_PINS[led_number]};
+  }
+
   watchdog::WatchdogPeripheral& iwdg() { return iwdg_; }
 
   i2c::I2cPeripheral& i2c1() { return i2c1_; }

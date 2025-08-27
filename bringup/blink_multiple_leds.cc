@@ -19,9 +19,8 @@ int main(int argc, char* argv[]) {
   static_assert(BoardType::NUM_DEBUG_LEDS < 4, "Need to implement blink for more LEDs");
 
   for (size_t i = 0; i < BoardType::NUM_DEBUG_LEDS; ++i) {
-    auto& gpio{System::board().gpio(BoardType::DEBUG_LED_PORTS[i])};
     System::scheduler().add_task(
-        blink(gpio, BoardType::DEBUG_LED_PINS[i], DURATION_MULTIPLES[i] * BASE_DURATION));
+        blink(System::board().debug_led(i), DURATION_MULTIPLES[i] * BASE_DURATION));
   }
 
   System::scheduler().start();

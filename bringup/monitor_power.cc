@@ -34,8 +34,7 @@ int main(int argc, char* argv[]) {
   auto& scheduler{System::scheduler()};
   scheduler.add_task(monitor_power(board.power_monitor1(), power_monitor1, 1000ms));
   scheduler.add_task(monitor_power(board.power_monitor2(), power_monitor2, 1000ms));
-  scheduler.add_task(blink(board.gpio<System::BoardType::DEBUG_LED_PORT>(),
-                           System::BoardType::DEBUG_LED_PIN, 500ms));
+  scheduler.add_task(blink(board.debug_led()));
   scheduler.add_task(run_watchdog(board.iwdg()));
 
   scheduler.start();
