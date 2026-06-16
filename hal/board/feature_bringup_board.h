@@ -190,7 +190,7 @@ class Board final {
   /**
    * Accessor for GPIO periperhals. Note that the templated version above is vastly preferred, as it
    * gives compile-time errors, as opposed to runtime errors like this method. This method should
-   * only be used as to lookup GPIO ports using integer values that can be evaluated at
+   * only be used as to lookup GPIO ports using integer values that cannot be evaluated at
    * compile-time; these integer values will mainly come from STM's HAL.
    */
   gpio::GpioPeripheral& gpio(gpio::PortNumber port) {
