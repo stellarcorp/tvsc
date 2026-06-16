@@ -6,6 +6,7 @@
 
 #include "hal/adc/adc.h"
 #include "hal/adc/stm32l4xx_adc.h"
+#include "hal/board/basic_board.h"
 #include "hal/can_bus/can_bus.h"
 #include "hal/can_bus/stm32l4xx_can_bus.h"
 #include "hal/dac/dac.h"
@@ -89,6 +90,10 @@ class Board final {
   gpio::GpioStm32xxxx gpio_port_e_{reinterpret_cast<void*>(GPIOE_BASE), 4};
   gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH_BASE), 7};
   // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
+
+  std::array<gpio::PinPeripheral, NUM_DEBUG_LEDS> DEBUG_LEDS{
+      gpio::PinPeripheral{this->gpio(DEBUG_LED_PORTS[0]), DEBUG_LED_PINS[0]},
+  };
 
   power::PowerStm32L4xx power_{};
 
@@ -225,13 +230,14 @@ class Board final {
 
   random::RngPeripheral& rng() { return rng_; }
 
-  gpio::PinPeripheral debug_led() {
-    return gpio::PinPeripheral{gpio<DEBUG_LED_PORT>(), DEBUG_LED_PIN};
+  template <size_t LED = 0>
+  gpio::PinPeripheral& debug_led() noexcept {
+    static_assert(LED < NUM_DEBUG_LEDS);
+    return DEBUG_LEDS[LED];
   }
+  auto debug_led() noexcept { return debug_led<>(); }
 
-  gpio::PinPeripheral debug_led(size_t led_number) {
-    return gpio::PinPeripheral{gpio(DEBUG_LED_PORTS[led_number]), DEBUG_LED_PINS[led_number]};
-  }
+  gpio::PinPeripheral& debug_led(size_t led_number) noexcept { return DEBUG_LEDS[led_number]; }
 
   watchdog::WatchdogPeripheral& iwdg() { return iwdg_; }
 
@@ -251,5 +257,7 @@ class Board final {
 
   mcu::Mcu& mcu() { return mcu_; }
 };
+
+static_assert(BasicBoard<Board>);
 
 }  // namespace tvsc::hal::board

@@ -38,6 +38,20 @@ cc_library(
 )
 
 cc_library(
+    name = "board_concepts",
+    hdrs = [
+        "basic_board.h",
+    ],
+    deps = [
+        # Note that the deps for all concepts should come from the library that depends on this one.
+        # The concepts test both the signature of the Board class and also the dependency
+        # configuration. Importantly, not all of the board types provide the features of all of the
+        # board concepts. While we could split each concept into its own library with its own
+        # dependencies, we haven't done that at this stage. That would likely be a better structure.
+    ],
+)
+
+cc_library(
     name = "nucleo_l412kb_board",
     srcs = [
         "nucleo_l412kb_board.cc",
@@ -49,6 +63,7 @@ cc_library(
         "//platforms:nucleo_l412kb_board",
     ],
     deps = [
+        ":board_concepts",
         "//hal",
         "//hal/adc",
         "//hal/dma",
@@ -74,6 +89,7 @@ cc_library(
         "//platforms:nucleo_l432kc_board",
     ],
     deps = [
+        ":board_concepts",
         "//hal",
         "//hal/adc",
         "//hal/dac",
@@ -100,6 +116,7 @@ cc_library(
         "//platforms:nucleo_l452re_board",
     ],
     deps = [
+        ":board_concepts",
         "//hal",
         "//hal/adc",
         "//hal/dac",
@@ -128,6 +145,7 @@ cc_library(
         "//platforms:feature_bringup_board",
     ],
     deps = [
+        ":board_concepts",
         "//hal",
         "//hal/adc",
         "//hal/can_bus",
@@ -160,6 +178,7 @@ cc_library(
         "//platforms:satellite_board",
     ],
     deps = [
+        ":board_concepts",
         "//hal",
         "//hal/adc",
         "//hal/can_bus",
@@ -192,6 +211,7 @@ cc_library(
         "@platforms//os:linux",
     ],
     deps = [
+        ":board_concepts",
         "//hal",
         "//hal/gpio",
         "//hal/power",
