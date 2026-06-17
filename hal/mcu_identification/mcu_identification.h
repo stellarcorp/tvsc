@@ -6,13 +6,13 @@
 #include "hash/hash_combine.h"
 #include "hash/integer_hash.h"
 
-namespace tvsc::hal::mcu {
+namespace tvsc::hal::mcu_identification {
 
 using McuId = std::array<uint32_t, 3>;
 
-class Mcu {
+class McuIdentification {
  public:
-  virtual ~Mcu() = default;
+  virtual ~McuIdentification() = default;
 
   virtual void read_id(McuId& id) = 0;
 
@@ -26,4 +26,4 @@ class Mcu {
   }
 };
 
-}  // namespace tvsc::hal::mcu
+}  // namespace tvsc::hal::mcu_identification

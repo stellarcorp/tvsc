@@ -20,8 +20,8 @@
 #include "hal/i2c/stm32l4xx_i2c.h"
 #include "hal/imu/bmi323_imu.h"
 #include "hal/imu/imu.h"
-#include "hal/mcu/mcu.h"
-#include "hal/mcu/stm32l4xx_mcu.h"
+#include "hal/mcu_identification/mcu_identification.h"
+#include "hal/mcu_identification/stm32l4xx_mcu_identification.h"
 #include "hal/power/power.h"
 #include "hal/power/stm32l4xx_power.h"
 #include "hal/power_monitor/ina260_power_monitor.h"
@@ -142,7 +142,7 @@ class Board final {
                                               /* SWCLK_CONTROL Pin */ 13,  //
                                               /* NRST_CONTROL Pin */ 14};
 
-  mcu::McuStm32l4xx mcu_{};
+  mcu_identification::McuIdentificationStm32l4xx mcu_identification_{};
 
   // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
   // more difficult to accidentally use them.
@@ -225,7 +225,7 @@ class Board final {
 
   power::Power& power() { return power_; }
 
-  mcu::Mcu& mcu() { return mcu_; }
+  mcu_identification::McuIdentification& mcu_identification() { return mcu_identification_; }
 
   dac::DacPeripheral& dac() { return dac_; }
 

@@ -11,7 +11,7 @@
 #include "bringup/read_board_id.h"
 #include "hal/board/board.h"
 #include "hal/board_identification/board_ids.h"
-#include "hal/mcu/mcu.h"
+#include "hal/mcu_identification/mcu_identification.h"
 #include "message/announce.h"
 #include "message/leds.h"
 #include "message/message.h"
@@ -31,7 +31,7 @@ extern "C" {
 alignas(uint32_t)  //
     __attribute__((section(".status.value"))) tvsc::hal::board_identification::BoardId board_id{};
 
-__attribute__((section(".status.value"))) tvsc::hal::mcu::McuId mcu_id{};
+__attribute__((section(".status.value"))) tvsc::hal::mcu_identification::McuId mcu_id{};
 
 __attribute__((section(".status.value"))) uint8_t hashed_mcu_id{};
 __attribute__((section(".status.value"))) tvsc::message::CanBusMessage announce_msg{};
@@ -98,8 +98,8 @@ int main(int argc, char* argv[]) {
                              System::BoardType::BOARD_ID_POWER_PIN, gpio_id_sense_peripheral,
                              System::BoardType::BOARD_ID_SENSE_PIN, adc_peripheral);
 
-    system.board().mcu().read_id(mcu_id);
-    hashed_mcu_id = system.board().mcu().hashed_id();
+    system.board().mcu_identification().read_id(mcu_id);
+    hashed_mcu_id = system.board().mcu_identification().hashed_id();
 
     tvsc::message::create_announce_message(announce_msg, hashed_mcu_id, board_id);
   }

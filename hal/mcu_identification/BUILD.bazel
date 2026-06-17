@@ -1,7 +1,7 @@
 cc_library(
-    name = "mcu_headers",
+    name = "mcu_identification_headers",
     hdrs = [
-        "mcu.h",
+        "mcu_identification.h",
     ],
     deps = [
         "//hal",
@@ -10,34 +10,34 @@ cc_library(
 )
 
 cc_library(
-    name = "mcu",
+    name = "mcu_identification",
     target_compatible_with = select({
         "//platforms:stm32_core": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
     deps = [
-        ":mcu_headers",
+        ":mcu_identification_headers",
     ] + select({
         "//platforms:stm32l4xx": [
-            ":stm32l4xx_mcu",
+            ":stm32l4xx_mcu_identification",
         ],
     }),
 )
 
 cc_library(
-    name = "stm32l4xx_mcu",
+    name = "stm32l4xx_mcu_identification",
     srcs = [
-        "stm32l4xx_mcu.cc",
+        "stm32l4xx_mcu_identification.cc",
     ],
     hdrs = [
-        "stm32l4xx_mcu.h",
+        "stm32l4xx_mcu_identification.h",
     ],
     target_compatible_with = [
         "//platforms:stm32l4xx",
     ],
     deps = [
-        ":mcu_headers",
+        ":mcu_identification_headers",
         "//base",
         "//hal",
         "//third_party/stm32",
