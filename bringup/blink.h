@@ -14,7 +14,7 @@ using namespace std::chrono_literals;
 
 template <tvsc::hal::TimeType DURATION_MS =
               /* one year in milliseconds */ 365LL * 24 * 60 * 60 * 1000>
-tvsc::system::System::Task blink(tvsc::hal::gpio::PinPeripheral led_peripheral,
+tvsc::system::System::Task blink(tvsc::hal::gpio::PinPeripheral& led_peripheral,
                                  typename system::System::ClockType::duration delay = 500ms) {
   tvsc::hal::gpio::Pin led{led_peripheral.access()};
 

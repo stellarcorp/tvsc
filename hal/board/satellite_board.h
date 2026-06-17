@@ -219,6 +219,8 @@ class Board final {
 
   power::Power& power() { return power_; }
 
+  mcu::Mcu& mcu() { return mcu_; }
+
   dac::DacPeripheral& dac() { return dac_; }
 
   adc::AdcPeripheral& adc() { return adc_; }
@@ -235,7 +237,7 @@ class Board final {
     static_assert(LED < NUM_DEBUG_LEDS);
     return DEBUG_LEDS[LED];
   }
-  auto debug_led() noexcept { return debug_led<>(); }
+  auto& debug_led() noexcept { return debug_led<>(); }
 
   gpio::PinPeripheral& debug_led(size_t led_number) noexcept { return DEBUG_LEDS[led_number]; }
 
@@ -254,8 +256,6 @@ class Board final {
   power_monitor::PowerMonitorPeripheral& power_monitor2() { return power_monitor2_; }
 
   programmer::ProgrammerPeripheral& programmer() { return programmer_; }
-
-  mcu::Mcu& mcu() { return mcu_; }
 };
 
 static_assert(BasicBoard<Board>);

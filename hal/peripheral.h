@@ -72,6 +72,10 @@ class Peripheral {
   virtual void disable() = 0;
 
  public:
+  Peripheral() = default;
+  Peripheral(const Peripheral&) = delete;
+  Peripheral(Peripheral&&) = delete;
+
   virtual ~Peripheral() = default;
 
   // Access an interface to use the functionality of this peripheral.
