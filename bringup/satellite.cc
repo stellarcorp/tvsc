@@ -114,17 +114,17 @@ int main(int argc, char* argv[]) {
                                            system.board().gpio<System::BoardType::DEBUG_LED_PORT>(),
                                            System::BoardType::DEBUG_LED_PIN));
 
-  system.scheduler().add_task(periodic_transmit(system.board().can1(), 10s, announce_msg));
+  system.scheduler().add_task(periodic_transmit(system.board().can<0>(), 10s, announce_msg));
 
   system.scheduler().add_task(
-      can_bus_receive(system.board().can1(), can_bus_message_queue, system.board().debug_led()));
+      can_bus_receive(system.board().can<0>(), can_bus_message_queue, system.board().debug_led()));
 
   system.scheduler().add_task(process_messages(can_bus_message_queue));
 
   if (board_id == static_cast<tvsc::hal::board_identification::BoardId>(
                       tvsc::hal::board_identification::CanonicalBoardIds::COMMS_BOARD_1)) {
     system.scheduler().add_task(
-        periodic_transmit(system.board().can1(), 500ms, 100ms,
+        periodic_transmit(system.board().can<0>(), 500ms, 100ms,
                           tvsc::message::led_on_command<tvsc::message::CanBusMessage::mtu()>(),
                           tvsc::message::led_off_command<tvsc::message::CanBusMessage::mtu()>()));
   }

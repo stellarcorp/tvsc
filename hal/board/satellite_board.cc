@@ -120,22 +120,22 @@ void SysTick_Handler() {
 
 void CAN1_TX_IRQHandler(void) {
   tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
-  board.can1().handle_interrupt();
+  board.can<0>().handle_interrupt();
 }
 
 void CAN1_RX0_IRQHandler(void) {
   tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
-  board.can1().handle_interrupt();
+  board.can<0>().handle_interrupt();
 }
 
 void CAN1_RX1_IRQHandler(void) {
   tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
-  board.can1().handle_interrupt();
+  board.can<0>().handle_interrupt();
 }
 
 void CAN1_SCE_IRQHandler(void) {
   tvsc::hal::board::Board& board{tvsc::hal::board::Board::board()};
-  board.can1().handle_interrupt();
+  board.can<0>().handle_interrupt();
 }
 
 }  // extern "C"

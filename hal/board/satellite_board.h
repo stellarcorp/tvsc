@@ -49,6 +49,9 @@ class Board final {
   static constexpr size_t NUM_DAC_CHANNELS{1};
   static constexpr size_t NUM_DEBUG_LEDS{1};
 
+  static constexpr size_t NUM_I2C_BUSES{3};
+  static constexpr size_t NUM_CAN_BUSES{1};
+
   static constexpr gpio::PortNumber GPIO_PORT_A{0};
   static constexpr gpio::PortNumber GPIO_PORT_B{1};
   static constexpr gpio::PortNumber GPIO_PORT_C{2};
@@ -114,22 +117,25 @@ class Board final {
 
   watchdog::WatchdogStm32l4xx iwdg_{IWDG, lsi_oscillator_};
 
-  i2c::I2cStm32l4xx i2c1_{I2C1, gpio_port_b_, /* SCL Pin */ 6, /* SDA Pin */ 7};
-  i2c::I2cStm32l4xx i2c2_{I2C2, gpio_port_b_, /* SCL Pin */ 10, /* SDA Pin */ 11};
-  i2c::I2cStm32l4xx i2c3_{I2C3, gpio_port_c_, /* SCL Pin */ 0, /* SDA Pin */ 1};
+  std::array<i2c::I2cStm32l4xx, NUM_I2C_BUSES> i2c_buses{
+      i2c::I2cStm32l4xx{I2C1, gpio_port_b_, /* SCL Pin */ 6, /* SDA Pin */ 7},
+      i2c::I2cStm32l4xx{I2C2, gpio_port_b_, /* SCL Pin */ 10, /* SDA Pin */ 11},
+      i2c::I2cStm32l4xx{I2C3, gpio_port_c_, /* SCL Pin */ 0, /* SDA Pin */ 1},
+  };
 
-  can_bus::CanBusStm32l4xx can1_{CAN1,
-                                 gpio_port_a_,
-                                 /* TX Pin */ 12,
-                                 /* RX Pin */ 11,
-                                 /* SHUTDOWN Pin */ 9,
-                                 /* SILENT Pin */ 10};
+  std::array<can_bus::CanBusStm32l4xx, NUM_CAN_BUSES> can_buses{
+      can_bus::CanBusStm32l4xx{CAN1, gpio_port_a_,
+                               /* TX Pin */ 12,
+                               /* RX Pin */ 11,
+                               /* SHUTDOWN Pin */ 9,
+                               /* SILENT Pin */ 10},
+  };
 
-  imu::Bmi323Imu imu1_{0x68, i2c1_};
-  imu::Bmi323Imu imu2_{0x69, i2c2_};
+  imu::Bmi323Imu imu1_{0x68, i2c<0>()};
+  imu::Bmi323Imu imu2_{0x69, i2c<1>()};
 
-  power_monitor::Ina260PowerMonitor power_monitor1_{0x40, i2c3_};
-  power_monitor::Ina260PowerMonitor power_monitor2_{0x41, i2c3_};
+  power_monitor::Ina260PowerMonitor power_monitor1_{0x40, i2c<2>()};
+  power_monitor::Ina260PowerMonitor power_monitor2_{0x41, i2c<2>()};
 
   programmer::ProgrammerStm32l4xx programmer_{gpio_port_b_,                //
                                               /* SWDIO_CONTROL Pin */ 15,  //
@@ -232,6 +238,20 @@ class Board final {
 
   random::RngPeripheral& rng() { return rng_; }
 
+  watchdog::WatchdogPeripheral& iwdg() { return iwdg_; }
+
+  template <size_t BUS = 0>
+  i2c::I2cPeripheral& i2c() noexcept {
+    static_assert(BUS < NUM_I2C_BUSES);
+    return i2c_buses[BUS];
+  }
+
+  template <size_t BUS = 0>
+  can_bus::CanBusPeripheral& can() noexcept {
+    static_assert(BUS < NUM_CAN_BUSES);
+    return can_buses[BUS];
+  }
+
   template <size_t LED = 0>
   gpio::PinPeripheral& debug_led() noexcept {
     static_assert(LED < NUM_DEBUG_LEDS);
@@ -239,23 +259,15 @@ class Board final {
   }
   auto& debug_led() noexcept { return debug_led<>(); }
 
-  gpio::PinPeripheral& debug_led(size_t led_number) noexcept { return DEBUG_LEDS[led_number]; }
+  gpio::PinPeripheral& debug_led(size_t led_number) noexcept { return DEBUG_LEDS.at(led_number); }
 
-  watchdog::WatchdogPeripheral& iwdg() { return iwdg_; }
-
-  i2c::I2cPeripheral& i2c1() { return i2c1_; }
-  i2c::I2cPeripheral& i2c2() { return i2c2_; }
-  i2c::I2cPeripheral& i2c3() { return i2c3_; }
-
-  can_bus::CanBusPeripheral& can1() { return can1_; }
+  programmer::ProgrammerPeripheral& programmer() { return programmer_; }
 
   imu::ImuPeripheral& imu1() { return imu1_; }
   imu::ImuPeripheral& imu2() { return imu2_; }
 
   power_monitor::PowerMonitorPeripheral& power_monitor1() { return power_monitor1_; }
   power_monitor::PowerMonitorPeripheral& power_monitor2() { return power_monitor2_; }
-
-  programmer::ProgrammerPeripheral& programmer() { return programmer_; }
 };
 
 static_assert(BasicBoard<Board>);

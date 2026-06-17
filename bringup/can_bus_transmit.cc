@@ -28,7 +28,7 @@ tvsc::system::System::Task echo_client() {
 
   auto& board{tvsc::system::System::board()};
   auto& debug_led_peripheral{board.gpio<BoardType::DEBUG_LED_PORT>()};
-  auto& can1_peripheral{board.can1()};
+  auto& can1_peripheral{board.can<0>()};
 
   // Turn on clocks for the peripherals that we want.
   auto debug_led{debug_led_peripheral.access()};
