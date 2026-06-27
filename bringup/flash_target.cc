@@ -14,6 +14,6 @@ int main(int argc, char *argv[]) {
   BoardType &board{BoardType::board()};
 
   System::scheduler().add_task(flash_target(
-      board.programmer(), board.gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN));
+      board.programmer(), board.mcu().gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN));
   System::scheduler().start();
 }

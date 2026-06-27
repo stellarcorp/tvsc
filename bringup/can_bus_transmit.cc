@@ -26,9 +26,10 @@ tvsc::system::System::Task echo_client() {
   using namespace tvsc::hal::can_bus;
   using namespace tvsc::hal::gpio;
 
+  auto& mcu{tvsc::system::System::mcu()};
   auto& board{tvsc::system::System::board()};
-  auto& debug_led_peripheral{board.gpio<BoardType::DEBUG_LED_PORT>()};
-  auto& can1_peripheral{board.can<0>()};
+  auto& debug_led_peripheral{board.debug_led<0>()};
+  auto& can1_peripheral{mcu.can<0>()};
 
   // Turn on clocks for the peripherals that we want.
   auto debug_led{debug_led_peripheral.access()};
@@ -38,15 +39,15 @@ tvsc::system::System::Task echo_client() {
   while (error_code != 0) {
   }
 
-  debug_led.set_pin_mode(BoardType::DEBUG_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
+  debug_led.set_pin_mode(PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
   while (true) {
     using std::to_string;
     if (can1.transmit(++identifier, MESSAGE)) {
       ++tx_count;
-      debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
+      debug_led.write_pin(/* ON */ 1);
       co_yield 2ms;
-      debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
+      debug_led.write_pin(/* OFF */ 0);
     } else {
       ++error_count;
       error_code = can1.error_code();

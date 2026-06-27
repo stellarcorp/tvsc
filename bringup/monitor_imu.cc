@@ -21,6 +21,7 @@ __attribute__((section(".status.value"))) ImuReading imu2_reading{};
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
+  auto& mcu{System::mcu()};
   auto& board{System::board()};
   auto& scheduler{System::scheduler()};
 
@@ -28,7 +29,7 @@ int main(int argc, char* argv[]) {
   // scheduler.add_task(monitor_imu<ClockType>(board.imu2(), imu2_reading,
   // 1ms));
   scheduler.add_task(blink(board.debug_led()));
-  scheduler.add_task(run_watchdog(board.iwdg()));
+  scheduler.add_task(run_watchdog(mcu.iwdg()));
 
   scheduler.start();
 }

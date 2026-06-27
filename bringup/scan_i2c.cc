@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
   BoardType& board{BoardType::board()};
-  auto& i2c_peripheral{board.i2c<0>()};
+  auto& i2c_peripheral{board.mcu().i2c<0>()};
 
   auto i2c{i2c_peripheral.access()};
   while (true) {

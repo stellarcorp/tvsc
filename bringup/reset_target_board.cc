@@ -15,7 +15,7 @@ tvsc::system::System::Task reset_target() {
   using namespace std::chrono_literals;
   using namespace tvsc::hal::gpio;
 
-  auto &debug_led_peripheral{system::System::board().gpio<BoardType::DEBUG_LED_PORT>()};
+  auto &debug_led_peripheral{system::System::board().mcu().gpio<BoardType::DEBUG_LED_PORT>()};
   auto &programmer_peripheral{system::System::board().programmer()};
 
   // Turn on clocks for the peripherals that we want.

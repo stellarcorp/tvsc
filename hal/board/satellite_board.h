@@ -20,6 +20,8 @@
 #include "hal/i2c/stm32l4xx_i2c.h"
 #include "hal/imu/bmi323_imu.h"
 #include "hal/imu/imu.h"
+#include "hal/mcu/mcu.h"
+#include "hal/mcu/stm32l4xx.h"
 #include "hal/mcu_identification/mcu_identification.h"
 #include "hal/mcu_identification/stm32l4xx_mcu_identification.h"
 #include "hal/power/power.h"
@@ -45,212 +47,46 @@ namespace tvsc::hal::board {
 
 class Board final {
  public:
-  static constexpr gpio::PortNumber NUM_GPIO_PORTS{6};
-  static constexpr size_t NUM_DAC_CHANNELS{1};
-  static constexpr size_t NUM_DEBUG_LEDS{1};
-
-  static constexpr size_t NUM_I2C_BUSES{3};
-  static constexpr size_t NUM_CAN_BUSES{1};
-
-  static constexpr gpio::PortNumber GPIO_PORT_A{0};
-  static constexpr gpio::PortNumber GPIO_PORT_B{1};
-  static constexpr gpio::PortNumber GPIO_PORT_C{2};
-  static constexpr gpio::PortNumber GPIO_PORT_D{3};
-  static constexpr gpio::PortNumber GPIO_PORT_E{4};
-  static constexpr gpio::PortNumber GPIO_PORT_H{7};
-
   // Location of the pins to read the board id.
-  static constexpr gpio::PortNumber BOARD_ID_POWER_PORT{GPIO_PORT_A};
-  static constexpr gpio::PortNumber BOARD_ID_SENSE_PORT{GPIO_PORT_A};
+  static constexpr gpio::PortNumber BOARD_ID_POWER_PORT{mcu::Mcu::GPIO_PORT_A};
+  static constexpr gpio::PortNumber BOARD_ID_SENSE_PORT{mcu::Mcu::GPIO_PORT_A};
   static constexpr gpio::PinNumber BOARD_ID_POWER_PIN{6};
   static constexpr gpio::PinNumber BOARD_ID_SENSE_PIN{7};
 
-  // Location of the LEDs provided by this board.
-  static constexpr gpio::PortNumber DEBUG_LED_PORT{GPIO_PORT_C};
+  // Debug LEDs provided by this board.
+  static constexpr size_t NUM_DEBUG_LEDS{1};
+  static constexpr gpio::PortNumber DEBUG_LED_PORT{mcu::Mcu::GPIO_PORT_C};
   static constexpr gpio::PinNumber DEBUG_LED_PIN{13};
 
   static constexpr std::array<gpio::PortNumber, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{DEBUG_LED_PORT};
   static constexpr std::array<gpio::PinNumber, NUM_DEBUG_LEDS> DEBUG_LED_PINS{DEBUG_LED_PIN};
 
-  static constexpr gpio::PortNumber DAC_CHANNEL_1_PORT{GPIO_PORT_A};
-  static constexpr gpio::PinNumber DAC_CHANNEL_1_PIN{4};
-
-  static constexpr std::array<gpio::PortNumber, NUM_DAC_CHANNELS> DAC_PORTS{DAC_CHANNEL_1_PORT};
-  static constexpr std::array<gpio::PinNumber, NUM_DAC_CHANNELS> DAC_PINS{DAC_CHANNEL_1_PIN};
-
  private:
-  rcc::RccStm32L4xx rcc_{};
-
-  systick::SysTickStm32l4xx sys_tick_{};
-
-  // We initialize these GPIO ports with the addresses where their registers are bound.
-  // Note that the STM32L4xx boards seem to have up to 11 (A-K) GPIO ports. We have only provided
-  // for the first few here, but this can be expanded if necessary.
-  gpio::GpioStm32xxxx gpio_port_a_{reinterpret_cast<void*>(GPIOA_BASE), 0};
-  gpio::GpioStm32xxxx gpio_port_b_{reinterpret_cast<void*>(GPIOB_BASE), 1};
-  gpio::GpioStm32xxxx gpio_port_c_{reinterpret_cast<void*>(GPIOC_BASE), 2};
-  gpio::GpioStm32xxxx gpio_port_d_{reinterpret_cast<void*>(GPIOD_BASE), 3};
-  gpio::GpioStm32xxxx gpio_port_e_{reinterpret_cast<void*>(GPIOE_BASE), 4};
-  gpio::GpioStm32xxxx gpio_port_h_{reinterpret_cast<void*>(GPIOH_BASE), 7};
-  // Don't forget to modify NUM_GPIO_PORTS and add a GPIO_PORT_* above.
-
   std::array<gpio::PinPeripheral, NUM_DEBUG_LEDS> DEBUG_LEDS{
-      gpio::PinPeripheral{this->gpio(DEBUG_LED_PORTS[0]), DEBUG_LED_PINS[0]},
+      gpio::PinPeripheral{mcu().gpio<DEBUG_LED_PORTS[0]>(), DEBUG_LED_PINS[0]},
   };
 
-  power::PowerStm32L4xx power_{};
+  imu::Bmi323Imu imu1_{0x68, mcu().i2c<0>()};
+  imu::Bmi323Imu imu2_{0x69, mcu().i2c<1>()};
 
-  dac::DacStm32xxxx<NUM_DAC_CHANNELS> dac_{DAC};
+  power_monitor::Ina260PowerMonitor power_monitor1_{0x40, mcu().i2c<2>()};
+  power_monitor::Ina260PowerMonitor power_monitor2_{0x41, mcu().i2c<2>()};
 
-  dma::DmaStm32l4xx dma1_{DMA1};
-  dma::DmaStm32l4xx dma2_{DMA2};
-
-  adc::AdcStm32l4xx adc_{ADC1, dma1_, DMA1_Channel1, DMA_REQUEST_0};
-
-  timer::TimerStm32l4xx timer2_{Stm32PeripheralIds::TIM2_ID, TIM2};
-
-  rcc::LsiOscillatorStm32L4xx lsi_oscillator_{};
-  timer::Stm32l4xxLptim lptim1_{Stm32PeripheralIds::LPTIM1_ID, LPTIM1, lsi_oscillator_};
-
-  rcc::Hsi48OscillatorStm32L4xx hsi48_oscillator_{};
-  random::RngStm32xxxx rng_{hsi48_oscillator_};
-
-  watchdog::WatchdogStm32l4xx iwdg_{IWDG, lsi_oscillator_};
-
-  std::array<i2c::I2cStm32l4xx, NUM_I2C_BUSES> i2c_buses{
-      i2c::I2cStm32l4xx{I2C1, gpio_port_b_, /* SCL Pin */ 6, /* SDA Pin */ 7},
-      i2c::I2cStm32l4xx{I2C2, gpio_port_b_, /* SCL Pin */ 10, /* SDA Pin */ 11},
-      i2c::I2cStm32l4xx{I2C3, gpio_port_c_, /* SCL Pin */ 0, /* SDA Pin */ 1},
-  };
-
-  std::array<can_bus::CanBusStm32l4xx, NUM_CAN_BUSES> can_buses{
-      can_bus::CanBusStm32l4xx{CAN1, gpio_port_a_,
-                               /* TX Pin */ 12,
-                               /* RX Pin */ 11,
-                               /* SHUTDOWN Pin */ 9,
-                               /* SILENT Pin */ 10},
-  };
-
-  imu::Bmi323Imu imu1_{0x68, i2c<0>()};
-  imu::Bmi323Imu imu2_{0x69, i2c<1>()};
-
-  power_monitor::Ina260PowerMonitor power_monitor1_{0x40, i2c<2>()};
-  power_monitor::Ina260PowerMonitor power_monitor2_{0x41, i2c<2>()};
-
-  programmer::ProgrammerStm32l4xx programmer_{gpio_port_b_,                //
+  programmer::ProgrammerStm32l4xx programmer_{mcu().gpio<1>(),             //
                                               /* SWDIO_CONTROL Pin */ 15,  //
                                               /* SWCLK_CONTROL Pin */ 13,  //
                                               /* NRST_CONTROL Pin */ 14};
 
-  mcu_identification::McuIdentificationStm32l4xx mcu_identification_{};
-
-  // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
-  // more difficult to accidentally use them.
-  static constexpr gpio::PortNumber GPIO_PORT_F{5};
-  static constexpr gpio::PortNumber GPIO_PORT_G{6};
-  static constexpr size_t NUM_DISALLOWED_PORTS{2};
-
   static Board board_;
 
   // Private constructor to restrict inadvertent instantiation and copying.
-  Board();
+  Board() = default;
 
  public:
   // One board per executable.
   static Board& board();
 
-  template <gpio::PortNumber GPIO_PORT>
-  gpio::GpioPeripheral& gpio() {
-    static_assert(
-        GPIO_PORT < NUM_GPIO_PORTS + NUM_DISALLOWED_PORTS,
-        "Invalid GPIO port id. Likely, there is a mismatch in the build that instantiates a Board "
-        "without considering the correct BOARD_ID. Verify that the board-specific header file "
-        "(hal/boards/board_<board-name>.h) is being included.");
-    static_assert(
-        GPIO_PORT != GPIO_PORT_F,
-        "Invalid GPIO port id. Port F does not exist on this board. Likely, there is a mismatch in "
-        "the build that instantiates a Board "
-        "without considering the correct BOARD_ID. Verify that the board-specific header file "
-        "(hal/boards/board_<board-name>.h) is being included.");
-    static_assert(
-        GPIO_PORT != GPIO_PORT_G,
-        "Invalid GPIO port id. Port G does not exist on this board. Likely, there is a mismatch in "
-        "the build that instantiates a Board "
-        "without considering the correct BOARD_ID. Verify that the board-specific header file "
-        "(hal/boards/board_<board-name>.h) is being included.");
-    if constexpr (GPIO_PORT == 0) {
-      return gpio_port_a_;
-    }
-    if constexpr (GPIO_PORT == 1) {
-      return gpio_port_b_;
-    }
-    if constexpr (GPIO_PORT == 2) {
-      return gpio_port_c_;
-    }
-    if constexpr (GPIO_PORT == 3) {
-      return gpio_port_d_;
-    }
-    if constexpr (GPIO_PORT == 4) {
-      return gpio_port_e_;
-    }
-    if constexpr (GPIO_PORT == 7) {
-      return gpio_port_h_;
-    }
-  }
-
-  /**
-   * Accessor for GPIO periperhals. Note that the templated version above is vastly preferred, as it
-   * gives compile-time errors, as opposed to runtime errors like this method. This method should
-   * only be used as to lookup GPIO ports using integer values that can be evaluated at
-   * compile-time; these integer values will mainly come from STM's HAL.
-   */
-  gpio::GpioPeripheral& gpio(gpio::PortNumber port) {
-    if (port == 0) {
-      return gpio_port_a_;
-    } else if (port == 1) {
-      return gpio_port_b_;
-    } else if (port == 2) {
-      return gpio_port_c_;
-    } else if (port == 3) {
-      return gpio_port_d_;
-    } else if (port == 4) {
-      return gpio_port_e_;
-    } else if (port == 7) {
-      return gpio_port_h_;
-    }
-    error();
-  }
-
-  rcc::Rcc& rcc() { return rcc_; };
-
-  power::Power& power() { return power_; }
-
-  mcu_identification::McuIdentification& mcu_identification() { return mcu_identification_; }
-
-  dac::DacPeripheral& dac() { return dac_; }
-
-  adc::AdcPeripheral& adc() { return adc_; }
-
-  timer::TimerPeripheral& timer2() { return timer2_; }
-  timer::TimerPeripheral& sleep_timer() { return lptim1_; }
-
-  systick::SysTickType& sys_tick() { return sys_tick_; }
-
-  random::RngPeripheral& rng() { return rng_; }
-
-  watchdog::WatchdogPeripheral& iwdg() { return iwdg_; }
-
-  template <size_t BUS = 0>
-  i2c::I2cPeripheral& i2c() noexcept {
-    static_assert(BUS < NUM_I2C_BUSES);
-    return i2c_buses[BUS];
-  }
-
-  template <size_t BUS = 0>
-  can_bus::CanBusPeripheral& can() noexcept {
-    static_assert(BUS < NUM_CAN_BUSES);
-    return can_buses[BUS];
-  }
+  static mcu::Mcu& mcu();
 
   template <size_t LED = 0>
   gpio::PinPeripheral& debug_led() noexcept {

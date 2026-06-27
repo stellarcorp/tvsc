@@ -90,16 +90,16 @@ int main(int argc, char* argv[]) {
   auto& system{System::get()};
 
   {
-    auto& gpio_id_power_peripheral{system.board().gpio<System::BoardType::BOARD_ID_POWER_PORT>()};
-    auto& gpio_id_sense_peripheral{system.board().gpio<System::BoardType::BOARD_ID_SENSE_PORT>()};
-    auto& adc_peripheral{system.board().adc()};
+    auto& gpio_id_power_peripheral{system.mcu().gpio<System::BoardType::BOARD_ID_POWER_PORT>()};
+    auto& gpio_id_sense_peripheral{system.mcu().gpio<System::BoardType::BOARD_ID_SENSE_PORT>()};
+    auto& adc_peripheral{system.mcu().adc()};
 
     board_id = read_board_id(system.clock(), gpio_id_power_peripheral,
                              System::BoardType::BOARD_ID_POWER_PIN, gpio_id_sense_peripheral,
                              System::BoardType::BOARD_ID_SENSE_PIN, adc_peripheral);
 
-    system.board().mcu_identification().read_id(mcu_id);
-    hashed_mcu_id = system.board().mcu_identification().hashed_id();
+    system.mcu().mcu_identification().read_id(mcu_id);
+    hashed_mcu_id = system.mcu().mcu_identification().hashed_id();
 
     tvsc::message::create_announce_message(announce_msg, hashed_mcu_id, board_id);
   }
@@ -111,20 +111,20 @@ int main(int argc, char* argv[]) {
   (void)can_bus_message_queue.attach_processor(can_bus_sniffer);
 
   system.scheduler().add_task(flash_target(system.board().programmer(),
-                                           system.board().gpio<System::BoardType::DEBUG_LED_PORT>(),
+                                           system.mcu().gpio<System::BoardType::DEBUG_LED_PORT>(),
                                            System::BoardType::DEBUG_LED_PIN));
 
-  system.scheduler().add_task(periodic_transmit(system.board().can<0>(), 10s, announce_msg));
+  system.scheduler().add_task(periodic_transmit(system.mcu().can<0>(), 10s, announce_msg));
 
   system.scheduler().add_task(
-      can_bus_receive(system.board().can<0>(), can_bus_message_queue, system.board().debug_led()));
+      can_bus_receive(system.mcu().can<0>(), can_bus_message_queue, system.board().debug_led()));
 
   system.scheduler().add_task(process_messages(can_bus_message_queue));
 
   if (board_id == static_cast<tvsc::hal::board_identification::BoardId>(
                       tvsc::hal::board_identification::CanonicalBoardIds::COMMS_BOARD_1)) {
     system.scheduler().add_task(
-        periodic_transmit(system.board().can<0>(), 500ms, 100ms,
+        periodic_transmit(system.mcu().can<0>(), 500ms, 100ms,
                           tvsc::message::led_on_command<tvsc::message::CanBusMessage::mtu()>(),
                           tvsc::message::led_off_command<tvsc::message::CanBusMessage::mtu()>()));
   }

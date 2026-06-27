@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
   // be able to detect that the watchdog caused a reset.
   System::clock().sleep(CYCLE_TIME);
 
-  System::scheduler().add_task(run_watchdog(System::board().iwdg()));
+  System::scheduler().add_task(run_watchdog(System::mcu().iwdg()));
   System::scheduler().add_task(blink(System::board().debug_led()));
   System::scheduler().add_task(quit(CYCLE_TIME));
   System::scheduler().start();

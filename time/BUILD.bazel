@@ -23,7 +23,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//hal",
-        "//hal/board",
+        "//hal/mcu",
         "//hal/power",
         "//hal/rcc",
         "//hal/timer",

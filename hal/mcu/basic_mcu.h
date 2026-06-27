@@ -4,7 +4,9 @@
 #include <type_traits>
 
 #include "hal/gpio/gpio.h"
-#include "hal/mcu/mcu.h"
+#include "hal/power/power.h"
+#include "hal/rcc/rcc.h"
+#include "hal/systick/systick.h"
 
 namespace tvsc::hal::board {
 
@@ -19,16 +21,32 @@ concept HasDebugLed =                         //
     true;
 
 template <typename B>
-concept HasMcu =  //
+concept HasRcc =  //
     requires(B& b) {
-      { b.mcu() } -> std::same_as<mcu::Mcu&>;
+      { b.rcc() } -> std::same_as<rcc::Rcc&>;
+    } and  //
+    true;
+
+template <typename B>
+concept HasPower =  //
+    requires(B& b) {
+      { b.power() } -> std::same_as<power::Power&>;
+    } and  //
+    true;
+
+template <typename B>
+concept HasSysTick =  //
+    requires(B& b) {
+      { b.sys_tick() } -> std::same_as<systick::SysTickType&>;
     } and  //
     true;
 
 template <typename B>
 concept BasicBoard =    //
     HasDebugLed<B> and  //
-    HasMcu<B> and       //
+    HasRcc<B> and       //
+    HasPower<B> and     //
+    HasSysTick<B> and   //
     true;
 
 }  // namespace tvsc::hal::board

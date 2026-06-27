@@ -39,10 +39,10 @@ tvsc::system::System::Task read_board_id(int32_t num_iterations = -1) {
   using BoardType = tvsc::system::System::BoardType;
   using namespace std::chrono_literals;
 
-  auto& board{tvsc::system::System::board()};
-  auto& gpio_id_power_peripheral{board.gpio<BoardType::BOARD_ID_POWER_PORT>()};
-  auto& gpio_id_sense_peripheral{board.gpio<BoardType::BOARD_ID_SENSE_PORT>()};
-  auto& adc_peripheral{board.adc()};
+  auto& mcu{tvsc::system::System::mcu()};
+  auto& gpio_id_power_peripheral{mcu.gpio<BoardType::BOARD_ID_POWER_PORT>()};
+  auto& gpio_id_sense_peripheral{mcu.gpio<BoardType::BOARD_ID_SENSE_PORT>()};
+  auto& adc_peripheral{mcu.adc()};
 
   // Turn on clocks for the peripherals that we want.
   auto gpio_id_power{gpio_id_power_peripheral.access()};
@@ -121,6 +121,6 @@ int main(int argc, char* argv[]) {
         return board_id != tvsc::cast_to_underlying_type(
                                tvsc::hal::board_identification::CanonicalBoardIds::UNKNOWN);
       },
-      System::board().gpio<BoardType::DEBUG_LED_PORT>(), System::board().DEBUG_LED_PIN));
+      System::board().debug_led<0>()));
   System::scheduler().start();
 }

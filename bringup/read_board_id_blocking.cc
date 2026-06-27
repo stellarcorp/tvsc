@@ -22,9 +22,9 @@ int main(int argc, char* argv[]) {
   BoardType& board{BoardType::board()};
   auto& clock{ClockType::clock()};
 
-  auto& gpio_id_power_peripheral{board.gpio<BoardType::BOARD_ID_POWER_PORT>()};
-  auto& gpio_id_sense_peripheral{board.gpio<BoardType::BOARD_ID_SENSE_PORT>()};
-  auto& adc_peripheral{board.adc()};
+  auto& gpio_id_power_peripheral{board.mcu().gpio<BoardType::BOARD_ID_POWER_PORT>()};
+  auto& gpio_id_sense_peripheral{board.mcu().gpio<BoardType::BOARD_ID_SENSE_PORT>()};
+  auto& adc_peripheral{board.mcu().adc()};
 
   while (true) {
     board_id = tvsc::bringup::read_board_id(clock, gpio_id_power_peripheral,

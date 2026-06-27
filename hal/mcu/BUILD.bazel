@@ -1,0 +1,96 @@
+cc_library(
+    name = "mcu",
+    hdrs = [
+        "mcu.h",
+    ],
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        "//flags",
+    ] + select({
+        "//platforms:stm32l412xx_mcu": [
+            ":stm32l4xx_mcu",
+        ],
+        "//platforms:stm32l432xx_mcu": [
+            ":stm32l4xx_mcu",
+        ],
+        "//platforms:stm32l452xx_mcu": [
+            ":stm32l4xx_mcu",
+        ],
+        "@platforms//os:linux": [
+            ":simulation",
+        ],
+    }),
+    alwayslink = True,
+)
+
+cc_library(
+    name = "mcu_concepts",
+    hdrs = [
+    ],
+    deps = [
+        # Note that the deps for all concepts should come from the library that depends on this one.
+        # The concepts test both the signature of the Board class and also the dependency
+        # configuration. Importantly, not all of the board types provide the features of all of the
+        # board concepts. While we could split each concept into its own library with its own
+        # dependencies, we haven't done that at this stage. That would likely be a better structure.
+    ],
+)
+
+cc_library(
+    name = "stm32l4xx_mcu",
+    srcs = [
+        "stm32l4xx.cc",
+    ],
+    hdrs = [
+        "stm32l4xx.h",
+    ],
+    target_compatible_with = select({
+        "//platforms:stm32l412xx_mcu": [],
+        "//platforms:stm32l432xx_mcu": [],
+        "//platforms:stm32l452xx_mcu": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    deps = [
+        ":mcu_concepts",
+        "//hal",
+        "//hal/adc",
+        "//hal/can_bus",
+        "//hal/dac",
+        "//hal/dma",
+        "//hal/gpio",
+        "//hal/i2c",
+        "//hal/mcu_identification",
+        "//hal/power",
+        "//hal/random",
+        "//hal/rcc",
+        "//hal/systick",
+        "//hal/watchdog",
+        "//third_party/stm32",
+    ],
+)
+
+cc_library(
+    name = "simulation",
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
+    deps = [
+        ":mcu_concepts",
+        "//hal",
+        "//hal/gpio",
+        "//hal/power",
+        "//hal/rcc",
+        "//hal/simulation",
+        "//hal/systick",
+        "//hal/timer",
+        "//hal/watchdog",
+        "//io",
+        "//third_party/glog",
+        "//time:simulation_clock",
+    ],
+)

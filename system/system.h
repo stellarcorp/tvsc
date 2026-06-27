@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "hal/board/board.h"
+#include "hal/mcu/mcu.h"
 #include "system/scheduler.h"
 #include "system/task.h"
 #include "time/embedded_clock.h"
@@ -18,21 +19,24 @@ class System final {
 #endif
 
   using ClockType = tvsc::time::EmbeddedClock;
+  using McuType = tvsc::hal::mcu::Mcu;
   using BoardType = tvsc::hal::board::Board;
   using Scheduler = SchedulerT<ClockType, SCHEDULER_QUEUE_SIZE>;
   using Task = TaskT<ClockType>;
 
  private:
-  BoardType& board_{BoardType::board()};
-  ClockType& clock_{ClockType::clock()};
+  McuType* const mcu_{&McuType::mcu()};
+  BoardType* const board_{&BoardType::board()};
+  ClockType* const clock_{&ClockType::clock()};
 
-  Scheduler scheduler_{board_.rcc()};
+  Scheduler scheduler_{mcu_->rcc()};
 
   // Singleton with instance held in static accessor function.
   System() = default;
 
  public:
   static ClockType& clock();
+  static McuType& mcu();
   static BoardType& board();
   static Scheduler& scheduler();
 

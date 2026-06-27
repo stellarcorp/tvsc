@@ -6,14 +6,13 @@
 
 namespace tvsc::bringup {
 
-tvsc::system::System::Task blink_randomly(tvsc::hal::gpio::GpioPeripheral& gpio_peripheral,
-                                          tvsc::hal::gpio::PinNumber pin) {
-  auto gpio{gpio_peripheral.access()};
-  gpio.set_pin_mode(pin, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
-  gpio.write_pin(pin, 0);
+tvsc::system::System::Task blink_randomly(tvsc::hal::gpio::PinPeripheral& led_peripheral) {
+  auto led{led_peripheral.access()};
+  led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
+  led.write_pin(/* OFF */ 0);
 
   while (true) {
-    gpio.toggle_pin(pin);
+    led.toggle_pin();
     const std::chrono::milliseconds delay_ms{tvsc::random::generate_random_value(5U, 1000U)};
     co_yield delay_ms;
   }

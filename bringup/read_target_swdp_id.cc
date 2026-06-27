@@ -24,7 +24,7 @@ tvsc::system::System::Task read_target_swdp_id() {
 
   static constexpr uint32_t EXPECTED_SW_DP_IDCODE{0x2BA01477};
 
-  auto &debug_led_peripheral{System::board().gpio<BoardType::DEBUG_LED_PORT>()};
+  auto &debug_led_peripheral{System::mcu().gpio<BoardType::DEBUG_LED_PORT>()};
   auto &programmer_peripheral{System::board().programmer()};
 
   // Turn on clocks for the peripherals that we want.

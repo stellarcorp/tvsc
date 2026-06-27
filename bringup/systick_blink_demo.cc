@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 
   const auto delay{500ms};
 
-  tvsc::hal::gpio::GpioPeripheral& gpio_peripheral{board.gpio<BoardType::DEBUG_LED_PORT>()};
+  tvsc::hal::gpio::GpioPeripheral& gpio_peripheral{board.mcu().gpio<BoardType::DEBUG_LED_PORT>()};
   tvsc::hal::gpio::Gpio gpio{gpio_peripheral.access()};
   tvsc::hal::gpio::PinNumber pin{BoardType::DEBUG_LED_PIN};
 

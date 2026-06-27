@@ -29,24 +29,25 @@ namespace tvsc::bringup {
 
 template <uint8_t DAC_CHANNEL = 0>
 tvsc::system::System::Task run_adc_demo() {
+  using McuType = tvsc::system::System::McuType;
   using BoardType = tvsc::system::System::BoardType;
   using namespace std::chrono_literals;
+  auto& mcu{tvsc::system::System::mcu()};
   auto& board{tvsc::system::System::board()};
-  auto& gpio_peripheral{board.gpio<BoardType::DEBUG_LED_PORT>()};
-  auto& adc_peripheral{board.adc()};
-  auto& dac_peripheral{board.dac()};
-  auto& dac_gpio_peripheral{board.gpio<BoardType::DAC_PORTS[DAC_CHANNEL]>()};
+  auto& led_peripheral{board.debug_led<0>()};
+  auto& adc_peripheral{mcu.adc()};
+  auto& dac_peripheral{mcu.dac()};
+  auto& dac_gpio_peripheral{mcu.gpio<McuType::DAC_PORTS[DAC_CHANNEL]>()};
 
   // Turn on clocks for the peripherals that we want.
   auto dac{dac_peripheral.access()};
-  auto gpio{gpio_peripheral.access()};
+  auto led{led_peripheral.access()};
   auto adc{adc_peripheral.access()};
   auto dac_gpio{dac_gpio_peripheral.access()};
 
-  dac_gpio.set_pin_mode(BoardType::DAC_PINS[DAC_CHANNEL], tvsc::hal::gpio::PinMode::ANALOG);
+  dac_gpio.set_pin_mode(McuType::DAC_PINS[DAC_CHANNEL], tvsc::hal::gpio::PinMode::ANALOG);
 
-  gpio.set_pin_mode(BoardType::DEBUG_LED_PIN, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL,
-                    tvsc::hal::gpio::PinSpeed::LOW);
+  led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal::gpio::PinSpeed::LOW);
 
   static constexpr uint8_t RESOLUTION{12};
   static constexpr uint8_t RESOLUTION_SHIFT{RESOLUTION - 8};
@@ -62,13 +63,13 @@ tvsc::system::System::Task run_adc_demo() {
       adc.calibrate_single_ended_input();
 
       // Flash slowly after calibration.
-      gpio.write_pin(BoardType::DEBUG_LED_PIN, 1);
+      led.write_pin(/* ON */ 1);
       co_yield 500ms;
-      gpio.write_pin(BoardType::DEBUG_LED_PIN, 0);
+      led.write_pin(/* OFF */ 0);
       co_yield 500ms;
-      gpio.write_pin(BoardType::DEBUG_LED_PIN, 1);
+      led.write_pin(/* ON */ 1);
       co_yield 500ms;
-      gpio.write_pin(BoardType::DEBUG_LED_PIN, 0);
+      led.write_pin(/* OFF */ 0);
       co_yield 500ms;
     }
 
@@ -84,7 +85,7 @@ tvsc::system::System::Task run_adc_demo() {
       dma_complete = false;
       dma_error = false;
 
-      adc.start_single_conversion({BoardType::DAC_CHANNEL_1_PORT, BoardType::DAC_CHANNEL_1_PIN},
+      adc.start_single_conversion({McuType::DAC_CHANNEL_1_PORT, McuType::DAC_CHANNEL_1_PIN},
                                   buffer.data(), buffer.size());
 
       while (!dma_complete) {
@@ -101,16 +102,16 @@ tvsc::system::System::Task run_adc_demo() {
 
       if (relative_difference < 0.25f || absolute_difference < (3 << RESOLUTION_SHIFT)) {
         // Success. Short solid.
-        gpio.write_pin(BoardType::DEBUG_LED_PIN, 1);
+        led.write_pin(/* ON */ 1);
         co_yield 400ms;
-        gpio.write_pin(BoardType::DEBUG_LED_PIN, 0);
+        led.write_pin(/* OFF */ 0);
         co_yield 100ms;
       } else {
         // Failure. Flash frenetically.
         for (int i = 0; i < 2; ++i) {
-          gpio.write_pin(BoardType::DEBUG_LED_PIN, 1);
+          led.write_pin(/* ON */ 1);
           co_yield 50ms;
-          gpio.write_pin(BoardType::DEBUG_LED_PIN, 0);
+          led.write_pin(/* OFF */ 0);
           co_yield 50ms;
         }
       }
@@ -123,7 +124,7 @@ tvsc::system::System::Task run_adc_demo() {
     relative_difference = 0.f;
     dac.set_value(current_output_value);
     dac.clear_value();
-    gpio.write_pin(BoardType::DEBUG_LED_PIN, 0);
+    led.write_pin(/* OFF */ 0);
     co_yield 500ms;
   }
 }

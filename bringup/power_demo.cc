@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
   BoardType& board{BoardType::board()};
-  auto& rcc{board.rcc()};
+  auto& rcc{board.mcu().rcc()};
 
   static constexpr bool demo_speed_changes{true};
   bool at_max_speed{false};
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
   }
 
   // Turn on clocks for the GPIO ports that we want.
-  auto gpio{board.gpio<BoardType::DEBUG_LED_PORT>().access()};
+  auto gpio{board.mcu().gpio<BoardType::DEBUG_LED_PORT>().access()};
 
   gpio.set_pin_mode(BoardType::DEBUG_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 

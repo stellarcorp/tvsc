@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "hal/board/board.h"
+#include "hal/mcu/mcu.h"
 #include "hal/time_type.h"
 
 namespace tvsc::time {
@@ -54,10 +54,10 @@ EmbeddedClock::time_point EmbeddedClock::now() noexcept { return clock().current
 
 EmbeddedClock& EmbeddedClock::clock() noexcept {
   static EmbeddedClock instance{
-      tvsc::hal::board::Board::board().sys_tick(),     //
-      tvsc::hal::board::Board::board().sleep_timer(),  //
-      tvsc::hal::board::Board::board().power(),        //
-      tvsc::hal::board::Board::board().rcc()           //
+      tvsc::hal::mcu::Mcu::mcu().sys_tick(),     //
+      tvsc::hal::mcu::Mcu::mcu().sleep_timer(),  //
+      tvsc::hal::mcu::Mcu::mcu().power(),        //
+      tvsc::hal::mcu::Mcu::mcu().rcc()           //
   };
   return instance;
 }

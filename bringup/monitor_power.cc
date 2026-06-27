@@ -21,6 +21,7 @@ __attribute__((section(".status.value"))) PowerUsage power_monitor2{};
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
+  auto& mcu{System::mcu()};
   auto& board{System::board()};
 
   board.power_monitor1().set_current_measurement_time_approximate(1ms);
@@ -35,7 +36,7 @@ int main(int argc, char* argv[]) {
   scheduler.add_task(monitor_power(board.power_monitor1(), power_monitor1, 1000ms));
   scheduler.add_task(monitor_power(board.power_monitor2(), power_monitor2, 1000ms));
   scheduler.add_task(blink(board.debug_led()));
-  scheduler.add_task(run_watchdog(board.iwdg()));
+  scheduler.add_task(run_watchdog(mcu.iwdg()));
 
   scheduler.start();
 }

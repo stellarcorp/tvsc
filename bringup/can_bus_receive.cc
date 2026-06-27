@@ -90,9 +90,10 @@ tvsc::system::System::Task echo_server() {
   using namespace tvsc::hal::can_bus;
   using namespace tvsc::hal::gpio;
 
+  auto &mcu{tvsc::system::System::mcu()};
   auto &board{tvsc::system::System::board()};
-  auto &debug_led_peripheral{board.gpio<BoardType::DEBUG_LED_PORT>()};
-  auto &can1_peripheral{board.can<0>()};
+  auto &debug_led_peripheral{mcu.gpio<BoardType::DEBUG_LED_PORT>()};
+  auto &can1_peripheral{mcu.can<0>()};
 
   // Turn on clocks for the peripherals that we want.
   auto debug_led{debug_led_peripheral.access()};
