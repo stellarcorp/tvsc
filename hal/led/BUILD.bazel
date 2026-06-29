@@ -1,0 +1,25 @@
+cc_library(
+    name = "led_headers",
+    hdrs = [
+        "led.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//hal",
+    ],
+)
+
+cc_library(
+    name = "led",
+    srcs = [
+        "hal_led.cc",
+    ],
+    hdrs = [
+        "hal_led.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":led_headers",
+        "//hal/gpio",
+    ],
+)
