@@ -1,7 +1,0 @@
---- tools/arm/arm-none-eabi/include/endian.h.orig	1969-12-31 19:00:00.000000000 -0500
-+++ tools/arm/arm-none-eabi/include/endian.h	2023-03-02 16:23:36.474654194 -0500
-@@ -0,0 +1,4 @@
-+#ifndef _ENDIAN_H
-+#define	_ENDIAN_H
-+#include <machine/endian.h>
-+#endif /* !_ENDIAN_H */

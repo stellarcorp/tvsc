@@ -11,7 +11,6 @@ cc_library(
 cc_library(
     name = "gpio",
     target_compatible_with = select({
-        "//platforms:teensyduino_core": [],
         "//platforms:stm32_core": [],
         "@platforms//os:linux": [],
         "//conditions:default": ["@platforms//:incompatible"],
@@ -20,9 +19,6 @@ cc_library(
     deps = [
         ":gpio_headers",
     ] + select({
-        "//platforms:teensyduino_core": [
-            ":teensyduino_gpio",
-        ],
         "//platforms:stm32_core": [
             ":stm32_gpio",
         ],
@@ -30,24 +26,6 @@ cc_library(
             ":simulation",
         ],
     }),
-)
-
-cc_library(
-    name = "teensyduino_gpio",
-    srcs = [
-        "teensyduino_gpio.cc",
-    ],
-    hdrs = [
-        "teensyduino_gpio.h",
-    ],
-    target_compatible_with = [
-        "//platforms:teensyduino_core",
-    ],
-    deps = [
-        ":gpio_headers",
-        "//hal",
-        "//third_party/arduino:core",
-    ],
 )
 
 cc_library(

@@ -20,53 +20,6 @@ platform(
     ],
 )
 
-# Vehicle platforms. Powerful CPU without an OS, but with bus support for embedded components.
-platform(
-    name = "teensy40",
-    constraint_values = [
-        "@platforms//cpu:armv7e-mf",
-        "@platforms//os:none",
-        ":teensy4",
-        ":teensy40_mcu",
-        ":teensyduino_core",
-        ":teensyduino_gpio",
-        ":one_debug_led",
-        ":no_debug_push_button",
-        ":teensyduino_adc",
-        ":teensyduino_dac",
-        ":teensyduino_dma",
-        ":teensyduino_i2c",
-        ":teensyduino_spi",
-        ":teensyduino_can_bus",
-        ":teensyduino_eeprom",
-        ":no_networking",
-        ":teensy40_board",
-    ],
-)
-
-platform(
-    name = "teensy41",
-    constraint_values = [
-        "@platforms//cpu:armv7e-mf",
-        "@platforms//os:none",
-        ":teensy4",
-        ":teensy41_mcu",
-        ":teensyduino_core",
-        ":teensyduino_gpio",
-        ":one_debug_led",
-        ":no_debug_push_button",
-        ":teensyduino_adc",
-        ":teensyduino_dac",
-        ":teensyduino_dma",
-        ":teensyduino_i2c",
-        ":teensyduino_spi",
-        ":teensyduino_can_bus",
-        ":teensyduino_eeprom",
-        ":no_networking",
-        ":teensy41_board",
-    ],
-)
-
 platform(
     name = "nucleo_l412kb",
     constraint_values = [
@@ -184,11 +137,6 @@ platform(
 constraint_setting(name = "cpu_series")
 
 constraint_value(
-    name = "teensy4",
-    constraint_setting = "cpu_series",
-)
-
-constraint_value(
     name = "stm32l4xx",
     constraint_setting = "cpu_series",
 )
@@ -211,16 +159,6 @@ constraint_value(
     constraint_setting = "mcu",
 )
 
-constraint_value(
-    name = "teensy40_mcu",
-    constraint_setting = "mcu",
-)
-
-constraint_value(
-    name = "teensy41_mcu",
-    constraint_setting = "mcu",
-)
-
 # Core functionality. This constraint is a catch-all for general functionality including sleep &
 # time functions, printing & logging, random number generation, etc. If we need more specific
 # details on any given category, it should be broken out to its own constraint_setting.
@@ -229,12 +167,6 @@ constraint_setting(name = "core_functionality")
 # These platforms have a fully implemented C++17 (or later) standard library.
 constraint_value(
     name = "std_cpp",
-    constraint_setting = "core_functionality",
-)
-
-# These platforms depend on the Teensyduino Arduino implementation to provide core functions.
-constraint_value(
-    name = "teensyduino_core",
     constraint_setting = "core_functionality",
 )
 
@@ -248,17 +180,7 @@ constraint_value(
 constraint_setting(name = "gpio")
 
 constraint_value(
-    name = "teensyduino_gpio",
-    constraint_setting = "gpio",
-)
-
-constraint_value(
     name = "stm32_gpio",
-    constraint_setting = "gpio",
-)
-
-constraint_value(
-    name = "wiring_pi_gpio",
     constraint_setting = "gpio",
 )
 
@@ -302,11 +224,6 @@ constraint_value(
 constraint_setting(name = "adc")
 
 constraint_value(
-    name = "teensyduino_adc",
-    constraint_setting = "adc",
-)
-
-constraint_value(
     name = "stm32l4xx_adc",
     constraint_setting = "adc",
 )
@@ -318,11 +235,6 @@ constraint_value(
 
 # DAC support.
 constraint_setting(name = "dac")
-
-constraint_value(
-    name = "teensyduino_dac",
-    constraint_setting = "dac",
-)
 
 constraint_value(
     name = "stm32l4xx_dac",
@@ -338,11 +250,6 @@ constraint_value(
 constraint_setting(name = "dma")
 
 constraint_value(
-    name = "teensyduino_dma",
-    constraint_setting = "dma",
-)
-
-constraint_value(
     name = "stm32l4xx_dma",
     constraint_setting = "dma",
 )
@@ -354,11 +261,6 @@ constraint_value(
 
 # I2C support.
 constraint_setting(name = "i2c")
-
-constraint_value(
-    name = "teensyduino_i2c",
-    constraint_setting = "i2c",
-)
 
 constraint_value(
     name = "stm32_i2c",
@@ -374,17 +276,7 @@ constraint_value(
 constraint_setting(name = "spi")
 
 constraint_value(
-    name = "teensyduino_spi",
-    constraint_setting = "spi",
-)
-
-constraint_value(
     name = "stm32_spi",
-    constraint_setting = "spi",
-)
-
-constraint_value(
-    name = "spidev_spi",
     constraint_setting = "spi",
 )
 
@@ -395,11 +287,6 @@ constraint_value(
 
 # CAN bus support.
 constraint_setting(name = "can_bus")
-
-constraint_value(
-    name = "teensyduino_can_bus",
-    constraint_setting = "can_bus",
-)
 
 constraint_value(
     name = "stm32_can_bus",
@@ -413,11 +300,6 @@ constraint_value(
 
 # EEPROM support.
 constraint_setting(name = "eeprom")
-
-constraint_value(
-    name = "teensyduino_eeprom",
-    constraint_setting = "eeprom",
-)
 
 constraint_value(
     name = "stm32_eeprom",
@@ -468,15 +350,5 @@ constraint_value(
 
 constraint_value(
     name = "satellite_board",
-    constraint_setting = "board_type",
-)
-
-constraint_value(
-    name = "teensy40_board",
-    constraint_setting = "board_type",
-)
-
-constraint_value(
-    name = "teensy41_board",
     constraint_setting = "board_type",
 )
