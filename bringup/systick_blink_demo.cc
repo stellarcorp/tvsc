@@ -27,10 +27,8 @@ int main(int argc, char* argv[]) {
 
   auto led{board.debug_led().access()};
 
-  led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
-
   while (clock.current_time() < completion_time) {
-    led.toggle_pin();
+    led.toggle();
 
     const auto change_time{clock.current_time() + delay};
     while (clock.current_time() < change_time) {

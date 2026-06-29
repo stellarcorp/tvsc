@@ -29,8 +29,6 @@ tvsc::system::System::Task read_target_swdp_id() {
   // Turn on clocks for the peripherals that we want.
   auto debug_led{debug_led_peripheral.access()};
 
-  debug_led.set_pin_mode(PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
-
   while (true) {
     {
       target_swdp_id = 0;
@@ -44,16 +42,16 @@ tvsc::system::System::Task read_target_swdp_id() {
       // Successful read.
       if (success && target_swdp_id == EXPECTED_SW_DP_IDCODE) {
         for (int i = 0; i < 5; ++i) {
-          debug_led.write_pin(/* ON */ 1);
+          debug_led.on();
           co_yield 250ms;
-          debug_led.write_pin(/* OFF */ 0);
+          debug_led.off();
           co_yield 250ms;
         }
       } else {
         for (int i = 0; i < 5; ++i) {
-          debug_led.write_pin(/* ON */ 1);
+          debug_led.on();
           co_yield 50ms;
-          debug_led.write_pin(/* OFF */ 0);
+          debug_led.off();
           co_yield 50ms;
         }
       }

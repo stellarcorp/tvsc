@@ -4,6 +4,7 @@
 
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
+#include "hal/led/led.h"
 #include "hal/time_type.h"
 #include "system/system.h"
 #include "system/task.h"
@@ -14,29 +15,27 @@ using namespace std::chrono_literals;
 
 template <tvsc::hal::TimeType DURATION_MS =
               /* one year in milliseconds */ 365LL * 24 * 60 * 60 * 1000>
-tvsc::system::System::Task blink(tvsc::hal::gpio::PinPeripheral& led_peripheral,
+tvsc::system::System::Task blink(tvsc::hal::led::LedPeripheral& led_peripheral,
                                  typename system::System::ClockType::duration delay = 500ms) {
-  tvsc::hal::gpio::Pin led{led_peripheral.access()};
+  auto led{led_peripheral.access()};
 
-  led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
   const auto stop_time{system::System::clock().current_time() +
                        std::chrono::milliseconds(DURATION_MS)};
 
-  led.write_pin(0);
+  led.off();
   while (system::System::clock().current_time() < stop_time) {
-    led.toggle_pin();
+    led.toggle();
     co_yield delay;
   }
-  led.write_pin(0);
+  led.off();
   co_return;
 }
 
 tvsc::system::System::Task blink_on_success(std::function<bool()> is_success,
-                                            tvsc::hal::gpio::PinPeripheral& led_peripheral) {
+                                            tvsc::hal::led::LedPeripheral& led_peripheral) {
   auto led{led_peripheral.access()};
 
-  led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
-  led.write_pin(/* OFF */ 0);
+  led.off();
   constexpr typename system::System::ClockType::duration success_delay{250ms};
   constexpr typename system::System::ClockType::duration fail_delay1{50ms};
   constexpr typename system::System::ClockType::duration fail_delay2{500ms};
@@ -47,7 +46,7 @@ tvsc::system::System::Task blink_on_success(std::function<bool()> is_success,
 
   while (true) {
     while (success) {
-      led.toggle_pin();
+      led.toggle();
       co_yield success_delay;
       success = is_success();
     }
@@ -55,13 +54,13 @@ tvsc::system::System::Task blink_on_success(std::function<bool()> is_success,
     while (!success) {
       fail_toggle_count = 0;
       while (!success && fail_toggle_count < fail_toggle_target) {
-        led.toggle_pin();
+        led.toggle();
         co_yield fail_delay1;
         ++fail_toggle_count;
         success = is_success();
       }
       if (!success) {
-        led.toggle_pin();
+        led.toggle();
         co_yield fail_delay2;
         success = is_success();
       }

@@ -53,7 +53,6 @@ tvsc::system::System::Task run_adc_demo() {
   auto dac_out_gpio{mcu.create_peripheral(Pinout::DAC_CHANNEL_PINS[DAC_CHANNEL]).access()};
 
   dac_out_gpio.set_pin_mode(tvsc::hal::gpio::PinMode::ANALOG);
-  led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal::gpio::PinSpeed::LOW);
 
   static constexpr uint8_t RESOLUTION{8};
   static constexpr uint8_t RESOLUTION_SHIFT{RESOLUTION - 8};
@@ -67,11 +66,11 @@ tvsc::system::System::Task run_adc_demo() {
     static constexpr uint32_t CALIBRATION_FREQUENCY{1024};
     if ((iteration_counter % CALIBRATION_FREQUENCY) == 0) {
       // Turn on LED while calibrating.
-      led.write_pin(/* ON */ 1);
+      led.on();
 
       adc.calibrate_single_ended_input();
 
-      led.write_pin(/* OFF */ 0);
+      led.off();
     }
 
     timer.start(PERIOD_US.count());

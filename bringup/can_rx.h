@@ -4,6 +4,7 @@
 
 #include "hal/can_bus/can_bus.h"
 #include "hal/gpio/gpio.h"
+#include "hal/led/led.h"
 #include "message/message.h"
 #include "message/queue.h"
 #include "system/system.h"
@@ -14,21 +15,19 @@ template <size_t QUEUE_SIZE, size_t NUM_HANDLERS>
 tvsc::system::System::Task can_bus_receive(
     tvsc::hal::can_bus::CanBusPeripheral& can_peripheral,
     tvsc::message::CanBusMessageQueue<QUEUE_SIZE, NUM_HANDLERS>& queue,
-    tvsc::hal::gpio::PinPeripheral& led_peripheral) {
+    tvsc::hal::led::LedPeripheral& led_peripheral) {
   using namespace std::chrono_literals;
   using namespace tvsc::hal::can_bus;
   using namespace tvsc::hal::gpio;
 
   {
     // Turn on the LED GPIO.
-    Pin led{led_peripheral.access()};
-
-    led.set_pin_mode(PinMode::OUTPUT_PUSH_PULL);
+    auto led{led_peripheral.access()};
 
     for (int i = 0; i < 5; ++i) {
-      led.write_pin(1);
+      led.on();
       co_yield 25ms;
-      led.write_pin(0);
+      led.off();
       co_yield 25ms;
     }
   }
@@ -38,20 +37,18 @@ tvsc::system::System::Task can_bus_receive(
   while (true) {
     while (can.available_message_count(RxFifo::FIFO_ZERO) > 0) {
       // Turn on the LED GPIO.
-      Pin led{led_peripheral.access()};
-
-      led.set_pin_mode(PinMode::OUTPUT_PUSH_PULL);
+      auto led{led_peripheral.access()};
 
       tvsc::message::CanBusMessage message{};
       if (can.receive(RxFifo::FIFO_ZERO, message) && queue.enqueue(message)) {
-        led.write_pin(1);
+        led.on();
         co_yield 50ms;
-        led.write_pin(0);
+        led.off();
       } else {
         for (int i = 0; i < 5; ++i) {
-          led.write_pin(1);
+          led.on();
           co_yield 25ms;
-          led.write_pin(0);
+          led.off();
           co_yield 25ms;
         }
       }

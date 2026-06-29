@@ -114,6 +114,6 @@ int main(int argc, char* argv[]) {
         return board_id != tvsc::cast_to_underlying_type(
                                tvsc::hal::board_identification::CanonicalBoardIds::UNKNOWN);
       },
-      System::board().debug_led<0>()));
+      System::board().debug_led()));
   System::scheduler().start();
 }

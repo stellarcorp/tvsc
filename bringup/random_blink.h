@@ -1,18 +1,17 @@
 #include <chrono>
 
-#include "hal/gpio/gpio.h"
+#include "hal/led/led.h"
 #include "random/random.h"
 #include "system/system.h"
 
 namespace tvsc::bringup {
 
-tvsc::system::System::Task blink_randomly(tvsc::hal::gpio::PinPeripheral& led_peripheral) {
+tvsc::system::System::Task blink_randomly(tvsc::hal::led::LedPeripheral& led_peripheral) {
   auto led{led_peripheral.access()};
-  led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
-  led.write_pin(/* OFF */ 0);
+  led.off();
 
   while (true) {
-    led.toggle_pin();
+    led.toggle();
     const std::chrono::milliseconds delay_ms{tvsc::random::generate_random_value(5U, 1000U)};
     co_yield delay_ms;
   }

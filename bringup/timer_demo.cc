@@ -32,8 +32,7 @@ int main(int argc, char *argv[]) {
 
   auto led{board.debug_led().access()};
 
-  led.set_pin_mode(PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
-  led.write_pin(/* ON */ 1);
+  led.on();
 
   auto timer{board.mcu().sleep_timer().access()};
   debug_stats.timer_id = timer.id();
@@ -49,6 +48,6 @@ int main(int argc, char *argv[]) {
       // LPTIM_CompareMatchCallback().
       __WFI();
     }
-    led.toggle_pin();
+    led.toggle();
   }
 }

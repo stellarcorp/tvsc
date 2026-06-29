@@ -21,16 +21,14 @@ tvsc::system::System::Task reset_target() {
   // Turn on clocks for the peripherals that we want.
   auto debug_led{debug_led_peripheral.access()};
 
-  debug_led.set_pin_mode(PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
-
   while (true) {
     co_yield 2s;
 
     {
       for (int i = 0; i < 5; ++i) {
-        debug_led.write_pin(/* ON */ 1);
+        debug_led.on();
         co_yield 25ms;
-        debug_led.write_pin(/* OFF */ 0);
+        debug_led.off();
         co_yield 25ms;
       }
 

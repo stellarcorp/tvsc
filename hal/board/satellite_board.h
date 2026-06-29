@@ -20,6 +20,8 @@
 #include "hal/i2c/stm32l4xx_i2c.h"
 #include "hal/imu/bmi323_imu.h"
 #include "hal/imu/imu.h"
+#include "hal/led/hal_led.h"
+#include "hal/led/led.h"
 #include "hal/mcu/mcu.h"
 #include "hal/mcu/stm32l4xx.h"
 #include "hal/mcu_identification/mcu_identification.h"
@@ -50,8 +52,8 @@ class Board final {
   using PinoutType = pinout::Pinout;
 
  private:
-  std::array<gpio::PinPeripheral, PinoutType::NUM_DEBUG_LEDS> DEBUG_LEDS{
-      mcu().create_peripheral(PinoutType::DEBUG_LED_PINS[0]),
+  std::array<led::HalLed, PinoutType::NUM_DEBUG_LEDS> DEBUG_LEDS{
+      led::HalLed(mcu().create_peripheral(PinoutType::DEBUG_LED_PINS[0])),
   };
 
   imu::Bmi323Imu imu1_{0x68, mcu().i2c<0>()};
@@ -78,13 +80,13 @@ class Board final {
   static mcu::Mcu& mcu();
 
   template <size_t LED = 0>
-  gpio::PinPeripheral& debug_led() noexcept {
+  led::LedPeripheral& debug_led() noexcept {
     static_assert(LED < PinoutType::NUM_DEBUG_LEDS);
     return DEBUG_LEDS[LED];
   }
   auto& debug_led() noexcept { return debug_led<>(); }
 
-  gpio::PinPeripheral& debug_led(size_t led_number) noexcept { return DEBUG_LEDS.at(led_number); }
+  led::LedPeripheral& debug_led(size_t led_number) noexcept { return DEBUG_LEDS.at(led_number); }
 
   programmer::ProgrammerPeripheral& programmer() { return programmer_; }
 

@@ -23,11 +23,9 @@ int main(int argc, char* argv[]) {
 
   auto led{board.debug_led().access()};
 
-  led.set_pin_mode(PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
-
   while (true) {
     for (int i = 0; i < 20; ++i) {
-      led.toggle_pin();
+      led.toggle();
       tvsc::time::EmbeddedClock& clock{tvsc::time::EmbeddedClock::clock()};
       clock.sleep_ms(75);
     }

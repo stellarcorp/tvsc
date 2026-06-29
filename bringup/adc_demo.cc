@@ -47,8 +47,6 @@ tvsc::system::System::Task run_adc_demo() {
 
   dac_gpio.set_pin_mode(tvsc::hal::gpio::PinMode::ANALOG);
 
-  led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal::gpio::PinSpeed::LOW);
-
   static constexpr uint8_t RESOLUTION{12};
   static constexpr uint8_t RESOLUTION_SHIFT{RESOLUTION - 8};
 
@@ -63,13 +61,13 @@ tvsc::system::System::Task run_adc_demo() {
       adc.calibrate_single_ended_input();
 
       // Flash slowly after calibration.
-      led.write_pin(/* ON */ 1);
+      led.on();
       co_yield 500ms;
-      led.write_pin(/* OFF */ 0);
+      led.off();
       co_yield 500ms;
-      led.write_pin(/* ON */ 1);
+      led.on();
       co_yield 500ms;
-      led.write_pin(/* OFF */ 0);
+      led.off();
       co_yield 500ms;
     }
 
@@ -101,16 +99,16 @@ tvsc::system::System::Task run_adc_demo() {
 
       if (relative_difference < 0.25f || absolute_difference < (3 << RESOLUTION_SHIFT)) {
         // Success. Short solid.
-        led.write_pin(/* ON */ 1);
+        led.on();
         co_yield 400ms;
-        led.write_pin(/* OFF */ 0);
+        led.off();
         co_yield 100ms;
       } else {
         // Failure. Flash frenetically.
         for (int i = 0; i < 2; ++i) {
-          led.write_pin(/* ON */ 1);
+          led.on();
           co_yield 50ms;
-          led.write_pin(/* OFF */ 0);
+          led.off();
           co_yield 50ms;
         }
       }
@@ -123,7 +121,7 @@ tvsc::system::System::Task run_adc_demo() {
     relative_difference = 0.f;
     dac.set_value(current_output_value);
     dac.clear_value();
-    led.write_pin(/* OFF */ 0);
+    led.off();
     co_yield 500ms;
   }
 }

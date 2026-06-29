@@ -98,17 +98,15 @@ tvsc::system::System::Task echo_server() {
   auto debug_led{debug_led_peripheral.access()};
   auto can1{can1_peripheral.access()};
 
-  debug_led.set_pin_mode(PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
-
   while (true) {
     error_code = can1.error_code();
     while (can1.available_message_count(RxFifo::FIFO_ZERO) > 0) {
       const bool success{can1.receive_raw(RxFifo::FIFO_ZERO, identifier, message_payload)};
       if (success) {
         ++rx_count;
-        debug_led.write_pin(/* ON */ 1);
+        debug_led.on();
         co_yield 2ms;
-        debug_led.write_pin(/* OFF */ 0);
+        debug_led.off();
       } else {
         ++rx_error_count;
       }
