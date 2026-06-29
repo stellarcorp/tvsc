@@ -1,0 +1,131 @@
+cc_library(
+    name = "pinout",
+    hdrs = [
+        "pinout.h",
+    ],
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        "//flags",
+    ] + select({
+        "//platforms:nucleo_l412kb_board": [
+            ":nucleo_l412kb_pinout",
+        ],
+        "//platforms:nucleo_l432kc_board": [
+            ":nucleo_l432kc_pinout",
+        ],
+        "//platforms:nucleo_l452re_board": [
+            ":nucleo_l452re_pinout",
+        ],
+        "//platforms:feature_bringup_board": [
+            ":feature_bringup_pinout",
+        ],
+        "//platforms:satellite_board": [
+            ":satellite_pinout",
+        ],
+        "@platforms//os:linux": [
+            ":simulation",
+        ],
+    }),
+    alwayslink = True,
+)
+
+cc_library(
+    name = "pinout_concepts",
+    hdrs = [
+        "basic_pinout.h",
+    ],
+    deps = [
+        # Note that the deps for all concepts should come from the library that depends on this one.
+    ],
+)
+
+cc_library(
+    name = "nucleo_l412kb_pinout",
+    hdrs = [
+        "nucleo_l412kb_pinout.h",
+    ],
+    target_compatible_with = [
+        "//platforms:nucleo_l412kb_board",
+    ],
+    deps = [
+        ":pinout_concepts",
+        "//hal/gpio",
+    ],
+)
+
+cc_library(
+    name = "nucleo_l432kc_pinout",
+    hdrs = [
+        "nucleo_l432kc_pinout.h",
+    ],
+    target_compatible_with = [
+        "//platforms:nucleo_l432kc_board",
+    ],
+    deps = [
+        ":pinout_concepts",
+        "//hal/gpio",
+    ],
+)
+
+cc_library(
+    name = "nucleo_l452re_pinout",
+    hdrs = [
+        "nucleo_l452re_pinout.h",
+    ],
+    target_compatible_with = [
+        "//platforms:nucleo_l452re_board",
+    ],
+    deps = [
+        ":pinout_concepts",
+        "//hal/gpio",
+    ],
+)
+
+cc_library(
+    name = "feature_bringup_pinout",
+    hdrs = [
+        "feature_bringup_pinout.h",
+    ],
+    target_compatible_with = [
+        "//platforms:feature_bringup_board",
+    ],
+    deps = [
+        ":pinout_concepts",
+        "//hal/gpio",
+    ],
+)
+
+cc_library(
+    name = "satellite_pinout",
+    hdrs = [
+        "satellite_pinout.h",
+    ],
+    target_compatible_with = [
+        "//platforms:satellite_board",
+    ],
+    deps = [
+        ":pinout_concepts",
+        "//hal/gpio",
+    ],
+)
+
+cc_library(
+    name = "simulation",
+    hdrs = [
+        "simulation_pinout.h",
+    ],
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
+    deps = [
+        ":pinout_concepts",
+        "//hal/gpio",
+        "//third_party/glog",
+        "//time:simulation_clock",
+    ],
+)
