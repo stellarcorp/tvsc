@@ -19,6 +19,7 @@
 #include "hal/i2c/stm32l4xx_i2c.h"
 #include "hal/mcu_identification/mcu_identification.h"
 #include "hal/mcu_identification/stm32l4xx_mcu_identification.h"
+#include "hal/pinout/pinout.h"
 #include "hal/power/power.h"
 #include "hal/power/stm32l4xx_power.h"
 #include "hal/random/rng.h"
@@ -40,91 +41,52 @@ namespace internal {
 void configure_interrupts();
 }
 
-template <size_t NUMBER_GPIO_PORTS, size_t NUMBER_I2C_BUSES, size_t NUMBER_CAN_BUSES,
-          size_t NUMBER_DAC_CHANNELS, size_t NUMBER_ADC_CHANNELS>
+template <size_t MAX_GPIO_PORTS, size_t MAX_I2C_BUSES, size_t MAX_CAN_BUSES,
+          size_t MAX_DAC_CHANNELS, size_t MAX_ADC_CHANNELS>
 class McuStm32L4xx final {
  public:
-  static constexpr size_t NUM_GPIO_PORTS{NUMBER_GPIO_PORTS};
-  static constexpr size_t NUM_I2C_BUSES{NUMBER_I2C_BUSES};
-  static constexpr size_t NUM_CAN_BUSES{NUMBER_CAN_BUSES};
-  static constexpr size_t NUM_DAC_CHANNELS{NUMBER_DAC_CHANNELS};
-  static constexpr size_t NUM_ADC_CHANNELS{NUMBER_ADC_CHANNELS};
+  using PinoutType = pinout::Pinout;
 
-  static constexpr gpio::PortNumber GPIO_PORT_A{0};
-  static constexpr gpio::PortNumber GPIO_PORT_B{1};
-  static constexpr gpio::PortNumber GPIO_PORT_C{2};
-  static constexpr gpio::PortNumber GPIO_PORT_D{3};
-  static constexpr gpio::PortNumber GPIO_PORT_E{4};
-  static constexpr gpio::PortNumber GPIO_PORT_F{5};
-  static constexpr gpio::PortNumber GPIO_PORT_G{6};
-  static constexpr gpio::PortNumber GPIO_PORT_H{7};
-
-  static constexpr gpio::PortNumber DAC_CHANNEL_1_PORT{GPIO_PORT_A};
-  static constexpr gpio::PinNumber DAC_CHANNEL_1_PIN{4};
-
-  static constexpr std::array<gpio::PortNumber, NUM_DAC_CHANNELS> DAC_PORTS{DAC_CHANNEL_1_PORT};
-  static constexpr std::array<gpio::PinNumber, NUM_DAC_CHANNELS> DAC_PINS{DAC_CHANNEL_1_PIN};
+  static_assert(PinoutType::NUM_GPIO_PORTS <= MAX_GPIO_PORTS);
+  static_assert(PinoutType::NUM_I2C_BUSES <= MAX_I2C_BUSES);
+  static_assert(PinoutType::NUM_CAN_BUSES <= MAX_CAN_BUSES);
+  static_assert(PinoutType::NUM_DAC_CHANNELS <= MAX_DAC_CHANNELS);
+  static_assert(PinoutType::NUM_ADC_CHANNELS <= MAX_ADC_CHANNELS);
 
  private:
   rcc::RccStm32L4xx rcc_{};
 
   systick::SysTickStm32l4xx sys_tick_{};
-  /*
-      std::array<gpio::GpioStm32xxxx, NUM_GPIO_PORTS> gpio_ports_{
-  #if defined(GPIOA_BASE) && (NUM_GPIO_PORTS > 1)
-        gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOA_BASE), GPIO_PORT_A},
-  #endif
-  #if defined(GPIOB_BASE) && (NUM_GPIO_PORTS > 2)
-        gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOB_BASE), GPIO_PORT_B},
-  #endif
-  #if defined(GPIOC_BASE) && (NUM_GPIO_PORTS > 3)
-        gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOC_BASE), GPIO_PORT_C},
-  #endif
-  #if defined(GPIOD_BASE) && (NUM_GPIO_PORTS > 4)
-        gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOD_BASE), GPIO_PORT_D},
-  #endif
-  #if defined(GPIOE_BASE) && (NUM_GPIO_PORTS > 5)
-        gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOE_BASE), GPIO_PORT_E},
-  #endif
-  #if defined(GPIOF_BASE) && (NUM_GPIO_PORTS > 6)
-        gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOF_BASE), GPIO_PORT_F},
-  #endif
-  #if defined(GPIOG_BASE) && (NUM_GPIO_PORTS > 7)
-        gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOG_BASE), GPIO_PORT_G},
-  #endif
 
-        gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOH_BASE), GPIO_PORT_H},
-    };
-  */
-  std::array<gpio::GpioStm32xxxx, NUM_GPIO_PORTS> gpio_ports_{
+  std::array<gpio::GpioStm32xxxx, MAX_GPIO_PORTS> gpio_ports_{
 #if defined(GPIOA_BASE)
-      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOA_BASE), GPIO_PORT_A},
+      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOA_BASE), PinoutType::GPIO_PORT_A},
 #endif
 #if defined(GPIOB_BASE)
-      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOB_BASE), GPIO_PORT_B},
+      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOB_BASE), PinoutType::GPIO_PORT_B},
 #endif
 #if defined(GPIOC_BASE)
-      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOC_BASE), GPIO_PORT_C},
+      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOC_BASE), PinoutType::GPIO_PORT_C},
 #endif
 #if defined(GPIOD_BASE)
-      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOD_BASE), GPIO_PORT_D},
+      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOD_BASE), PinoutType::GPIO_PORT_D},
 #endif
 #if defined(GPIOE_BASE)
-      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOE_BASE), GPIO_PORT_E},
+      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOE_BASE), PinoutType::GPIO_PORT_E},
 #endif
 #if defined(GPIOF_BASE)
-      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOF_BASE), GPIO_PORT_F},
+      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOF_BASE), PinoutType::GPIO_PORT_F},
 #endif
 #if defined(GPIOG_BASE)
-      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOG_BASE), GPIO_PORT_G},
+      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOG_BASE), PinoutType::GPIO_PORT_G},
 #endif
 
-      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOH_BASE), GPIO_PORT_H},
+      gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOH_BASE), PinoutType::GPIO_PORT_H},
   };
 
   power::PowerStm32L4xx power_{};
 
-  dac::DacStm32xxxx<NUM_DAC_CHANNELS> dac_{DAC};
+  dac::DacStm32xxxx<PinoutType::NUM_DAC_CHANNELS> dac_{DAC};
 
   dma::DmaStm32l4xx dma1_{DMA1};
   dma::DmaStm32l4xx dma2_{DMA2};
@@ -141,25 +103,22 @@ class McuStm32L4xx final {
 
   watchdog::WatchdogStm32l4xx iwdg_{IWDG, lsi_oscillator_};
 
-  std::array<i2c::I2cStm32l4xx, NUM_I2C_BUSES> i2c_buses{
-      i2c::I2cStm32l4xx{I2C1, gpio<GPIO_PORT_B>(), /* SCL Pin */ 6, /* SDA Pin */ 7},
-      i2c::I2cStm32l4xx{I2C2, gpio<GPIO_PORT_B>(), /* SCL Pin */ 10, /* SDA Pin */ 11},
-      i2c::I2cStm32l4xx{I2C3, gpio<GPIO_PORT_C>(), /* SCL Pin */ 0, /* SDA Pin */ 1},
+  std::array<i2c::I2cStm32l4xx, PinoutType::NUM_I2C_BUSES> i2c_buses{
+      i2c::I2cStm32l4xx{I2C1, as_peripheral(PinoutType::I2C1_SCL_PIN),
+                        as_peripheral(PinoutType::I2C1_SDA_PIN)},
+      i2c::I2cStm32l4xx{I2C2, as_peripheral(PinoutType::I2C2_SCL_PIN),
+                        as_peripheral(PinoutType::I2C2_SDA_PIN)},
+      i2c::I2cStm32l4xx{I2C3, as_peripheral(PinoutType::I2C3_SCL_PIN),
+                        as_peripheral(PinoutType::I2C3_SDA_PIN)},
   };
 
-  std::array<can_bus::CanBusStm32l4xx, NUM_CAN_BUSES> can_buses{
-      can_bus::CanBusStm32l4xx{CAN1, gpio<GPIO_PORT_A>(),
-                               /* TX Pin */ 12,
-                               /* RX Pin */ 11,
-                               /* SHUTDOWN Pin */ 9,
-                               /* SILENT Pin */ 10},
+  std::array<can_bus::CanBusStm32l4xx, PinoutType::NUM_CAN_BUSES> can_buses{
+      can_bus::CanBusStm32l4xx{
+          CAN1, as_peripheral(PinoutType::CAN1_TX_PIN), as_peripheral(PinoutType::CAN1_RX_PIN),
+          as_peripheral(PinoutType::CAN1_SHUTDOWN_PIN), as_peripheral(PinoutType::CAN1_SILENT_PIN)},
   };
 
   mcu_identification::McuIdentificationStm32l4xx mcu_identification_{};
-
-  // Note that these GPIO Ports are disallowed on this board. They are marked private to make it
-  // more difficult to accidentally use them.
-  static constexpr size_t NUM_DISALLOWED_PORTS{2};
 
   // Private constructor to restrict inadvertent instantiation and copying.
   McuStm32L4xx() { internal::configure_interrupts(); }
@@ -171,14 +130,20 @@ class McuStm32L4xx final {
     return mcu_;
   }
 
+  constexpr gpio::PinPeripheral as_peripheral(gpio::PinRef ref) noexcept {
+    return {gpio(ref.port), ref.pin};
+  }
+
   template <gpio::PortNumber GPIO_PORT>
-  gpio::GpioPeripheral& gpio() {
-    static_assert((GPIO_PORT < NUM_GPIO_PORTS - 1) or (GPIO_PORT == GPIO_PORT_H),
-                  "Invalid GPIO port id. Likely, there is a mismatch in the build that "
-                  "instantiates the wrong MCU or attempts to use the wrong MCU. Verify that the "
-                  "board-specific header file (hal/mcu/<mcu_type>.h) is being included.");
-    if constexpr (GPIO_PORT == GPIO_PORT_H) {
-      return gpio_ports_[NUM_GPIO_PORTS - 1];
+  constexpr gpio::GpioPeripheral& gpio() noexcept {
+    static_assert(
+        (GPIO_PORT < PinoutType::NUM_GPIO_PORTS - 1) or (GPIO_PORT == PinoutType::GPIO_PORT_H),
+        "Invalid GPIO port id. Possible issues: Invalid Pinout configuration. Invalid "
+        "Mcu initialization code. It is also possible that there is a mismatch in the build that "
+        "instantiates the wrong MCU or attempts to use the wrong MCU. Verify that the "
+        "board-specific header file (hal/mcu/<mcu_type>.h) is being included.");
+    if constexpr (GPIO_PORT == PinoutType::GPIO_PORT_H) {
+      return gpio_ports_[MAX_GPIO_PORTS - 1];
     } else {
       return gpio_ports_[GPIO_PORT];
     }
@@ -190,9 +155,9 @@ class McuStm32L4xx final {
    * only be used to lookup GPIO ports using integer values that cannot be evaluated at
    * compile-time; these integer values will mainly come from STM's HAL.
    */
-  gpio::GpioPeripheral& gpio(gpio::PortNumber port) {
-    if (port == GPIO_PORT_H) {
-      return gpio_ports_[NUM_GPIO_PORTS - 1];
+  constexpr gpio::GpioPeripheral& gpio(gpio::PortNumber port) noexcept {
+    if (port == PinoutType::GPIO_PORT_H) {
+      return gpio_ports_[MAX_GPIO_PORTS - 1];
     } else {
       return gpio_ports_.at(port);
     }
@@ -220,13 +185,13 @@ class McuStm32L4xx final {
 
   template <size_t BUS = 0>
   i2c::I2cPeripheral& i2c() noexcept {
-    static_assert(BUS < NUM_I2C_BUSES);
+    static_assert(BUS < PinoutType::NUM_I2C_BUSES);
     return i2c_buses[BUS];
   }
 
   template <size_t BUS = 0>
   can_bus::CanBusPeripheral& can() noexcept {
-    static_assert(BUS < NUM_CAN_BUSES);
+    static_assert(BUS < PinoutType::NUM_CAN_BUSES);
     return can_buses[BUS];
   }
 };
@@ -238,8 +203,7 @@ using Mcu = McuStm32L4xx</* GPIO ports */ 4, /* I2C buses */ 3, /* CAN buses */ 
 using Mcu = McuStm32L4xx</* GPIO ports */ 3, /* I2C buses */ 2, /* CAN buses */ 1, /* DACs */ 2,
                          /* ADCs */ 1>;
 #elif defined(STM32L452xx)
-using Mcu = McuStm32L4xx</* GPIO ports */ 6, /* I2C buses, actual max is 4, but 3 are common */ 3,
-                         /* CAN buses */ 1, /* DACs */ 1,
+using Mcu = McuStm32L4xx</* GPIO ports */ 6, /* I2C buses */ 4, /* CAN buses */ 1, /* DACs */ 1,
                          /* ADCs */ 1>;
 #endif
 

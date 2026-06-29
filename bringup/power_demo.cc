@@ -21,14 +21,13 @@ int main(int argc, char* argv[]) {
     rcc.set_clock_to_min_speed();
   }
 
-  // Turn on clocks for the GPIO ports that we want.
-  auto gpio{board.mcu().gpio<BoardType::DEBUG_LED_PORT>().access()};
+  auto led{board.debug_led().access()};
 
-  gpio.set_pin_mode(BoardType::DEBUG_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
+  led.set_pin_mode(PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
   while (true) {
     for (int i = 0; i < 20; ++i) {
-      gpio.toggle_pin(BoardType::DEBUG_LED_PIN);
+      led.toggle_pin();
       tvsc::time::EmbeddedClock& clock{tvsc::time::EmbeddedClock::clock()};
       clock.sleep_ms(75);
     }

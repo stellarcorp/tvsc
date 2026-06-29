@@ -15,22 +15,22 @@ tvsc::system::System::Task reset_target() {
   using namespace std::chrono_literals;
   using namespace tvsc::hal::gpio;
 
-  auto &debug_led_peripheral{system::System::board().mcu().gpio<BoardType::DEBUG_LED_PORT>()};
+  auto &debug_led_peripheral{system::System::board().debug_led()};
   auto &programmer_peripheral{system::System::board().programmer()};
 
   // Turn on clocks for the peripherals that we want.
   auto debug_led{debug_led_peripheral.access()};
 
-  debug_led.set_pin_mode(BoardType::DEBUG_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
+  debug_led.set_pin_mode(PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
   while (true) {
     co_yield 2s;
 
     {
       for (int i = 0; i < 5; ++i) {
-        debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
+        debug_led.write_pin(/* ON */ 1);
         co_yield 25ms;
-        debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
+        debug_led.write_pin(/* OFF */ 0);
         co_yield 25ms;
       }
 

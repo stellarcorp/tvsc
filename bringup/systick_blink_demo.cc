@@ -25,14 +25,12 @@ int main(int argc, char* argv[]) {
 
   const auto delay{500ms};
 
-  tvsc::hal::gpio::GpioPeripheral& gpio_peripheral{board.mcu().gpio<BoardType::DEBUG_LED_PORT>()};
-  tvsc::hal::gpio::Gpio gpio{gpio_peripheral.access()};
-  tvsc::hal::gpio::PinNumber pin{BoardType::DEBUG_LED_PIN};
+  auto led{board.debug_led().access()};
 
-  gpio.set_pin_mode(pin, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
+  led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
 
   while (clock.current_time() < completion_time) {
-    gpio.toggle_pin(pin);
+    led.toggle_pin();
 
     const auto change_time{clock.current_time() + delay};
     while (clock.current_time() < change_time) {

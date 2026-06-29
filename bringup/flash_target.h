@@ -29,7 +29,7 @@ namespace tvsc::bringup {
 
 tvsc::system::System::Task flash_target(
     tvsc::hal::programmer::ProgrammerPeripheral &programmer_peripheral,
-    tvsc::hal::gpio::GpioPeripheral &debug_led_peripheral, tvsc::hal::gpio::PinNumber debug_led_pin) {
+    tvsc::hal::gpio::PinPeripheral &debug_led_peripheral) {
   using namespace std::chrono_literals;
   using namespace tvsc::hal::gpio;
   using namespace tvsc::serial_wire;
@@ -57,12 +57,12 @@ tvsc::system::System::Task flash_target(
         if (success && target_build_time.timestamp < tvsc::meta::BUILD_TIME.timestamp) {
           auto debug_led{debug_led_peripheral.access()};
 
-          debug_led.set_pin_mode(debug_led_pin, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
+          debug_led.set_pin_mode(PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
           for (int i = 0; i < 3; ++i) {
-            debug_led.write_pin(debug_led_pin, 1);
+            debug_led.write_pin(1);
             co_yield 250ms;
-            debug_led.write_pin(debug_led_pin, 0);
+            debug_led.write_pin(0);
             co_yield 250ms;
           }
 
@@ -71,10 +71,10 @@ tvsc::system::System::Task flash_target(
           }
 
           if (success) {
-            debug_led.write_pin(debug_led_pin, 1);
+            debug_led.write_pin(1);
             success = flash.write_pages(FLASH_WRITE_START_PAGE, tvsc::meta::firmware_size_pages,
                                         tvsc::meta::firmware_start);
-            debug_led.write_pin(debug_led_pin, 0);
+            debug_led.write_pin(0);
           }
 
           (void)target.disable_debug();
@@ -83,16 +83,16 @@ tvsc::system::System::Task flash_target(
 
           if (success) {
             for (int i = 0; i < 5; ++i) {
-              debug_led.write_pin(debug_led_pin, 1);
+              debug_led.write_pin(1);
               co_yield 250ms;
-              debug_led.write_pin(debug_led_pin, 0);
+              debug_led.write_pin(0);
               co_yield 250ms;
             }
           } else {
             for (int i = 0; i < 5; ++i) {
-              debug_led.write_pin(debug_led_pin, 1);
+              debug_led.write_pin(1);
               co_yield 50ms;
-              debug_led.write_pin(debug_led_pin, 0);
+              debug_led.write_pin(0);
               co_yield 50ms;
             }
           }

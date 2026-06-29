@@ -10,7 +10,7 @@ namespace tvsc::bringup {
 
 template <uint8_t DAC_CHANNEL = 0>
 tvsc::system::System::Task run_dac_demo(uint32_t& output_value, uint64_t initial_delay_ms = 0) {
-  using McuType = tvsc::system::System::McuType;
+  using Pinout = tvsc::system::System::PinoutType;
   using namespace std::chrono_literals;
 
   static constexpr uint32_t dac_8bit_values[] = {0, 1, 2, 4, 8, 16, 32, 64, 128, 256};
@@ -18,17 +18,18 @@ tvsc::system::System::Task run_dac_demo(uint32_t& output_value, uint64_t initial
   static constexpr uint32_t dac_16bit_values[] = {0,    256,  512,   1024,  2048,
                                                   4096, 8192, 16636, 32768, 65536};
 
-  auto& dac_peripheral{tvsc::system::System::mcu().dac()};
-  auto& dac_gpio_peripheral{tvsc::system::System::mcu().gpio<McuType::DAC_PORTS[DAC_CHANNEL]>()};
+  auto& mcu{tvsc::system::System::mcu()};
+  auto& dac_peripheral{mcu.dac()};
+  auto dac_out_peripheral{mcu.as_peripheral(Pinout::DAC_CHANNEL_PINS[DAC_CHANNEL])};
 
   if (initial_delay_ms > 0) {
     co_yield std::chrono::milliseconds{initial_delay_ms};
   }
 
   // Turn on clocks for the peripherals that we want.
-  auto dac_out_gpio{dac_gpio_peripheral.access()};
+  auto dac_out{dac_out_peripheral.access()};
 
-  dac_out_gpio.set_pin_mode(McuType::DAC_PINS[DAC_CHANNEL], tvsc::hal::gpio::PinMode::ANALOG);
+  dac_out.set_pin_mode(tvsc::hal::gpio::PinMode::ANALOG);
 
   while (true) {
     for (auto& v : dac_8bit_values) {

@@ -47,23 +47,11 @@ namespace tvsc::hal::board {
 
 class Board final {
  public:
-  // Location of the pins to read the board id.
-  static constexpr gpio::PortNumber BOARD_ID_POWER_PORT{mcu::Mcu::GPIO_PORT_A};
-  static constexpr gpio::PortNumber BOARD_ID_SENSE_PORT{mcu::Mcu::GPIO_PORT_A};
-  static constexpr gpio::PinNumber BOARD_ID_POWER_PIN{6};
-  static constexpr gpio::PinNumber BOARD_ID_SENSE_PIN{7};
-
-  // Debug LEDs provided by this board.
-  static constexpr size_t NUM_DEBUG_LEDS{1};
-  static constexpr gpio::PortNumber DEBUG_LED_PORT{mcu::Mcu::GPIO_PORT_C};
-  static constexpr gpio::PinNumber DEBUG_LED_PIN{13};
-
-  static constexpr std::array<gpio::PortNumber, NUM_DEBUG_LEDS> DEBUG_LED_PORTS{DEBUG_LED_PORT};
-  static constexpr std::array<gpio::PinNumber, NUM_DEBUG_LEDS> DEBUG_LED_PINS{DEBUG_LED_PIN};
+  using PinoutType = pinout::Pinout;
 
  private:
-  std::array<gpio::PinPeripheral, NUM_DEBUG_LEDS> DEBUG_LEDS{
-      gpio::PinPeripheral{mcu().gpio<DEBUG_LED_PORTS[0]>(), DEBUG_LED_PINS[0]},
+  std::array<gpio::PinPeripheral, PinoutType::NUM_DEBUG_LEDS> DEBUG_LEDS{
+      mcu().as_peripheral(PinoutType::DEBUG_LED_PINS[0]),
   };
 
   imu::Bmi323Imu imu1_{0x68, mcu().i2c<0>()};
@@ -72,10 +60,11 @@ class Board final {
   power_monitor::Ina260PowerMonitor power_monitor1_{0x40, mcu().i2c<2>()};
   power_monitor::Ina260PowerMonitor power_monitor2_{0x41, mcu().i2c<2>()};
 
-  programmer::ProgrammerStm32l4xx programmer_{mcu().gpio<1>(),             //
-                                              /* SWDIO_CONTROL Pin */ 15,  //
-                                              /* SWCLK_CONTROL Pin */ 13,  //
-                                              /* NRST_CONTROL Pin */ 14};
+  programmer::ProgrammerStm32l4xx programmer_{
+      mcu().as_peripheral(PinoutType::PROGRAMMER_SWDIO_CONTROL_PIN),
+      mcu().as_peripheral(PinoutType::PROGRAMMER_SWCLK_CONTROL_PIN),
+      mcu().as_peripheral(PinoutType::PROGRAMMER_NRST_CONTROL_PIN),
+  };
 
   static Board board_;
 
@@ -90,7 +79,7 @@ class Board final {
 
   template <size_t LED = 0>
   gpio::PinPeripheral& debug_led() noexcept {
-    static_assert(LED < NUM_DEBUG_LEDS);
+    static_assert(LED < PinoutType::NUM_DEBUG_LEDS);
     return DEBUG_LEDS[LED];
   }
   auto& debug_led() noexcept { return debug_led<>(); }

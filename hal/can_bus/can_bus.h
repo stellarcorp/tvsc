@@ -23,7 +23,7 @@ class CanBus;
 // TODO(james): Change the std::array<uint8_t, 8> to a real buffer type, likely a reworked
 // tvsc::buffer::Buffer.
 
-class CanBusPeripheral : public Peripheral<CanBusPeripheral, CanBus> {
+class CanBusPeripheral : public SingletonPeripheral<CanBusPeripheral, CanBus> {
  private:
   virtual void enable() = 0;
   virtual void disable() = 0;

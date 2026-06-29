@@ -29,15 +29,15 @@ namespace tvsc::bringup {
 
 template <uint8_t DAC_CHANNEL = 0>
 tvsc::system::System::Task run_adc_demo() {
-  using McuType = tvsc::system::System::McuType;
-  using BoardType = tvsc::system::System::BoardType;
+  using Pinout = tvsc::system::System::PinoutType;
   using namespace std::chrono_literals;
+
   auto& mcu{tvsc::system::System::mcu()};
   auto& board{tvsc::system::System::board()};
-  auto& led_peripheral{board.debug_led<0>()};
+  auto& led_peripheral{board.debug_led()};
   auto& adc_peripheral{mcu.adc()};
   auto& dac_peripheral{mcu.dac()};
-  auto& dac_gpio_peripheral{mcu.gpio<McuType::DAC_PORTS[DAC_CHANNEL]>()};
+  auto dac_gpio_peripheral{mcu.as_peripheral(Pinout::DAC_CHANNEL_PINS[DAC_CHANNEL])};
 
   // Turn on clocks for the peripherals that we want.
   auto dac{dac_peripheral.access()};
@@ -45,7 +45,7 @@ tvsc::system::System::Task run_adc_demo() {
   auto adc{adc_peripheral.access()};
   auto dac_gpio{dac_gpio_peripheral.access()};
 
-  dac_gpio.set_pin_mode(McuType::DAC_PINS[DAC_CHANNEL], tvsc::hal::gpio::PinMode::ANALOG);
+  dac_gpio.set_pin_mode(tvsc::hal::gpio::PinMode::ANALOG);
 
   led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal::gpio::PinSpeed::LOW);
 
@@ -85,8 +85,7 @@ tvsc::system::System::Task run_adc_demo() {
       dma_complete = false;
       dma_error = false;
 
-      adc.start_single_conversion({McuType::DAC_CHANNEL_1_PORT, McuType::DAC_CHANNEL_1_PIN},
-                                  buffer.data(), buffer.size());
+      adc.start_single_conversion(dac_gpio.ref(), buffer.data(), buffer.size());
 
       while (!dma_complete) {
         // Yield while we take the measurement.

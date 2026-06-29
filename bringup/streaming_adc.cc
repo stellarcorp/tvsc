@@ -36,25 +36,24 @@ static constexpr std::chrono::microseconds PERIOD_US{500ms};
  */
 template <uint8_t DAC_CHANNEL = 0>
 tvsc::system::System::Task run_adc_demo() {
-  using McuType = tvsc::system::System::McuType;
-  using BoardType = tvsc::system::System::BoardType;
+  using Pinout = tvsc::system::System::PinoutType;
 
   auto& mcu{tvsc::system::System::mcu()};
   auto& board{tvsc::system::System::board()};
-  auto& gpio_peripheral{board.debug_led<0>()};
+  auto& led_peripheral{board.debug_led()};
   auto& adc_peripheral{mcu.adc()};
   auto& dac_peripheral{mcu.dac()};
   auto& timer_peripheral{mcu.timer2()};
 
   // Turn on clocks for the peripherals that we want.
   auto dac{dac_peripheral.access()};
-  auto gpio{gpio_peripheral.access()};
+  auto led{led_peripheral.access()};
   auto adc{adc_peripheral.access()};
   auto timer{timer_peripheral.access()};
-  auto dac_out_gpio{mcu.gpio<McuType::DAC_PORTS[DAC_CHANNEL]>().access()};
+  auto dac_out_gpio{mcu.as_peripheral(Pinout::DAC_CHANNEL_PINS[DAC_CHANNEL]).access()};
 
-  dac_out_gpio.set_pin_mode(McuType::DAC_PINS[DAC_CHANNEL], tvsc::hal::gpio::PinMode::ANALOG);
-  gpio.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal::gpio::PinSpeed::LOW);
+  dac_out_gpio.set_pin_mode(tvsc::hal::gpio::PinMode::ANALOG);
+  led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal::gpio::PinSpeed::LOW);
 
   static constexpr uint8_t RESOLUTION{8};
   static constexpr uint8_t RESOLUTION_SHIFT{RESOLUTION - 8};
@@ -68,16 +67,16 @@ tvsc::system::System::Task run_adc_demo() {
     static constexpr uint32_t CALIBRATION_FREQUENCY{1024};
     if ((iteration_counter % CALIBRATION_FREQUENCY) == 0) {
       // Turn on LED while calibrating.
-      gpio.write_pin(/* ON */ 1);
+      led.write_pin(/* ON */ 1);
 
       adc.calibrate_single_ended_input();
 
-      gpio.write_pin(/* OFF */ 0);
+      led.write_pin(/* OFF */ 0);
     }
 
     timer.start(PERIOD_US.count());
-    adc.start_conversion_stream({McuType::DAC_CHANNEL_1_PORT, McuType::DAC_CHANNEL_1_PIN},
-                                values_read.data(), values_read.size() * 2, timer);
+    adc.start_conversion_stream(dac_out_gpio.ref(), values_read.data(), values_read.size() * 2,
+                                timer);
 
     dma_complete = false;
     dma_error = false;

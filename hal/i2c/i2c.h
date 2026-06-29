@@ -17,7 +17,7 @@ class I2c;
 /**
  * Interface to manage sending and receiving messages over an I2C bus.
  */
-class I2cPeripheral : public Peripheral<I2cPeripheral, I2c> {
+class I2cPeripheral : public SingletonPeripheral<I2cPeripheral, I2c> {
  public:
   using Callback = std::function<void(bool success)>;
 

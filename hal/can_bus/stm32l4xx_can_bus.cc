@@ -11,18 +11,21 @@ namespace tvsc::hal::can_bus {
 void CanBusStm32l4xx::enable() {
   using namespace tvsc::hal::gpio;
 
-  gpio_ = gpio_peripheral_->access();
-  gpio_.set_pin_mode(tx_pin_, PinMode::ALTERNATE_FUNCTION_PUSH_PULL, PinSpeed::MEDIUM, GPIO_AF9_CAN1);
-  gpio_.set_pin_mode(rx_pin_, PinMode::ALTERNATE_FUNCTION_PUSH_PULL, PinSpeed::MEDIUM, GPIO_AF9_CAN1);
+  tx_pin_ = tx_pin_peripheral_.access();
+  rx_pin_ = rx_pin_peripheral_.access();
+  silent_pin_ = silent_pin_peripheral_.access();
+  shutdown_pin_ = shutdown_pin_peripheral_.access();
 
-  gpio_.set_pin_mode(shutdown_pin_, PinMode::OUTPUT_PUSH_PULL_WITH_PULL_DOWN);
-  gpio_.set_pin_mode(silent_pin_, PinMode::OUTPUT_PUSH_PULL_WITH_PULL_DOWN);
+  tx_pin_.set_pin_mode(PinMode::ALTERNATE_FUNCTION_PUSH_PULL, PinSpeed::MEDIUM, GPIO_AF9_CAN1);
+  rx_pin_.set_pin_mode(PinMode::ALTERNATE_FUNCTION_PUSH_PULL, PinSpeed::MEDIUM, GPIO_AF9_CAN1);
+  shutdown_pin_.set_pin_mode(PinMode::OUTPUT_PUSH_PULL_WITH_PULL_DOWN);
+  silent_pin_.set_pin_mode(PinMode::OUTPUT_PUSH_PULL_WITH_PULL_DOWN);
 
   __HAL_RCC_CAN1_CLK_ENABLE();
   __HAL_RCC_CAN1_CLK_SLEEP_ENABLE();  // Keep CAN1 clock active in Stop mode
 
-  gpio_.write_pin(shutdown_pin_, 0);
-  gpio_.write_pin(silent_pin_, 0);
+  shutdown_pin_.write_pin(0);
+  silent_pin_.write_pin(0);
 
   /*
    * ------------------------------
@@ -116,7 +119,10 @@ void CanBusStm32l4xx::disable() {
   HAL_CAN_Stop(&can_bus_);
   HAL_CAN_DeInit(&can_bus_);
   __HAL_RCC_CAN1_CLK_DISABLE();
-  gpio_.invalidate();
+  tx_pin_.invalidate();
+  rx_pin_.invalidate();
+  silent_pin_.invalidate();
+  shutdown_pin_.invalidate();
 }
 
 uint32_t CanBusStm32l4xx::available_message_count(RxFifo fifo) {

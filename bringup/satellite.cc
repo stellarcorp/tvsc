@@ -51,14 +51,12 @@ class CanBusSniffer final : public tvsc::message::Processor<tvsc::message::CanBu
 
 class LedControl final : public tvsc::message::Processor<tvsc::message::CanBusMessage> {
  private:
-  tvsc::hal::gpio::GpioPeripheral* led_gpio_peripheral_;
-  tvsc::hal::gpio::PinNumber led_pin_;
-  tvsc::hal::gpio::Gpio led_gpio_{};
+  tvsc::hal::gpio::PinPeripheral led_peripheral_;
+  tvsc::hal::gpio::Pin led_{};
 
  public:
-  LedControl(tvsc::hal::gpio::GpioPeripheral& led_gpio_peripheral,
-             tvsc::hal::gpio::PinNumber led_pin)
-      : led_gpio_peripheral_(&led_gpio_peripheral), led_pin_(led_pin) {}
+  LedControl(tvsc::hal::gpio::PinPeripheral led_peripheral)
+      : led_peripheral_(std::move(led_peripheral)) {}
 
   bool process(const tvsc::message::CanBusMessage& msg) override {
     const tvsc::message::Type type{msg.retrieve_type()};
@@ -67,14 +65,14 @@ class LedControl final : public tvsc::message::Processor<tvsc::message::CanBusMe
           static_cast<tvsc::message::Subsystem>(msg.payload()[0])};
       if (subsystem == tvsc::message::Subsystem::LED) {
         if (msg.payload()[1] == 0x01) {
-          if (!led_gpio_.is_valid()) {
-            led_gpio_ = led_gpio_peripheral_->access();
-            led_gpio_.set_pin_mode(led_pin_, tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
+          if (!led_.is_valid()) {
+            led_ = led_peripheral_.access();
+            led_.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL);
           }
-          led_gpio_.write_pin(led_pin_, 1);
+          led_.write_pin(/* ON */ 1);
         } else if (msg.payload()[1] == 0x00) {
-          if (led_gpio_.is_valid()) {
-            led_gpio_.write_pin(led_pin_, 0);
+          if (led_.is_valid()) {
+            led_.write_pin(/* OFF */ 0);
           }
         }
         return true;
@@ -86,17 +84,16 @@ class LedControl final : public tvsc::message::Processor<tvsc::message::CanBusMe
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
-
+  using Pinout = System::PinoutType;
   auto& system{System::get()};
 
   {
-    auto& gpio_id_power_peripheral{system.mcu().gpio<System::BoardType::BOARD_ID_POWER_PORT>()};
-    auto& gpio_id_sense_peripheral{system.mcu().gpio<System::BoardType::BOARD_ID_SENSE_PORT>()};
+    auto id_power_peripheral{system.mcu().as_peripheral(Pinout::BOARD_ID_POWER_PIN)};
+    auto id_sense_peripheral{system.mcu().as_peripheral(Pinout::BOARD_ID_SENSE_PIN)};
     auto& adc_peripheral{system.mcu().adc()};
 
-    board_id = read_board_id(system.clock(), gpio_id_power_peripheral,
-                             System::BoardType::BOARD_ID_POWER_PIN, gpio_id_sense_peripheral,
-                             System::BoardType::BOARD_ID_SENSE_PIN, adc_peripheral);
+    board_id = read_board_id(system.clock(), std::move(id_power_peripheral),
+                             std::move(id_sense_peripheral), adc_peripheral);
 
     system.mcu().mcu_identification().read_id(mcu_id);
     hashed_mcu_id = system.mcu().mcu_identification().hashed_id();
@@ -110,9 +107,8 @@ int main(int argc, char* argv[]) {
   CanBusSniffer can_bus_sniffer{};
   (void)can_bus_message_queue.attach_processor(can_bus_sniffer);
 
-  system.scheduler().add_task(flash_target(system.board().programmer(),
-                                           system.mcu().gpio<System::BoardType::DEBUG_LED_PORT>(),
-                                           System::BoardType::DEBUG_LED_PIN));
+  system.scheduler().add_task(
+      flash_target(system.board().programmer(), system.board().debug_led()));
 
   system.scheduler().add_task(periodic_transmit(system.mcu().can<0>(), 10s, announce_msg));
 

@@ -85,21 +85,20 @@ void HAL_CAN_ErrorCallback(CAN_HandleTypeDef *) {
 namespace tvsc::bringup {
 
 tvsc::system::System::Task echo_server() {
-  using BoardType = tvsc::system::System::BoardType;
   using namespace std::chrono_literals;
   using namespace tvsc::hal::can_bus;
   using namespace tvsc::hal::gpio;
 
   auto &mcu{tvsc::system::System::mcu()};
   auto &board{tvsc::system::System::board()};
-  auto &debug_led_peripheral{mcu.gpio<BoardType::DEBUG_LED_PORT>()};
+  auto &debug_led_peripheral{board.debug_led()};
   auto &can1_peripheral{mcu.can<0>()};
 
   // Turn on clocks for the peripherals that we want.
   auto debug_led{debug_led_peripheral.access()};
   auto can1{can1_peripheral.access()};
 
-  debug_led.set_pin_mode(BoardType::DEBUG_LED_PIN, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
+  debug_led.set_pin_mode(PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 
   while (true) {
     error_code = can1.error_code();
@@ -107,9 +106,9 @@ tvsc::system::System::Task echo_server() {
       const bool success{can1.receive_raw(RxFifo::FIFO_ZERO, identifier, message_payload)};
       if (success) {
         ++rx_count;
-        debug_led.write_pin(BoardType::DEBUG_LED_PIN, 1);
+        debug_led.write_pin(/* ON */ 1);
         co_yield 2ms;
-        debug_led.write_pin(BoardType::DEBUG_LED_PIN, 0);
+        debug_led.write_pin(/* OFF */ 0);
       } else {
         ++rx_error_count;
       }

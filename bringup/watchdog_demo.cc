@@ -14,8 +14,6 @@ int main(int argc, char* argv[]) {
 
   static constexpr auto CYCLE_TIME{5s};
 
-  using BoardType = tvsc::system::System::BoardType;
-
   // Sleep now so that we can detect the board reset. If we just launch into the tasks, we might not
   // be able to detect that the watchdog caused a reset.
   System::clock().sleep(CYCLE_TIME);

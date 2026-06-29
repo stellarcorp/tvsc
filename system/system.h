@@ -4,6 +4,7 @@
 
 #include "hal/board/board.h"
 #include "hal/mcu/mcu.h"
+#include "hal/pinout/pinout.h"
 #include "system/scheduler.h"
 #include "system/task.h"
 #include "time/embedded_clock.h"
@@ -18,9 +19,10 @@ class System final {
   static constexpr size_t SCHEDULER_QUEUE_SIZE{5};
 #endif
 
-  using ClockType = tvsc::time::EmbeddedClock;
+  using PinoutType = tvsc::hal::pinout::Pinout;
   using McuType = tvsc::hal::mcu::Mcu;
   using BoardType = tvsc::hal::board::Board;
+  using ClockType = tvsc::time::EmbeddedClock;
   using Scheduler = SchedulerT<ClockType, SCHEDULER_QUEUE_SIZE>;
   using Task = TaskT<ClockType>;
 

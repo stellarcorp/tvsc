@@ -32,28 +32,22 @@ void HAL_ADC_ErrorCallback(ADC_HandleTypeDef* adc) { dma_error = true; }
 
 namespace tvsc::bringup {
 
-using BoardType = tvsc::hal::board::Board;
-using ClockType = tvsc::time::EmbeddedClock;
-
 tvsc::system::System::Task read_board_id(int32_t num_iterations = -1) {
-  using BoardType = tvsc::system::System::BoardType;
+  using Pinout = tvsc::system::System::PinoutType;
   using namespace std::chrono_literals;
 
   auto& mcu{tvsc::system::System::mcu()};
-  auto& gpio_id_power_peripheral{mcu.gpio<BoardType::BOARD_ID_POWER_PORT>()};
-  auto& gpio_id_sense_peripheral{mcu.gpio<BoardType::BOARD_ID_SENSE_PORT>()};
   auto& adc_peripheral{mcu.adc()};
+  auto id_power_peripheral{mcu.as_peripheral(Pinout::BOARD_ID_POWER_PIN)};
+  auto id_sense_peripheral{mcu.as_peripheral(Pinout::BOARD_ID_SENSE_PIN)};
 
   // Turn on clocks for the peripherals that we want.
-  auto gpio_id_power{gpio_id_power_peripheral.access()};
-  auto gpio_id_sense{gpio_id_sense_peripheral.access()};
+  auto id_power{id_power_peripheral.access()};
+  auto id_sense{id_sense_peripheral.access()};
   auto adc{adc_peripheral.access()};
 
-  gpio_id_power.set_pin_mode(BoardType::BOARD_ID_POWER_PIN,
-                             tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL,
-                             tvsc::hal::gpio::PinSpeed::LOW);
-
-  gpio_id_sense.set_pin_mode(BoardType::BOARD_ID_SENSE_PIN, tvsc::hal::gpio::PinMode::ANALOG);
+  id_power.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal::gpio::PinSpeed::LOW);
+  id_sense.set_pin_mode(tvsc::hal::gpio::PinMode::ANALOG);
 
   int32_t iteration_counter{0};
   while (num_iterations < 0 || iteration_counter < num_iterations) {
@@ -69,7 +63,7 @@ tvsc::system::System::Task read_board_id(int32_t num_iterations = -1) {
     }
 
     // Turn on the power to the board id circuitry.
-    gpio_id_power.write_pin(BoardType::BOARD_ID_POWER_PIN, 1);
+    id_power.write_pin(/* ON */ 1);
     // Let the circuit settle.
     co_yield 1ms;
 
@@ -81,8 +75,7 @@ tvsc::system::System::Task read_board_id(int32_t num_iterations = -1) {
     dma_complete = false;
     dma_error = false;
 
-    adc.start_single_conversion({BoardType::BOARD_ID_SENSE_PORT, BoardType::BOARD_ID_SENSE_PIN},
-                                buffer.data(), buffer.size());
+    adc.start_single_conversion(id_sense.ref(), buffer.data(), buffer.size());
 
     while (!dma_complete) {
       // Yield while we take the measurement.
@@ -91,7 +84,7 @@ tvsc::system::System::Task read_board_id(int32_t num_iterations = -1) {
     adc.reset_after_conversion();
 
     // Turn off the power to the board id circuitry.
-    gpio_id_power.write_pin(BoardType::BOARD_ID_POWER_PIN, 0);
+    id_power.write_pin(/* OFF */ 0);
 
     uint16_t value_read = buffer[0];
 
@@ -103,7 +96,7 @@ tvsc::system::System::Task read_board_id(int32_t num_iterations = -1) {
   }
 
   // Turn off the power to the board id circuitry.
-  gpio_id_power.write_pin(BoardType::BOARD_ID_POWER_PIN, 0);
+  id_power.write_pin(/* OFF */ 0);
   co_return;
 }
 

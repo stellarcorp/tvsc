@@ -21,7 +21,6 @@ namespace tvsc::bringup {
 static constexpr char MESSAGE[] = "Hello";
 
 tvsc::system::System::Task echo_client() {
-  using BoardType = tvsc::system::System::BoardType;
   using namespace std::chrono_literals;
   using namespace tvsc::hal::can_bus;
   using namespace tvsc::hal::gpio;

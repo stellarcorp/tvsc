@@ -72,9 +72,11 @@ class Peripheral {
   virtual void disable() = 0;
 
  public:
-  Peripheral() = default;
-  Peripheral(const Peripheral&) = delete;
-  Peripheral(Peripheral&&) = delete;
+  constexpr Peripheral() noexcept = default;
+  constexpr Peripheral(const Peripheral&) noexcept = default;
+  constexpr Peripheral(Peripheral&&) noexcept = default;
+  constexpr Peripheral& operator=(const Peripheral&) noexcept = default;
+  constexpr Peripheral& operator=(Peripheral&&) noexcept = default;
 
   virtual ~Peripheral() = default;
 
@@ -85,11 +87,21 @@ class Peripheral {
 };
 
 template <typename PeripheralType, typename FunctionalType>
+class SingletonPeripheral : public Peripheral<PeripheralType, FunctionalType> {
+ public:
+  constexpr SingletonPeripheral() = default;
+  SingletonPeripheral(const SingletonPeripheral&) = delete;
+  SingletonPeripheral(SingletonPeripheral&&) = delete;
+
+  virtual ~SingletonPeripheral() = default;
+};
+
+template <typename PeripheralType, typename FunctionalType>
 class Functional {
  protected:
   PeripheralType* peripheral_{nullptr};
 
-  Functional() = default;
+  constexpr Functional() noexcept = default;
 
   explicit Functional(PeripheralType& peripheral) : peripheral_(&peripheral) {
     peripheral_->inc_ref_count();
@@ -102,9 +114,10 @@ class Functional {
     }
   }
 
-  Functional(Functional&& rhs) : peripheral_(std::exchange(rhs.peripheral_, nullptr)) {}
+  constexpr Functional(Functional&& rhs) noexcept
+      : peripheral_(std::exchange(rhs.peripheral_, nullptr)) {}
 
-  virtual Functional& operator=(Functional&& rhs) {
+  constexpr virtual Functional& operator=(Functional&& rhs) noexcept {
     std::swap(peripheral_, rhs.peripheral_);
     return *this;
   }

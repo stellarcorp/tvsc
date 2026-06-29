@@ -14,12 +14,14 @@ namespace tvsc::hal::can_bus {
 class CanBusStm32l4xx final : public CanBusPeripheral {
  private:
   CAN_HandleTypeDef can_bus_{};
-  gpio::GpioPeripheral* gpio_peripheral_;
-  gpio::Gpio gpio_{};
-  gpio::PinNumber tx_pin_;
-  gpio::PinNumber rx_pin_;
-  gpio::PinNumber shutdown_pin_;
-  gpio::PinNumber silent_pin_;
+  gpio::PinPeripheral tx_pin_peripheral_;
+  gpio::PinPeripheral rx_pin_peripheral_;
+  gpio::PinPeripheral shutdown_pin_peripheral_;
+  gpio::PinPeripheral silent_pin_peripheral_;
+  gpio::Pin tx_pin_{};
+  gpio::Pin rx_pin_{};
+  gpio::Pin shutdown_pin_{};
+  gpio::Pin silent_pin_{};
 
   void enable() override;
   void disable() override;
@@ -33,13 +35,13 @@ class CanBusStm32l4xx final : public CanBusPeripheral {
   uint32_t error_code() const override;
 
  public:
-  CanBusStm32l4xx(CAN_TypeDef* can_bus_instance, gpio::GpioPeripheral& gpio_peripheral,
-                  gpio::PinNumber tx_pin, gpio::PinNumber rx_pin, gpio::PinNumber shutdown_pin, gpio::PinNumber silent_pin)
-      : gpio_peripheral_(&gpio_peripheral),
-        tx_pin_(tx_pin),
-        rx_pin_(rx_pin),
-        shutdown_pin_(shutdown_pin),
-        silent_pin_(silent_pin) {
+  CanBusStm32l4xx(CAN_TypeDef* can_bus_instance, gpio::PinPeripheral tx_pin,
+                  gpio::PinPeripheral rx_pin, gpio::PinPeripheral shutdown_pin,
+                  gpio::PinPeripheral silent_pin)
+      : tx_pin_peripheral_(std::move(tx_pin)),
+        rx_pin_peripheral_(std::move(rx_pin)),
+        shutdown_pin_peripheral_(std::move(shutdown_pin)),
+        silent_pin_peripheral_(std::move(silent_pin)) {
     can_bus_.Instance = can_bus_instance;
   }
 

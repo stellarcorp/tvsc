@@ -3,17 +3,14 @@
 #include "base/initializer.h"
 #include "system/system.h"
 
-using BoardType = tvsc::system::System::BoardType;
-
 using namespace tvsc::bringup;
 using namespace tvsc::system;
 
 int main(int argc, char *argv[]) {
   tvsc::initialize(&argc, &argv);
 
-  BoardType &board{BoardType::board()};
+  auto &board{System::board()};
 
-  System::scheduler().add_task(flash_target(
-      board.programmer(), board.mcu().gpio<BoardType::DEBUG_LED_PORT>(), BoardType::DEBUG_LED_PIN));
+  System::scheduler().add_task(flash_target(board.programmer(), board.debug_led()));
   System::scheduler().start();
 }

@@ -11,31 +11,36 @@ namespace tvsc::hal::programmer {
 using namespace tvsc::hal::gpio;
 
 void ProgrammerStm32l4xx::enable() {
-  gpio_ = gpio_peripheral_->access();
-  gpio_.set_pin_mode(swclk_pin_, PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
+  swdio_pin_ = swdio_pin_peripheral_.access();
+  swclk_pin_ = swclk_pin_peripheral_.access();
+  reset_pin_ = reset_pin_peripheral_.access();
+
+  swclk_pin_.set_pin_mode(PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
 }
 
 void ProgrammerStm32l4xx::disable() {
   idle(1);
   turnaround(SwdioDriveState::FLOAT);
 
-  gpio_.set_pin_mode(reset_pin_, PinMode::UNUSED);
-  gpio_.set_pin_mode(swclk_pin_, PinMode::UNUSED);
-  gpio_.set_pin_mode(swdio_pin_, PinMode::UNUSED);
+  reset_pin_.set_pin_mode(PinMode::UNUSED);
+  swclk_pin_.set_pin_mode(PinMode::UNUSED);
+  swdio_pin_.set_pin_mode(PinMode::UNUSED);
 
-  gpio_.invalidate();
+  reset_pin_.invalidate();
+  swclk_pin_.invalidate();
+  swdio_pin_.invalidate();
 }
 
 void ProgrammerStm32l4xx::initiate_target_board_reset() {
-  gpio_.set_pin_mode(reset_pin_, PinMode::OUTPUT_OPEN_DRAIN, PinSpeed::LOW);
-  gpio_.write_pin(reset_pin_, 0);
+  reset_pin_.set_pin_mode(PinMode::OUTPUT_OPEN_DRAIN, PinSpeed::LOW);
+  reset_pin_.write_pin(0);
 }
 
 void ProgrammerStm32l4xx::conclude_target_board_reset() {
-  gpio_.write_pin(reset_pin_, 1);
+  reset_pin_.write_pin(1);
   half_period_delay();
   half_period_delay();
-  gpio_.set_pin_mode(reset_pin_, PinMode::UNUSED);
+  reset_pin_.set_pin_mode(PinMode::UNUSED);
 }
 
 void ProgrammerStm32l4xx::set_clock_period(std::chrono::nanoseconds clock_period) {
@@ -49,18 +54,18 @@ void ProgrammerStm32l4xx::turnaround(SwdioDriveState state) {
 
   current_swdio_drive_state_ = state;
   if (state == SwdioDriveState::FLOAT) {
-    gpio_.set_pin_mode(swdio_pin_, swdio_input_mode_, PinSpeed::LOW);
+    swdio_pin_.set_pin_mode(swdio_input_mode_, PinSpeed::LOW);
   }
   half_period_delay();
 
-  gpio_.write_pin(swclk_pin_, 1);
+  swclk_pin_.write_pin(1);
 
   half_period_delay();
 
-  gpio_.write_pin(swclk_pin_, 0);
+  swclk_pin_.write_pin(0);
 
   if (state == SwdioDriveState::DRIVE) {
-    gpio_.set_pin_mode(swdio_pin_, swdio_output_mode_, PinSpeed::LOW);
+    swdio_pin_.set_pin_mode(swdio_output_mode_, PinSpeed::LOW);
   }
 }
 
@@ -68,15 +73,15 @@ void ProgrammerStm32l4xx::turnaround(SwdioDriveState state) {
 void ProgrammerStm32l4xx::send_no_parity(uint32_t data, uint8_t bits_to_send) {
   turnaround(SwdioDriveState::DRIVE);
   for (uint8_t i = 0; i < bits_to_send; ++i) {
-    gpio_.write_pin(swdio_pin_, bits::get_bit_field_value<1>(data, i));
+    swdio_pin_.write_pin(bits::get_bit_field_value<1>(data, i));
 
     half_period_delay();
 
-    gpio_.write_pin(swclk_pin_, 1);
+    swclk_pin_.write_pin(1);
 
     half_period_delay();
 
-    gpio_.write_pin(swclk_pin_, 0);
+    swclk_pin_.write_pin(0);
   }
 }
 
@@ -86,15 +91,15 @@ void ProgrammerStm32l4xx::send(uint32_t data, uint8_t bits_to_send) {
   send_no_parity(data, bits_to_send);
 
   // Send the parity.
-  gpio_.write_pin(swdio_pin_, parity & 0x01);
+  swdio_pin_.write_pin(parity & 0x01);
 
   half_period_delay();
 
-  gpio_.write_pin(swclk_pin_, 1);
+  swclk_pin_.write_pin(1);
 
   half_period_delay();
 
-  gpio_.write_pin(swclk_pin_, 0);
+  swclk_pin_.write_pin(0);
 }
 
 // Receive the specified number of bits into data. The target will not send any parity bits during
@@ -107,14 +112,14 @@ void ProgrammerStm32l4xx::receive_no_parity(uint32_t& data, uint8_t bits_to_rece
   for (uint8_t i = 0; i < bits_to_receive; ++i) {
     half_period_delay();
 
-    const uint8_t bit_value{gpio_.read_pin(swdio_pin_)};
+    const uint8_t bit_value{swdio_pin_.read_pin()};
     bits::modify_bit_field<1>(data, static_cast<uint32_t>(bit_value), i);
 
-    gpio_.write_pin(swclk_pin_, 1);
+    swclk_pin_.write_pin(1);
 
     half_period_delay();
 
-    gpio_.write_pin(swclk_pin_, 0);
+    swclk_pin_.write_pin(0);
   }
 }
 
@@ -125,13 +130,13 @@ bool ProgrammerStm32l4xx::receive(uint32_t& data, uint8_t bits_to_receive) {
 
   half_period_delay();
 
-  const uint8_t bit_value{gpio_.read_pin(swdio_pin_)};
+  const uint8_t bit_value{swdio_pin_.read_pin()};
 
-  gpio_.write_pin(swclk_pin_, 1);
+  swclk_pin_.write_pin(1);
 
   half_period_delay();
 
-  gpio_.write_pin(swclk_pin_, 0);
+  swclk_pin_.write_pin(0);
 
   const uint8_t parity{static_cast<uint8_t>(__builtin_parity(data))};
   return (parity & 0x01) == bit_value;

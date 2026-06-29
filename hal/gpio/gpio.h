@@ -109,7 +109,7 @@ enum class PinSpeed : uint8_t {
 
 class Gpio;
 
-class GpioPeripheral : public Peripheral<GpioPeripheral, Gpio> {
+class GpioPeripheral : public SingletonPeripheral<GpioPeripheral, Gpio> {
  private:
   virtual void enable() = 0;
   virtual void disable() = 0;
@@ -139,7 +139,7 @@ class Gpio final : public Functional<GpioPeripheral, Gpio> {
   friend class Peripheral<GpioPeripheral, Gpio>;
 
  public:
-  Gpio() = default;
+  constexpr Gpio() noexcept = default;
 
   void set_pin_mode(PinNumber pin, PinMode mode, PinSpeed speed = PinSpeed::LOW,
                     uint8_t alternate_function_mapping = 0) {
@@ -176,11 +176,17 @@ class PinPeripheral final : public Peripheral<PinPeripheral, Pin> {
   friend class Pin;
 
  public:
-  PinPeripheral(GpioPeripheral& gpio_peripheral, PinNumber pin_number)
+  constexpr PinPeripheral(GpioPeripheral& gpio_peripheral, PinNumber pin_number) noexcept
       : gpio_peripheral_(&gpio_peripheral), pin_number_(pin_number) {}
 
-  PortNumber port() const { return gpio_peripheral_->port(); }
-  PinNumber pin() const { return pin_number_; }
+  // constexpr PinPeripheral(const PinPeripheral&) noexcept = default;
+  constexpr PinPeripheral(PinPeripheral&&) noexcept = default;
+  // constexpr PinPeripheral& operator=(const PinPeripheral&) noexcept = default;
+  constexpr PinPeripheral& operator=(PinPeripheral&&) noexcept = default;
+
+  constexpr PortNumber port() const noexcept { return gpio_peripheral_->port(); }
+  constexpr PinNumber pin() const noexcept { return pin_number_; }
+  constexpr PinRef ref() const noexcept { return {gpio_peripheral_->port(), pin_number_}; }
 };
 
 class Pin final : public Functional<PinPeripheral, Pin> {
@@ -190,6 +196,8 @@ class Pin final : public Functional<PinPeripheral, Pin> {
   explicit Pin(PinPeripheral& peripheral) : Functional<PinPeripheral, Pin>(peripheral) {}
 
  public:
+  Pin() = default;
+
   void set_pin_mode(PinMode mode, PinSpeed speed = PinSpeed::LOW,
                     uint8_t alternate_function_mapping = 0) {
     peripheral_->set_pin_mode(mode, speed, alternate_function_mapping);
@@ -201,6 +209,7 @@ class Pin final : public Functional<PinPeripheral, Pin> {
 
   PortNumber port() const { return peripheral_->port(); }
   PinNumber pin() const { return peripheral_->pin(); }
+  PinRef ref() const { return peripheral_->ref(); }
 };
 
 }  // namespace tvsc::hal::gpio

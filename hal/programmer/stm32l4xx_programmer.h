@@ -23,11 +23,12 @@ namespace tvsc::hal::programmer {
  */
 class ProgrammerStm32l4xx final : public ProgrammerPeripheral {
  private:
-  gpio::GpioPeripheral* gpio_peripheral_;
-  gpio::Gpio gpio_{};
-  gpio::PinNumber swdio_pin_;
-  gpio::PinNumber swclk_pin_;
-  gpio::PinNumber reset_pin_;
+  gpio::PinPeripheral swdio_pin_peripheral_;
+  gpio::PinPeripheral swclk_pin_peripheral_;
+  gpio::PinPeripheral reset_pin_peripheral_;
+  gpio::Pin swdio_pin_{};
+  gpio::Pin swclk_pin_{};
+  gpio::Pin reset_pin_{};
   uint32_t half_clock_period_cycles_{};
   SwdioDriveState current_swdio_drive_state_{SwdioDriveState::FLOAT};
 
@@ -58,12 +59,11 @@ class ProgrammerStm32l4xx final : public ProgrammerPeripheral {
   bool receive(uint32_t& data, uint8_t bits_to_receive) override;
 
  public:
-  ProgrammerStm32l4xx(gpio::GpioPeripheral& gpio_peripheral, gpio::PinNumber swdio_pin,
-                      gpio::PinNumber swclk_pin, gpio::PinNumber reset_pin)
-      : gpio_peripheral_(&gpio_peripheral),
-        swdio_pin_(swdio_pin),
-        swclk_pin_(swclk_pin),
-        reset_pin_(reset_pin) {}
+  ProgrammerStm32l4xx(gpio::PinPeripheral swdio_pin, gpio::PinPeripheral swclk_pin,
+                      gpio::PinPeripheral reset_pin)
+      : swdio_pin_peripheral_(std::move(swdio_pin)),
+        swclk_pin_peripheral_(std::move(swclk_pin)),
+        reset_pin_peripheral_(std::move(reset_pin)) {}
 
   void idle(uint32_t num_cycles) override;
 };

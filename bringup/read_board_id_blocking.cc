@@ -3,11 +3,8 @@
 
 #include "base/initializer.h"
 #include "bringup/read_board_id.h"
-#include "hal/board/board.h"
-#include "time/embedded_clock.h"
+#include "system/system.h"
 
-using BoardType = tvsc::hal::board::Board;
-using ClockType = tvsc::time::EmbeddedClock;
 using namespace std::chrono_literals;
 using namespace tvsc::hal::board_identification;
 
@@ -19,18 +16,20 @@ alignas(uint32_t)  //
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
-  BoardType& board{BoardType::board()};
-  auto& clock{ClockType::clock()};
+  using Pinout = tvsc::system::System::PinoutType;
 
-  auto& gpio_id_power_peripheral{board.mcu().gpio<BoardType::BOARD_ID_POWER_PORT>()};
-  auto& gpio_id_sense_peripheral{board.mcu().gpio<BoardType::BOARD_ID_SENSE_PORT>()};
-  auto& adc_peripheral{board.mcu().adc()};
+  auto& system{tvsc::system::System::get()};
+  auto& mcu{system.mcu()};
+  auto& clock{system.clock()};
+
+  auto id_power_peripheral{mcu.as_peripheral(Pinout::BOARD_ID_POWER_PIN)};
+  auto id_sense_peripheral{mcu.as_peripheral(Pinout::BOARD_ID_SENSE_PIN)};
+  auto& adc_peripheral{mcu.adc()};
 
   while (true) {
-    board_id = tvsc::bringup::read_board_id(clock, gpio_id_power_peripheral,
-                                            BoardType::BOARD_ID_POWER_PIN, gpio_id_sense_peripheral,
-                                            BoardType::BOARD_ID_SENSE_PIN, adc_peripheral);
+    board_id = tvsc::bringup::read_board_id(clock, std::move(id_power_peripheral),
+                                            std::move(id_sense_peripheral), adc_peripheral);
 
-    ClockType::clock().wait(10ms);
+    system.clock().wait(10ms);
   }
 }

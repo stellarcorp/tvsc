@@ -10,11 +10,12 @@ namespace tvsc::hal::i2c {
 void I2cStm32l4xx::enable() {
   using namespace tvsc::hal::gpio;
 
-  gpio_ = gpio_peripheral_->access();
-  gpio_.set_pin_mode(scl_pin_, PinMode::ALTERNATE_FUNCTION_OPEN_DRAIN_WITH_PULL_UP,
-                     PinSpeed::HIGH, GPIO_AF4_I2C1);
-  gpio_.set_pin_mode(sda_pin_, PinMode::ALTERNATE_FUNCTION_OPEN_DRAIN_WITH_PULL_UP,
-                     PinSpeed::HIGH, GPIO_AF4_I2C1);
+  scl_pin_ = scl_pin_peripheral_.access();
+  sda_pin_ = sda_pin_peripheral_.access();
+  scl_pin_.set_pin_mode(PinMode::ALTERNATE_FUNCTION_OPEN_DRAIN_WITH_PULL_UP, PinSpeed::HIGH,
+                        GPIO_AF4_I2C1);
+  sda_pin_.set_pin_mode(PinMode::ALTERNATE_FUNCTION_OPEN_DRAIN_WITH_PULL_UP, PinSpeed::HIGH,
+                        GPIO_AF4_I2C1);
 
   if (i2c_.Instance == I2C1) {
     __HAL_RCC_I2C1_CLK_ENABLE();
@@ -59,7 +60,8 @@ void I2cStm32l4xx::disable() {
     error();
   }
 
-  gpio_.invalidate();
+  sda_pin_.invalidate();
+  scl_pin_.invalidate();
 }
 
 bool I2cStm32l4xx::is_device_ready(uint8_t device_address) {

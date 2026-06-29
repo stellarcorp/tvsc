@@ -11,7 +11,6 @@ namespace tvsc::hal::board {
 template <typename B, std::size_t MINIMUM_COUNT = 1>
 concept HasDebugLed =                         //
     (MINIMUM_COUNT > 0) and                   //
-    (B::NUM_DEBUG_LEDS >= MINIMUM_COUNT) and  //
     requires(B& b) {
       { b.template debug_led<0>() } -> std::same_as<gpio::PinPeripheral&>;
       { b.template debug_led<MINIMUM_COUNT - 1>() } -> std::same_as<gpio::PinPeripheral&>;
