@@ -8,17 +8,7 @@
 #include "hal/rcc/rcc.h"
 #include "hal/systick/systick.h"
 
-namespace tvsc::hal::board {
-
-template <typename B, std::size_t MINIMUM_COUNT = 1>
-concept HasDebugLed =                         //
-    (MINIMUM_COUNT > 0) and                   //
-    (B::NUM_DEBUG_LEDS >= MINIMUM_COUNT) and  //
-    requires(B& b) {
-      { b.template debug_led<0>() } -> std::same_as<gpio::PinPeripheral&>;
-      { b.template debug_led<MINIMUM_COUNT - 1>() } -> std::same_as<gpio::PinPeripheral&>;
-    } and  //
-    true;
+namespace tvsc::hal::mcu {
 
 template <typename B>
 concept HasRcc =  //
@@ -42,11 +32,18 @@ concept HasSysTick =  //
     true;
 
 template <typename B>
-concept BasicBoard =    //
-    HasDebugLed<B> and  //
-    HasRcc<B> and       //
-    HasPower<B> and     //
-    HasSysTick<B> and   //
+concept HasCreatePeripheral =  //
+    requires(B& b, gpio::PinRef ref) {
+      { b.create_peripheral(ref) } -> std::same_as<gpio::PinPeripheral>;
+    } and  //
     true;
 
-}  // namespace tvsc::hal::board
+template <typename B>
+concept BasicMcu =              //
+    HasRcc<B> and               //
+    HasPower<B> and             //
+    HasSysTick<B> and           //
+    HasCreatePeripheral<B> and  //
+    true;
+
+}  // namespace tvsc::hal::mcu

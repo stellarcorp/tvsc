@@ -51,7 +51,7 @@ class Board final {
 
  private:
   std::array<gpio::PinPeripheral, PinoutType::NUM_DEBUG_LEDS> DEBUG_LEDS{
-      mcu().as_peripheral(PinoutType::DEBUG_LED_PINS[0]),
+      mcu().create_peripheral(PinoutType::DEBUG_LED_PINS[0]),
   };
 
   imu::Bmi323Imu imu1_{0x68, mcu().i2c<0>()};
@@ -61,9 +61,9 @@ class Board final {
   power_monitor::Ina260PowerMonitor power_monitor2_{0x41, mcu().i2c<2>()};
 
   programmer::ProgrammerStm32l4xx programmer_{
-      mcu().as_peripheral(PinoutType::PROGRAMMER_SWDIO_CONTROL_PIN),
-      mcu().as_peripheral(PinoutType::PROGRAMMER_SWCLK_CONTROL_PIN),
-      mcu().as_peripheral(PinoutType::PROGRAMMER_NRST_CONTROL_PIN),
+      mcu().create_peripheral(PinoutType::PROGRAMMER_SWDIO_CONTROL_PIN),
+      mcu().create_peripheral(PinoutType::PROGRAMMER_SWCLK_CONTROL_PIN),
+      mcu().create_peripheral(PinoutType::PROGRAMMER_NRST_CONTROL_PIN),
   };
 
   static Board board_;

@@ -22,8 +22,8 @@ int main(int argc, char* argv[]) {
   auto& mcu{system.mcu()};
   auto& clock{system.clock()};
 
-  auto id_power_peripheral{mcu.as_peripheral(Pinout::BOARD_ID_POWER_PIN)};
-  auto id_sense_peripheral{mcu.as_peripheral(Pinout::BOARD_ID_SENSE_PIN)};
+  auto id_power_peripheral{mcu.create_peripheral(Pinout::BOARD_ID_POWER_PIN)};
+  auto id_sense_peripheral{mcu.create_peripheral(Pinout::BOARD_ID_SENSE_PIN)};
   auto& adc_peripheral{mcu.adc()};
 
   while (true) {

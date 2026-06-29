@@ -20,7 +20,7 @@ tvsc::system::System::Task run_dac_demo(uint32_t& output_value, uint64_t initial
 
   auto& mcu{tvsc::system::System::mcu()};
   auto& dac_peripheral{mcu.dac()};
-  auto dac_out_peripheral{mcu.as_peripheral(Pinout::DAC_CHANNEL_PINS[DAC_CHANNEL])};
+  auto dac_out_peripheral{mcu.create_peripheral(Pinout::DAC_CHANNEL_PINS[DAC_CHANNEL])};
 
   if (initial_delay_ms > 0) {
     co_yield std::chrono::milliseconds{initial_delay_ms};

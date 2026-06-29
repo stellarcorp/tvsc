@@ -37,7 +37,7 @@ tvsc::system::System::Task run_adc_demo() {
   auto& led_peripheral{board.debug_led()};
   auto& adc_peripheral{mcu.adc()};
   auto& dac_peripheral{mcu.dac()};
-  auto dac_gpio_peripheral{mcu.as_peripheral(Pinout::DAC_CHANNEL_PINS[DAC_CHANNEL])};
+  auto dac_gpio_peripheral{mcu.create_peripheral(Pinout::DAC_CHANNEL_PINS[DAC_CHANNEL])};
 
   // Turn on clocks for the peripherals that we want.
   auto dac{dac_peripheral.access()};

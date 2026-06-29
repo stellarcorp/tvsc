@@ -17,6 +17,7 @@
 #include "hal/gpio/stm_gpio.h"
 #include "hal/i2c/i2c.h"
 #include "hal/i2c/stm32l4xx_i2c.h"
+#include "hal/mcu/basic_mcu.h"
 #include "hal/mcu_identification/mcu_identification.h"
 #include "hal/mcu_identification/stm32l4xx_mcu_identification.h"
 #include "hal/pinout/pinout.h"
@@ -104,18 +105,19 @@ class McuStm32L4xx final {
   watchdog::WatchdogStm32l4xx iwdg_{IWDG, lsi_oscillator_};
 
   std::array<i2c::I2cStm32l4xx, PinoutType::NUM_I2C_BUSES> i2c_buses{
-      i2c::I2cStm32l4xx{I2C1, as_peripheral(PinoutType::I2C1_SCL_PIN),
-                        as_peripheral(PinoutType::I2C1_SDA_PIN)},
-      i2c::I2cStm32l4xx{I2C2, as_peripheral(PinoutType::I2C2_SCL_PIN),
-                        as_peripheral(PinoutType::I2C2_SDA_PIN)},
-      i2c::I2cStm32l4xx{I2C3, as_peripheral(PinoutType::I2C3_SCL_PIN),
-                        as_peripheral(PinoutType::I2C3_SDA_PIN)},
+      i2c::I2cStm32l4xx{I2C1, create_peripheral(PinoutType::I2C1_SCL_PIN),
+                        create_peripheral(PinoutType::I2C1_SDA_PIN)},
+      i2c::I2cStm32l4xx{I2C2, create_peripheral(PinoutType::I2C2_SCL_PIN),
+                        create_peripheral(PinoutType::I2C2_SDA_PIN)},
+      i2c::I2cStm32l4xx{I2C3, create_peripheral(PinoutType::I2C3_SCL_PIN),
+                        create_peripheral(PinoutType::I2C3_SDA_PIN)},
   };
 
   std::array<can_bus::CanBusStm32l4xx, PinoutType::NUM_CAN_BUSES> can_buses{
-      can_bus::CanBusStm32l4xx{
-          CAN1, as_peripheral(PinoutType::CAN1_TX_PIN), as_peripheral(PinoutType::CAN1_RX_PIN),
-          as_peripheral(PinoutType::CAN1_SHUTDOWN_PIN), as_peripheral(PinoutType::CAN1_SILENT_PIN)},
+      can_bus::CanBusStm32l4xx{CAN1, create_peripheral(PinoutType::CAN1_TX_PIN),
+                               create_peripheral(PinoutType::CAN1_RX_PIN),
+                               create_peripheral(PinoutType::CAN1_SHUTDOWN_PIN),
+                               create_peripheral(PinoutType::CAN1_SILENT_PIN)},
   };
 
   mcu_identification::McuIdentificationStm32l4xx mcu_identification_{};
@@ -130,7 +132,7 @@ class McuStm32L4xx final {
     return mcu_;
   }
 
-  constexpr gpio::PinPeripheral as_peripheral(gpio::PinRef ref) noexcept {
+  constexpr gpio::PinPeripheral create_peripheral(gpio::PinRef ref) noexcept {
     return {gpio(ref.port), ref.pin};
   }
 
@@ -206,5 +208,7 @@ using Mcu = McuStm32L4xx</* GPIO ports */ 3, /* I2C buses */ 2, /* CAN buses */ 
 using Mcu = McuStm32L4xx</* GPIO ports */ 6, /* I2C buses */ 4, /* CAN buses */ 1, /* DACs */ 1,
                          /* ADCs */ 1>;
 #endif
+
+static_assert(BasicMcu<Mcu>);
 
 }  // namespace tvsc::hal::mcu

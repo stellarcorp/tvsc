@@ -88,8 +88,8 @@ int main(int argc, char* argv[]) {
   auto& system{System::get()};
 
   {
-    auto id_power_peripheral{system.mcu().as_peripheral(Pinout::BOARD_ID_POWER_PIN)};
-    auto id_sense_peripheral{system.mcu().as_peripheral(Pinout::BOARD_ID_SENSE_PIN)};
+    auto id_power_peripheral{system.mcu().create_peripheral(Pinout::BOARD_ID_POWER_PIN)};
+    auto id_sense_peripheral{system.mcu().create_peripheral(Pinout::BOARD_ID_SENSE_PIN)};
     auto& adc_peripheral{system.mcu().adc()};
 
     board_id = read_board_id(system.clock(), std::move(id_power_peripheral),

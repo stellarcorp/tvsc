@@ -50,7 +50,7 @@ tvsc::system::System::Task run_adc_demo() {
   auto led{led_peripheral.access()};
   auto adc{adc_peripheral.access()};
   auto timer{timer_peripheral.access()};
-  auto dac_out_gpio{mcu.as_peripheral(Pinout::DAC_CHANNEL_PINS[DAC_CHANNEL]).access()};
+  auto dac_out_gpio{mcu.create_peripheral(Pinout::DAC_CHANNEL_PINS[DAC_CHANNEL]).access()};
 
   dac_out_gpio.set_pin_mode(tvsc::hal::gpio::PinMode::ANALOG);
   led.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal::gpio::PinSpeed::LOW);

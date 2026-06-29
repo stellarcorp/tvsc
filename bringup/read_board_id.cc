@@ -38,8 +38,8 @@ tvsc::system::System::Task read_board_id(int32_t num_iterations = -1) {
 
   auto& mcu{tvsc::system::System::mcu()};
   auto& adc_peripheral{mcu.adc()};
-  auto id_power_peripheral{mcu.as_peripheral(Pinout::BOARD_ID_POWER_PIN)};
-  auto id_sense_peripheral{mcu.as_peripheral(Pinout::BOARD_ID_SENSE_PIN)};
+  auto id_power_peripheral{mcu.create_peripheral(Pinout::BOARD_ID_POWER_PIN)};
+  auto id_sense_peripheral{mcu.create_peripheral(Pinout::BOARD_ID_SENSE_PIN)};
 
   // Turn on clocks for the peripherals that we want.
   auto id_power{id_power_peripheral.access()};
