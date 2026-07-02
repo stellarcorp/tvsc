@@ -28,8 +28,7 @@ class AdcPeripheral : public Peripheral<AdcPeripheral, Adc> {
    * result is stored in the location specified by destination using DMA.
    *
    * TODO(james): Rework this API to support converting multiple pins at one time. Likely, we would
-   * want begin/end iterators as parameters. (Note: can't use std::array as it would require
-   * templating on the size of the array, and template functions can't be virtual.
+   * want begin/end iterators as parameters.
    */
   virtual void start_single_conversion(gpio::PinRef pin, uint32_t* destination,
                                        size_t destination_buffer_size) = 0;
