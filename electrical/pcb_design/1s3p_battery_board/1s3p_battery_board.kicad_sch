@@ -309,6 +309,18 @@
 		(uuid "cbbd1c0d-65ec-423c-8809-0e5a6652341c")
 	)
 	(junction
+		(at 201.93 132.08)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0c8d56ae-07be-45e3-a578-3a17422cb76a")
+	)
+	(junction
+		(at 204.47 129.54)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8ff3d2bc-41bb-41ed-919f-3864b1244307")
+	)
+	(junction
 		(at 128.27 190.5)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -644,6 +656,16 @@
 	)
 	(wire
 		(pts
+			(xy 201.93 132.08) (xy 217.17 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "00c5ff93-d994-40f9-bb79-8ce9b7323b3c")
+	)
+	(wire
+		(pts
 			(xy 247.65 91.44) (xy 226.06 91.44)
 		)
 		(stroke
@@ -734,16 +756,6 @@
 	)
 	(wire
 		(pts
-			(xy 165.1 113.03) (xy 217.17 113.03)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "10225ea5-c2d4-4f26-a80a-6d5fc15efa40")
-	)
-	(wire
-		(pts
 			(xy 91.44 27.94) (xy 113.03 27.94)
 		)
 		(stroke
@@ -784,16 +796,6 @@
 	)
 	(wire
 		(pts
-			(xy 260.35 146.05) (xy 236.22 146.05)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "17e0096a-d46e-470b-b82f-64ccf9c619ed")
-	)
-	(wire
-		(pts
 			(xy 128.27 185.42) (xy 128.27 190.5)
 		)
 		(stroke
@@ -811,16 +813,6 @@
 			(type default)
 		)
 		(uuid "1c663ca8-dbd6-45cc-b51c-a622e871f6f2")
-	)
-	(wire
-		(pts
-			(xy 217.17 129.54) (xy 186.69 129.54)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "238d41cb-6982-4513-b7e0-f3d77cafed05")
 	)
 	(wire
 		(pts
@@ -904,13 +896,13 @@
 	)
 	(wire
 		(pts
-			(xy 165.1 115.57) (xy 217.17 115.57)
+			(xy 204.47 129.54) (xy 217.17 129.54)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "35778147-fdb0-4835-a91a-fc1d2c5d49d5")
+		(uuid "38f1b20f-9992-4b0c-b007-7a4d26408d4f")
 	)
 	(bus
 		(pts
@@ -954,16 +946,6 @@
 	)
 	(wire
 		(pts
-			(xy 165.1 121.92) (xy 217.17 121.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4b3f45f5-7e5f-470f-9ba9-6abb9d08ecb9")
-	)
-	(wire
-		(pts
 			(xy 199.39 22.86) (xy 154.94 22.86)
 		)
 		(stroke
@@ -1004,6 +986,16 @@
 	)
 	(wire
 		(pts
+			(xy 201.93 148.59) (xy 201.93 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5b2976f4-55ce-42d7-9ad8-6f82a04e0b0d")
+	)
+	(wire
+		(pts
 			(xy 91.44 33.02) (xy 113.03 33.02)
 		)
 		(stroke
@@ -1011,16 +1003,6 @@
 			(type default)
 		)
 		(uuid "5ca8cee7-8b4e-488b-baef-b966bec1a6ba")
-	)
-	(wire
-		(pts
-			(xy 165.1 118.11) (xy 217.17 118.11)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5df92567-bdcc-4ac3-b68e-1997b91e0659")
 	)
 	(wire
 		(pts
@@ -1304,16 +1286,6 @@
 	)
 	(wire
 		(pts
-			(xy 260.35 132.08) (xy 260.35 146.05)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ae457710-cd52-41bd-b23f-cd0d005a30ae")
-	)
-	(wire
-		(pts
 			(xy 91.44 22.86) (xy 113.03 22.86)
 		)
 		(stroke
@@ -1321,6 +1293,16 @@
 			(type default)
 		)
 		(uuid "af478efd-4901-490f-8435-aff65f1d1932")
+	)
+	(wire
+		(pts
+			(xy 186.69 129.54) (xy 204.47 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b41859e4-4c9e-4cee-a823-6bddbccd354b")
 	)
 	(bus
 		(pts
@@ -1334,7 +1316,17 @@
 	)
 	(wire
 		(pts
-			(xy 189.23 132.08) (xy 217.17 132.08)
+			(xy 217.17 146.05) (xy 204.47 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c1c5817b-6350-4762-9536-952bec660593")
+	)
+	(wire
+		(pts
+			(xy 189.23 132.08) (xy 201.93 132.08)
 		)
 		(stroke
 			(width 0)
@@ -1412,6 +1404,16 @@
 		)
 		(uuid "d359ae90-4fe4-46c5-815c-c52202cfa731")
 	)
+	(wire
+		(pts
+			(xy 204.47 146.05) (xy 204.47 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d5ccf567-2490-4450-872c-0bd464c5d68a")
+	)
 	(bus
 		(pts
 			(xy 201.93 22.86) (xy 201.93 25.4)
@@ -1451,6 +1453,16 @@
 			(type default)
 		)
 		(uuid "df922852-8f82-4aef-8a5f-6df44db4bd30")
+	)
+	(wire
+		(pts
+			(xy 217.17 148.59) (xy 201.93 148.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e3800019-3e9a-48cb-a8f9-e44e748878eb")
 	)
 	(bus
 		(pts
@@ -1521,16 +1533,6 @@
 			(type default)
 		)
 		(uuid "fc0e437b-5d27-4d54-866e-5912365a8f15")
-	)
-	(wire
-		(pts
-			(xy 247.65 132.08) (xy 260.35 132.08)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fc1aa115-c6da-4867-8c3e-27d1e0ddc5b1")
 	)
 	(label "SWDIO"
 		(at 104.14 76.2 180)
@@ -2070,8 +2072,8 @@
 		)
 	)
 	(sheet
-		(at 217.17 109.22)
-		(size 30.48 25.4)
+		(at 217.17 125.73)
+		(size 30.48 8.89)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -2086,7 +2088,7 @@
 		)
 		(uuid "19ea33e9-01fa-4354-abc3-f79a9b6a5b89")
 		(property "Sheetname" "Batteries"
-			(at 217.17 108.5084 0)
+			(at 217.17 125.0184 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2102,46 +2104,6 @@
 				)
 				(justify left top)
 				(hide yes)
-			)
-		)
-		(pin "BATTERY_3_EN" input
-			(at 217.17 118.11 180)
-			(uuid "9e2ec8b6-5f4d-43d5-bb11-54a9d8aee2a7")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "BATTERY_2_EN" input
-			(at 217.17 115.57 180)
-			(uuid "2ac82cfb-51db-45a6-abb4-887360988888")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "BATTERY_1_EN" input
-			(at 217.17 113.03 180)
-			(uuid "ed5cbdad-5931-40f9-984a-e927ded1960e")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "TEMPERATURE_SENSE" input
-			(at 217.17 121.92 180)
-			(uuid "b5cc8c47-b4c8-41e4-8737-d024e83828d6")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
 			)
 		)
 		(pin "I2C_SDA" input
@@ -2164,9 +2126,19 @@
 				(justify left)
 			)
 		)
-		(pin "BOARD_LOAD_+" input
+		(pin "BATT_INT" input
+			(at 247.65 129.54 0)
+			(uuid "225099b1-f6ce-4bf1-8ff6-e5621ffbbe05")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SOLAR_VIN" input
 			(at 247.65 132.08 0)
-			(uuid "c216d260-6ca3-41d8-9d5b-343dce30150f")
+			(uuid "96d91628-2d67-4e44-ace6-13bfb0aa1eff")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2367,7 +2339,7 @@
 	)
 	(sheet
 		(at 217.17 142.24)
-		(size 19.05 7.62)
+		(size 19.05 10.16)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -2391,7 +2363,7 @@
 			)
 		)
 		(property "Sheetfile" "power.kicad_sch"
-			(at 217.17 150.4446 0)
+			(at 217.17 152.9846 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2400,14 +2372,24 @@
 				(hide yes)
 			)
 		)
-		(pin "BOARD_LOAD_+" input
-			(at 236.22 146.05 0)
-			(uuid "2c313bee-5b29-4a34-a7ab-e313ee1232fb")
+		(pin "I2C_SCL" input
+			(at 217.17 148.59 180)
+			(uuid "d5ce81f8-6714-4036-8b1d-647862ef7137")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
+				(justify left)
+			)
+		)
+		(pin "I2C_SDA" input
+			(at 217.17 146.05 180)
+			(uuid "a4baf147-4483-4d6a-ba18-a176fa0c0365")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 		(instances
@@ -2711,46 +2693,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
-			)
-		)
-		(pin "BATTERY_1_EN" input
-			(at 165.1 113.03 0)
-			(uuid "50cd83a5-95eb-4c44-9180-a1be566f0961")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "BATTERY_2_EN" input
-			(at 165.1 115.57 0)
-			(uuid "378557c9-5f81-402b-8689-ad20e0ef36ff")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "BATTERY_3_EN" input
-			(at 165.1 118.11 0)
-			(uuid "3317e591-b192-4f91-827c-45a4d5be7f46")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "TEMPERATURE_SENSE" input
-			(at 165.1 121.92 0)
-			(uuid "c9a019ad-0bef-4917-a375-5b239f0ff83f")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
 			)
 		)
 		(instances

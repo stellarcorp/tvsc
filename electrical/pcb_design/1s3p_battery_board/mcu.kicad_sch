@@ -2418,6 +2418,10 @@
 		(uuid "1ad52625-907e-4257-b56a-a9a757b603a9")
 	)
 	(no_connect
+		(at 143.51 110.49)
+		(uuid "38c455e7-ced2-499e-8437-cb24002cdcc5")
+	)
+	(no_connect
 		(at 143.51 54.61)
 		(uuid "50dcc131-d7ab-4e40-9190-c86bcb4cc7df")
 	)
@@ -2436,6 +2440,10 @@
 	(no_connect
 		(at 107.95 80.01)
 		(uuid "765ae8da-31ce-47b1-b54f-7f84ae62015c")
+	)
+	(no_connect
+		(at 143.51 118.11)
+		(uuid "7aeae08d-625d-4bbd-9f79-617a7e8440ce")
 	)
 	(no_connect
 		(at 107.95 97.79)
@@ -2480,6 +2488,14 @@
 	(no_connect
 		(at 107.95 113.03)
 		(uuid "ada5c470-4099-42f6-bda6-d139d6f4cf66")
+	)
+	(no_connect
+		(at 143.51 67.31)
+		(uuid "d1316a97-0cc7-4412-845f-828cea9f8ae2")
+	)
+	(no_connect
+		(at 143.51 107.95)
+		(uuid "dc4d5318-7d65-4688-bd0f-72e83ab896f7")
 	)
 	(no_connect
 		(at 107.95 92.71)
@@ -3691,17 +3707,6 @@
 		)
 		(uuid "4ccc62ca-86b6-4773-9e66-6a8cb30a6939")
 	)
-	(hierarchical_label "BATTERY_2_EN"
-		(shape input)
-		(at 143.51 110.49 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "4efdb922-0874-4c74-a4e6-f1bc62477b0f")
-	)
 	(hierarchical_label "CAN1_SHUTDOWN"
 		(shape input)
 		(at 143.51 77.47 0)
@@ -3746,28 +3751,6 @@
 		)
 		(uuid "754b7353-7f79-4a13-beb1-6d93c8663809")
 	)
-	(hierarchical_label "TEMPERATURE_SENSE"
-		(shape input)
-		(at 143.51 67.31 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "79c83a9b-bc55-41ed-8279-b805f7a2f767")
-	)
-	(hierarchical_label "BATTERY_1_EN"
-		(shape input)
-		(at 143.51 118.11 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "7b444c30-7fc7-4120-8d87-b9d011c81e43")
-	)
 	(hierarchical_label "CAN1_RX"
 		(shape input)
 		(at 143.51 82.55 0)
@@ -3800,17 +3783,6 @@
 			(justify left)
 		)
 		(uuid "a34a2efe-6309-4f4b-a3cf-ad876db992b3")
-	)
-	(hierarchical_label "BATTERY_3_EN"
-		(shape input)
-		(at 143.51 107.95 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "ab715a61-2fcc-4f42-80ee-916c357c6b26")
 	)
 	(hierarchical_label "I2C2_SDA"
 		(shape input)
