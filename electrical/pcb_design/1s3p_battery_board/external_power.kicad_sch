@@ -3,7 +3,13 @@
 	(generator "eeschema")
 	(generator_version "9.0")
 	(uuid "f04689ba-ef8b-4886-ae81-81c7b07fe20c")
-	(paper "A4")
+	(paper "USLetter")
+	(title_block
+		(title "1s3p Battery Board")
+		(date "2026-07-11")
+		(rev "${PCB_VERSION}")
+		(company "TVSC")
+	)
 	(lib_symbols
 		(symbol "TVSC:B2B-PH-K-S__LF__SN_"
 			(exclude_from_sim no)

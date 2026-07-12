@@ -3,7 +3,13 @@
 	(generator "eeschema")
 	(generator_version "9.0")
 	(uuid "27f98a17-e0d1-4dc9-99e6-737d14cbb84e")
-	(paper "A4")
+	(paper "USLetter")
+	(title_block
+		(title "1s3p Battery Board")
+		(date "2026-07-11")
+		(rev "${PCB_VERSION}")
+		(company "TVSC")
+	)
 	(lib_symbols
 		(symbol "Connector:USB_C_Receptacle"
 			(pin_names
