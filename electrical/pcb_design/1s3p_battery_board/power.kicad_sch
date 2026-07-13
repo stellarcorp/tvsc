@@ -2634,7 +2634,7 @@
 				)
 			)
 		)
-		(property "Footprint" "footprints:Nondescript_R_0603_1608Metric"
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
 			(at 102.87 53.848 90)
 			(effects
 				(font
@@ -2670,7 +2670,7 @@
 				(hide yes)
 			)
 		)
-		(property "Basic or Extended Component" "Extended"
+		(property "Basic or Extended Component" "Basic"
 			(at 102.87 52.07 0)
 			(effects
 				(font
@@ -2679,7 +2679,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "C23029"
+		(property "MPN" "C25887"
 			(at 102.87 52.07 0)
 			(effects
 				(font
@@ -2697,7 +2697,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer Part Number" "0603WAF3652T5E"
+		(property "Manufacturer Part Number" "0402WGF3652TCE"
 			(at 102.87 52.07 0)
 			(effects
 				(font
@@ -3120,127 +3120,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:TestPoint_Probe")
-		(at 133.35 41.91 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "4688c26c-9f53-4682-83ea-b72e2977679d")
-		(property "Reference" "TP4"
-			(at 132.08 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "BOARD_LOAD_+"
-			(at 137.16 41.5925 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "footprints:TestPoint_Pad_D1.5mm"
-			(at 138.43 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 138.43 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "test point (alternative probe-style design)"
-			(at 133.35 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "NA"
-			(at 133.35 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 133.35 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" ""
-			(at 133.35 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 133.35 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 133.35 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 133.35 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "d2c8db01-ddff-4d59-9ad5-43395b17377a")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "TP4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 191.77 72.39 0)
 		(unit 1)
@@ -3376,127 +3255,6 @@
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
 					(reference "C17")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint_Probe")
-		(at 143.51 41.91 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "4c8a166d-f072-44ee-9b65-c729fe516f81")
-		(property "Reference" "TP6"
-			(at 142.24 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 147.32 41.5925 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "footprints:TestPoint_Pad_D1.5mm"
-			(at 148.59 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 148.59 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "test point (alternative probe-style design)"
-			(at 143.51 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "NA"
-			(at 143.51 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 143.51 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" ""
-			(at 143.51 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 143.51 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 143.51 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 143.51 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "2cdc0c59-d628-4502-9fdf-2248cb8fd8a6")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/7f8fc7f5-7f1e-476b-9e93-5575de1d6778"
-					(reference "TP6")
 					(unit 1)
 				)
 			)
@@ -3728,7 +3486,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10m"
+		(property "Value" "100m"
 			(at 140.335 47.6249 90)
 			(effects
 				(font
@@ -3737,7 +3495,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 138.43 41.91 0)
 			(effects
 				(font
@@ -3773,7 +3531,7 @@
 				(hide yes)
 			)
 		)
-		(property "Basic or Extended Component" "Extended"
+		(property "Basic or Extended Component" "Basic"
 			(at 138.43 41.91 0)
 			(effects
 				(font
@@ -3782,7 +3540,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "C241862"
+		(property "MPN" "C1518131"
 			(at 138.43 41.91 0)
 			(effects
 				(font
@@ -3800,7 +3558,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer Part Number" "WSLP2512R0100FEA"
+		(property "Manufacturer Part Number" "WSL0805R1000DEA18"
 			(at 138.43 41.91 0)
 			(effects
 				(font
