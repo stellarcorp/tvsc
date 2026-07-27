@@ -1,0 +1,673 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "5bc85e84-470a-44f9-900c-015e3bddeb2f")
+	(paper "USLetter")
+	(title_block
+		(title "1s3p Battery Board")
+		(date "2026-07-11")
+		(rev "${PCB_VERSION}")
+		(company "TVSC")
+	)
+	(lib_symbols)
+	(junction
+		(at 219.71 68.58)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3b98d9b2-01e8-4986-9170-8434d913b3d5")
+	)
+	(junction
+		(at 219.71 104.14)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a8484029-8465-4107-bd01-306f9966c5ed")
+	)
+	(junction
+		(at 219.71 93.98)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a85f1ce2-862d-4e22-bd98-ebc82a3974c0")
+	)
+	(junction
+		(at 219.71 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c45606b2-40a8-4d05-bbf5-35bd8681e642")
+	)
+	(junction
+		(at 219.71 78.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e5d9ac18-f6ca-4be0-9e7e-3da28fb52b01")
+	)
+	(wire
+		(pts
+			(xy 48.26 93.98) (xy 153.67 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "02c8689a-3531-4be3-a496-ec93b4773055")
+	)
+	(wire
+		(pts
+			(xy 219.71 68.58) (xy 219.71 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0b5fe8bb-17b0-4459-ad78-913a2e84d877")
+	)
+	(wire
+		(pts
+			(xy 48.26 104.14) (xy 90.17 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2bf4d6d7-a294-4bb5-a1b4-cac4ed7bde02")
+	)
+	(wire
+		(pts
+			(xy 115.57 104.14) (xy 219.71 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5496d9da-d5f5-4b6e-ab75-8f88aec2ec4a")
+	)
+	(wire
+		(pts
+			(xy 219.71 78.74) (xy 219.71 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5cd5afc6-30a0-4ec8-bae0-2f1198dcf878")
+	)
+	(wire
+		(pts
+			(xy 219.71 53.34) (xy 219.71 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "64b87b95-6378-426e-85f6-09f9c1dd1b5a")
+	)
+	(wire
+		(pts
+			(xy 219.71 119.38) (xy 245.11 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6bbce893-f4ec-4a55-965e-bf8c41e1994a")
+	)
+	(wire
+		(pts
+			(xy 179.07 68.58) (xy 219.71 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "80dea0b5-3ac1-43cb-91f7-a9de027eb4a8")
+	)
+	(wire
+		(pts
+			(xy 179.07 119.38) (xy 219.71 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "824325db-a109-4ce8-82bb-29ae3514c53e")
+	)
+	(wire
+		(pts
+			(xy 219.71 104.14) (xy 219.71 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "832028b7-6ac0-4ad2-a4d7-9c82f7ea5fa2")
+	)
+	(wire
+		(pts
+			(xy 219.71 93.98) (xy 219.71 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9d639ee3-453d-42a7-a193-019d42957b98")
+	)
+	(wire
+		(pts
+			(xy 115.57 53.34) (xy 219.71 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9f315584-69c5-46c4-847b-4d5d5f0824be")
+	)
+	(wire
+		(pts
+			(xy 48.26 119.38) (xy 153.67 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a124f2d2-946a-4463-bb5b-66585e868fe2")
+	)
+	(wire
+		(pts
+			(xy 48.26 53.34) (xy 90.17 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ae19f182-5f01-4e23-88a0-fa6ad4ac0458")
+	)
+	(wire
+		(pts
+			(xy 179.07 93.98) (xy 219.71 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b4750ad0-99ae-437b-9b8b-4cc541b03769")
+	)
+	(wire
+		(pts
+			(xy 115.57 78.74) (xy 219.71 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d76aba63-9b6e-4f65-b8f9-63f4689f6dab")
+	)
+	(wire
+		(pts
+			(xy 48.26 68.58) (xy 153.67 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e9a4cbf0-aa6a-47e9-8a70-d5c06e12daa5")
+	)
+	(wire
+		(pts
+			(xy 48.26 78.74) (xy 90.17 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fc620086-5569-4b42-80ac-89ae20ba7f08")
+	)
+	(hierarchical_label "VSOLAR_2"
+		(shape input)
+		(at 48.26 68.58 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "037a72d3-d1b9-40d8-9805-d93f29e5e77a")
+	)
+	(hierarchical_label "VSOLAR_4"
+		(shape input)
+		(at 48.26 93.98 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "970c7c95-ae6a-48b7-abe0-38e733d6d700")
+	)
+	(hierarchical_label "VSOLAR_3"
+		(shape input)
+		(at 48.26 78.74 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "9b40a527-ec68-4d31-ab5e-ea767ca9f1f3")
+	)
+	(hierarchical_label "VSOLAR_1"
+		(shape input)
+		(at 48.26 53.34 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "b7fe94c9-6598-476f-8b3c-e3501a0497f6")
+	)
+	(hierarchical_label "VSOLAR_6"
+		(shape input)
+		(at 48.26 119.38 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "c00cdb90-4203-4344-ad57-415568bae541")
+	)
+	(hierarchical_label "VSOLAR_5"
+		(shape input)
+		(at 48.26 104.14 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "de136448-e9fc-4cea-85fc-54520c39dac7")
+	)
+	(hierarchical_label "MPPT_OUT"
+		(shape input)
+		(at 245.11 119.38 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e7a58745-459c-480c-ae84-fe0b15bcd48f")
+	)
+	(sheet
+		(at 90.17 73.66)
+		(size 25.4 8.89)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "120dec90-7a0a-4d85-8490-fd19b38a9904")
+		(property "Sheetname" "Single Solar Accumulator3"
+			(at 90.17 72.9484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "single_solar_accumulator.kicad_sch"
+			(at 90.17 83.1346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "MPPT_OUT" input
+			(at 115.57 78.74 0)
+			(uuid "42746664-5ee1-42fd-83aa-ffea0adec70f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VSOLAR" input
+			(at 90.17 78.74 180)
+			(uuid "f59f0101-b103-4de4-af87-bd9265eea297")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/871cbcd2-4cc1-4db6-a732-9d21443e7ada"
+					(page "13")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 153.67 63.5)
+		(size 25.4 8.89)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "4e8332eb-3b53-4226-98c1-024cc786f1db")
+		(property "Sheetname" "Single Solar Accumulator2"
+			(at 153.67 62.7884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "single_solar_accumulator.kicad_sch"
+			(at 153.67 72.9746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "MPPT_OUT" input
+			(at 179.07 68.58 0)
+			(uuid "3d6164d2-f219-4198-9a3e-518ccacb1a1f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VSOLAR" input
+			(at 153.67 68.58 180)
+			(uuid "a3e9c7d7-d5cb-493d-bea5-075a771ea093")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/871cbcd2-4cc1-4db6-a732-9d21443e7ada"
+					(page "12")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 90.17 99.06)
+		(size 25.4 8.89)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "65daaccc-3170-4d1b-af70-2fba36b4b36b")
+		(property "Sheetname" "Single Solar Accumulator5"
+			(at 90.17 98.3484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "single_solar_accumulator.kicad_sch"
+			(at 90.17 108.5346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "MPPT_OUT" input
+			(at 115.57 104.14 0)
+			(uuid "2a3a1d30-fff5-43f3-aaad-c60e0d0b8362")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VSOLAR" input
+			(at 90.17 104.14 180)
+			(uuid "7e5b6ad1-0fd9-434d-b786-a0108d3ebc1d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/871cbcd2-4cc1-4db6-a732-9d21443e7ada"
+					(page "15")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 153.67 88.9)
+		(size 25.4 8.89)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "aadf76c6-dd75-43d4-8da6-71178d5c4159")
+		(property "Sheetname" "Single Solar Accumulator4"
+			(at 153.67 88.1884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "single_solar_accumulator.kicad_sch"
+			(at 153.67 98.3746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "MPPT_OUT" input
+			(at 179.07 93.98 0)
+			(uuid "c6289e18-fece-43cb-89b0-7697811be52c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VSOLAR" input
+			(at 153.67 93.98 180)
+			(uuid "d47af8d6-df08-47aa-b6ad-5f210cd2a0d8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/871cbcd2-4cc1-4db6-a732-9d21443e7ada"
+					(page "14")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 90.17 48.26)
+		(size 25.4 8.89)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "b0423495-d21b-48bc-ba26-08b36485df71")
+		(property "Sheetname" "Single Solar Accumulator1"
+			(at 90.17 47.5484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "single_solar_accumulator.kicad_sch"
+			(at 90.17 57.7346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "MPPT_OUT" input
+			(at 115.57 53.34 0)
+			(uuid "46c11c18-e6a4-4b26-94d0-00b0bea238ff")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VSOLAR" input
+			(at 90.17 53.34 180)
+			(uuid "e6f565b5-69d0-4b8d-b5aa-4af394482b3f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/871cbcd2-4cc1-4db6-a732-9d21443e7ada"
+					(page "11")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 153.67 114.3)
+		(size 25.4 8.89)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "c9e2f19b-3f19-41cd-a86b-673e7e5b8ce4")
+		(property "Sheetname" "Single Solar Accumulator6"
+			(at 153.67 113.5884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "single_solar_accumulator.kicad_sch"
+			(at 153.67 123.7746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "MPPT_OUT" input
+			(at 179.07 119.38 0)
+			(uuid "99b8f825-34b8-4808-86aa-f9b7c934ace5")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VSOLAR" input
+			(at 153.67 119.38 180)
+			(uuid "1cfa6eb7-83bd-4d20-8d5a-3f063eedfb6f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/871cbcd2-4cc1-4db6-a732-9d21443e7ada"
+					(page "16")
+				)
+			)
+		)
+	)
+)
