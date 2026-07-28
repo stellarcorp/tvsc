@@ -11,6 +11,313 @@
 		(company "TVSC")
 	)
 	(lib_symbols
+		(symbol "Device:LED"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "LED"
+				(at 0 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Light emitting diode"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Sim.Pins" "1=K 2=A"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "LED diode"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "LED* LED_SMD:* LED_THT:*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "LED_0_1"
+				(polyline
+					(pts
+						(xy -3.048 -0.762) (xy -4.572 -2.286) (xy -3.81 -2.286) (xy -4.572 -2.286) (xy -4.572 -1.524)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 -0.762) (xy -3.302 -2.286) (xy -2.54 -2.286) (xy -3.302 -2.286) (xy -3.302 -1.524)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 0) (xy 1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -1.27) (xy -1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -1.27) (xy 1.27 1.27) (xy -1.27 0) (xy 1.27 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "LED_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 2.032 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "TVSC:Four_Mounting_Hole_PCB"
 			(exclude_from_sim no)
 			(in_bom no)
@@ -2713,6 +3020,26 @@
 		)
 		(uuid "54567513-38fe-4296-b7bf-1c715a040fef")
 	)
+	(text_box "We include the PCB on this schematic sheet since the system bus headers are positioned relative to the PCB."
+		(exclude_from_sim no)
+		(at 31.75 143.51 0)
+		(size 25.4 12.7)
+		(margins 0.9525 0.9525 0.9525 0.9525)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "1c331fe5-3fca-4579-95b7-f74515c1c913")
+	)
 	(text_box "Layout note: the QTH connector must be on the side of the board with the batteries. The -07 variant of this connector is taller than the batteries and can ensure mechanical compatibility with other boards."
 		(exclude_from_sim no)
 		(at 123.19 22.86 0)
@@ -3181,6 +3508,16 @@
 	)
 	(wire
 		(pts
+			(xy 91.44 168.91) (xy 91.44 171.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2916a59f-e56f-4567-900b-23ead5bb248f")
+	)
+	(wire
+		(pts
 			(xy 172.72 60.96) (xy 177.8 60.96)
 		)
 		(stroke
@@ -3328,6 +3665,16 @@
 			(type default)
 		)
 		(uuid "972873a8-a756-4616-a776-6636fb13925d")
+	)
+	(wire
+		(pts
+			(xy 91.44 168.91) (xy 93.98 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a65f5c57-8f17-46ea-a7eb-5f392b288605")
 	)
 	(wire
 		(pts
@@ -3639,6 +3986,17 @@
 		)
 		(uuid "90a9a323-6bcf-4d77-b849-896173c94570")
 	)
+	(hierarchical_label "DEBUG_LED"
+		(shape input)
+		(at 109.22 168.91 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "93c93c5d-73ab-421c-8335-9217713c1849")
+	)
 	(hierarchical_label "SWCLK"
 		(shape input)
 		(at 107.95 55.88 0)
@@ -3736,7 +4094,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "036575cb-4c93-405b-bce7-e6cf19775d34")
-		(property "Reference" "#PWR0502"
+		(property "Reference" "#PWR0503"
 			(at 69.85 127 0)
 			(effects
 				(font
@@ -3786,7 +4144,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0502")
+					(reference "#PWR0503")
 					(unit 1)
 				)
 			)
@@ -4068,7 +4426,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "140a9785-ed71-4881-b224-e9ebdf877ff2")
-		(property "Reference" "#PWR0503"
+		(property "Reference" "#PWR0505"
 			(at 107.95 60.96 0)
 			(effects
 				(font
@@ -4118,7 +4476,78 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0503")
+					(reference "#PWR0505")
+					(unit 1)
+				)
+			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "#PWR0105")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 91.44 171.45 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1dcf3574-628d-47a1-be37-360f1211eef6")
+		(property "Reference" "#PWR0504"
+			(at 91.44 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 91.44 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 91.44 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 91.44 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 91.44 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "14e2aa0d-bfda-4b53-8838-42ecf592a857")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
+					(reference "#PWR0504")
 					(unit 1)
 				)
 			)
@@ -4139,7 +4568,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "233d86bc-4e44-4f35-ab21-e5d48f53414c")
-		(property "Reference" "#PWR0510"
+		(property "Reference" "#PWR0512"
 			(at 209.55 127 0)
 			(effects
 				(font
@@ -4189,13 +4618,13 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0510")
+					(reference "#PWR0512")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
-					(reference "#PWR0111")
+					(reference "#PWR0112")
 					(unit 1)
 				)
 			)
@@ -4211,7 +4640,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "43246e31-5a67-499e-a41a-c6eead07ca87")
-		(property "Reference" "#PWR0101"
+		(property "Reference" "#PWR0501"
 			(at 48.26 187.96 0)
 			(effects
 				(font
@@ -4261,7 +4690,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0101")
+					(reference "#PWR0501")
 					(unit 1)
 				)
 			)
@@ -4543,7 +4972,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "69a616a5-e342-49e6-8eb9-c93320888afd")
-		(property "Reference" "#PWR0508"
+		(property "Reference" "#PWR0510"
 			(at 177.8 146.05 0)
 			(effects
 				(font
@@ -4593,13 +5022,13 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0508")
+					(reference "#PWR0510")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
-					(reference "#PWR0109")
+					(reference "#PWR0110")
 					(unit 1)
 				)
 			)
@@ -4614,7 +5043,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "74298b92-4074-424e-a9c3-be3f8926f8d5")
-		(property "Reference" "#PWR0507"
+		(property "Reference" "#PWR0509"
 			(at 171.45 127 0)
 			(effects
 				(font
@@ -4664,13 +5093,13 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0507")
+					(reference "#PWR0509")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
-					(reference "#PWR0108")
+					(reference "#PWR0109")
 					(unit 1)
 				)
 			)
@@ -4685,7 +5114,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "7740eeae-8fcc-4167-a695-e87a772446f1")
-		(property "Reference" "#PWR0506"
+		(property "Reference" "#PWR0508"
 			(at 171.45 63.5 0)
 			(effects
 				(font
@@ -4735,13 +5164,322 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0506")
+					(reference "#PWR0508")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
-					(reference "#PWR0107")
+					(reference "#PWR0108")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 97.79 168.91 270)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9cdb5441-d226-46c4-b7fc-32efe8ac0e55")
+		(property "Reference" "R501"
+			(at 97.79 164.084 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "33"
+			(at 97.79 166.37 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
+			(at 97.79 170.688 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 97.79 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 97.79 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C25105"
+			(at 97.79 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 97.79 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "0402WGF330JTCE"
+			(at 97.79 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 97.79 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Purpose" ""
+			(at 97.79 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 97.79 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 97.79 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 97.79 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 97.79 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a710da4b-7117-4162-9e03-7236c0b6eac0")
+		)
+		(pin "2"
+			(uuid "218bdecf-d2a8-4310-981d-7e16926ffc51")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
+					(reference "R501")
+					(unit 1)
+				)
+			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "R101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:LED")
+		(at 105.41 168.91 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a4e2e60e-a9c9-41e7-b750-00d0c6df57a6")
+		(property "Reference" "D501"
+			(at 104.14 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Blue LED"
+			(at 104.14 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
+			(at 105.41 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 105.41 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Light emitting diode"
+			(at 105.41 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 105.41 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C72041"
+			(at 105.41 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Everlight Elec"
+			(at 105.41 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "19-217/BHC-ZL1M2RY/3T"
+			(at 105.41 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Purpose" "+3.3V Power Indicator"
+			(at 105.41 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Extended"
+			(at 105.41 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 105.41 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 105.41 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 105.41 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "79da9be4-68d1-4254-8c4d-18d7ee6ff631")
+		)
+		(pin "2"
+			(uuid "b0fa3abe-564d-4b28-914a-9771b38defab")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
+					(reference "D501")
+					(unit 1)
+				)
+			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "D101")
 					(unit 1)
 				)
 			)
@@ -4756,7 +5494,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b594ec59-a88e-43f5-bf58-509a8aa6d5ea")
-		(property "Reference" "#PWR0504"
+		(property "Reference" "#PWR0506"
 			(at 107.95 127 0)
 			(effects
 				(font
@@ -4806,13 +5544,13 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0504")
+					(reference "#PWR0506")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
-					(reference "#PWR0105")
+					(reference "#PWR0106")
 					(unit 1)
 				)
 			)
@@ -4827,7 +5565,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "bb8a589c-6712-42d3-ad45-13218c3c6e28")
-		(property "Reference" "#PWR0501"
+		(property "Reference" "#PWR0502"
 			(at 69.85 63.5 0)
 			(effects
 				(font
@@ -4877,7 +5615,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0501")
+					(reference "#PWR0502")
 					(unit 1)
 				)
 			)
@@ -4898,7 +5636,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c0c7bff3-c2a4-4d5c-958c-aa64c3686b55")
-		(property "Reference" "#PWR0509"
+		(property "Reference" "#PWR0511"
 			(at 209.55 60.96 0)
 			(effects
 				(font
@@ -4948,13 +5686,13 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0509")
+					(reference "#PWR0511")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
-					(reference "#PWR0110")
+					(reference "#PWR0111")
 					(unit 1)
 				)
 			)
@@ -4970,7 +5708,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e8a2b317-9070-4a7a-a8f1-3b11aabd5a27")
-		(property "Reference" "PCB101"
+		(property "Reference" "PCB501"
 			(at 48.26 166.37 0)
 			(effects
 				(font
@@ -5029,7 +5767,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "PCB101")
+					(reference "PCB501")
 					(unit 1)
 				)
 			)
@@ -5050,7 +5788,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f47374ae-18c0-45c9-b7b0-31fe9ca9d80a")
-		(property "Reference" "#PWR0505"
+		(property "Reference" "#PWR0507"
 			(at 101.6 146.05 0)
 			(effects
 				(font
@@ -5100,16 +5838,22 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0505")
+					(reference "#PWR0507")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
-					(reference "#PWR0106")
+					(reference "#PWR0107")
 					(unit 1)
 				)
 			)
 		)
 	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
 )
