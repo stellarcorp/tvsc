@@ -11,6 +11,143 @@
 		(company "TVSC")
 	)
 	(lib_symbols
+		(symbol "TVSC:Four_Mounting_Hole_PCB"
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "PCB"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" ""
+				(at 0 6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Footprint" "footprints:Core_Board"
+				(at 0 -7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Four_Mounting_Hole_PCB_0_1"
+				(rectangle
+					(start -8.89 5.08)
+					(end 8.89 -5.08)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Four_Mounting_Hole_PCB_1_1"
+				(pin power_in line
+					(at -11.43 2.54 0)
+					(length 2.54)
+					(name "MH1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MH1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -11.43 -2.54 0)
+					(length 2.54)
+					(name "MH3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MH3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 11.43 2.54 180)
+					(length 2.54)
+					(name "MH2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MH2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 11.43 -2.54 180)
+					(length 2.54)
+					(name "MH4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MH4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "TVSC:QSH-030-01-L-D-A"
 			(pin_names
 				(offset 1.016)
@@ -2553,9 +2690,32 @@
 			(embedded_fonts no)
 		)
 	)
+	(rectangle
+		(start 31.75 162.56)
+		(end 64.77 189.23)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid fe5f99cd-360f-4546-9e09-eb5c3ea3fef1)
+	)
+	(text "PCB"
+		(exclude_from_sim no)
+		(at 31.496 161.544 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "54567513-38fe-4296-b7bf-1c715a040fef")
+	)
 	(text_box "Layout note: the QTH connector must be on the side of the board with the batteries. The -07 variant of this connector is taller than the batteries and can ensure mechanical compatibility with other boards."
 		(exclude_from_sim no)
-		(at 123.19 26.67 0)
+		(at 123.19 22.86 0)
 		(size 27.94 21.59)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
@@ -2592,16 +2752,34 @@
 		(uuid "3eb3bb8b-7315-46f3-88b9-91bd60831d0f")
 	)
 	(junction
+		(at 35.56 176.53)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7512822b-54f4-4b61-b0da-d065e93fd0a4")
+	)
+	(junction
 		(at 177.8 134.62)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "86609f47-b77e-4a4e-b06f-0aaebc4fb6c7")
 	)
 	(junction
+		(at 48.26 181.61)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "98ee15ec-9d9b-4cd5-ba3f-062823089eb7")
+	)
+	(junction
 		(at 101.6 134.62)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b8f2ccde-9e1c-4212-a829-c46f9492079c")
+	)
+	(junction
+		(at 60.96 176.53)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fc75c401-0a5d-4860-8cef-7e5fd59cba25")
 	)
 	(junction
 		(at 101.6 139.7)
@@ -2943,6 +3121,16 @@
 	)
 	(wire
 		(pts
+			(xy 35.56 181.61) (xy 48.26 181.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "09b78b65-66cc-4fce-bf49-072a70fc6e05")
+	)
+	(wire
+		(pts
 			(xy 69.85 55.88) (xy 76.2 55.88)
 		)
 		(stroke
@@ -2950,6 +3138,16 @@
 			(type default)
 		)
 		(uuid "09cdbd2f-42dd-4ff3-80a4-6395c51185a1")
+	)
+	(wire
+		(pts
+			(xy 60.96 171.45) (xy 59.69 171.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0afe3005-3848-44fb-89d4-e8918ca810d0")
 	)
 	(wire
 		(pts
@@ -2970,6 +3168,16 @@
 			(type default)
 		)
 		(uuid "13c15e6a-e0d3-4fa0-aef1-95d2cca33fd9")
+	)
+	(wire
+		(pts
+			(xy 60.96 176.53) (xy 60.96 181.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1f85cb35-358a-4be6-83e0-6732a10e7bd6")
 	)
 	(wire
 		(pts
@@ -3003,6 +3211,26 @@
 	)
 	(wire
 		(pts
+			(xy 35.56 176.53) (xy 36.83 176.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3a13de3d-fb12-45aa-9950-da27ef3aa7b7")
+	)
+	(wire
+		(pts
+			(xy 35.56 171.45) (xy 36.83 171.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3a30354e-07cf-4aad-bb77-618be89661c0")
+	)
+	(wire
+		(pts
 			(xy 208.28 124.46) (xy 203.2 124.46)
 		)
 		(stroke
@@ -3023,6 +3251,16 @@
 	)
 	(wire
 		(pts
+			(xy 35.56 176.53) (xy 35.56 181.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4c0a3648-195f-4acf-85dd-c35230004631")
+	)
+	(wire
+		(pts
 			(xy 208.28 121.92) (xy 203.2 121.92)
 		)
 		(stroke
@@ -3030,6 +3268,16 @@
 			(type default)
 		)
 		(uuid "51eb325c-cce5-4bd9-9206-a86c3d94f87a")
+	)
+	(wire
+		(pts
+			(xy 60.96 176.53) (xy 59.69 176.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "631b3059-a282-4e11-8769-3ffd35cce22e")
 	)
 	(wire
 		(pts
@@ -3060,6 +3308,16 @@
 			(type default)
 		)
 		(uuid "78fc2d46-9af3-4383-ade2-8f3bcd9b7dbd")
+	)
+	(wire
+		(pts
+			(xy 35.56 171.45) (xy 35.56 176.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96d7172a-c5e5-4de4-9346-6c6dc338aedb")
 	)
 	(wire
 		(pts
@@ -3140,6 +3398,26 @@
 			(type default)
 		)
 		(uuid "f3a881f7-9af8-4776-914e-a1c354298313")
+	)
+	(wire
+		(pts
+			(xy 48.26 181.61) (xy 60.96 181.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f4a4d79b-aec0-4f3c-9f80-b09add387d8f")
+	)
+	(wire
+		(pts
+			(xy 60.96 171.45) (xy 60.96 176.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f6c78b65-df70-4f63-b661-a0b6fedfc75d")
 	)
 	(hierarchical_label "CANH_DOWNSTREAM"
 		(shape input)
@@ -3512,6 +3790,12 @@
 					(unit 1)
 				)
 			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "#PWR0103")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -3767,6 +4051,12 @@
 					(unit 1)
 				)
 			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "J102")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -3832,6 +4122,12 @@
 					(unit 1)
 				)
 			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "#PWR0104")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -3894,6 +4190,84 @@
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
 					(reference "#PWR0510")
+					(unit 1)
+				)
+			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "#PWR0111")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 48.26 181.61 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "43246e31-5a67-499e-a41a-c6eead07ca87")
+		(property "Reference" "#PWR0101"
+			(at 48.26 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 48.26 186.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 48.26 181.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 48.26 181.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 48.26 181.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7df2f784-b480-4c45-87c1-3190d26aab01")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
+					(reference "#PWR0101")
+					(unit 1)
+				)
+			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "#PWR0101")
 					(unit 1)
 				)
 			)
@@ -4152,6 +4526,12 @@
 					(unit 1)
 				)
 			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "J101")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -4214,6 +4594,12 @@
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
 					(reference "#PWR0508")
+					(unit 1)
+				)
+			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "#PWR0109")
 					(unit 1)
 				)
 			)
@@ -4282,6 +4668,12 @@
 					(unit 1)
 				)
 			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "#PWR0108")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -4344,6 +4736,12 @@
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
 					(reference "#PWR0506")
+					(unit 1)
+				)
+			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "#PWR0107")
 					(unit 1)
 				)
 			)
@@ -4412,6 +4810,12 @@
 					(unit 1)
 				)
 			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "#PWR0105")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -4474,6 +4878,12 @@
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
 					(reference "#PWR0501")
+					(unit 1)
+				)
+			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "#PWR0102")
 					(unit 1)
 				)
 			)
@@ -4542,6 +4952,93 @@
 					(unit 1)
 				)
 			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "#PWR0110")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "TVSC:Four_Mounting_Hole_PCB")
+		(at 48.26 173.99 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e8a2b317-9070-4a7a-a8f1-3b11aabd5a27")
+		(property "Reference" "PCB101"
+			(at 48.26 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "~"
+			(at 48.26 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "footprints:Core_Board"
+			(at 48.26 181.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 48.26 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 48.26 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "MH4"
+			(uuid "019d938c-3cdd-4e9f-bc4a-ce507c5b0c31")
+		)
+		(pin "MH2"
+			(uuid "ad91665b-4cbb-4671-bb65-120f185a43cd")
+		)
+		(pin "MH1"
+			(uuid "512a7de6-30a7-438c-a3b3-ba749b944880")
+		)
+		(pin "MH3"
+			(uuid "cc99313b-e7af-421b-93ef-21278128485d")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
+					(reference "PCB101")
+					(unit 1)
+				)
+			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "PCB101")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -4604,6 +5101,12 @@
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
 					(reference "#PWR0505")
+					(unit 1)
+				)
+			)
+			(project "core_board"
+				(path "/e6438119-610d-4c6f-962a-4263de270d8c"
+					(reference "#PWR0106")
 					(unit 1)
 				)
 			)
