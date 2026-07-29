@@ -1368,7 +1368,7 @@
 		(uuid "fd8a223a-0ccf-4f01-8dd6-c213f6e8a033")
 	)
 	(hierarchical_label "USB_D-"
-		(shape input)
+		(shape bidirectional)
 		(at 121.92 74.93 0)
 		(effects
 			(font
@@ -1379,7 +1379,7 @@
 		(uuid "060240c7-f719-4436-94c7-738adb531444")
 	)
 	(hierarchical_label "USB_VIN"
-		(shape input)
+		(shape output)
 		(at 121.92 60.96 0)
 		(effects
 			(font
@@ -1390,7 +1390,7 @@
 		(uuid "397c30fb-5871-46d7-8866-10413bd7ccc7")
 	)
 	(hierarchical_label "USB_D+"
-		(shape input)
+		(shape bidirectional)
 		(at 121.92 80.01 0)
 		(effects
 			(font

@@ -2256,6 +2256,17 @@
 		(uuid "2e64e682-b61c-4908-a1eb-1061414d9b56")
 	)
 	(hierarchical_label "3V3"
+		(shape output)
+		(at 231.14 48.26 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "7279ff9b-28e9-4cb6-92f0-33c44827b11a")
+	)
+	(hierarchical_label "3V3"
 		(shape input)
 		(at 220.98 97.79 0)
 		(effects
@@ -2267,7 +2278,7 @@
 		(uuid "773e6791-3607-4403-a7ec-f86759a3ae72")
 	)
 	(hierarchical_label "I2C_SCL"
-		(shape input)
+		(shape bidirectional)
 		(at 200.66 96.52 0)
 		(effects
 			(font
@@ -2275,10 +2286,10 @@
 			)
 			(justify left)
 		)
-		(uuid "88ed5e35-c985-45a6-8025-23903639ed1f")
+		(uuid "a4d834b7-ff74-4740-a6f1-70c7e2ed84ac")
 	)
 	(hierarchical_label "I2C_SDA"
-		(shape input)
+		(shape bidirectional)
 		(at 200.66 99.06 0)
 		(effects
 			(font
@@ -2286,18 +2297,7 @@
 			)
 			(justify left)
 		)
-		(uuid "890cc536-4528-4068-a225-c2a96a9a76bb")
-	)
-	(hierarchical_label "3V3"
-		(shape input)
-		(at 231.14 48.26 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "b2c8715f-a87c-4a3b-a2a0-44c75a8b4d5e")
+		(uuid "e66f9fb4-1e33-495e-9176-74d1bbedbb4e")
 	)
 	(symbol
 		(lib_id "Device:L_Small")

@@ -3437,131 +3437,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "power:+3V3"
-			(power)
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "#PWR"
-				(at 0 -3.81 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Value" "+3V3"
-				(at 0 3.556 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Power symbol creates a global label with name \"+3V3\""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "global power"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "+3V3_0_1"
-				(polyline
-					(pts
-						(xy -0.762 1.27) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 0) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "+3V3_1_1"
-				(pin power_in line
-					(at 0 0 90)
-					(length 0)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "power:GND"
 			(power)
 			(pin_numbers
@@ -5493,6 +5368,16 @@
 	)
 	(wire
 		(pts
+			(xy 109.22 97.79) (xy 109.22 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b8509a6e-7f07-4125-b9db-d78e5374c211")
+	)
+	(wire
+		(pts
 			(xy 54.61 21.59) (xy 66.04 21.59)
 		)
 		(stroke
@@ -5540,6 +5425,16 @@
 			(type default)
 		)
 		(uuid "c1219515-1ef5-450f-b6d5-61f60f4cad7b")
+	)
+	(wire
+		(pts
+			(xy 110.49 97.79) (xy 109.22 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c1bfffe1-ed20-4f02-a99b-3d6dd8a65f0f")
 	)
 	(wire
 		(pts
@@ -6031,16 +5926,16 @@
 		)
 		(uuid "ed9f6c7d-1e79-4f1e-97f2-7547489eee58")
 	)
-	(hierarchical_label "VBUS"
+	(hierarchical_label "3V3"
 		(shape input)
-		(at 257.81 105.41 0)
+		(at 110.49 97.79 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "5a5d1b30-cc75-45d8-9bf5-2aed78627a32")
+		(uuid "17521828-e774-423e-bcd5-af0056d72d17")
 	)
 	(hierarchical_label "EXTERNAL_VIN"
 		(shape input)
@@ -6064,19 +5959,19 @@
 		)
 		(uuid "bb211b6d-ef3f-4e13-a680-5ff72e960ee3")
 	)
-	(hierarchical_label "BATT_INT"
-		(shape input)
-		(at 101.6 106.68 180)
+	(hierarchical_label "VBUS"
+		(shape output)
+		(at 257.81 105.41 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
-		(uuid "c01f16c3-08be-458e-aa01-69f9f97dc380")
+		(uuid "c4fc638c-c38d-4e7c-a4ec-8e5fb7611b43")
 	)
 	(hierarchical_label "I2C_SCL"
-		(shape input)
+		(shape bidirectional)
 		(at 129.54 99.06 180)
 		(effects
 			(font
@@ -6087,7 +5982,7 @@
 		(uuid "c999bb90-e688-4457-965b-45d45763ed85")
 	)
 	(hierarchical_label "I2C_SDA"
-		(shape input)
+		(shape bidirectional)
 		(at 129.54 101.6 180)
 		(effects
 			(font
@@ -6096,6 +5991,17 @@
 			(justify right)
 		)
 		(uuid "cc93ddc6-2eaf-41f9-8094-4bd445b79b06")
+	)
+	(hierarchical_label "BATT_INT"
+		(shape output)
+		(at 101.6 106.68 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "d17db254-0430-405d-b786-c60ecd528c5a")
 	)
 	(symbol
 		(lib_id "Device:C_Small")
@@ -8233,71 +8139,6 @@
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
 					(reference "R809")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3V3")
-		(at 109.22 99.06 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "440e5a81-6d89-4119-9f54-1a4e45efdd76")
-		(property "Reference" "#PWR0808"
-			(at 109.22 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 104.394 97.282 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 109.22 99.06 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 109.22 99.06 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 109.22 99.06 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "d0c809e2-7006-41e7-9ab9-6e25c50823d5")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0808")
 					(unit 1)
 				)
 			)
@@ -15498,9 +15339,9 @@
 				(justify left top)
 			)
 		)
-		(pin "USB_D+" input
+		(pin "USB_D-" bidirectional
 			(at 39.37 91.44 0)
-			(uuid "65a5eb22-a65a-4ceb-bead-60a06c549a21")
+			(uuid "d259380e-29bf-4cf2-9ec1-27be288aba2e")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15508,19 +15349,19 @@
 				(justify right)
 			)
 		)
-		(pin "USB_D-" input
-			(at 39.37 93.98 0)
-			(uuid "0cdac567-9e2c-4245-b4bc-3abc256cbf3b")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "USB_VIN" input
+		(pin "USB_VIN" output
 			(at 39.37 87.63 0)
-			(uuid "a9ec8caa-4eaf-495c-bfe1-f0c0d480c755")
+			(uuid "e4c4a18a-c922-4c8a-afe7-d7f258be3f66")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "USB_D+" bidirectional
+			(at 39.37 93.98 0)
+			(uuid "6339b0ae-da3d-4048-bf14-cb2822c5d974")
 			(effects
 				(font
 					(size 1.27 1.27)

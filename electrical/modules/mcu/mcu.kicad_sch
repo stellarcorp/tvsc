@@ -3469,7 +3469,7 @@
 		(uuid "ff365fba-af57-4707-91be-9e79c9221715")
 	)
 	(hierarchical_label "SWCLK_CTRL"
-		(shape input)
+		(shape output)
 		(at 245.11 152.4 0)
 		(effects
 			(font
@@ -3480,7 +3480,7 @@
 		(uuid "0383027c-1cd4-421e-b1c6-d46ac81f15ed")
 	)
 	(hierarchical_label "DEBUG_LED"
-		(shape input)
+		(shape output)
 		(at 29.21 138.43 180)
 		(effects
 			(font
@@ -3502,7 +3502,7 @@
 		(uuid "05e9566b-f064-4fe5-b83f-0598cc9506a9")
 	)
 	(hierarchical_label "SWDIO"
-		(shape input)
+		(shape bidirectional)
 		(at 257.81 52.07 0)
 		(effects
 			(font
@@ -3513,7 +3513,7 @@
 		(uuid "07f34fc2-3c1a-4778-bad7-e7319ba7c248")
 	)
 	(hierarchical_label "CAN1_SILENT"
-		(shape input)
+		(shape output)
 		(at 144.78 80.01 0)
 		(effects
 			(font
@@ -3524,7 +3524,7 @@
 		(uuid "1bc6326a-a65e-44d9-8851-115623415160")
 	)
 	(hierarchical_label "SPI3_SCK"
-		(shape input)
+		(shape output)
 		(at 29.21 100.33 180)
 		(effects
 			(font
@@ -3535,7 +3535,7 @@
 		(uuid "353eb5ce-b8a6-44ea-be21-1015286c25f9")
 	)
 	(hierarchical_label "I2C1_SDA"
-		(shape input)
+		(shape bidirectional)
 		(at 255.27 82.55 0)
 		(effects
 			(font
@@ -3579,7 +3579,7 @@
 		(uuid "4b677542-f88a-47e7-acf1-fb2b89801150")
 	)
 	(hierarchical_label "SPI3_MOSI"
-		(shape input)
+		(shape output)
 		(at 29.21 116.84 180)
 		(effects
 			(font
@@ -3601,7 +3601,7 @@
 		(uuid "53fbacae-6374-4191-995a-a3a2187859c0")
 	)
 	(hierarchical_label "NRST_CTRL"
-		(shape input)
+		(shape output)
 		(at 245.11 157.48 0)
 		(effects
 			(font
@@ -3612,7 +3612,7 @@
 		(uuid "5d710479-913f-485e-a316-4ee63ed1a09b")
 	)
 	(hierarchical_label "I2C2_SDA"
-		(shape input)
+		(shape bidirectional)
 		(at 246.38 130.81 0)
 		(effects
 			(font
@@ -3634,7 +3634,7 @@
 		(uuid "70f0e8eb-f234-43dc-b3de-1fbf9e09dd1c")
 	)
 	(hierarchical_label "I2C1_SCL"
-		(shape input)
+		(shape output)
 		(at 255.27 80.01 0)
 		(effects
 			(font
@@ -3722,7 +3722,7 @@
 		(uuid "86b8704c-60dc-4510-9704-75671bbb2a54")
 	)
 	(hierarchical_label "BOARD_ID_PWR"
-		(shape input)
+		(shape output)
 		(at 144.78 69.85 0)
 		(effects
 			(font
@@ -3766,7 +3766,7 @@
 		(uuid "a6cf4f2b-8d98-44b1-96e1-4bae5edda15f")
 	)
 	(hierarchical_label "CAN1_RX"
-		(shape input)
+		(shape bidirectional)
 		(at 144.78 82.55 0)
 		(effects
 			(font
@@ -3788,7 +3788,7 @@
 		(uuid "b4ebd2b8-36ee-4277-a30d-ee6183f5440b")
 	)
 	(hierarchical_label "SWO_CTRL"
-		(shape input)
+		(shape output)
 		(at 245.11 143.51 0)
 		(effects
 			(font
@@ -3810,7 +3810,7 @@
 		(uuid "beb9ca54-0b41-486e-b8f1-7588596ccbc2")
 	)
 	(hierarchical_label "CAN1_SHUTDOWN"
-		(shape input)
+		(shape output)
 		(at 144.78 77.47 0)
 		(effects
 			(font
@@ -3821,7 +3821,7 @@
 		(uuid "c3c10d71-c40e-4183-a81c-13e3a1e79e62")
 	)
 	(hierarchical_label "BOOT0_CTRL"
-		(shape input)
+		(shape output)
 		(at 248.92 109.22 0)
 		(effects
 			(font
@@ -3832,7 +3832,7 @@
 		(uuid "c5ec89cd-60e3-4775-8751-ba7b0326c5c8")
 	)
 	(hierarchical_label "I2C2_SCL"
-		(shape input)
+		(shape output)
 		(at 246.38 128.27 0)
 		(effects
 			(font
@@ -3843,7 +3843,7 @@
 		(uuid "d031d2ab-4b84-47af-8fa7-334989da9990")
 	)
 	(hierarchical_label "I2C3_SCL"
-		(shape input)
+		(shape output)
 		(at 26.67 74.93 180)
 		(effects
 			(font
@@ -3876,7 +3876,7 @@
 		(uuid "eb955e1c-0f3f-45a8-8354-d8da50a6e366")
 	)
 	(hierarchical_label "SWDIO_CTRL"
-		(shape input)
+		(shape bidirectional)
 		(at 245.11 165.1 0)
 		(effects
 			(font
@@ -3887,7 +3887,7 @@
 		(uuid "ee0511d4-d1e5-46c2-98cf-5f60e8e6eb2e")
 	)
 	(hierarchical_label "I2C3_SDA"
-		(shape input)
+		(shape bidirectional)
 		(at 26.67 77.47 180)
 		(effects
 			(font
@@ -3909,7 +3909,7 @@
 		(uuid "f973fb18-a6e1-481e-a6b1-a8dbf6d764e1")
 	)
 	(hierarchical_label "CAN1_TX"
-		(shape input)
+		(shape bidirectional)
 		(at 144.78 85.09 0)
 		(effects
 			(font
