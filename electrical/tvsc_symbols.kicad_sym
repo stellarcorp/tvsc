@@ -4067,19 +4067,21 @@
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "Q"
-			(at 18.542 1.905 0)
+			(at 17.78 1.524 0)
 			(effects
 				(font
 					(size 1.524 1.524)
 				)
+				(justify left)
 			)
 		)
 		(property "Value" "CSD13385F5"
-			(at 18.542 -2.54 0)
+			(at 17.78 -0.762 0)
 			(effects
 				(font
 					(size 1.524 1.524)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "footprints:PICOSTAR3_YJK_TEX"
@@ -4640,7 +4642,9 @@
 					(type outline)
 				)
 			)
-			(pin unspecified line
+		)
+		(symbol "CSD13385F5_1_1"
+			(pin input line
 				(at 0 0 0)
 				(length 2.54)
 				(name "G"
@@ -4658,7 +4662,7 @@
 					)
 				)
 			)
-			(pin unspecified line
+			(pin passive line
 				(at 10.16 7.62 270)
 				(length 2.54)
 				(name "D"
@@ -4676,7 +4680,7 @@
 					)
 				)
 			)
-			(pin unspecified line
+			(pin passive line
 				(at 10.16 -7.62 90)
 				(length 2.54)
 				(name "S"
