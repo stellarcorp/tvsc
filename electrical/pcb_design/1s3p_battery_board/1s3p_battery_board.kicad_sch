@@ -266,7 +266,7 @@
 		(members "POWER" "SENSE")
 	)
 	(bus_alias "CAN_BUS"
-		(members "CANH_UPSTREAM" "CANL_UPSTREAM" "CANH_DOWNSTREAM" "CANL_DOWNSTREAM")
+		(members "CANH" "CANL")
 	)
 	(bus_alias "I2C"
 		(members "SCL" "SDA")
@@ -304,10 +304,22 @@
 		(uuid "21aa7e89-ac53-4fd5-ac3d-23412ebeece1")
 	)
 	(junction
+		(at 162.56 52.07)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "416eab5a-05c2-48cc-a31b-64a353c5d63e")
+	)
+	(junction
 		(at 64.77 101.6)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "71accd22-0622-4554-877a-e4d90d82848e")
+	)
+	(junction
+		(at 162.56 45.72)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8e29d18f-00c4-43f5-85eb-40eeb526f543")
 	)
 	(junction
 		(at 95.25 116.84)
@@ -357,7 +369,7 @@
 		(uuid "306b0faa-d3a2-495a-8fe0-039bfc8d1a63")
 	)
 	(bus_entry
-		(at 176.53 45.72)
+		(at 165.1 49.53)
 		(size -2.54 2.54)
 		(stroke
 			(width 0)
@@ -510,15 +522,6 @@
 		(uuid "b48272d6-2c29-47bc-a428-8a123f58a5cf")
 	)
 	(bus_entry
-		(at 176.53 53.34)
-		(size -2.54 2.54)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c1d4cf6d-390a-407b-84c3-46412ecc7820")
-	)
-	(bus_entry
 		(at 88.9 59.69)
 		(size 2.54 -2.54)
 		(stroke
@@ -528,22 +531,13 @@
 		(uuid "c2d4eace-8096-48c4-b4d9-f16c6dd0f3ed")
 	)
 	(bus_entry
-		(at 176.53 43.18)
+		(at 165.1 43.18)
 		(size -2.54 2.54)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "c7299cb3-4c92-476e-a394-3c966ff09e47")
-	)
-	(bus_entry
-		(at 176.53 50.8)
-		(size -2.54 2.54)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ca91025f-6e5f-400c-900f-fabfff49c3c8")
 	)
 	(bus_entry
 		(at 201.93 86.36)
@@ -600,15 +594,6 @@
 		(uuid "d6cb63dd-9388-4af6-bc99-a9c884ad9c79")
 	)
 	(bus_entry
-		(at 248.92 116.84)
-		(size -2.54 2.54)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e55f8c47-393a-49b6-8218-70187112246f")
-	)
-	(bus_entry
 		(at 88.9 88.9)
 		(size -2.54 2.54)
 		(stroke
@@ -625,15 +610,6 @@
 			(type default)
 		)
 		(uuid "fc3aeb85-4ac2-4533-a702-51f2b43fc596")
-	)
-	(bus_entry
-		(at 248.92 114.3)
-		(size -2.54 2.54)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fe55d8bd-888e-48e8-89bc-32e1f7e1273c")
 	)
 	(wire
 		(pts
@@ -654,26 +630,6 @@
 			(type default)
 		)
 		(uuid "01fcaabf-7028-4e23-8331-e73dcd02fcfc")
-	)
-	(bus
-		(pts
-			(xy 248.92 114.3) (xy 248.92 116.84)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "03a87d37-964b-4106-89d4-5ba57b850ebc")
-	)
-	(bus
-		(pts
-			(xy 176.53 43.18) (xy 176.53 41.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "03ec66e5-3c95-4b87-8cb4-36b92b8c5d72")
 	)
 	(wire
 		(pts
@@ -725,16 +681,6 @@
 		)
 		(uuid "125a76dc-c0fa-40fd-a67b-2e044817388b")
 	)
-	(wire
-		(pts
-			(xy 224.79 119.38) (xy 246.38 119.38)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "142cc54e-00a2-4150-b127-9c90d0c9b931")
-	)
 	(bus
 		(pts
 			(xy 201.93 86.36) (xy 201.93 88.9)
@@ -757,13 +703,13 @@
 	)
 	(wire
 		(pts
-			(xy 154.94 53.34) (xy 173.99 53.34)
+			(xy 154.94 48.26) (xy 162.56 48.26)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "1c663ca8-dbd6-45cc-b51c-a622e871f6f2")
+		(uuid "180804b1-5c58-4abd-8a93-ef5f277b26ab")
 	)
 	(wire
 		(pts
@@ -875,6 +821,36 @@
 		)
 		(uuid "347d0b3d-cbf4-4ab4-a633-c90d26076880")
 	)
+	(wire
+		(pts
+			(xy 162.56 52.07) (xy 162.56 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ab17a45-884d-428d-82cc-69e24685183f")
+	)
+	(wire
+		(pts
+			(xy 154.94 52.07) (xy 162.56 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3c55d104-a9c6-49ba-bc0d-f89dbdba1052")
+	)
+	(wire
+		(pts
+			(xy 154.94 54.61) (xy 162.56 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "40e6fcb5-29dd-43b2-bfbe-26a122319b61")
+	)
 	(bus
 		(pts
 			(xy 88.9 83.82) (xy 88.9 86.36)
@@ -914,16 +890,6 @@
 			(type default)
 		)
 		(uuid "4f3510d4-3c21-4066-b493-2a31f5ffed32")
-	)
-	(bus
-		(pts
-			(xy 176.53 53.34) (xy 176.53 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4fe3b773-9e30-4786-b398-7d8badb7c17c")
 	)
 	(wire
 		(pts
@@ -977,7 +943,7 @@
 	)
 	(wire
 		(pts
-			(xy 154.94 45.72) (xy 173.99 45.72)
+			(xy 154.94 45.72) (xy 162.56 45.72)
 		)
 		(stroke
 			(width 0)
@@ -987,7 +953,7 @@
 	)
 	(bus
 		(pts
-			(xy 248.92 41.91) (xy 248.92 107.95)
+			(xy 248.92 43.18) (xy 248.92 107.95)
 		)
 		(stroke
 			(width 0)
@@ -1087,6 +1053,16 @@
 	)
 	(wire
 		(pts
+			(xy 162.56 45.72) (xy 162.56 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7ce3a344-fa8a-4e9e-b4a3-b36381111e46")
+	)
+	(wire
+		(pts
 			(xy 154.94 34.29) (xy 199.39 34.29)
 		)
 		(stroke
@@ -1125,16 +1101,6 @@
 		)
 		(uuid "7f652d92-1b38-4335-b6ea-7db386ad10de")
 	)
-	(bus
-		(pts
-			(xy 176.53 45.72) (xy 176.53 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "82412109-17a9-48d0-b73b-8f5f43e32085")
-	)
 	(wire
 		(pts
 			(xy 91.44 82.55) (xy 104.14 82.55)
@@ -1147,7 +1113,7 @@
 	)
 	(bus
 		(pts
-			(xy 176.53 45.72) (xy 176.53 43.18)
+			(xy 165.1 49.53) (xy 165.1 43.18)
 		)
 		(stroke
 			(width 0)
@@ -1164,16 +1130,6 @@
 			(type default)
 		)
 		(uuid "993cdcb0-ee33-49a5-9777-2f6b9aaa31f4")
-	)
-	(wire
-		(pts
-			(xy 224.79 116.84) (xy 246.38 116.84)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "998ff3c4-ee8a-4860-a706-3963b1d3c944")
 	)
 	(wire
 		(pts
@@ -1247,16 +1203,6 @@
 	)
 	(wire
 		(pts
-			(xy 173.99 55.88) (xy 154.94 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a94abb6e-50bc-42ab-920f-f60a4429b500")
-	)
-	(wire
-		(pts
 			(xy 95.25 107.95) (xy 95.25 116.84)
 		)
 		(stroke
@@ -1277,7 +1223,7 @@
 	)
 	(bus
 		(pts
-			(xy 176.53 41.91) (xy 248.92 41.91)
+			(xy 165.1 43.18) (xy 248.92 43.18)
 		)
 		(stroke
 			(width 0)
@@ -1334,16 +1280,6 @@
 			(type default)
 		)
 		(uuid "cea68a52-2ac4-4e06-af39-c3088d2c187d")
-	)
-	(wire
-		(pts
-			(xy 154.94 48.26) (xy 173.99 48.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d1904f3a-fa93-44c8-a9e2-3637665d8cb0")
 	)
 	(bus
 		(pts
@@ -1495,16 +1431,6 @@
 		)
 		(uuid "f6f2e1e9-99df-4ea1-83da-045c306eabb8")
 	)
-	(bus
-		(pts
-			(xy 248.92 110.49) (xy 248.92 114.3)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fc0e437b-5d27-4d54-866e-5912365a8f15")
-	)
 	(label "SWDIO"
 		(at 104.14 88.9 180)
 		(effects
@@ -1516,7 +1442,7 @@
 		(uuid "04300b49-3d06-49b3-b60b-27d03961f648")
 	)
 	(label "{CAN_BUS}"
-		(at 237.49 41.91 0)
+		(at 238.76 43.18 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1565,16 +1491,6 @@
 		)
 		(uuid "386a892f-2344-4b14-99ce-a38cb85cd11b")
 	)
-	(label "CANL_UPSTREAM"
-		(at 154.94 48.26 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "4d36aa06-6c69-4fe9-a1bc-5ce468fdde99")
-	)
 	(label "SWCLK"
 		(at 113.03 52.07 180)
 		(effects
@@ -1595,7 +1511,7 @@
 		)
 		(uuid "55bcc679-982b-4cc7-9816-c37ecd9a0848")
 	)
-	(label "CANH_UPSTREAM"
+	(label "CANH"
 		(at 154.94 45.72 0)
 		(effects
 			(font
@@ -1645,7 +1561,7 @@
 		)
 		(uuid "6c35b386-26ec-4359-96e3-11b135903367")
 	)
-	(label "CANL_UPSTREAM"
+	(label "CANL"
 		(at 224.79 113.03 0)
 		(effects
 			(font
@@ -1654,16 +1570,6 @@
 			(justify left bottom)
 		)
 		(uuid "7ce95ce0-2bf4-4652-8a84-1ea12c08a26a")
-	)
-	(label "CANL_DOWNSTREAM"
-		(at 154.94 55.88 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "82818a80-09be-442f-8cad-e7b53eb40fa9")
 	)
 	(label "SWCLK"
 		(at 67.31 86.36 0)
@@ -1705,16 +1611,6 @@
 		)
 		(uuid "990a0164-fc05-4613-b583-d5b8b70d2e19")
 	)
-	(label "CANH_DOWNSTREAM"
-		(at 154.94 53.34 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "9cb13a3a-7e7f-4915-8916-cf329999bae3")
-	)
 	(label "CTRL.SWCLK"
 		(at 165.1 88.9 0)
 		(effects
@@ -1725,7 +1621,7 @@
 		)
 		(uuid "a6e8317f-fd47-4061-8bd9-b6cce40502b5")
 	)
-	(label "CANH_UPSTREAM"
+	(label "CANH"
 		(at 224.79 110.49 0)
 		(effects
 			(font
@@ -1805,6 +1701,16 @@
 		)
 		(uuid "e11f7609-3dc5-4af6-80fc-4b1d501e76ab")
 	)
+	(label "CANL"
+		(at 154.94 52.07 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e3309eb9-d526-48bc-8b09-2af92fa6a1e5")
+	)
 	(label "SWDIO"
 		(at 67.31 88.9 0)
 		(effects
@@ -1814,16 +1720,6 @@
 			(justify left bottom)
 		)
 		(uuid "e609fa55-5598-4fe8-8231-35b7bced9df5")
-	)
-	(label "CANH_DOWNSTREAM"
-		(at 224.79 116.84 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "ea29a2de-38d1-43bc-bcdf-36940a6a2547")
 	)
 	(label "CTRL.SWO"
 		(at 154.94 36.83 0)
@@ -1844,16 +1740,6 @@
 			(justify left bottom)
 		)
 		(uuid "f02f3edf-b9c9-4f4f-bee7-4299a894e3f7")
-	)
-	(label "CANL_DOWNSTREAM"
-		(at 224.79 119.38 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f7c49391-21a6-4561-b3f2-486998c9410c")
 	)
 	(symbol
 		(lib_id "power:VBUS")
@@ -2090,7 +1976,7 @@
 			)
 		)
 		(pin "CANL_DOWNSTREAM" input
-			(at 154.94 55.88 0)
+			(at 154.94 54.61 0)
 			(uuid "64b74bbc-47cf-4daf-87e2-2dbf30c71742")
 			(effects
 				(font
@@ -2110,7 +1996,7 @@
 			)
 		)
 		(pin "CANH_DOWNSTREAM" input
-			(at 154.94 53.34 0)
+			(at 154.94 48.26 0)
 			(uuid "a7ba98c4-8570-477c-83d7-500b91d2e3e7")
 			(effects
 				(font
@@ -2180,7 +2066,7 @@
 			)
 		)
 		(pin "CANL_UPSTREAM" input
-			(at 154.94 48.26 0)
+			(at 154.94 52.07 0)
 			(uuid "26d91ea2-8f42-45b6-bb37-1cd0fc3c497f")
 			(effects
 				(font
@@ -2873,7 +2759,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "can_bus.kicad_sch"
+		(property "Sheetfile" "../../modules/can_bus/can_bus.kicad_sch"
 			(at 182.88 123.7746 0)
 			(effects
 				(font
@@ -2893,26 +2779,6 @@
 				(justify left)
 			)
 		)
-		(pin "CANL_DOWNSTREAM" input
-			(at 224.79 119.38 0)
-			(uuid "30402f55-c49a-45aa-8ce2-3b4a187242a8")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "CANH_DOWNSTREAM" input
-			(at 224.79 116.84 0)
-			(uuid "d78bf7a2-4b45-4216-8e63-3fb2cd77371b")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
 		(pin "CAN_TX" input
 			(at 182.88 119.38 180)
 			(uuid "bf0673bb-e395-47ba-8c91-75ae4e16b17c")
@@ -2921,26 +2787,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
-			)
-		)
-		(pin "CANL_UPSTREAM" input
-			(at 224.79 113.03 0)
-			(uuid "96391bb6-33df-46eb-862b-2d109056e812")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "CANH_UPSTREAM" input
-			(at 224.79 110.49 0)
-			(uuid "62b3a673-ce2a-4c7b-9e6b-305938ca7c1d")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
 			)
 		)
 		(pin "CAN_SILENT" input
@@ -2961,6 +2807,26 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+			)
+		)
+		(pin "CANL" input
+			(at 224.79 113.03 0)
+			(uuid "f6e5a1c3-dc58-4b27-8a8d-3f15f65f561f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "CANH" input
+			(at 224.79 110.49 0)
+			(uuid "86f14e69-2ce4-43be-a329-e3382fcfa5da")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 			)
 		)
 		(instances
