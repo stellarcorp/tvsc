@@ -5,8 +5,10 @@
 	(uuid "92465487-256a-4cb1-9bd2-6d40463e6535")
 	(paper "USLetter")
 	(title_block
-		(title "CAN bus module")
-		(date "2026-07-28")
+		(title "${PCB_NAME}")
+		(date "2026-07-11")
+		(rev "${PCB_VERSION}")
+		(company "TVSC")
 	)
 	(lib_symbols
 		(symbol "Device:C"
@@ -1308,6 +1310,15 @@
 				(hide yes)
 			)
 		)
+		(property "Purpose" ""
+			(at 179.07 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "9949edbb-bcb8-49f0-85e7-65320dae88a5")
 		)
@@ -1316,8 +1327,8 @@
 		)
 		(instances
 			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "C603")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
+					(reference "C503")
 					(unit 1)
 				)
 			)
@@ -1487,6 +1498,15 @@
 				(hide yes)
 			)
 		)
+		(property "Purpose" ""
+			(at 80.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "79e570b9-3f29-401b-8661-dac88ac3c4e5")
 		)
@@ -1513,8 +1533,8 @@
 		)
 		(instances
 			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "U601")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
+					(reference "U501")
 					(unit 1)
 				)
 			)
@@ -1669,6 +1689,15 @@
 				(hide yes)
 			)
 		)
+		(property "Purpose" ""
+			(at 185.42 68.58 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "8783eed2-cff9-4701-8f60-08673ea11b80")
 		)
@@ -1677,8 +1706,8 @@
 		)
 		(instances
 			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "R602")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
+					(reference "R502")
 					(unit 1)
 				)
 			)
@@ -1748,8 +1777,8 @@
 		)
 		(instances
 			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "#PWR0603")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
+					(reference "#PWR0502")
 					(unit 1)
 				)
 			)
@@ -1870,6 +1899,15 @@
 				(hide yes)
 			)
 		)
+		(property "Purpose" ""
+			(at 144.78 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "1769a647-079e-474c-8a1b-82fbcdf79062")
 		)
@@ -1878,8 +1916,8 @@
 		)
 		(instances
 			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "JP601")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
+					(reference "JP501")
 					(unit 1)
 				)
 			)
@@ -1949,8 +1987,8 @@
 		)
 		(instances
 			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "#PWR0602")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
+					(reference "#PWR0501")
 					(unit 1)
 				)
 			)
@@ -2021,8 +2059,8 @@
 		)
 		(instances
 			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "#PWR0604")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
+					(reference "#PWR0503")
 					(unit 1)
 				)
 			)
@@ -2143,6 +2181,15 @@
 				(hide yes)
 			)
 		)
+		(property "Purpose" ""
+			(at 212.09 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "ed786e81-4c91-49e9-a163-c6572b14cffb")
 		)
@@ -2151,8 +2198,8 @@
 		)
 		(instances
 			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "JP602")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
+					(reference "JP502")
 					(unit 1)
 				)
 			)
@@ -2291,6 +2338,15 @@
 				(hide yes)
 			)
 		)
+		(property "Purpose" ""
+			(at 60.96 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "235f3222-1f4a-4496-a2e5-3db7892d9898")
 		)
@@ -2299,8 +2355,8 @@
 		)
 		(instances
 			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "C602")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
+					(reference "C502")
 					(unit 1)
 				)
 			)
@@ -2455,6 +2511,15 @@
 				(hide yes)
 			)
 		)
+		(property "Purpose" ""
+			(at 172.72 68.58 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "78d02190-42bd-493a-b3be-9da8c5c45b8d")
 		)
@@ -2463,8 +2528,8 @@
 		)
 		(instances
 			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "R601")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
+					(reference "R501")
 					(unit 1)
 				)
 			)
@@ -2603,6 +2668,15 @@
 				(hide yes)
 			)
 		)
+		(property "Purpose" ""
+			(at 49.53 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "d9799127-db76-4d8d-be06-0d92a35dad07")
 		)
@@ -2611,8 +2685,8 @@
 		)
 		(instances
 			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "C601")
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
+					(reference "C501")
 					(unit 1)
 				)
 			)
