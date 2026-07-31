@@ -6,7 +6,7 @@
 	(paper "USLetter")
 	(title_block
 		(title "${PCB_NAME}")
-		(date "2026-07-11")
+		(date "2026-07-30")
 		(rev "${PCB_VERSION}")
 		(company "TVSC")
 	)
@@ -1999,12 +1999,6 @@
 		(uuid "37f7339f-0cb4-4d33-b2f3-d9efb01e1a18")
 	)
 	(junction
-		(at 33.02 43.18)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "46769a39-1063-4ed4-ac78-40f0d7aa3501")
-	)
-	(junction
 		(at 240.03 130.81)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2129,6 +2123,10 @@
 	(no_connect
 		(at 109.22 97.79)
 		(uuid "25d7f2f1-1221-48ab-958a-336d6553c06d")
+	)
+	(no_connect
+		(at 144.78 120.65)
+		(uuid "2921596b-25cd-4a73-9ceb-40f6acf30e85")
 	)
 	(no_connect
 		(at 109.22 92.71)
@@ -2302,16 +2300,6 @@
 	)
 	(wire
 		(pts
-			(xy 212.09 120.65) (xy 212.09 109.22)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1bf50185-f2ae-4419-b986-38a89acde48b")
-	)
-	(wire
-		(pts
 			(xy 41.91 100.33) (xy 109.22 100.33)
 		)
 		(stroke
@@ -2319,16 +2307,6 @@
 			(type default)
 		)
 		(uuid "1f29a043-45a0-4744-9541-8660b608785f")
-	)
-	(wire
-		(pts
-			(xy 26.67 43.18) (xy 33.02 43.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "222c284a-2242-4f31-ba09-6a588feeacee")
 	)
 	(wire
 		(pts
@@ -2502,16 +2480,6 @@
 	)
 	(wire
 		(pts
-			(xy 144.78 120.65) (xy 212.09 120.65)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "45cb2b2c-5566-4b61-9ffa-77ca3e247e9c")
-	)
-	(wire
-		(pts
 			(xy 132.08 44.45) (xy 132.08 46.99)
 		)
 		(stroke
@@ -2629,16 +2597,6 @@
 			(type default)
 		)
 		(uuid "5a79ed83-e668-42ba-9961-6f0ad7ca1f7e")
-	)
-	(wire
-		(pts
-			(xy 212.09 109.22) (xy 213.36 109.22)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5d257f77-aed8-45e1-a940-0ce0ad027497")
 	)
 	(wire
 		(pts
@@ -3222,16 +3180,6 @@
 	)
 	(wire
 		(pts
-			(xy 220.98 109.22) (xy 248.92 109.22)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bfb91147-cb4c-4cfc-be02-df0a7c79350f")
-	)
-	(wire
-		(pts
 			(xy 255.27 80.01) (xy 234.95 80.01)
 		)
 		(stroke
@@ -3470,6 +3418,16 @@
 		)
 		(uuid "ff365fba-af57-4707-91be-9e79c9221715")
 	)
+	(label "BOOT0"
+		(at 107.95 64.77 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d537eddf-2f67-4ac9-a8be-d81402d98086")
+	)
 	(hierarchical_label "SWCLK_CTRL"
 		(shape output)
 		(at 245.11 152.4 0)
@@ -3646,17 +3604,6 @@
 		)
 		(uuid "7118630d-31c7-4c61-8521-c9552483a1fc")
 	)
-	(hierarchical_label "BOOT0"
-		(shape input)
-		(at 26.67 43.18 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "73f5ffd0-fc20-452b-af54-c16cfc6117c4")
-	)
 	(hierarchical_label "3V3"
 		(shape input)
 		(at 40.64 17.78 0)
@@ -3821,17 +3768,6 @@
 			(justify left)
 		)
 		(uuid "c3c10d71-c40e-4183-a81c-13e3a1e79e62")
-	)
-	(hierarchical_label "BOOT0_CTRL"
-		(shape output)
-		(at 248.92 109.22 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "c5ec89cd-60e3-4775-8751-ba7b0326c5c8")
 	)
 	(hierarchical_label "I2C2_SCL"
 		(shape output)
@@ -6022,152 +5958,6 @@
 			(project "mcu"
 				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
 					(reference "R116")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 217.17 109.22 90)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "3f80e627-bfaa-424e-8d21-79531c1f8802")
-		(property "Reference" "R210"
-			(at 217.17 114.3 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "33"
-			(at 217.17 111.76 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 217.17 107.442 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 217.17 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 217.17 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" "Y"
-			(at 217.17 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" "Basic"
-			(at 217.17 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "C25105"
-			(at 217.17 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 217.17 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 217.17 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 217.17 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 217.17 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 217.17 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "2554f3ba-84bd-408b-b04e-68f6741cde5a")
-		)
-		(pin "1"
-			(uuid "22283b39-c6f7-48db-afd6-c044c892c562")
-		)
-		(instances
-			(project "core_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/8e27c7c2-0d25-45f6-9c1b-87f643b528a8"
-					(reference "R210")
-					(unit 1)
-				)
-			)
-			(project "mcu"
-				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
-					(reference "R110")
 					(unit 1)
 				)
 			)

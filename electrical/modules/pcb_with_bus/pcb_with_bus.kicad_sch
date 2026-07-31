@@ -6,7 +6,7 @@
 	(paper "USLetter")
 	(title_block
 		(title "${PCB_NAME}")
-		(date "2026-07-11")
+		(date "2026-07-30")
 		(rev "${PCB_VERSION}")
 		(company "TVSC")
 	)
@@ -3155,6 +3155,10 @@
 		(uuid "204101ba-2461-4ec6-84fb-ff603ce23cf0")
 	)
 	(no_connect
+		(at 203.2 68.58)
+		(uuid "255a5971-192d-4e90-a73e-1cd8472c89b6")
+	)
+	(no_connect
 		(at 177.8 63.5)
 		(uuid "288b87f0-b8c9-4c6b-958d-e9a65131f751")
 	)
@@ -3401,6 +3405,10 @@
 	(no_connect
 		(at 177.8 121.92)
 		(uuid "d7427e38-847a-40e5-8880-d7b1d1e679ed")
+	)
+	(no_connect
+		(at 101.6 68.58)
+		(uuid "db93ac33-cc30-448e-b36f-7d1a35a8c37f")
 	)
 	(no_connect
 		(at 101.6 111.76)
@@ -3652,28 +3660,6 @@
 		)
 		(uuid "0e511160-edf5-48d7-912b-a64bea625b1c")
 	)
-	(hierarchical_label "SWDIO_CTRL"
-		(shape input)
-		(at 203.2 60.96 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "1274c696-d897-404c-be3c-6f51770723b7")
-	)
-	(hierarchical_label "BOOT0_CTRL"
-		(shape input)
-		(at 203.2 63.5 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "12b01185-26ad-4aed-9cbc-0677ba62c099")
-	)
 	(hierarchical_label "VBUS"
 		(shape input)
 		(at 177.8 109.22 180)
@@ -3718,6 +3704,28 @@
 		)
 		(uuid "39823cff-09ca-4dbf-b14c-ca9f6a279c22")
 	)
+	(hierarchical_label "NRST_CTRL"
+		(shape input)
+		(at 203.2 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "42b8acc7-9166-4498-92ae-a1226c56160d")
+	)
+	(hierarchical_label "SWDIO"
+		(shape input)
+		(at 101.6 58.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "435bf0f6-eec0-43cb-90d1-7d3888cad712")
+	)
 	(hierarchical_label "CANL_UPSTREAM"
 		(shape input)
 		(at 101.6 88.9 0)
@@ -3728,17 +3736,6 @@
 			(justify left)
 		)
 		(uuid "438148d9-ff8d-4dcd-b5ce-5e6413635082")
-	)
-	(hierarchical_label "SWDIO"
-		(shape input)
-		(at 101.6 60.96 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "45f09b20-8667-44e0-95f0-cc22066db09a")
 	)
 	(hierarchical_label "CANH_UPSTREAM"
 		(shape input)
@@ -3751,6 +3748,17 @@
 		)
 		(uuid "4e63ca76-edeb-4f90-8d6f-bf0c633033ea")
 	)
+	(hierarchical_label "NRST"
+		(shape input)
+		(at 101.6 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5ef15cc1-855c-4889-af99-d9876f33847a")
+	)
 	(hierarchical_label "VBUS"
 		(shape input)
 		(at 177.8 73.66 180)
@@ -3761,17 +3769,6 @@
 			(justify right)
 		)
 		(uuid "687ac32a-4020-4071-931d-b455d45bdcd0")
-	)
-	(hierarchical_label "NRST_CTRL"
-		(shape input)
-		(at 203.2 58.42 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "69a0665d-337b-42f3-8612-e70011966e55")
 	)
 	(hierarchical_label "VSOLAR"
 		(shape input)
@@ -3795,17 +3792,6 @@
 		)
 		(uuid "7a71b9f0-41ae-42e5-93ca-b4de3358c36f")
 	)
-	(hierarchical_label "NRST"
-		(shape input)
-		(at 101.6 58.42 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "7e3c4c66-c196-4eda-b68a-efb161e5841d")
-	)
 	(hierarchical_label "VBUS"
 		(shape input)
 		(at 76.2 73.66 180)
@@ -3828,6 +3814,17 @@
 		)
 		(uuid "8321859d-56e0-4b18-8d13-7844e25420d5")
 	)
+	(hierarchical_label "SWO"
+		(shape input)
+		(at 101.6 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "925f7fe0-bf81-4949-84e4-01c05b4f8e1a")
+	)
 	(hierarchical_label "DEBUG_LED"
 		(shape input)
 		(at 137.16 165.1 0)
@@ -3849,6 +3846,17 @@
 			(justify left)
 		)
 		(uuid "9b7b935c-3f8f-4fa5-9245-e7f385b87e2f")
+	)
+	(hierarchical_label "SWDIO_CTRL"
+		(shape input)
+		(at 203.2 58.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "ad00fb30-850c-4191-b1f0-d7126940c204")
 	)
 	(hierarchical_label "VBUS"
 		(shape input)
@@ -3894,17 +3902,6 @@
 		)
 		(uuid "c879ae44-f6b6-4d37-9efd-1a6ffdba9129")
 	)
-	(hierarchical_label "SWO"
-		(shape input)
-		(at 101.6 66.04 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "d07e7aec-1a93-463a-a6fb-725a668a405c")
-	)
 	(hierarchical_label "VBUS"
 		(shape input)
 		(at 177.8 91.44 180)
@@ -3915,17 +3912,6 @@
 			(justify right)
 		)
 		(uuid "d728bc58-8464-478b-bda9-34afcca61fcc")
-	)
-	(hierarchical_label "SWO_CTRL"
-		(shape input)
-		(at 203.2 66.04 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "df13ea94-7527-4425-8549-959de20c1897")
 	)
 	(hierarchical_label "CANH_DOWNSTREAM"
 		(shape input)
@@ -3971,6 +3957,17 @@
 		)
 		(uuid "f1ede38f-3110-43c3-9f41-3db1f9d79f0e")
 	)
+	(hierarchical_label "SWO_CTRL"
+		(shape input)
+		(at 203.2 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "f471697b-a6d0-4c57-9523-878af5a31060")
+	)
 	(hierarchical_label "VSOLAR"
 		(shape input)
 		(at 76.2 58.42 180)
@@ -3981,17 +3978,6 @@
 			(justify right)
 		)
 		(uuid "fd0d46e3-49c7-469a-9e8a-a1caccc92783")
-	)
-	(hierarchical_label "BOOT0"
-		(shape input)
-		(at 101.6 63.5 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "fd1a4f32-c661-400c-9e1a-f6a1cb6baf07")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -4877,7 +4863,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 203.2 68.58 90)
+		(at 203.2 66.04 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -4885,8 +4871,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "79e1c065-4473-4e96-b101-32a6d492f415")
-		(property "Reference" "#PWR0406"
-			(at 209.55 68.58 0)
+		(property "Reference" "#PWR0102"
+			(at 209.55 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4895,7 +4881,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 208.026 68.58 90)
+			(at 208.026 66.04 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4903,7 +4889,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 203.2 68.58 0)
+			(at 203.2 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4912,7 +4898,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 203.2 68.58 0)
+			(at 203.2 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4921,7 +4907,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 203.2 68.58 0)
+			(at 203.2 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4935,7 +4921,7 @@
 		(instances
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0406")
+					(reference "#PWR0102")
 					(unit 1)
 				)
 			)
@@ -5258,7 +5244,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 101.6 68.58 90)
+		(at 101.6 66.04 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5266,8 +5252,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c82fc1c9-dd1f-4782-aa58-5cc2545f51e2")
-		(property "Reference" "#PWR0403"
-			(at 107.95 68.58 0)
+		(property "Reference" "#PWR0101"
+			(at 107.95 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5276,7 +5262,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 106.426 68.58 90)
+			(at 106.426 66.04 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5284,7 +5270,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 101.6 68.58 0)
+			(at 101.6 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5293,7 +5279,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 101.6 68.58 0)
+			(at 101.6 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5302,7 +5288,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 101.6 68.58 0)
+			(at 101.6 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5316,7 +5302,7 @@
 		(instances
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/3da789b3-8d47-4650-8c6e-e8d24eec9b52"
-					(reference "#PWR0403")
+					(reference "#PWR0101")
 					(unit 1)
 				)
 			)

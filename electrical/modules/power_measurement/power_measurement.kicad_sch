@@ -4,6 +4,12 @@
 	(generator_version "9.0")
 	(uuid "00a61877-cce1-46a2-8791-e21dc4524eb1")
 	(paper "USLetter")
+	(title_block
+		(title "${PCB_NAME}")
+		(date "2026-07-30")
+		(rev "${PCB_VERSION}")
+		(company "TVSC")
+	)
 	(lib_symbols
 		(symbol "Device:C"
 			(pin_numbers
@@ -1015,7 +1021,7 @@
 		(uuid "3e067b2a-2e08-4a81-b07f-d2d71c145afc")
 	)
 	(hierarchical_label "I2C_SCL"
-		(shape bidirectional)
+		(shape input)
 		(at 138.43 74.93 0)
 		(effects
 			(font
