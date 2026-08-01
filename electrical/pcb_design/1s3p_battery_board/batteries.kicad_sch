@@ -5,8 +5,8 @@
 	(uuid "a07e8c6c-3412-4fdf-b0fa-f1cf944ca754")
 	(paper "USLetter")
 	(title_block
-		(title "1s3p Battery Board")
-		(date "2026-07-11")
+		(title "${PCB_NAME}")
+		(date "2026-07-30")
 		(rev "${PCB_VERSION}")
 		(company "TVSC")
 	)
@@ -3704,10 +3704,10 @@
 		)
 		(uuid "bc7fd9cd-1d2c-41ee-afa5-fc3b731e6250")
 	)
-	(text_box "Thermistors for measuring battery temperatures. One thermistor for each battery.\n"
+	(text_box "Thermistors for measuring battery temperatures. One thermistor for each of the boundaries around the batteries. The outer two thermistors should not be enabled if only using a single battery in the middle holder.\n"
 		(exclude_from_sim no)
-		(at 62.23 163.83 0)
-		(size 20.32 11.43)
+		(at 109.22 191.77 0)
+		(size 49.53 11.43)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
 			(width 0)
@@ -3757,10 +3757,10 @@
 		(uuid "066c14d3-74f2-454d-9500-84c6a89057a9")
 	)
 	(junction
-		(at 113.03 158.75)
+		(at 154.94 149.86)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "0cc1a08c-3c95-49af-bdbc-96c5f550f5d3")
+		(uuid "0abab396-48b2-47c4-b57d-97fca51b7c31")
 	)
 	(junction
 		(at 229.87 143.51)
@@ -3775,7 +3775,7 @@
 		(uuid "1236919d-49d9-4f09-818d-ee313d05a0a0")
 	)
 	(junction
-		(at 87.63 172.72)
+		(at 68.58 173.99)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "12faaf00-c721-48c0-8ce8-9c888c9b4f3a")
@@ -3817,7 +3817,19 @@
 		(uuid "2df5fb85-a499-41fd-8791-54dd769ca38d")
 	)
 	(junction
-		(at 207.01 105.41)
+		(at 124.46 190.5)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "328a2a52-ae43-4d35-9adb-5aa5609ba751")
+	)
+	(junction
+		(at 93.98 181.61)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "347a25a1-d396-4b77-a2b4-62e05bceb2d6")
+	)
+	(junction
+		(at 217.17 105.41)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "3506a670-b732-4720-8da5-31a260302d3c")
@@ -3829,10 +3841,16 @@
 		(uuid "354aafdb-fa99-4f54-8fd0-af16bdab3af1")
 	)
 	(junction
-		(at 148.59 172.72)
+		(at 207.01 105.41)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "37a3c906-490f-452e-8907-0d2db0c34725")
+		(uuid "36ac3296-f264-427e-8f23-cad26c17b9cb")
+	)
+	(junction
+		(at 137.16 190.5)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "43beba1e-0cb4-44ef-8a12-bad5b85d66ed")
 	)
 	(junction
 		(at 50.8 151.13)
@@ -3841,7 +3859,7 @@
 		(uuid "4523fece-4261-4af7-a56c-6d97da1c0b1c")
 	)
 	(junction
-		(at 87.63 158.75)
+		(at 68.58 160.02)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "455ace9f-fecb-4a3d-856e-333a2bbd8ea0")
@@ -3853,22 +3871,28 @@
 		(uuid "4900a55d-d38a-48fd-a693-013fbb7ac819")
 	)
 	(junction
-		(at 119.38 189.23)
+		(at 100.33 190.5)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "4db10300-f264-474f-aa2e-e5ae6435ec10")
 	)
 	(junction
-		(at 93.98 189.23)
+		(at 74.93 190.5)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "57f54bc2-4771-44f2-a2e3-6df01353a9bf")
 	)
 	(junction
-		(at 217.17 105.41)
+		(at 227.33 105.41)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5d08e06f-2b43-43ef-b87f-ded90e4577d2")
+	)
+	(junction
+		(at 118.11 181.61)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5f524008-edfc-4ad5-b921-4fb7205986b2")
 	)
 	(junction
 		(at 53.34 44.45)
@@ -3877,7 +3901,19 @@
 		(uuid "5fa44181-8a0e-4f82-b3a9-8015a2a1e603")
 	)
 	(junction
-		(at 207.01 110.49)
+		(at 142.24 181.61)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6348f94f-82ce-45ef-8e6e-5a4d01cf1017")
+	)
+	(junction
+		(at 118.11 160.02)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "65b3a6fa-05b4-4c79-a6bc-e2228225bfd0")
+	)
+	(junction
+		(at 217.17 110.49)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "66430624-6964-49f6-b3a8-74aea7b10e16")
@@ -3889,13 +3925,19 @@
 		(uuid "67f272ad-7b39-4c6d-ae48-1b1fe8c90bb2")
 	)
 	(junction
-		(at 113.03 189.23)
+		(at 142.24 173.99)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "68838c20-0891-4c8b-9ebb-79a228b1b3b4")
+		(uuid "6919eb24-24af-42aa-99ca-633f0a604571")
 	)
 	(junction
-		(at 87.63 180.34)
+		(at 207.01 110.49)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6c9f55ce-fdb3-4225-9e71-a2119af98a97")
+	)
+	(junction
+		(at 68.58 181.61)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6e4bf230-f605-42ae-8d81-41725e5846bc")
@@ -3919,19 +3961,13 @@
 		(uuid "840e2a28-a287-4267-adcf-57373d74876b")
 	)
 	(junction
-		(at 137.16 180.34)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "8a3a7cb6-8245-44d4-98f5-466e54fc92ba")
-	)
-	(junction
 		(at 196.85 105.41)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8b0d7b15-1fa1-491b-9537-c4f140fc1da5")
 	)
 	(junction
-		(at 227.33 105.41)
+		(at 237.49 105.41)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "97ec8fe4-f4a6-4ec0-9b78-75c5f443f747")
@@ -3943,7 +3979,7 @@
 		(uuid "a092fb42-213c-40d8-b477-a4f291caa7a3")
 	)
 	(junction
-		(at 106.68 189.23)
+		(at 87.63 190.5)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "a8844443-4fe1-490e-a72a-394f5d90074e")
@@ -3955,7 +3991,7 @@
 		(uuid "a91d081d-5905-4fc0-a9f4-964ea149472b")
 	)
 	(junction
-		(at 217.17 110.49)
+		(at 227.33 110.49)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b0c5df41-bbc1-4df4-8602-9821c9335f61")
@@ -3967,7 +4003,7 @@
 		(uuid "b3f26b92-1249-4292-9a0b-5095afd53df8")
 	)
 	(junction
-		(at 132.08 189.23)
+		(at 113.03 190.5)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b8bc32ca-5030-4837-a763-5f2fe59e4533")
@@ -3979,7 +4015,7 @@
 		(uuid "b97064c4-ceeb-4be0-87fe-ceba896b0be8")
 	)
 	(junction
-		(at 236.22 105.41)
+		(at 246.38 105.41)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "bb134d49-59a6-4386-8706-aaa1e7fec1b6")
@@ -3991,7 +4027,7 @@
 		(uuid "c78bdedc-7624-4a02-abe1-2eb4c9aaede4")
 	)
 	(junction
-		(at 137.16 172.72)
+		(at 118.11 173.99)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "cb25ee88-6538-4a98-90b2-eadcd1c7a2ba")
@@ -4015,13 +4051,19 @@
 		(uuid "d8619e6a-bdf3-4e9f-8908-7a3b1bf027ac")
 	)
 	(junction
-		(at 246.38 105.41)
+		(at 93.98 160.02)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "db0ad58d-6162-4439-96d2-5bca5718736c")
+	)
+	(junction
+		(at 256.54 105.41)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "dc0a8e43-b65b-42e4-ac54-8dfa3f5b991d")
 	)
 	(junction
-		(at 227.33 110.49)
+		(at 237.49 110.49)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "dc6d43e9-f735-43d5-adcd-f87013245fe3")
@@ -4057,13 +4099,7 @@
 		(uuid "ee63a23d-42d5-489e-8076-ac8d01ed11ab")
 	)
 	(junction
-		(at 113.03 180.34)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f12bd3da-25da-42a9-b328-e378af9f6b57")
-	)
-	(junction
-		(at 113.03 172.72)
+		(at 93.98 173.99)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f2f6194e-2ca6-4b90-958b-4d193a8b80ef")
@@ -4099,7 +4135,13 @@
 		(uuid "f9dc3fa5-14e8-43f6-8161-c9742effb8ce")
 	)
 	(junction
-		(at 236.22 110.49)
+		(at 106.68 190.5)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fa6ef6fb-a730-459e-86c7-06096922bfdf")
+	)
+	(junction
+		(at 246.38 110.49)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "fb549577-bd6f-4a98-a1f1-14a54fb02a25")
@@ -4126,6 +4168,16 @@
 	)
 	(wire
 		(pts
+			(xy 148.59 189.23) (xy 148.59 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0383ed71-1fcf-4258-9f6e-12c5f40e42c9")
+	)
+	(wire
+		(pts
 			(xy 115.57 44.45) (xy 125.73 44.45)
 		)
 		(stroke
@@ -4146,7 +4198,7 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 189.23) (xy 132.08 189.23)
+			(xy 100.33 190.5) (xy 106.68 190.5)
 		)
 		(stroke
 			(width 0)
@@ -4276,6 +4328,16 @@
 	)
 	(wire
 		(pts
+			(xy 137.16 182.88) (xy 137.16 181.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0f4004ce-06c4-4a29-88dc-fc78fe1249ec")
+	)
+	(wire
+		(pts
 			(xy 250.19 146.05) (xy 250.19 143.51)
 		)
 		(stroke
@@ -4286,13 +4348,23 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 158.75) (xy 87.63 158.75)
+			(xy 64.77 160.02) (xy 68.58 160.02)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "0f809318-1985-4c90-801a-e2659c7206cb")
+	)
+	(wire
+		(pts
+			(xy 154.94 173.99) (xy 154.94 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "100a80cd-d21d-410a-b9a9-620e6416e7ab")
 	)
 	(wire
 		(pts
@@ -4326,7 +4398,7 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 189.23) (xy 119.38 187.96)
+			(xy 100.33 190.5) (xy 100.33 189.23)
 		)
 		(stroke
 			(width 0)
@@ -4356,7 +4428,7 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 171.45) (xy 113.03 172.72)
+			(xy 93.98 172.72) (xy 93.98 173.99)
 		)
 		(stroke
 			(width 0)
@@ -4406,7 +4478,7 @@
 	)
 	(wire
 		(pts
-			(xy 217.17 110.49) (xy 227.33 110.49)
+			(xy 227.33 110.49) (xy 237.49 110.49)
 		)
 		(stroke
 			(width 0)
@@ -4416,7 +4488,7 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 180.34) (xy 93.98 180.34)
+			(xy 68.58 181.61) (xy 74.93 181.61)
 		)
 		(stroke
 			(width 0)
@@ -4456,7 +4528,7 @@
 	)
 	(wire
 		(pts
-			(xy 246.38 105.41) (xy 257.81 105.41)
+			(xy 256.54 105.41) (xy 260.35 105.41)
 		)
 		(stroke
 			(width 0)
@@ -4466,7 +4538,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 180.34) (xy 87.63 180.34)
+			(xy 62.23 181.61) (xy 68.58 181.61)
 		)
 		(stroke
 			(width 0)
@@ -4486,7 +4558,7 @@
 	)
 	(wire
 		(pts
-			(xy 217.17 110.49) (xy 207.01 110.49)
+			(xy 227.33 110.49) (xy 217.17 110.49)
 		)
 		(stroke
 			(width 0)
@@ -4526,7 +4598,7 @@
 	)
 	(wire
 		(pts
-			(xy 106.68 181.61) (xy 106.68 180.34)
+			(xy 87.63 182.88) (xy 87.63 181.61)
 		)
 		(stroke
 			(width 0)
@@ -4536,7 +4608,7 @@
 	)
 	(wire
 		(pts
-			(xy 132.08 181.61) (xy 132.08 180.34)
+			(xy 113.03 182.88) (xy 113.03 181.61)
 		)
 		(stroke
 			(width 0)
@@ -4546,13 +4618,23 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 172.72) (xy 113.03 172.72)
+			(xy 68.58 173.99) (xy 93.98 173.99)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "346deb07-27dc-4e98-9703-5749730c1fdd")
+	)
+	(wire
+		(pts
+			(xy 118.11 160.02) (xy 118.11 167.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "347e133f-4ec9-4730-8811-81eb630d982e")
 	)
 	(wire
 		(pts
@@ -4606,7 +4688,7 @@
 	)
 	(wire
 		(pts
-			(xy 143.51 187.96) (xy 143.51 189.23)
+			(xy 124.46 189.23) (xy 124.46 190.5)
 		)
 		(stroke
 			(width 0)
@@ -4626,6 +4708,16 @@
 	)
 	(wire
 		(pts
+			(xy 137.16 187.96) (xy 137.16 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4174551e-6c87-4cf1-b7e7-379959ed56fb")
+	)
+	(wire
+		(pts
 			(xy 229.87 161.29) (xy 229.87 165.1)
 		)
 		(stroke
@@ -4633,6 +4725,16 @@
 			(type default)
 		)
 		(uuid "4746fffb-dfed-4bc6-82f5-25547a030059")
+	)
+	(wire
+		(pts
+			(xy 124.46 190.5) (xy 137.16 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "495da5af-03bf-4232-867a-21d7d3eff550")
 	)
 	(wire
 		(pts
@@ -4696,6 +4798,16 @@
 	)
 	(wire
 		(pts
+			(xy 142.24 172.72) (xy 142.24 173.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "52b1da66-44e6-4283-85ef-d1eb05d764d8")
+	)
+	(wire
+		(pts
 			(xy 172.72 58.42) (xy 162.56 58.42)
 		)
 		(stroke
@@ -4706,7 +4818,7 @@
 	)
 	(wire
 		(pts
-			(xy 217.17 105.41) (xy 207.01 105.41)
+			(xy 227.33 105.41) (xy 217.17 105.41)
 		)
 		(stroke
 			(width 0)
@@ -4726,7 +4838,7 @@
 	)
 	(wire
 		(pts
-			(xy 93.98 189.23) (xy 106.68 189.23)
+			(xy 74.93 190.5) (xy 87.63 190.5)
 		)
 		(stroke
 			(width 0)
@@ -4736,7 +4848,17 @@
 	)
 	(wire
 		(pts
-			(xy 236.22 110.49) (xy 246.38 110.49)
+			(xy 93.98 181.61) (xy 100.33 181.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "58f74c3c-d552-4080-aa3e-431ca0199268")
+	)
+	(wire
+		(pts
+			(xy 246.38 110.49) (xy 256.54 110.49)
 		)
 		(stroke
 			(width 0)
@@ -4746,13 +4868,13 @@
 	)
 	(wire
 		(pts
-			(xy 106.68 180.34) (xy 113.03 180.34)
+			(xy 118.11 173.99) (xy 142.24 173.99)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "5e8c8d3d-1c16-4837-bcaa-c8df8e689e13")
+		(uuid "5e0646a0-4867-4b72-960e-10c765f2ffb9")
 	)
 	(wire
 		(pts
@@ -4796,13 +4918,13 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 158.75) (xy 113.03 158.75)
+			(xy 106.68 193.04) (xy 106.68 190.5)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "5fdab288-2b9e-4e78-a645-4ae72cd91582")
+		(uuid "60835de0-db3f-432d-8701-b5b7b393c291")
 	)
 	(wire
 		(pts
@@ -4826,23 +4948,13 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 189.23) (xy 119.38 189.23)
+			(xy 87.63 190.5) (xy 100.33 190.5)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "64624a7c-81f1-4c0d-a63d-892774662487")
-	)
-	(wire
-		(pts
-			(xy 113.03 189.23) (xy 106.68 189.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "66a19d94-0059-432c-97a0-9458d3dccd02")
 	)
 	(wire
 		(pts
@@ -4863,6 +4975,16 @@
 			(type default)
 		)
 		(uuid "6759dc99-3b10-4dd9-bbd3-03218132855b")
+	)
+	(wire
+		(pts
+			(xy 207.01 105.41) (xy 217.17 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6799e123-ff7c-4dec-8e59-30d5ea26b566")
 	)
 	(wire
 		(pts
@@ -4896,7 +5018,7 @@
 	)
 	(wire
 		(pts
-			(xy 207.01 110.49) (xy 196.85 110.49)
+			(xy 217.17 110.49) (xy 207.01 110.49)
 		)
 		(stroke
 			(width 0)
@@ -4916,7 +5038,7 @@
 	)
 	(wire
 		(pts
-			(xy 137.16 180.34) (xy 143.51 180.34)
+			(xy 113.03 181.61) (xy 118.11 181.61)
 		)
 		(stroke
 			(width 0)
@@ -4946,7 +5068,7 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 110.49) (xy 236.22 110.49)
+			(xy 237.49 110.49) (xy 246.38 110.49)
 		)
 		(stroke
 			(width 0)
@@ -4966,7 +5088,7 @@
 	)
 	(wire
 		(pts
-			(xy 236.22 105.41) (xy 246.38 105.41)
+			(xy 246.38 105.41) (xy 256.54 105.41)
 		)
 		(stroke
 			(width 0)
@@ -4976,7 +5098,17 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 180.34) (xy 119.38 180.34)
+			(xy 137.16 190.5) (xy 148.59 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8288a3c0-13e6-40e2-b5bf-08ceaf64370b")
+	)
+	(wire
+		(pts
+			(xy 87.63 181.61) (xy 93.98 181.61)
 		)
 		(stroke
 			(width 0)
@@ -4993,6 +5125,16 @@
 			(type default)
 		)
 		(uuid "82bf9bfa-0103-425c-bd1a-ee08bb035a96")
+	)
+	(wire
+		(pts
+			(xy 118.11 181.61) (xy 118.11 173.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "839b3a15-5ebf-48ad-a597-994e0af6f7d3")
 	)
 	(wire
 		(pts
@@ -5096,7 +5238,7 @@
 	)
 	(wire
 		(pts
-			(xy 93.98 187.96) (xy 93.98 189.23)
+			(xy 74.93 189.23) (xy 74.93 190.5)
 		)
 		(stroke
 			(width 0)
@@ -5166,6 +5308,16 @@
 	)
 	(wire
 		(pts
+			(xy 207.01 110.49) (xy 196.85 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "976ce113-0959-435b-96a1-ae166222260f")
+	)
+	(wire
+		(pts
 			(xy 190.5 132.08) (xy 190.5 121.92)
 		)
 		(stroke
@@ -5173,6 +5325,26 @@
 			(type default)
 		)
 		(uuid "98361ad1-4587-44ca-8a3d-ce45089807a6")
+	)
+	(wire
+		(pts
+			(xy 68.58 160.02) (xy 93.98 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "98b5e4fc-3ea9-4f0e-a879-6593580fb1f2")
+	)
+	(wire
+		(pts
+			(xy 118.11 181.61) (xy 124.46 181.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9b01d802-ca64-4058-9e4f-9e33d2fe0b95")
 	)
 	(wire
 		(pts
@@ -5206,16 +5378,6 @@
 	)
 	(wire
 		(pts
-			(xy 148.59 172.72) (xy 148.59 149.86)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a368d981-21c7-48d9-b0eb-7384c3f8b6d4")
-	)
-	(wire
-		(pts
 			(xy 83.82 114.3) (xy 100.33 114.3)
 		)
 		(stroke
@@ -5236,7 +5398,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 180.34) (xy 81.28 181.61)
+			(xy 62.23 181.61) (xy 62.23 182.88)
 		)
 		(stroke
 			(width 0)
@@ -5266,6 +5428,16 @@
 	)
 	(wire
 		(pts
+			(xy 106.68 190.5) (xy 113.03 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ad175cb6-5734-43b0-89d2-a8c50ff02530")
+	)
+	(wire
+		(pts
 			(xy 66.04 21.59) (xy 66.04 24.13)
 		)
 		(stroke
@@ -5276,13 +5448,23 @@
 	)
 	(wire
 		(pts
-			(xy 132.08 189.23) (xy 143.51 189.23)
+			(xy 113.03 190.5) (xy 124.46 190.5)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "ad637cc7-e310-4bbb-bd0d-4e4838a71c45")
+	)
+	(wire
+		(pts
+			(xy 142.24 173.99) (xy 154.94 173.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "adf93324-5797-4d44-bede-c400227d16fc")
 	)
 	(wire
 		(pts
@@ -5296,7 +5478,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 186.69) (xy 81.28 189.23)
+			(xy 62.23 187.96) (xy 62.23 190.5)
 		)
 		(stroke
 			(width 0)
@@ -5316,7 +5498,7 @@
 	)
 	(wire
 		(pts
-			(xy 125.73 149.86) (xy 148.59 149.86)
+			(xy 125.73 149.86) (xy 154.94 149.86)
 		)
 		(stroke
 			(width 0)
@@ -5386,7 +5568,7 @@
 	)
 	(wire
 		(pts
-			(xy 106.68 186.69) (xy 106.68 189.23)
+			(xy 87.63 187.96) (xy 87.63 190.5)
 		)
 		(stroke
 			(width 0)
@@ -5396,7 +5578,7 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 105.41) (xy 236.22 105.41)
+			(xy 237.49 105.41) (xy 246.38 105.41)
 		)
 		(stroke
 			(width 0)
@@ -5446,7 +5628,7 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 172.72) (xy 137.16 172.72)
+			(xy 93.98 173.99) (xy 118.11 173.99)
 		)
 		(stroke
 			(width 0)
@@ -5486,16 +5668,6 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 189.23) (xy 113.03 191.77)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cd11b4c8-ec6c-4d27-8c16-57e22b228be6")
-	)
-	(wire
-		(pts
 			(xy 92.71 54.61) (xy 92.71 86.36)
 		)
 		(stroke
@@ -5516,7 +5688,7 @@
 	)
 	(wire
 		(pts
-			(xy 93.98 189.23) (xy 81.28 189.23)
+			(xy 74.93 190.5) (xy 62.23 190.5)
 		)
 		(stroke
 			(width 0)
@@ -5546,6 +5718,16 @@
 	)
 	(wire
 		(pts
+			(xy 142.24 181.61) (xy 148.59 181.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d96f90b5-f56c-49b4-b803-eac84da31e3d")
+	)
+	(wire
+		(pts
 			(xy 39.37 31.75) (xy 54.61 31.75)
 		)
 		(stroke
@@ -5566,7 +5748,7 @@
 	)
 	(wire
 		(pts
-			(xy 217.17 105.41) (xy 227.33 105.41)
+			(xy 227.33 105.41) (xy 237.49 105.41)
 		)
 		(stroke
 			(width 0)
@@ -5596,7 +5778,7 @@
 	)
 	(wire
 		(pts
-			(xy 132.08 186.69) (xy 132.08 189.23)
+			(xy 113.03 187.96) (xy 113.03 190.5)
 		)
 		(stroke
 			(width 0)
@@ -5606,7 +5788,7 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 171.45) (xy 87.63 172.72)
+			(xy 68.58 172.72) (xy 68.58 173.99)
 		)
 		(stroke
 			(width 0)
@@ -5636,6 +5818,26 @@
 	)
 	(wire
 		(pts
+			(xy 93.98 160.02) (xy 118.11 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e5566011-9c4b-4344-84ab-53908c8c118b")
+	)
+	(wire
+		(pts
+			(xy 93.98 173.99) (xy 93.98 181.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e557f5b5-fd14-43a3-8557-0ebf80c1c80d")
+	)
+	(wire
+		(pts
 			(xy 252.73 143.51) (xy 250.19 143.51)
 		)
 		(stroke
@@ -5646,7 +5848,7 @@
 	)
 	(wire
 		(pts
-			(xy 137.16 171.45) (xy 137.16 172.72)
+			(xy 118.11 172.72) (xy 118.11 173.99)
 		)
 		(stroke
 			(width 0)
@@ -5676,16 +5878,6 @@
 	)
 	(wire
 		(pts
-			(xy 137.16 172.72) (xy 148.59 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "eada160c-fa94-4c9a-9c16-e6be1552c7c3")
-	)
-	(wire
-		(pts
 			(xy 156.21 71.12) (xy 149.86 71.12)
 		)
 		(stroke
@@ -5693,6 +5885,16 @@
 			(type default)
 		)
 		(uuid "eb9539e1-2a9f-42f7-b5c5-fc8435d3a2be")
+	)
+	(wire
+		(pts
+			(xy 93.98 160.02) (xy 93.98 167.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ebe0e4ca-833e-4db9-bc7b-a774c16d08b3")
 	)
 	(wire
 		(pts
@@ -5713,16 +5915,6 @@
 			(type default)
 		)
 		(uuid "efeae93b-2432-4e5c-8bde-ade1934ea995")
-	)
-	(wire
-		(pts
-			(xy 113.03 158.75) (xy 137.16 158.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f0ec74f4-0f73-4821-8bab-c21b00eb007c")
 	)
 	(wire
 		(pts
@@ -5766,13 +5958,13 @@
 	)
 	(wire
 		(pts
-			(xy 132.08 180.34) (xy 137.16 180.34)
+			(xy 118.11 160.02) (xy 142.24 160.02)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "f6604117-8397-4940-b8d2-aef4e82ddb2d")
+		(uuid "f77e3072-bb05-47ff-8f48-484de4bec900")
 	)
 	(wire
 		(pts
@@ -5783,6 +5975,16 @@
 			(type default)
 		)
 		(uuid "fbf7b2b3-d2ee-4805-ae1f-618305ae5f30")
+	)
+	(wire
+		(pts
+			(xy 137.16 181.61) (xy 142.24 181.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fd69a86a-b26b-4ccd-ac58-c18033b67e8a")
 	)
 	(wire
 		(pts
@@ -5825,7 +6027,7 @@
 		(uuid "22e2f9bf-e8d8-4266-813e-9ced074d8188")
 	)
 	(label "REGN"
-		(at 83.82 158.75 180)
+		(at 64.77 160.02 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5949,7 +6151,7 @@
 	)
 	(hierarchical_label "VBUS"
 		(shape output)
-		(at 257.81 105.41 0)
+		(at 260.35 105.41 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6000,7 +6202,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "019515e4-cb5d-49e1-bb2a-30d8f3a86851")
-		(property "Reference" "C802"
+		(property "Reference" "C902"
 			(at 26.67 46.9962 0)
 			(effects
 				(font
@@ -6126,7 +6328,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C802")
+					(reference "C902")
 					(unit 1)
 				)
 			)
@@ -6141,7 +6343,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "03c3f334-9df1-4ece-ba87-fafadaa799ed")
-		(property "Reference" "#PWR0811"
+		(property "Reference" "#PWR0914"
 			(at 127 115.57 0)
 			(effects
 				(font
@@ -6191,7 +6393,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0811")
+					(reference "#PWR0914")
 					(unit 1)
 				)
 			)
@@ -6206,7 +6408,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0718f1b1-dd66-4990-892e-f135cbdc9c35")
-		(property "Reference" "Q801"
+		(property "Reference" "Q901"
 			(at 38.1 35.56 90)
 			(effects
 				(font
@@ -6263,7 +6465,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "Q801")
+					(reference "Q901")
 					(unit 1)
 				)
 			)
@@ -6279,7 +6481,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0e005b1c-1552-4239-8148-e48b31e50d03")
-		(property "Reference" "Q804"
+		(property "Reference" "Q904"
 			(at 80.01 13.462 90)
 			(effects
 				(font
@@ -6336,7 +6538,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "Q804")
+					(reference "Q904")
 					(unit 1)
 				)
 			)
@@ -6352,7 +6554,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0e4709ac-63c3-465b-941e-68b5830f3ab4")
-		(property "Reference" "R802"
+		(property "Reference" "R908"
 			(at 53.34 153.67 0)
 			(effects
 				(font
@@ -6478,7 +6680,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R802")
+					(reference "R908")
 					(unit 1)
 				)
 			)
@@ -6493,7 +6695,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0eafce7f-e714-4b6f-8fa1-f5b55fbeea47")
-		(property "Reference" "C812"
+		(property "Reference" "C922"
 			(at 175.768 54.864 0)
 			(effects
 				(font
@@ -6637,7 +6839,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C812")
+					(reference "C922")
 					(unit 1)
 				)
 			)
@@ -6654,7 +6856,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "110576cc-260a-49e6-9388-d573d88f8fc8")
-		(property "Reference" "#PWR0814"
+		(property "Reference" "#PWR0920"
 			(at 207.01 116.84 0)
 			(effects
 				(font
@@ -6704,7 +6906,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0814")
+					(reference "#PWR0920")
 					(unit 1)
 				)
 			)
@@ -6720,7 +6922,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "144da195-510c-409f-a596-9ee2298185ef")
-		(property "Reference" "C807"
+		(property "Reference" "C909"
 			(at 57.15 25.4062 0)
 			(effects
 				(font
@@ -6774,7 +6976,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C807")
+					(reference "C909")
 					(unit 1)
 				)
 			)
@@ -6789,7 +6991,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1702de49-02ca-41a4-b6a5-e231c6c98cbf")
-		(property "Reference" "C816"
+		(property "Reference" "C926"
 			(at 195.834 54.864 0)
 			(effects
 				(font
@@ -6933,7 +7135,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C816")
+					(reference "C926")
 					(unit 1)
 				)
 			)
@@ -6941,7 +7143,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 132.08 184.15 0)
+		(at 113.03 185.42 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6949,8 +7151,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1e9330f1-6ed8-4caf-9304-403d048c9d16")
-		(property "Reference" "R810"
-			(at 134.62 182.8799 0)
+		(property "Reference" "R916"
+			(at 115.57 184.1499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6959,7 +7161,7 @@
 			)
 		)
 		(property "Value" "57k9"
-			(at 134.62 185.4199 0)
+			(at 115.57 186.6899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6968,7 +7170,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 132.08 184.15 0)
+			(at 113.03 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6977,7 +7179,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 132.08 184.15 0)
+			(at 113.03 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6986,7 +7188,7 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
-			(at 132.08 184.15 0)
+			(at 113.03 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6995,7 +7197,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 132.08 184.15 0)
+			(at 113.03 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7004,7 +7206,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 132.08 184.15 0)
+			(at 113.03 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7013,7 +7215,7 @@
 			)
 		)
 		(property "MPN" ""
-			(at 132.08 184.15 0)
+			(at 113.03 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7022,7 +7224,7 @@
 			)
 		)
 		(property "Manufacturer" ""
-			(at 132.08 184.15 0)
+			(at 113.03 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7031,7 +7233,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" ""
-			(at 132.08 184.15 0)
+			(at 113.03 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7040,7 +7242,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 132.08 184.15 0)
+			(at 113.03 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7049,7 +7251,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 132.08 184.15 0)
+			(at 113.03 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7058,7 +7260,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 132.08 184.15 0)
+			(at 113.03 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7075,7 +7277,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R810")
+					(reference "R916")
 					(unit 1)
 				)
 			)
@@ -7092,7 +7294,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "255f184e-5dfc-473d-acb1-2fcf7c1354b0")
-		(property "Reference" "#PWR0813"
+		(property "Reference" "#PWR0919"
 			(at 172.72 64.77 0)
 			(effects
 				(font
@@ -7142,7 +7344,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0813")
+					(reference "#PWR0919")
 					(unit 1)
 				)
 			)
@@ -7158,7 +7360,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "26bf9dd5-512f-4e16-ab5d-344b43efea61")
-		(property "Reference" "#PWR0806"
+		(property "Reference" "#PWR0908"
 			(at 45.72 165.1 0)
 			(effects
 				(font
@@ -7208,7 +7410,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0806")
+					(reference "#PWR0908")
 					(unit 1)
 				)
 			)
@@ -7224,7 +7426,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2c38af00-e98b-4998-9c2b-85972ae4636f")
-		(property "Reference" "#PWR0810"
+		(property "Reference" "#PWR0912"
 			(at 115.57 55.88 0)
 			(effects
 				(font
@@ -7274,7 +7476,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0810")
+					(reference "#PWR0912")
 					(unit 1)
 				)
 			)
@@ -7290,7 +7492,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "330595df-436b-4781-acaa-a8bad05a7e20")
-		(property "Reference" "R804"
+		(property "Reference" "R911"
 			(at 87.63 49.53 90)
 			(effects
 				(font
@@ -7342,7 +7544,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R804")
+					(reference "R911")
 					(unit 1)
 				)
 			)
@@ -7357,7 +7559,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "34d739fb-c17e-4172-920e-48552e87d880")
-		(property "Reference" "C805"
+		(property "Reference" "C907"
 			(at 47.244 190.754 0)
 			(effects
 				(font
@@ -7501,7 +7703,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C805")
+					(reference "C907")
 					(unit 1)
 				)
 			)
@@ -7517,7 +7719,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "38838de1-76a7-4584-9a7e-92138f360f3b")
-		(property "Reference" "#PWR0812"
+		(property "Reference" "#PWR0917"
 			(at 139.7 138.43 0)
 			(effects
 				(font
@@ -7567,7 +7769,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0812")
+					(reference "#PWR0917")
 					(unit 1)
 				)
 			)
@@ -7583,7 +7785,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "38a52601-94cb-491e-899f-638fd69ac6c3")
-		(property "Reference" "#FLG0803"
+		(property "Reference" "#FLG0903"
 			(at 223.52 163.195 0)
 			(effects
 				(font
@@ -7633,7 +7835,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#FLG0803")
+					(reference "#FLG0903")
 					(unit 1)
 				)
 			)
@@ -7649,7 +7851,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "38b35941-f896-4428-abbe-2725d6140260")
-		(property "Reference" "C808"
+		(property "Reference" "C913"
 			(at 102.616 45.974 0)
 			(effects
 				(font
@@ -7793,7 +7995,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C808")
+					(reference "C913")
 					(unit 1)
 				)
 			)
@@ -7801,15 +8003,15 @@
 	)
 	(symbol
 		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 87.63 162.56 90)
+		(at 68.58 163.83 90)
 		(unit 1)
 		(exclude_from_sim yes)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "3ddfde8f-be33-4b24-bd74-dad290428564")
-		(property "Reference" "JP801"
-			(at 91.44 162.56 0)
+		(property "Reference" "JP901"
+			(at 72.39 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7818,7 +8020,7 @@
 			)
 		)
 		(property "Value" "SolderJumper_2_Open"
-			(at 90.17 163.83 90)
+			(at 71.12 165.1 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7828,7 +8030,7 @@
 			)
 		)
 		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 87.63 162.56 0)
+			(at 68.58 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7837,7 +8039,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 87.63 162.56 0)
+			(at 68.58 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7846,7 +8048,7 @@
 			)
 		)
 		(property "Description" "Solder Jumper, 2-pole, open"
-			(at 87.63 162.56 0)
+			(at 68.58 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7855,7 +8057,7 @@
 			)
 		)
 		(property "Active" ""
-			(at 87.63 162.56 0)
+			(at 68.58 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7864,7 +8066,7 @@
 			)
 		)
 		(property "MPN" "NA"
-			(at 87.63 162.56 0)
+			(at 68.58 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7873,7 +8075,7 @@
 			)
 		)
 		(property "Basic or Extended Component" ""
-			(at 87.63 162.56 0)
+			(at 68.58 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7882,7 +8084,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 87.63 162.56 0)
+			(at 68.58 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7891,7 +8093,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 87.63 162.56 0)
+			(at 68.58 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7900,7 +8102,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 87.63 162.56 0)
+			(at 68.58 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7917,7 +8119,149 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "JP801")
+					(reference "JP901")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Small")
+		(at 137.16 185.42 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3e535839-c269-48fa-be7a-b1d96e98f9ea")
+		(property "Reference" "R918"
+			(at 139.7 184.1499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "57k9"
+			(at 139.7 186.6899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
+			(at 137.16 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 137.16 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, small symbol"
+			(at 137.16 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 137.16 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 137.16 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
+			(at 137.16 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" ""
+			(at 137.16 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" ""
+			(at 137.16 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 137.16 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 137.16 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 137.16 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "18e07543-9ee9-4d00-991f-96f3f8f4553b")
+		)
+		(pin "1"
+			(uuid "7c7a9f40-df9b-4d39-9816-2d165b9f0a1b")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
+					(reference "R918")
 					(unit 1)
 				)
 			)
@@ -7933,7 +8277,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3eb315af-c562-4ea5-83e3-4bd519ac9d28")
-		(property "Reference" "#FLG0801"
+		(property "Reference" "#FLG0901"
 			(at 129.54 42.545 0)
 			(effects
 				(font
@@ -7983,7 +8327,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#FLG0801")
+					(reference "#FLG0901")
 					(unit 1)
 				)
 			)
@@ -7991,7 +8335,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 113.03 168.91 0)
+		(at 93.98 170.18 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7999,8 +8343,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "421fac41-6158-485a-92d7-72d4d2178747")
-		(property "Reference" "R809"
-			(at 115.57 167.6399 0)
+		(property "Reference" "R914"
+			(at 96.52 168.9099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8009,7 +8353,7 @@
 			)
 		)
 		(property "Value" "7k2"
-			(at 115.57 170.1799 0)
+			(at 96.52 171.4499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8018,7 +8362,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 113.03 168.91 0)
+			(at 93.98 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8027,7 +8371,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 113.03 168.91 0)
+			(at 93.98 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8036,7 +8380,7 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
-			(at 113.03 168.91 0)
+			(at 93.98 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8045,7 +8389,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 113.03 168.91 0)
+			(at 93.98 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8054,7 +8398,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 113.03 168.91 0)
+			(at 93.98 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8063,7 +8407,7 @@
 			)
 		)
 		(property "MPN" ""
-			(at 113.03 168.91 0)
+			(at 93.98 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8072,7 +8416,7 @@
 			)
 		)
 		(property "Manufacturer" ""
-			(at 113.03 168.91 0)
+			(at 93.98 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8081,7 +8425,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" ""
-			(at 113.03 168.91 0)
+			(at 93.98 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8090,7 +8434,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 113.03 168.91 0)
+			(at 93.98 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8099,7 +8443,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 113.03 168.91 0)
+			(at 93.98 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8108,7 +8452,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 113.03 168.91 0)
+			(at 93.98 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8125,7 +8469,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R809")
+					(reference "R914")
 					(unit 1)
 				)
 			)
@@ -8141,7 +8485,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "44e1d376-9514-4c8f-ac9d-81ff48f9b86d")
-		(property "Reference" "C806"
+		(property "Reference" "C908"
 			(at 55.88 48.2662 0)
 			(effects
 				(font
@@ -8195,7 +8539,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C806")
+					(reference "C908")
 					(unit 1)
 				)
 			)
@@ -8211,7 +8555,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4535171d-32e8-4ac4-9ceb-139d3e21dbf2")
-		(property "Reference" "#PWR0803"
+		(property "Reference" "#PWR0903"
 			(at 34.29 123.19 0)
 			(effects
 				(font
@@ -8261,7 +8605,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0803")
+					(reference "#PWR0903")
 					(unit 1)
 				)
 			)
@@ -8276,7 +8620,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "471c1417-0b9f-4cbb-a0ce-f7210be4e6cd")
-		(property "Reference" "JP803"
+		(property "Reference" "JP903"
 			(at 104.14 118.11 0)
 			(effects
 				(font
@@ -8385,7 +8729,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "JP803")
+					(reference "JP903")
 					(unit 1)
 				)
 			)
@@ -8401,7 +8745,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "48175e01-f338-4b5b-8384-75c842ec6a80")
-		(property "Reference" "C814"
+		(property "Reference" "C924"
 			(at 184.1563 63.5 90)
 			(effects
 				(font
@@ -8525,7 +8869,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C814")
+					(reference "C924")
 					(unit 1)
 				)
 			)
@@ -8541,7 +8885,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "49b2dd80-f353-4556-827d-ac5b7ccec24e")
-		(property "Reference" "#PWR0805"
+		(property "Reference" "#PWR0907"
 			(at 44.45 200.66 0)
 			(effects
 				(font
@@ -8591,7 +8935,167 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0805")
+					(reference "#PWR0907")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Thermistor_NTC")
+		(at 148.59 185.42 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "49ca614c-97a1-4a8d-b5fe-08e3abfa18a0")
+		(property "Reference" "TH904"
+			(at 151.13 184.4675 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k NTC"
+			(at 151.13 187.0075 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_R_0603_1608Metric"
+			(at 148.59 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 148.59 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+			(at 148.59 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Specs" "10k NTC, -55C to 150C"
+			(at 148.59 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C162670"
+			(at 148.59 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 148.59 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "NCU18XH103F6SRB"
+			(at 148.59 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 148.59 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Purpose" ""
+			(at 148.59 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 148.59 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 148.59 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 148.59 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 148.59 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "f0d5049e-3cb8-4757-8856-fce8730b3dbd")
+		)
+		(pin "1"
+			(uuid "ac7cdc9c-7817-4c22-b03b-a6e5408b4dae")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
+					(reference "TH904")
 					(unit 1)
 				)
 			)
@@ -8607,7 +9111,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "51d15857-86b8-4416-9ea7-1a388ed0e28b")
-		(property "Reference" "U801"
+		(property "Reference" "U901"
 			(at 63.5 104.14 0)
 			(effects
 				(font
@@ -8670,7 +9174,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "U801")
+					(reference "U901")
 					(unit 1)
 				)
 			)
@@ -8686,7 +9190,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "53ad87af-ab78-445c-aa1e-b0ee87ad88bf")
-		(property "Reference" "Q805"
+		(property "Reference" "Q905"
 			(at 257.81 131.064 0)
 			(effects
 				(font
@@ -8743,7 +9247,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "Q805")
+					(reference "Q905")
 					(unit 1)
 				)
 			)
@@ -8759,7 +9263,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "57f4f949-c62f-4e00-a8b1-f9e8b3fb915b")
-		(property "Reference" "C817"
+		(property "Reference" "C927"
 			(at 199.39 106.6862 0)
 			(effects
 				(font
@@ -8885,7 +9389,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C817")
+					(reference "C927")
 					(unit 1)
 				)
 			)
@@ -8900,7 +9404,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "58e4c29c-739e-41c6-899f-bfdf9e26a225")
-		(property "Reference" "Q802"
+		(property "Reference" "Q902"
 			(at 39.624 12.7 90)
 			(effects
 				(font
@@ -8957,7 +9461,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "Q802")
+					(reference "Q902")
 					(unit 1)
 				)
 			)
@@ -8973,7 +9477,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5b7d8322-e534-47f8-b75b-d7dfd1f7b65c")
-		(property "Reference" "#PWR0816"
+		(property "Reference" "#PWR0922"
 			(at 229.87 171.45 0)
 			(effects
 				(font
@@ -9023,131 +9527,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0816")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 113.03 176.53 90)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "5bd314a9-c5ef-42de-b613-f3086cbfbaa3")
-		(property "Reference" "JP805"
-			(at 116.84 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Value" "SolderJumper_2_Open"
-			(at 115.57 177.8 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 113.03 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 113.03 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Solder Jumper, 2-pole, open"
-			(at 113.03 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" ""
-			(at 113.03 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "NA"
-			(at 113.03 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" ""
-			(at 113.03 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 113.03 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 113.03 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 113.03 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "153a9953-1362-4028-b623-a70d41db497b")
-		)
-		(pin "1"
-			(uuid "1ec8bfb8-4699-4940-a7fc-646d18cc8ff8")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "JP805")
+					(reference "#PWR0922")
 					(unit 1)
 				)
 			)
@@ -9163,7 +9543,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5d0089b8-4ab6-4dc6-8fc0-b73cdc21f1df")
-		(property "Reference" "#PWR0815"
+		(property "Reference" "#PWR0921"
 			(at 229.87 130.81 0)
 			(effects
 				(font
@@ -9213,7 +9593,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0815")
+					(reference "#PWR0921")
 					(unit 1)
 				)
 			)
@@ -9229,7 +9609,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5f2ffdd4-f415-4de4-bfad-fb6a545a75af")
-		(property "Reference" "D802"
+		(property "Reference" "D902"
 			(at 68.58 25.3999 90)
 			(effects
 				(font
@@ -9283,7 +9663,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "D802")
+					(reference "D902")
 					(unit 1)
 				)
 			)
@@ -9298,7 +9678,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "5f844deb-99c9-4baf-aff8-69b2a397cdcc")
-		(property "Reference" "#PWR0802"
+		(property "Reference" "#PWR0902"
 			(at 29.21 57.15 0)
 			(effects
 				(font
@@ -9348,7 +9728,131 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0802")
+					(reference "#PWR0902")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:SolderJumper_2_Open")
+		(at 142.24 163.83 90)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "61a9419d-a47d-4b8f-85b3-935ffb4aa794")
+		(property "Reference" "JP904"
+			(at 146.05 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Value" "SolderJumper_2_Open"
+			(at 144.78 165.1 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+			(at 142.24 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 142.24 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Solder Jumper, 2-pole, open"
+			(at 142.24 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" ""
+			(at 142.24 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "NA"
+			(at 142.24 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" ""
+			(at 142.24 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 142.24 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 142.24 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 142.24 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "3f48bc91-c676-42c4-8cde-848dc804d6cc")
+		)
+		(pin "1"
+			(uuid "5c68ee28-1257-44c3-ae2b-9145c95bb741")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
+					(reference "JP904")
 					(unit 1)
 				)
 			)
@@ -9364,7 +9868,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "624a9c8a-ffb4-49f2-8f4c-3515f8508a40")
-		(property "Reference" "R801"
+		(property "Reference" "R906"
 			(at 43.18 153.67 0)
 			(effects
 				(font
@@ -9490,7 +9994,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R801")
+					(reference "R906")
 					(unit 1)
 				)
 			)
@@ -9506,7 +10010,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "63c339ad-77b9-420a-b092-7c615415f696")
-		(property "Reference" "BT801"
+		(property "Reference" "BT901"
 			(at 212.09 151.7649 90)
 			(effects
 				(font
@@ -9632,7 +10136,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "BT801")
+					(reference "BT901")
 					(unit 1)
 				)
 			)
@@ -9648,7 +10152,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "66233e24-fb13-4850-bfa3-bfffeb51a363")
-		(property "Reference" "D801"
+		(property "Reference" "D901"
 			(at 67.31 48.2599 90)
 			(effects
 				(font
@@ -9702,7 +10206,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "D801")
+					(reference "D901")
 					(unit 1)
 				)
 			)
@@ -9710,7 +10214,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 137.16 168.91 0)
+		(at 118.11 170.18 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9718,8 +10222,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6b843469-4614-43f0-82a4-0b3dbe98b363")
-		(property "Reference" "R811"
-			(at 139.7 167.6399 0)
+		(property "Reference" "R917"
+			(at 120.65 168.9099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9728,7 +10232,7 @@
 			)
 		)
 		(property "Value" "7k2"
-			(at 139.7 170.1799 0)
+			(at 120.65 171.4499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9737,7 +10241,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 137.16 168.91 0)
+			(at 118.11 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9746,7 +10250,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 137.16 168.91 0)
+			(at 118.11 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9755,7 +10259,7 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
-			(at 137.16 168.91 0)
+			(at 118.11 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9764,7 +10268,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 137.16 168.91 0)
+			(at 118.11 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9773,7 +10277,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 137.16 168.91 0)
+			(at 118.11 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9782,7 +10286,7 @@
 			)
 		)
 		(property "MPN" ""
-			(at 137.16 168.91 0)
+			(at 118.11 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9791,7 +10295,7 @@
 			)
 		)
 		(property "Manufacturer" ""
-			(at 137.16 168.91 0)
+			(at 118.11 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9800,7 +10304,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" ""
-			(at 137.16 168.91 0)
+			(at 118.11 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9809,7 +10313,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 137.16 168.91 0)
+			(at 118.11 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9818,7 +10322,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 137.16 168.91 0)
+			(at 118.11 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9827,7 +10331,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 137.16 168.91 0)
+			(at 118.11 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9844,7 +10348,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R811")
+					(reference "R917")
 					(unit 1)
 				)
 			)
@@ -9859,7 +10363,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "6c25ec67-1172-48a3-8f42-f03820ad7aa3")
-		(property "Reference" "C804"
+		(property "Reference" "C906"
 			(at 47.244 185.674 0)
 			(effects
 				(font
@@ -10003,131 +10507,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C804")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 113.03 162.56 90)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "6d2fea37-2d25-4f3a-aaaf-3bac649c620e")
-		(property "Reference" "JP804"
-			(at 116.84 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Value" "SolderJumper_2_Open"
-			(at 115.57 163.83 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 113.03 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 113.03 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Solder Jumper, 2-pole, open"
-			(at 113.03 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" ""
-			(at 113.03 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "NA"
-			(at 113.03 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" ""
-			(at 113.03 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 113.03 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 113.03 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 113.03 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "a3902fb5-ac06-4d08-b616-a78f54c9626c")
-		)
-		(pin "1"
-			(uuid "a9f0c86e-55c1-40b7-9471-3eac0ba166a9")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "JP804")
+					(reference "C906")
 					(unit 1)
 				)
 			)
@@ -10142,7 +10522,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "6d75b126-bed7-4ca2-814f-d6454ff3c472")
-		(property "Reference" "C810"
+		(property "Reference" "C916"
 			(at 123.19 45.7262 0)
 			(effects
 				(font
@@ -10268,42 +10648,42 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C810")
+					(reference "C916")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Device:Thermistor_NTC")
-		(at 143.51 184.15 0)
+		(lib_id "Device:C_Small")
+		(at 207.01 107.95 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "774f6025-3724-4125-bdeb-013f6c776212")
-		(property "Reference" "TH803"
-			(at 146.05 183.1975 0)
+		(uuid "7402eae1-9da5-4a31-9fdf-b90e9a848e99")
+		(property "Reference" "C935"
+			(at 209.55 106.6862 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
-		(property "Value" "10k NTC"
-			(at 146.05 185.7375 0)
+		(property "Value" "100n"
+			(at 209.55 109.2262 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
-		(property "Footprint" "footprints:Nondescript_R_0603_1608Metric"
-			(at 143.51 182.88 0)
+		(property "Footprint" "footprints:Nondescript_C_0402_1005Metric"
+			(at 207.01 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10312,7 +10692,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 143.51 182.88 0)
+			(at 207.01 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10320,44 +10700,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
-			(at 143.51 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Specs" "10k NTC, -55C to 150C"
-			(at 143.51 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "C162670"
-			(at 143.51 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "Murata Electronics"
-			(at 143.51 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer Part Number" "NCU18XH103F6SRB"
-			(at 143.51 184.15 0)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 207.01 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10366,7 +10710,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 143.51 184.15 0)
+			(at 207.01 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10374,8 +10718,8 @@
 				(hide yes)
 			)
 		)
-		(property "Purpose" ""
-			(at 143.51 184.15 0)
+		(property "MPN" "C1525"
+			(at 207.01 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10383,8 +10727,8 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Device" ""
-			(at 143.51 184.15 0)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 207.01 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10392,17 +10736,8 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Pins" ""
-			(at 143.51 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 143.51 184.15 0)
+		(property "Manufacturer Part Number" "CL05B104KO5NNNC"
+			(at 207.01 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10411,7 +10746,194 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 143.51 184.15 0)
+			(at 207.01 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 207.01 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 207.01 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 207.01 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "409a5c71-c4f8-4c58-85dc-3d7f2df5ec07")
+		)
+		(pin "2"
+			(uuid "b55b32d1-25a6-493e-9479-67c4e805e059")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
+					(reference "C935")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Thermistor_NTC")
+		(at 124.46 185.42 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "774f6025-3724-4125-bdeb-013f6c776212")
+		(property "Reference" "TH903"
+			(at 127 184.4675 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k NTC"
+			(at 127 187.0075 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_R_0603_1608Metric"
+			(at 124.46 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 124.46 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+			(at 124.46 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Specs" "10k NTC, -55C to 150C"
+			(at 124.46 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C162670"
+			(at 124.46 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 124.46 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "NCU18XH103F6SRB"
+			(at 124.46 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 124.46 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Purpose" ""
+			(at 124.46 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 124.46 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 124.46 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 124.46 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 124.46 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10428,7 +10950,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "TH803")
+					(reference "TH903")
 					(unit 1)
 				)
 			)
@@ -10436,15 +10958,15 @@
 	)
 	(symbol
 		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 87.63 176.53 90)
+		(at 68.58 177.8 90)
 		(unit 1)
 		(exclude_from_sim yes)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "78aa71c4-79d4-47f9-8e2c-7133f34fc728")
-		(property "Reference" "JP802"
-			(at 91.44 176.53 0)
+		(property "Reference" "JP902"
+			(at 72.39 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10453,7 +10975,7 @@
 			)
 		)
 		(property "Value" "SolderJumper_2_Open"
-			(at 90.17 177.8 90)
+			(at 71.12 179.07 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10463,7 +10985,7 @@
 			)
 		)
 		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 87.63 176.53 0)
+			(at 68.58 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10472,7 +10994,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 87.63 176.53 0)
+			(at 68.58 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10481,7 +11003,7 @@
 			)
 		)
 		(property "Description" "Solder Jumper, 2-pole, open"
-			(at 87.63 176.53 0)
+			(at 68.58 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10490,7 +11012,7 @@
 			)
 		)
 		(property "Active" ""
-			(at 87.63 176.53 0)
+			(at 68.58 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10499,7 +11021,7 @@
 			)
 		)
 		(property "MPN" "NA"
-			(at 87.63 176.53 0)
+			(at 68.58 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10508,7 +11030,7 @@
 			)
 		)
 		(property "Basic or Extended Component" ""
-			(at 87.63 176.53 0)
+			(at 68.58 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10517,7 +11039,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 87.63 176.53 0)
+			(at 68.58 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10526,7 +11048,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 87.63 176.53 0)
+			(at 68.58 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10535,7 +11057,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 87.63 176.53 0)
+			(at 68.58 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10552,7 +11074,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "JP802")
+					(reference "JP902")
 					(unit 1)
 				)
 			)
@@ -10568,7 +11090,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "79657474-c363-4290-a4e5-b09ed248b709")
-		(property "Reference" "#FLG0802"
+		(property "Reference" "#FLG0902"
 			(at 223.52 141.605 0)
 			(effects
 				(font
@@ -10619,7 +11141,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#FLG0802")
+					(reference "#FLG0902")
 					(unit 1)
 				)
 			)
@@ -10635,7 +11157,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7e059f60-2580-40ac-8724-3170523a4edc")
-		(property "Reference" "R806"
+		(property "Reference" "R913"
 			(at 88.9 26.67 90)
 			(effects
 				(font
@@ -10687,7 +11209,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R806")
+					(reference "R913")
 					(unit 1)
 				)
 			)
@@ -10703,7 +11225,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "84ccc4af-0ff5-4404-bd6e-ac7d96b80a97")
-		(property "Reference" "BT802"
+		(property "Reference" "BT902"
 			(at 233.68 151.7649 90)
 			(effects
 				(font
@@ -10829,7 +11351,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "BT802")
+					(reference "BT902")
 					(unit 1)
 				)
 			)
@@ -10837,7 +11359,7 @@
 	)
 	(symbol
 		(lib_id "Device:Thermistor_NTC")
-		(at 119.38 184.15 0)
+		(at 100.33 185.42 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10845,8 +11367,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8525f03c-3dde-42d6-b53c-e2e9647f0d31")
-		(property "Reference" "TH802"
-			(at 121.92 183.1975 0)
+		(property "Reference" "TH902"
+			(at 102.87 184.4675 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10855,7 +11377,7 @@
 			)
 		)
 		(property "Value" "10k NTC"
-			(at 121.92 185.7375 0)
+			(at 102.87 187.0075 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10864,7 +11386,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0603_1608Metric"
-			(at 119.38 182.88 0)
+			(at 100.33 184.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10873,7 +11395,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 119.38 182.88 0)
+			(at 100.33 184.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10882,7 +11404,7 @@
 			)
 		)
 		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
-			(at 119.38 184.15 0)
+			(at 100.33 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10891,7 +11413,7 @@
 			)
 		)
 		(property "Specs" "10k NTC, -55C to 150C"
-			(at 119.38 184.15 0)
+			(at 100.33 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10900,7 +11422,7 @@
 			)
 		)
 		(property "MPN" "C162670"
-			(at 119.38 184.15 0)
+			(at 100.33 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10909,7 +11431,7 @@
 			)
 		)
 		(property "Manufacturer" "Murata Electronics"
-			(at 119.38 184.15 0)
+			(at 100.33 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10918,7 +11440,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "NCU18XH103F6SRB"
-			(at 119.38 184.15 0)
+			(at 100.33 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10927,7 +11449,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 119.38 184.15 0)
+			(at 100.33 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10936,7 +11458,7 @@
 			)
 		)
 		(property "Purpose" ""
-			(at 119.38 184.15 0)
+			(at 100.33 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10945,7 +11467,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 119.38 184.15 0)
+			(at 100.33 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10954,7 +11476,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 119.38 184.15 0)
+			(at 100.33 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10963,7 +11485,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 119.38 184.15 0)
+			(at 100.33 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10972,7 +11494,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 119.38 184.15 0)
+			(at 100.33 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10989,73 +11511,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "TH802")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 113.03 191.77 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "8d53c4c4-de64-4ca8-98fa-6759c5112556")
-		(property "Reference" "#PWR0809"
-			(at 113.03 198.12 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 113.03 196.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 113.03 191.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 113.03 191.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 113.03 191.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "77ecbef8-af8c-4640-8bb4-7bd01689a715")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0809")
+					(reference "TH902")
 					(unit 1)
 				)
 			)
@@ -11071,7 +11527,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "8f4050c9-fd07-446c-8f62-d878df3847f9")
-		(property "Reference" "R812"
+		(property "Reference" "R920"
 			(at 157.734 98.044 90)
 			(effects
 				(font
@@ -11204,7 +11660,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R812")
+					(reference "R920")
 					(unit 1)
 				)
 			)
@@ -11220,7 +11676,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8f61becb-c3c0-4cf5-b9fe-0ad2a07bc5f8")
-		(property "Reference" "U802"
+		(property "Reference" "U903"
 			(at 139.7 63.5 0)
 			(effects
 				(font
@@ -11353,7 +11809,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "U802")
+					(reference "U903")
 					(unit 1)
 				)
 			)
@@ -11361,15 +11817,15 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 246.38 107.95 0)
+		(at 256.54 107.95 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "920ac4e5-abb3-4f35-bc21-cd517f472f7c")
-		(property "Reference" "C824"
-			(at 249.174 106.934 0)
+		(property "Reference" "C934"
+			(at 259.334 106.934 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11378,7 +11834,7 @@
 			)
 		)
 		(property "Value" "10u"
-			(at 249.174 109.474 0)
+			(at 259.334 109.474 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11387,7 +11843,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_C_0603_1608Metric"
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11396,7 +11852,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11405,7 +11861,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11414,7 +11870,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11423,7 +11879,7 @@
 			)
 		)
 		(property "Specs" "3.3V"
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11432,7 +11888,7 @@
 			)
 		)
 		(property "MPN" "C77041"
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11441,7 +11897,7 @@
 			)
 		)
 		(property "Manufacturer" "Murata"
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11450,7 +11906,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "GRM188R60J106ME47D"
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11459,7 +11915,7 @@
 			)
 		)
 		(property "Purpose" "Voltage regulator"
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11468,7 +11924,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Extended"
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11477,7 +11933,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11486,7 +11942,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11495,7 +11951,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 246.38 107.95 0)
+			(at 256.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11512,131 +11968,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C824")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 137.16 176.53 90)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "9509c4fa-0531-46de-a7bb-7b15cbffe1f3")
-		(property "Reference" "JP807"
-			(at 140.97 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Value" "SolderJumper_2_Open"
-			(at 139.7 177.8 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 137.16 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 137.16 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Solder Jumper, 2-pole, open"
-			(at 137.16 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" ""
-			(at 137.16 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "NA"
-			(at 137.16 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" ""
-			(at 137.16 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 137.16 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 137.16 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 137.16 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "050af8e0-1b6c-4458-ae16-24882a446974")
-		)
-		(pin "1"
-			(uuid "41abbc92-1867-4f2b-9e00-224635102ad3")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "JP807")
+					(reference "C934")
 					(unit 1)
 				)
 			)
@@ -11644,15 +11976,15 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 227.33 107.95 0)
+		(at 237.49 107.95 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "9af5edb7-3644-4e34-8566-8cff8c4ffa97")
-		(property "Reference" "C821"
-			(at 230.124 106.934 0)
+		(property "Reference" "C931"
+			(at 240.284 106.934 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11661,7 +11993,7 @@
 			)
 		)
 		(property "Value" "10u"
-			(at 230.124 109.474 0)
+			(at 240.284 109.474 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11670,7 +12002,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_C_0603_1608Metric"
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11679,7 +12011,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11688,7 +12020,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11697,7 +12029,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11706,7 +12038,7 @@
 			)
 		)
 		(property "Specs" "3.3V"
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11715,7 +12047,7 @@
 			)
 		)
 		(property "MPN" "C77041"
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11724,7 +12056,7 @@
 			)
 		)
 		(property "Manufacturer" "Murata"
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11733,7 +12065,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "GRM188R60J106ME47D"
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11742,7 +12074,7 @@
 			)
 		)
 		(property "Purpose" "Voltage regulator"
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11751,7 +12083,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Extended"
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11760,7 +12092,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11769,7 +12101,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11778,7 +12110,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 227.33 107.95 0)
+			(at 237.49 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11795,7 +12127,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C821")
+					(reference "C931")
 					(unit 1)
 				)
 			)
@@ -11811,7 +12143,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a237270a-c08e-4366-8b9a-6334bc9d461d")
-		(property "Reference" "R813"
+		(property "Reference" "R921"
 			(at 199.39 138.43 90)
 			(effects
 				(font
@@ -11863,7 +12195,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R813")
+					(reference "R921")
 					(unit 1)
 				)
 			)
@@ -11879,7 +12211,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a2d71415-6868-4ac8-9107-3cf2ebaf21d2")
-		(property "Reference" "C803"
+		(property "Reference" "C904"
 			(at 40.64 127.0062 0)
 			(effects
 				(font
@@ -12005,7 +12337,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C803")
+					(reference "C904")
 					(unit 1)
 				)
 			)
@@ -12013,7 +12345,7 @@
 	)
 	(symbol
 		(lib_id "Device:Thermistor_NTC")
-		(at 93.98 184.15 0)
+		(at 74.93 185.42 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -12021,8 +12353,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a8b148f0-0b8c-4939-9ea1-ddee92542214")
-		(property "Reference" "TH801"
-			(at 96.52 183.1975 0)
+		(property "Reference" "TH901"
+			(at 77.47 184.4675 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12031,7 +12363,7 @@
 			)
 		)
 		(property "Value" "10k NTC"
-			(at 96.52 185.7375 0)
+			(at 77.47 187.0075 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12040,7 +12372,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0603_1608Metric"
-			(at 93.98 182.88 0)
+			(at 74.93 184.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12049,7 +12381,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 93.98 182.88 0)
+			(at 74.93 184.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12058,7 +12390,7 @@
 			)
 		)
 		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
-			(at 93.98 184.15 0)
+			(at 74.93 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12067,7 +12399,7 @@
 			)
 		)
 		(property "Specs" "10k NTC, -55C to 150C"
-			(at 93.98 184.15 0)
+			(at 74.93 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12076,7 +12408,7 @@
 			)
 		)
 		(property "MPN" "C162670"
-			(at 93.98 184.15 0)
+			(at 74.93 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12085,7 +12417,7 @@
 			)
 		)
 		(property "Manufacturer" "Murata Electronics"
-			(at 93.98 184.15 0)
+			(at 74.93 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12094,7 +12426,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "NCU18XH103F6SRB"
-			(at 93.98 184.15 0)
+			(at 74.93 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12103,7 +12435,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 93.98 184.15 0)
+			(at 74.93 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12112,7 +12444,7 @@
 			)
 		)
 		(property "Purpose" ""
-			(at 93.98 184.15 0)
+			(at 74.93 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12121,7 +12453,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 93.98 184.15 0)
+			(at 74.93 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12130,7 +12462,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 93.98 184.15 0)
+			(at 74.93 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12139,7 +12471,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 93.98 184.15 0)
+			(at 74.93 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12148,7 +12480,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 93.98 184.15 0)
+			(at 74.93 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12165,7 +12497,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "TH801")
+					(reference "TH901")
 					(unit 1)
 				)
 			)
@@ -12180,7 +12512,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "abbbc363-c712-44a1-a870-0d243489b8a7")
-		(property "Reference" "C813"
+		(property "Reference" "C923"
 			(at 185.674 54.864 0)
 			(effects
 				(font
@@ -12324,7 +12656,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C813")
+					(reference "C923")
 					(unit 1)
 				)
 			)
@@ -12332,7 +12664,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 81.28 184.15 0)
+		(at 62.23 185.42 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -12340,8 +12672,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "af9c3990-8bf3-4444-8687-a1cb658ce9f2")
-		(property "Reference" "R803"
-			(at 83.82 182.8799 0)
+		(property "Reference" "R909"
+			(at 64.77 184.1499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12350,7 +12682,7 @@
 			)
 		)
 		(property "Value" "57k9"
-			(at 83.82 185.4199 0)
+			(at 64.77 186.6899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12359,7 +12691,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 81.28 184.15 0)
+			(at 62.23 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12368,7 +12700,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 81.28 184.15 0)
+			(at 62.23 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12377,7 +12709,7 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
-			(at 81.28 184.15 0)
+			(at 62.23 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12386,7 +12718,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 81.28 184.15 0)
+			(at 62.23 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12395,7 +12727,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 81.28 184.15 0)
+			(at 62.23 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12404,7 +12736,7 @@
 			)
 		)
 		(property "MPN" ""
-			(at 81.28 184.15 0)
+			(at 62.23 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12413,7 +12745,7 @@
 			)
 		)
 		(property "Manufacturer" ""
-			(at 81.28 184.15 0)
+			(at 62.23 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12422,7 +12754,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" ""
-			(at 81.28 184.15 0)
+			(at 62.23 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12431,7 +12763,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 81.28 184.15 0)
+			(at 62.23 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12440,7 +12772,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 81.28 184.15 0)
+			(at 62.23 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12449,7 +12781,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 81.28 184.15 0)
+			(at 62.23 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12466,7 +12798,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R803")
+					(reference "R909")
 					(unit 1)
 				)
 			)
@@ -12474,15 +12806,15 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 217.17 107.95 0)
+		(at 227.33 107.95 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "b017843c-d461-4184-a47d-8c8965caf01f")
-		(property "Reference" "C819"
-			(at 219.964 106.934 0)
+		(property "Reference" "C929"
+			(at 230.124 106.934 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12491,7 +12823,7 @@
 			)
 		)
 		(property "Value" "10u"
-			(at 219.964 109.474 0)
+			(at 230.124 109.474 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12500,7 +12832,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_C_0603_1608Metric"
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12509,7 +12841,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12518,7 +12850,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12527,7 +12859,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12536,7 +12868,7 @@
 			)
 		)
 		(property "Specs" "3.3V"
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12545,7 +12877,7 @@
 			)
 		)
 		(property "MPN" "C77041"
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12554,7 +12886,7 @@
 			)
 		)
 		(property "Manufacturer" "Murata"
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12563,7 +12895,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "GRM188R60J106ME47D"
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12572,7 +12904,7 @@
 			)
 		)
 		(property "Purpose" "Voltage regulator"
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12581,7 +12913,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Extended"
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12590,7 +12922,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12599,7 +12931,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12608,7 +12940,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 217.17 107.95 0)
+			(at 227.33 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12625,7 +12957,131 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C819")
+					(reference "C929")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:SolderJumper_2_Open")
+		(at 142.24 177.8 90)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "b05e91e0-ce3b-4aff-8cfb-d1182983ce59")
+		(property "Reference" "JP905"
+			(at 146.05 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Value" "SolderJumper_2_Open"
+			(at 144.78 179.07 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+			(at 142.24 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 142.24 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Solder Jumper, 2-pole, open"
+			(at 142.24 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" ""
+			(at 142.24 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "NA"
+			(at 142.24 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" ""
+			(at 142.24 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 142.24 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 142.24 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 142.24 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "6d47d923-ab43-4129-b9da-851c395d90f8")
+		)
+		(pin "1"
+			(uuid "56ad8326-ec1e-4133-a342-8e02c227e49e")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
+					(reference "JP905")
 					(unit 1)
 				)
 			)
@@ -12641,7 +13097,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b60f7482-fa9f-4331-96f3-ce28e3a1486c")
-		(property "Reference" "C809"
+		(property "Reference" "C914"
 			(at 112.522 45.974 0)
 			(effects
 				(font
@@ -12785,7 +13241,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C809")
+					(reference "C914")
 					(unit 1)
 				)
 			)
@@ -12801,7 +13257,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b936680c-c2bb-48a9-8ce0-ab89be705f0d")
-		(property "Reference" "R808"
+		(property "Reference" "R915"
 			(at 111.76 101.6 0)
 			(effects
 				(font
@@ -12927,7 +13383,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R808")
+					(reference "R915")
 					(unit 1)
 				)
 			)
@@ -12943,7 +13399,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "be18222b-7577-45fe-9958-80752569561d")
-		(property "Reference" "BT803"
+		(property "Reference" "BT903"
 			(at 254 151.7649 90)
 			(effects
 				(font
@@ -13069,7 +13525,149 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "BT803")
+					(reference "BT903")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Small")
+		(at 142.24 170.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c1bf7f23-4b25-45b2-a2c2-4454bdfbff25")
+		(property "Reference" "R919"
+			(at 144.78 168.9099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "7k2"
+			(at 144.78 171.4499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
+			(at 142.24 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 142.24 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, small symbol"
+			(at 142.24 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 142.24 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 142.24 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
+			(at 142.24 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" ""
+			(at 142.24 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" ""
+			(at 142.24 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 142.24 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 142.24 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 142.24 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "3939759d-e757-4151-b04a-027def290a57")
+		)
+		(pin "1"
+			(uuid "b52e00b8-ac48-4ff8-96fe-2c7d10ed95c3")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
+					(reference "R919")
 					(unit 1)
 				)
 			)
@@ -13084,7 +13682,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c1eafaad-c596-44fc-9dd1-e78a8532c27f")
-		(property "Reference" "#PWR0801"
+		(property "Reference" "#PWR0901"
 			(at 29.21 34.29 0)
 			(effects
 				(font
@@ -13134,7 +13732,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0801")
+					(reference "#PWR0901")
 					(unit 1)
 				)
 			)
@@ -13150,7 +13748,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c4ba44c4-0541-46c3-b3e4-fa5ae91ecb8f")
-		(property "Reference" "#PWR0807"
+		(property "Reference" "#PWR0909"
 			(at 83.82 133.35 0)
 			(effects
 				(font
@@ -13200,7 +13798,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0807")
+					(reference "#PWR0909")
 					(unit 1)
 				)
 			)
@@ -13216,7 +13814,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c81df64e-3841-471b-899f-d542d5a9c236")
-		(property "Reference" "Q803"
+		(property "Reference" "Q903"
 			(at 78.74 35.56 90)
 			(effects
 				(font
@@ -13273,7 +13871,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "Q803")
+					(reference "Q903")
 					(unit 1)
 				)
 			)
@@ -13281,15 +13879,15 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 236.22 107.95 0)
+		(at 246.38 107.95 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "c927fe3e-e1f7-496e-a4c1-03b5e9b630e0")
-		(property "Reference" "C822"
-			(at 239.014 106.934 0)
+		(property "Reference" "C932"
+			(at 249.174 106.934 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13298,7 +13896,7 @@
 			)
 		)
 		(property "Value" "10u"
-			(at 239.014 109.474 0)
+			(at 249.174 109.474 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13307,7 +13905,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_C_0603_1608Metric"
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13316,7 +13914,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13325,7 +13923,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13334,7 +13932,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13343,7 +13941,7 @@
 			)
 		)
 		(property "Specs" "3.3V"
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13352,7 +13950,7 @@
 			)
 		)
 		(property "MPN" "C77041"
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13361,7 +13959,7 @@
 			)
 		)
 		(property "Manufacturer" "Murata"
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13370,7 +13968,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "GRM188R60J106ME47D"
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13379,7 +13977,7 @@
 			)
 		)
 		(property "Purpose" "Voltage regulator"
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13388,7 +13986,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Extended"
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13397,7 +13995,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13406,7 +14004,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13415,7 +14013,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 236.22 107.95 0)
+			(at 246.38 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13432,7 +14030,72 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C822")
+					(reference "C932")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 106.68 193.04 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cac06c93-5a35-4079-b16d-90e8552c76cb")
+		(property "Reference" "#PWR0911"
+			(at 106.68 199.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 102.87 195.834 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 106.68 193.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 106.68 193.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 106.68 193.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "41a16634-7c13-463b-88ce-be3549bdfc7d")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
+					(reference "#PWR0911")
 					(unit 1)
 				)
 			)
@@ -13440,7 +14103,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 87.63 168.91 0)
+		(at 68.58 170.18 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13448,8 +14111,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ccc9345e-3745-4125-94d7-4171c9c0e5aa")
-		(property "Reference" "R805"
-			(at 90.17 167.6399 0)
+		(property "Reference" "R910"
+			(at 71.12 168.9099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13458,7 +14121,7 @@
 			)
 		)
 		(property "Value" "7k2"
-			(at 90.17 170.1799 0)
+			(at 71.12 171.4499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13467,7 +14130,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 87.63 168.91 0)
+			(at 68.58 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13476,7 +14139,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 87.63 168.91 0)
+			(at 68.58 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13485,7 +14148,7 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
-			(at 87.63 168.91 0)
+			(at 68.58 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13494,7 +14157,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 87.63 168.91 0)
+			(at 68.58 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13503,7 +14166,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 87.63 168.91 0)
+			(at 68.58 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13512,7 +14175,7 @@
 			)
 		)
 		(property "MPN" ""
-			(at 87.63 168.91 0)
+			(at 68.58 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13521,7 +14184,7 @@
 			)
 		)
 		(property "Manufacturer" ""
-			(at 87.63 168.91 0)
+			(at 68.58 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13530,7 +14193,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" ""
-			(at 87.63 168.91 0)
+			(at 68.58 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13539,7 +14202,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 87.63 168.91 0)
+			(at 68.58 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13548,7 +14211,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 87.63 168.91 0)
+			(at 68.58 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13557,7 +14220,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 87.63 168.91 0)
+			(at 68.58 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13574,7 +14237,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R805")
+					(reference "R910")
 					(unit 1)
 				)
 			)
@@ -13590,7 +14253,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ce1d7f81-eee4-4581-b31f-34ccf81f862e")
-		(property "Reference" "C811"
+		(property "Reference" "C920"
 			(at 165.1 54.6162 0)
 			(effects
 				(font
@@ -13716,131 +14379,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C811")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 137.16 162.56 90)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "d4253b44-daa0-400f-8659-a31173016498")
-		(property "Reference" "JP806"
-			(at 140.97 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Value" "SolderJumper_2_Open"
-			(at 139.7 163.83 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 137.16 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 137.16 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Solder Jumper, 2-pole, open"
-			(at 137.16 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Active" ""
-			(at 137.16 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "NA"
-			(at 137.16 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Basic or Extended Component" ""
-			(at 137.16 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 137.16 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 137.16 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 137.16 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "fe1f24b0-0558-4c39-b610-e9ccbcfaf700")
-		)
-		(pin "1"
-			(uuid "4f643c38-3708-4123-843d-0b0d911363f7")
-		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "JP806")
+					(reference "C920")
 					(unit 1)
 				)
 			)
@@ -13855,7 +14394,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "d5656dfd-0538-4670-bf0d-00d0ec65b6ce")
-		(property "Reference" "C815"
+		(property "Reference" "C925"
 			(at 184.1563 96.52 90)
 			(effects
 				(font
@@ -13979,7 +14518,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C815")
+					(reference "C925")
 					(unit 1)
 				)
 			)
@@ -13987,15 +14526,15 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint_Probe")
-		(at 148.59 172.72 0)
+		(at 154.94 149.86 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "d9202001-ad55-4b1a-9ffe-fc66619daa0e")
-		(property "Reference" "TP801"
-			(at 152.654 169.926 0)
+		(property "Reference" "TP901"
+			(at 159.004 147.066 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14004,7 +14543,7 @@
 			)
 		)
 		(property "Value" "TEMP"
-			(at 152.4 172.4025 0)
+			(at 158.75 149.5425 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14013,7 +14552,7 @@
 			)
 		)
 		(property "Footprint" "footprints:TestPoint_Pad_D1.5mm"
-			(at 153.67 172.72 0)
+			(at 160.02 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14022,7 +14561,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 153.67 172.72 0)
+			(at 160.02 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14031,7 +14570,7 @@
 			)
 		)
 		(property "Description" "test point (alternative probe-style design)"
-			(at 148.59 172.72 0)
+			(at 154.94 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14040,7 +14579,7 @@
 			)
 		)
 		(property "MPN" "NA"
-			(at 148.59 172.72 0)
+			(at 154.94 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14049,7 +14588,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 148.59 172.72 0)
+			(at 154.94 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14058,7 +14597,7 @@
 			)
 		)
 		(property "Basic or Extended Component" ""
-			(at 148.59 172.72 0)
+			(at 154.94 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14067,7 +14606,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 148.59 172.72 0)
+			(at 154.94 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14076,7 +14615,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 148.59 172.72 0)
+			(at 154.94 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14085,7 +14624,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 148.59 172.72 0)
+			(at 154.94 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14099,7 +14638,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "TP801")
+					(reference "TP901")
 					(unit 1)
 				)
 			)
@@ -14115,7 +14654,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "e1ccb5bf-6fcc-4476-89cc-f1dee844df4b")
-		(property "Reference" "C823"
+		(property "Reference" "C933"
 			(at 232.41 119.38 0)
 			(effects
 				(font
@@ -14259,7 +14798,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C823")
+					(reference "C933")
 					(unit 1)
 				)
 			)
@@ -14274,7 +14813,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "e3f203fd-74cf-4820-aaa0-2c051d00a58d")
-		(property "Reference" "D803"
+		(property "Reference" "D903"
 			(at 176.022 100.584 0)
 			(effects
 				(font
@@ -14407,7 +14946,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "D803")
+					(reference "D903")
 					(unit 1)
 				)
 			)
@@ -14423,7 +14962,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e418950b-3a64-47e2-9565-e95afe9818f6")
-		(property "Reference" "#PWR0804"
+		(property "Reference" "#PWR0905"
 			(at 38.1 138.43 0)
 			(effects
 				(font
@@ -14473,7 +15012,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "#PWR0804")
+					(reference "#PWR0905")
 					(unit 1)
 				)
 			)
@@ -14489,7 +15028,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e481e0ae-9eb0-48c8-a66b-5e406b5f8179")
-		(property "Reference" "SW801"
+		(property "Reference" "SW901"
 			(at 39.37 106.68 0)
 			(effects
 				(font
@@ -14541,7 +15080,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "SW801")
+					(reference "SW901")
 					(unit 1)
 				)
 			)
@@ -14557,7 +15096,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "e7c66b29-eef0-4484-aa61-1334bd80acaa")
-		(property "Reference" "L801"
+		(property "Reference" "L901"
 			(at 190.5 78.7399 0)
 			(effects
 				(font
@@ -14683,7 +15222,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "L801")
+					(reference "L901")
 					(unit 1)
 				)
 			)
@@ -14691,7 +15230,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 106.68 184.15 0)
+		(at 87.63 185.42 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -14699,8 +15238,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ef7fe41e-b2bd-4bb5-b59b-7c304267dfdf")
-		(property "Reference" "R807"
-			(at 109.22 182.8799 0)
+		(property "Reference" "R912"
+			(at 90.17 184.1499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14709,7 +15248,7 @@
 			)
 		)
 		(property "Value" "57k9"
-			(at 109.22 185.4199 0)
+			(at 90.17 186.6899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14718,7 +15257,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 106.68 184.15 0)
+			(at 87.63 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14727,7 +15266,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 106.68 184.15 0)
+			(at 87.63 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14736,7 +15275,7 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
-			(at 106.68 184.15 0)
+			(at 87.63 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14745,7 +15284,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 106.68 184.15 0)
+			(at 87.63 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14754,7 +15293,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Basic"
-			(at 106.68 184.15 0)
+			(at 87.63 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14763,7 +15302,7 @@
 			)
 		)
 		(property "MPN" ""
-			(at 106.68 184.15 0)
+			(at 87.63 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14772,7 +15311,7 @@
 			)
 		)
 		(property "Manufacturer" ""
-			(at 106.68 184.15 0)
+			(at 87.63 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14781,7 +15320,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" ""
-			(at 106.68 184.15 0)
+			(at 87.63 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14790,7 +15329,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 106.68 184.15 0)
+			(at 87.63 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14799,7 +15338,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 106.68 184.15 0)
+			(at 87.63 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14808,7 +15347,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 106.68 184.15 0)
+			(at 87.63 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14825,7 +15364,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "R807")
+					(reference "R912")
 					(unit 1)
 				)
 			)
@@ -14840,7 +15379,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f3eb507d-436a-4b14-96b0-a6db6b9b119e")
-		(property "Reference" "C801"
+		(property "Reference" "C901"
 			(at 26.67 24.1362 0)
 			(effects
 				(font
@@ -14966,7 +15505,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C801")
+					(reference "C901")
 					(unit 1)
 				)
 			)
@@ -14982,7 +15521,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f48817ac-559a-4e37-9848-9f6b9cb6b1ad")
-		(property "Reference" "C820"
+		(property "Reference" "C930"
 			(at 220.98 119.38 0)
 			(effects
 				(font
@@ -15126,7 +15665,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C820")
+					(reference "C930")
 					(unit 1)
 				)
 			)
@@ -15134,15 +15673,15 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 207.01 107.95 0)
+		(at 217.17 107.95 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "fa4f067c-2859-440f-9005-9b8ea3761a8e")
-		(property "Reference" "C818"
-			(at 210.058 106.934 0)
+		(property "Reference" "C928"
+			(at 220.218 106.934 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15151,7 +15690,7 @@
 			)
 		)
 		(property "Value" "10u"
-			(at 210.058 109.474 0)
+			(at 220.218 109.474 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15160,7 +15699,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_C_0603_1608Metric"
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15169,7 +15708,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15178,7 +15717,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15187,7 +15726,7 @@
 			)
 		)
 		(property "Active" "Y"
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15196,7 +15735,7 @@
 			)
 		)
 		(property "Specs" "3.3V"
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15205,7 +15744,7 @@
 			)
 		)
 		(property "MPN" "C77041"
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15214,7 +15753,7 @@
 			)
 		)
 		(property "Manufacturer" "Murata"
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15223,7 +15762,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" "GRM188R60J106ME47D"
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15232,7 +15771,7 @@
 			)
 		)
 		(property "Purpose" "Voltage regulator"
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15241,7 +15780,7 @@
 			)
 		)
 		(property "Basic or Extended Component" "Extended"
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15250,7 +15789,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15259,7 +15798,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15268,7 +15807,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 207.01 107.95 0)
+			(at 217.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15285,7 +15824,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(reference "C818")
+					(reference "C928")
 					(unit 1)
 				)
 			)
@@ -15358,7 +15897,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
-					(page "9")
+					(page "10")
 				)
 			)
 		)

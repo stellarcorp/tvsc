@@ -48,7 +48,7 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.25
+          "min_clearance": 0.2
         }
       },
       "diff_pair_dimensions": [
@@ -712,28 +712,12 @@
       "Root"
     ],
     [
-      "8e27c7c2-0d25-45f6-9c1b-87f643b528a8",
-      "MCU"
+      "e0e5088b-2fa2-4f34-adc6-d0f708744404",
+      "Core Board"
     ],
     [
       "c53c57dc-7222-49b0-892b-f2107402104f",
       "Board Identification"
-    ],
-    [
-      "f171a806-abd3-4855-8959-e516dfbdf78d",
-      "ST-LINK"
-    ],
-    [
-      "3da789b3-8d47-4650-8c6e-e8d24eec9b52",
-      "System Bus"
-    ],
-    [
-      "d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3",
-      "CAN bus"
-    ],
-    [
-      "64470299-6c65-479c-8ce7-e6a986c7fce1",
-      "Voltage Regulation"
     ],
     [
       "81089ff9-503a-4f60-899d-1c3f84da4833",
@@ -742,9 +726,34 @@
     [
       "81f7b2a2-a961-4c8b-bc5c-501d8f536fd1",
       "USB"
+    ],
+    [
+      "64470299-6c65-479c-8ce7-e6a986c7fce1",
+      "Voltage Regulation"
+    ],
+    [
+      "7b4bf28d-6031-4f39-baa2-3e9aecd97647",
+      "Power Measurement"
+    ],
+    [
+      "f171a806-abd3-4855-8959-e516dfbdf78d",
+      "ST-LINK"
+    ],
+    [
+      "8e27c7c2-0d25-45f6-9c1b-87f643b528a8",
+      "MCU"
+    ],
+    [
+      "3da789b3-8d47-4650-8c6e-e8d24eec9b52",
+      "System Bus"
+    ],
+    [
+      "d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3",
+      "CAN bus"
     ]
   ],
   "text_variables": {
+    "PCB_NAME": "1s3p Battery Board",
     "PCB_VERSION": "Defiant Dumpling"
   }
 }

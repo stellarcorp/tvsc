@@ -58,7 +58,12 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        [
+          "unresolved_variable|178342000|72900000|ba808eb4-4474-45ba-a9cd-1eba47374c81|00000000-0000-0000-0000-000000000000",
+          "This variable comes from the actual board. This is not an error on a module."
+        ]
+      ],
       "meta": {
         "version": 2
       },
