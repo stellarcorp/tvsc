@@ -11,21 +11,6 @@
 		(company "TVSC")
 	)
 	(lib_symbols)
-	(bus_alias "BOARD_ID"
-		(members "POWER" "SENSE")
-	)
-	(bus_alias "CAN_BUS"
-		(members "CANH" "CANL")
-	)
-	(bus_alias "I2C"
-		(members "SCL" "SDA")
-	)
-	(bus_alias "SPI"
-		(members "SCK" "MISO" "MOSI")
-	)
-	(bus_alias "SWD"
-		(members "NRST" "BOOT0" "SWCLK" "SWDIO" "SWO")
-	)
 	(text_box "Board capabilities checklist:\n- Magnetorquer control\n- Board ID with 4+ options, one for each instance of board\n- IMU measurements\n- Power usage measurement\n- IMU reading/control over SPI\n- Power source options: external power supply, bus interconnect\n- Onboard power regulation\n- Flash over TagConnect, both sides of board\n- Test points to verify voltage and signals in key locations\n- Standard system bus\n- Board identification resistors to id board at startup\n"
 		(exclude_from_sim no)
 		(at 12.7 170.18 0)
@@ -96,15 +81,6 @@
 			(type default)
 		)
 		(uuid "3802d116-8e36-4206-aa10-e359509dc405")
-	)
-	(bus_entry
-		(at 201.93 29.21)
-		(size -2.54 -2.54)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "381e4eb0-f7a7-48ed-9a5a-6d398cd0a014")
 	)
 	(bus_entry
 		(at 88.9 54.61)
@@ -278,24 +254,6 @@
 		(uuid "caac39d1-dd10-4583-a842-1e6a8ae0ab3e")
 	)
 	(bus_entry
-		(at 88.9 76.2)
-		(size 2.54 2.54)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cb1021bb-d4df-4da3-8d16-de3eaf0dc300")
-	)
-	(bus_entry
-		(at 88.9 49.53)
-		(size 2.54 -2.54)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cbad9cbc-19f3-4f12-98a1-56d615af5939")
-	)
-	(bus_entry
 		(at 201.93 97.79)
 		(size -2.54 2.54)
 		(stroke
@@ -312,15 +270,6 @@
 			(type default)
 		)
 		(uuid "d15d13e0-5f98-4375-8f07-368f3da07330")
-	)
-	(bus_entry
-		(at 201.93 88.9)
-		(size -2.54 2.54)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d6cb63dd-9388-4af6-bc99-a9c884ad9c79")
 	)
 	(bus_entry
 		(at 88.9 85.09)
@@ -402,16 +351,6 @@
 	)
 	(wire
 		(pts
-			(xy 165.1 91.44) (xy 199.39 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0dfe7826-ee68-4e24-a58d-437ec8187eed")
-	)
-	(wire
-		(pts
 			(xy 91.44 52.07) (xy 113.03 52.07)
 		)
 		(stroke
@@ -482,7 +421,7 @@
 	)
 	(bus
 		(pts
-			(xy 201.93 86.36) (xy 201.93 88.9)
+			(xy 201.93 86.36) (xy 201.93 92.71)
 		)
 		(stroke
 			(width 0)
@@ -582,7 +521,7 @@
 	)
 	(bus
 		(pts
-			(xy 88.9 49.53) (xy 88.9 54.61)
+			(xy 88.9 46.99) (xy 88.9 54.61)
 		)
 		(stroke
 			(width 0)
@@ -599,16 +538,6 @@
 			(type default)
 		)
 		(uuid "4b00d5e6-2820-48ba-8468-58db76f2e38b")
-	)
-	(wire
-		(pts
-			(xy 199.39 26.67) (xy 154.94 26.67)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4f3510d4-3c21-4066-b493-2a31f5ffed32")
 	)
 	(wire
 		(pts
@@ -820,16 +749,6 @@
 		)
 		(uuid "78cccf5f-27c3-4233-8b93-8f23a90af992")
 	)
-	(bus
-		(pts
-			(xy 201.93 88.9) (xy 201.93 92.71)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7ae8f01b-e851-4869-a24c-301fb8ee0a30")
-	)
 	(wire
 		(pts
 			(xy 165.1 95.25) (xy 199.39 95.25)
@@ -919,16 +838,6 @@
 			(type default)
 		)
 		(uuid "85dd96bb-103a-4fa5-837a-b4a4dc5d5802")
-	)
-	(wire
-		(pts
-			(xy 91.44 78.74) (xy 104.14 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "86ec4eea-2d92-49b1-8beb-28a57d4a2099")
 	)
 	(wire
 		(pts
@@ -1040,16 +949,6 @@
 		)
 		(uuid "a4e98e57-14e4-49f8-8128-e70f7d813aff")
 	)
-	(bus
-		(pts
-			(xy 88.9 46.99) (xy 88.9 49.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a6905aa4-be8e-464c-969e-5577e1708952")
-	)
 	(wire
 		(pts
 			(xy 99.06 128.27) (xy 104.14 128.27)
@@ -1059,16 +958,6 @@
 			(type default)
 		)
 		(uuid "a7225731-74d0-45ae-bd71-d660acdd2206")
-	)
-	(wire
-		(pts
-			(xy 91.44 46.99) (xy 113.03 46.99)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "af478efd-4901-490f-8435-aff65f1d1932")
 	)
 	(wire
 		(pts
@@ -1210,16 +1099,6 @@
 		)
 		(uuid "d1d9fdea-acd0-48f7-bcec-8321a8c6dcba")
 	)
-	(bus
-		(pts
-			(xy 201.93 26.67) (xy 201.93 29.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d6d67da6-7394-428a-99e1-9d0d9b621cc8")
-	)
 	(wire
 		(pts
 			(xy 35.56 97.79) (xy 39.37 97.79)
@@ -1292,7 +1171,7 @@
 	)
 	(bus
 		(pts
-			(xy 201.93 29.21) (xy 201.93 34.29)
+			(xy 201.93 26.67) (xy 201.93 34.29)
 		)
 		(stroke
 			(width 0)
@@ -1570,16 +1449,6 @@
 		)
 		(uuid "8e468023-43bd-4871-a4e3-a5c51d5d9751")
 	)
-	(label "BOOT0"
-		(at 113.03 46.99 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "96f39acc-8888-46b3-9602-ce49d229bcfe")
-	)
 	(label "SWO"
 		(at 104.14 87.63 180)
 		(effects
@@ -1620,16 +1489,6 @@
 		)
 		(uuid "b195284b-eef7-4f75-9cbb-6760dba6186d")
 	)
-	(label "BOOT0"
-		(at 104.14 78.74 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "b5d60d06-f18d-4268-8959-e525c8b6ddba")
-	)
 	(label "CTRL.NRST"
 		(at 165.1 88.9 0)
 		(effects
@@ -1649,16 +1508,6 @@
 			(justify right bottom)
 		)
 		(uuid "c71c0f40-a351-4f37-9ab4-b25f54be0375")
-	)
-	(label "CTRL.BOOT0"
-		(at 154.94 26.67 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "cb4fffc6-8e01-4eae-89e0-1e317ebd3ebf")
 	)
 	(label "3V3"
 		(at 68.58 74.93 0)
@@ -1689,16 +1538,6 @@
 			(justify right bottom)
 		)
 		(uuid "d82eb25b-c5d3-4031-94cd-271ae49b39f1")
-	)
-	(label "CTRL.BOOT0"
-		(at 165.1 91.44 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "e11f7609-3dc5-4af6-80fc-4b1d501e76ab")
 	)
 	(label "CANL"
 		(at 154.94 48.26 0)
@@ -2108,16 +1947,6 @@
 				(justify left)
 			)
 		)
-		(pin "BOOT0" output
-			(at 113.03 46.99 180)
-			(uuid "1058524e-c60b-400a-9ff3-3c9a11c24067")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
 		(pin "CANH_UPSTREAM" bidirectional
 			(at 154.94 45.72 0)
 			(uuid "55794ffa-0aec-429c-9e41-6a35f880d785")
@@ -2168,16 +1997,6 @@
 				(justify right)
 			)
 		)
-		(pin "BOOT0_CTRL" input
-			(at 154.94 26.67 0)
-			(uuid "93697ba3-b590-48ba-840a-4fd559bca905")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
 		(pin "VBUS" passive
 			(at 113.03 25.4 180)
 			(uuid "14eecfaa-6e79-41df-84ba-de3214fedc92")
@@ -2209,11 +2028,6 @@
 			)
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db"
-					(page "4")
-				)
-			)
 			(project ""
 				(path "/e0e5088b-2fa2-4f34-adc6-d0f708744404"
 					(page "#")
@@ -2287,11 +2101,6 @@
 			)
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db"
-					(page "6")
-				)
-			)
 			(project ""
 				(path "/e0e5088b-2fa2-4f34-adc6-d0f708744404"
 					(page "#")
@@ -2434,13 +2243,6 @@
 				(justify right)
 			)
 		)
-		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db"
-					(page "7")
-				)
-			)
-		)
 	)
 	(sheet
 		(at 104.14 72.39)
@@ -2516,16 +2318,6 @@
 				(justify right)
 			)
 		)
-		(pin "BOOT0" input
-			(at 104.14 78.74 180)
-			(uuid "f14b03ce-b408-4f5d-a42e-b5ccc5a12312")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
 		(pin "NRST" input
 			(at 104.14 76.2 180)
 			(uuid "4101bd57-2566-4154-98e6-0ae4e1655216")
@@ -2564,16 +2356,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
-			)
-		)
-		(pin "BOOT0_CTRL" output
-			(at 165.1 91.44 0)
-			(uuid "c501c19b-a8d6-45bb-802a-7a4e2ad49eb6")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
 			)
 		)
 		(pin "SWCLK_CTRL" output
@@ -2777,11 +2559,6 @@
 			)
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db"
-					(page "2")
-				)
-			)
 			(project ""
 				(path "/e0e5088b-2fa2-4f34-adc6-d0f708744404"
 					(page "#")
@@ -2895,11 +2672,6 @@
 			)
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db"
-					(page "5")
-				)
-			)
 			(project ""
 				(path "/e0e5088b-2fa2-4f34-adc6-d0f708744404"
 					(page "#")
@@ -2993,11 +2765,6 @@
 			)
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db"
-					(page "3")
-				)
-			)
 			(project ""
 				(path "/e0e5088b-2fa2-4f34-adc6-d0f708744404"
 					(page "#")
