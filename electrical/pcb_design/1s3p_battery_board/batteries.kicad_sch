@@ -2355,648 +2355,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "TVSC:CSD13385F5"
-			(pin_names
-				(offset 0.254)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "Q"
-				(at 17.78 1.524 0)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "CSD13385F5"
-				(at 17.78 -0.762 0)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-					(justify left)
-				)
-			)
-			(property "Footprint" "footprints:PICOSTAR3_YJK_TEX"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-						(italic yes)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "https://www.ti.com/lit/gpn/csd13385f5"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-						(italic yes)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "CSD13385F5"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "PICOSTAR3_YJK_TEX PICOSTAR3_YJK_TEX-M PICOSTAR3_YJK_TEX-L"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "CSD13385F5_0_1"
-				(polyline
-					(pts
-						(xy 2.54 0) (xy 4.318 0)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 3.81 0) (xy 3.81 -2.54)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 3.81 0)
-					(radius 0.0254)
-					(stroke
-						(width 0.508)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 3.81 -2.54) (xy 5.08 -2.54)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 4.318 0) (xy 4.572 -0.762)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 4.572 -0.762) (xy 4.826 0.762)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 4.826 0.762) (xy 5.08 -0.762)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.08 -4.572) (xy 5.08 -2.54)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.334 0.762) (xy 5.08 -0.762)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.334 0.762) (xy 5.588 -0.762)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.588 -0.762) (xy 5.842 0.762)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.842 0.762) (xy 6.096 0)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 6.096 0) (xy 6.985 0)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 6.985 -2.54) (xy 6.985 2.54)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 1.905) (xy 9.525 1.905)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 1.27) (xy 7.62 2.54)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 -0.635) (xy 7.62 0.635)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 -1.905) (xy 9.525 -1.905)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 -2.54) (xy 7.62 -1.27)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 -4.572) (xy 8.89 -4.826)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 -4.572) (xy 8.89 -5.334)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 -4.572) (xy 8.89 -5.334) (xy 8.89 -3.81)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 -5.334) (xy 7.62 -3.81)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 8.89 0.635) (xy 7.62 0) (xy 8.89 -0.635)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 8.89 0) (xy 9.525 0)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 8.89 0)
-					(radius 6.35)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 8.89 -3.81) (xy 7.62 -4.572)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 8.89 -5.334) (xy 8.89 -3.81)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 9.525 2.54) (xy 10.795 2.54)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 9.525 1.905) (xy 9.525 2.54)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 9.525 -1.905)
-					(radius 0.0254)
-					(stroke
-						(width 0.508)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 9.525 -2.54) (xy 9.525 0)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 9.525 -2.54) (xy 10.795 -2.54)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 10.16 5.08) (xy 10.16 2.54)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 10.16 2.54)
-					(radius 0.0254)
-					(stroke
-						(width 0.508)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 10.16 -2.54) (xy 10.16 -5.08)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 10.16 -2.54)
-					(radius 0.0254)
-					(stroke
-						(width 0.508)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 10.16 -4.572) (xy 5.08 -4.572)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 10.16 -4.572)
-					(radius 0.0254)
-					(stroke
-						(width 0.508)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 10.795 0.635) (xy 10.795 2.54)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 10.795 -2.54) (xy 10.795 -0.635)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 11.43 0.635) (xy 10.16 0.635)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 11.43 -0.635) (xy 10.16 -0.635) (xy 10.795 0.635)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-			)
-			(symbol "CSD13385F5_1_1"
-				(pin input line
-					(at 0 0 0)
-					(length 2.54)
-					(name "G"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 10.16 7.62 270)
-					(length 2.54)
-					(name "D"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 10.16 -7.62 90)
-					(length 2.54)
-					(name "S"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "TVSC:Keystone_1043"
 			(pin_names
 				(offset 1.016)
@@ -3441,6 +2799,343 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Transistor_FET:CSD16570Q5B"
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "Q"
+				(at 5.08 1.905 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "CSD16570Q5B"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_SMD:TDSON-8-1"
+				(at 5.08 -1.905 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(italic yes)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "http://www.ti.com/lit/gpn/csd16570q5b"
+				(at 5.08 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Description" "100A Id, 25V Vds, NexFET N-Channel Power MOSFET, 0.59mOhm Ron, 95nC Qg(typ), SON8 5x6mm"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "NexFET Power MOSFET N-MOS"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "TDSON*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "CSD16570Q5B_0_1"
+				(polyline
+					(pts
+						(xy 0.254 1.905) (xy 0.254 -1.905)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.254 0) (xy -2.54 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 2.286) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 0.508) (xy 0.762 -0.508)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -1.27) (xy 0.762 -2.286)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -1.778) (xy 3.302 -1.778) (xy 3.302 1.778) (xy 0.762 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.016 0) (xy 2.032 0.381) (xy 2.032 -0.381) (xy 1.016 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 1.651 0)
+					(radius 2.794)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 2.54) (xy 2.54 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.54 1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 2.54 -1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 -2.54) (xy 2.54 0) (xy 0.762 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.794 0.508) (xy 2.921 0.381) (xy 3.683 0.381) (xy 3.81 0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 3.302 0.381) (xy 2.921 -0.254) (xy 3.683 -0.254) (xy 3.302 0.381)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "CSD16570Q5B_1_1"
+				(pin input line
+					(at -5.08 0 0)
+					(length 5.08)
+					(name "G"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "D"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(name "S"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(hide yes)
+					(name "S"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(hide yes)
+					(name "S"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "power:GND"
 			(power)
 			(pin_numbers
@@ -3745,6 +3440,12 @@
 		(uuid "e2a7d2d3-5308-4337-a683-d6889b238205")
 	)
 	(junction
+		(at 80.01 31.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "00da00e5-ff40-4f55-b2a1-b4e14ba43138")
+	)
+	(junction
 		(at 191.77 74.93)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3791,6 +3492,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "1c118948-f6bf-4402-96c4-5223bc37b145")
+	)
+	(junction
+		(at 78.74 54.61)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1c4a0029-433d-4950-8d17-5e8f8be11c00")
 	)
 	(junction
 		(at 229.87 165.1)
@@ -3997,12 +3704,6 @@
 		(uuid "b0c5df41-bbc1-4df4-8602-9821c9335f61")
 	)
 	(junction
-		(at 78.74 54.61)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b3f26b92-1249-4292-9a0b-5095afd53df8")
-	)
-	(junction
 		(at 113.03 190.5)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4115,12 +3816,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f57d32b5-beda-4dc6-9406-362250f4148c")
-	)
-	(junction
-		(at 80.01 31.75)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f613b369-41c3-424c-8779-5c283a3ea789")
 	)
 	(junction
 		(at 115.57 44.45)
@@ -4245,6 +3940,16 @@
 			(type default)
 		)
 		(uuid "0719047f-1e28-4df2-a38d-5efe0d443e30")
+	)
+	(wire
+		(pts
+			(xy 83.82 44.45) (xy 105.41 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "09243a44-49ab-4bb9-8bd1-4e8c7f1120e7")
 	)
 	(wire
 		(pts
@@ -4438,7 +4143,7 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 21.59) (xy 31.75 21.59)
+			(xy 29.21 21.59) (xy 34.29 21.59)
 		)
 		(stroke
 			(width 0)
@@ -4448,7 +4153,7 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 44.45) (xy 30.48 44.45)
+			(xy 29.21 44.45) (xy 33.02 44.45)
 		)
 		(stroke
 			(width 0)
@@ -4528,6 +4233,16 @@
 	)
 	(wire
 		(pts
+			(xy 250.19 116.84) (xy 250.19 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "22e3fd3c-1a41-41f0-84a7-349ccfee9c57")
+	)
+	(wire
+		(pts
 			(xy 256.54 105.41) (xy 260.35 105.41)
 		)
 		(stroke
@@ -4588,7 +4303,7 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 44.45) (xy 71.12 44.45)
+			(xy 64.77 44.45) (xy 73.66 44.45)
 		)
 		(stroke
 			(width 0)
@@ -4698,16 +4413,6 @@
 	)
 	(wire
 		(pts
-			(xy 250.19 116.84) (xy 250.19 124.46)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "40aa61f9-3b3a-4521-abc6-f2164b5ed151")
-	)
-	(wire
-		(pts
 			(xy 137.16 187.96) (xy 137.16 190.5)
 		)
 		(stroke
@@ -4738,6 +4443,16 @@
 	)
 	(wire
 		(pts
+			(xy 78.74 52.07) (xy 78.74 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4979bc33-6f1c-4ff7-879a-d7d3e75bfe3a")
+	)
+	(wire
+		(pts
 			(xy 105.41 49.53) (xy 115.57 49.53)
 		)
 		(stroke
@@ -4748,16 +4463,6 @@
 	)
 	(wire
 		(pts
-			(xy 80.01 31.75) (xy 86.36 31.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4a58df2d-b469-4b1a-a79f-3b7ea7d5aa4e")
-	)
-	(wire
-		(pts
 			(xy 44.45 114.3) (xy 43.18 114.3)
 		)
 		(stroke
@@ -4765,6 +4470,16 @@
 			(type default)
 		)
 		(uuid "4d0c274c-a8a8-436c-9afd-6a242e4619fd")
+	)
+	(wire
+		(pts
+			(xy 44.45 21.59) (xy 54.61 21.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4d0e1ac0-1177-4f00-a64d-9e3d58e56b3f")
 	)
 	(wire
 		(pts
@@ -4908,16 +4623,6 @@
 	)
 	(wire
 		(pts
-			(xy 46.99 21.59) (xy 54.61 21.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5f8f6052-bf70-4d03-877d-d046cb9f7c7c")
-	)
-	(wire
-		(pts
 			(xy 106.68 193.04) (xy 106.68 190.5)
 		)
 		(stroke
@@ -5008,13 +4713,13 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 21.59) (xy 105.41 21.59)
+			(xy 39.37 29.21) (xy 39.37 31.75)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "68637cfc-5fc9-4125-8eaf-72e65d997c8d")
+		(uuid "6882dc9e-d9bd-447c-be6d-8c18d4e31f5f")
 	)
 	(wire
 		(pts
@@ -5048,13 +4753,23 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 132.08) (xy 240.03 132.08)
+			(xy 190.5 132.08) (xy 242.57 132.08)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "75c12463-dd5d-4a8e-9995-e11fd2804de6")
+	)
+	(wire
+		(pts
+			(xy 80.01 29.21) (xy 80.01 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7726f9ac-83bb-470d-a3d5-b352c6f389c5")
 	)
 	(wire
 		(pts
@@ -5398,6 +5113,16 @@
 	)
 	(wire
 		(pts
+			(xy 80.01 31.75) (xy 86.36 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a613cdc3-1a57-4c27-a48b-20b91339064a")
+	)
+	(wire
+		(pts
 			(xy 62.23 181.61) (xy 62.23 182.88)
 		)
 		(stroke
@@ -5405,6 +5130,16 @@
 			(type default)
 		)
 		(uuid "a70fa9ce-ddfb-4b46-b4ae-e8c75c7c0f09")
+	)
+	(wire
+		(pts
+			(xy 38.1 52.07) (xy 38.1 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a88e314f-caf3-4c91-874e-8f5e2d9f3eb9")
 	)
 	(wire
 		(pts
@@ -5538,16 +5273,6 @@
 	)
 	(wire
 		(pts
-			(xy 86.36 44.45) (xy 105.41 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b69c9b8c-67b6-4857-ab03-9c8aa2d8b5a4")
-	)
-	(wire
-		(pts
 			(xy 109.22 97.79) (xy 109.22 99.06)
 		)
 		(stroke
@@ -5575,6 +5300,16 @@
 			(type default)
 		)
 		(uuid "ba10547f-45d6-4858-a5a4-ffcc2778deea")
+	)
+	(wire
+		(pts
+			(xy 43.18 44.45) (xy 53.34 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bab590cf-f98f-4458-8aff-3b12465d4da8")
 	)
 	(wire
 		(pts
@@ -5668,6 +5403,16 @@
 	)
 	(wire
 		(pts
+			(xy 85.09 21.59) (xy 105.41 21.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cdad2cf5-15ba-4e61-afa7-006c0c68c69d")
+	)
+	(wire
+		(pts
 			(xy 92.71 54.61) (xy 92.71 86.36)
 		)
 		(stroke
@@ -5678,7 +5423,7 @@
 	)
 	(wire
 		(pts
-			(xy 250.19 139.7) (xy 250.19 143.51)
+			(xy 250.19 137.16) (xy 250.19 143.51)
 		)
 		(stroke
 			(width 0)
@@ -5735,16 +5480,6 @@
 			(type default)
 		)
 		(uuid "dc960bbb-a866-4ee1-9f74-a164229f4111")
-	)
-	(wire
-		(pts
-			(xy 78.74 54.61) (xy 85.09 54.61)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "dd86dc59-cf73-4c7a-8fea-096a04f405d0")
 	)
 	(wire
 		(pts
@@ -5808,13 +5543,13 @@
 	)
 	(wire
 		(pts
-			(xy 45.72 44.45) (xy 53.34 44.45)
+			(xy 78.74 54.61) (xy 85.09 54.61)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e55042e3-3201-4e40-b6d2-c4d07059a88c")
+		(uuid "e5008560-94cd-46ff-a8e9-0dd718f4cfdc")
 	)
 	(wire
 		(pts
@@ -5968,7 +5703,7 @@
 	)
 	(wire
 		(pts
-			(xy 66.04 21.59) (xy 72.39 21.59)
+			(xy 66.04 21.59) (xy 74.93 21.59)
 		)
 		(stroke
 			(width 0)
@@ -6400,8 +6135,8 @@
 		)
 	)
 	(symbol
-		(lib_id "TVSC:CSD13385F5")
-		(at 38.1 54.61 90)
+		(lib_id "Transistor_FET:CSD16570Q5B")
+		(at 38.1 46.99 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6409,43 +6144,89 @@
 		(dnp no)
 		(uuid "0718f1b1-dd66-4990-892e-f135cbdc9c35")
 		(property "Reference" "Q901"
-			(at 38.1 35.56 90)
+			(at 38.1 37.846 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "CSD13385F5"
-			(at 38.1 38.1 90)
+		(property "Value" "CSD16570Q5B"
+			(at 38.1 40.386 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "footprints:PICOSTAR3_YJK_TEX"
-			(at 38.1 54.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.ti.com/lit/gpn/csd13385f5"
-			(at 38.1 54.61 0)
+		(property "Footprint" "Package_TO_SOT_SMD:TDSON-8-1"
+			(at 40.005 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 					(italic yes)
 				)
+				(justify left)
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 38.1 54.61 0)
+		(property "Datasheet" "https://www.ti.com/product/CSD16570Q5B"
+			(at 41.91 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "100A Id, 25V Vds, NexFET N-Channel Power MOSFET, 0.59mOhm Ron, 95nC Qg(typ), SON8 5x6mm"
+			(at 38.1 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 38.1 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Extended"
+			(at 38.1 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C473359"
+			(at 38.1 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Texas Instruments"
+			(at 38.1 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CSD16570Q5B"
+			(at 38.1 46.99 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6462,6 +6243,12 @@
 		(pin "3"
 			(uuid "dcb3e6c6-3393-45eb-b33c-95dc99d73780")
 		)
+		(pin "4"
+			(uuid "50fae0f3-a61b-4e5d-b022-cfa297c1bbd2")
+		)
+		(pin "5"
+			(uuid "95572132-4ea6-4220-8d44-2086ba285ab3")
+		)
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/81089ff9-503a-4f60-899d-1c3f84da4833"
@@ -6472,8 +6259,8 @@
 		)
 	)
 	(symbol
-		(lib_id "TVSC:CSD13385F5")
-		(at 80.01 31.75 270)
+		(lib_id "Transistor_FET:CSD16570Q5B")
+		(at 80.01 24.13 270)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -6482,43 +6269,89 @@
 		(dnp no)
 		(uuid "0e005b1c-1552-4239-8148-e48b31e50d03")
 		(property "Reference" "Q904"
-			(at 80.01 13.462 90)
+			(at 80.01 14.986 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "CSD13385F5"
-			(at 80.01 15.494 90)
+		(property "Value" "CSD16570Q5B"
+			(at 80.01 17.018 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "footprints:PICOSTAR3_YJK_TEX"
-			(at 80.01 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.ti.com/lit/gpn/csd13385f5"
-			(at 80.01 31.75 0)
+		(property "Footprint" "Package_TO_SOT_SMD:TDSON-8-1"
+			(at 78.105 19.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 					(italic yes)
 				)
+				(justify left)
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 80.01 31.75 0)
+		(property "Datasheet" "https://www.ti.com/product/CSD16570Q5B"
+			(at 76.2 19.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "100A Id, 25V Vds, NexFET N-Channel Power MOSFET, 0.59mOhm Ron, 95nC Qg(typ), SON8 5x6mm"
+			(at 80.01 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 80.01 24.13 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Extended"
+			(at 80.01 24.13 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C473359"
+			(at 80.01 24.13 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Texas Instruments"
+			(at 80.01 24.13 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CSD16570Q5B"
+			(at 80.01 24.13 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6534,6 +6367,12 @@
 		)
 		(pin "3"
 			(uuid "ad8990dc-adbe-4eca-b773-0d070e23d677")
+		)
+		(pin "4"
+			(uuid "21832e3a-056d-4002-93f3-b8310846cef7")
+		)
+		(pin "5"
+			(uuid "46af0b54-ae16-4303-a27a-cc9accb07a39")
 		)
 		(instances
 			(project "1s3p_battery_board"
@@ -9181,8 +9020,8 @@
 		)
 	)
 	(symbol
-		(lib_id "TVSC:CSD13385F5")
-		(at 240.03 132.08 0)
+		(lib_id "Transistor_FET:CSD16570Q5B")
+		(at 247.65 132.08 0)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -9191,43 +9030,89 @@
 		(dnp no)
 		(uuid "53ad87af-ab78-445c-aa1e-b0ee87ad88bf")
 		(property "Reference" "Q905"
-			(at 257.81 131.064 0)
+			(at 255.27 131.064 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "CSD13385F5"
-			(at 261.366 133.35 0)
+		(property "Value" "CSD16570Q5B"
+			(at 259.588 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "footprints:PICOSTAR3_YJK_TEX"
-			(at 240.03 132.08 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.ti.com/lit/gpn/csd13385f5"
-			(at 240.03 132.08 0)
+		(property "Footprint" "Package_TO_SOT_SMD:TDSON-8-1"
+			(at 252.73 130.175 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 					(italic yes)
 				)
+				(justify left)
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 240.03 132.08 0)
+		(property "Datasheet" "https://www.ti.com/product/CSD16570Q5B"
+			(at 252.73 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "100A Id, 25V Vds, NexFET N-Channel Power MOSFET, 0.59mOhm Ron, 95nC Qg(typ), SON8 5x6mm"
+			(at 247.65 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 247.65 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Extended"
+			(at 247.65 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C473359"
+			(at 247.65 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Texas Instruments"
+			(at 247.65 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CSD16570Q5B"
+			(at 247.65 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9243,6 +9128,12 @@
 		)
 		(pin "3"
 			(uuid "ca15fbc6-8c86-442e-bbbf-124afc71bfdc")
+		)
+		(pin "4"
+			(uuid "aa1d60b3-98db-4b99-863c-7191e37a7a84")
+		)
+		(pin "5"
+			(uuid "08eae541-c1bf-4be6-a129-09716c0f9266")
 		)
 		(instances
 			(project "1s3p_battery_board"
@@ -9396,8 +9287,8 @@
 		)
 	)
 	(symbol
-		(lib_id "TVSC:CSD13385F5")
-		(at 39.37 31.75 90)
+		(lib_id "Transistor_FET:CSD16570Q5B")
+		(at 39.37 24.13 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9405,43 +9296,89 @@
 		(dnp no)
 		(uuid "58e4c29c-739e-41c6-899f-bfdf9e26a225")
 		(property "Reference" "Q902"
-			(at 39.624 12.7 90)
+			(at 39.116 14.986 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "CSD13385F5"
-			(at 39.624 15.24 90)
+		(property "Value" "CSD16570Q5B"
+			(at 39.116 17.526 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "footprints:PICOSTAR3_YJK_TEX"
-			(at 39.37 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.ti.com/lit/gpn/csd13385f5"
-			(at 39.37 31.75 0)
+		(property "Footprint" "Package_TO_SOT_SMD:TDSON-8-1"
+			(at 41.275 19.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 					(italic yes)
 				)
+				(justify left)
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 39.37 31.75 0)
+		(property "Datasheet" "https://www.ti.com/product/CSD16570Q5B"
+			(at 43.18 19.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "100A Id, 25V Vds, NexFET N-Channel Power MOSFET, 0.59mOhm Ron, 95nC Qg(typ), SON8 5x6mm"
+			(at 39.37 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 39.37 24.13 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Extended"
+			(at 39.37 24.13 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C473359"
+			(at 39.37 24.13 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Texas Instruments"
+			(at 39.37 24.13 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CSD16570Q5B"
+			(at 39.37 24.13 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9457,6 +9394,12 @@
 		)
 		(pin "3"
 			(uuid "d039d8c5-7362-441a-848e-88c87386006a")
+		)
+		(pin "5"
+			(uuid "4647cb37-33cc-44b6-8c5b-673c15b9a95c")
+		)
+		(pin "4"
+			(uuid "f94e9ec8-add5-4211-9131-0a62fa0a24ce")
 		)
 		(instances
 			(project "1s3p_battery_board"
@@ -11692,7 +11635,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_DFN_QFN:Texas_RQM0029A_VQFN-29_4x4mm_P0.4mm"
+		(property "Footprint" "footprints:RQM0029A-MFG"
 			(at 139.7 161.544 0)
 			(effects
 				(font
@@ -13805,8 +13748,8 @@
 		)
 	)
 	(symbol
-		(lib_id "TVSC:CSD13385F5")
-		(at 78.74 54.61 270)
+		(lib_id "Transistor_FET:CSD16570Q5B")
+		(at 78.74 46.99 270)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -13815,14 +13758,6 @@
 		(dnp no)
 		(uuid "c81df64e-3841-471b-899f-d542d5a9c236")
 		(property "Reference" "Q903"
-			(at 78.74 35.56 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CSD13385F5"
 			(at 78.74 38.1 90)
 			(effects
 				(font
@@ -13830,28 +13765,82 @@
 				)
 			)
 		)
-		(property "Footprint" "footprints:PICOSTAR3_YJK_TEX"
-			(at 78.74 54.61 0)
+		(property "Value" "CSD16570Q5B"
+			(at 78.74 40.64 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:TDSON-8-1"
+			(at 76.835 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 					(italic yes)
 				)
+				(justify left)
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.ti.com/lit/gpn/csd13385f5"
-			(at 78.74 54.61 0)
+		(property "Datasheet" "https://www.ti.com/product/CSD16570Q5B"
+			(at 74.93 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
-					(italic yes)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "100A Id, 25V Vds, NexFET N-Channel Power MOSFET, 0.59mOhm Ron, 95nC Qg(typ), SON8 5x6mm"
+			(at 78.74 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
 				)
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 78.74 54.61 0)
+		(property "Active" "Y"
+			(at 78.74 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Extended"
+			(at 78.74 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C473359"
+			(at 78.74 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Texas Instruments"
+			(at 78.74 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "CSD16570Q5B"
+			(at 78.74 46.99 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13867,6 +13856,12 @@
 		)
 		(pin "3"
 			(uuid "a62884a7-dc89-44ea-ae29-0956eb4fe099")
+		)
+		(pin "5"
+			(uuid "fed47f87-0370-45a0-a29b-6cfacb50ca45")
+		)
+		(pin "4"
+			(uuid "dbb36db4-e0a5-4c8b-96fe-8c9bb2df2d82")
 		)
 		(instances
 			(project "1s3p_battery_board"
