@@ -10,7 +10,132 @@
 		(rev "${PCB_VERSION}")
 		(company "TVSC")
 	)
-	(lib_symbols)
+	(lib_symbols
+		(symbol "Device:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 2.032 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
 	(bus_alias "BOARD_ID"
 		(members "POWER" "SENSE")
 	)
@@ -45,6 +170,12 @@
 			(justify left top)
 		)
 		(uuid "cbbd1c0d-65ec-423c-8809-0e5a6652341c")
+	)
+	(junction
+		(at 143.51 111.76)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e8c7d6dd-e43c-4fa5-802a-9a606ab830e0")
 	)
 	(no_connect
 		(at 167.64 100.33)
@@ -104,6 +235,16 @@
 	)
 	(wire
 		(pts
+			(xy 144.78 102.87) (xy 143.51 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "12276edb-bbfe-4471-b655-48aace3dc203")
+	)
+	(wire
+		(pts
 			(xy 129.54 85.09) (xy 167.64 85.09)
 		)
 		(stroke
@@ -144,7 +285,17 @@
 	)
 	(wire
 		(pts
-			(xy 154.94 90.17) (xy 154.94 111.76)
+			(xy 143.51 111.76) (xy 167.64 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "79a1f6eb-d206-4cfc-b77d-a1920051524d")
+	)
+	(wire
+		(pts
+			(xy 138.43 90.17) (xy 138.43 111.76)
 		)
 		(stroke
 			(width 0)
@@ -174,7 +325,7 @@
 	)
 	(wire
 		(pts
-			(xy 154.94 111.76) (xy 167.64 111.76)
+			(xy 138.43 111.76) (xy 143.51 111.76)
 		)
 		(stroke
 			(width 0)
@@ -234,6 +385,16 @@
 	)
 	(wire
 		(pts
+			(xy 143.51 102.87) (xy 143.51 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b6ef4496-010f-4137-984a-344d3cac449c")
+	)
+	(wire
+		(pts
 			(xy 97.79 80.01) (xy 99.06 80.01)
 		)
 		(stroke
@@ -244,7 +405,7 @@
 	)
 	(wire
 		(pts
-			(xy 129.54 90.17) (xy 154.94 90.17)
+			(xy 129.54 90.17) (xy 138.43 90.17)
 		)
 		(stroke
 			(width 0)
@@ -281,6 +442,158 @@
 			(justify right bottom)
 		)
 		(uuid "ba38c0d6-b824-43cd-a4b7-28f03615228e")
+	)
+	(label "3V3"
+		(at 144.78 102.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d9f3410d-26f2-48aa-9f96-4e5eb29df66c")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 143.51 107.95 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b936680c-c2bb-48a9-8ce0-ab89be705f0d")
+		(property "Reference" "R101"
+			(at 146.05 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "9k31"
+			(at 146.05 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
+			(at 141.732 107.95 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 143.51 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 143.51 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "C270572"
+			(at 143.51 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 143.51 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer Part Number" "0402WGF9311TCE"
+			(at 143.51 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Active" "Y"
+			(at 143.51 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Basic or Extended Component" "Basic"
+			(at 143.51 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 143.51 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 143.51 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 143.51 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "144255f7-2ced-4085-925b-674767d1f823")
+		)
+		(pin "1"
+			(uuid "15540da4-c112-446b-b459-e788ca0c63da")
+		)
+		(instances
+			(project "1s3p_battery_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db"
+					(reference "R101")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(sheet
 		(at 99.06 72.39)
@@ -380,7 +693,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db"
-					(page "9")
+					(page "10")
 				)
 			)
 		)
@@ -453,7 +766,7 @@
 		(instances
 			(project "1s3p_battery_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db"
-					(page "8")
+					(page "9")
 				)
 			)
 		)
