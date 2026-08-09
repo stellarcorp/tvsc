@@ -147,16 +147,16 @@
 	(net 2 "GND")
 	(net 3 "/BOARD_LOAD_+")
 	(net 4 "/3V3")
-	(net 5 "Net-(U101-LX2)")
-	(net 6 "Net-(U101-LX1)")
-	(net 7 "Net-(U101-CFG1)")
+	(net 5 "Net-(U301-LX2)")
+	(net 6 "Net-(U301-LX1)")
+	(net 7 "Net-(U301-CFG1)")
 	(footprint "footprints:Nondescript_C_0603_1608Metric"
 		(layer "B.Cu")
 		(uuid "01f606b3-d122-4046-a91b-acb616b6f319")
 		(at 140.27 97.665 90)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
-		(property "Reference" "C101"
+		(property "Reference" "C301"
 			(at 0 1.43 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -501,7 +501,7 @@
 		(at 141.77 97.665 90)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
-		(property "Reference" "C102"
+		(property "Reference" "C302"
 			(at 0 1.43 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -846,7 +846,7 @@
 		(at 144.15 97.345 -90)
 		(descr "WSON, 10 Pin (http://www.ti.com/lit/gpn/tps63030#page=24), generated with kicad-footprint-generator ipc_noLead_generator.py")
 		(tags "WSON NoLead")
-		(property "Reference" "U101"
+		(property "Reference" "U301"
 			(at 0 2.2 90)
 			(layer "B.Fab")
 			(uuid "a243e3d1-36fd-473c-9272-4b645b0d40d4")
@@ -1242,7 +1242,7 @@
 			(size 0.825 0.25)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net 7 "Net-(U101-CFG1)")
+			(net 7 "Net-(U301-CFG1)")
 			(pinfunction "CFG1")
 			(pintype "input")
 			(uuid "59185fd0-5d18-43c2-b344-6cd3bad9d283")
@@ -1282,7 +1282,7 @@
 			(size 0.825 0.25)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net 5 "Net-(U101-LX2)")
+			(net 5 "Net-(U301-LX2)")
 			(pinfunction "LX2")
 			(pintype "input")
 			(uuid "f33884df-1ecb-408e-8beb-c5c0dff2055c")
@@ -1302,7 +1302,7 @@
 			(size 0.825 0.25)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net 6 "Net-(U101-LX1)")
+			(net 6 "Net-(U301-LX1)")
 			(pinfunction "LX1")
 			(pintype "input")
 			(uuid "b1f1850a-6d1b-4a58-8593-2c018a2a8d96")
@@ -1419,7 +1419,7 @@
 		(at 144.17 101.165 180)
 		(descr "Inductor SMD 1008 (2520 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: https://ecsxtal.com/store/pdf/ECS-MPI2520-SMD-POWER-INDUCTOR.pdf), generated with kicad-footprint-generator")
 		(tags "inductor")
-		(property "Reference" "L101"
+		(property "Reference" "L301"
 			(at 0 2.05 0)
 			(layer "B.SilkS")
 			(hide yes)
@@ -1646,7 +1646,7 @@
 			(size 1.25 2.2)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.2)
-			(net 5 "Net-(U101-LX2)")
+			(net 5 "Net-(U301-LX2)")
 			(pintype "passive")
 			(uuid "9d61f275-9b98-485d-b926-85fbcb2050b6")
 		)
@@ -1655,7 +1655,7 @@
 			(size 1.25 2.2)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.2)
-			(net 6 "Net-(U101-LX1)")
+			(net 6 "Net-(U301-LX1)")
 			(pintype "passive")
 			(uuid "d345157a-8f7e-45b6-a4dc-eacf3bc0caea")
 		)
@@ -1678,7 +1678,7 @@
 		(at 148.9 98.495)
 		(descr "Resistor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
-		(property "Reference" "R102"
+		(property "Reference" "R302"
 			(at 0 1.65 0)
 			(layer "B.SilkS")
 			(hide yes)
@@ -1937,7 +1937,7 @@
 		(at 146.4 97.765 90)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
-		(property "Reference" "C103"
+		(property "Reference" "C303"
 			(at 0 1.43 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -2282,7 +2282,7 @@
 		(at 144.67 94.965)
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
-		(property "Reference" "R101"
+		(property "Reference" "R301"
 			(at 0 1.17 0)
 			(layer "B.SilkS")
 			(hide yes)
@@ -2587,7 +2587,7 @@
 			(size 0.54 0.64)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net 7 "Net-(U101-CFG1)")
+			(net 7 "Net-(U301-CFG1)")
 			(pintype "passive")
 			(uuid "152354d4-323f-49d7-85a2-7a867e711a26")
 		)
@@ -2986,7 +2986,7 @@
 	)
 	(zone
 		(net 5)
-		(net_name "Net-(U101-LX2)")
+		(net_name "Net-(U301-LX2)")
 		(layer "B.Cu")
 		(uuid "2e9db936-cdf4-4529-9e3e-25d06636224e")
 		(hatch edge 0.5)
@@ -3157,7 +3157,7 @@
 	)
 	(zone
 		(net 6)
-		(net_name "Net-(U101-LX1)")
+		(net_name "Net-(U301-LX1)")
 		(layer "B.Cu")
 		(uuid "6dd085e7-499c-44c3-b51a-8a46ef45c5e1")
 		(hatch edge 0.5)

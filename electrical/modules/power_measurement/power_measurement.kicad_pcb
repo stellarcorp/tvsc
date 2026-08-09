@@ -148,7 +148,7 @@
 	(net 3 "/3V3")
 	(net 4 "/I2C_SCL")
 	(net 5 "/I2C_SDA")
-	(net 6 "Net-(U101-SLOW)")
+	(net 6 "Net-(U401-SLOW)")
 	(net 7 "/SENSE_3_+")
 	(net 8 "/SENSE_3_-")
 	(net 9 "/SENSE_2_-")
@@ -161,7 +161,7 @@
 		(at 145.98 102.94 -90)
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
-		(property "Reference" "C101"
+		(property "Reference" "C401"
 			(at 0 1.16 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -478,7 +478,7 @@
 		(at 145.23 99.94)
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
-		(property "Reference" "R101"
+		(property "Reference" "R401"
 			(at 0 1.17 0)
 			(layer "B.SilkS")
 			(hide yes)
@@ -792,7 +792,7 @@
 			(size 0.54 0.64)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net 6 "Net-(U101-SLOW)")
+			(net 6 "Net-(U401-SLOW)")
 			(pintype "passive")
 			(uuid "81e6e41e-a89a-4b4e-8e69-bb24a0ec033d")
 		)
@@ -815,7 +815,7 @@
 		(at 143.185 99.1225 90)
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
-		(property "Reference" "C102"
+		(property "Reference" "C402"
 			(at 0 1.16 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -1132,7 +1132,7 @@
 		(at 142.825 102.7325 180)
 		(descr "UQFN, 16 Pin (http://ww1.microchip.com/downloads/en/DeviceDoc/16L_UQFN_4x4x0_5mm_JQ_C04257A.pdf), generated with kicad-footprint-generator ipc_noLead_generator.py")
 		(tags "UQFN NoLead")
-		(property "Reference" "U101"
+		(property "Reference" "U401"
 			(at 0 3.3 0)
 			(layer "B.SilkS")
 			(hide yes)
@@ -1649,7 +1649,7 @@
 			(size 0.825 0.3)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net 6 "Net-(U101-SLOW)")
+			(net 6 "Net-(U401-SLOW)")
 			(pinfunction "SLOW")
 			(pintype "input")
 			(uuid "b1025a9f-d8cb-4f13-8cf1-00b0451d8201")

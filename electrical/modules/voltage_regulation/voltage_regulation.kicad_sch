@@ -1457,7 +1457,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0d28c3e8-11cf-46cb-8e72-de43bb39b0eb")
-		(property "Reference" "L701"
+		(property "Reference" "L301"
 			(at 83.82 62.2299 0)
 			(effects
 				(font
@@ -1581,15 +1581,15 @@
 			(uuid "8374f5cc-fca8-476a-a1b6-a725e69d2ddc")
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/64470299-6c65-479c-8ce7-e6a986c7fce1"
-					(reference "L701")
+			(project "core_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/64470299-6c65-479c-8ce7-e6a986c7fce1"
+					(reference "L301")
 					(unit 1)
 				)
 			)
 			(project "voltage_regulation"
 				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
-					(reference "L101")
+					(reference "L301")
 					(unit 1)
 				)
 			)
@@ -1604,7 +1604,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "157f5677-f2e2-4c5b-abcb-cce2df149f17")
-		(property "Reference" "U701"
+		(property "Reference" "U301"
 			(at 96.52 40.64 0)
 			(effects
 				(font
@@ -1753,15 +1753,15 @@
 			(uuid "35660d9d-9127-48ea-9d0f-150374e9b510")
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/64470299-6c65-479c-8ce7-e6a986c7fce1"
-					(reference "U701")
+			(project "core_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/64470299-6c65-479c-8ce7-e6a986c7fce1"
+					(reference "U301")
 					(unit 1)
 				)
 			)
 			(project "voltage_regulation"
 				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
-					(reference "U101")
+					(reference "U301")
 					(unit 1)
 				)
 			)
@@ -1776,7 +1776,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "244426e2-9785-4434-ae0a-5174671bae31")
-		(property "Reference" "R701"
+		(property "Reference" "R301"
 			(at 110.49 53.34 90)
 			(effects
 				(font
@@ -1898,15 +1898,15 @@
 			(uuid "62cec33e-dc87-4890-9de1-221f5612fd7c")
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/64470299-6c65-479c-8ce7-e6a986c7fce1"
-					(reference "R701")
+			(project "core_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/64470299-6c65-479c-8ce7-e6a986c7fce1"
+					(reference "R301")
 					(unit 1)
 				)
 			)
 			(project "voltage_regulation"
 				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
-					(reference "R101")
+					(reference "R301")
 					(unit 1)
 				)
 			)
@@ -1922,7 +1922,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "588803f9-ec9c-4f50-92fa-d66f17087809")
-		(property "Reference" "R702"
+		(property "Reference" "R302"
 			(at 147.955 51.4349 90)
 			(effects
 				(font
@@ -2046,15 +2046,15 @@
 			(uuid "1a04cf90-f64b-48dc-a5fb-eb1b65377e08")
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/64470299-6c65-479c-8ce7-e6a986c7fce1"
-					(reference "R702")
+			(project "core_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/64470299-6c65-479c-8ce7-e6a986c7fce1"
+					(reference "R302")
 					(unit 1)
 				)
 			)
 			(project "voltage_regulation"
 				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
-					(reference "R102")
+					(reference "R302")
 					(unit 1)
 				)
 			)
@@ -2069,7 +2069,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "805f3d2c-d0f5-46a8-b149-68c4691ab56c")
-		(property "Reference" "#PWR0701"
+		(property "Reference" "#PWR0301"
 			(at 96.52 91.44 0)
 			(effects
 				(font
@@ -2117,15 +2117,15 @@
 			(uuid "e5a01c36-5953-45d7-9c0c-dbb30bccc073")
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/64470299-6c65-479c-8ce7-e6a986c7fce1"
-					(reference "#PWR0701")
+			(project "core_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/64470299-6c65-479c-8ce7-e6a986c7fce1"
+					(reference "#PWR0301")
 					(unit 1)
 				)
 			)
 			(project "voltage_regulation"
 				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
-					(reference "#PWR0101")
+					(reference "#PWR0301")
 					(unit 1)
 				)
 			)
@@ -2141,7 +2141,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a156a996-988a-46e0-9368-98f9b89d0537")
-		(property "Reference" "#FLG0701"
+		(property "Reference" "#FLG0301"
 			(at 228.6 46.355 0)
 			(effects
 				(font
@@ -2189,15 +2189,15 @@
 			(uuid "0da7d3de-7226-4cbc-9f24-a422e6053737")
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/64470299-6c65-479c-8ce7-e6a986c7fce1"
-					(reference "#FLG0701")
+			(project "core_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/64470299-6c65-479c-8ce7-e6a986c7fce1"
+					(reference "#FLG0301")
 					(unit 1)
 				)
 			)
 			(project "voltage_regulation"
 				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
-					(reference "#FLG0101")
+					(reference "#FLG0301")
 					(unit 1)
 				)
 			)
@@ -2213,7 +2213,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "aac7586b-593b-48d6-9e28-45cad0930004")
-		(property "Reference" "C701"
+		(property "Reference" "C301"
 			(at 62.23 54.61 0)
 			(effects
 				(font
@@ -2355,15 +2355,15 @@
 			(uuid "53f08ee4-7415-4c53-b2ef-f89a76cbddac")
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/64470299-6c65-479c-8ce7-e6a986c7fce1"
-					(reference "C701")
+			(project "core_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/64470299-6c65-479c-8ce7-e6a986c7fce1"
+					(reference "C301")
 					(unit 1)
 				)
 			)
 			(project "voltage_regulation"
 				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
-					(reference "C101")
+					(reference "C301")
 					(unit 1)
 				)
 			)
@@ -2379,7 +2379,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "d3c432cd-f319-45cd-875b-9b7a48f88c8e")
-		(property "Reference" "C702"
+		(property "Reference" "C302"
 			(at 72.39 54.61 0)
 			(effects
 				(font
@@ -2521,15 +2521,15 @@
 			(uuid "b86bcb8b-5a38-47af-9dd1-fd33f74a2318")
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/64470299-6c65-479c-8ce7-e6a986c7fce1"
-					(reference "C702")
+			(project "core_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/64470299-6c65-479c-8ce7-e6a986c7fce1"
+					(reference "C302")
 					(unit 1)
 				)
 			)
 			(project "voltage_regulation"
 				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
-					(reference "C102")
+					(reference "C302")
 					(unit 1)
 				)
 			)
@@ -2544,7 +2544,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "e860cc90-80e9-4ec8-b20c-0958dc861ab7")
-		(property "Reference" "#PWR0702"
+		(property "Reference" "#PWR0302"
 			(at 114.3 76.2 0)
 			(effects
 				(font
@@ -2592,15 +2592,15 @@
 			(uuid "2187b4fa-ac6a-48da-8bd1-7d7484b7510d")
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/64470299-6c65-479c-8ce7-e6a986c7fce1"
-					(reference "#PWR0702")
+			(project "core_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/64470299-6c65-479c-8ce7-e6a986c7fce1"
+					(reference "#PWR0302")
 					(unit 1)
 				)
 			)
 			(project "voltage_regulation"
 				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
-					(reference "#PWR0102")
+					(reference "#PWR0302")
 					(unit 1)
 				)
 			)
@@ -2616,7 +2616,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ff17705f-59a6-4858-a0e8-e1480e11ff18")
-		(property "Reference" "C703"
+		(property "Reference" "C303"
 			(at 128.27 54.61 0)
 			(effects
 				(font
@@ -2758,15 +2758,15 @@
 			(uuid "451c39ff-2fcf-4aa7-9129-924a06005785")
 		)
 		(instances
-			(project "1s3p_battery_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/e0e5088b-2fa2-4f34-adc6-d0f708744404/64470299-6c65-479c-8ce7-e6a986c7fce1"
-					(reference "C703")
+			(project "core_board"
+				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/64470299-6c65-479c-8ce7-e6a986c7fce1"
+					(reference "C303")
 					(unit 1)
 				)
 			)
 			(project "voltage_regulation"
 				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
-					(reference "C103")
+					(reference "C303")
 					(unit 1)
 				)
 			)
