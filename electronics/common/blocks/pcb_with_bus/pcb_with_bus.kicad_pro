@@ -76,7 +76,12 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        [
+          "via_dangling|114312500|95387500|28246fca-14c5-4a3c-a3d8-97e28a307d08|00000000-0000-0000-0000-000000000000",
+          "Intentionally unconnected via to be connected when this design block is used."
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -257,7 +262,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": ""
+      "sch_revision": "${PCB_VERSION}"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -491,7 +496,7 @@
       "similar_labels": "warning",
       "similar_power": "warning",
       "simulation_model_issue": "ignore",
-      "single_global_label": "ignore",
+      "single_global_label": "warning",
       "stacked_pin_name": "warning",
       "unannotated": "error",
       "unconnected_wire_endpoint": "warning",
@@ -673,21 +678,28 @@
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "pcb_with_bus.kicad_sch",
-        "name": "pcb_with_bus",
-        "uuid": "00000000-0000-0000-0000-000000000000"
+        "filename": "main.kicad_sch",
+        "name": "main",
+        "uuid": "b33064ae-868c-465b-af7e-738aac2dff25"
       }
     ],
-    "used_designators": "",
+    "used_designators": "#FLG201,R202,PCB202,J203-204,D202",
     "variants": []
   },
   "sheets": [
     [
-      "e6438119-610d-4c6f-962a-4263de270d8c",
-      "Root"
+      "b33064ae-868c-465b-af7e-738aac2dff25",
+      "main"
+    ],
+    [
+      "457025f3-db34-4770-9275-b20f44116142",
+      "PCB with bus"
     ]
   ],
-  "text_variables": {},
+  "text_variables": {
+    "PCB_NAME": "PCB with system bus headers",
+    "PCB_VERSION": "Defiant Dumpling"
+  },
   "tuning_profiles": {
     "meta": {
       "version": 0

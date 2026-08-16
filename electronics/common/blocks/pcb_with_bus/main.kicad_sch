@@ -1,0 +1,276 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "68f2c95e-af2a-4d0a-b6dc-809c460a98f2")
+	(paper "USLetter")
+	(title_block
+		(title "${PCB_NAME}")
+		(date "2026-08-16")
+		(rev "${PCB_VERSION}")
+		(company "TVSC")
+	)
+	(lib_symbols)
+	(no_connect
+		(at 158.75 100.33)
+		(uuid "1a9865a2-3e16-4cd6-b10c-fea43462be2b")
+	)
+	(no_connect
+		(at 105.41 74.93)
+		(uuid "226bd574-8405-4d12-b7ff-e7f5c7381579")
+	)
+	(no_connect
+		(at 158.75 74.93)
+		(uuid "25b79cf1-52ec-460a-811a-1a481c4039d8")
+	)
+	(no_connect
+		(at 105.41 95.25)
+		(uuid "3f84ba1b-4dc8-4482-908d-edbb6c5008a7")
+	)
+	(no_connect
+		(at 105.41 77.47)
+		(uuid "60d37bc0-21ea-4c3e-a029-1acfa89c875e")
+	)
+	(no_connect
+		(at 158.75 97.79)
+		(uuid "6e9db2c9-dd95-4ecf-818c-58ff608dc2f5")
+	)
+	(no_connect
+		(at 158.75 102.87)
+		(uuid "872a0829-33ac-462a-a1b4-ab0c50f5cb05")
+	)
+	(no_connect
+		(at 158.75 82.55)
+		(uuid "a4bba26e-fc7a-4d43-a0f8-64ceee389e6e")
+	)
+	(no_connect
+		(at 158.75 80.01)
+		(uuid "aa6fb5f3-88bb-4b68-833f-866ed298b87e")
+	)
+	(no_connect
+		(at 105.41 64.77)
+		(uuid "c6f20218-7a50-4d01-bc0d-092dc9bf8be3")
+	)
+	(no_connect
+		(at 158.75 95.25)
+		(uuid "cd43a996-99a6-4519-b9cf-2b7db500efe1")
+	)
+	(no_connect
+		(at 105.41 67.31)
+		(uuid "cffbf1f1-cb3b-4b8d-8f79-a98b6e7bee43")
+	)
+	(no_connect
+		(at 158.75 77.47)
+		(uuid "d84118e5-12b6-4b24-b5e2-2481939d029a")
+	)
+	(no_connect
+		(at 105.41 80.01)
+		(uuid "e39c73f9-aec0-45b2-bcc0-86ebc95c0911")
+	)
+	(no_connect
+		(at 105.41 82.55)
+		(uuid "e3a90a5b-4226-4810-896a-2be119bc08f6")
+	)
+	(sheet
+		(at 105.41 60.96)
+		(size 53.34 46.99)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "457025f3-db34-4770-9275-b20f44116142")
+		(property "Sheetname" "PCB with bus"
+			(at 105.41 60.2484 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "pcb_with_bus.kicad_sch"
+			(at 105.41 108.5346 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "SWCLK_CTRL" input
+			(at 158.75 77.47 0)
+			(uuid "11efef06-035f-4786-b624-6117ae9ed670")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VSOLAR" input
+			(at 105.41 64.77 180)
+			(uuid "1417dc7e-8e69-4ac6-ba12-5adf095b9168")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "NRST_CTRL" input
+			(at 158.75 74.93 0)
+			(uuid "4372bbe4-eec0-452c-83ca-fcc11757a0e7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SWDIO" input
+			(at 105.41 80.01 180)
+			(uuid "c23cb4df-ea68-4d1d-a036-8a94d9582be1")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "CANL_UPSTREAM" input
+			(at 158.75 100.33 0)
+			(uuid "b53a617a-9f30-426d-a2a0-fc8afb4fe218")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "CANH_UPSTREAM" input
+			(at 158.75 95.25 0)
+			(uuid "f25c8d9d-2dc0-468f-ac73-c096807074e9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "NRST" input
+			(at 105.41 74.93 180)
+			(uuid "8043f121-63e9-4f29-b6be-0b3ddacb0e3a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SWO" input
+			(at 105.41 77.47 180)
+			(uuid "913826f4-1197-4de4-a65b-114b65459870")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DEBUG_LED" input
+			(at 105.41 95.25 180)
+			(uuid "254c9b6c-4114-453d-bcf2-6fcfd44531a8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SWCLK" input
+			(at 105.41 82.55 180)
+			(uuid "13c1aeec-d965-416f-b161-5b6763a61aad")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SWDIO_CTRL" input
+			(at 158.75 80.01 0)
+			(uuid "680db837-24ad-4d85-9a88-e65e7ba36eae")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VBUS" input
+			(at 105.41 67.31 180)
+			(uuid "6c4dea7a-639e-4078-a018-4a243fc46624")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "CANH_DOWNSTREAM" input
+			(at 158.75 97.79 0)
+			(uuid "72be2b03-cdea-485e-8925-7cca206e415c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "CANL_DOWNSTREAM" input
+			(at 158.75 102.87 0)
+			(uuid "0b0c97e5-c9a0-49ec-8276-870b8428a993")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SWO_CTRL" input
+			(at 158.75 82.55 0)
+			(uuid "66783c9f-5e10-44ff-81ff-3c785d6bf128")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "pcb_with_bus"
+				(path "/b33064ae-868c-465b-af7e-738aac2dff25"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
