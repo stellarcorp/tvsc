@@ -1,0 +1,108 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "7493ae91-72a4-413c-92dc-27f4ab435567")
+	(paper "USLetter")
+	(title_block
+		(title "${PCB_NAME}")
+		(date "2026-08-16")
+		(rev "${PCB_VERSION}")
+		(company "TVSC")
+	)
+	(lib_symbols)
+	(no_connect
+		(at 160.02 91.44)
+		(uuid "337636ef-ada7-4d40-9749-ce03615d65da")
+	)
+	(no_connect
+		(at 160.02 82.55)
+		(uuid "4490d3d4-e25e-45ba-93fe-b7cab9ab96d5")
+	)
+	(no_connect
+		(at 121.92 82.55)
+		(uuid "ea422cfd-c62a-4f24-a8be-7a5d5aaf393e")
+	)
+	(sheet
+		(at 121.92 77.47)
+		(size 38.1 21.59)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "2e3bd425-bc2a-4575-ae86-3cfba4ed8b03")
+		(property "Sheetname" "Voltage Regulation"
+			(at 121.92 76.7584 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "voltage_regulation.kicad_sch"
+			(at 121.92 99.6446 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "BOARD_LOAD_+" output
+			(at 160.02 91.44 0)
+			(uuid "a5d76d1a-0549-4aad-9014-a5385956e9f8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VBUS" input
+			(at 121.92 82.55 180)
+			(uuid "3691782d-302d-42bf-914b-dd2c34c48e89")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "3V3" output
+			(at 160.02 82.55 0)
+			(uuid "ac2f8d6d-d42d-466e-95b7-d05083d6f5b2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "voltage_regulation"
+				(path "/c5d96ab9-5a29-4a9c-8454-97d11b1b2425"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
