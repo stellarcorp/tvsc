@@ -1,0 +1,164 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "1f8670c0-015d-47c7-b18d-1eddd9926fb5")
+	(paper "USLetter")
+	(title_block
+		(title "${PCB_NAME}")
+		(date "2026-08-16")
+		(rev "${PCB_VERSION}")
+		(company "TVSC")
+	)
+	(lib_symbols)
+	(no_connect
+		(at 128.27 83.82)
+		(uuid "39ebf2a8-310d-489c-8d25-377c5659546b")
+	)
+	(no_connect
+		(at 163.83 72.39)
+		(uuid "39ee7244-a161-489b-aeba-4c6ef07f0ac9")
+	)
+	(no_connect
+		(at 128.27 78.74)
+		(uuid "58a201a8-a360-4aed-9a55-201c4f57db77")
+	)
+	(no_connect
+		(at 128.27 81.28)
+		(uuid "6faa834e-16c2-405f-b0e1-c5028ee51858")
+	)
+	(no_connect
+		(at 128.27 86.36)
+		(uuid "aa03a273-95e8-4ee6-bf0b-cb5315df0bf1")
+	)
+	(no_connect
+		(at 128.27 72.39)
+		(uuid "d866157e-1deb-4fd6-9319-b8b76ceedf8e")
+	)
+	(no_connect
+		(at 163.83 74.93)
+		(uuid "ee447723-284f-4013-82ba-0548482a7d29")
+	)
+	(sheet
+		(at 128.27 68.58)
+		(size 35.56 21.59)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "6624f817-2a4c-49e9-9ded-3abf8ad53cb4")
+		(property "Sheetname" "can_bus"
+			(at 128.27 67.8684 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "can_bus.kicad_sch"
+			(at 128.27 90.7546 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "CAN_TX" bidirectional
+			(at 128.27 81.28 180)
+			(uuid "c2b6ffbb-7959-4ba4-acbe-29683e7e83e6")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "CAN_RX" bidirectional
+			(at 128.27 78.74 180)
+			(uuid "12622b4b-9019-4a22-805f-3263c4166c0f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "CANL" bidirectional
+			(at 163.83 74.93 0)
+			(uuid "9fbf6ac0-6f76-4f38-b549-8d0a9e1ab9f0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "3V3" input
+			(at 128.27 72.39 180)
+			(uuid "933c8fc4-696b-4a39-91b1-ee1ad819a3fe")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "CAN_SHUTDOWN" input
+			(at 128.27 83.82 180)
+			(uuid "c446cf4d-b960-4625-821f-11ef18755cee")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "CANH" bidirectional
+			(at 163.83 72.39 0)
+			(uuid "fff415a8-ed92-4fd6-8b01-c0788f66e62a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "CAN_SILENT" input
+			(at 128.27 86.36 180)
+			(uuid "46fd9655-d5aa-4d5b-8ecd-f0c3d4e82f87")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "can_bus"
+				(path "/622236e2-ab36-42a2-8ac9-3e930ba28da8"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
