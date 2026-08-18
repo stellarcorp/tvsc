@@ -1,0 +1,206 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "3ad08111-203f-4bed-a0b2-23f2564e05d1")
+	(paper "USLetter")
+	(title_block
+		(title "${PCB_NAME}")
+		(date "2026-08-16")
+		(rev "${PCB_VERSION}")
+		(company "TVSC")
+	)
+	(lib_symbols)
+	(no_connect
+		(at 123.19 99.06)
+		(uuid "1dabedf7-657f-4905-9db1-2cbc11a68fab")
+	)
+	(no_connect
+		(at 123.19 92.71)
+		(uuid "241cfc2a-90fd-4970-bb0e-a2229b9f53ef")
+	)
+	(no_connect
+		(at 123.19 101.6)
+		(uuid "42f11743-14e6-44cf-9cb3-756f983af1f0")
+	)
+	(no_connect
+		(at 160.02 86.36)
+		(uuid "586487d0-8b6a-4779-8357-a7c60621a2d9")
+	)
+	(no_connect
+		(at 160.02 83.82)
+		(uuid "7019a2ca-e997-496a-b22f-61a42e9d5a27")
+	)
+	(no_connect
+		(at 123.19 83.82)
+		(uuid "83300805-cddb-4337-9abb-1ae04a7f505f")
+	)
+	(no_connect
+		(at 123.19 105.41)
+		(uuid "b94b505f-19bb-4ca9-9f4c-bc7a7e52af3f")
+	)
+	(no_connect
+		(at 123.19 88.9)
+		(uuid "cf690187-b2da-4e0e-8781-895fd70697ef")
+	)
+	(no_connect
+		(at 123.19 95.25)
+		(uuid "d3b59caa-f4ed-4cd2-9c00-4be6055b2aea")
+	)
+	(no_connect
+		(at 123.19 107.95)
+		(uuid "e41f72d7-26b4-422e-bcf4-6255a8d88484")
+	)
+	(sheet
+		(at 123.19 77.47)
+		(size 36.83 35.56)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "b46f3a66-c5eb-49e8-b6df-1ac3fe8abb32")
+		(property "Sheetname" "power_measurement"
+			(at 123.19 76.7584 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "power_measurement.kicad_sch"
+			(at 123.19 113.6146 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "SENSE_3_+" input
+			(at 123.19 99.06 180)
+			(uuid "32b6d2fd-1250-482b-a4af-a8ff60fa2e82")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SENSE_4_+" input
+			(at 123.19 105.41 180)
+			(uuid "b912c277-658f-4b1e-8772-e2347dfa85c5")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SENSE_4_-" input
+			(at 123.19 107.95 180)
+			(uuid "961030da-848c-495f-82cc-c858b3c12dfa")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "3V3" input
+			(at 123.19 83.82 180)
+			(uuid "1846a2e1-61c7-4406-b304-a76a77599dfd")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SENSE_2_+" input
+			(at 123.19 92.71 180)
+			(uuid "48769e0c-5484-47ef-a212-800972ab3726")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SENSE_3_-" input
+			(at 123.19 101.6 180)
+			(uuid "5a26679c-a440-430e-8031-da4224658ad8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "BOARD_LOAD_+" input
+			(at 123.19 88.9 180)
+			(uuid "3f5598c5-99ee-4135-92fd-0abb3d530899")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "I2C_SDA" bidirectional
+			(at 160.02 86.36 0)
+			(uuid "cf9881cd-6f52-4fd2-a576-7573e982eab5")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SENSE_2_-" input
+			(at 123.19 95.25 180)
+			(uuid "f3ae35e9-307c-4593-b41e-6ed803c52a74")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "I2C_SCL" input
+			(at 160.02 83.82 0)
+			(uuid "29a15290-c609-49e0-b5f2-e229f99f1d43")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "power_measurement"
+				(path "/fa1a47ee-6efe-45dd-a018-8accaf81ef9e"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
