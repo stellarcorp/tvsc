@@ -1,12 +1,18 @@
 (kicad_pcb
-	(version 20241229)
+	(version 20260206)
 	(generator "pcbnew")
-	(generator_version "9.0")
+	(generator_version "10.0")
 	(general
 		(thickness 1.6)
 		(legacy_teardrops no)
 	)
-	(paper "A4")
+	(paper "USLetter")
+	(title_block
+		(title "${PCB_NAME}")
+		(date "2026-08-16")
+		(rev "${PCB_VERSION}")
+		(company "TVSC")
+	)
 	(layers
 		(0 "F.Cu" signal)
 		(4 "In1.Cu" signal)
@@ -99,7 +105,20 @@
 		)
 		(pad_to_mask_clearance 0)
 		(allow_soldermask_bridges_in_footprints no)
-		(tenting front back)
+		(tenting
+			(front yes)
+			(back yes)
+		)
+		(covering
+			(front no)
+			(back no)
+		)
+		(plugging
+			(front no)
+			(back no)
+		)
+		(capping no)
+		(filling no)
 		(aux_axis_origin 138.8 87)
 		(grid_origin 138.8 87)
 		(pcbplotparams
@@ -110,15 +129,12 @@
 			(usegerberattributes yes)
 			(usegerberadvancedattributes yes)
 			(creategerberjobfile yes)
-			(dashed_line_dash_ratio 12.000000)
-			(dashed_line_gap_ratio 3.000000)
+			(dashed_line_dash_ratio 12)
+			(dashed_line_gap_ratio 3)
 			(svgprecision 4)
 			(plotframeref no)
 			(mode 1)
 			(useauxorigin no)
-			(hpglpennumber 1)
-			(hpglpenspeed 20)
-			(hpglpendiameter 15.000000)
 			(pdf_front_fp_property_popups yes)
 			(pdf_back_fp_property_popups yes)
 			(pdf_metadata yes)
@@ -142,16 +158,8 @@
 			(outputdirectory "")
 		)
 	)
-	(net 0 "")
-	(net 1 "/3V3")
-	(net 2 "Net-(J601-T_SWCLK)")
-	(net 3 "GND")
-	(net 4 "/SWO")
-	(net 5 "Net-(J601-T_SWDIO)")
-	(net 6 "Net-(J601-T_NRST)")
-	(net 7 "/SWCLK")
-	(net 8 "/NRST")
-	(net 9 "/SWDIO")
+	(property "PCB_NAME" "Design block for ST-Link using TagConnect header")
+	(property "PCB_VERSION" "Defiant Dumpling")
 	(footprint "Connector:Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical"
 		(layer "F.Cu")
 		(uuid "3a60cded-bbfc-45f3-acc3-cfd89ed9d98c")
@@ -311,10 +319,17 @@
 				)
 			)
 		)
-		(path "/5a1321e8-c3ef-4996-9e9e-ee6cada0df46")
-		(sheetname "/")
+		(path "/18601e55-5109-46e0-ab5a-5b30005ba3a1/5a1321e8-c3ef-4996-9e9e-ee6cada0df46")
+		(sheetname "/st_link/")
 		(sheetfile "st_link.kicad_sch")
-		(attr exclude_from_pos_files exclude_from_bom)
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2" "3" "4" "5" "6" "7" "8")
+			)
+		)
+		(attr exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -1.905 1.27)
 			(end -1.905 0.635)
@@ -422,17 +437,17 @@
 			(at -1.27 0.635 270)
 			(size 0.7874 0.7874)
 			(layers "F.Cu" "F.Mask")
-			(net 1 "/3V3")
-			(pinfunction "T_VCC")
-			(pintype "power_in")
+			(net "/st_link/3V3")
+			(pinfunction "T_VCC_1")
+			(pintype "power_in+no_connect")
 			(uuid "35c1dff4-e5c4-4f64-af80-8f83ecf856e3")
 		)
 		(pad "2" connect circle
 			(at -1.27 -0.635 270)
 			(size 0.7874 0.7874)
 			(layers "F.Cu" "F.Mask")
-			(net 5 "Net-(J601-T_SWDIO)")
-			(pinfunction "T_SWDIO")
+			(net "Net-(J601-T_SWDIO)")
+			(pinfunction "T_SWDIO_2")
 			(pintype "bidirectional")
 			(uuid "85cf1f54-0732-4718-853b-a7e769f579b2")
 		)
@@ -440,8 +455,8 @@
 			(at 0 0.635 270)
 			(size 0.7874 0.7874)
 			(layers "F.Cu" "F.Mask")
-			(net 6 "Net-(J601-T_NRST)")
-			(pinfunction "T_NRST")
+			(net "Net-(J601-T_NRST)")
+			(pinfunction "T_NRST_3")
 			(pintype "open_collector")
 			(uuid "a7d3c077-ae3a-45d7-90e4-0ac0a5a5ac11")
 		)
@@ -449,8 +464,8 @@
 			(at 0 -0.635 270)
 			(size 0.7874 0.7874)
 			(layers "F.Cu" "F.Mask")
-			(net 2 "Net-(J601-T_SWCLK)")
-			(pinfunction "T_SWCLK")
+			(net "Net-(J601-T_SWCLK)")
+			(pinfunction "T_SWCLK_4")
 			(pintype "output")
 			(uuid "4143023a-0790-403a-b6c7-2f835869adf9")
 		)
@@ -458,8 +473,8 @@
 			(at 1.27 0.635 270)
 			(size 0.7874 0.7874)
 			(layers "F.Cu" "F.Mask")
-			(net 3 "GND")
-			(pinfunction "GND")
+			(net "GND")
+			(pinfunction "GND_5")
 			(pintype "power_in")
 			(uuid "63ee0504-ae48-41a1-b4fd-a77a1c42d1b7")
 		)
@@ -467,14 +482,12 @@
 			(at 1.27 -0.635 270)
 			(size 0.7874 0.7874)
 			(layers "F.Cu" "F.Mask")
-			(net 4 "/SWO")
-			(pinfunction "T_SWO")
-			(pintype "input")
+			(net "/st_link/SWO")
+			(pinfunction "T_SWO_6")
+			(pintype "input+no_connect")
 			(uuid "8a8fbdee-70de-4a28-b488-e97568bb0e78")
 		)
 		(zone
-			(net 0)
-			(net_name "")
 			(layer "F.Cu")
 			(uuid "44c0d515-c76c-4408-936f-4ab1cb77c8eb")
 			(hatch full 0.508)
@@ -482,7 +495,6 @@
 				(clearance 0)
 			)
 			(min_thickness 0.254)
-			(filled_areas_thickness no)
 			(keepout
 				(tracks allowed)
 				(vias not_allowed)
@@ -497,6 +509,7 @@
 			(fill
 				(thermal_gap 0.508)
 				(thermal_bridge_width 0.508)
+				(island_removal_mode 0)
 			)
 			(polygon
 				(pts
@@ -535,7 +548,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" ""
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -664,10 +677,17 @@
 			)
 		)
 		(property ki_fp_filters "R_*")
-		(path "/747f34b3-c461-49e9-b163-edf2254d7db7")
-		(sheetname "/")
+		(path "/18601e55-5109-46e0-ab5a-5b30005ba3a1/747f34b3-c461-49e9-b163-edf2254d7db7")
+		(sheetname "/st_link/")
 		(sheetfile "st_link.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -0.075 0.38)
 			(end 0.075 0.38)
@@ -804,8 +824,8 @@
 			(size 0.54 0.64)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net 9 "/SWDIO")
-			(pintype "passive")
+			(net "/st_link/SWDIO")
+			(pintype "passive+no_connect")
 			(uuid "6f9330bb-e02e-4b4f-9781-ad94467af61d")
 		)
 		(pad "2" smd roundrect
@@ -813,12 +833,12 @@
 			(size 0.54 0.64)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net 5 "Net-(J601-T_SWDIO)")
+			(net "Net-(J601-T_SWDIO)")
 			(pintype "passive")
 			(uuid "7fb6442d-f45d-49f3-96e4-3acbcb89542a")
 		)
 		(embedded_fonts no)
-		(model "${KICAD6_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.wrl"
+		(model "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -859,7 +879,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" ""
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -988,10 +1008,17 @@
 			)
 		)
 		(property ki_fp_filters "R_*")
-		(path "/56c8896f-dfbc-4389-bbb2-3a8849f0e2e5")
-		(sheetname "/")
+		(path "/18601e55-5109-46e0-ab5a-5b30005ba3a1/56c8896f-dfbc-4389-bbb2-3a8849f0e2e5")
+		(sheetname "/st_link/")
 		(sheetfile "st_link.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -0.075 0.38)
 			(end 0.075 0.38)
@@ -1128,8 +1155,8 @@
 			(size 0.54 0.64)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net 8 "/NRST")
-			(pintype "passive")
+			(net "/st_link/NRST")
+			(pintype "passive+no_connect")
 			(uuid "3810c608-dcf7-4b75-a051-17ef0030abf6")
 		)
 		(pad "2" smd roundrect
@@ -1137,12 +1164,12 @@
 			(size 0.54 0.64)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net 6 "Net-(J601-T_NRST)")
+			(net "Net-(J601-T_NRST)")
 			(pintype "passive")
 			(uuid "09de627e-d066-471d-a082-f184a051baa7")
 		)
 		(embedded_fonts no)
-		(model "${KICAD6_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.wrl"
+		(model "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -1183,7 +1210,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" ""
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -1312,10 +1339,17 @@
 			)
 		)
 		(property ki_fp_filters "R_*")
-		(path "/0ac881a0-a447-4782-925f-78298ca8228a")
-		(sheetname "/")
+		(path "/18601e55-5109-46e0-ab5a-5b30005ba3a1/0ac881a0-a447-4782-925f-78298ca8228a")
+		(sheetname "/st_link/")
 		(sheetfile "st_link.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -0.075 0.38)
 			(end 0.075 0.38)
@@ -1452,8 +1486,8 @@
 			(size 0.54 0.64)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net 7 "/SWCLK")
-			(pintype "passive")
+			(net "/st_link/SWCLK")
+			(pintype "passive+no_connect")
 			(uuid "7a2764c1-9b82-43e5-be29-93baaacf1781")
 		)
 		(pad "2" smd roundrect
@@ -1461,12 +1495,12 @@
 			(size 0.54 0.64)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net 2 "Net-(J601-T_SWCLK)")
+			(net "Net-(J601-T_SWCLK)")
 			(pintype "passive")
 			(uuid "8f03ca3e-5825-4433-a233-e8e078364eb5")
 		)
 		(embedded_fonts no)
-		(model "${KICAD6_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.wrl"
+		(model "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -1483,7 +1517,7 @@
 		(end 140.165 89.27)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 1)
+		(net "/st_link/3V3")
 		(uuid "aa7f3aa4-4153-4f38-81b0-25fcc53510bc")
 	)
 	(segment
@@ -1491,7 +1525,7 @@
 		(end 140.145 89.25)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 1)
+		(net "/st_link/3V3")
 		(uuid "eb886d48-a052-4cde-9452-5fb996998003")
 	)
 	(via
@@ -1500,7 +1534,17 @@
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
 		(free yes)
-		(net 1)
+		(capping no)
+		(covering
+			(front no)
+			(back no)
+		)
+		(plugging
+			(front no)
+			(back no)
+		)
+		(filling no)
+		(net "/st_link/3V3")
 		(uuid "cedcdbf2-276c-4e61-b21d-1a01a47866aa")
 	)
 	(segment
@@ -1508,7 +1552,7 @@
 		(end 142.15 90.54)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 2)
+		(net "Net-(J601-T_SWCLK)")
 		(uuid "121d59ed-eb46-4e30-927b-85c952181fd8")
 	)
 	(segment
@@ -1516,7 +1560,7 @@
 		(end 143.29 89.4)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 2)
+		(net "Net-(J601-T_SWCLK)")
 		(uuid "26aa4fd9-afe7-4529-8e0b-9450e3762941")
 	)
 	(segment
@@ -1524,7 +1568,7 @@
 		(end 140.155 91.8)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 3)
+		(net "GND")
 		(uuid "b0cefda9-3eb1-4e4b-988e-472e0c9d53a6")
 	)
 	(segment
@@ -1532,7 +1576,7 @@
 		(end 140.165 91.81)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 3)
+		(net "GND")
 		(uuid "ff9a181d-f5e9-45a1-adcb-1df21c41bea6")
 	)
 	(via
@@ -1541,7 +1585,17 @@
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
 		(free yes)
-		(net 3)
+		(capping no)
+		(covering
+			(front no)
+			(back no)
+		)
+		(plugging
+			(front no)
+			(back no)
+		)
+		(filling no)
+		(net "GND")
 		(uuid "c1b1c8a3-9847-4461-968c-3c54052eb25e")
 	)
 	(segment
@@ -1549,7 +1603,7 @@
 		(end 137.55 88)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 4)
+		(net "/st_link/SWO")
 		(uuid "286868ae-c341-45ed-a976-cdad733242ff")
 	)
 	(segment
@@ -1557,7 +1611,7 @@
 		(end 138.8 94.25)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 4)
+		(net "/st_link/SWO")
 		(uuid "2998c73f-98a1-42ed-960d-f060b0d481a6")
 	)
 	(segment
@@ -1565,7 +1619,7 @@
 		(end 139.3 86.25)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 4)
+		(net "/st_link/SWO")
 		(uuid "2b3a1526-75c0-45b9-992f-754268d13a50")
 	)
 	(segment
@@ -1573,7 +1627,7 @@
 		(end 143.3 93.5)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 4)
+		(net "/st_link/SWO")
 		(uuid "4d50b52a-8e37-456d-a02a-d50f89c048f4")
 	)
 	(segment
@@ -1581,7 +1635,7 @@
 		(end 143.3 92.5)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 4)
+		(net "/st_link/SWO")
 		(uuid "6c24da1d-c93c-49b9-84ac-82593ed92640")
 	)
 	(segment
@@ -1589,7 +1643,7 @@
 		(end 144.3 86.25)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 4)
+		(net "/st_link/SWO")
 		(uuid "d5711135-6e22-4e9c-acd6-a24fc083a793")
 	)
 	(segment
@@ -1597,7 +1651,7 @@
 		(end 142.61 91.81)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 4)
+		(net "/st_link/SWO")
 		(uuid "e9b3f65c-b6a3-4e7e-b31a-d58f6646e990")
 	)
 	(segment
@@ -1605,7 +1659,7 @@
 		(end 137.55 93)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 4)
+		(net "/st_link/SWO")
 		(uuid "fb31acb7-1d7d-4d36-bddc-394f6da9ec2d")
 	)
 	(segment
@@ -1613,7 +1667,7 @@
 		(end 142.55 94.25)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 4)
+		(net "/st_link/SWO")
 		(uuid "fd4bdb2f-cd26-47b0-aaad-349f50dd246b")
 	)
 	(segment
@@ -1621,7 +1675,7 @@
 		(end 142.305 88.4)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 5)
+		(net "Net-(J601-T_SWDIO)")
 		(uuid "29e84821-81c3-4dbc-9419-84beaf83e1ac")
 	)
 	(segment
@@ -1629,7 +1683,7 @@
 		(end 143.29 88.4)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 5)
+		(net "Net-(J601-T_SWDIO)")
 		(uuid "bb932d39-cb66-4649-879b-18fa1ca5ae48")
 	)
 	(segment
@@ -1637,7 +1691,7 @@
 		(end 139.300051 90.54)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 6)
+		(net "Net-(J601-T_NRST)")
 		(uuid "338879cd-44e5-40bc-bd5c-27092f15170e")
 	)
 	(segment
@@ -1645,7 +1699,7 @@
 		(end 140.25535 87.0047)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 6)
+		(net "Net-(J601-T_NRST)")
 		(uuid "46ae945a-295b-45df-bd28-33dd6cb9f94d")
 	)
 	(segment
@@ -1653,7 +1707,7 @@
 		(end 138.3 89.539949)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 6)
+		(net "Net-(J601-T_NRST)")
 		(uuid "51608844-5962-4126-829f-6b47e66b9806")
 	)
 	(segment
@@ -1661,7 +1715,7 @@
 		(end 142.8947 87.0047)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 6)
+		(net "Net-(J601-T_NRST)")
 		(uuid "d554db41-196c-49e4-9db3-8301b4955e84")
 	)
 	(segment
@@ -1669,7 +1723,7 @@
 		(end 143.29 87.4)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 6)
+		(net "Net-(J601-T_NRST)")
 		(uuid "db81a9b7-2851-435e-a906-f166adeb86be")
 	)
 	(segment
@@ -1677,12 +1731,11 @@
 		(end 138.3 88.96005)
 		(width 0.5)
 		(layer "F.Cu")
-		(net 6)
+		(net "Net-(J601-T_NRST)")
 		(uuid "f498c4bc-5dd8-44fa-8014-a44fb5ca5678")
 	)
 	(zone
-		(net 3)
-		(net_name "GND")
+		(net "GND")
 		(layer "In1.Cu")
 		(uuid "70982623-e273-4571-9239-137d91dac90c")
 		(hatch edge 0.5)
@@ -1691,12 +1744,12 @@
 			(clearance 0.5)
 		)
 		(min_thickness 0.25)
-		(filled_areas_thickness no)
 		(fill yes
 			(thermal_gap 0.5)
 			(thermal_bridge_width 0.5)
 			(smoothing fillet)
 			(radius 1)
+			(island_removal_mode 0)
 		)
 		(polygon
 			(pts
@@ -1789,8 +1842,7 @@
 		)
 	)
 	(zone
-		(net 1)
-		(net_name "/3V3")
+		(net "/st_link/3V3")
 		(layer "In2.Cu")
 		(uuid "ec3843fe-f7eb-4596-8130-3c95c40916a2")
 		(hatch edge 0.5)
@@ -1799,12 +1851,12 @@
 			(clearance 0.5)
 		)
 		(min_thickness 0.25)
-		(filled_areas_thickness no)
 		(fill yes
 			(thermal_gap 0.5)
 			(thermal_bridge_width 0.5)
 			(smoothing fillet)
 			(radius 1)
+			(island_removal_mode 0)
 		)
 		(polygon
 			(pts

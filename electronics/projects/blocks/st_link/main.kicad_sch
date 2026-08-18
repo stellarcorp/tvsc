@@ -1,0 +1,136 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "96ce04d7-9896-454a-b448-04a28fa53f52")
+	(paper "USLetter")
+	(title_block
+		(title "${PCB_NAME}")
+		(date "2026-08-16")
+		(rev "${PCB_VERSION}")
+		(company "TVSC")
+	)
+	(lib_symbols)
+	(no_connect
+		(at 156.21 87.63)
+		(uuid "3cfeaff6-fd59-454c-a7c4-74c0f06762c9")
+	)
+	(no_connect
+		(at 133.35 87.63)
+		(uuid "61d49f56-40e6-440d-b3f1-8bd772abc7e2")
+	)
+	(no_connect
+		(at 156.21 92.71)
+		(uuid "c4a1ab5c-1e6f-4581-a77b-f2b3b8a85dec")
+	)
+	(no_connect
+		(at 156.21 90.17)
+		(uuid "c7137868-f631-4b61-8d86-5411eb9ea98e")
+	)
+	(no_connect
+		(at 156.21 95.25)
+		(uuid "ced3c8ba-2794-4e86-ac18-06df6255fe5f")
+	)
+	(sheet
+		(at 133.35 83.82)
+		(size 22.86 17.78)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "18601e55-5109-46e0-ab5a-5b30005ba3a1")
+		(property "Sheetname" "st_link"
+			(at 133.35 83.1084 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "st_link.kicad_sch"
+			(at 133.35 102.1846 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "SWO" output
+			(at 156.21 95.25 0)
+			(uuid "fd4da46f-18d0-41ba-a4c9-54c542718003")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "NRST" output
+			(at 156.21 87.63 0)
+			(uuid "9b80fe1f-f88a-4aec-9a0c-bf9f8608e8fa")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SWDIO" bidirectional
+			(at 156.21 92.71 0)
+			(uuid "1d74928f-1227-47e4-99de-bdda8b55805d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SWCLK" output
+			(at 156.21 90.17 0)
+			(uuid "1bcc6a2f-5bb7-49a0-91de-1c5594c9bbe7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "3V3" input
+			(at 133.35 87.63 180)
+			(uuid "f22e6e4c-fd3e-4da9-9f44-1ea02d8d7bed")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "st_link"
+				(path "/827c1ebc-ded0-4e20-9821-97237a263c82"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
