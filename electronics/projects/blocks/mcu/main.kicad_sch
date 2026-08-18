@@ -1,0 +1,458 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "80b854da-d2f0-4bd3-bff1-86ff5f9054f0")
+	(paper "USLetter")
+	(title_block
+		(title "${PCB_NAME}")
+		(date "2026-08-16")
+		(rev "${PCB_VERSION}")
+		(company "TVSC")
+	)
+	(lib_symbols)
+	(no_connect
+		(at 116.84 77.47)
+		(uuid "0553cfb8-1281-453c-aa3b-2c50e1b74a5c")
+	)
+	(no_connect
+		(at 179.07 71.12)
+		(uuid "0c306d2f-9f9f-4a73-90d8-a39b4ef93336")
+	)
+	(no_connect
+		(at 179.07 109.22)
+		(uuid "222d95ea-0e46-408e-93d0-f2ef71cc9ccf")
+	)
+	(no_connect
+		(at 179.07 85.09)
+		(uuid "274bc857-c267-4097-b634-95155507a499")
+	)
+	(no_connect
+		(at 179.07 90.17)
+		(uuid "2e432526-52b4-4f57-b43a-43bc9dbe4235")
+	)
+	(no_connect
+		(at 116.84 74.93)
+		(uuid "30d893d9-506a-4ffd-8d51-7c2945ae2929")
+	)
+	(no_connect
+		(at 116.84 72.39)
+		(uuid "33d588d3-5358-404c-8a1a-f6fc977d9043")
+	)
+	(no_connect
+		(at 179.07 104.14)
+		(uuid "435cf91e-be17-4721-b2b8-fee37569f808")
+	)
+	(no_connect
+		(at 179.07 68.58)
+		(uuid "461b7da9-9748-4d53-8368-dd476e097544")
+	)
+	(no_connect
+		(at 179.07 106.68)
+		(uuid "48ae3ba7-1ab3-482e-bc60-22148b5c2c2f")
+	)
+	(no_connect
+		(at 116.84 91.44)
+		(uuid "4a931faa-58fd-40ac-815e-b7db1110a6c4")
+	)
+	(no_connect
+		(at 116.84 105.41)
+		(uuid "541b2396-637b-42d9-90fc-a67202d214a9")
+	)
+	(no_connect
+		(at 179.07 95.25)
+		(uuid "6f37f7af-e556-4566-ad7f-d9819799885c")
+	)
+	(no_connect
+		(at 116.84 110.49)
+		(uuid "76f79624-58ff-486a-a10b-1924de5bf3f8")
+	)
+	(no_connect
+		(at 179.07 115.57)
+		(uuid "7ff2db92-9a50-49dd-98b9-889007720ec0")
+	)
+	(no_connect
+		(at 116.84 107.95)
+		(uuid "83355182-cc90-4c17-b0e4-e34aa8c0bb62")
+	)
+	(no_connect
+		(at 116.84 86.36)
+		(uuid "847876a5-14d0-4ea8-91d9-bc79541d78b6")
+	)
+	(no_connect
+		(at 116.84 93.98)
+		(uuid "872711bd-90f8-4189-84da-a113e9b2abaf")
+	)
+	(no_connect
+		(at 179.07 76.2)
+		(uuid "8899732d-428c-4cab-9d30-e5bbe0f76ce6")
+	)
+	(no_connect
+		(at 179.07 87.63)
+		(uuid "a0c37f7d-b11b-4083-847e-6d190bcee18b")
+	)
+	(no_connect
+		(at 116.84 67.31)
+		(uuid "b0af3e5e-2da4-4604-bd39-b7964ff86a5c")
+	)
+	(no_connect
+		(at 116.84 96.52)
+		(uuid "b38f88a2-fe27-4647-8826-dfed17207e42")
+	)
+	(no_connect
+		(at 116.84 80.01)
+		(uuid "d5074fc2-3598-45ab-ac92-2672da7504af")
+	)
+	(no_connect
+		(at 179.07 73.66)
+		(uuid "d5382991-b3d7-432c-8ddc-a99061ab6ff6")
+	)
+	(no_connect
+		(at 179.07 82.55)
+		(uuid "d76db336-9e96-41c9-9218-fbc2c3618a12")
+	)
+	(no_connect
+		(at 116.84 99.06)
+		(uuid "dc276fe6-b407-45d4-81b8-3110ebbd87b1")
+	)
+	(no_connect
+		(at 179.07 97.79)
+		(uuid "e64197b3-df1f-4e40-87fa-24f35d2786e2")
+	)
+	(no_connect
+		(at 116.84 88.9)
+		(uuid "ee3a4caa-1539-45af-935a-2aeade47eca2")
+	)
+	(sheet
+		(at 116.84 64.77)
+		(size 62.23 55.88)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "715cdf2b-c6d5-4aab-80cf-c0171f8b42dd")
+		(property "Sheetname" "mcu"
+			(at 116.84 64.0584 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "mcu.kicad_sch"
+			(at 116.84 121.2346 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "SWCLK_CTRL" output
+			(at 179.07 71.12 0)
+			(uuid "feea0f20-9e2a-4eb5-ba9d-5013206524be")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SWDIO" bidirectional
+			(at 116.84 77.47 180)
+			(uuid "f5fd5c07-134a-4c56-88e3-ae4daf6c934d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "CAN1_SILENT" output
+			(at 179.07 87.63 0)
+			(uuid "30078387-7107-4916-99a2-5df86b07ad8f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SPI3_SCK" output
+			(at 116.84 105.41 180)
+			(uuid "d3e8bb8b-36cf-4f86-9dd4-9f07307224cb")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "I2C1_SDA" bidirectional
+			(at 116.84 88.9 180)
+			(uuid "a2479f62-e64a-46a7-8abc-4903c38896b0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "NRST" input
+			(at 116.84 72.39 180)
+			(uuid "2dc176f8-ea0c-44e5-8396-7c3d95c2b259")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "PERIPH_INT_1" input
+			(at 179.07 95.25 0)
+			(uuid "c91ce7db-7873-4ebc-aa85-725fe5e0c0f1")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SPI3_MOSI" output
+			(at 116.84 110.49 180)
+			(uuid "b89a1110-1372-4fb2-93e1-c8f7fcc2e2c9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SWCLK" input
+			(at 116.84 74.93 180)
+			(uuid "ff924dcb-2f83-4108-bc09-2561ebfb9f8c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "NRST_CTRL" output
+			(at 179.07 68.58 0)
+			(uuid "c52de3da-52b1-434f-9cb1-a22a15730a03")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C2_SDA" bidirectional
+			(at 116.84 93.98 180)
+			(uuid "0d425daa-82ea-4c59-a113-6f954065e34e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "I2C1_SCL" output
+			(at 116.84 86.36 180)
+			(uuid "0135c861-ebaa-4715-9db5-b827e987770a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "BOARD_ID_SENS" input
+			(at 179.07 109.22 0)
+			(uuid "d5d6b554-e9c5-4e85-b020-f2b66582e012")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "BOARD_ID_VERSION" input
+			(at 179.07 106.68 0)
+			(uuid "20cfdb41-57f5-497c-b0aa-50b238ae7531")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "BOARD_ID_PWR" output
+			(at 179.07 104.14 0)
+			(uuid "e4fab55d-62c1-48c6-a3a5-dd1fb45099e7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SWO" input
+			(at 116.84 80.01 180)
+			(uuid "48bf7d33-5b11-44bb-8bc1-88cc4c945683")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SPI3_MISO" input
+			(at 116.84 107.95 180)
+			(uuid "88fc08d0-3550-48d7-929f-233f146e47ce")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "CAN1_RX" bidirectional
+			(at 179.07 82.55 0)
+			(uuid "26d961c1-c9a1-43dd-b137-ab4fcee9d595")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SWO_CTRL" output
+			(at 179.07 76.2 0)
+			(uuid "d6ff4c84-a99e-4e5c-8faf-d8733da8b6fa")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PERIPH_INT_2" input
+			(at 179.07 97.79 0)
+			(uuid "a35b5af5-820e-4c03-a465-ad64c7264645")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "CAN1_SHUTDOWN" output
+			(at 179.07 90.17 0)
+			(uuid "6b4f5be0-317b-4bb8-9969-2bd2b7a9b978")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C2_SCL" output
+			(at 116.84 91.44 180)
+			(uuid "09cb72b8-221a-423d-8a5f-0964c4b98b29")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "I2C3_SCL" output
+			(at 116.84 96.52 180)
+			(uuid "58573bbb-34fc-4383-93a6-22e82ba58fce")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "3V3" input
+			(at 116.84 67.31 180)
+			(uuid "ea1747ea-bef0-4a96-9856-b94a8cf4b5db")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SWDIO_CTRL" bidirectional
+			(at 179.07 73.66 0)
+			(uuid "92f36a8b-ac21-4752-b246-ee9615c1cdfe")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C3_SDA" bidirectional
+			(at 116.84 99.06 180)
+			(uuid "1bbfa9ba-6d0c-4edf-9c18-bb0342ce1e15")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "CAN1_TX" bidirectional
+			(at 179.07 85.09 0)
+			(uuid "62c5fe6a-d9bd-4898-b02f-3a02fc44bb1d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DEBUG_LED" output
+			(at 179.07 115.57 0)
+			(uuid "85a98481-1a7f-4f2b-9785-ed885ba7b091")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
