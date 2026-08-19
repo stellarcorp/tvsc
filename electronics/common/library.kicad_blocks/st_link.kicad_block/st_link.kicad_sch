@@ -1007,7 +1007,7 @@
 	)
 	(wire
 		(pts
-			(xy 144.78 91.44) (xy 144.78 88.9)
+			(xy 144.78 92.71) (xy 144.78 88.9)
 		)
 		(stroke
 			(width 0)
@@ -1067,6 +1067,16 @@
 	)
 	(wire
 		(pts
+			(xy 135.89 92.71) (xy 144.78 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "75e5ebd5-4491-431c-b4fb-ac18e035080e")
+	)
+	(wire
+		(pts
 			(xy 135.89 83.82) (xy 144.78 83.82)
 		)
 		(stroke
@@ -1077,7 +1087,7 @@
 	)
 	(wire
 		(pts
-			(xy 106.68 73.66) (xy 128.27 73.66)
+			(xy 106.68 72.39) (xy 128.27 72.39)
 		)
 		(stroke
 			(width 0)
@@ -1087,7 +1097,7 @@
 	)
 	(wire
 		(pts
-			(xy 106.68 91.44) (xy 144.78 91.44)
+			(xy 106.68 92.71) (xy 128.27 92.71)
 		)
 		(stroke
 			(width 0)
@@ -1117,7 +1127,7 @@
 	)
 	(wire
 		(pts
-			(xy 137.16 73.66) (xy 137.16 78.74)
+			(xy 137.16 72.39) (xy 137.16 78.74)
 		)
 		(stroke
 			(width 0)
@@ -1127,7 +1137,7 @@
 	)
 	(wire
 		(pts
-			(xy 135.89 73.66) (xy 137.16 73.66)
+			(xy 135.89 72.39) (xy 137.16 72.39)
 		)
 		(stroke
 			(width 0)
@@ -1137,7 +1147,7 @@
 	)
 	(hierarchical_label "SWO"
 		(shape output)
-		(at 106.68 91.44 180)
+		(at 106.68 92.71 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1170,7 +1180,7 @@
 	)
 	(hierarchical_label "SWDIO"
 		(shape bidirectional)
-		(at 106.68 73.66 180)
+		(at 106.68 72.39 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1729,7 +1739,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 132.08 73.66 90)
+		(at 132.08 72.39 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1739,7 +1749,7 @@
 		(dnp no)
 		(uuid "747f34b3-c461-49e9-b163-edf2254d7db7")
 		(property "Reference" "R601"
-			(at 132.08 68.58 90)
+			(at 132.08 67.31 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1749,7 +1759,7 @@
 			)
 		)
 		(property "Value" "33"
-			(at 132.08 71.12 90)
+			(at 132.08 69.85 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1759,7 +1769,7 @@
 			)
 		)
 		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 132.08 75.438 90)
+			(at 132.08 74.168 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1770,7 +1780,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 132.08 73.66 0)
+			(at 132.08 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1781,7 +1791,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 132.08 73.66 0)
+			(at 132.08 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1792,7 +1802,7 @@
 			)
 		)
 		(property "Active" ""
-			(at 132.08 73.66 90)
+			(at 132.08 72.39 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1803,7 +1813,7 @@
 			)
 		)
 		(property "Basic or Extended Component" ""
-			(at 132.08 73.66 90)
+			(at 132.08 72.39 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1814,7 +1824,7 @@
 			)
 		)
 		(property "MPN" ""
-			(at 132.08 73.66 90)
+			(at 132.08 72.39 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1825,7 +1835,7 @@
 			)
 		)
 		(property "Manufacturer" ""
-			(at 132.08 73.66 90)
+			(at 132.08 72.39 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1836,7 +1846,7 @@
 			)
 		)
 		(property "Manufacturer Part Number" ""
-			(at 132.08 73.66 90)
+			(at 132.08 72.39 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1847,7 +1857,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 132.08 73.66 90)
+			(at 132.08 72.39 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1858,7 +1868,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 132.08 73.66 90)
+			(at 132.08 72.39 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1869,7 +1879,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 132.08 73.66 90)
+			(at 132.08 72.39 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1895,6 +1905,174 @@
 			(project "st_link"
 				(path "/827c1ebc-ded0-4e20-9821-97237a263c82/18601e55-5109-46e0-ab5a-5b30005ba3a1"
 					(reference "R601")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 132.08 92.71 90)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "7f5524c3-980f-4ae4-a2c8-663da25560c1")
+		(property "Reference" "R604"
+			(at 132.08 97.79 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "33"
+			(at 132.08 95.25 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
+			(at 132.08 90.932 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 132.08 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 132.08 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Active" ""
+			(at 132.08 92.71 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Basic or Extended Component" ""
+			(at 132.08 92.71 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" ""
+			(at 132.08 92.71 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" ""
+			(at 132.08 92.71 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer Part Number" ""
+			(at 132.08 92.71 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 132.08 92.71 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 132.08 92.71 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 132.08 92.71 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "f278e2ee-9877-49e0-a188-f509c599aa18")
+		)
+		(pin "1"
+			(uuid "84e02541-7170-48ba-9a58-2a31e4d355d8")
+		)
+		(instances
+			(project "st_link"
+				(path "/827c1ebc-ded0-4e20-9821-97237a263c82/18601e55-5109-46e0-ab5a-5b30005ba3a1"
+					(reference "R604")
 					(unit 1)
 				)
 			)
