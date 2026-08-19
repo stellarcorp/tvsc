@@ -63,7 +63,7 @@
           "min_clearance": 0.25,
           "min_island_area": 10.0,
           "min_thickness": 0.25,
-          "pad_connection": 1,
+          "pad_connection": 2,
           "remove_islands": 0,
           "thermal_relief_gap": 0.5,
           "thermal_relief_spoke_width": 0.5
@@ -683,7 +683,7 @@
         "uuid": "b33064ae-868c-465b-af7e-738aac2dff25"
       }
     ],
-    "used_designators": "#FLG201,R202,PCB202,J203-204,D202",
+    "used_designators": "#PWR201-208,#FLG201,R201-202,PCB201-202,J201-204,D201-202",
     "variants": []
   },
   "sheets": [
