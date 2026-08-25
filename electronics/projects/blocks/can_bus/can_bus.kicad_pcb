@@ -166,7 +166,7 @@
 		(at 154.04 101.605 -90)
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
-		(property "Reference" "C703"
+		(property "Reference" "C103"
 			(at 0 1.16 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -481,7 +481,7 @@
 			(size 0.56 0.62)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "Net-(C703-Pad2)")
+			(net "Net-(C103-Pad2)")
 			(pintype "passive")
 			(uuid "88a7dfb1-a71a-465e-8cd5-dc0b03d1b762")
 		)
@@ -504,7 +504,7 @@
 		(at 150.8 103.275 180)
 		(descr "SMD Solder Jumper, 1x1.5mm, rounded Pads, 0.3mm gap, open")
 		(tags "solder jumper open")
-		(property "Reference" "JP702"
+		(property "Reference" "JP102"
 			(at 0 0 90)
 			(layer "B.Fab")
 			(uuid "bd667765-03f2-44d2-9148-3d78db9600d8")
@@ -882,7 +882,7 @@
 		(at 151.79825 96.675 180)
 		(descr "+soic d")
 		(tags "Integrated Circuit")
-		(property "Reference" "U701"
+		(property "Reference" "U101"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(uuid "ad479378-bbb0-4607-860a-5cddd73b2237")
@@ -1326,7 +1326,7 @@
 		(at 156.04825 96.675 90)
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
-		(property "Reference" "C702"
+		(property "Reference" "C102"
 			(at 0 1.16 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -1664,7 +1664,7 @@
 		(at 157.04825 96.675 90)
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
-		(property "Reference" "C701"
+		(property "Reference" "C101"
 			(at 0 1.16 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -2002,7 +2002,7 @@
 		(at 153.04 101.095 -90)
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
-		(property "Reference" "R701"
+		(property "Reference" "R101"
 			(at 0 1.17 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -2365,7 +2365,7 @@
 			(size 0.54 0.64)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "Net-(C703-Pad2)")
+			(net "Net-(C103-Pad2)")
 			(pintype "passive")
 			(uuid "b97cfd5c-e7ff-4b5f-a717-935625e932ef")
 		)
@@ -2388,7 +2388,7 @@
 		(at 150.8 100.775)
 		(descr "SMD Solder Jumper, 1x1.5mm, rounded Pads, 0.3mm gap, open")
 		(tags "solder jumper open")
-		(property "Reference" "JP701"
+		(property "Reference" "JP101"
 			(at 0 0 90)
 			(layer "B.Fab")
 			(uuid "dab46690-f3bd-4ade-b9a9-c4c038676311")
@@ -2766,7 +2766,7 @@
 		(at 153.04 103.005 -90)
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
-		(property "Reference" "R702"
+		(property "Reference" "R102"
 			(at 0 1.17 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -3120,7 +3120,7 @@
 			(size 0.54 0.64)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "Net-(C703-Pad2)")
+			(net "Net-(C103-Pad2)")
 			(pintype "passive")
 			(uuid "fef31bf8-b2e5-4c8d-9f4c-563cae4d03b1")
 		)
@@ -3277,46 +3277,6 @@
 		(layer "B.Cu")
 		(net "GND")
 		(uuid "eeb0214f-cd5f-449a-ae23-19897a6e07f1")
-	)
-	(segment
-		(start 154.04 102.085)
-		(end 153.52 102.085)
-		(width 0.5)
-		(layer "B.Cu")
-		(net "Net-(C703-Pad2)")
-		(uuid "3b89fa9e-ce93-40e7-a162-0d6ec67fe02b")
-	)
-	(segment
-		(start 154.04 102.085)
-		(end 153.45 102.085)
-		(width 0.5)
-		(layer "B.Cu")
-		(net "Net-(C703-Pad2)")
-		(uuid "3fa204ec-f2b8-4df5-9c2c-cd77d0678c56")
-	)
-	(segment
-		(start 153.45 102.085)
-		(end 153.04 102.495)
-		(width 0.5)
-		(layer "B.Cu")
-		(net "Net-(C703-Pad2)")
-		(uuid "77180bed-1a2e-440d-a596-113c273eb8a4")
-	)
-	(segment
-		(start 153.52 102.085)
-		(end 153.04 101.605)
-		(width 0.5)
-		(layer "B.Cu")
-		(net "Net-(C703-Pad2)")
-		(uuid "8a15e6c2-9804-4822-ba71-302573a11c80")
-	)
-	(segment
-		(start 153.04 101.605)
-		(end 153.04 102.495)
-		(width 0.5)
-		(layer "B.Cu")
-		(net "Net-(C703-Pad2)")
-		(uuid "e67e373a-be52-4d71-ab62-d1acc416b042")
 	)
 	(segment
 		(start 152.8 103.275)
@@ -3531,6 +3491,46 @@
 		(layer "B.Cu")
 		(net "/can_bus/CANH_TERMINATION")
 		(uuid "b3973aef-79c0-44c1-b251-ec4477384e8f")
+	)
+	(segment
+		(start 154.04 102.085)
+		(end 153.52 102.085)
+		(width 0.5)
+		(layer "B.Cu")
+		(net "Net-(C103-Pad2)")
+		(uuid "3b89fa9e-ce93-40e7-a162-0d6ec67fe02b")
+	)
+	(segment
+		(start 154.04 102.085)
+		(end 153.45 102.085)
+		(width 0.5)
+		(layer "B.Cu")
+		(net "Net-(C103-Pad2)")
+		(uuid "3fa204ec-f2b8-4df5-9c2c-cd77d0678c56")
+	)
+	(segment
+		(start 153.45 102.085)
+		(end 153.04 102.495)
+		(width 0.5)
+		(layer "B.Cu")
+		(net "Net-(C103-Pad2)")
+		(uuid "77180bed-1a2e-440d-a596-113c273eb8a4")
+	)
+	(segment
+		(start 153.52 102.085)
+		(end 153.04 101.605)
+		(width 0.5)
+		(layer "B.Cu")
+		(net "Net-(C103-Pad2)")
+		(uuid "8a15e6c2-9804-4822-ba71-302573a11c80")
+	)
+	(segment
+		(start 153.04 101.605)
+		(end 153.04 102.495)
+		(width 0.5)
+		(layer "B.Cu")
+		(net "Net-(C103-Pad2)")
+		(uuid "e67e373a-be52-4d71-ab62-d1acc416b042")
 	)
 	(zone
 		(net "GND")
