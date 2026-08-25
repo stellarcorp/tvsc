@@ -560,7 +560,7 @@
   "schematic": {
     "annotate_start_num": 200,
     "annotation": {
-      "method": 0,
+      "method": 1,
       "sort_order": 0
     },
     "bom_export_filename": "${PROJECTNAME}.csv",
@@ -683,17 +683,17 @@
         "uuid": "b33064ae-868c-465b-af7e-738aac2dff25"
       }
     ],
-    "used_designators": "#PWR201-208,#FLG201,R201-202,PCB201-202,J201-204,D201-202",
+    "used_designators": "#PWR101-108,#PWR201-208,#FLG101,#FLG201,R101,R201-202,PCB101,PCB201-202,J101-102,J201-204,D101,D201-202",
     "variants": []
   },
   "sheets": [
     [
-      "b33064ae-868c-465b-af7e-738aac2dff25",
-      "main"
-    ],
-    [
       "457025f3-db34-4770-9275-b20f44116142",
       "PCB with bus"
+    ],
+    [
+      "b33064ae-868c-465b-af7e-738aac2dff25",
+      "main"
     ]
   ],
   "text_variables": {
