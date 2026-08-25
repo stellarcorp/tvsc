@@ -160,7 +160,7 @@
 		(at 140.27 97.665 90)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
-		(property "Reference" "C301"
+		(property "Reference" "C101"
 			(at 0 1.43 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -512,7 +512,7 @@
 		(at 141.77 97.665 90)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
-		(property "Reference" "C302"
+		(property "Reference" "C102"
 			(at 0 1.43 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -864,7 +864,7 @@
 		(at 144.15 97.345 -90)
 		(descr "WSON, 10 Pin (http://www.ti.com/lit/gpn/tps63030#page=24), generated with kicad-footprint-generator ipc_noLead_generator.py")
 		(tags "WSON NoLead")
-		(property "Reference" "U301"
+		(property "Reference" "U101"
 			(at 0 2.2 90)
 			(layer "B.Fab")
 			(uuid "a243e3d1-36fd-473c-9272-4b645b0d40d4")
@@ -1267,7 +1267,7 @@
 			(size 0.825 0.25)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "Net-(U301-CFG1)")
+			(net "Net-(U101-CFG1)")
 			(pinfunction "CFG1_3")
 			(pintype "input")
 			(uuid "59185fd0-5d18-43c2-b344-6cd3bad9d283")
@@ -1307,7 +1307,7 @@
 			(size 0.825 0.25)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "Net-(U301-LX2)")
+			(net "Net-(U101-LX2)")
 			(pinfunction "LX2_7")
 			(pintype "input")
 			(uuid "f33884df-1ecb-408e-8beb-c5c0dff2055c")
@@ -1327,7 +1327,7 @@
 			(size 0.825 0.25)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "Net-(U301-LX1)")
+			(net "Net-(U101-LX1)")
 			(pinfunction "LX1_9")
 			(pintype "input")
 			(uuid "b1f1850a-6d1b-4a58-8593-2c018a2a8d96")
@@ -1444,7 +1444,7 @@
 		(at 144.17 101.165 180)
 		(descr "Inductor SMD 1008 (2520 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: https://ecsxtal.com/store/pdf/ECS-MPI2520-SMD-POWER-INDUCTOR.pdf), generated with kicad-footprint-generator")
 		(tags "inductor")
-		(property "Reference" "L301"
+		(property "Reference" "L101"
 			(at 0 2.05 0)
 			(layer "B.SilkS")
 			(hide yes)
@@ -1678,7 +1678,7 @@
 			(size 1.25 2.2)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.2)
-			(net "Net-(U301-LX2)")
+			(net "Net-(U101-LX2)")
 			(pintype "passive")
 			(uuid "9d61f275-9b98-485d-b926-85fbcb2050b6")
 		)
@@ -1687,7 +1687,7 @@
 			(size 1.25 2.2)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.2)
-			(net "Net-(U301-LX1)")
+			(net "Net-(U101-LX1)")
 			(pintype "passive")
 			(uuid "d345157a-8f7e-45b6-a4dc-eacf3bc0caea")
 		)
@@ -1710,7 +1710,7 @@
 		(at 148.9 98.495)
 		(descr "Resistor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
-		(property "Reference" "R302"
+		(property "Reference" "R102"
 			(at 0 1.65 0)
 			(layer "B.SilkS")
 			(hide yes)
@@ -1976,7 +1976,7 @@
 		(at 146.4 97.765 90)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
-		(property "Reference" "C303"
+		(property "Reference" "C103"
 			(at 0 1.43 90)
 			(layer "B.SilkS")
 			(hide yes)
@@ -2328,7 +2328,7 @@
 		(at 144.67 94.965)
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
-		(property "Reference" "R301"
+		(property "Reference" "R101"
 			(at 0 1.17 0)
 			(layer "B.SilkS")
 			(hide yes)
@@ -2640,7 +2640,7 @@
 			(size 0.54 0.64)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "Net-(U301-CFG1)")
+			(net "Net-(U101-CFG1)")
 			(pintype "passive")
 			(uuid "152354d4-323f-49d7-85a2-7a867e711a26")
 		)
@@ -3119,46 +3119,6 @@
 		(net "GND")
 		(uuid "8710636b-c442-46da-b0b5-6957d4982f33")
 	)
-	(segment
-		(start 144.15 94.975)
-		(end 144.16 94.965)
-		(width 0.3)
-		(layer "B.Cu")
-		(net "Net-(U301-CFG1)")
-		(uuid "0beedd76-6c51-42a8-8104-9f51d6a83481")
-	)
-	(segment
-		(start 144.15 96.1325)
-		(end 144.15 94.975)
-		(width 0.3)
-		(layer "B.Cu")
-		(net "Net-(U301-CFG1)")
-		(uuid "b0a7bc30-70b6-40e7-a1a6-70ea4b5db645")
-	)
-	(segment
-		(start 147.9875 98.495)
-		(end 147.9875 99.5125)
-		(width 0.3)
-		(layer "B.Cu")
-		(net "/Voltage Regulation/BOARD_LOAD_+")
-		(uuid "9755a2a5-10f2-4ded-899b-c7683954db7b")
-	)
-	(segment
-		(start 147.9875 99.5125)
-		(end 148.77 100.295)
-		(width 0.3)
-		(layer "B.Cu")
-		(net "/Voltage Regulation/BOARD_LOAD_+")
-		(uuid "a1b20a0a-9a23-46a2-93f5-ed5f7b913f61")
-	)
-	(segment
-		(start 148.77 100.295)
-		(end 152.27 100.295)
-		(width 0.3)
-		(layer "B.Cu")
-		(net "/Voltage Regulation/BOARD_LOAD_+")
-		(uuid "ed6fe48e-f0c2-4bb8-b012-4b2cb79cb50b")
-	)
 	(via
 		(at 151.25 98.495)
 		(size 0.5)
@@ -3387,8 +3347,24 @@
 		(net "/Voltage Regulation/3V3")
 		(uuid "f97dc38a-efa1-4042-b6f7-9a3c773fdce0")
 	)
+	(segment
+		(start 144.15 94.975)
+		(end 144.16 94.965)
+		(width 0.3)
+		(layer "B.Cu")
+		(net "Net-(U101-CFG1)")
+		(uuid "0beedd76-6c51-42a8-8104-9f51d6a83481")
+	)
+	(segment
+		(start 144.15 96.1325)
+		(end 144.15 94.975)
+		(width 0.3)
+		(layer "B.Cu")
+		(net "Net-(U101-CFG1)")
+		(uuid "b0a7bc30-70b6-40e7-a1a6-70ea4b5db645")
+	)
 	(zone
-		(net "Net-(U301-LX2)")
+		(net "Net-(U101-LX2)")
 		(layer "B.Cu")
 		(uuid "2e9db936-cdf4-4529-9e3e-25d06636224e")
 		(hatch edge 0.5)
@@ -3593,7 +3569,7 @@
 		)
 	)
 	(zone
-		(net "Net-(U301-LX1)")
+		(net "Net-(U101-LX1)")
 		(layer "B.Cu")
 		(uuid "6dd085e7-499c-44c3-b51a-8a46ef45c5e1")
 		(hatch edge 0.5)
@@ -3922,11 +3898,10 @@
 			(layer "B.Cu")
 			(pts
 				(xy 152.493039 97.214685) (xy 152.538794 97.267489) (xy 152.55 97.319) (xy 152.55 99.671) (xy 152.530315 99.738039)
-				(xy 152.477511 99.783794) (xy 152.426 99.795) (xy 148.887755 99.795) (xy 148.820716 99.775315) (xy 148.800074 99.758681)
-				(xy 148.736319 99.694926) (xy 148.702834 99.633603) (xy 148.7 99.607245) (xy 148.7 99.193068) (xy 148.707817 99.149737)
-				(xy 148.744091 99.052483) (xy 148.7505 98.992873) (xy 148.750499 97.997128) (xy 148.744091 97.937517)
-				(xy 148.707818 97.840263) (xy 148.7 97.79693) (xy 148.7 97.319) (xy 148.719685 97.251961) (xy 148.772489 97.206206)
-				(xy 148.824 97.195) (xy 152.426 97.195)
+				(xy 152.477511 99.783794) (xy 152.426 99.795) (xy 148.824 99.795) (xy 148.756961 99.775315) (xy 148.711206 99.722511)
+				(xy 148.7 99.671) (xy 148.7 99.193068) (xy 148.707817 99.149737) (xy 148.744091 99.052483) (xy 148.7505 98.992873)
+				(xy 148.750499 97.997128) (xy 148.744091 97.937517) (xy 148.707818 97.840263) (xy 148.7 97.79693)
+				(xy 148.7 97.319) (xy 148.719685 97.251961) (xy 148.772489 97.206206) (xy 148.824 97.195) (xy 152.426 97.195)
 			)
 		)
 		(filled_polygon

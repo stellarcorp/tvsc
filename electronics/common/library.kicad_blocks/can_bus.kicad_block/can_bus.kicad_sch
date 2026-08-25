@@ -1254,7 +1254,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "13540dd8-219a-41d0-9446-8162331f9d71")
-		(property "Reference" "C703"
+		(property "Reference" "C103"
 			(at 173.228 77.978 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1416,18 +1416,12 @@
 		(instances
 			(project "can_bus"
 				(path "/622236e2-ab36-42a2-8ac9-3e930ba28da8/6624f817-2a4c-49e9-9ded-3abf8ad53cb4"
-					(reference "C703")
+					(reference "C103")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "C703")
-					(unit 1)
-				)
-			)
-			(project "can_bus"
-				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
 					(reference "C703")
 					(unit 1)
 				)
@@ -1445,7 +1439,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "163d3296-8b3d-458c-83e9-cbf481e9aa3e")
-		(property "Reference" "U701"
+		(property "Reference" "U101"
 			(at 99.568 64.262 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1642,18 +1636,12 @@
 		(instances
 			(project "can_bus"
 				(path "/622236e2-ab36-42a2-8ac9-3e930ba28da8/6624f817-2a4c-49e9-9ded-3abf8ad53cb4"
-					(reference "U701")
+					(reference "U101")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "U701")
-					(unit 1)
-				)
-			)
-			(project "can_bus"
-				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
 					(reference "U701")
 					(unit 1)
 				)
@@ -1672,7 +1660,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "303de6e7-be28-44c2-a39e-f0f673a83e77")
-		(property "Reference" "R702"
+		(property "Reference" "R102"
 			(at 185.928 71.882 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1855,18 +1843,12 @@
 		(instances
 			(project "can_bus"
 				(path "/622236e2-ab36-42a2-8ac9-3e930ba28da8/6624f817-2a4c-49e9-9ded-3abf8ad53cb4"
-					(reference "R702")
+					(reference "R102")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "R702")
-					(unit 1)
-				)
-			)
-			(project "can_bus"
-				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
 					(reference "R702")
 					(unit 1)
 				)
@@ -1884,7 +1866,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "3aee901b-b671-45e7-9db4-8e916756e484")
-		(property "Reference" "#PWR0702"
+		(property "Reference" "#PWR0102"
 			(at 58.42 52.07 0)
 			(hide yes)
 			(show_name no)
@@ -1944,18 +1926,12 @@
 		(instances
 			(project "can_bus"
 				(path "/622236e2-ab36-42a2-8ac9-3e930ba28da8/6624f817-2a4c-49e9-9ded-3abf8ad53cb4"
-					(reference "#PWR0702")
+					(reference "#PWR0102")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "#PWR0702")
-					(unit 1)
-				)
-			)
-			(project "can_bus"
-				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
 					(reference "#PWR0702")
 					(unit 1)
 				)
@@ -1973,7 +1949,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "69e26d8a-8804-4003-9874-40f9d0b5222a")
-		(property "Reference" "JP701"
+		(property "Reference" "JP101"
 			(at 144.78 72.39 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2115,18 +2091,12 @@
 		(instances
 			(project "can_bus"
 				(path "/622236e2-ab36-42a2-8ac9-3e930ba28da8/6624f817-2a4c-49e9-9ded-3abf8ad53cb4"
-					(reference "JP701")
+					(reference "JP101")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "JP701")
-					(unit 1)
-				)
-			)
-			(project "can_bus"
-				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
 					(reference "JP701")
 					(unit 1)
 				)
@@ -2144,7 +2114,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "7c2f4b44-ce0d-4d75-abdb-e59e1bd37123")
-		(property "Reference" "#PWR0701"
+		(property "Reference" "#PWR0101"
 			(at 55.88 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -2204,18 +2174,12 @@
 		(instances
 			(project "can_bus"
 				(path "/622236e2-ab36-42a2-8ac9-3e930ba28da8/6624f817-2a4c-49e9-9ded-3abf8ad53cb4"
-					(reference "#PWR0701")
+					(reference "#PWR0101")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "#PWR0701")
-					(unit 1)
-				)
-			)
-			(project "can_bus"
-				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
 					(reference "#PWR0701")
 					(unit 1)
 				)
@@ -2234,7 +2198,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "838b98f5-0c0d-4e5d-9484-2aaf5466a2a3")
-		(property "Reference" "#PWR0703"
+		(property "Reference" "#PWR0103"
 			(at 179.07 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -2294,18 +2258,12 @@
 		(instances
 			(project "can_bus"
 				(path "/622236e2-ab36-42a2-8ac9-3e930ba28da8/6624f817-2a4c-49e9-9ded-3abf8ad53cb4"
-					(reference "#PWR0703")
+					(reference "#PWR0103")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "#PWR0703")
-					(unit 1)
-				)
-			)
-			(project "can_bus"
-				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
 					(reference "#PWR0703")
 					(unit 1)
 				)
@@ -2323,7 +2281,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "87508386-063b-4418-866b-dbe113768c81")
-		(property "Reference" "JP702"
+		(property "Reference" "JP102"
 			(at 212.09 72.39 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2465,18 +2423,12 @@
 		(instances
 			(project "can_bus"
 				(path "/622236e2-ab36-42a2-8ac9-3e930ba28da8/6624f817-2a4c-49e9-9ded-3abf8ad53cb4"
-					(reference "JP702")
+					(reference "JP102")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "JP702")
-					(unit 1)
-				)
-			)
-			(project "can_bus"
-				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
 					(reference "JP702")
 					(unit 1)
 				)
@@ -2495,7 +2447,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d1ce5776-f6d3-4b5b-bb82-0f000b6f3aff")
-		(property "Reference" "C702"
+		(property "Reference" "C102"
 			(at 64.77 59.69 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2658,18 +2610,12 @@
 		(instances
 			(project "can_bus"
 				(path "/622236e2-ab36-42a2-8ac9-3e930ba28da8/6624f817-2a4c-49e9-9ded-3abf8ad53cb4"
-					(reference "C702")
+					(reference "C102")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "C702")
-					(unit 1)
-				)
-			)
-			(project "can_bus"
-				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
 					(reference "C702")
 					(unit 1)
 				)
@@ -2688,7 +2634,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "d2314a21-6ad6-44c6-81ec-fe9e9ca44cb1")
-		(property "Reference" "R701"
+		(property "Reference" "R101"
 			(at 172.466 71.882 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2871,18 +2817,12 @@
 		(instances
 			(project "can_bus"
 				(path "/622236e2-ab36-42a2-8ac9-3e930ba28da8/6624f817-2a4c-49e9-9ded-3abf8ad53cb4"
-					(reference "R701")
+					(reference "R101")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "R701")
-					(unit 1)
-				)
-			)
-			(project "can_bus"
-				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
 					(reference "R701")
 					(unit 1)
 				)
@@ -2901,7 +2841,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ece5624a-867f-4867-a35f-5428d98b0390")
-		(property "Reference" "C701"
+		(property "Reference" "C101"
 			(at 53.34 59.69 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3064,18 +3004,12 @@
 		(instances
 			(project "can_bus"
 				(path "/622236e2-ab36-42a2-8ac9-3e930ba28da8/6624f817-2a4c-49e9-9ded-3abf8ad53cb4"
-					(reference "C701")
+					(reference "C101")
 					(unit 1)
 				)
 			)
 			(project "core_board"
 				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/d470ef27-6c0f-4ffa-83b6-2c4b3c9c5ff3"
-					(reference "C701")
-					(unit 1)
-				)
-			)
-			(project "can_bus"
-				(path "/92465487-256a-4cb1-9bd2-6d40463e6535"
 					(reference "C701")
 					(unit 1)
 				)
