@@ -1,0 +1,70 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "64b33f68-11d3-4205-83e9-6e2e0bf665e5")
+	(paper "USLetter")
+	(lib_symbols)
+	(sheet
+		(at 134.62 91.44)
+		(size 13.97 12.7)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "046a5db3-12ab-48f3-ab78-7b9229c94382")
+		(property "Sheetname" "single_component"
+			(at 134.62 90.7284 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "single_component.kicad_sch"
+			(at 134.62 104.7246 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "VIN" input
+			(at 134.62 96.52 180)
+			(uuid "cf692cb6-b671-476e-a31f-4636b261a565")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "single_component"
+				(path "/8266cec0-bc30-4cb2-a249-50a3fd8f5b56"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
