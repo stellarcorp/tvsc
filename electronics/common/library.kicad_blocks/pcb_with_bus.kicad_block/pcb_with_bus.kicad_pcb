@@ -3612,6 +3612,12 @@
 			)
 		)
 	)
+	(point
+		(at 109.0625 138.6375)
+		(size 1)
+		(layer "F.Cu")
+		(uuid "4b1194b2-9f47-4aa2-be1f-d9cc4732214d")
+	)
 	(segment
 		(start 113.0725 96.6375)
 		(end 113.8425 96.6375)
@@ -3920,6 +3926,22 @@
 		(uuid "dc78d35a-dbfc-46ac-8665-ff177dbcba3a")
 	)
 	(segment
+		(start 112.0525 95.67)
+		(end 111.755 95.3725)
+		(width 0.5)
+		(layer "F.Cu")
+		(net "Net-(D101-K)")
+		(uuid "5aa1577c-e54c-411b-a39d-938d2e95f79b")
+	)
+	(segment
+		(start 112.0525 96.6375)
+		(end 112.0525 95.67)
+		(width 0.5)
+		(layer "F.Cu")
+		(net "Net-(D101-K)")
+		(uuid "7f5db9aa-09db-4f8c-9bbb-f29629e0cd37")
+	)
+	(segment
 		(start 113.33 95.3725)
 		(end 114.2975 95.3725)
 		(width 0.5)
@@ -4185,22 +4207,6 @@
 		(filling no)
 		(net "/PCB with bus/VSOLAR")
 		(uuid "8176deae-06ce-422b-9daf-aa680ba532f8")
-	)
-	(segment
-		(start 112.0525 95.67)
-		(end 111.755 95.3725)
-		(width 0.5)
-		(layer "F.Cu")
-		(net "Net-(D101-K)")
-		(uuid "5aa1577c-e54c-411b-a39d-938d2e95f79b")
-	)
-	(segment
-		(start 112.0525 96.6375)
-		(end 112.0525 95.67)
-		(width 0.5)
-		(layer "F.Cu")
-		(net "Net-(D101-K)")
-		(uuid "7f5db9aa-09db-4f8c-9bbb-f29629e0cd37")
 	)
 	(zone
 		(net "/PCB with bus/VSOLAR")
