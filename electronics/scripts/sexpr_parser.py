@@ -1,31 +1,42 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """
-sexpr_parser.py - Reusable, event-driven S-expression parser library.
+sexpr_parser.py - Reusable, event-driven S-expression parser library with automatic tree construction.
 """
 
-from typing import Callable, Optional, Dict, Any, Generator, Tuple
+from typing import Any, Callable, Dict, Generator, Optional, Tuple
+
+
+class Node:
+    def __init__(self) -> None:
+        self.type: Optional[str] = None
+        self.properties: list[str] = []
+        self.children: list[Node] = []
+
 
 # Type definitions for event callbacks:
-# fn(node_frame: dict, line_num: int) -> None
-CallbackFn = Callable[[str, Dict[str, Any], int], None]
+NodeOpenCallback = Callable[[Node, int], None]
+NodeCloseCallback = Callable[[Node, int], None]
 
 
 class SExprParser:
     """
     Event-driven S-expression parser.
-    Fires callbacks when nodes open and close.
+    Fires callbacks when nodes open and close, automatically building and passing
+    the completed subtree to the on_node_close callback.
     """
 
     def __init__(
         self,
         content: str,
-        on_node_open: Optional[CallbackFn] = None,
-        on_node_close: Optional[CallbackFn] = None,
+        on_node_open: Optional[NodeOpenCallback] = None,
+        on_node_close: Optional[NodeCloseCallback] = None,
     ):
         self.content = content
         self.on_node_open = on_node_open
         self.on_node_close = on_node_close
-        self.stack = []
+        self.stack: list[Node] = []
 
     def parse(self) -> None:
         """Parse the content string and trigger registered callbacks."""
@@ -33,18 +44,16 @@ class SExprParser:
 
         for token_type, value, line_num in tokens:
             if token_type == "LPAREN":
-                # Push a new node frame onto the stack
-                frame = {"type": None, "line": line_num, "atoms": []}
-                self.stack.append(frame)
+                self.stack.append(Node())
 
             elif token_type == "RPAREN":
                 if not self.stack:
                     continue  # Guard against malformed S-expressions
 
                 current_frame = self.stack.pop()
-                node_type = (
-                    current_frame["type"] if current_frame["type"] else "UNKNOWN"
-                )
+                parent_frame = self.stack[-1] if self.stack else None
+                if parent_frame:
+                    parent_frame.children.append(current_frame)
 
                 if self.on_node_close:
                     self.on_node_close(current_frame, line_num)
@@ -53,19 +62,19 @@ class SExprParser:
                 if self.stack:
                     current_frame = self.stack[-1]
                     # The first atom immediately after '(' defines the node type
-                    if current_frame["type"] is None:
-                        current_frame["type"] = value
+                    if current_frame.type is None:
+                        current_frame.type = value
                         if self.on_node_open:
                             self.on_node_open(current_frame, line_num)
                     else:
-                        current_frame["atoms"].append(value)
+                        current_frame.properties.append(value)
 
     def _tokenize(
         self, text: str
     ) -> Generator[Tuple[str, str, int], None, None]:
         """
         Tokenizer yielding (token_type, value, line_number).
-        Handles string literals, parentheses, and S-expression atoms.
+        Handles string literals, parentheses, line comments, and S-expression properties.
         """
         i = 0
         n = len(text)
@@ -79,6 +88,10 @@ class SExprParser:
                 i += 1
             elif char.isspace():
                 i += 1
+            elif char == ";":
+                # Line comment: skip until newline
+                while i < n and text[i] != "\n":
+                    i += 1
             elif char == "(":
                 yield ("LPAREN", "(", line_num)
                 i += 1
@@ -86,12 +99,13 @@ class SExprParser:
                 yield ("RPAREN", ")", line_num)
                 i += 1
             elif char == '"':
-                # Quoted string literal token
                 start = i
                 i += 1
                 while i < n and text[i] != '"':
                     if text[i] == "\\" and i + 1 < n:
-                        i += 2  # Skip escaped characters
+                        if text[i + 1] == "\n":
+                            line_num += 1
+                        i += 2  # Skip escape sequence
                     else:
                         if text[i] == "\n":
                             line_num += 1
@@ -100,10 +114,11 @@ class SExprParser:
                     i += 1  # Include closing quote
                 yield ("ATOM", text[start:i], line_num)
             else:
-                # Unquoted atom
                 start = i
                 while (
-                    i < n and not text[i].isspace() and text[i] not in "()"
+                    i < n
+                    and not text[i].isspace()
+                    and text[i] not in "();"
                 ):
                     i += 1
                 yield ("ATOM", text[start:i], line_num)

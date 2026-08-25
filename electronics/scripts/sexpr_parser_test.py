@@ -4,20 +4,15 @@ test_sexpr_parser.py - Unit tests for sexpr_parser.py using pytest.
 """
 
 import pytest
-from sexpr_parser import SExprParser
+from sexpr_parser import Node, SExprParser
 
 
-def parse_and_collect(content: str):
-    """Utility helper to parse S-expressions and return closed node frames."""
-    closed_nodes = []
+def parse_and_collect(content: str) -> list[Node]:
+    """Utility helper to parse S-expressions and return closed Node instances."""
+    closed_nodes: list[Node] = []
 
-    def on_close(frame, line_num):
-        # Frame format: {"type": str, "line": int, "atoms": list}
-        closed_nodes.append({
-            "type": frame["type"] if frame["type"] else "UNKNOWN",
-            "atoms": frame["atoms"],
-            "line": frame["line"]
-        })
+    def on_close(node: Node, line_num: int) -> None:
+        closed_nodes.append(node)
 
     parser = SExprParser(content, on_node_close=on_close)
     parser.parse()
@@ -33,17 +28,17 @@ def test_node_type_identification():
     child_node = nodes[0]
     parent_node = nodes[1]
 
-    assert child_node["type"] == "layer"
-    assert parent_node["type"] == "footprint"
+    assert child_node.type == "layer"
+    assert parent_node.type == "footprint"
 
 
 def test_empty_node_type_identification():
-    """Verify parser handles empty nodes '()' without crashing and assigns fallback type."""
+    """Verify parser handles empty nodes '()' without crashing and leaves type as None."""
     sexpr = '()'
     nodes = parse_and_collect(sexpr)
 
     assert len(nodes) == 1
-    assert nodes[0]["type"] == "UNKNOWN"
+    assert nodes[0].type is None
 
 
 def test_node_atoms_extraction():
@@ -52,8 +47,8 @@ def test_node_atoms_extraction():
     nodes = parse_and_collect(sexpr)
 
     assert len(nodes) == 1
-    assert nodes[0]["type"] == "at"
-    assert nodes[0]["atoms"] == ["145.0", "90.0", "90"]
+    assert nodes[0].type == "at"
+    assert nodes[0].properties == ["145.0", "90.0", "90"]
 
 
 def test_node_with_only_type_and_no_atoms():
@@ -62,21 +57,21 @@ def test_node_with_only_type_and_no_atoms():
     nodes = parse_and_collect(sexpr)
 
     assert len(nodes) == 1
-    assert nodes[0]["type"] == "mirrored"
-    assert nodes[0]["atoms"] == []
+    assert nodes[0].type == "mirrored"
+    assert nodes[0].properties == []
 
 
 def test_empty_node_atoms_list():
-    """Verify parser returns an empty atoms list for empty parenthetical nodes '()'."""
+    """Verify parser returns an empty properties list for empty parenthetical nodes '()'."""
     sexpr = '()'
     nodes = parse_and_collect(sexpr)
 
     assert len(nodes) == 1
-    assert nodes[0]["atoms"] == []
+    assert nodes[0].properties == []
 
 
 def test_nested_child_nodes():
-    """Verify node type and atom extractions across multi-level nested trees."""
+    """Verify node type and property extractions across multi-level nested trees."""
     sexpr = """
     (target_sync_manifest "carrier_board"
       (block_instance "PWR_MOD_01"
@@ -102,31 +97,31 @@ def test_nested_child_nodes():
 
     # Depth Level 3 Nodes
     node_at = nodes[0]
-    assert node_at["type"] == "at"
-    assert node_at["atoms"] == ["145.0", "90.0"]
+    assert node_at.type == "at"
+    assert node_at.properties == ["145.0", "90.0"]
 
     node_rot = nodes[1]
-    assert node_rot["type"] == "rotation"
-    assert node_rot["atoms"] == ["90"]
+    assert node_rot.type == "rotation"
+    assert node_rot.properties == ["90"]
 
     node_empty_child = nodes[2]
-    assert node_empty_child["type"] == "UNKNOWN"
-    assert node_empty_child["atoms"] == []
+    assert node_empty_child.type is None
+    assert node_empty_child.properties == []
 
     # Depth Level 2 Node
     node_placement = nodes[3]
-    assert node_placement["type"] == "placement"
-    assert node_placement["atoms"] == []  # Nested parenthetical nodes are not pushed as primitive string atoms
+    assert node_placement.type == "placement"
+    assert node_placement.properties == []  # Nested parenthetical nodes are attached to children, not properties
 
     # Depth Level 1 Node
     node_instance = nodes[4]
-    assert node_instance["type"] == "block_instance"
-    assert node_instance["atoms"] == ['"PWR_MOD_01"']
+    assert node_instance.type == "block_instance"
+    assert node_instance.properties == ['"PWR_MOD_01"']
 
     # Depth Level 0 (Root) Node
     node_root = nodes[5]
-    assert node_root["type"] == "target_sync_manifest"
-    assert node_root["atoms"] == ['"carrier_board"']
+    assert node_root.type == "target_sync_manifest"
+    assert node_root.properties == ['"carrier_board"']
 
 
 if __name__ == "__main__":
