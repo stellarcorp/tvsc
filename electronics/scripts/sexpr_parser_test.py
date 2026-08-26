@@ -1,10 +1,8 @@
 #!/usr/bin/env pytest
-"""
-test_sexpr_parser.py - Unit tests for sexpr_parser.py using pytest.
-"""
 
 import pytest
-from sexpr_parser import Node, SExprParser
+from node import Node
+from sexpr_parser import SExprParser
 
 
 def parse_and_collect(content: str) -> list[Node]:
@@ -122,6 +120,19 @@ def test_nested_child_nodes():
     node_root = nodes[5]
     assert node_root.type == "target_sync_manifest"
     assert node_root.properties == ['"carrier_board"']
+
+
+def test_parse_from_file_path():
+    """Verify SExprParser accepts a string file path and correctly parses its S-expressions."""
+    file_path = "testdata/single_component/single_component.kicad_sch"
+    nodes = parse_and_collect(file_path)
+
+    # Ensure the parser successfully opened the file, processed contents, and closed nodes
+    assert len(nodes) > 0
+
+    # Root node is the last node to close in the bottom-up event-driven parser sequence
+    root_node = nodes[-1]
+    assert root_node.type == "kicad_sch"
 
 
 if __name__ == "__main__":

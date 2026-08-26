@@ -2,18 +2,12 @@
 from __future__ import annotations
 
 """
-sexpr_parser.py - Reusable, event-driven S-expression parser library with automatic tree construction.
+Event-driven S-expression parser library with automatic tree construction.
 """
 
-from typing import Any, Callable, Dict, Generator, Optional, Tuple
-
-
-class Node:
-    def __init__(self) -> None:
-        self.type: Optional[str] = None
-        self.properties: list[str] = []
-        self.children: list[Node] = []
-
+from node import Node
+from pathlib import Path
+from typing import Any, Callable, Dict, Generator, Optional, Tuple, Union
 
 # Type definitions for event callbacks:
 NodeOpenCallback = Callable[[Node, int], None]
@@ -29,11 +23,18 @@ class SExprParser:
 
     def __init__(
         self,
-        content: str,
+        source: Union[str, Path],
         on_node_open: Optional[NodeOpenCallback] = None,
         on_node_close: Optional[NodeCloseCallback] = None,
     ):
-        self.content = content
+        if isinstance(source, Path) or (
+                isinstance(source, str) and "\n" not in source and (
+                    source.endswith(".kicad_sch") or source.endswith(".kicad_pcb")
+                )
+        ):
+            self.content = Path(source).read_text(encoding="utf-8")
+        else:
+            self.content = str(source)
         self.on_node_open = on_node_open
         self.on_node_close = on_node_close
         self.stack: list[Node] = []
@@ -99,8 +100,9 @@ class SExprParser:
                 yield ("RPAREN", ")", line_num)
                 i += 1
             elif char == '"':
-                start = i
+                # Increment before capturing the start to vaoid including the opening quote.
                 i += 1
+                start = i
                 while i < n and text[i] != '"':
                     if text[i] == "\\" and i + 1 < n:
                         if text[i + 1] == "\n":
@@ -110,9 +112,11 @@ class SExprParser:
                         if text[i] == "\n":
                             line_num += 1
                         i += 1
+                if start < n:
+                    yield ("ATOM", text[start:i], line_num)
+                # Increment after yielding the value to avoid including the closing quote.
                 if i < n:
-                    i += 1  # Include closing quote
-                yield ("ATOM", text[start:i], line_num)
+                    i += 1
             else:
                 start = i
                 while (
