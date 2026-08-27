@@ -830,6 +830,26 @@
 			(embedded_fonts no)
 		)
 	)
+	(text_box "The SLOW pin is tied high to set the sampling rate at 8 samples per second. Tying it low increases the sample rate to 1k samples per second, completely unnecessary for our use cases. Also, this pin can be programmed to become an ALERT pin (active low, pull-up required). For now, we configure this power measurement to require polling over I2C."
+		(exclude_from_sim no)
+		(at 191.77 83.82 0)
+		(size 34.29 26.4392)
+		(margins 0.9525 0.9525 0.9525 0.9525)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "51810945-c630-4dee-a2d9-b65c63a547cf")
+	)
 	(junction
 		(at 143.51 116.84)
 		(diameter 0)
