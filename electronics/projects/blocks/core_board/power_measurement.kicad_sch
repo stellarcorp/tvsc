@@ -830,6 +830,26 @@
 			(embedded_fonts no)
 		)
 	)
+	(text_box "The SLOW pin is tied high to set the sampling rate at 8 samples per second. Tying it low increases the sample rate to 1k samples per second, completely unnecessary for our use cases. Also, this pin can be programmed to become an ALERT pin (active low, pull-up required). For now, we configure this power measurement to require polling over I2C."
+		(exclude_from_sim no)
+		(at 191.77 83.82 0)
+		(size 34.29 26.4392)
+		(margins 0.9525 0.9525 0.9525 0.9525)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "51810945-c630-4dee-a2d9-b65c63a547cf")
+	)
 	(junction
 		(at 143.51 116.84)
 		(diameter 0)
@@ -1396,21 +1416,15 @@
 			(uuid "becafd2a-b801-477a-9271-e4e1f7f12a75")
 		)
 		(instances
-			(project "power_measurement"
-				(path "/00a61877-cce1-46a2-8791-e21dc4524eb1"
-					(reference "U401")
-					(unit 1)
-				)
-			)
 			(project "core_board"
-				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/c4bc1ab2-352e-43a9-b0fd-013dae9fb161"
+				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/6daad74e-8262-43e4-8e59-fc916a32c5dc"
 					(reference "U501")
 					(unit 1)
 				)
 			)
 			(project "power_measurement"
 				(path "/fa1a47ee-6efe-45dd-a018-8accaf81ef9e/b46f3a66-c5eb-49e8-b6df-1ac3fe8abb32"
-					(reference "U402")
+					(reference "U101")
 					(unit 1)
 				)
 			)
@@ -1485,21 +1499,15 @@
 			(uuid "58e2dd6c-5e39-4608-9593-29762f1eaa0b")
 		)
 		(instances
-			(project "power_measurement"
-				(path "/00a61877-cce1-46a2-8791-e21dc4524eb1"
-					(reference "#PWR0401")
-					(unit 1)
-				)
-			)
 			(project "core_board"
-				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/c4bc1ab2-352e-43a9-b0fd-013dae9fb161"
+				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/6daad74e-8262-43e4-8e59-fc916a32c5dc"
 					(reference "#PWR0501")
 					(unit 1)
 				)
 			)
 			(project "power_measurement"
 				(path "/fa1a47ee-6efe-45dd-a018-8accaf81ef9e/b46f3a66-c5eb-49e8-b6df-1ac3fe8abb32"
-					(reference "#PWR0401")
+					(reference "#PWR0101")
 					(unit 1)
 				)
 			)
@@ -1666,21 +1674,15 @@
 			(uuid "30289267-2c4c-47d5-b9db-a9885ec06fe5")
 		)
 		(instances
-			(project "power_measurement"
-				(path "/00a61877-cce1-46a2-8791-e21dc4524eb1"
-					(reference "C402")
-					(unit 1)
-				)
-			)
 			(project "core_board"
-				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/c4bc1ab2-352e-43a9-b0fd-013dae9fb161"
+				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/6daad74e-8262-43e4-8e59-fc916a32c5dc"
 					(reference "C502")
 					(unit 1)
 				)
 			)
 			(project "power_measurement"
 				(path "/fa1a47ee-6efe-45dd-a018-8accaf81ef9e/b46f3a66-c5eb-49e8-b6df-1ac3fe8abb32"
-					(reference "C404")
+					(reference "C102")
 					(unit 1)
 				)
 			)
@@ -1848,21 +1850,15 @@
 			(uuid "87b8b831-bbac-43f8-9f1a-fd27a8512384")
 		)
 		(instances
-			(project "power_measurement"
-				(path "/00a61877-cce1-46a2-8791-e21dc4524eb1"
-					(reference "R401")
-					(unit 1)
-				)
-			)
 			(project "core_board"
-				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/c4bc1ab2-352e-43a9-b0fd-013dae9fb161"
+				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/6daad74e-8262-43e4-8e59-fc916a32c5dc"
 					(reference "R501")
 					(unit 1)
 				)
 			)
 			(project "power_measurement"
 				(path "/fa1a47ee-6efe-45dd-a018-8accaf81ef9e/b46f3a66-c5eb-49e8-b6df-1ac3fe8abb32"
-					(reference "R402")
+					(reference "R101")
 					(unit 1)
 				)
 			)
@@ -1937,21 +1933,15 @@
 			(uuid "c0c2a2d1-11f9-41ce-811d-aaa41e6e930c")
 		)
 		(instances
-			(project "power_measurement"
-				(path "/00a61877-cce1-46a2-8791-e21dc4524eb1"
-					(reference "#PWR0403")
-					(unit 1)
-				)
-			)
 			(project "core_board"
-				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/c4bc1ab2-352e-43a9-b0fd-013dae9fb161"
+				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/6daad74e-8262-43e4-8e59-fc916a32c5dc"
 					(reference "#PWR0503")
 					(unit 1)
 				)
 			)
 			(project "power_measurement"
 				(path "/fa1a47ee-6efe-45dd-a018-8accaf81ef9e/b46f3a66-c5eb-49e8-b6df-1ac3fe8abb32"
-					(reference "#PWR0403")
+					(reference "#PWR0103")
 					(unit 1)
 				)
 			)
@@ -2120,21 +2110,15 @@
 			(uuid "853a94a7-ee89-4f50-b4a7-14c32f4485ab")
 		)
 		(instances
-			(project "power_measurement"
-				(path "/00a61877-cce1-46a2-8791-e21dc4524eb1"
-					(reference "C401")
-					(unit 1)
-				)
-			)
 			(project "core_board"
-				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/c4bc1ab2-352e-43a9-b0fd-013dae9fb161"
+				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/6daad74e-8262-43e4-8e59-fc916a32c5dc"
 					(reference "C501")
 					(unit 1)
 				)
 			)
 			(project "power_measurement"
 				(path "/fa1a47ee-6efe-45dd-a018-8accaf81ef9e/b46f3a66-c5eb-49e8-b6df-1ac3fe8abb32"
-					(reference "C403")
+					(reference "C101")
 					(unit 1)
 				)
 			)
@@ -2210,21 +2194,15 @@
 			(uuid "f795c7cb-1824-4433-8b7b-370714ac62e8")
 		)
 		(instances
-			(project "power_measurement"
-				(path "/00a61877-cce1-46a2-8791-e21dc4524eb1"
-					(reference "#PWR0402")
-					(unit 1)
-				)
-			)
 			(project "core_board"
-				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/c4bc1ab2-352e-43a9-b0fd-013dae9fb161"
+				(path "/efde0c74-5be6-4589-ad87-b4823ac1634b/c87fd2a4-f8d6-4149-89ef-17a7a7e4f014/6daad74e-8262-43e4-8e59-fc916a32c5dc"
 					(reference "#PWR0502")
 					(unit 1)
 				)
 			)
 			(project "power_measurement"
 				(path "/fa1a47ee-6efe-45dd-a018-8accaf81ef9e/b46f3a66-c5eb-49e8-b6df-1ac3fe8abb32"
-					(reference "#PWR0402")
+					(reference "#PWR0102")
 					(unit 1)
 				)
 			)

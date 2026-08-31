@@ -10,17 +10,534 @@
 		(rev "${PCB_VERSION}")
 		(company "TVSC")
 	)
-	(lib_symbols)
+	(lib_symbols
+		(symbol "Device:NetTie_2"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "NT"
+				(at 0 1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "NetTie_2"
+				(at 0 -1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Net tie, 2 pins"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "net tie short"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Net*Tie*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "NetTie_2_0_1"
+				(polyline
+					(pts
+						(xy -1.27 0) (xy 1.27 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "NetTie_2_1_1"
+				(pin passive line
+					(at -2.54 0 0)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 0 180)
+					(length 2.54)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "TVSC:NetTie_NC"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board no)
+			(in_pos_files no)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "NT"
+				(at 0 1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "NetTie_NC"
+				(at 0 -1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Net tie to NC"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "net tie short"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Net*Tie*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "NetTie_NC_0_1"
+				(polyline
+					(pts
+						(xy -1.27 0) (xy 1.27 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "NetTie_NC_1_1"
+				(text "X"
+					(at 1.27 0 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(pin passive line
+					(at -2.54 0 0)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "power:GND"
+			(power global)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "#PWR"
+				(at 0 -6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "GND"
+				(at 0 -3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "GND_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 -1.27) (xy 1.27 -1.27) (xy 0 -2.54) (xy -1.27 -1.27) (xy 0 -1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "GND_1_1"
+				(pin power_in line
+					(at 0 0 270)
+					(length 0)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "power:PWR_FLAG"
+			(power global)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "#FLG"
+				(at 0 1.905 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "PWR_FLAG"
+				(at 0 3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Special symbol for telling ERC where power comes from"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "flag power"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "PWR_FLAG_0_0"
+				(pin power_out line
+					(at 0 0 90)
+					(length 0)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "PWR_FLAG_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
+	(junction
+		(at 91.44 69.85)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f857ffdd-2a78-44c6-8c06-413864612c83")
+	)
 	(no_connect
 		(at 116.84 77.47)
 		(uuid "0553cfb8-1281-453c-aa3b-2c50e1b74a5c")
+	)
+	(no_connect
+		(at 198.12 95.25)
+		(uuid "0b9e5825-6707-438c-a3be-75e78aceb645")
 	)
 	(no_connect
 		(at 179.07 71.12)
 		(uuid "0c306d2f-9f9f-4a73-90d8-a39b4ef93336")
 	)
 	(no_connect
-		(at 179.07 109.22)
+		(at 179.07 119.38)
 		(uuid "222d95ea-0e46-408e-93d0-f2ef71cc9ccf")
 	)
 	(no_connect
@@ -36,11 +553,15 @@
 		(uuid "30d893d9-506a-4ffd-8d51-7c2945ae2929")
 	)
 	(no_connect
+		(at 116.84 113.03)
+		(uuid "320be212-a809-4a02-90a2-25df1be54e94")
+	)
+	(no_connect
 		(at 116.84 72.39)
 		(uuid "33d588d3-5358-404c-8a1a-f6fc977d9043")
 	)
 	(no_connect
-		(at 179.07 104.14)
+		(at 179.07 114.3)
 		(uuid "435cf91e-be17-4721-b2b8-fee37569f808")
 	)
 	(no_connect
@@ -48,39 +569,43 @@
 		(uuid "461b7da9-9748-4d53-8368-dd476e097544")
 	)
 	(no_connect
-		(at 179.07 106.68)
+		(at 179.07 116.84)
 		(uuid "48ae3ba7-1ab3-482e-bc60-22148b5c2c2f")
 	)
 	(no_connect
-		(at 116.84 91.44)
+		(at 116.84 92.71)
 		(uuid "4a931faa-58fd-40ac-815e-b7db1110a6c4")
 	)
 	(no_connect
-		(at 116.84 105.41)
+		(at 116.84 130.81)
 		(uuid "541b2396-637b-42d9-90fc-a67202d214a9")
 	)
 	(no_connect
-		(at 179.07 95.25)
-		(uuid "6f37f7af-e556-4566-ad7f-d9819799885c")
+		(at 179.07 125.73)
+		(uuid "56c87d71-4010-4307-9234-1c0740d7a9cb")
 	)
 	(no_connect
-		(at 116.84 110.49)
-		(uuid "76f79624-58ff-486a-a10b-1924de5bf3f8")
-	)
-	(no_connect
-		(at 179.07 115.57)
-		(uuid "7ff2db92-9a50-49dd-98b9-889007720ec0")
+		(at 116.84 125.73)
+		(uuid "60ed595d-d85b-4fe3-b3e1-b6a4e3ff4bf9")
 	)
 	(no_connect
 		(at 116.84 107.95)
-		(uuid "83355182-cc90-4c17-b0e4-e34aa8c0bb62")
+		(uuid "75e2943a-80b8-4e9d-b4f1-75d8d612db75")
+	)
+	(no_connect
+		(at 116.84 135.89)
+		(uuid "76f79624-58ff-486a-a10b-1924de5bf3f8")
 	)
 	(no_connect
 		(at 116.84 86.36)
 		(uuid "847876a5-14d0-4ea8-91d9-bc79541d78b6")
 	)
 	(no_connect
-		(at 116.84 93.98)
+		(at 116.84 120.65)
+		(uuid "86c4dd34-75e4-4b18-ad94-ccadb87f7dfe")
+	)
+	(no_connect
+		(at 116.84 95.25)
 		(uuid "872711bd-90f8-4189-84da-a113e9b2abaf")
 	)
 	(no_connect
@@ -88,15 +613,31 @@
 		(uuid "8899732d-428c-4cab-9d30-e5bbe0f76ce6")
 	)
 	(no_connect
+		(at 116.84 110.49)
+		(uuid "8e826a18-c804-4b5e-bafe-22876749863d")
+	)
+	(no_connect
 		(at 179.07 87.63)
 		(uuid "a0c37f7d-b11b-4083-847e-6d190bcee18b")
+	)
+	(no_connect
+		(at 198.12 97.79)
+		(uuid "aa00c659-1924-48ec-9b47-dacdd8e102dc")
+	)
+	(no_connect
+		(at 116.84 123.19)
+		(uuid "aaf05d2e-ceef-400a-8438-d091b5902d99")
+	)
+	(no_connect
+		(at 116.84 133.35)
+		(uuid "ac5ae3d4-4ca0-426f-8f20-c01eea72292f")
 	)
 	(no_connect
 		(at 116.84 67.31)
 		(uuid "b0af3e5e-2da4-4604-bd39-b7964ff86a5c")
 	)
 	(no_connect
-		(at 116.84 96.52)
+		(at 116.84 99.06)
 		(uuid "b38f88a2-fe27-4647-8826-dfed17207e42")
 	)
 	(no_connect
@@ -112,20 +653,568 @@
 		(uuid "d76db336-9e96-41c9-9218-fbc2c3618a12")
 	)
 	(no_connect
-		(at 116.84 99.06)
+		(at 116.84 101.6)
 		(uuid "dc276fe6-b407-45d4-81b8-3110ebbd87b1")
 	)
 	(no_connect
-		(at 179.07 97.79)
-		(uuid "e64197b3-df1f-4e40-87fa-24f35d2786e2")
+		(at 116.84 118.11)
+		(uuid "deb2843b-7aa9-4520-a5ed-9c4d7023d8be")
+	)
+	(no_connect
+		(at 116.84 140.97)
+		(uuid "e106d7d6-fee7-4b60-bf7c-95dc58d92a00")
 	)
 	(no_connect
 		(at 116.84 88.9)
 		(uuid "ee3a4caa-1539-45af-935a-2aeade47eca2")
 	)
+	(no_connect
+		(at 198.12 100.33)
+		(uuid "f1465db7-be82-4159-a61e-176ae43fd6ed")
+	)
+	(wire
+		(pts
+			(xy 179.07 95.25) (xy 191.77 95.25)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1092f5c3-cbfd-4f7d-9cc1-5b0fa093b87f")
+	)
+	(wire
+		(pts
+			(xy 198.12 97.79) (xy 196.85 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "15a6109e-9ba7-4b00-8a61-c6056c5ec6b9")
+	)
+	(wire
+		(pts
+			(xy 179.07 97.79) (xy 191.77 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "241825ea-318f-41d9-bd35-a76a765dfd29")
+	)
+	(wire
+		(pts
+			(xy 198.12 95.25) (xy 196.85 95.25)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d1700978-4a6e-4099-9e33-19fd020bdbe1")
+	)
+	(wire
+		(pts
+			(xy 179.07 100.33) (xy 191.77 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d5b2b980-37bf-4fe0-98f3-cc46bc5b1d2d")
+	)
+	(wire
+		(pts
+			(xy 198.12 100.33) (xy 196.85 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e7454bea-7bbc-4e1f-a398-b64c0df6f924")
+	)
+	(symbol
+		(lib_id "Device:NetTie_2")
+		(at 194.31 95.25 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "71338b6b-ff03-4da7-981b-d979b75eb8a7")
+		(property "Reference" "NT202"
+			(at 194.31 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NetTie_2"
+			(at 194.31 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
+			(at 194.31 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 194.31 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Net tie, 2 pins"
+			(at 194.31 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fe91022d-171b-41af-968f-7f66264a7cb4")
+		)
+		(pin "2"
+			(uuid "9e1b493e-78a9-4c56-9905-703239303f79")
+		)
+		(instances
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea"
+					(reference "NT202")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 91.44 69.85 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ac4c58e6-8d3d-4b33-9274-cdfaef1d50ae")
+		(property "Reference" "#PWR0201"
+			(at 91.44 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 91.44 73.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 91.44 69.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 91.44 69.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 91.44 69.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3dec0fa0-a2e6-4d86-89d0-742cc2411a89")
+		)
+		(instances
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea"
+					(reference "#PWR0201")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:NetTie_2")
+		(at 194.31 100.33 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "af71aa24-2ec0-4687-b6ab-83750ac24e54")
+		(property "Reference" "NT205"
+			(at 194.31 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NetTie_2"
+			(at 194.31 97.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
+			(at 194.31 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 194.31 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Net tie, 2 pins"
+			(at 194.31 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "64a2a40d-9c1e-41d5-9a31-4ac5285bc389")
+		)
+		(pin "2"
+			(uuid "e54eaaba-f201-45f4-9597-2e8762ea7974")
+		)
+		(instances
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea"
+					(reference "NT205")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 91.44 69.85 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b11be669-30ca-4a04-b2b4-c05c3018b52c")
+		(property "Reference" "#FLG0201"
+			(at 91.44 67.945 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 91.44 64.77 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 91.44 69.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 91.44 69.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 91.44 69.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3b966d3c-1207-4f6c-9c81-b8a9bda866b5")
+		)
+		(instances
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea"
+					(reference "#FLG0201")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "TVSC:NetTie_NC")
+		(at 93.98 69.85 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b592fc75-c2d3-4133-8cea-21ba4c2d97c5")
+		(property "Reference" "NT201"
+			(at 93.98 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NetTie_NC"
+			(at 93.98 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 93.98 69.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 93.98 69.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Net tie to NC"
+			(at 93.98 69.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "446e078e-faa1-40bc-bd03-ccb914e39357")
+		)
+		(instances
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea"
+					(reference "NT201")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:NetTie_2")
+		(at 194.31 97.79 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d90377f9-8a89-487d-9f9f-125bf00929d3")
+		(property "Reference" "NT203"
+			(at 194.31 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NetTie_2"
+			(at 194.31 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
+			(at 194.31 97.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 194.31 97.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Net tie, 2 pins"
+			(at 194.31 97.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "c2640fac-a3d6-44fe-b7e8-88fdc6f3e7e4")
+		)
+		(pin "2"
+			(uuid "36ac054d-f1e6-41c6-bace-76a0cf499fb5")
+		)
+		(instances
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea"
+					(reference "NT203")
+					(unit 1)
+				)
+			)
+		)
+	)
 	(sheet
 		(at 116.84 64.77)
-		(size 62.23 55.88)
+		(size 62.23 80.01)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -151,7 +1240,7 @@
 			)
 		)
 		(property "Sheetfile" "mcu.kicad_sch"
-			(at 116.84 121.2346 0)
+			(at 116.84 145.3646 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -192,7 +1281,7 @@
 			)
 		)
 		(pin "SPI3_SCK" output
-			(at 116.84 105.41 180)
+			(at 116.84 130.81 180)
 			(uuid "d3e8bb8b-36cf-4f86-9dd4-9f07307224cb")
 			(effects
 				(font
@@ -232,7 +1321,7 @@
 			)
 		)
 		(pin "SPI3_MOSI" output
-			(at 116.84 110.49 180)
+			(at 116.84 135.89 180)
 			(uuid "b89a1110-1372-4fb2-93e1-c8f7fcc2e2c9")
 			(effects
 				(font
@@ -262,7 +1351,7 @@
 			)
 		)
 		(pin "I2C2_SDA" bidirectional
-			(at 116.84 93.98 180)
+			(at 116.84 95.25 180)
 			(uuid "0d425daa-82ea-4c59-a113-6f954065e34e")
 			(effects
 				(font
@@ -282,7 +1371,7 @@
 			)
 		)
 		(pin "BOARD_ID_SENS" input
-			(at 179.07 109.22 0)
+			(at 179.07 119.38 0)
 			(uuid "d5d6b554-e9c5-4e85-b020-f2b66582e012")
 			(effects
 				(font
@@ -292,7 +1381,7 @@
 			)
 		)
 		(pin "BOARD_ID_VERSION" input
-			(at 179.07 106.68 0)
+			(at 179.07 116.84 0)
 			(uuid "20cfdb41-57f5-497c-b0aa-50b238ae7531")
 			(effects
 				(font
@@ -302,7 +1391,7 @@
 			)
 		)
 		(pin "BOARD_ID_PWR" output
-			(at 179.07 104.14 0)
+			(at 179.07 114.3 0)
 			(uuid "e4fab55d-62c1-48c6-a3a5-dd1fb45099e7")
 			(effects
 				(font
@@ -322,7 +1411,7 @@
 			)
 		)
 		(pin "SPI3_MISO" input
-			(at 116.84 107.95 180)
+			(at 116.84 133.35 180)
 			(uuid "88fc08d0-3550-48d7-929f-233f146e47ce")
 			(effects
 				(font
@@ -372,7 +1461,7 @@
 			)
 		)
 		(pin "I2C2_SCL" output
-			(at 116.84 91.44 180)
+			(at 116.84 92.71 180)
 			(uuid "09cb72b8-221a-423d-8a5f-0964c4b98b29")
 			(effects
 				(font
@@ -382,7 +1471,7 @@
 			)
 		)
 		(pin "I2C3_SCL" output
-			(at 116.84 96.52 180)
+			(at 116.84 99.06 180)
 			(uuid "58573bbb-34fc-4383-93a6-22e82ba58fce")
 			(effects
 				(font
@@ -412,7 +1501,7 @@
 			)
 		)
 		(pin "I2C3_SDA" bidirectional
-			(at 116.84 99.06 180)
+			(at 116.84 101.6 180)
 			(uuid "1bbfa9ba-6d0c-4edf-9c18-bb0342ce1e15")
 			(effects
 				(font
@@ -432,13 +1521,103 @@
 			)
 		)
 		(pin "DEBUG_LED" output
-			(at 179.07 115.57 0)
+			(at 179.07 125.73 0)
 			(uuid "85a98481-1a7f-4f2b-9785-ed885ba7b091")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
+			)
+		)
+		(pin "SPI1_MISO" input
+			(at 116.84 110.49 180)
+			(uuid "a2f15f11-9b6d-4b52-bcb1-ba0187c8f9bb")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SPI1_MOSI" output
+			(at 116.84 113.03 180)
+			(uuid "18832a47-54e3-4f22-96fd-1c1379a97186")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SPI1_SCK" output
+			(at 116.84 107.95 180)
+			(uuid "0aa0d4bb-2ff1-4951-8a4f-95d5dab70606")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SPI2_MISO" input
+			(at 116.84 120.65 180)
+			(uuid "26b5bea8-7a1e-42c8-ac72-675dd1a326dc")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SPI2_MOSI" input
+			(at 116.84 123.19 180)
+			(uuid "5e345e3b-f5d0-4d85-bf2a-5af072bd473f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SPI2_SCK" output
+			(at 116.84 118.11 180)
+			(uuid "0ccc3473-6143-4029-ab04-f037777548fb")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "PERIPH_INT_3" input
+			(at 179.07 100.33 0)
+			(uuid "76681bfe-a3a5-4b4e-a4d5-9299d287b2fd")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SPI1_SPI3_CS" bidirectional
+			(at 116.84 140.97 180)
+			(uuid "2fa739e3-184f-4ca6-85b6-54700e55baf0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SPI2_CS" bidirectional
+			(at 116.84 125.73 180)
+			(uuid "6300bcc4-a0ed-4036-8faa-e2c2fe721ef4")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 		(instances

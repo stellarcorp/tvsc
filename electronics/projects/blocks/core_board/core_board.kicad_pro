@@ -60,7 +60,7 @@
           "hatch_smoothing_level": 0,
           "hatch_smoothing_value": 0.1,
           "hatch_thickness": 1.0,
-          "min_clearance": 0.25,
+          "min_clearance": 0.5,
           "min_island_area": 10.0,
           "min_thickness": 0.25,
           "pad_connection": 2,
@@ -76,7 +76,24 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        [
+          "npth_inside_courtyard|113551750|109630000|1f9de3f8-1563-4a5d-85a9-4cea1e8772d4|2ccc8c54-f978-4b57-92b4-25f105672d98",
+          "These headers are designed to be placed back-to-back."
+        ],
+        [
+          "npth_inside_courtyard|113551750|129760000|c5e68b2a-8335-4e42-8e0b-7f83adeba4bd|2ccc8c54-f978-4b57-92b4-25f105672d98",
+          "These headers are designed to be placed back-to-back."
+        ],
+        [
+          "npth_inside_courtyard|118251750|110455000|d4a8ef51-63fe-452d-9765-f94122def0a7|5e5fbee4-cc45-40c5-9017-bf5d90f87afb",
+          "These headers are designed to be placed back-to-back."
+        ],
+        [
+          "npth_inside_courtyard|118251750|128935000|d71d2f0f-8379-49bc-b0ff-425ec804de1e|5e5fbee4-cc45-40c5-9017-bf5d90f87afb",
+          "These headers are designed to be placed back-to-back."
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -765,7 +782,7 @@
         "uuid": "efde0c74-5be6-4589-ad87-b4823ac1634b"
       }
     ],
-    "used_designators": "NT101-119,NT701-719,C16-18,C301-303,C401-410,C501-503,C601-610,C801-803,D201,D301,JP1-2,JP401-402,JP801-802,R23-24,R201,R301-302,R401-415,R501-502,R601-615,R701-703,R801-802,U4,U301,U401,U501,U601,U801,#PWR22-24,#PWR201-208,#PWR301-308,#PWR401-407,#PWR501-503,#PWR601-607,#PWR701-703,#PWR801-803,#FLG101,#FLG201,#FLG301,#FLG501,#FLG701,J201-202,J301-302,J701,L301,L501,PCB201,PCB301",
+    "used_designators": "PCB201,PCB301,L301,L501,J201-202,J301-302,J701,#FLG101,#FLG201,#FLG301,#FLG501,#FLG701,#FLG801,#PWR22-24,#PWR201-208,#PWR301-308,#PWR401-407,#PWR501-503,#PWR601-609,#PWR701-703,#PWR801-803,U4,U301,U401,U501,U601,U801,R23-24,R201,R301-302,R401-415,R501-502,R601-619,R701-704,R801-802,JP1-2,JP401-402,JP801-802,D201,D301,C16-18,C301-303,C401-410,C501-503,C601-614,C801-803,NT101-119,NT601-615,NT701-719,NT801-819",
     "variants": []
   },
   "sheets": [
@@ -778,7 +795,7 @@
       "pcb_with_bus"
     ],
     [
-      "dad862ba-b1c7-4106-8ed5-6c592a68170e",
+      "67fd60e2-b54e-4371-8a56-a180a344756b",
       "voltage_regulation"
     ],
     [
@@ -786,12 +803,16 @@
       "can_bus"
     ],
     [
-      "c4bc1ab2-352e-43a9-b0fd-013dae9fb161",
+      "6daad74e-8262-43e4-8e59-fc916a32c5dc",
       "power_measurement"
     ],
     [
-      "4cbd314f-325f-4b7f-a135-6d5f42502b1c",
+      "278fcd7e-95d3-4cf4-85d0-c5532f903eb9",
       "mcu"
+    ],
+    [
+      "c7996912-474c-44c8-bb4a-88f12c2861c1",
+      "st_link"
     ],
     [
       "efde0c74-5be6-4589-ad87-b4823ac1634b",
