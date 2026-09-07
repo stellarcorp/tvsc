@@ -2436,6 +2436,26 @@
 	)
 	(wire
 		(pts
+			(xy 40.64 116.84) (xy 60.96 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0391eaa2-1d60-4e6f-a4d5-ccf45068c1a6")
+	)
+	(wire
+		(pts
+			(xy 144.78 73.66) (xy 149.86 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "046080f2-ad75-489a-8db8-245ea8029c70")
+	)
+	(wire
+		(pts
 			(xy 157.48 132.08) (xy 157.48 152.4)
 		)
 		(stroke
@@ -2453,16 +2473,6 @@
 			(type default)
 		)
 		(uuid "04f46fa3-e158-44f5-9d50-c54ac3f93901")
-	)
-	(wire
-		(pts
-			(xy 149.86 81.28) (xy 156.21 81.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "088cc16c-fb16-4dd2-889a-803905e726b9")
 	)
 	(wire
 		(pts
@@ -2486,7 +2496,7 @@
 	)
 	(wire
 		(pts
-			(xy 144.78 88.9) (xy 181.61 88.9)
+			(xy 144.78 88.9) (xy 203.2 88.9)
 		)
 		(stroke
 			(width 0)
@@ -2526,13 +2536,13 @@
 	)
 	(wire
 		(pts
-			(xy 41.91 116.84) (xy 60.96 116.84)
+			(xy 144.78 83.82) (xy 167.64 83.82)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "1f29a043-45a0-4744-9541-8660b608785f")
+		(uuid "1dd4a7f2-c7f0-482b-be95-e4673745af6b")
 	)
 	(wire
 		(pts
@@ -2556,23 +2566,13 @@
 	)
 	(wire
 		(pts
-			(xy 186.69 55.88) (xy 241.3 55.88)
+			(xy 205.74 55.88) (xy 241.3 55.88)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "28fe41d9-bbe2-4f28-9053-ea63fcab3110")
-	)
-	(wire
-		(pts
-			(xy 247.65 152.4) (xy 251.46 152.4)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2c597075-7d1a-4fed-964b-455c55d6eaad")
 	)
 	(wire
 		(pts
@@ -2606,6 +2606,16 @@
 	)
 	(wire
 		(pts
+			(xy 172.72 60.96) (xy 144.78 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2dc33921-de62-44c2-aec6-f36ae564e3cd")
+	)
+	(wire
+		(pts
 			(xy 246.38 147.32) (xy 251.46 147.32)
 		)
 		(stroke
@@ -2636,7 +2646,17 @@
 	)
 	(wire
 		(pts
-			(xy 181.61 53.34) (xy 181.61 88.9)
+			(xy 144.78 86.36) (xy 167.64 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "305c0dad-e9a0-441c-a891-901c63e8b523")
+	)
+	(wire
+		(pts
+			(xy 203.2 53.34) (xy 203.2 88.9)
 		)
 		(stroke
 			(width 0)
@@ -2663,6 +2683,16 @@
 			(type default)
 		)
 		(uuid "3451bef6-baa8-4e6a-8690-bd0fcc93a928")
+	)
+	(wire
+		(pts
+			(xy 246.38 88.9) (xy 251.46 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3463e39b-a3e0-408f-beae-7525d6373dd3")
 	)
 	(wire
 		(pts
@@ -2696,7 +2726,7 @@
 	)
 	(wire
 		(pts
-			(xy 181.61 53.34) (xy 241.3 53.34)
+			(xy 203.2 53.34) (xy 241.3 53.34)
 		)
 		(stroke
 			(width 0)
@@ -2736,7 +2766,7 @@
 	)
 	(wire
 		(pts
-			(xy 205.74 80.01) (xy 241.3 80.01)
+			(xy 220.98 80.01) (xy 241.3 80.01)
 		)
 		(stroke
 			(width 0)
@@ -2756,7 +2786,7 @@
 	)
 	(wire
 		(pts
-			(xy 144.78 109.22) (xy 210.82 109.22)
+			(xy 144.78 109.22) (xy 223.52 109.22)
 		)
 		(stroke
 			(width 0)
@@ -2776,7 +2806,7 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 86.36) (xy 241.3 86.36)
+			(xy 223.52 86.36) (xy 241.3 86.36)
 		)
 		(stroke
 			(width 0)
@@ -2786,17 +2816,7 @@
 	)
 	(wire
 		(pts
-			(xy 41.91 130.81) (xy 66.04 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "47e33dfc-1f90-421b-b69f-d23065694151")
-	)
-	(wire
-		(pts
-			(xy 149.86 71.12) (xy 156.21 71.12)
+			(xy 147.32 63.5) (xy 172.72 63.5)
 		)
 		(stroke
 			(width 0)
@@ -2846,16 +2866,6 @@
 	)
 	(wire
 		(pts
-			(xy 247.65 165.1) (xy 251.46 165.1)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4d7f6c4f-853f-47ec-be85-4e67ec1ec80f")
-	)
-	(wire
-		(pts
 			(xy 144.78 129.54) (xy 160.02 129.54)
 		)
 		(stroke
@@ -2876,7 +2886,7 @@
 	)
 	(wire
 		(pts
-			(xy 191.77 58.42) (xy 191.77 106.68)
+			(xy 208.28 58.42) (xy 208.28 106.68)
 		)
 		(stroke
 			(width 0)
@@ -2953,6 +2963,16 @@
 			(type default)
 		)
 		(uuid "5ed6557f-af7a-44d6-ba11-4b573d60e37a")
+	)
+	(wire
+		(pts
+			(xy 156.21 72.39) (xy 173.99 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6011bca3-9bb9-493d-aae5-d96b87cb3b93")
 	)
 	(wire
 		(pts
@@ -3056,6 +3076,16 @@
 	)
 	(wire
 		(pts
+			(xy 144.78 76.2) (xy 156.21 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6b1d1664-9cdb-4b72-9eca-52a48a0c8988")
+	)
+	(wire
+		(pts
 			(xy 35.56 83.82) (xy 26.67 83.82)
 		)
 		(stroke
@@ -3086,7 +3116,7 @@
 	)
 	(wire
 		(pts
-			(xy 191.77 58.42) (xy 240.03 58.42)
+			(xy 208.28 58.42) (xy 240.03 58.42)
 		)
 		(stroke
 			(width 0)
@@ -3096,7 +3126,7 @@
 	)
 	(wire
 		(pts
-			(xy 186.69 55.88) (xy 186.69 91.44)
+			(xy 205.74 55.88) (xy 205.74 91.44)
 		)
 		(stroke
 			(width 0)
@@ -3166,7 +3196,7 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 109.22) (xy 210.82 86.36)
+			(xy 223.52 109.22) (xy 223.52 86.36)
 		)
 		(stroke
 			(width 0)
@@ -3186,17 +3216,7 @@
 	)
 	(wire
 		(pts
-			(xy 247.65 72.39) (xy 251.46 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7bd78d5d-a420-4531-bdb4-f9a98fbd88cc")
-	)
-	(wire
-		(pts
-			(xy 144.78 91.44) (xy 186.69 91.44)
+			(xy 144.78 91.44) (xy 205.74 91.44)
 		)
 		(stroke
 			(width 0)
@@ -3226,7 +3246,17 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 58.42) (xy 176.53 95.25)
+			(xy 40.64 130.81) (xy 66.04 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7dfe2b2c-ca66-4151-865b-be37aacfda2a")
+	)
+	(wire
+		(pts
+			(xy 198.12 58.42) (xy 198.12 96.52)
 		)
 		(stroke
 			(width 0)
@@ -3236,7 +3266,7 @@
 	)
 	(wire
 		(pts
-			(xy 203.2 95.25) (xy 203.2 72.39)
+			(xy 218.44 96.52) (xy 218.44 72.39)
 		)
 		(stroke
 			(width 0)
@@ -3246,7 +3276,7 @@
 	)
 	(wire
 		(pts
-			(xy 54.61 92.71) (xy 41.91 92.71)
+			(xy 45.72 92.71) (xy 41.91 92.71)
 		)
 		(stroke
 			(width 0)
@@ -3256,7 +3286,7 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 130.81) (xy 34.29 130.81)
+			(xy 29.21 130.81) (xy 35.56 130.81)
 		)
 		(stroke
 			(width 0)
@@ -3293,6 +3323,16 @@
 			(type default)
 		)
 		(uuid "89ccfe9e-aa4f-48aa-8573-6e53d7000682")
+	)
+	(wire
+		(pts
+			(xy 156.21 76.2) (xy 156.21 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8dffd6f8-2d17-40d7-a032-840bfde8a235")
 	)
 	(wire
 		(pts
@@ -3346,7 +3386,7 @@
 	)
 	(wire
 		(pts
-			(xy 144.78 111.76) (xy 213.36 111.76)
+			(xy 144.78 111.76) (xy 226.06 111.76)
 		)
 		(stroke
 			(width 0)
@@ -3356,13 +3396,23 @@
 	)
 	(wire
 		(pts
-			(xy 109.22 93.98) (xy 54.61 93.98)
+			(xy 109.22 93.98) (xy 45.72 93.98)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "9426ba6a-8efa-4bf8-b632-35e1be323628")
+	)
+	(wire
+		(pts
+			(xy 246.38 152.4) (xy 251.46 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "949c6ece-4063-4d84-9362-9d7019d048ec")
 	)
 	(wire
 		(pts
@@ -3406,7 +3456,7 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 116.84) (xy 34.29 116.84)
+			(xy 29.21 116.84) (xy 35.56 116.84)
 		)
 		(stroke
 			(width 0)
@@ -3436,7 +3486,7 @@
 	)
 	(wire
 		(pts
-			(xy 144.78 58.42) (xy 176.53 58.42)
+			(xy 144.78 58.42) (xy 198.12 58.42)
 		)
 		(stroke
 			(width 0)
@@ -3473,6 +3523,16 @@
 			(type default)
 		)
 		(uuid "9fa1da5b-ddbf-42a5-add7-433d34b7fa3e")
+	)
+	(wire
+		(pts
+			(xy 246.38 72.39) (xy 251.46 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a02d50a7-b56b-4494-be5f-d69cf42a9746")
 	)
 	(wire
 		(pts
@@ -3536,7 +3596,7 @@
 	)
 	(wire
 		(pts
-			(xy 173.99 97.79) (xy 205.74 97.79)
+			(xy 195.58 99.06) (xy 220.98 99.06)
 		)
 		(stroke
 			(width 0)
@@ -3576,6 +3636,16 @@
 	)
 	(wire
 		(pts
+			(xy 149.86 66.04) (xy 149.86 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "af7f83f7-50a5-408c-92d0-182156906c4b")
+	)
+	(wire
+		(pts
 			(xy 200.66 116.84) (xy 144.78 116.84)
 		)
 		(stroke
@@ -3586,7 +3656,7 @@
 	)
 	(wire
 		(pts
-			(xy 54.61 93.98) (xy 54.61 92.71)
+			(xy 45.72 93.98) (xy 45.72 92.71)
 		)
 		(stroke
 			(width 0)
@@ -3613,6 +3683,16 @@
 			(type default)
 		)
 		(uuid "b1230aea-d669-40fb-b295-e64ebdea55fc")
+	)
+	(wire
+		(pts
+			(xy 147.32 63.5) (xy 147.32 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b145b08c-20be-412f-b6ee-23724c3491b8")
 	)
 	(wire
 		(pts
@@ -3706,7 +3786,7 @@
 	)
 	(wire
 		(pts
-			(xy 41.91 97.79) (xy 54.61 97.79)
+			(xy 41.91 97.79) (xy 45.72 97.79)
 		)
 		(stroke
 			(width 0)
@@ -3716,17 +3796,7 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 60.96) (xy 156.21 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bdcc2e95-5b3c-4171-b98a-327b89efa0bf")
-	)
-	(wire
-		(pts
-			(xy 157.48 152.4) (xy 240.03 152.4)
+			(xy 157.48 152.4) (xy 241.3 152.4)
 		)
 		(stroke
 			(width 0)
@@ -3763,6 +3833,16 @@
 			(type default)
 		)
 		(uuid "c052be4b-f404-49c1-8548-b521e95c1354")
+	)
+	(wire
+		(pts
+			(xy 144.78 71.12) (xy 147.32 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c0e04d45-7085-40dc-ade9-e05c9cae7a05")
 	)
 	(wire
 		(pts
@@ -3813,6 +3893,16 @@
 			(type default)
 		)
 		(uuid "c508caec-7442-4585-a67a-634c6e271ccb")
+	)
+	(wire
+		(pts
+			(xy 144.78 78.74) (xy 167.64 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c58305a7-dc12-4d22-b4b9-849a268979d2")
 	)
 	(wire
 		(pts
@@ -3876,7 +3966,7 @@
 	)
 	(wire
 		(pts
-			(xy 109.22 96.52) (xy 54.61 96.52)
+			(xy 109.22 96.52) (xy 45.72 96.52)
 		)
 		(stroke
 			(width 0)
@@ -3906,7 +3996,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 165.1) (xy 240.03 165.1)
+			(xy 152.4 165.1) (xy 241.3 165.1)
 		)
 		(stroke
 			(width 0)
@@ -3916,7 +4006,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 95.25) (xy 203.2 95.25)
+			(xy 198.12 96.52) (xy 218.44 96.52)
 		)
 		(stroke
 			(width 0)
@@ -3926,23 +4016,13 @@
 	)
 	(wire
 		(pts
-			(xy 213.36 88.9) (xy 240.03 88.9)
+			(xy 226.06 88.9) (xy 241.3 88.9)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "d4f9e30f-e91b-4151-b853-5c24d11c873c")
-	)
-	(wire
-		(pts
-			(xy 149.86 83.82) (xy 156.21 83.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d5db6749-a2d8-4d2a-b9df-edf49511ba11")
 	)
 	(wire
 		(pts
@@ -3966,16 +4046,6 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 78.74) (xy 156.21 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d71bf1f6-074e-4007-961b-a607dfb42252")
-	)
-	(wire
-		(pts
 			(xy 165.1 24.13) (xy 165.1 26.67)
 		)
 		(stroke
@@ -3996,7 +4066,7 @@
 	)
 	(wire
 		(pts
-			(xy 203.2 72.39) (xy 240.03 72.39)
+			(xy 218.44 72.39) (xy 241.3 72.39)
 		)
 		(stroke
 			(width 0)
@@ -4036,7 +4106,7 @@
 	)
 	(wire
 		(pts
-			(xy 213.36 111.76) (xy 213.36 88.9)
+			(xy 226.06 111.76) (xy 226.06 88.9)
 		)
 		(stroke
 			(width 0)
@@ -4056,16 +4126,6 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 73.66) (xy 156.21 73.66)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e21d50f1-0225-4ebf-bc32-8ab7fc807528")
-	)
-	(wire
-		(pts
 			(xy 231.14 135.89) (xy 231.14 137.16)
 		)
 		(stroke
@@ -4076,7 +4136,7 @@
 	)
 	(wire
 		(pts
-			(xy 173.99 93.98) (xy 144.78 93.98)
+			(xy 195.58 93.98) (xy 144.78 93.98)
 		)
 		(stroke
 			(width 0)
@@ -4126,23 +4186,13 @@
 	)
 	(wire
 		(pts
-			(xy 173.99 97.79) (xy 173.99 93.98)
+			(xy 195.58 99.06) (xy 195.58 93.98)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "ea939909-76cb-40e3-a1f9-91f9a999751d")
-	)
-	(wire
-		(pts
-			(xy 247.65 88.9) (xy 251.46 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ebb4225f-52af-4bd0-9c4f-f27f1cfbf0ed")
 	)
 	(wire
 		(pts
@@ -4156,13 +4206,23 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 86.36) (xy 156.21 86.36)
+			(xy 246.38 165.1) (xy 251.46 165.1)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "f356a3f8-4e8d-48b9-85c2-5a6f02072a4f")
+		(uuid "efabe6ab-f1c0-4e73-ade7-d902d010f71e")
+	)
+	(wire
+		(pts
+			(xy 144.78 81.28) (xy 167.64 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f1ab6b50-9a21-4aed-9727-e78c7161458c")
 	)
 	(wire
 		(pts
@@ -4186,7 +4246,7 @@
 	)
 	(wire
 		(pts
-			(xy 54.61 96.52) (xy 54.61 97.79)
+			(xy 45.72 96.52) (xy 45.72 97.79)
 		)
 		(stroke
 			(width 0)
@@ -4206,7 +4266,17 @@
 	)
 	(wire
 		(pts
-			(xy 205.74 97.79) (xy 205.74 80.01)
+			(xy 149.86 66.04) (xy 172.72 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f932d028-5318-4cac-9adf-c5f1aec6b84b")
+	)
+	(wire
+		(pts
+			(xy 220.98 99.06) (xy 220.98 80.01)
 		)
 		(stroke
 			(width 0)
@@ -4216,7 +4286,7 @@
 	)
 	(wire
 		(pts
-			(xy 191.77 106.68) (xy 144.78 106.68)
+			(xy 208.28 106.68) (xy 144.78 106.68)
 		)
 		(stroke
 			(width 0)
@@ -4244,6 +4314,16 @@
 		)
 		(uuid "ff43a748-0eca-4feb-88a7-6dcdc932b42f")
 	)
+	(label "BOARD_ID_VERSION_INTERNAL"
+		(at 146.05 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "024aba5e-ba0f-40db-841f-c8d239ca2a57")
+	)
 	(label "SPI2_CS_INTERNAL"
 		(at 241.3 147.32 180)
 		(effects
@@ -4253,6 +4333,46 @@
 			(justify right bottom)
 		)
 		(uuid "073e43e6-b5d1-4ea6-ba46-c972e52f7c26")
+	)
+	(label "SPI1_MOSI_INTERNAL"
+		(at 241.3 88.9 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "0b967858-b84a-491d-869b-3a84250a6801")
+	)
+	(label "SPI2_SCK_INTERNAL"
+		(at 241.3 152.4 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "0e55aad3-3525-49b4-9509-4782852dea47")
+	)
+	(label "CAN1_TX_INTERNAL"
+		(at 146.05 86.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1bc32368-b32f-4a9b-bef3-01f452b272b7")
+	)
+	(label "SPI2_MOSI_INTERNAL"
+		(at 241.3 165.1 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "299ac5e7-a2c2-4bb6-992e-49e03c2fb58e")
 	)
 	(label "DEBUG_LED_INTERNAL"
 		(at 41.91 147.32 0)
@@ -4264,6 +4384,16 @@
 		)
 		(uuid "2bfb8e3a-74ac-4bd8-91e2-81f9dade6119")
 	)
+	(label "SPI3_MOSI_INTERNAL"
+		(at 43.18 130.81 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40b3a16c-a46b-41fd-966a-9a2fe2bd7d4e")
+	)
 	(label "SWO_CTRL_INTERNAL"
 		(at 41.91 83.82 0)
 		(effects
@@ -4273,6 +4403,46 @@
 			(justify left bottom)
 		)
 		(uuid "489b71b7-36fd-4179-b479-887ecc3ea345")
+	)
+	(label "BOARD_ID_PWR_INTERNAL"
+		(at 147.32 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "50a1c8e7-a71b-4eb1-b05d-b164c31523d3")
+	)
+	(label "CAN1_SHUTDOWN_INTERNAL"
+		(at 146.05 78.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "633fcff6-5104-4cd6-b197-d07ab7cd019e")
+	)
+	(label "CAN1_RX_INTERNAL"
+		(at 146.05 83.82 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "757c8465-15e1-40bc-8a28-729e66503abb")
+	)
+	(label "BOARD_ID_SENS_INTERNAL"
+		(at 149.86 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7846ad2b-bef6-47ef-be41-45f330909892")
 	)
 	(label "SPI2_MISO_INTERNAL"
 		(at 241.3 160.02 180)
@@ -4284,6 +4454,16 @@
 		)
 		(uuid "902881c3-0f19-4253-9962-fdf237c7eabd")
 	)
+	(label "SPI3_SCK_INTERNAL"
+		(at 43.18 116.84 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "93fbb795-946f-4b94-a3a8-60fb92503898")
+	)
 	(label "SWCLK_INTERNAL"
 		(at 238.76 55.88 180)
 		(effects
@@ -4294,6 +4474,16 @@
 		)
 		(uuid "ae58a0ba-6e64-4ef3-bde5-d03d4e8b1353")
 	)
+	(label "SPI1_SCK_INTERNAL"
+		(at 240.03 72.39 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "ce26f414-2deb-4cef-a8d0-a4236c718a44")
+	)
 	(label "BOOT0"
 		(at 107.95 66.04 180)
 		(effects
@@ -4303,6 +4493,16 @@
 			(justify right bottom)
 		)
 		(uuid "d537eddf-2f67-4ac9-a8be-d81402d98086")
+	)
+	(label "CAN1_SILENT_INTERNAL"
+		(at 146.05 81.28 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "dc5c931c-8c9c-42f3-a1ed-9dc1284b721d")
 	)
 	(label "SPI1_SPI3_CS_INTERNAL"
 		(at 241.3 80.01 180)
@@ -4358,7 +4558,7 @@
 	)
 	(hierarchical_label "CAN1_RX"
 		(shape bidirectional)
-		(at 156.21 83.82 0)
+		(at 172.72 83.82 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4391,7 +4591,7 @@
 	)
 	(hierarchical_label "BOARD_ID_SENS"
 		(shape input)
-		(at 156.21 73.66 0)
+		(at 177.8 66.04 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4402,7 +4602,7 @@
 	)
 	(hierarchical_label "CAN1_SILENT"
 		(shape output)
-		(at 156.21 81.28 0)
+		(at 172.72 81.28 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4633,7 +4833,7 @@
 	)
 	(hierarchical_label "PERIPH_INT_3"
 		(shape input)
-		(at 144.78 76.2 0)
+		(at 173.99 72.39 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4732,7 +4932,7 @@
 	)
 	(hierarchical_label "BOARD_ID_VERSION"
 		(shape input)
-		(at 156.21 60.96 0)
+		(at 177.8 60.96 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4754,7 +4954,7 @@
 	)
 	(hierarchical_label "BOARD_ID_PWR"
 		(shape output)
-		(at 156.21 71.12 0)
+		(at 177.8 63.5 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4787,7 +4987,7 @@
 	)
 	(hierarchical_label "CAN1_TX"
 		(shape bidirectional)
-		(at 156.21 86.36 0)
+		(at 172.72 86.36 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4798,7 +4998,7 @@
 	)
 	(hierarchical_label "CAN1_SHUTDOWN"
 		(shape output)
-		(at 156.21 78.74 0)
+		(at 172.72 78.74 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4896,7 +5096,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "0193c650-dec3-4ccb-8e82-b09be5aec08c")
-		(property "Reference" "R107"
+		(property "Reference" "R105"
 			(at 36.83 22.86 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5054,7 +5254,7 @@
 			)
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R107")
+					(reference "R105")
 					(unit 1)
 				)
 			)
@@ -5072,7 +5272,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "02e47960-0486-4dd0-85bd-250e61b69f35")
-		(property "Reference" "R111"
+		(property "Reference" "R109"
 			(at 233.68 130.81 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5230,7 +5430,7 @@
 			)
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R111")
+					(reference "R109")
 					(unit 1)
 				)
 			)
@@ -5248,7 +5448,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0a7c35f0-62bc-48de-82fa-a66da3891277")
-		(property "Reference" "R113"
+		(property "Reference" "R112"
 			(at 243.84 130.81 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5406,7 +5606,7 @@
 			)
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R113")
+					(reference "R112")
 					(unit 1)
 				)
 			)
@@ -5491,348 +5691,6 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 38.1 116.84 90)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "0dda5f4f-706e-47b5-bf49-6d56a7544e9c")
-		(property "Reference" "R105"
-			(at 38.1 121.92 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "33"
-			(at 38.1 119.38 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 38.1 115.062 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 38.1 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 38.1 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Active" "Y"
-			(at 38.1 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Basic or Extended Component" "Basic"
-			(at 38.1 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "C25105"
-			(at 38.1 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 38.1 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 38.1 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 38.1 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 38.1 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 38.1 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "b7fdb483-b0fc-4d27-910c-969297dfc17a")
-		)
-		(pin "1"
-			(uuid "ac5bc7fb-a04c-47b1-9d93-f93625eff2c9")
-		)
-		(instances
-			(project "core_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/8e27c7c2-0d25-45f6-9c1b-87f643b528a8"
-					(reference "R502")
-					(unit 1)
-				)
-			)
-			(project "mcu"
-				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R105")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 243.84 72.39 90)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "10ea8681-76c2-4082-9349-14b536c906c0")
-		(property "Reference" "R116"
-			(at 243.84 77.47 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "33"
-			(at 243.84 74.93 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 243.84 70.612 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 243.84 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 243.84 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Active" "Y"
-			(at 243.84 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Basic or Extended Component" "Basic"
-			(at 243.84 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "C25105"
-			(at 243.84 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 243.84 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 243.84 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 243.84 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 243.84 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 243.84 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "add5d278-6f3f-4c70-90c1-20fc58c00a9f")
-		)
-		(pin "1"
-			(uuid "8131b09e-eae7-46f8-b63a-042d9b0eca87")
-		)
-		(instances
-			(project "mcu"
-				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R116")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
 		(at 231.14 114.3 0)
 		(unit 1)
 		(body_style 1)
@@ -5843,7 +5701,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "13c29451-b118-4f78-97a2-7e6b9e8f66fb")
-		(property "Reference" "R110"
+		(property "Reference" "R108"
 			(at 233.68 113.03 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6001,7 +5859,7 @@
 			)
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R110")
+					(reference "R108")
 					(unit 1)
 				)
 			)
@@ -6361,19 +6219,20 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 38.1 130.81 90)
-		(mirror x)
+		(lib_id "Device:NetTie_2")
+		(at 243.84 88.9 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
-		(uuid "2023978e-8400-4706-b1d8-2cbfc96db5ad")
-		(property "Reference" "R106"
-			(at 38.1 135.89 90)
+		(fields_autoplaced yes)
+		(uuid "1ef7ade3-75a4-495d-928f-99035ce47653")
+		(property "Reference" "NT117"
+			(at 243.84 83.82 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6382,8 +6241,9 @@
 				)
 			)
 		)
-		(property "Value" "33"
-			(at 38.1 133.35 90)
+		(property "Value" "NetTie_2"
+			(at 243.84 86.36 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6392,8 +6252,8 @@
 				)
 			)
 		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 38.1 129.032 90)
+		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
+			(at 243.84 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6404,7 +6264,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 38.1 130.81 0)
+			(at 243.84 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6414,8 +6274,8 @@
 				)
 			)
 		)
-		(property "Description" "Resistor"
-			(at 38.1 130.81 0)
+		(property "Description" "Net tie, 2 pins"
+			(at 243.84 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6424,111 +6284,99 @@
 					(size 1.27 1.27)
 				)
 			)
-		)
-		(property "Active" "Y"
-			(at 38.1 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Basic or Extended Component" "Basic"
-			(at 38.1 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "C25105"
-			(at 38.1 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 38.1 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 38.1 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 38.1 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 38.1 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 38.1 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "bf842f1a-0107-4d10-bb2d-29ce72f7fced")
 		)
 		(pin "1"
-			(uuid "77ae407a-4f6b-49b5-aa4b-07e914f9c48e")
+			(uuid "abc779fa-ef98-4db4-88c4-30f253b54e3c")
+		)
+		(pin "2"
+			(uuid "77f0a879-9223-4665-ae09-ab10306f39aa")
 		)
 		(instances
-			(project "core_board"
-				(path "/695f882b-5312-4493-b26d-8f7d6768a9db/8e27c7c2-0d25-45f6-9c1b-87f643b528a8"
-					(reference "R503")
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
+					(reference "NT117")
 					(unit 1)
 				)
 			)
+		)
+	)
+	(symbol
+		(lib_id "Device:NetTie_2")
+		(at 243.84 152.4 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "21078c99-d48a-47a4-bd0f-f43bd5949b2f")
+		(property "Reference" "NT119"
+			(at 243.84 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NetTie_2"
+			(at 243.84 149.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
+			(at 243.84 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 243.84 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Net tie, 2 pins"
+			(at 243.84 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9d05c9a0-d46e-4a05-b348-de6422fc17db")
+		)
+		(pin "2"
+			(uuid "a21047fc-d1ee-4226-acb2-e952aa5b66d4")
+		)
+		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R106")
+					(reference "NT119")
 					(unit 1)
 				)
 			)
@@ -7261,7 +7109,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "31934eba-a8eb-41a1-8b28-bf9bbeadbfaa")
-		(property "Reference" "NT111"
+		(property "Reference" "NT118"
 			(at 243.84 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7325,7 +7173,7 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT111")
+					(reference "NT118")
 					(unit 1)
 				)
 			)
@@ -7510,7 +7358,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "367eddf0-3b31-42e4-ba7d-384fbac4bb12")
-		(property "Reference" "NT114"
+		(property "Reference" "NT115"
 			(at 243.84 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -7574,7 +7422,7 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT114")
+					(reference "NT115")
 					(unit 1)
 				)
 			)
@@ -7592,7 +7440,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3be79261-389f-4eb5-acaf-2f9afbb9b0c3")
-		(property "Reference" "R112"
+		(property "Reference" "R111"
 			(at 243.84 113.03 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7750,7 +7598,7 @@
 			)
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R112")
+					(reference "R111")
 					(unit 1)
 				)
 			)
@@ -7758,7 +7606,7 @@
 	)
 	(symbol
 		(lib_id "Device:NetTie_2")
-		(at 147.32 78.74 0)
+		(at 170.18 78.74 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7768,8 +7616,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3c2894e8-eef9-4c53-9e09-ed074d14664c")
-		(property "Reference" "NT104"
-			(at 147.32 73.66 0)
+		(property "Reference" "NT106"
+			(at 170.18 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7780,7 +7628,7 @@
 			)
 		)
 		(property "Value" "NetTie_2"
-			(at 147.32 76.2 0)
+			(at 170.18 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7791,7 +7639,7 @@
 			)
 		)
 		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
-			(at 147.32 78.74 0)
+			(at 170.18 78.74 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7802,7 +7650,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 147.32 78.74 0)
+			(at 170.18 78.74 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7813,7 +7661,7 @@
 			)
 		)
 		(property "Description" "Net tie, 2 pins"
-			(at 147.32 78.74 0)
+			(at 170.18 78.74 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7832,7 +7680,7 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT104")
+					(reference "NT106")
 					(unit 1)
 				)
 			)
@@ -7850,7 +7698,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3db6f739-35e8-4590-b4fe-1dd150b1c54e")
-		(property "Reference" "NT110"
+		(property "Reference" "NT120"
 			(at 243.84 154.94 0)
 			(hide yes)
 			(show_name no)
@@ -7914,7 +7762,7 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT110")
+					(reference "NT120")
 					(unit 1)
 				)
 			)
@@ -8005,7 +7853,7 @@
 	)
 	(symbol
 		(lib_id "Device:NetTie_2")
-		(at 147.32 60.96 0)
+		(at 175.26 60.96 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -8015,8 +7863,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "45b408a9-66c1-4726-a306-d3b4f2f367af")
-		(property "Reference" "NT101"
-			(at 147.32 55.88 0)
+		(property "Reference" "NT110"
+			(at 175.26 55.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8027,7 +7875,7 @@
 			)
 		)
 		(property "Value" "NetTie_2"
-			(at 147.32 58.42 0)
+			(at 175.26 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8038,7 +7886,7 @@
 			)
 		)
 		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
-			(at 147.32 60.96 0)
+			(at 175.26 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8049,7 +7897,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 147.32 60.96 0)
+			(at 175.26 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8060,7 +7908,7 @@
 			)
 		)
 		(property "Description" "Net tie, 2 pins"
-			(at 147.32 60.96 0)
+			(at 175.26 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8079,175 +7927,7 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT101")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 243.84 88.9 90)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "58ce54d4-acdd-438c-9e57-d8c19f294a93")
-		(property "Reference" "R117"
-			(at 243.84 93.98 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "33"
-			(at 243.84 91.44 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 243.84 87.122 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 243.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 243.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Active" "Y"
-			(at 243.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Basic or Extended Component" "Basic"
-			(at 243.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "C25105"
-			(at 243.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 243.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 243.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 243.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 243.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 243.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "563d1fe9-4a62-4791-b979-151bd6dac217")
-		)
-		(pin "1"
-			(uuid "ed19475d-033e-4b5c-8bdf-3cd32032c27e")
-		)
-		(instances
-			(project "mcu"
-				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R117")
+					(reference "NT110")
 					(unit 1)
 				)
 			)
@@ -8601,7 +8281,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "677c1719-5b86-4e81-960b-ebda3e18ff88")
-		(property "Reference" "NT115"
+		(property "Reference" "NT105"
 			(at 38.1 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -8665,7 +8345,7 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT115")
+					(reference "NT105")
 					(unit 1)
 				)
 			)
@@ -9016,19 +8696,20 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 243.84 152.4 90)
-		(mirror x)
+		(lib_id "Device:NetTie_2")
+		(at 243.84 72.39 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
-		(uuid "71ed283b-29da-405a-8a72-6773e11ec578")
-		(property "Reference" "R118"
-			(at 243.84 157.48 90)
+		(fields_autoplaced yes)
+		(uuid "701effa4-e0b6-41e0-ab04-346925a5fc33")
+		(property "Reference" "NT114"
+			(at 243.84 67.31 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9037,8 +8718,9 @@
 				)
 			)
 		)
-		(property "Value" "33"
-			(at 243.84 154.94 90)
+		(property "Value" "NetTie_2"
+			(at 243.84 69.85 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9047,8 +8729,8 @@
 				)
 			)
 		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 243.84 150.622 90)
+		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
+			(at 243.84 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9059,7 +8741,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 243.84 152.4 0)
+			(at 243.84 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9069,8 +8751,8 @@
 				)
 			)
 		)
-		(property "Description" "Resistor"
-			(at 243.84 152.4 0)
+		(property "Description" "Net tie, 2 pins"
+			(at 243.84 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9079,105 +8761,17 @@
 					(size 1.27 1.27)
 				)
 			)
-		)
-		(property "Active" "Y"
-			(at 243.84 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Basic or Extended Component" "Basic"
-			(at 243.84 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "C25105"
-			(at 243.84 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 243.84 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 243.84 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 243.84 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 243.84 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 243.84 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "af1b994e-0e67-4861-860b-790d77fa81aa")
 		)
 		(pin "1"
-			(uuid "627cb0b6-7f31-4daa-9335-174684e9fd35")
+			(uuid "04ede74c-35f3-4793-85d1-809244278e50")
+		)
+		(pin "2"
+			(uuid "b0e9a585-7c4e-4a1b-b49b-773235d66d7c")
 		)
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R118")
+					(reference "NT114")
 					(unit 1)
 				)
 			)
@@ -9268,7 +8862,7 @@
 	)
 	(symbol
 		(lib_id "Device:NetTie_2")
-		(at 147.32 86.36 0)
+		(at 170.18 86.36 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9278,8 +8872,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "79956e3e-2a81-4308-90bd-f5dcd5754a35")
-		(property "Reference" "NT107"
-			(at 147.32 81.28 0)
+		(property "Reference" "NT109"
+			(at 170.18 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9290,7 +8884,7 @@
 			)
 		)
 		(property "Value" "NetTie_2"
-			(at 147.32 83.82 0)
+			(at 170.18 83.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9301,7 +8895,7 @@
 			)
 		)
 		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
-			(at 147.32 86.36 0)
+			(at 170.18 86.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9312,7 +8906,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 147.32 86.36 0)
+			(at 170.18 86.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9323,7 +8917,7 @@
 			)
 		)
 		(property "Description" "Net tie, 2 pins"
-			(at 147.32 86.36 0)
+			(at 170.18 86.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9342,7 +8936,7 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT107")
+					(reference "NT109")
 					(unit 1)
 				)
 			)
@@ -9360,7 +8954,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "8c8a677f-3210-422c-9ded-088cbb282bb3")
-		(property "Reference" "R115"
+		(property "Reference" "R113"
 			(at 243.84 63.5 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9516,7 +9110,7 @@
 			)
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R115")
+					(reference "R113")
 					(unit 1)
 				)
 			)
@@ -9534,7 +9128,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8d6827ee-5658-4864-bf99-34e4179e2a03")
-		(property "Reference" "NT108"
+		(property "Reference" "NT113"
 			(at 243.84 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -9598,7 +9192,89 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT108")
+					(reference "NT113")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:NetTie_2")
+		(at 38.1 116.84 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "95b8bd42-c972-4833-a45a-e6c76e854d18")
+		(property "Reference" "NT102"
+			(at 38.1 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NetTie_2"
+			(at 38.1 114.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
+			(at 38.1 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 38.1 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Net tie, 2 pins"
+			(at 38.1 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "0309ccb3-76e3-4677-89b8-422c5b636fe4")
+		)
+		(pin "2"
+			(uuid "7544fb99-16e6-423c-9330-b243648417a3")
+		)
+		(instances
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
+					(reference "NT102")
 					(unit 1)
 				)
 			)
@@ -9616,7 +9292,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "97c92cb2-1d28-4897-a8cd-710cc2a70df4")
-		(property "Reference" "R108"
+		(property "Reference" "R106"
 			(at 43.18 48.26 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9774,7 +9450,7 @@
 			)
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R108")
+					(reference "R106")
 					(unit 1)
 				)
 			)
@@ -9858,6 +9534,88 @@
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
 					(reference "#PWR0106")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:NetTie_2")
+		(at 175.26 63.5 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a138f6da-990f-49de-8618-621a5e758fe5")
+		(property "Reference" "NT111"
+			(at 175.26 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NetTie_2"
+			(at 175.26 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
+			(at 175.26 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 175.26 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Net tie, 2 pins"
+			(at 175.26 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "387789bd-a734-4a39-9e24-28aee9782035")
+		)
+		(pin "2"
+			(uuid "3836ff3b-5659-46f1-a1e4-db0a0fd2d758")
+		)
+		(instances
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
+					(reference "NT111")
 					(unit 1)
 				)
 			)
@@ -10034,88 +9792,6 @@
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
 					(reference "C102")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:NetTie_2")
-		(at 147.32 73.66 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a50dfe0b-f984-4760-bf2b-cc716f1847dc")
-		(property "Reference" "NT103"
-			(at 147.32 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "NetTie_2"
-			(at 147.32 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
-			(at 147.32 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 147.32 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Net tie, 2 pins"
-			(at 147.32 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "53bd723b-21e3-46ee-a55b-1a72f78ac6d9")
-		)
-		(pin "2"
-			(uuid "48ecacc7-63a5-4777-9dab-1f9ab6753aae")
-		)
-		(instances
-			(project "mcu"
-				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT103")
 					(unit 1)
 				)
 			)
@@ -10475,6 +10151,88 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:NetTie_2")
+		(at 243.84 165.1 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b64754cb-3de6-47a2-b8d8-5b805835181e")
+		(property "Reference" "NT121"
+			(at 243.84 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NetTie_2"
+			(at 243.84 162.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
+			(at 243.84 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 243.84 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Net tie, 2 pins"
+			(at 243.84 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b079965d-d5b8-493b-be19-e0eeb0b5f62b")
+		)
+		(pin "2"
+			(uuid "21a73299-e16e-487d-a9d8-47ec181946dc")
+		)
+		(instances
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
+					(reference "NT121")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 97.79 44.45 0)
 		(mirror y)
@@ -10656,7 +10414,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "be45b7a2-b99e-4c52-a5a5-132d185cba58")
-		(property "Reference" "R114"
+		(property "Reference" "R110"
 			(at 243.84 48.26 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10814,7 +10572,7 @@
 			)
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R114")
+					(reference "R110")
 					(unit 1)
 				)
 			)
@@ -10832,7 +10590,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c7166cf5-2699-44e2-aae5-f45be5ed7877")
-		(property "Reference" "NT112"
+		(property "Reference" "NT103"
 			(at 38.1 120.65 0)
 			(hide yes)
 			(show_name no)
@@ -10896,7 +10654,7 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT112")
+					(reference "NT103")
 					(unit 1)
 				)
 			)
@@ -11090,7 +10848,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c9e54088-8658-48a1-bc13-0b8e3ea620c9")
-		(property "Reference" "NT109"
+		(property "Reference" "NT116"
 			(at 243.84 81.28 0)
 			(hide yes)
 			(show_name no)
@@ -11154,7 +10912,7 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT109")
+					(reference "NT116")
 					(unit 1)
 				)
 			)
@@ -11331,88 +11089,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:NetTie_2")
-		(at 147.32 71.12 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d8a2bf14-53e8-4618-9256-ed61848f8424")
-		(property "Reference" "NT102"
-			(at 147.32 66.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "NetTie_2"
-			(at 147.32 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
-			(at 147.32 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 147.32 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Net tie, 2 pins"
-			(at 147.32 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2c8a6019-bcac-4588-99f9-46ed1ae9359a")
-		)
-		(pin "2"
-			(uuid "49733f1e-a204-4b6a-9550-94748d6b4b8f")
-		)
-		(instances
-			(project "mcu"
-				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT102")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 46.99 71.12 0)
 		(unit 1)
@@ -11424,7 +11100,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e14e98c1-3ae7-4e0e-8ed2-2e0a6b79ff04")
-		(property "Reference" "R109"
+		(property "Reference" "R107"
 			(at 49.53 69.85 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11582,7 +11258,7 @@
 			)
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R109")
+					(reference "R107")
 					(unit 1)
 				)
 			)
@@ -12188,7 +11864,7 @@
 	)
 	(symbol
 		(lib_id "Device:NetTie_2")
-		(at 147.32 81.28 0)
+		(at 170.18 81.28 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12198,8 +11874,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e8f31200-253d-470e-9d54-498d387ba367")
-		(property "Reference" "NT105"
-			(at 147.32 76.2 0)
+		(property "Reference" "NT107"
+			(at 170.18 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12210,7 +11886,7 @@
 			)
 		)
 		(property "Value" "NetTie_2"
-			(at 147.32 78.74 0)
+			(at 170.18 78.74 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12221,7 +11897,7 @@
 			)
 		)
 		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
-			(at 147.32 81.28 0)
+			(at 170.18 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12232,7 +11908,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 147.32 81.28 0)
+			(at 170.18 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12243,7 +11919,7 @@
 			)
 		)
 		(property "Description" "Net tie, 2 pins"
-			(at 147.32 81.28 0)
+			(at 170.18 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12262,7 +11938,7 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT105")
+					(reference "NT107")
 					(unit 1)
 				)
 			)
@@ -12270,7 +11946,7 @@
 	)
 	(symbol
 		(lib_id "Device:NetTie_2")
-		(at 147.32 83.82 0)
+		(at 175.26 66.04 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12279,9 +11955,9 @@
 		(in_pos_files no)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "ebca369e-6e14-4abd-a0ab-06af48d5efe7")
-		(property "Reference" "NT106"
-			(at 147.32 78.74 0)
+		(uuid "e9983d17-455e-4b04-8fd2-2c860c145c08")
+		(property "Reference" "NT112"
+			(at 175.26 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12292,7 +11968,7 @@
 			)
 		)
 		(property "Value" "NetTie_2"
-			(at 147.32 81.28 0)
+			(at 175.26 63.5 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12303,7 +11979,7 @@
 			)
 		)
 		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
-			(at 147.32 83.82 0)
+			(at 175.26 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12314,7 +11990,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 147.32 83.82 0)
+			(at 175.26 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12325,7 +12001,89 @@
 			)
 		)
 		(property "Description" "Net tie, 2 pins"
-			(at 147.32 83.82 0)
+			(at 175.26 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8d1e84f9-50e3-4e1c-9120-422dad3eb187")
+		)
+		(pin "2"
+			(uuid "e5fdb05a-9fa0-4032-817e-014f2a0d408c")
+		)
+		(instances
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
+					(reference "NT112")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:NetTie_2")
+		(at 170.18 83.82 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ebca369e-6e14-4abd-a0ab-06af48d5efe7")
+		(property "Reference" "NT108"
+			(at 170.18 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NetTie_2"
+			(at 170.18 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
+			(at 170.18 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 170.18 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Net tie, 2 pins"
+			(at 170.18 83.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12344,7 +12102,7 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT106")
+					(reference "NT108")
 					(unit 1)
 				)
 			)
@@ -12445,7 +12203,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f5f4e27c-3f23-4b0d-8092-0a41cd8f4c5e")
-		(property "Reference" "NT113"
+		(property "Reference" "NT101"
 			(at 38.1 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -12509,7 +12267,7 @@
 		(instances
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "NT113")
+					(reference "NT101")
 					(unit 1)
 				)
 			)
@@ -12683,174 +12441,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 243.84 165.1 90)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "fa492b67-785f-4aff-ab9d-2f4128304fda")
-		(property "Reference" "R119"
-			(at 243.84 170.18 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "33"
-			(at 243.84 167.64 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:Nondescript_R_0402_1005Metric"
-			(at 243.84 163.322 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 243.84 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 243.84 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Active" "Y"
-			(at 243.84 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Basic or Extended Component" "Basic"
-			(at 243.84 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "C25105"
-			(at 243.84 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 243.84 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer Part Number" "0402WGF330JTCE"
-			(at 243.84 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 243.84 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 243.84 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 243.84 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "6ad18c16-4466-4ae5-9e40-6597e73ca79a")
-		)
-		(pin "1"
-			(uuid "26372b22-93b3-43e2-a5a7-b3c397bccf42")
-		)
-		(instances
-			(project "mcu"
-				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
-					(reference "R119")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 121.92 24.13 0)
 		(mirror y)
@@ -12929,6 +12519,88 @@
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
 					(reference "#PWR0105")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:NetTie_2")
+		(at 38.1 130.81 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fd9fb326-f4fe-4a90-80e6-d68011e38ccf")
+		(property "Reference" "NT104"
+			(at 38.1 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NetTie_2"
+			(at 38.1 128.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
+			(at 38.1 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 38.1 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Net tie, 2 pins"
+			(at 38.1 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4f4e39b9-cdf1-4cc2-a169-bf0eef39d22f")
+		)
+		(pin "2"
+			(uuid "c9f06cfb-bf0d-45b4-83d7-9e41ed5d7424")
+		)
+		(instances
+			(project "mcu"
+				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea/715cdf2b-c6d5-4aab-80cf-c0171f8b42dd"
+					(reference "NT104")
 					(unit 1)
 				)
 			)
