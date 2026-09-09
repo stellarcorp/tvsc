@@ -60,12 +60,12 @@
           "hatch_smoothing_level": 0,
           "hatch_smoothing_value": 0.1,
           "hatch_thickness": 1.0,
-          "min_clearance": 0.5,
-          "min_island_area": 10.0,
+          "min_clearance": 0.2,
+          "min_island_area": 0.0013161349,
           "min_thickness": 0.25,
           "pad_connection": 2,
           "remove_islands": 0,
-          "thermal_relief_gap": 0.5,
+          "thermal_relief_gap": 0.0,
           "thermal_relief_spoke_width": 0.5
         }
       },
@@ -76,24 +76,7 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [
-        [
-          "npth_inside_courtyard|113551750|109630000|1f9de3f8-1563-4a5d-85a9-4cea1e8772d4|2ccc8c54-f978-4b57-92b4-25f105672d98",
-          "These headers are designed to be placed back-to-back."
-        ],
-        [
-          "npth_inside_courtyard|113551750|129760000|c5e68b2a-8335-4e42-8e0b-7f83adeba4bd|2ccc8c54-f978-4b57-92b4-25f105672d98",
-          "These headers are designed to be placed back-to-back."
-        ],
-        [
-          "npth_inside_courtyard|118251750|110455000|d4a8ef51-63fe-452d-9765-f94122def0a7|5e5fbee4-cc45-40c5-9017-bf5d90f87afb",
-          "These headers are designed to be placed back-to-back."
-        ],
-        [
-          "npth_inside_courtyard|118251750|128935000|d71d2f0f-8379-49bc-b0ff-425ec804de1e|5e5fbee4-cc45-40c5-9017-bf5d90f87afb",
-          "These headers are designed to be placed back-to-back."
-        ]
-      ],
+      "drc_exclusions": [],
       "meta": {
         "version": 2
       },
@@ -653,19 +636,19 @@
           "group_by": false,
           "label": "MPN",
           "name": "MPN",
-          "show": false
+          "show": true
         },
         {
           "group_by": false,
           "label": "Manufacturer",
           "name": "Manufacturer",
-          "show": false
+          "show": true
         },
         {
           "group_by": false,
           "label": "Manufacturer Part Number",
           "name": "Manufacturer Part Number",
-          "show": false
+          "show": true
         },
         {
           "group_by": false,
@@ -731,7 +714,7 @@
           "group_by": false,
           "label": "Active",
           "name": "Active",
-          "show": false
+          "show": true
         }
       ],
       "filter_string": "",
@@ -782,7 +765,7 @@
         "uuid": "efde0c74-5be6-4589-ad87-b4823ac1634b"
       }
     ],
-    "used_designators": "PCB201,PCB301,L301,L501,J201-202,J301-302,J701,#FLG101,#FLG201,#FLG301,#FLG501,#FLG701,#FLG801,#PWR22-24,#PWR201-208,#PWR301-308,#PWR401-407,#PWR501-503,#PWR601-609,#PWR701-703,#PWR801-803,U4,U301,U401,U501,U601,U801,R23-24,R201,R301-302,R401-415,R501-502,R601-619,R701-704,R801-802,JP1-2,JP401-402,JP801-802,D201,D301,C16-18,C301-303,C401-410,C501-503,C601-614,C801-803,NT101-119,NT601-615,NT701-719,NT801-819",
+    "used_designators": "PCB201,PCB301,PCB801,L301,L501,L601,J201-202,J301-302,J701,J801-802,#FLG101,#FLG201,#FLG301,#FLG501,#FLG601,#FLG701,#FLG801,#FLG901,#PWR22-24,#PWR101-102,#PWR201-213,#PWR301-309,#PWR401-407,#PWR501-503,#PWR601-609,#PWR701-703,#PWR801-813,#PWR901-913,U4,U301,U401,U501,U601,U801,R23-24,R101-102,R201,R301-313,R401-415,R501-502,R601-619,R701-704,R801-802,JP1-2,JP401-402,JP801-802,D101,D201,D301,C16-18,C301-314,C401-410,C501-503,C601-614,C801-803,NT101-119,NT301-321,NT401-404,NT601-615,NT701-719,NT801-849,NT901-916",
     "variants": []
   },
   "sheets": [
@@ -791,15 +774,15 @@
       "core_board"
     ],
     [
-      "c6720382-c117-490e-ab8b-ce41cefac18e",
-      "pcb_with_bus"
+      "de5017ed-4b43-48f0-95ff-cbaa80710833",
+      "Isolated Bus"
     ],
     [
-      "67fd60e2-b54e-4371-8a56-a180a344756b",
-      "voltage_regulation"
+      "edbace4c-3feb-4c2d-b1a3-4e34cb69becd",
+      "mcu"
     ],
     [
-      "66e88cae-c705-41c6-a86f-41a4af975dfd",
+      "2891d774-d432-4693-b815-ba026d427ab4",
       "can_bus"
     ],
     [
@@ -807,12 +790,16 @@
       "power_measurement"
     ],
     [
-      "278fcd7e-95d3-4cf4-85d0-c5532f903eb9",
-      "mcu"
+      "175829f7-241a-40f0-b17e-c454839fe386",
+      "voltage_regulation"
     ],
     [
       "c7996912-474c-44c8-bb4a-88f12c2861c1",
       "st_link"
+    ],
+    [
+      "f936bcc4-4c60-41f3-a422-1b24adbcf422",
+      "pcb_with_bus"
     ],
     [
       "efde0c74-5be6-4589-ad87-b4823ac1634b",
