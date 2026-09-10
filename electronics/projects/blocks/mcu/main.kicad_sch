@@ -11,148 +11,6 @@
 		(company "TVSC")
 	)
 	(lib_symbols
-		(symbol "Device:NetTie_2"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom no)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "NT"
-				(at 0 1.27 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "NetTie_2"
-				(at 0 -1.27 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Net tie, 2 pins"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "net tie short"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "Net*Tie*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "NetTie_2_0_1"
-				(polyline
-					(pts
-						(xy -1.27 0) (xy 1.27 0)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "NetTie_2_1_1"
-				(pin passive line
-					(at -2.54 0 0)
-					(length 2.54)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 0 180)
-					(length 2.54)
-					(name "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "TVSC:NetTie_NC"
 			(pin_numbers
 				(hide yes)
@@ -529,16 +387,20 @@
 		(uuid "0553cfb8-1281-453c-aa3b-2c50e1b74a5c")
 	)
 	(no_connect
-		(at 198.12 95.25)
-		(uuid "0b9e5825-6707-438c-a3be-75e78aceb645")
-	)
-	(no_connect
 		(at 179.07 71.12)
 		(uuid "0c306d2f-9f9f-4a73-90d8-a39b4ef93336")
 	)
 	(no_connect
+		(at 179.07 95.25)
+		(uuid "1a0d5123-16e9-4b99-a232-e49ceb814281")
+	)
+	(no_connect
 		(at 179.07 119.38)
 		(uuid "222d95ea-0e46-408e-93d0-f2ef71cc9ccf")
+	)
+	(no_connect
+		(at 179.07 97.79)
+		(uuid "234b9847-2726-4189-9882-e7ade64f7a09")
 	)
 	(no_connect
 		(at 179.07 85.09)
@@ -613,16 +475,20 @@
 		(uuid "8899732d-428c-4cab-9d30-e5bbe0f76ce6")
 	)
 	(no_connect
+		(at 179.07 102.87)
+		(uuid "8cf9703e-e98a-4f0e-beec-4304f3a644d7")
+	)
+	(no_connect
 		(at 116.84 110.49)
 		(uuid "8e826a18-c804-4b5e-bafe-22876749863d")
 	)
 	(no_connect
-		(at 179.07 87.63)
-		(uuid "a0c37f7d-b11b-4083-847e-6d190bcee18b")
+		(at 179.07 105.41)
+		(uuid "9e381631-f7eb-4894-858d-12386b68acfd")
 	)
 	(no_connect
-		(at 198.12 97.79)
-		(uuid "aa00c659-1924-48ec-9b47-dacdd8e102dc")
+		(at 179.07 87.63)
+		(uuid "a0c37f7d-b11b-4083-847e-6d190bcee18b")
 	)
 	(no_connect
 		(at 116.84 123.19)
@@ -639,6 +505,10 @@
 	(no_connect
 		(at 116.84 99.06)
 		(uuid "b38f88a2-fe27-4647-8826-dfed17207e42")
+	)
+	(no_connect
+		(at 179.07 100.33)
+		(uuid "c362cfdf-1faf-40f6-ab13-3839b5a55560")
 	)
 	(no_connect
 		(at 116.84 80.01)
@@ -667,152 +537,6 @@
 	(no_connect
 		(at 116.84 88.9)
 		(uuid "ee3a4caa-1539-45af-935a-2aeade47eca2")
-	)
-	(no_connect
-		(at 198.12 100.33)
-		(uuid "f1465db7-be82-4159-a61e-176ae43fd6ed")
-	)
-	(wire
-		(pts
-			(xy 179.07 95.25) (xy 191.77 95.25)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1092f5c3-cbfd-4f7d-9cc1-5b0fa093b87f")
-	)
-	(wire
-		(pts
-			(xy 198.12 97.79) (xy 196.85 97.79)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "15a6109e-9ba7-4b00-8a61-c6056c5ec6b9")
-	)
-	(wire
-		(pts
-			(xy 179.07 97.79) (xy 191.77 97.79)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "241825ea-318f-41d9-bd35-a76a765dfd29")
-	)
-	(wire
-		(pts
-			(xy 198.12 95.25) (xy 196.85 95.25)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d1700978-4a6e-4099-9e33-19fd020bdbe1")
-	)
-	(wire
-		(pts
-			(xy 179.07 100.33) (xy 191.77 100.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d5b2b980-37bf-4fe0-98f3-cc46bc5b1d2d")
-	)
-	(wire
-		(pts
-			(xy 198.12 100.33) (xy 196.85 100.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e7454bea-7bbc-4e1f-a398-b64c0df6f924")
-	)
-	(symbol
-		(lib_id "Device:NetTie_2")
-		(at 194.31 95.25 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "71338b6b-ff03-4da7-981b-d979b75eb8a7")
-		(property "Reference" "NT202"
-			(at 194.31 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "NetTie_2"
-			(at 194.31 92.71 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
-			(at 194.31 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 194.31 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Net tie, 2 pins"
-			(at 194.31 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fe91022d-171b-41af-968f-7f66264a7cb4")
-		)
-		(pin "2"
-			(uuid "9e1b493e-78a9-4c56-9905-703239303f79")
-		)
-		(instances
-			(project "mcu"
-				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea"
-					(reference "NT202")
-					(unit 1)
-				)
-			)
-		)
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -886,88 +610,6 @@
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea"
 					(reference "#PWR0201")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:NetTie_2")
-		(at 194.31 100.33 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "af71aa24-2ec0-4687-b6ab-83750ac24e54")
-		(property "Reference" "NT204"
-			(at 194.31 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "NetTie_2"
-			(at 194.31 97.79 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
-			(at 194.31 100.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 194.31 100.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Net tie, 2 pins"
-			(at 194.31 100.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "64a2a40d-9c1e-41d5-9a31-4ac5285bc389")
-		)
-		(pin "2"
-			(uuid "e54eaaba-f201-45f4-9597-2e8762ea7974")
-		)
-		(instances
-			(project "mcu"
-				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea"
-					(reference "NT204")
 					(unit 1)
 				)
 			)
@@ -1118,6 +760,17 @@
 				)
 			)
 		)
+		(property "Purpose" ""
+			(at 93.98 69.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "446e078e-faa1-40bc-bd03-ccb914e39357")
 		)
@@ -1125,88 +778,6 @@
 			(project "mcu"
 				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea"
 					(reference "NT201")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:NetTie_2")
-		(at 194.31 97.79 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d90377f9-8a89-487d-9f9f-125bf00929d3")
-		(property "Reference" "NT203"
-			(at 194.31 92.71 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "NetTie_2"
-			(at 194.31 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "footprints:NetTie-2_SMD_Pad0.3mm"
-			(at 194.31 97.79 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 194.31 97.79 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Net tie, 2 pins"
-			(at 194.31 97.79 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c2640fac-a3d6-44fe-b7e8-88fdc6f3e7e4")
-		)
-		(pin "2"
-			(uuid "36ac054d-f1e6-41c6-bace-76a0cf499fb5")
-		)
-		(instances
-			(project "mcu"
-				(path "/e0c2fc85-f40c-4891-ac69-7b51983158ea"
-					(reference "NT203")
 					(unit 1)
 				)
 			)
@@ -1618,6 +1189,26 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+			)
+		)
+		(pin "PERIPH_INT_4" input
+			(at 179.07 102.87 0)
+			(uuid "8f8b84fa-1e02-4b43-b902-b9a18fd20968")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PERIPH_INT_5" input
+			(at 179.07 105.41 0)
+			(uuid "288ab37e-a2ff-45c4-91d0-b0f7c0e0ad9b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 			)
 		)
 		(instances
