@@ -60,12 +60,12 @@
           "hatch_smoothing_level": 0,
           "hatch_smoothing_value": 0.1,
           "hatch_thickness": 1.0,
-          "min_clearance": 0.2,
-          "min_island_area": 0.0013161349,
+          "min_clearance": 0.25,
+          "min_island_area": 10.0,
           "min_thickness": 0.25,
           "pad_connection": 2,
           "remove_islands": 0,
-          "thermal_relief_gap": 0.0,
+          "thermal_relief_gap": 0.5,
           "thermal_relief_spoke_width": 0.5
         }
       },
@@ -765,7 +765,7 @@
         "uuid": "efde0c74-5be6-4589-ad87-b4823ac1634b"
       }
     ],
-    "used_designators": "PCB201,PCB301,PCB801,L301,L501,L601,J201-202,J301-302,J701,J801-802,#FLG101,#FLG201,#FLG301,#FLG501,#FLG601,#FLG701,#FLG801,#FLG901,#PWR22-24,#PWR101-102,#PWR201-213,#PWR301-309,#PWR401-407,#PWR501-503,#PWR601-609,#PWR701-703,#PWR801-813,#PWR901-913,U4,U301,U401,U501,U601,U801,R23-24,R101-102,R201,R301-313,R401-415,R501-502,R601-619,R701-704,R801-802,JP1-2,JP401-402,JP801-802,D101,D201,D301,C16-18,C301-314,C401-410,C501-503,C601-614,C801-803,NT101-119,NT301-321,NT401-404,NT601-615,NT701-719,NT801-849,NT901-916",
+    "used_designators": "NT101-119,NT301-326,NT401-404,NT601-615,NT701-719,NT801-849,NT901-916,NT1001,C16-18,C301-314,C401-410,C501-503,C601-614,C801-803,C901-903,D101,D201,D301,JP1-2,JP401-402,JP801-802,R23-24,R101-102,R201,R301-313,R401-415,R501-502,R601-619,R701-704,R801-802,R901-903,U4,U301,U401,U501,U601,U801,U901,#PWR22-24,#PWR101-102,#PWR201-213,#PWR301-309,#PWR401-407,#PWR501-503,#PWR601-609,#PWR701-703,#PWR801-813,#PWR901-913,#PWR1001-1003,#FLG101,#FLG201,#FLG301,#FLG501,#FLG601,#FLG701,#FLG801,#FLG901,#FLG1001,J201-202,J301-302,J701,J801-802,L301,L501,L601,PCB201,PCB301,PCB801",
     "variants": []
   },
   "sheets": [
@@ -778,7 +778,7 @@
       "Isolated Bus"
     ],
     [
-      "edbace4c-3feb-4c2d-b1a3-4e34cb69becd",
+      "4f34ce11-bd64-4b34-9a57-b598ff5eff1a",
       "mcu"
     ],
     [
@@ -800,6 +800,10 @@
     [
       "f936bcc4-4c60-41f3-a422-1b24adbcf422",
       "pcb_with_bus"
+    ],
+    [
+      "a7130a64-432f-48bb-a705-9a1e8b1e26ff",
+      "imu"
     ],
     [
       "efde0c74-5be6-4589-ad87-b4823ac1634b",
