@@ -279,6 +279,7 @@ struct basic_common_reference<std::pair<Val1, Val2>, tvsc::iterator::MultiRefere
 
 namespace tvsc::iterator::concept_checks {
 
+// Verify expected concepts are indeed satisfied for a trivial type of MultiIterator.
 using ZipIter = MultiIterator<int*, int*>;
 using Ref = typename ZipIter::reference;
 using Val = typename ZipIter::value_type;
