@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <iterator>
 
 #include "buffer/store_string.h"
 #include "glog/logging.h"
@@ -10,9 +11,7 @@
 
 namespace tvsc::buffer {
 
-// =============================================================================
-// Typed Baseline Tests (Applies to all Store configurations)
-// =============================================================================
+// Baseline tests. These apply to all Store configurations.
 
 template <typename T>
 class StoreTest : public ::testing::Test {};
@@ -64,31 +63,59 @@ TYPED_TEST(StoreTest, SizeIncrementsWithEachAdd) {
   EXPECT_EQ(TypeParam::capacity(), store.size());
 }
 
-// =============================================================================
-// Insertion Policy Tests
-// =============================================================================
+TYPED_TEST(StoreTest, CanAddUpToCapacity) {
+  TypeParam store{};
 
-TEST(ArrayStoreAppendTest, PreservesInsertionOrder) {
-  using Store = ArrayStore<int, size_t, 4, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
-  static constexpr std::array<int, 4> input{4, 1, 3, 2};
-
-  Store store{};
-  for (int val : input) {
-    store.add(val);
+  for (typename TypeParam::size_type i = 0; i < TypeParam::capacity(); ++i) {
+    const auto value{static_cast<typename TypeParam::value_type>(i + 1)};
+    EXPECT_EQ(i, store.size());
+    const auto inserted_location{store.add(value)};
+    EXPECT_NE(store.end(), inserted_location) << to_string(store);
+    EXPECT_EQ(value, *inserted_location);
   }
 
-  EXPECT_TRUE(std::equal(store.begin(), store.end(), input.begin(), input.end()));
+  EXPECT_EQ(TypeParam::capacity(), store.size());
+
+  for (typename TypeParam::size_type i = 0; i < TypeParam::capacity(); ++i) {
+    const auto value{static_cast<typename TypeParam::value_type>(i + 1)};
+    EXPECT_NE(store.end(), std::find(store.begin(), store.end(), value));
+  }
 }
 
-TEST(ArrayStoreAppendTest, AddReturnsIteratorToInsertionLocation) {
-  using Store = ArrayStore<int, size_t, 4, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
-  static constexpr int VALUE{10};
-  Store store{};
-  const auto it{store.add(VALUE)};
+// InsertionPolicy::APPEND Tests
 
-  EXPECT_NE(store.end(), it);
-  EXPECT_EQ(VALUE, *it);
+TYPED_TEST(StoreTest, PreservesInsertionOrder) {
+  if constexpr (TypeParam::insertion_policy() == InsertionPolicy::APPEND) {
+    static constexpr std::array<typename TypeParam::value_type, 4> input{4, 1, 3, 2};
+
+    TypeParam store{};
+    for (auto i : input) {
+      if (store.size() < store.capacity()) {
+        store.add(i);
+      }
+    }
+
+    if (input.size() > store.capacity()) {
+      EXPECT_TRUE(std::equal(store.begin(), store.end(), input.begin(),
+                             std::next(input.begin(), store.capacity())));
+    } else {
+      EXPECT_TRUE(std::equal(store.begin(), store.end(), input.begin(), input.end()));
+    }
+  }
 }
+
+TYPED_TEST(StoreTest, AddReturnsIteratorToInsertionLocation) {
+  if constexpr (TypeParam::insertion_policy() == InsertionPolicy::APPEND) {
+    static constexpr int VALUE{10};
+    TypeParam store{};
+    const auto insertion_location{store.add(VALUE)};
+
+    EXPECT_NE(store.end(), insertion_location);
+    EXPECT_EQ(VALUE, *insertion_location);
+  }
+}
+
+// InsertionPolicy::SORTED Tests
 
 TEST(ArrayStoreSortedTest, MaintainsSortedOrderOnRandomInserts) {
   using Store = ArrayStore<int, size_t, 4, InsertionPolicy::SORTED, OverflowPolicy::REJECT>;
@@ -106,21 +133,47 @@ TEST(ArrayStoreSortedTest, MaintainsSortedOrderOnRandomInserts) {
 }
 
 TEST(ArrayStoreSortedTest, AddReturnsIteratorToInsertedPosition) {
-  using Store = ArrayStore<int, size_t, 4, InsertionPolicy::SORTED, OverflowPolicy::REJECT>;
+  using Store = ArrayStore<int, size_t, 6, InsertionPolicy::SORTED, OverflowPolicy::REJECT>;
 
   Store store{};
   store.add(10);
   store.add(30);
+  EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
 
-  const auto inserted_location{store.add(20)};
+  {
+    // Store contains [10, 30]
+    const auto inserted_location{store.add(20)};
 
-  EXPECT_EQ(20, *inserted_location);
-  EXPECT_EQ(store.begin() + 1, inserted_location);
+    EXPECT_EQ(20, *inserted_location);
+    EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
+  }
+
+  {
+    // Store contains [10, 20, 30]
+    const auto inserted_location{store.add(40)};
+
+    EXPECT_EQ(40, *inserted_location);
+    EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
+  }
+
+  {
+    // Store contains [10, 20, 30, 40]
+    const auto inserted_location{store.add(0)};
+
+    EXPECT_EQ(0, *inserted_location);
+    EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
+  }
+
+  {
+    // Store contains [0, 10, 20, 30, 40]
+    const auto inserted_location{store.add(25)};
+
+    EXPECT_EQ(25, *inserted_location);
+    EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
+  }
 }
 
-// =============================================================================
-// Overflow Policy Tests
-// =============================================================================
+// OverflowPolicy::REJECT Tests
 
 TEST(ArrayStoreOverflowRejectTest, RejectsElementsWhenFull) {
   using Store = ArrayStore<int, size_t, 4, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
