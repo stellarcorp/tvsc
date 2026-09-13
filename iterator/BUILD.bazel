@@ -2,6 +2,7 @@ cc_library(
     name = "iterator",
     hdrs = [
         "multi_iterator.h",
+        "ring_iterator.h",
     ],
     visibility = ["//visibility:public"],
 )
@@ -10,6 +11,18 @@ cc_test(
     name = "multi_iterator_test",
     srcs = [
         "multi_iterator_test.cc",
+    ],
+    deps = [
+        ":iterator",
+        "//third_party/gtest",
+    ],
+    size = "small",
+)
+
+cc_test(
+    name = "ring_iterator_test",
+    srcs = [
+        "ring_iterator_test.cc",
     ],
     deps = [
         ":iterator",
