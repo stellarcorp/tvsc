@@ -1,9 +1,24 @@
 cc_library(
+    name = "store_api",
+    hdrs = [
+        "store.h",
+        "array_store.h",
+        "store_string.h",
+    ],
+    deps = [
+        "//iterator",
+    ],
+)
+
+cc_library(
     name = "buffer",
     hdrs = [
         "blocking_data_sink.h",
         "buffer.h",
         "ring_buffer.h",
+    ],
+    deps = [
+        ":store_api",
     ],
     visibility = ["//visibility:public"],
 )
@@ -25,5 +40,15 @@ cc_test(
         ":buffer",
         "//third_party/glog",
         "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "array_store_test",
+    srcs = ["array_store_test.cc"],
+    deps = [
+        ":store_api",
+        "//third_party/gtest",
+        "//third_party/glog",
     ],
 )
