@@ -18,14 +18,15 @@ template <typename Store, bool is_const = false>
 class RandomAccessStoreIterator;
 
 template <typename Value, std::unsigned_integral Size, Size CAPACITY,
-          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY>
+          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY,
+          typename Container = std::array<Value, CAPACITY>>
 class ArrayStore;
 
 template <typename Store>
 using OverflowHandler = std::function<bool(Store, typename Store::value_type&)>;
 
 template <typename Value, std::unsigned_integral Size, Size CAPACITY,
-          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY>
+          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY, typename Container>
 class ArrayStore final {
  private:
   static constexpr bool is_ring_buffer{OVERFLOW_POLICY == OverflowPolicy::DROP_FRONT};
@@ -35,7 +36,7 @@ class ArrayStore final {
  public:
   using value_type = Value;
   using size_type = Size;
-  using container_type = std::array<value_type, CAPACITY>;
+  using container_type = Container;
 
   using raw_iterator = RandomAccessStoreIterator<ArrayStore, /* is_const */ false>;
   using const_iterator = RandomAccessStoreIterator<ArrayStore, /* is_const */ true>;
