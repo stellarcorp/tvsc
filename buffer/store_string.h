@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "buffer/array_store.h"
 #include "buffer/store.h"
 
 namespace tvsc::buffer {
@@ -20,6 +21,15 @@ std::string to_string(const IsStore auto& s) {
   } else {
     result += "[]";
   }
+  return result;
+}
+
+template <IsStore S, bool is_const>
+std::string to_string(const RandomAccessStoreIterator<S, is_const>& iter) {
+  using std::to_string;
+  std::string result{"<@"};
+  result += to_string(iter.pos());
+  result += ">";
   return result;
 }
 
