@@ -101,6 +101,11 @@ class ArrayStore final {
   }
 
   [[nodiscard]] constexpr bool handle_overflow(const value_type& value) noexcept {
+    if constexpr (IsExpandableCapacityStore<ArrayStore>) {
+      if (capacity() < max_capacity()) {
+        reserve(std::min(max_capacity(), 2 * capacity()));
+      }
+    }
     if constexpr (has_overflow_handler) {
       const bool insert_allowed{overflow_handler_(*this, value)};
       return insert_allowed and size() < capacity();
@@ -140,6 +145,12 @@ class ArrayStore final {
   [[nodiscard]] static constexpr size_type capacity() noexcept { return CAPACITY; }
   [[nodiscard]] static constexpr size_type min_capacity() noexcept { return CAPACITY; }
   [[nodiscard]] static constexpr size_type max_capacity() noexcept { return CAPACITY; }
+
+  constexpr void reserve(size_type new_capacity) noexcept
+    requires(IsExpandableCapacityStore<ArrayStore>)
+  {
+    elements_.reserve(std::min(new_capacity, max_capacity()));
+  }
 
   [[nodiscard]] constexpr size_type size() const noexcept {
     if constexpr (is_ring_buffer) {

@@ -25,7 +25,7 @@ enum class OverflowPolicy {
 };
 
 template <typename S>
-concept IsStore =
+concept IsStore =  //
     requires {
       { S::insertion_policy() } -> std::same_as<InsertionPolicy>;
       { S::overflow_policy() } -> std::same_as<OverflowPolicy>;
@@ -62,47 +62,60 @@ concept IsStore =
     true;
 
 template <typename S>
-concept IsConstantCapacityStore = IsStore<S> and  //
-                                  requires {
-                                    // Constant capacity stores have their capacity fixed at
-                                    // compile-time.
-                                    { S::capacity() } -> std::convertible_to<typename S::size_type>;
-                                    {
-                                      S::min_capacity()
-                                    } -> std::convertible_to<typename S::size_type>;
-                                    {
-                                      S::max_capacity()
-                                    } -> std::convertible_to<typename S::size_type>;
-                                    requires(S::min_capacity() == S::max_capacity());
-                                    requires(S::capacity() == S::max_capacity());
-                                  } and  //
-                                  true;
+concept IsConstantCapacityStore =  //
+    IsStore<S> and                 //
+    requires {
+      // Constant capacity stores have their capacity fixed at
+      // compile-time.
+      { S::capacity() } -> std::convertible_to<typename S::size_type>;
+      { S::min_capacity() } -> std::convertible_to<typename S::size_type>;
+      { S::max_capacity() } -> std::convertible_to<typename S::size_type>;
+      requires(S::min_capacity() == S::max_capacity());
+      requires(S::capacity() == S::max_capacity());
+    } and  //
+    true;
 
 template <typename S>
-concept IsRandomAccessStore = IsStore<S> and                           //
-                              std::ranges::sized_range<S> and          //
-                              std::ranges::random_access_range<S> and  //
-                              requires(const S& s, S::size_type i) {
-                                { s[i] } -> std::convertible_to<typename S::value_type>;
-                                { s.at(i) } -> std::convertible_to<typename S::value_type>;
-                              } and  //
-                              true;
+concept IsExpandableCapacityStore =  //
+    IsStore<S> and                   //
+    requires(const S& s) {
+      // Constant capacity stores have their capacity fixed at
+      // compile-time.
+      { s.capacity() } -> std::convertible_to<typename S::size_type>;
+      { S::min_capacity() } -> std::convertible_to<typename S::size_type>;
+      { S::max_capacity() } -> std::convertible_to<typename S::size_type>;
+      requires(S::min_capacity() < S::max_capacity());
+    } and  //
+    true;
 
 template <typename S>
-concept IsQueue = IsStore<S> and                   //
-                  std::ranges::sized_range<S> and  //
-                  requires(S& s, const S::value_type& v) {
-                    // Note: return type on these functions is unspecified. May be void.
-                    s.pop_front();
-                    s.push_back(v);
-                  } and  //
-                  true;
+concept IsRandomAccessStore =                //
+    IsStore<S> and                           //
+    std::ranges::sized_range<S> and          //
+    std::ranges::random_access_range<S> and  //
+    requires(const S& s, S::size_type i) {
+      { s[i] } -> std::convertible_to<typename S::value_type>;
+      { s.at(i) } -> std::convertible_to<typename S::value_type>;
+    } and  //
+    true;
 
 template <typename S>
-concept IsRingBuffer = IsQueue<S> and                                                   //
-                       requires {                                                       //
-                         requires(S::overflow_policy() == OverflowPolicy::DROP_FRONT);  //
-                       } and                                                            //
-                       true;
+concept IsQueue =                    //
+    IsStore<S> and                   //
+    std::ranges::sized_range<S> and  //
+    requires(S& s, const S::value_type& v) {
+      // Note: return type on these functions is unspecified. May be void.
+      s.pop_front();
+      s.push_back(v);
+    } and  //
+    true;
+
+template <typename S>
+concept IsRingBuffer =                                               //
+    IsQueue<S> and                                                   //
+    requires {                                                       //
+      requires(S::overflow_policy() == OverflowPolicy::DROP_FRONT);  //
+    } and                                                            //
+    true;
 
 }  // namespace tvsc::buffer
