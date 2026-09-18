@@ -46,8 +46,8 @@ TYPED_TEST(StoreTest, StartsEmpty) {
 
 TYPED_TEST(StoreTest, CapacityMatchesTemplateParameter) {
   TypeParam store{};
-  EXPECT_GT(TypeParam::capacity(), 0);
-  EXPECT_GE(TypeParam::capacity(), store.size());
+  EXPECT_GT(store.capacity(), 0);
+  EXPECT_GE(store.capacity(), store.size());
 }
 
 TYPED_TEST(StoreTest, CanInsertAndFindSingleElement) {
@@ -78,18 +78,18 @@ TYPED_TEST(StoreTest, CanEraseSingleElementByIterator) {
 TYPED_TEST(StoreTest, SizeIncrementsWithEachInsert) {
   TypeParam store{};
 
-  for (typename TypeParam::size_type i = 0; i < TypeParam::capacity(); ++i) {
+  for (typename TypeParam::size_type i = 0; i < store.capacity(); ++i) {
     EXPECT_EQ(i, store.size());
     store.insert(static_cast<typename TypeParam::value_type>(i + 1));
   }
 
-  EXPECT_EQ(TypeParam::capacity(), store.size());
+  EXPECT_EQ(store.capacity(), store.size());
 }
 
 TYPED_TEST(StoreTest, CanInsertUpToCapacity) {
   TypeParam store{};
 
-  for (typename TypeParam::size_type i = 0; i < TypeParam::capacity(); ++i) {
+  for (typename TypeParam::size_type i = 0; i < store.capacity(); ++i) {
     const auto value{static_cast<typename TypeParam::value_type>(i + 1)};
     EXPECT_EQ(i, store.size());
     const auto inserted_location{store.insert(value)};
@@ -97,9 +97,9 @@ TYPED_TEST(StoreTest, CanInsertUpToCapacity) {
     EXPECT_EQ(value, *inserted_location);
   }
 
-  EXPECT_EQ(TypeParam::capacity(), store.size());
+  EXPECT_EQ(store.capacity(), store.size());
 
-  for (typename TypeParam::size_type i = 0; i < TypeParam::capacity(); ++i) {
+  for (typename TypeParam::size_type i = 0; i < store.capacity(); ++i) {
     const auto value{static_cast<typename TypeParam::value_type>(i + 1)};
     EXPECT_NE(store.end(), std::find(store.begin(), store.end(), value));
   }
@@ -218,12 +218,12 @@ TEST(ArrayStoreOverflowRejectTest, RejectsElementsWhenFull) {
     store.insert(val);
   }
 
-  EXPECT_EQ(Store::capacity(), store.size());
+  EXPECT_EQ(store.capacity(), store.size());
 
   const auto insertion_point = store.insert(REJECTED_VALUE);
 
   EXPECT_EQ(store.end(), insertion_point);
-  EXPECT_EQ(Store::capacity(), store.size());
+  EXPECT_EQ(store.capacity(), store.size());
   EXPECT_EQ(store.end(), std::find(store.begin(), store.end(), REJECTED_VALUE));
 }
 

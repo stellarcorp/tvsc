@@ -142,7 +142,14 @@ class ArrayStore final {
     return OVERFLOW_POLICY;
   }
 
-  [[nodiscard]] static constexpr size_type capacity() noexcept { return CAPACITY; }
+  [[nodiscard]] constexpr size_type capacity() const noexcept {
+    if constexpr (IsConstantCapacityStore<ArrayStore>) {
+      return CAPACITY;
+    } else {
+      return elements_.capacity();
+    }
+  }
+
   [[nodiscard]] static constexpr size_type min_capacity() noexcept { return CAPACITY; }
   [[nodiscard]] static constexpr size_type max_capacity() noexcept { return CAPACITY; }
 

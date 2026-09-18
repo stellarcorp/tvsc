@@ -64,14 +64,13 @@ concept IsStore =  //
 template <typename S>
 concept IsConstantCapacityStore =  //
     IsStore<S> and                 //
-    requires {
+    requires(const S& s) {
       // Constant capacity stores have their capacity fixed at
       // compile-time.
-      { S::capacity() } -> std::convertible_to<typename S::size_type>;
+      { s.capacity() } -> std::convertible_to<typename S::size_type>;
       { S::min_capacity() } -> std::convertible_to<typename S::size_type>;
       { S::max_capacity() } -> std::convertible_to<typename S::size_type>;
       requires(S::min_capacity() == S::max_capacity());
-      requires(S::capacity() == S::max_capacity());
     } and  //
     true;
 
