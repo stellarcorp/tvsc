@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "buffer/array_store.h"
 #include "buffer/store.h"
+#include "buffer/store_interface.h"
 
 namespace tvsc::buffer {
 

@@ -2,12 +2,11 @@ cc_library(
     name = "store_api",
     hdrs = [
         "store.h",
-        "array_store.h",
+        "store_interface.h",
         "store_string.h",
     ],
     deps = [
         "//base",
-        "//iterator",
     ],
 )
 
@@ -45,8 +44,8 @@ cc_test(
 )
 
 cc_test(
-    name = "array_store_test",
-    srcs = ["array_store_test.cc"],
+    name = "store_test",
+    srcs = ["store_test.cc"],
     deps = [
         ":store_api",
         "//third_party/gtest",

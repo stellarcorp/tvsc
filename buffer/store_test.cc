@@ -1,4 +1,4 @@
-#include "buffer/array_store.h"
+#include "buffer/store.h"
 
 #include <algorithm>
 #include <array>
