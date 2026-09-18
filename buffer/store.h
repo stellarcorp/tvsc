@@ -19,14 +19,14 @@ class RandomAccessStoreIterator;
 template <typename Value, std::unsigned_integral Size, Size CAPACITY,
           InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY,
           typename Container = std::array<Value, CAPACITY>>
-class ArrayStore;
+class Store;
 
 template <typename Store>
 using OverflowHandler = std::function<bool(Store, typename Store::value_type&)>;
 
 template <typename Value, std::unsigned_integral Size, Size CAPACITY,
           InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY, typename Container>
-class ArrayStore final {
+class Store final {
  private:
   static constexpr bool is_ring_buffer{OVERFLOW_POLICY == OverflowPolicy::DROP_FRONT};
   static constexpr bool has_overflow_handler{OVERFLOW_POLICY == OverflowPolicy::OVERFLOW_HANDLER};
@@ -37,8 +37,8 @@ class ArrayStore final {
   using size_type = Size;
   using container_type = Container;
 
-  using raw_iterator = RandomAccessStoreIterator<ArrayStore, /* is_const */ false>;
-  using const_iterator = RandomAccessStoreIterator<ArrayStore, /* is_const */ true>;
+  using raw_iterator = RandomAccessStoreIterator<Store, /* is_const */ false>;
+  using const_iterator = RandomAccessStoreIterator<Store, /* is_const */ true>;
   using iterator = std::conditional_t<index_modification_allowed, raw_iterator, const_iterator>;
 
   using raw_reference = std::iter_reference_t<raw_iterator>;
@@ -61,7 +61,7 @@ class ArrayStore final {
 
   struct Empty final {};
   using OverflowHandlerStorage =
-      std::conditional_t<has_overflow_handler, OverflowHandler<ArrayStore>, Empty>;
+      std::conditional_t<has_overflow_handler, OverflowHandler<Store>, Empty>;
 
   // size_ is either the head and tail tracking indices for a ring buffer, or it is just the
   // size_type. Note that by not including a single API behind these concepts, we induce compiler
@@ -101,7 +101,7 @@ class ArrayStore final {
   }
 
   [[nodiscard]] constexpr bool handle_overflow(const value_type& value) noexcept {
-    if constexpr (IsExpandableCapacityStore<ArrayStore>) {
+    if constexpr (IsExpandableCapacityStore<Store>) {
       if (capacity() < max_capacity()) {
         reserve(std::min(max_capacity(), 2 * capacity()));
       }
@@ -120,19 +120,19 @@ class ArrayStore final {
   }
 
  public:
-  constexpr ArrayStore() noexcept
+  constexpr Store() noexcept
     requires(!has_overflow_handler)
   = default;
 
-  explicit constexpr ArrayStore(OverflowHandler<ArrayStore> overflow_handler) noexcept
+  explicit constexpr Store(OverflowHandler<Store> overflow_handler) noexcept
     requires(has_overflow_handler)
       : overflow_handler_(std::move(overflow_handler)) {}
 
-  constexpr ArrayStore(const ArrayStore& rhs) noexcept = default;
-  constexpr ArrayStore(ArrayStore&& rhs) noexcept = default;
+  constexpr Store(const Store& rhs) noexcept = default;
+  constexpr Store(Store&& rhs) noexcept = default;
 
-  constexpr ArrayStore& operator=(const ArrayStore& rhs) noexcept = default;
-  constexpr ArrayStore& operator=(ArrayStore&& rhs) noexcept = default;
+  constexpr Store& operator=(const Store& rhs) noexcept = default;
+  constexpr Store& operator=(Store&& rhs) noexcept = default;
 
   [[nodiscard]] static constexpr InsertionPolicy insertion_policy() noexcept {
     return INSERTION_POLICY;
@@ -143,7 +143,7 @@ class ArrayStore final {
   }
 
   [[nodiscard]] constexpr size_type capacity() const noexcept {
-    if constexpr (IsConstantCapacityStore<ArrayStore>) {
+    if constexpr (IsConstantCapacityStore<Store>) {
       return CAPACITY;
     } else {
       return elements_.capacity();
@@ -154,7 +154,7 @@ class ArrayStore final {
   [[nodiscard]] static constexpr size_type max_capacity() noexcept { return CAPACITY; }
 
   constexpr void reserve(size_type new_capacity) noexcept
-    requires(IsExpandableCapacityStore<ArrayStore>)
+    requires(IsExpandableCapacityStore<Store>)
   {
     elements_.reserve(std::min(new_capacity, max_capacity()));
   }
@@ -532,10 +532,10 @@ class RandomAccessStoreIterator final {
 
 template <typename Value, size_t CAPACITY>
 using RingBuffer =
-    ArrayStore<Value, size_t, CAPACITY, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>;
+    Store<Value, size_t, CAPACITY, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>;
 
 template <typename Value, size_t CAPACITY>
-using Queue = ArrayStore<Value, size_t, CAPACITY, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
+using Queue = Store<Value, size_t, CAPACITY, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
 
 namespace concept_checks {
 using ExampleRingBuffer = RingBuffer<int, 4>;
