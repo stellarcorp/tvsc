@@ -16,23 +16,23 @@ namespace tvsc::buffer {
 template <typename T>
 class StoreTest : public ::testing::Test {};
 
-using StoreImplementations =
-    ::testing::Types<Store<int, uint8_t, 2, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-                     Store<int, uint8_t, 2, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-                     Store<int, uint8_t, 8, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-                     Store<int, uint8_t, 8, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-                     Store<int, size_t, 4, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-                     Store<int, size_t, 4, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-                     Store<int, size_t, 8, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-                     Store<int, size_t, 8, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-                     Store<int, uint8_t, 2, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-                     Store<int, uint8_t, 2, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
-                     Store<int, uint8_t, 8, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-                     Store<int, uint8_t, 8, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
-                     Store<int, size_t, 4, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-                     Store<int, size_t, 4, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
-                     Store<int, size_t, 8, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-                     Store<int, size_t, 8, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>>;
+using StoreImplementations = ::testing::Types<
+    ArrayStore<int, uint8_t, 2, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
+    ArrayStore<int, uint8_t, 2, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
+    ArrayStore<int, uint8_t, 8, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
+    ArrayStore<int, uint8_t, 8, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
+    ArrayStore<int, size_t, 4, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
+    ArrayStore<int, size_t, 4, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
+    ArrayStore<int, size_t, 8, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
+    ArrayStore<int, size_t, 8, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
+    ArrayStore<int, uint8_t, 2, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
+    ArrayStore<int, uint8_t, 2, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
+    ArrayStore<int, uint8_t, 8, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
+    ArrayStore<int, uint8_t, 8, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
+    ArrayStore<int, size_t, 4, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
+    ArrayStore<int, size_t, 4, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
+    ArrayStore<int, size_t, 8, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
+    ArrayStore<int, size_t, 8, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>>;
 
 TYPED_TEST_SUITE(StoreTest, StoreImplementations);
 

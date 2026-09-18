@@ -530,12 +530,18 @@ class RandomAccessStoreIterator final {
   [[nodiscard]] constexpr auto pos() const noexcept { return pos_; }
 };
 
-template <typename Value, size_t CAPACITY>
-using RingBuffer =
-    Store<Value, size_t, CAPACITY, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>;
+template <typename Value, std::unsigned_integral Size, Size CAPACITY,
+          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY>
+using ArrayStore =
+    Store<Value, Size, CAPACITY, INSERTION_POLICY, OVERFLOW_POLICY, std::array<Value, CAPACITY>>;
 
-template <typename Value, size_t CAPACITY>
-using Queue = Store<Value, size_t, CAPACITY, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
+template <typename Value, size_t CAPACITY, typename Container = std::array<Value, CAPACITY>>
+using RingBuffer =
+    Store<Value, size_t, CAPACITY, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT, Container>;
+
+template <typename Value, size_t CAPACITY, typename Container = std::array<Value, CAPACITY>>
+using Queue =
+    Store<Value, size_t, CAPACITY, InsertionPolicy::APPEND, OverflowPolicy::REJECT, Container>;
 
 namespace concept_checks {
 using ExampleRingBuffer = RingBuffer<int, 4>;
