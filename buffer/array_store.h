@@ -100,6 +100,20 @@ class ArrayStore final {
     return const_cast<raw_reference>(std::as_const(*this)[n]);
   }
 
+  [[nodiscard]] constexpr bool handle_overflow(const value_type& value) noexcept {
+    if constexpr (has_overflow_handler) {
+      const bool insert_allowed{overflow_handler_(*this, value)};
+      return insert_allowed and size() < capacity();
+    } else if constexpr (is_ring_buffer) {
+      ++size_.head;
+      return true;
+    } else if constexpr (OVERFLOW_POLICY == OverflowPolicy::REJECT) {
+      return false;
+    } else {
+      static_assert(false, "OverflowPolicy not implemented in handle_overflow.");
+    }
+  }
+
  public:
   constexpr ArrayStore() noexcept
     requires(!has_overflow_handler)
@@ -260,19 +274,11 @@ class ArrayStore final {
 
   constexpr iterator insert(const value_type& value) {
     if (size() == capacity()) {
-      if constexpr (has_overflow_handler) {
-        const bool insert_allowed{overflow_handler_(*this, value)};
-        if (!insert_allowed or size() == capacity()) {
-          return end();
-        }
-      } else if constexpr (is_ring_buffer) {
-        ++size_.head;
-      } else if constexpr (OVERFLOW_POLICY == OverflowPolicy::REJECT) {
+      if (!handle_overflow(value)) {
         return end();
-      } else {
-        static_assert(false, "OverflowPolicy not implemented in insert() method.");
       }
     }
+
     if constexpr (INSERTION_POLICY == InsertionPolicy::APPEND) {
       const auto insertion_point{end()};
       *insertion_point = value;
@@ -286,15 +292,14 @@ class ArrayStore final {
           except<std::overflow_error>("Overflow on size index value. (APPEND)");
         }
       }
-
       return insertion_point;
     } else if constexpr (INSERTION_POLICY == InsertionPolicy::SORTED) {
       // Under the sorted insertion policy, the iterators from begin() and end() are actually
-      // const_iterators. What they point to cannot be modifed. If it could be modified, this store
-      // would likely no longer be sorted. But this also means that we can't just use the begin()
-      // and end() iterators here, since we are modifying the store. To work around this issue,
-      // without requiring a custom binary search implementation, we use the raw_iterator to insert
-      // the value and then translate that to an iterator instance before returning.
+      // const_iterators. What they point to cannot be modifed. If it could be modified, this
+      // store would likely no longer be sorted. But this also means that we can't just use the
+      // begin() and end() iterators here, since we are modifying the store. To work around this
+      // issue, without requiring a custom binary search implementation, we use the raw_iterator
+      // to insert the value and then translate that to an iterator instance before returning.
       const auto insertion_point{std::lower_bound(raw_begin(), raw_end(), value)};
 
       std::copy_backward(insertion_point, raw_end(), std::next(raw_end(), 1));
@@ -309,7 +314,6 @@ class ArrayStore final {
           except<std::overflow_error>("Overflow on size index value. (APPEND)");
         }
       }
-
       return iterator{insertion_point};
     }
   }
@@ -335,17 +339,8 @@ class ArrayStore final {
     requires(index_modification_allowed)
   {
     if (size() == capacity()) {
-      if constexpr (has_overflow_handler) {
-        const bool insert_allowed{overflow_handler_(*this, value)};
-        if (!insert_allowed or size() == capacity()) {
-          return;
-        }
-      } else if constexpr (is_ring_buffer) {
-        ++size_.head;
-      } else if constexpr (OVERFLOW_POLICY == OverflowPolicy::REJECT) {
+      if (!handle_overflow(value)) {
         return;
-      } else {
-        static_assert(false, "OverflowPolicy not implemented in push_back method.");
       }
     }
 
@@ -373,8 +368,8 @@ class ArrayStore final {
 
   constexpr void clear() noexcept {
     if constexpr (is_ring_buffer) {
-      // Note that we bring the head_ up to the tail_ so that head_ and tail_ are both monotonically
-      // increasing for the lifetime of this container.
+      // Note that we bring the head_ up to the tail_ so that head_ and tail_ are both
+      // monotonically increasing for the lifetime of this container.
       size_.head = size_.tail;
     } else {
       size_ = 0;
