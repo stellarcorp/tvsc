@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 
 #include "buffer/store.h"
@@ -29,13 +30,25 @@ std::string to_string(const IsStore auto& s) {
   return result;
 }
 
+std::ostream& operator<<(std::ostream& os, const IsStore auto& s) {
+  os << to_string(s);
+  return os;
+}
+
 template <IsStore S, bool is_const>
-std::string to_string(const RandomAccessStoreIterator<S, is_const>& iter) {
+std::string to_string(const internal::RandomAccessStoreIterator<S, is_const>& iter) {
   using std::to_string;
   std::string result{"<@"};
   result += to_string(iter.pos());
   result += ">";
   return result;
+}
+
+template <IsStore S, bool is_const>
+std::ostream& operator<<(std::ostream& os,
+                         const internal::RandomAccessStoreIterator<S, is_const>& iter) {
+  os << to_string(iter);
+  return os;
 }
 
 }  // namespace tvsc::buffer

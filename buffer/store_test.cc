@@ -16,6 +16,20 @@ namespace tvsc::buffer {
 template <typename T>
 class StoreTest : public ::testing::Test {};
 
+// Helper templates that make the different Store specializations in the Types below somewhat easier
+// to read.
+
+template <typename Value, size_t CAPACITY, InsertionPolicy INSERTION_POLICY,
+          OverflowPolicy OVERFLOW_POLICY>
+  requires std::default_initializable<Value>
+using ArrayStore = internal::Store<Value, size_t, CAPACITY, CAPACITY, INSERTION_POLICY,
+                                   OVERFLOW_POLICY, std::array<Value, CAPACITY>>;
+
+template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
+          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY>
+using VectorStore = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, INSERTION_POLICY,
+                                    OVERFLOW_POLICY, std::vector<Value>>;
+
 using StoreImplementations =
     ::testing::Types<ArrayStore<int, 256, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
                      ArrayStore<int, 2, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
@@ -28,14 +42,14 @@ using StoreImplementations =
                      ArrayStore<int, 8, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
 
                      VectorStore<int, 128, 256, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-                     VectorStore<int, 2, 8, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-                     VectorStore<int, 2, 8, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
+                     VectorStore<int, 2, 16, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
+                     VectorStore<int, 2, 16, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
                      VectorStore<int, 8, 16, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
                      VectorStore<int, 8, 16, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
                      VectorStore<int, 2, 16, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
                      VectorStore<int, 2, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
                      VectorStore<int, 8, 16, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-                     VectorStore<int, 8, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT> >;
+                     VectorStore<int, 8, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>>;
 
 TYPED_TEST_SUITE(StoreTest, StoreImplementations);
 
@@ -176,66 +190,73 @@ TYPED_TEST(StoreTest, MaintainsSortedOrderOnRandomInserts) {
   }
 }
 
-TEST(StoreSortedTest, InsertReturnsIteratorToInsertedPosition) {
-  using Store = Store<int, size_t, 6, 6, InsertionPolicy::SORTED, OverflowPolicy::REJECT>;
-
-  Store store{};
-  store.insert(10);
-  store.insert(30);
-  EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
-
-  {
-    // Store contains [10, 30]
-    const auto inserted_location{store.insert(20)};
-
-    EXPECT_EQ(20, *inserted_location);
+TYPED_TEST(StoreTest, InsertReturnsIteratorToInsertedPosition) {
+  using Store = TypeParam;
+  if constexpr (Store::insertion_policy() == InsertionPolicy::SORTED and
+                Store::max_capacity() >= 6) {
+    Store store{};
+    store.insert(10);
+    store.insert(30);
     EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
-  }
 
-  {
-    // Store contains [10, 20, 30]
-    const auto inserted_location{store.insert(40)};
+    {
+      // Store contains [10, 30]
+      const auto inserted_location{store.insert(20)};
 
-    EXPECT_EQ(40, *inserted_location);
-    EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
-  }
+      EXPECT_EQ(20, *inserted_location);
+      EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
+    }
 
-  {
-    // Store contains [10, 20, 30, 40]
-    const auto inserted_location{store.insert(0)};
+    {
+      // Store contains [10, 20, 30]
+      const auto inserted_location{store.insert(40)};
 
-    EXPECT_EQ(0, *inserted_location);
-    EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
-  }
+      EXPECT_EQ(40, *inserted_location);
+      EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
+    }
 
-  {
-    // Store contains [0, 10, 20, 30, 40]
-    const auto inserted_location{store.insert(25)};
+    {
+      // Store contains [10, 20, 30, 40]
+      const auto inserted_location{store.insert(0)};
 
-    EXPECT_EQ(25, *inserted_location);
-    EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
+      EXPECT_EQ(0, *inserted_location);
+      EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
+    }
+
+    {
+      // Store contains [0, 10, 20, 30, 40]
+      const auto inserted_location{store.insert(25)};
+
+      EXPECT_EQ(25, *inserted_location);
+      EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
+    }
   }
 }
 
 // OverflowPolicy::REJECT Tests
 
-TEST(StoreOverflowRejectTest, RejectsElementsWhenFull) {
-  using Store = Store<int, size_t, 4, 4, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
-  static constexpr std::array<int, 4> input = {1, 2, 3, 4};
-  static constexpr int REJECTED_VALUE = 99;
+TYPED_TEST(StoreTest, RejectsElementsWhenFull) {
+  using Store = TypeParam;
+  if constexpr (Store::overflow_policy() == OverflowPolicy::REJECT) {
+    static constexpr std::array<int, 16> input{1, 2,  3,  4,  5,  6,  7,  8,
+                                               9, 10, 11, 12, 13, 14, 15, 16};
+    static constexpr int REJECTED_VALUE{99};
 
-  Store store{};
-  for (int val : input) {
-    store.insert(val);
+    Store store{};
+    for (int val : input) {
+      if (store.size() < store.max_capacity()) {
+        store.insert(val);
+      }
+    }
+
+    if (store.size() == store.max_capacity()) {
+      const auto insertion_point = store.insert(REJECTED_VALUE);
+
+      EXPECT_EQ(store.end(), insertion_point);
+      EXPECT_EQ(store.max_capacity(), store.size());
+      EXPECT_EQ(store.end(), std::find(store.begin(), store.end(), REJECTED_VALUE));
+    }
   }
-
-  EXPECT_EQ(store.capacity(), store.size());
-
-  const auto insertion_point = store.insert(REJECTED_VALUE);
-
-  EXPECT_EQ(store.end(), insertion_point);
-  EXPECT_EQ(store.capacity(), store.size());
-  EXPECT_EQ(store.end(), std::find(store.begin(), store.end(), REJECTED_VALUE));
 }
 
 }  // namespace tvsc::buffer

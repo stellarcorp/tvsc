@@ -1,3 +1,21 @@
+/**
+ * This file defines several basic container adapters, such as a RingBuffer and a Queue. These
+ * containers are implemented on top of a general purpose adapter named Store along with an
+ * iterator and other supporting types.
+ *
+ * This approach started as an experiment. Could a single class handle the use cases of a large
+ * number of container-based data structures? The result is a trade-off.
+ *
+ * For a small team of C++ experts, this solution is fantastic. All of the code is centralized and
+ * well-tested. Different container implementations will not drift out of sync with each other. The
+ * implementation details are contained in a small number of files, so no one is opening many
+ * different files to read the different implementations of each container.
+ *
+ * For a large team, this approach would be a disaster. It requires deep knowledge of C++. The
+ * number of if-blocks (usually, constexpr if) creates a unique form of spaghetti code. Parsing
+ * through the different combinations is a headache. And in the likely event of an error, the
+ * compiler messages are inscrutable.
+ */
 #pragma once
 
 #include <algorithm>
@@ -13,6 +31,15 @@
 
 namespace tvsc::buffer {
 
+/**
+ * Signature for callback functions that will be called when a Store overflows. Note that not all
+ * Store specializations support an overflow callback.
+ */
+template <typename Store>
+using OverflowHandler = std::function<bool(Store&, typename Store::value_type&)>;
+
+namespace internal {
+
 template <typename Store, bool is_const = false>
 class RandomAccessStoreIterator;
 
@@ -22,9 +49,15 @@ template <typename Value, std::unsigned_integral Size, Size MIN_CAPACITY, Size M
   requires(MIN_CAPACITY > 0) and std::default_initializable<Value>
 class Store;
 
-template <typename Store>
-using OverflowHandler = std::function<bool(Store&, typename Store::value_type&)>;
-
+/**
+ * General Store class that provides a unified implementation of several common data structures.
+ * Primarly, this class is a template for container adapters with various policies for insertion and
+ * overflow. This template is not intended to be used directly. Various specialized adapters that
+ * can be used directly are configured at the bottom of this file. Use these specialized adapters.
+ *
+ * Note that this template and its specializations only support value types that are default
+ * initializable. This constraint could be relaxed, but so far, that has not been necessary.
+ */
 template <typename Value, std::unsigned_integral Size, Size MIN_CAPACITY, Size MAX_CAPACITY,
           InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY, typename Container>
   requires(MIN_CAPACITY > 0) and std::default_initializable<Value>
@@ -544,30 +577,50 @@ class RandomAccessStoreIterator final {
   [[nodiscard]] constexpr auto pos() const noexcept { return pos_; }
 };
 
+}  // namespace internal
+
+/**
+ * Adapter to create a ring buffer out of a standard container.
+ */
+template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
+          typename Container = std::array<Value, MAX_CAPACITY>>
+using RingBuffer = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY,
+                                   InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT, Container>;
+
+/**
+ * Adapter to create a queue out of a standard container.
+ */
+template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
+          typename Container = std::array<Value, MAX_CAPACITY>>
+using Queue = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, InsertionPolicy::APPEND,
+                              OverflowPolicy::REJECT, Container>;
+
+/**
+ * Adapter to create a sorted queue, also known as a priority queue, from a standard container.
+ */
+template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
+          typename Container = std::array<Value, MAX_CAPACITY>>
+using SortedQueue = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY,
+                                    InsertionPolicy::SORTED, OverflowPolicy::REJECT, Container>;
+
+// Check that the various types from the template above adhere to the intended concepts. These
+// checks act as an early test for these types.
+namespace concept_checks {
+
 template <typename Value, size_t CAPACITY, InsertionPolicy INSERTION_POLICY,
           OverflowPolicy OVERFLOW_POLICY>
-using ArrayStore = Store<Value, size_t, CAPACITY, CAPACITY, INSERTION_POLICY, OVERFLOW_POLICY,
-                         std::array<Value, CAPACITY>>;
+  requires std::default_initializable<Value>
+using ArrayStore = internal::Store<Value, size_t, CAPACITY, CAPACITY, INSERTION_POLICY,
+                                   OVERFLOW_POLICY, std::array<Value, CAPACITY>>;
 
-template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
-          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY>
-using VectorStore = Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, INSERTION_POLICY,
-                          OVERFLOW_POLICY, std::vector<Value>>;
-
-template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
-          typename Container = std::array<Value, MAX_CAPACITY>>
-using RingBuffer = Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, InsertionPolicy::APPEND,
-                         OverflowPolicy::DROP_FRONT, Container>;
-
-template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
-          typename Container = std::array<Value, MAX_CAPACITY>>
-using Queue = Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, InsertionPolicy::APPEND,
-                    OverflowPolicy::REJECT, Container>;
-
-namespace concept_checks {
 using ExampleArrayStore = ArrayStore<int, 4, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
 static_assert(IsConstantCapacityStore<ExampleArrayStore>);
 static_assert(IsRandomAccessStore<ExampleArrayStore>);
+
+template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
+          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY>
+using VectorStore = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, INSERTION_POLICY,
+                                    OVERFLOW_POLICY, std::vector<Value>>;
 
 using ExampleVectorStore = VectorStore<int, 4, 64, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
 static_assert(IsExpandableCapacityStore<ExampleVectorStore>);
@@ -578,6 +631,10 @@ static_assert(IsRingBuffer<ExampleRingBuffer>);
 
 using ExampleQueue = Queue<int, 4, 4>;
 static_assert(IsQueue<ExampleQueue>);
+
+using ExampleSortedQueue = SortedQueue<int, 4, 4>;
+static_assert(IsStore<ExampleSortedQueue>);
+
 }  // namespace concept_checks
 
 }  // namespace tvsc::buffer
