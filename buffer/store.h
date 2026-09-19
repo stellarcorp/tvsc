@@ -16,16 +16,18 @@ namespace tvsc::buffer {
 template <typename Store, bool is_const = false>
 class RandomAccessStoreIterator;
 
-template <typename Value, std::unsigned_integral Size, Size CAPACITY,
+template <typename Value, std::unsigned_integral Size, Size MIN_CAPACITY, Size MAX_CAPACITY,
           InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY,
-          typename Container = std::array<Value, CAPACITY>>
+          typename Container = std::array<Value, MAX_CAPACITY>>
+  requires(MIN_CAPACITY > 0) and std::default_initializable<Value>
 class Store;
 
 template <typename Store>
-using OverflowHandler = std::function<bool(Store, typename Store::value_type&)>;
+using OverflowHandler = std::function<bool(Store&, typename Store::value_type&)>;
 
-template <typename Value, std::unsigned_integral Size, Size CAPACITY,
+template <typename Value, std::unsigned_integral Size, Size MIN_CAPACITY, Size MAX_CAPACITY,
           InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY, typename Container>
+  requires(MIN_CAPACITY > 0) and std::default_initializable<Value>
 class Store final {
  private:
   static constexpr bool is_ring_buffer{OVERFLOW_POLICY == OverflowPolicy::DROP_FRONT};
@@ -103,7 +105,8 @@ class Store final {
   [[nodiscard]] constexpr bool handle_overflow(const value_type& value) noexcept {
     if constexpr (IsExpandableCapacityStore<Store>) {
       if (capacity() < max_capacity()) {
-        reserve(std::min(max_capacity(), 2 * capacity()));
+        reserve(2 * capacity());
+        return true;
       }
     }
     if constexpr (has_overflow_handler) {
@@ -144,19 +147,22 @@ class Store final {
 
   [[nodiscard]] constexpr size_type capacity() const noexcept {
     if constexpr (IsConstantCapacityStore<Store>) {
-      return CAPACITY;
+      return MAX_CAPACITY;
     } else {
       return elements_.capacity();
     }
   }
 
-  [[nodiscard]] static constexpr size_type min_capacity() noexcept { return CAPACITY; }
-  [[nodiscard]] static constexpr size_type max_capacity() noexcept { return CAPACITY; }
+  [[nodiscard]] static constexpr size_type min_capacity() noexcept { return MIN_CAPACITY; }
+  [[nodiscard]] static constexpr size_type max_capacity() noexcept { return MAX_CAPACITY; }
 
   constexpr void reserve(size_type new_capacity) noexcept
     requires(IsExpandableCapacityStore<Store>)
   {
-    elements_.reserve(std::min(new_capacity, max_capacity()));
+    static_assert(HasReserve<container_type>);
+    new_capacity = std::clamp(new_capacity, min_capacity(), max_capacity());
+    elements_.reserve(new_capacity);
+    elements_.resize(elements_.capacity());
   }
 
   [[nodiscard]] constexpr size_type size() const noexcept {
@@ -259,12 +265,14 @@ class Store final {
     if constexpr (is_ring_buffer) {
       if (n >= size_.tail or n < size_.head) {
         except<std::out_of_range>(
-            "Attempt to fetch element (via at()) of empty store. (is_ring_buffer)");
+            "Attempt to fetch element (via at()) that is out of range of the store. "
+            "(is_ring_buffer)");
       }
       return elements_[n % capacity()];
     } else {
       if (n >= size_) {
-        except<std::out_of_range>("Attempt to fetch element (via at()) of empty store.");
+        except<std::out_of_range>(
+            "Attempt to fetch element (via at()) that is out of range of the store.");
       }
       return elements_[n];
     }
@@ -298,9 +306,6 @@ class Store final {
     }
 
     if constexpr (INSERTION_POLICY == InsertionPolicy::APPEND) {
-      const auto insertion_point{end()};
-      *insertion_point = value;
-
       if constexpr (is_ring_buffer) {
         if (++size_.tail == 0) [[unlikely]] {
           except<std::overflow_error>("Overflow on tail index value. (APPEND)");
@@ -310,6 +315,8 @@ class Store final {
           except<std::overflow_error>("Overflow on size index value. (APPEND)");
         }
       }
+      const auto insertion_point{std::prev(end())};
+      *insertion_point = value;
       return insertion_point;
     } else if constexpr (INSERTION_POLICY == InsertionPolicy::SORTED) {
       // Under the sorted insertion policy, the iterators from begin() and end() are actually
@@ -320,9 +327,6 @@ class Store final {
       // to insert the value and then translate that to an iterator instance before returning.
       const auto insertion_point{std::lower_bound(raw_begin(), raw_end(), value)};
 
-      std::copy_backward(insertion_point, raw_end(), std::next(raw_end(), 1));
-      *insertion_point = value;
-
       if constexpr (is_ring_buffer) {
         if (++size_.tail == 0) [[unlikely]] {
           except<std::overflow_error>("Overflow on tail index value. (APPEND)");
@@ -332,6 +336,10 @@ class Store final {
           except<std::overflow_error>("Overflow on size index value. (APPEND)");
         }
       }
+
+      std::copy_backward(insertion_point, std::prev(raw_end()), raw_end());
+      *insertion_point = value;
+
       return iterator{insertion_point};
     }
   }
@@ -508,19 +516,25 @@ class RandomAccessStoreIterator final {
     return it;
   }
 
+  template <bool OtherConst>
   [[nodiscard]] friend constexpr difference_type operator-(
-      const RandomAccessStoreIterator& lhs, const RandomAccessStoreIterator& rhs) noexcept {
+      const RandomAccessStoreIterator& lhs,
+      const RandomAccessStoreIterator<Store, OtherConst>& rhs) noexcept {
     return static_cast<difference_type>(lhs.pos_) - static_cast<difference_type>(rhs.pos_);
   }
 
-  [[nodiscard]] friend constexpr auto operator<=>(const RandomAccessStoreIterator& lhs,
-                                                  const RandomAccessStoreIterator& rhs) noexcept {
-    return lhs.pos_ <=> rhs.pos_;
+  template <bool OtherConst>
+  [[nodiscard]] friend constexpr bool operator==(
+      const RandomAccessStoreIterator& lhs,
+      const RandomAccessStoreIterator<Store, OtherConst>& rhs) noexcept {
+    return lhs.pos_ == rhs.pos_;
   }
 
-  [[nodiscard]] friend constexpr bool operator==(const RandomAccessStoreIterator& lhs,
-                                                 const RandomAccessStoreIterator& rhs) noexcept {
-    return lhs.pos_ == rhs.pos_;
+  template <bool OtherConst>
+  [[nodiscard]] friend constexpr auto operator<=>(
+      const RandomAccessStoreIterator& lhs,
+      const RandomAccessStoreIterator<Store, OtherConst>& rhs) noexcept {
+    return lhs.pos_ <=> rhs.pos_;
   }
 
   template <typename, bool>
@@ -530,23 +544,39 @@ class RandomAccessStoreIterator final {
   [[nodiscard]] constexpr auto pos() const noexcept { return pos_; }
 };
 
-template <typename Value, std::unsigned_integral Size, Size CAPACITY,
+template <typename Value, size_t CAPACITY, InsertionPolicy INSERTION_POLICY,
+          OverflowPolicy OVERFLOW_POLICY>
+using ArrayStore = Store<Value, size_t, CAPACITY, CAPACITY, INSERTION_POLICY, OVERFLOW_POLICY,
+                         std::array<Value, CAPACITY>>;
+
+template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
           InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY>
-using ArrayStore =
-    Store<Value, Size, CAPACITY, INSERTION_POLICY, OVERFLOW_POLICY, std::array<Value, CAPACITY>>;
+using VectorStore = Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, INSERTION_POLICY,
+                          OVERFLOW_POLICY, std::vector<Value>>;
 
-template <typename Value, size_t CAPACITY, typename Container = std::array<Value, CAPACITY>>
-using RingBuffer =
-    Store<Value, size_t, CAPACITY, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT, Container>;
+template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
+          typename Container = std::array<Value, MAX_CAPACITY>>
+using RingBuffer = Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, InsertionPolicy::APPEND,
+                         OverflowPolicy::DROP_FRONT, Container>;
 
-template <typename Value, size_t CAPACITY, typename Container = std::array<Value, CAPACITY>>
-using Queue =
-    Store<Value, size_t, CAPACITY, InsertionPolicy::APPEND, OverflowPolicy::REJECT, Container>;
+template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
+          typename Container = std::array<Value, MAX_CAPACITY>>
+using Queue = Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, InsertionPolicy::APPEND,
+                    OverflowPolicy::REJECT, Container>;
 
 namespace concept_checks {
-using ExampleRingBuffer = RingBuffer<int, 4>;
+using ExampleArrayStore = ArrayStore<int, 4, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
+static_assert(IsConstantCapacityStore<ExampleArrayStore>);
+static_assert(IsRandomAccessStore<ExampleArrayStore>);
+
+using ExampleVectorStore = VectorStore<int, 4, 64, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
+static_assert(IsExpandableCapacityStore<ExampleVectorStore>);
+static_assert(IsRandomAccessStore<ExampleVectorStore>);
+
+using ExampleRingBuffer = RingBuffer<int, 4, 4>;
 static_assert(IsRingBuffer<ExampleRingBuffer>);
-using ExampleQueue = Queue<int, 4>;
+
+using ExampleQueue = Queue<int, 4, 4>;
 static_assert(IsQueue<ExampleQueue>);
 }  // namespace concept_checks
 

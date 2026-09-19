@@ -24,6 +24,10 @@ enum class OverflowPolicy {
   OVERFLOW_HANDLER,
 };
 
+template <typename Container>
+concept HasReserve =  //
+    requires(Container& c, size_t n) { c.reserve(n); };
+
 template <typename S>
 concept IsStore =  //
     requires {
@@ -35,12 +39,15 @@ concept IsStore =  //
       typename S::size_type;
       requires std::integral<typename S::size_type>;
       typename S::value_type;
+      requires std::default_initializable<typename S::value_type>;
     } and  //
 
     requires(const S& s) {
       { s.capacity() } -> std::convertible_to<typename S::size_type>;
-      { s.min_capacity() } -> std::convertible_to<typename S::size_type>;
-      { s.max_capacity() } -> std::convertible_to<typename S::size_type>;
+      { S::min_capacity() } -> std::convertible_to<typename S::size_type>;
+      { S::max_capacity() } -> std::convertible_to<typename S::size_type>;
+      requires(S::min_capacity() > 0);
+      requires(S::min_capacity() <= S::max_capacity());
     } and  //
 
     requires(const S& s) {
@@ -78,8 +85,6 @@ template <typename S>
 concept IsExpandableCapacityStore =  //
     IsStore<S> and                   //
     requires(const S& s) {
-      // Constant capacity stores have their capacity fixed at
-      // compile-time.
       { s.capacity() } -> std::convertible_to<typename S::size_type>;
       { S::min_capacity() } -> std::convertible_to<typename S::size_type>;
       { S::max_capacity() } -> std::convertible_to<typename S::size_type>;

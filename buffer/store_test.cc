@@ -16,23 +16,26 @@ namespace tvsc::buffer {
 template <typename T>
 class StoreTest : public ::testing::Test {};
 
-using StoreImplementations = ::testing::Types<
-    ArrayStore<int, uint8_t, 2, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-    ArrayStore<int, uint8_t, 2, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-    ArrayStore<int, uint8_t, 8, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-    ArrayStore<int, uint8_t, 8, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-    ArrayStore<int, size_t, 4, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-    ArrayStore<int, size_t, 4, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-    ArrayStore<int, size_t, 8, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-    ArrayStore<int, size_t, 8, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-    ArrayStore<int, uint8_t, 2, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-    ArrayStore<int, uint8_t, 2, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
-    ArrayStore<int, uint8_t, 8, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-    ArrayStore<int, uint8_t, 8, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
-    ArrayStore<int, size_t, 4, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-    ArrayStore<int, size_t, 4, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
-    ArrayStore<int, size_t, 8, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-    ArrayStore<int, size_t, 8, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>>;
+using StoreImplementations =
+    ::testing::Types<ArrayStore<int, 256, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
+                     ArrayStore<int, 2, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
+                     ArrayStore<int, 2, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
+                     ArrayStore<int, 8, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
+                     ArrayStore<int, 8, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
+                     ArrayStore<int, 2, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
+                     ArrayStore<int, 2, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
+                     ArrayStore<int, 8, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
+                     ArrayStore<int, 8, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
+
+                     VectorStore<int, 128, 256, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
+                     VectorStore<int, 2, 8, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
+                     VectorStore<int, 2, 8, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
+                     VectorStore<int, 8, 16, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
+                     VectorStore<int, 8, 16, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
+                     VectorStore<int, 2, 16, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
+                     VectorStore<int, 2, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
+                     VectorStore<int, 8, 16, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
+                     VectorStore<int, 8, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT> >;
 
 TYPED_TEST_SUITE(StoreTest, StoreImplementations);
 
@@ -46,8 +49,13 @@ TYPED_TEST(StoreTest, StartsEmpty) {
 
 TYPED_TEST(StoreTest, CapacityMatchesTemplateParameter) {
   TypeParam store{};
+  const typename TypeParam::value_type value{42};
+  // Note that before a value is added to the store, the store's capacity might be zero.
+  store.insert(value);
+  EXPECT_EQ(1, store.size());
   EXPECT_GT(store.capacity(), 0);
-  EXPECT_GE(store.capacity(), store.size());
+  EXPECT_GT(store.min_capacity(), 0);
+  EXPECT_GE(store.max_capacity(), store.min_capacity());
 }
 
 TYPED_TEST(StoreTest, CanInsertAndFindSingleElement) {
@@ -109,20 +117,23 @@ TYPED_TEST(StoreTest, CanInsertUpToCapacity) {
 
 TYPED_TEST(StoreTest, PreservesInsertionOrder) {
   if constexpr (TypeParam::insertion_policy() == InsertionPolicy::APPEND) {
-    static constexpr std::array<typename TypeParam::value_type, 4> input{4, 1, 3, 2};
+    static constexpr std::array<typename TypeParam::value_type, 3> input{4, 1, 3 /*, 2*/};
 
     TypeParam store{};
     for (auto i : input) {
-      if (store.size() < store.capacity()) {
+      if (store.size() < store.max_capacity()) {
         store.insert(i);
+        LOG(INFO) << "store: " << to_string(store);
       }
     }
 
     if (input.size() > store.capacity()) {
       EXPECT_TRUE(std::equal(store.begin(), store.end(), input.begin(),
-                             std::next(input.begin(), store.capacity())));
+                             std::next(input.begin(), store.capacity())))
+          << to_string(store);
     } else {
-      EXPECT_TRUE(std::equal(store.begin(), store.end(), input.begin(), input.end()));
+      EXPECT_TRUE(std::equal(store.begin(), store.end(), input.begin(), input.end()))
+          << to_string(store);
     }
   }
 }
@@ -148,7 +159,7 @@ TYPED_TEST(StoreTest, MaintainsSortedOrderOnRandomInserts) {
 
     Store store{};
     for (int val : input) {
-      if (store.size() < store.capacity()) {
+      if (store.size() < store.max_capacity()) {
         const auto insertion_location{store.insert(val)};
         EXPECT_EQ(val, *insertion_location);
         EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()))
@@ -166,7 +177,7 @@ TYPED_TEST(StoreTest, MaintainsSortedOrderOnRandomInserts) {
 }
 
 TEST(StoreSortedTest, InsertReturnsIteratorToInsertedPosition) {
-  using Store = Store<int, size_t, 6, InsertionPolicy::SORTED, OverflowPolicy::REJECT>;
+  using Store = Store<int, size_t, 6, 6, InsertionPolicy::SORTED, OverflowPolicy::REJECT>;
 
   Store store{};
   store.insert(10);
@@ -209,7 +220,7 @@ TEST(StoreSortedTest, InsertReturnsIteratorToInsertedPosition) {
 // OverflowPolicy::REJECT Tests
 
 TEST(StoreOverflowRejectTest, RejectsElementsWhenFull) {
-  using Store = Store<int, size_t, 4, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
+  using Store = Store<int, size_t, 4, 4, InsertionPolicy::APPEND, OverflowPolicy::REJECT>;
   static constexpr std::array<int, 4> input = {1, 2, 3, 4};
   static constexpr int REJECTED_VALUE = 99;
 

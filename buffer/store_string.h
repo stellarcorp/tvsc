@@ -10,6 +10,11 @@ namespace tvsc::buffer {
 std::string to_string(const IsStore auto& s) {
   using std::to_string;
   std::string result{};
+  result.append("<")
+      .append(to_string(s.size()))
+      .append("/")
+      .append(to_string(s.capacity()))
+      .append("> ");
   if (s.size() > 0) {
     result += "[\n";
     for (const auto& v : s) {
