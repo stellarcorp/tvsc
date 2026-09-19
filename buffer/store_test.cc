@@ -36,20 +36,20 @@ using StoreImplementations =
                      ArrayStore<int, 2, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
                      ArrayStore<int, 8, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
                      ArrayStore<int, 8, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-                     ArrayStore<int, 2, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-                     ArrayStore<int, 2, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
-                     ArrayStore<int, 8, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-                     ArrayStore<int, 8, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
+                     ArrayStore<int, 2, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST>,
+                     ArrayStore<int, 2, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST>,
+                     ArrayStore<int, 8, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST>,
+                     ArrayStore<int, 8, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST>,
 
                      VectorStore<int, 128, 256, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
                      VectorStore<int, 2, 16, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
                      VectorStore<int, 2, 16, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
                      VectorStore<int, 8, 16, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
                      VectorStore<int, 8, 16, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-                     VectorStore<int, 2, 16, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-                     VectorStore<int, 2, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>,
-                     VectorStore<int, 8, 16, InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT>,
-                     VectorStore<int, 8, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_FRONT>>;
+                     VectorStore<int, 2, 16, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST>,
+                     VectorStore<int, 2, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST>,
+                     VectorStore<int, 8, 16, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST>,
+                     VectorStore<int, 8, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST>>;
 
 TYPED_TEST_SUITE(StoreTest, StoreImplementations);
 
@@ -129,15 +129,14 @@ TYPED_TEST(StoreTest, CanInsertUpToCapacity) {
 
 // InsertionPolicy::APPEND Tests
 
-TYPED_TEST(StoreTest, PreservesInsertionOrder) {
+TYPED_TEST(StoreTest, AppendPreservesInsertionOrder) {
   if constexpr (TypeParam::insertion_policy() == InsertionPolicy::APPEND) {
-    static constexpr std::array<typename TypeParam::value_type, 3> input{4, 1, 3 /*, 2*/};
+    static constexpr std::array<typename TypeParam::value_type, 4> input{4, 1, 3, 2};
 
     TypeParam store{};
     for (auto i : input) {
       if (store.size() < store.max_capacity()) {
         store.insert(i);
-        LOG(INFO) << "store: " << to_string(store);
       }
     }
 
@@ -152,7 +151,7 @@ TYPED_TEST(StoreTest, PreservesInsertionOrder) {
   }
 }
 
-TYPED_TEST(StoreTest, InsertReturnsIteratorToInsertionLocation) {
+TYPED_TEST(StoreTest, AppendInsertReturnsIteratorToInsertionLocation) {
   if constexpr (TypeParam::insertion_policy() == InsertionPolicy::APPEND) {
     static constexpr int VALUE{10};
     TypeParam store{};

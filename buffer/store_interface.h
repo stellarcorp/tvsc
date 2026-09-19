@@ -9,6 +9,9 @@ namespace tvsc::buffer {
 
 enum class InsertionPolicy {
   APPEND,
+  // Note that a PREPEND policy would be a horrible idea. It would be O(n) insertion on every
+  // insertion. It is much more efficient to change the mindset of what is meant by front and back
+  // and get the O(1) insertion from the APPEND policy.
   SORTED,
 };
 
@@ -17,11 +20,7 @@ enum class OverflowPolicy {
   REJECT,
   // Evict the element at the front (index 0 or similar). This policy gives the behavior of a ring
   // buffer.
-  DROP_FRONT,
-  // Call a function provided by the user that can reduce the size of the store in some way. The
-  // most likely use case is when multiple entries can be transformed into fewer entries using
-  // statistical / numerical methods.
-  OVERFLOW_HANDLER,
+  DROP_OLDEST,
 };
 
 template <typename Container>
@@ -115,11 +114,11 @@ concept IsQueue =                    //
     true;
 
 template <typename S>
-concept IsRingBuffer =                                               //
-    IsQueue<S> and                                                   //
-    requires {                                                       //
-      requires(S::overflow_policy() == OverflowPolicy::DROP_FRONT);  //
-    } and                                                            //
+concept IsRingBuffer =                                                //
+    IsQueue<S> and                                                    //
+    requires {                                                        //
+      requires(S::overflow_policy() == OverflowPolicy::DROP_OLDEST);  //
+    } and                                                             //
     true;
 
 }  // namespace tvsc::buffer

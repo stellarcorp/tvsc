@@ -63,9 +63,12 @@ template <typename Value, std::unsigned_integral Size, Size MIN_CAPACITY, Size M
   requires(MIN_CAPACITY > 0) and std::default_initializable<Value>
 class Store final {
  private:
-  static constexpr bool is_ring_buffer{OVERFLOW_POLICY == OverflowPolicy::DROP_FRONT};
-  static constexpr bool has_overflow_handler{OVERFLOW_POLICY == OverflowPolicy::OVERFLOW_HANDLER};
+  static constexpr bool is_ring_buffer{OVERFLOW_POLICY == OverflowPolicy::DROP_OLDEST};
   static constexpr bool index_modification_allowed{INSERTION_POLICY != InsertionPolicy::SORTED};
+
+  // TODO(james): Add a template parameter for an overflow handler and update this conditional to a
+  // check if that parameter is a valid, callable functor.
+  static constexpr bool has_overflow_handler{false};
 
  public:
   using value_type = Value;
@@ -331,7 +334,7 @@ class Store final {
     return const_cast<reference>(std::as_const(*this)[n]);
   }
 
-  constexpr iterator insert(const value_type& value) {
+  constexpr iterator insert(value_type&& value) noexcept {
     if (size() == capacity()) {
       if (!handle_overflow(value)) {
         return end();
@@ -349,7 +352,7 @@ class Store final {
         }
       }
       const auto insertion_point{std::prev(end())};
-      *insertion_point = value;
+      *insertion_point = std::move(value);
       return insertion_point;
     } else if constexpr (INSERTION_POLICY == InsertionPolicy::SORTED) {
       // Under the sorted insertion policy, the iterators from begin() and end() are actually
@@ -362,22 +365,24 @@ class Store final {
 
       if constexpr (is_ring_buffer) {
         if (++size_.tail == 0) [[unlikely]] {
-          except<std::overflow_error>("Overflow on tail index value. (APPEND)");
+          except<std::overflow_error>("Overflow on tail index value. (SORTED)");
         }
       } else {
         if (++size_ == 0) [[unlikely]] {
-          except<std::overflow_error>("Overflow on size index value. (APPEND)");
+          except<std::overflow_error>("Overflow on size index value. (SORTED)");
         }
       }
 
       std::copy_backward(insertion_point, std::prev(raw_end()), raw_end());
-      *insertion_point = value;
+      *insertion_point = std::move(value);
 
       return iterator{insertion_point};
     }
   }
 
-  constexpr iterator erase(const_iterator pos) {
+  constexpr iterator insert(const value_type& value) noexcept { return insert(value_type{value}); }
+
+  constexpr iterator erase(const_iterator pos) noexcept {
     raw_iterator raw_pos{raw_iterator::as_non_const(pos)};
     if (empty()) [[unlikely]] {
       except<std::out_of_range>("Attempt to erase element from empty store.");
@@ -394,7 +399,7 @@ class Store final {
     }
   }
 
-  constexpr void push_back(const value_type& value) noexcept
+  constexpr void push_back(value_type&& value) noexcept
     requires(index_modification_allowed)
   {
     if (size() == capacity()) {
@@ -404,17 +409,19 @@ class Store final {
     }
 
     if constexpr (is_ring_buffer) {
-      elements_[size_.tail % capacity()] = value;
+      elements_[size_.tail % capacity()] = std::move(value);
       if (++size_.tail == 0) [[unlikely]] {
         except<std::overflow_error>("Overflow on tail index value. (APPEND)");
       }
     } else {
-      elements_[size_] = value;
+      elements_[size_] = std::move(value);
       if (++size_ == 0) [[unlikely]] {
         except<std::overflow_error>("Overflow on size index value. (APPEND)");
       }
     }
   }
+
+  constexpr void push_back(const value_type& value) noexcept { push_back(value_type{value}); }
 
   constexpr void pop_front() noexcept {
     if constexpr (is_ring_buffer) {
@@ -585,7 +592,7 @@ class RandomAccessStoreIterator final {
 template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
           typename Container = std::array<Value, MAX_CAPACITY>>
 using RingBuffer = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY,
-                                   InsertionPolicy::APPEND, OverflowPolicy::DROP_FRONT, Container>;
+                                   InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST, Container>;
 
 /**
  * Adapter to create a queue out of a standard container.
