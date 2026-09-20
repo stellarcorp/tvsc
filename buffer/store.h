@@ -589,26 +589,26 @@ class RandomAccessStoreIterator final {
 /**
  * Adapter to create a ring buffer out of a standard container.
  */
-template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
+template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY = MIN_CAPACITY,
           typename Container = std::array<Value, MAX_CAPACITY>>
 using RingBuffer = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY,
                                    InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST, Container>;
 
 /**
- * Adapter to create a queue out of a standard container.
+ * Adapter to create a generic buffer out of a standard container.
  */
-template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
+template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY = MIN_CAPACITY,
           typename Container = std::array<Value, MAX_CAPACITY>>
-using Queue = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, InsertionPolicy::APPEND,
-                              OverflowPolicy::REJECT, Container>;
+using Buffer = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, InsertionPolicy::APPEND,
+                               OverflowPolicy::REJECT, Container>;
 
 /**
- * Adapter to create a sorted queue, also known as a priority queue, from a standard container.
+ * Adapter to create a sorted buffer from a standard container.
  */
-template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
+template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY = MIN_CAPACITY,
           typename Container = std::array<Value, MAX_CAPACITY>>
-using SortedQueue = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY,
-                                    InsertionPolicy::SORTED, OverflowPolicy::REJECT, Container>;
+using SortedBuffer = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY,
+                                     InsertionPolicy::SORTED, OverflowPolicy::REJECT, Container>;
 
 // Check that the various types from the template above adhere to the intended concepts. These
 // checks act as an early test for these types.
@@ -633,14 +633,18 @@ using ExampleVectorStore = VectorStore<int, 4, 64, InsertionPolicy::APPEND, Over
 static_assert(IsExpandableCapacityStore<ExampleVectorStore>);
 static_assert(IsRandomAccessStore<ExampleVectorStore>);
 
-using ExampleRingBuffer = RingBuffer<int, 4, 4>;
+using ExampleRingBuffer = RingBuffer<int, 4>;
 static_assert(IsRingBuffer<ExampleRingBuffer>);
+// RingBuffer can also be used as a queue.
+static_assert(IsQueue<ExampleRingBuffer>);
 
-using ExampleQueue = Queue<int, 4, 4>;
-static_assert(IsQueue<ExampleQueue>);
+using ExampleBuffer = Buffer<int, 4>;
+static_assert(IsStore<ExampleBuffer>);
+// Buffer can also be used as a queue.
+static_assert(IsQueue<ExampleBuffer>);
 
-using ExampleSortedQueue = SortedQueue<int, 4, 4>;
-static_assert(IsStore<ExampleSortedQueue>);
+using ExampleSortedBuffer = SortedBuffer<int, 4>;
+static_assert(IsStore<ExampleSortedBuffer>);
 
 }  // namespace concept_checks
 

@@ -17,7 +17,7 @@ template <typename T>
 class StoreTest : public ::testing::Test {};
 
 // Helper templates that make the different Store specializations in the Types below somewhat easier
-// to read.
+// to read. These templates allow us to explicitly test out many combinations of settings.
 
 template <typename Value, size_t CAPACITY, InsertionPolicy INSERTION_POLICY,
           OverflowPolicy OVERFLOW_POLICY>
@@ -49,7 +49,10 @@ using StoreImplementations =
                      VectorStore<int, 2, 16, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST>,
                      VectorStore<int, 2, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST>,
                      VectorStore<int, 8, 16, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST>,
-                     VectorStore<int, 8, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST>>;
+                     VectorStore<int, 8, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST>,
+
+                     // Actually test the adapters in the public interface as well.
+                     RingBuffer<int, 64>, Buffer<int, 64>, SortedBuffer<int, 64>>;
 
 TYPED_TEST_SUITE(StoreTest, StoreImplementations);
 
