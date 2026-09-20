@@ -31,23 +31,28 @@
 
 namespace tvsc::buffer {
 
-/**
- * Signature for callback functions that will be called when a Store overflows. Note that not all
- * Store specializations support an overflow callback.
- */
-template <typename Store>
-using OverflowHandler = std::function<bool(Store&, typename Store::value_type&)>;
+// Default handler for overflow conditions that acts as a no-op.
+struct NoOpOverflowHandler final {
+  template <typename Store, typename Value>
+  [[nodiscard]] constexpr bool operator()(Store& /*store*/, Value& /*element*/) const noexcept {
+    // Returning true allows the store to continue with any automatic overflow policies and possibly
+    // insert the element. Returning false means this element should be rejected, regardless of
+    // those policies.
+    return true;
+  }
+};
+
+static_assert(
+    []() constexpr {
+      [[maybe_unused]] NoOpOverflowHandler handler{};
+      return true;
+    }(),
+    "NoOpOverflowHandler must be constructible in a constexpr context");
 
 namespace internal {
 
 template <typename Store, bool is_const = false>
 class RandomAccessStoreIterator;
-
-template <typename Value, std::unsigned_integral Size, Size MIN_CAPACITY, Size MAX_CAPACITY,
-          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY,
-          typename Container = std::array<Value, MAX_CAPACITY>>
-  requires(MIN_CAPACITY > 0) and std::default_initializable<Value>
-class Store;
 
 /**
  * General Store class that provides a unified implementation of several common data structures.
@@ -59,16 +64,14 @@ class Store;
  * initializable. This constraint could be relaxed, but so far, that has not been necessary.
  */
 template <typename Value, std::unsigned_integral Size, Size MIN_CAPACITY, Size MAX_CAPACITY,
-          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY, typename Container>
+          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY,
+          typename Container = std::array<Value, MAX_CAPACITY>,
+          typename OverflowHandler = NoOpOverflowHandler>
   requires(MIN_CAPACITY > 0) and std::default_initializable<Value>
 class Store final {
  private:
   static constexpr bool is_ring_buffer{OVERFLOW_POLICY == OverflowPolicy::DROP_OLDEST};
   static constexpr bool index_modification_allowed{INSERTION_POLICY != InsertionPolicy::SORTED};
-
-  // TODO(james): Add a template parameter for an overflow handler and update this conditional to a
-  // check if that parameter is a valid, callable functor.
-  static constexpr bool has_overflow_handler{false};
 
  public:
   using value_type = Value;
@@ -82,6 +85,8 @@ class Store final {
   using raw_reference = std::iter_reference_t<raw_iterator>;
   using reference = std::iter_reference_t<iterator>;
   using const_reference = std::iter_reference_t<const_iterator>;
+
+  using overflow_handler_type = OverflowHandler;
 
  private:
   // head and tail are logically managed as a queue. New items enter at the back (tail) of the
@@ -97,18 +102,12 @@ class Store final {
 
   using SizeStorage = std::conditional_t<is_ring_buffer, RingPosition, size_type>;
 
-  struct Empty final {};
-  using OverflowHandlerStorage =
-      std::conditional_t<has_overflow_handler, OverflowHandler<Store>, Empty>;
-
   // size_ is either the head and tail tracking indices for a ring buffer, or it is just the
-  // size_type. Note that by not including a single API behind these concepts, we induce compiler
+  // size_type. Note that by not forcing these types to share a single API, we induce compiler
   // errors when code attempts to use one when it was meant to use the other.
   SizeStorage size_{};
 
-  // When the overflow_handler_ is not needed it is an instance of Empty and takes no space due to
-  // [[no_unique_address]].
-  [[no_unique_address]] OverflowHandlerStorage overflow_handler_{};
+  [[no_unique_address]] overflow_handler_type overflow_handler_{};
 
   container_type elements_{};
 
@@ -139,16 +138,22 @@ class Store final {
   }
 
   [[nodiscard]] constexpr bool handle_overflow(const value_type& value) noexcept {
+    // Expand the store's capacity if possible.
     if constexpr (IsExpandableCapacityStore<Store>) {
       if (capacity() < max_capacity()) {
         reserve(2 * capacity());
         return true;
       }
     }
-    if constexpr (has_overflow_handler) {
-      const bool insert_allowed{overflow_handler_(*this, value)};
-      return insert_allowed and size() < capacity();
-    } else if constexpr (is_ring_buffer) {
+
+    // Allow the overflow handler to restructure the store's elements.
+    const bool insert_allowed{overflow_handler_(*this, value)};
+    if (insert_allowed and size() < capacity()) {
+      return true;
+    }
+
+    // Finally, apply fixed overflow policies.
+    if constexpr (is_ring_buffer) {
       ++size_.head;
       return true;
     } else if constexpr (OVERFLOW_POLICY == OverflowPolicy::REJECT) {
@@ -159,12 +164,9 @@ class Store final {
   }
 
  public:
-  constexpr Store() noexcept
-    requires(!has_overflow_handler)
-  = default;
+  constexpr Store() noexcept = default;
 
-  explicit constexpr Store(OverflowHandler<Store> overflow_handler) noexcept
-    requires(has_overflow_handler)
+  explicit constexpr Store(overflow_handler_type overflow_handler) noexcept
       : overflow_handler_(std::move(overflow_handler)) {}
 
   constexpr Store(const Store& rhs) noexcept = default;
@@ -590,25 +592,30 @@ class RandomAccessStoreIterator final {
  * Adapter to create a ring buffer out of a standard container.
  */
 template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY = MIN_CAPACITY,
+          typename OverflowHandler = NoOpOverflowHandler,
           typename Container = std::array<Value, MAX_CAPACITY>>
-using RingBuffer = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY,
-                                   InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST, Container>;
+using RingBuffer =
+    internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, InsertionPolicy::APPEND,
+                    OverflowPolicy::DROP_OLDEST, Container, OverflowHandler>;
 
 /**
  * Adapter to create a generic buffer out of a standard container.
  */
 template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY = MIN_CAPACITY,
+          typename OverflowHandler = NoOpOverflowHandler,
           typename Container = std::array<Value, MAX_CAPACITY>>
 using Buffer = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, InsertionPolicy::APPEND,
-                               OverflowPolicy::REJECT, Container>;
+                               OverflowPolicy::REJECT, Container, OverflowHandler>;
 
 /**
  * Adapter to create a sorted buffer from a standard container.
  */
 template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY = MIN_CAPACITY,
+          typename OverflowHandler = NoOpOverflowHandler,
           typename Container = std::array<Value, MAX_CAPACITY>>
-using SortedBuffer = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY,
-                                     InsertionPolicy::SORTED, OverflowPolicy::REJECT, Container>;
+using SortedBuffer =
+    internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, InsertionPolicy::SORTED,
+                    OverflowPolicy::REJECT, Container, OverflowHandler>;
 
 // Check that the various types from the template above adhere to the intended concepts. These
 // checks act as an early test for these types.

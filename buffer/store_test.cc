@@ -2,8 +2,10 @@
 
 #include <algorithm>
 #include <array>
+#include <concepts>
 #include <cstdint>
 #include <iterator>
+#include <ranges>
 
 #include "buffer/store_string.h"
 #include "glog/logging.h"
@@ -11,48 +13,70 @@
 
 namespace tvsc::buffer {
 
-// Baseline tests. These apply to all Store configurations.
+struct OverflowCounter final {
+  inline static int count{};
+
+  static void reset() noexcept { count = 0; }
+  static auto value() noexcept { return count; }
+
+  template <typename Store, typename Value>
+  [[nodiscard]] constexpr bool operator()(Store& /*store*/, Value& /*element*/) const noexcept {
+    ++count;
+    return true;
+  }
+};
 
 template <typename T>
-class StoreTest : public ::testing::Test {};
+class StoreTest : public ::testing::Test {
+ public:
+  void SetUp() override { OverflowCounter::reset(); }
+};
 
 // Helper templates that make the different Store specializations in the Types below somewhat easier
 // to read. These templates allow us to explicitly test out many combinations of settings.
 
 template <typename Value, size_t CAPACITY, InsertionPolicy INSERTION_POLICY,
-          OverflowPolicy OVERFLOW_POLICY>
+          OverflowPolicy OVERFLOW_POLICY, typename OverflowHandler = NoOpOverflowHandler>
   requires std::default_initializable<Value>
 using ArrayStore = internal::Store<Value, size_t, CAPACITY, CAPACITY, INSERTION_POLICY,
-                                   OVERFLOW_POLICY, std::array<Value, CAPACITY>>;
+                                   OVERFLOW_POLICY, std::array<Value, CAPACITY>, OverflowHandler>;
 
 template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY,
-          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY>
+          InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY,
+          typename OverflowHandler = NoOpOverflowHandler>
 using VectorStore = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, INSERTION_POLICY,
-                                    OVERFLOW_POLICY, std::vector<Value>>;
+                                    OVERFLOW_POLICY, std::vector<Value>, OverflowHandler>;
 
-using StoreImplementations =
-    ::testing::Types<ArrayStore<int, 256, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-                     ArrayStore<int, 2, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-                     ArrayStore<int, 2, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-                     ArrayStore<int, 8, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-                     ArrayStore<int, 8, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-                     ArrayStore<int, 2, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST>,
-                     ArrayStore<int, 2, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST>,
-                     ArrayStore<int, 8, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST>,
-                     ArrayStore<int, 8, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST>,
+static_assert(IsExpandableCapacityStore<VectorStore<int, 2, 13, InsertionPolicy::APPEND,
+                                                    OverflowPolicy::REJECT, OverflowCounter>>);
 
-                     VectorStore<int, 128, 256, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-                     VectorStore<int, 2, 16, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-                     VectorStore<int, 2, 16, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-                     VectorStore<int, 8, 16, InsertionPolicy::APPEND, OverflowPolicy::REJECT>,
-                     VectorStore<int, 8, 16, InsertionPolicy::SORTED, OverflowPolicy::REJECT>,
-                     VectorStore<int, 2, 16, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST>,
-                     VectorStore<int, 2, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST>,
-                     VectorStore<int, 8, 16, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST>,
-                     VectorStore<int, 8, 16, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST>,
+using StoreImplementations = ::testing::Types<
+    ArrayStore<int, 256, InsertionPolicy::APPEND, OverflowPolicy::REJECT, OverflowCounter>,
 
-                     // Actually test the adapters in the public interface as well.
-                     RingBuffer<int, 64>, Buffer<int, 64>, SortedBuffer<int, 64>>;
+    ArrayStore<int, 2, InsertionPolicy::APPEND, OverflowPolicy::REJECT, OverflowCounter>,
+    ArrayStore<int, 2, InsertionPolicy::SORTED, OverflowPolicy::REJECT, OverflowCounter>,
+    ArrayStore<int, 8, InsertionPolicy::APPEND, OverflowPolicy::REJECT, OverflowCounter>,
+    ArrayStore<int, 8, InsertionPolicy::SORTED, OverflowPolicy::REJECT, OverflowCounter>,
+    ArrayStore<int, 2, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST, OverflowCounter>,
+    ArrayStore<int, 2, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST, OverflowCounter>,
+    ArrayStore<int, 8, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST, OverflowCounter>,
+    ArrayStore<int, 8, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST, OverflowCounter>,
+
+    VectorStore<int, 128, 256, InsertionPolicy::APPEND, OverflowPolicy::REJECT, OverflowCounter>,
+
+    VectorStore<int, 2, 11, InsertionPolicy::APPEND, OverflowPolicy::REJECT, OverflowCounter>,
+    VectorStore<int, 2, 11, InsertionPolicy::SORTED, OverflowPolicy::REJECT, OverflowCounter>,
+    VectorStore<int, 8, 11, InsertionPolicy::APPEND, OverflowPolicy::REJECT, OverflowCounter>,
+    VectorStore<int, 8, 11, InsertionPolicy::SORTED, OverflowPolicy::REJECT, OverflowCounter>,
+    VectorStore<int, 2, 11, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST, OverflowCounter>,
+    VectorStore<int, 2, 11, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST, OverflowCounter>,
+    VectorStore<int, 8, 11, InsertionPolicy::APPEND, OverflowPolicy::DROP_OLDEST, OverflowCounter>,
+    VectorStore<int, 8, 11, InsertionPolicy::SORTED, OverflowPolicy::DROP_OLDEST, OverflowCounter>,
+
+    // Actually test the adapters in the public interface as well.
+    RingBuffer<int, 11>, Buffer<int, 11>, SortedBuffer<int, 11>,
+    RingBuffer<int, 11, 11, OverflowCounter>, Buffer<int, 11, 11, OverflowCounter>,
+    SortedBuffer<int, 11, 11, OverflowCounter>>;
 
 TYPED_TEST_SUITE(StoreTest, StoreImplementations);
 
@@ -194,43 +218,16 @@ TYPED_TEST(StoreTest, MaintainsSortedOrderOnRandomInserts) {
 
 TYPED_TEST(StoreTest, InsertReturnsIteratorToInsertedPosition) {
   using Store = TypeParam;
-  if constexpr (Store::insertion_policy() == InsertionPolicy::SORTED and
-                Store::max_capacity() >= 6) {
+  if constexpr (Store::insertion_policy() == InsertionPolicy::SORTED) {
+    static constexpr std::array<int, 8> values{10, 30, 20, 40, 0, 25, 35, 45};
     Store store{};
-    store.insert(10);
-    store.insert(30);
-    EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
 
-    {
-      // Store contains [10, 30]
-      const auto inserted_location{store.insert(20)};
-
-      EXPECT_EQ(20, *inserted_location);
-      EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
-    }
-
-    {
-      // Store contains [10, 20, 30]
-      const auto inserted_location{store.insert(40)};
-
-      EXPECT_EQ(40, *inserted_location);
-      EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
-    }
-
-    {
-      // Store contains [10, 20, 30, 40]
-      const auto inserted_location{store.insert(0)};
-
-      EXPECT_EQ(0, *inserted_location);
-      EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
-    }
-
-    {
-      // Store contains [0, 10, 20, 30, 40]
-      const auto inserted_location{store.insert(25)};
-
-      EXPECT_EQ(25, *inserted_location);
-      EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end()));
+    for (const auto v : values) {
+      const auto inserted_location{store.insert(v)};
+      if (inserted_location != store.end()) {
+        EXPECT_EQ(v, *inserted_location);
+        EXPECT_TRUE(std::ranges::is_sorted(store.begin(), store.end())) << store;
+      }
     }
   }
 }
@@ -240,8 +237,8 @@ TYPED_TEST(StoreTest, InsertReturnsIteratorToInsertedPosition) {
 TYPED_TEST(StoreTest, RejectsElementsWhenFull) {
   using Store = TypeParam;
   if constexpr (Store::overflow_policy() == OverflowPolicy::REJECT) {
-    static constexpr std::array<int, 16> input{1, 2,  3,  4,  5,  6,  7,  8,
-                                               9, 10, 11, 12, 13, 14, 15, 16};
+    static constexpr auto input{std::views::iota(0, 64)};
+
     static constexpr int REJECTED_VALUE{99};
 
     Store store{};
@@ -258,6 +255,28 @@ TYPED_TEST(StoreTest, RejectsElementsWhenFull) {
       EXPECT_EQ(store.max_capacity(), store.size());
       EXPECT_EQ(store.end(), std::find(store.begin(), store.end(), REJECTED_VALUE));
     }
+  }
+}
+
+// Overflow handler tests.
+
+TYPED_TEST(StoreTest, CallsOverflowHandler) {
+  using Store = TypeParam;
+  if constexpr (std::same_as<typename Store::overflow_handler_type, OverflowCounter>) {
+    static constexpr auto input{std::views::iota(0, 64)};
+
+    int expected_overflow_counter_value{};
+    Store store{};
+    for (int val : input) {
+      if (store.size() == store.capacity() and store.size() == Store::max_capacity()) {
+        ++expected_overflow_counter_value;
+      }
+      store.insert(val);
+    }
+
+    EXPECT_EQ(expected_overflow_counter_value, OverflowCounter::value())
+        << "store.size(): " << store.size() << ", store.capacity(): " << store.capacity()
+        << ", Store::max_capacity(): " << Store::max_capacity();
   }
 }
 
