@@ -66,12 +66,13 @@ class RandomAccessStoreIterator;
 template <typename Value, std::unsigned_integral Size, Size MIN_CAPACITY, Size MAX_CAPACITY,
           InsertionPolicy INSERTION_POLICY, OverflowPolicy OVERFLOW_POLICY,
           typename Container = std::array<Value, MAX_CAPACITY>,
-          typename OverflowHandler = NoOpOverflowHandler>
+          typename OverflowHandler = NoOpOverflowHandler, typename Compare = std::less<Value>>
   requires(MIN_CAPACITY > 0) and std::default_initializable<Value>
 class Store final {
  private:
   static constexpr bool is_ring_buffer{OVERFLOW_POLICY == OverflowPolicy::DROP_OLDEST};
-  static constexpr bool index_modification_allowed{INSERTION_POLICY != InsertionPolicy::SORTED};
+  static constexpr bool is_sorted{INSERTION_POLICY == InsertionPolicy::SORTED};
+  static constexpr bool index_modification_allowed{!is_sorted};
 
  public:
   using value_type = Value;
@@ -87,6 +88,9 @@ class Store final {
   using const_reference = std::iter_reference_t<const_iterator>;
 
   using overflow_handler_type = OverflowHandler;
+
+  struct Empty final {};
+  using compare = std::conditional_t<is_sorted, Compare, Empty>;
 
  private:
   // head and tail are logically managed as a queue. New items enter at the back (tail) of the
@@ -106,10 +110,10 @@ class Store final {
   // size_type. Note that by not forcing these types to share a single API, we induce compiler
   // errors when code attempts to use one when it was meant to use the other.
   SizeStorage size_{};
+  container_type elements_{};
 
   [[no_unique_address]] overflow_handler_type overflow_handler_{};
-
-  container_type elements_{};
+  [[no_unique_address]] compare comparator_{};
 
   friend raw_iterator;
   friend iterator;
@@ -168,6 +172,14 @@ class Store final {
 
   explicit constexpr Store(overflow_handler_type overflow_handler) noexcept
       : overflow_handler_(std::move(overflow_handler)) {}
+
+  explicit constexpr Store(compare comparator) noexcept
+    requires(is_sorted)
+      : comparator_(std::move(comparator)) {}
+
+  constexpr Store(overflow_handler_type overflow_handler, compare comparator) noexcept
+    requires(is_sorted)
+      : overflow_handler_(std::move(overflow_handler)), comparator_(std::move(comparator)) {}
 
   constexpr Store(const Store& rhs) noexcept = default;
   constexpr Store(Store&& rhs) noexcept = default;
@@ -363,7 +375,7 @@ class Store final {
       // begin() and end() iterators here, since we are modifying the store. To work around this
       // issue, without requiring a custom binary search implementation, we use the raw_iterator
       // to insert the value and then translate that to an iterator instance before returning.
-      const auto insertion_point{std::lower_bound(raw_begin(), raw_end(), value)};
+      const auto insertion_point{std::lower_bound(raw_begin(), raw_end(), value, comparator_)};
 
       if constexpr (is_ring_buffer) {
         if (++size_.tail == 0) [[unlikely]] {
@@ -611,11 +623,11 @@ using Buffer = internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, Insert
  * Adapter to create a sorted buffer from a standard container.
  */
 template <typename Value, size_t MIN_CAPACITY, size_t MAX_CAPACITY = MIN_CAPACITY,
-          typename OverflowHandler = NoOpOverflowHandler,
+          typename OverflowHandler = NoOpOverflowHandler, typename Compare = std::less<Value>,
           typename Container = std::array<Value, MAX_CAPACITY>>
 using SortedBuffer =
     internal::Store<Value, size_t, MIN_CAPACITY, MAX_CAPACITY, InsertionPolicy::SORTED,
-                    OverflowPolicy::REJECT, Container, OverflowHandler>;
+                    OverflowPolicy::REJECT, Container, OverflowHandler, Compare>;
 
 // Check that the various types from the template above adhere to the intended concepts. These
 // checks act as an early test for these types.
