@@ -1,27 +1,3 @@
-filegroup(
-    name = "linker_script",
-    srcs = select({
-        "//platforms:nucleo_l412kb_board": [
-            "//toolchain/nucleo_l4:stm32l412xx_flash_linker_script",
-        ],
-        "//platforms:nucleo_l432kc_board": [
-            "//toolchain/nucleo_l4:stm32l432xx_flash_linker_script",
-        ],
-        "//platforms:nucleo_l452re_board": [
-            "//toolchain/nucleo_l4:stm32l452xx_flash_linker_script",
-        ],
-        "//platforms:feature_bringup_board": [
-            "//toolchain/nucleo_l4:stm32l452xx_flash_linker_script",
-        ],
-        "//platforms:satellite_board": [
-            "//toolchain/nucleo_l4:stm32l452xx_flash_linker_script",
-        ],
-    }),
-    target_compatible_with = [
-        "@platforms//os:none",
-    ],
-)
-
 cc_library(
     name = "tasks",
     hdrs = [
@@ -85,9 +61,9 @@ cc_binary(
         "blink.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -111,9 +87,9 @@ cc_binary(
         "monitor_imu.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -136,9 +112,9 @@ cc_binary(
         "monitor_power.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -161,9 +137,9 @@ cc_binary(
         "blink_multiple_leds.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -186,9 +162,9 @@ cc_binary(
         "random_blink.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -212,9 +188,9 @@ cc_binary(
         "adc_demo.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -239,9 +215,9 @@ cc_binary(
         "streaming_adc.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -266,9 +242,9 @@ cc_binary(
         "dac_demo.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -292,9 +268,9 @@ cc_binary(
         "power_demo.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -315,9 +291,9 @@ cc_binary(
         "read_board_id.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -343,9 +319,9 @@ cc_binary(
         "read_board_id_blocking.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_adc": ["@platforms//:incompatible"],
@@ -369,9 +345,9 @@ cc_binary(
         "scan_i2c.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_i2c": ["@platforms//:incompatible"],
         "//conditions:default": [],
@@ -390,9 +366,9 @@ cc_binary(
         "fetch_imu_ids.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_i2c": ["@platforms//:incompatible"],
         "//conditions:default": [],
@@ -410,9 +386,9 @@ cc_binary(
         "can_bus_transmit.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -437,9 +413,9 @@ cc_binary(
         "can_bus_receive.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -464,9 +440,9 @@ cc_binary(
         "flash_target.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//conditions:default": [],
@@ -493,10 +469,10 @@ cc_binary(
         "satellite.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
     defines = ["CONFIG_SCHEDULER_QUEUE_SIZE=6"],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//conditions:default": [],
@@ -526,9 +502,9 @@ cc_binary(
         "read_target_swdp_id.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//conditions:default": [],
@@ -552,9 +528,9 @@ cc_binary(
         "reset_target_board.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//conditions:default": [],
@@ -576,9 +552,9 @@ cc_binary(
         "timer_demo.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "//platforms:no_gpio": ["@platforms//:incompatible"],
         "//platforms:no_debug_led": ["@platforms//:incompatible"],
@@ -599,9 +575,9 @@ cc_binary(
         "systick_blink_demo.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "@platforms//os:none": [],
         "//conditions:default": ["@platforms//:incompatible"],
@@ -645,9 +621,9 @@ cc_binary(
         "watchdog_demo.cc",
     ],
     additional_linker_inputs = [
-        ":linker_script",
+        "//platforms:linker_script",
     ],
-    linkopts = ["-Wl,-T$(execpath :linker_script)"],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
     target_compatible_with = select({
         "@platforms//os:none": [],
         "//conditions:default": ["@platforms//:incompatible"],
