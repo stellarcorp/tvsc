@@ -1,6 +1,6 @@
-package(default_visibility = ["//visibility:public"])
-
 load(":cc_toolchain_config.bzl", "cc_toolchain_config")
+
+package(default_visibility = ["//visibility:public"])
 
 filegroup(name = "empty")
 
@@ -60,39 +60,4 @@ toolchain(
     ],
     toolchain = ":stm32l4xx-armv7e-mf_toolchain",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
-)
-
-# These linker scripts are good generic options, but we will likely need specific scripts for
-# different board configurations and SKUs.
-filegroup(
-    name = "stm32l412xx_flash_linker_script",
-    srcs = [
-        "STM32L412KBUX_FLASH.ld",
-    ],
-    target_compatible_with = [
-        "//platforms:stm32l412xx_mcu",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-filegroup(
-    name = "stm32l432xx_flash_linker_script",
-    srcs = [
-        "STM32L432KCUX_FLASH.ld",
-    ],
-    target_compatible_with = [
-        "//platforms:stm32l432xx_mcu",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-filegroup(
-    name = "stm32l452xx_flash_linker_script",
-    srcs = [
-        "STM32L452RETX_FLASH.ld",
-    ],
-    target_compatible_with = [
-        "//platforms:stm32l452xx_mcu",
-    ],
-    visibility = ["//visibility:public"],
 )
