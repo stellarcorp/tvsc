@@ -115,7 +115,7 @@ SECTIONS
     . = ALIGN(4);
   } >FLASH
 
-  /* Uninitialized status section at top of RAM */
+  /* Status section (uninitialized) at top of RAM */
   .status (NOLOAD) :
   {
     . = ALIGN(4);
