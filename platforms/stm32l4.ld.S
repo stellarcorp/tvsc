@@ -81,38 +81,29 @@ SECTIONS
     . = ALIGN(4);
   } >FLASH
 
-  /* C++ constructor initialization arrays */
+  /* Initialization arrays for C++ global constructors */
   .preinit_array :
   {
-    . = ALIGN(4);
     PROVIDE_HIDDEN (__preinit_array_start = .);
-    KEEP (*(.preinit_array*))
+    KEEP (*(.preinit_array))
     PROVIDE_HIDDEN (__preinit_array_end = .);
-    . = ALIGN(4);
   } >FLASH
 
   .init_array :
   {
-    . = ALIGN(4);
     PROVIDE_HIDDEN (__init_array_start = .);
-    KEEP (*(SORT(.init_array.*)))
-    KEEP (*(.init_array*))
-    KEEP (*(SORT(.ctors.*)))
-    KEEP (*(.ctors))
+    /* Sort constructor functions by priority if specified */
+    KEEP (*(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*)))
+    KEEP (*(.init_array EXCLUDE_FILE (*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o) .ctors))
     PROVIDE_HIDDEN (__init_array_end = .);
-    . = ALIGN(4);
   } >FLASH
 
   .fini_array :
   {
-    . = ALIGN(4);
     PROVIDE_HIDDEN (__fini_array_start = .);
-    KEEP (*(SORT(.fini_array.*)))
-    KEEP (*(.fini_array*))
-    KEEP (*(SORT(.dtors.*)))
-    KEEP (*(.dtors))
+    KEEP (*(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*)))
+    KEEP (*(.fini_array EXCLUDE_FILE (*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o) .dtors))
     PROVIDE_HIDDEN (__fini_array_end = .);
-    . = ALIGN(4);
   } >FLASH
 
   /* Status section (uninitialized) at top of RAM */
