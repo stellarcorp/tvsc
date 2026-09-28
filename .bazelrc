@@ -20,6 +20,10 @@ build:linux --copt -DGENERAL_PURPOSE_COMPUTER
 build:c++20 --cxxopt -std=c++20
 build:c++23 --cxxopt -std=c++23
 build:c++26 --cxxopt -std=c++26
+# And equivalent C dialects
+build:c++20 --copt -std=c17
+build:c++23 --copt -std=c23
+build:c++26 --copt -std=c23
 
 # Setting to enable platform builds.
 build:platform_build --incompatible_enable_cc_toolchain_resolution
