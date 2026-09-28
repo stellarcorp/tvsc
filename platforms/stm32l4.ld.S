@@ -4,21 +4,17 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of user mode stack. */
-_estack = ORIGIN(RAM) + LENGTH(RAM);
+_estack = ORIGIN(SRAM1) + LENGTH(SRAM1);
 
 _Min_Heap_Size  = 0x200;
 _Min_Stack_Size = 0x400;
 
 MEMORY
 {
-  RAM         (rw)  : ORIGIN = 0x20000000, LENGTH = SRAM1_MEM_SIZE
-  FLASH       (rx)  : ORIGIN = 0x08000000, LENGTH = FLASH_MEM_SIZE
-  DMA_BUFFERS (rw)  : ORIGIN = 0x20020000, LENGTH = SRAM2_MEM_SIZE
+  SRAM1 (rw)  : ORIGIN = 0x20000000, LENGTH = SRAM1_MEM_SIZE
+  FLASH (rx)  : ORIGIN = 0x08000000, LENGTH = FLASH_MEM_SIZE
+  SRAM2 (rw)  : ORIGIN = 0x20020000, LENGTH = SRAM2_MEM_SIZE
 }
-
-__FLASH_SIZE = LENGTH(FLASH);
-__RAM_SIZE   = LENGTH(RAM);
-__DMA_BUFFERS_SIZE = LENGTH(DMA_BUFFERS);
 
 SECTIONS
 {
@@ -120,7 +116,7 @@ SECTIONS
     *(FAULT_SECTION)
     . = ALIGN(4);
     _estatus = .;
-  } >RAM
+  } >SRAM1
 
   /* Used by startup code to initialize .data in RAM */
   _sidata = LOADADDR(.data);
@@ -134,7 +130,7 @@ SECTIONS
     *(.data*)
     . = ALIGN(4);
     _edata = .;
-  } >RAM AT> FLASH
+  } >SRAM1 AT> FLASH
 
   /* Total Flash footprint boundaries */
   FIRMWARE_BEGIN = ORIGIN(FLASH);
@@ -152,7 +148,7 @@ SECTIONS
     . = ALIGN(4);
     _ebss = .;
     __bss_end__ = _ebss;
-  } >RAM
+  } >SRAM1
 
   /* Reserve minimum heap and stack space */
   ._user_heap_stack (NOLOAD) :
@@ -163,7 +159,7 @@ SECTIONS
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
-  } >RAM
+  } >SRAM1
 
   /* Dedicated non-cacheable / SRAM2 DMA buffer section */
   .dma_buffers (NOLOAD) :
@@ -173,7 +169,7 @@ SECTIONS
     *(DMA_BUFFER_SECTION)
     . = ALIGN(32);
     PROVIDE(_edma_buf = .);
-  } >DMA_BUFFERS
+  } >SRAM2
 
   ASSERT((_edma_buf - _sdma_buf) <= SRAM2_MEM_SIZE, "DMA buffers exceed available size.")
 
