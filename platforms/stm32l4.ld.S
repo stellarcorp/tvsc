@@ -1,3 +1,4 @@
+#include "linker_sections.h"
 #include "memory_sizes.h"
 
 ENTRY(Reset_Handler)
@@ -33,7 +34,7 @@ SECTIONS
   .build_time :
   {
     . = ALIGN(4);
-    KEEP(*(.build_time))
+    KEEP(*(BUILD_TIME_SECTION))
     . = ALIGN(4);
   } >FLASH
 
@@ -119,12 +120,13 @@ SECTIONS
   {
     . = ALIGN(4);
     _sstatus = .;
-    *(.status.time)
-    *(.status.speed)
-    *(.status.power)
-    *(.status*)
+    *(SYSTICK_VALUE_SECTION)
+    *(CLOCK_SPEED_VALUE_SECTION)
+    *(POWER_STATUS_SECTION)
+    *(PRINCIPAL_RESULT_SECTION)
+    *(SYSTEM_STATUS_SECTION.*)
     *(.bss.errno)
-    *(.status.fault)
+    *(FAULT_SECTION)
     . = ALIGN(4);
     _estatus = .;
   } >RAM
@@ -173,15 +175,16 @@ SECTIONS
   } >RAM
 
   /* Dedicated non-cacheable / SRAM2 DMA buffer section */
-  .dma_buf (NOLOAD) :
+  .dma_buffers (NOLOAD) :
   {
     . = ALIGN(32);
     PROVIDE(_sdma_buf = .);
-    *(.dma_buf*)
-    *(.dma_buffers*)
+    *(DMA_BUFFER_SECTION)
     . = ALIGN(32);
     PROVIDE(_edma_buf = .);
   } >DMA_BUFFERS
+
+  ASSERT((_edma_buf - _sdma_buf) <= SRAM2_MEM_SIZE, "DMA buffers exceed available size.")
 
   /* Remove all code and data originating from the following libraries. */
   /DISCARD/ :

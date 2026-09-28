@@ -3,14 +3,17 @@ load("//platforms:linker_script.bzl", "preprocess_linker_script")
 package(default_visibility = ["//visibility:public"])
 
 filegroup(
-    name = "memory_sizes_hdrs",
-    srcs = ["memory_sizes.h"],
+    name = "linker_hdrs",
+    srcs = [
+        "linker_sections.h",
+        "memory_sizes.h",
+    ],
 )
 
 preprocess_linker_script(
     name = "generate_stm32l4_linker_script",
     src = "stm32l4.ld.S",
-    hdrs = [":memory_sizes_hdrs"],
+    hdrs = [":linker_hdrs"],
     out = "stm32l4.ld",
     target_compatible_with = [
         "@platforms//os:none",
@@ -24,8 +27,8 @@ filegroup(
 )
 
 cc_library(
-    name = "memory_sizes",
-    hdrs = [":memory_sizes_hdrs"],
+    name = "platforms",
+    hdrs = [":linker_hdrs"],
     visibility = ["//visibility:public"],
 )
 
