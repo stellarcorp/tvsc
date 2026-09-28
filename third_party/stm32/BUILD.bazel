@@ -36,6 +36,33 @@ cc_library(
 )
 
 cc_library(
+    name = "stm32_no_dynamic_allocation",
+    srcs = [
+        "syscalls.c",
+        "sysmem_noheap.c",
+    ],
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":stm32_headers",
+    ] + select({
+        "//platforms:stm32l412xx_mcu": [
+            ":stm32l412xx",
+        ],
+        "//platforms:stm32l432xx_mcu": [
+            ":stm32l432xx",
+        ],
+        "//platforms:stm32l452xx_mcu": [
+            ":stm32l452xx",
+        ],
+    }),
+    alwayslink = True,
+)
+
+cc_library(
     name = "stm32l412xx",
     srcs = [
         "startup_stm32l412xx.s",
