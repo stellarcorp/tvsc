@@ -6,10 +6,13 @@
 #include "hal/gpio/gpio.h"
 #include "hal/led/led.h"
 #include "hal/time_type.h"
+#include "platforms/linker_sections.h"
 #include "system/system.h"
 #include "system/task.h"
 
 namespace tvsc::bringup {
+
+inline DEBUG_VAR int blink_trace{};
 
 using namespace std::chrono_literals;
 
@@ -17,17 +20,26 @@ template <tvsc::hal::TimeType DURATION_MS =
               /* one year in milliseconds */ 365LL * 24 * 60 * 60 * 1000>
 tvsc::system::System::Task blink(tvsc::hal::led::LedPeripheral& led_peripheral,
                                  typename system::System::ClockType::duration delay = 500ms) {
+  blink_trace = 256;
+  ++blink_trace;
   auto led{led_peripheral.access()};
 
   const auto stop_time{system::System::clock().current_time() +
                        std::chrono::milliseconds(DURATION_MS)};
 
+  ++blink_trace;
   led.off();
+  ++blink_trace;
   while (system::System::clock().current_time() < stop_time) {
+    ++blink_trace;
     led.toggle();
+    ++blink_trace;
     co_yield delay;
+    ++blink_trace;
   }
+  blink_trace = std::numeric_limits<decltype(blink_trace)>::max() - 2;
   led.off();
+  ++blink_trace;
   co_return;
 }
 

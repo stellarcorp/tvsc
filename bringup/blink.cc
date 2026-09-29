@@ -14,4 +14,6 @@ int main(int argc, char* argv[]) {
   System::scheduler().add_task(quit());
 
   System::scheduler().start();
+
+  return 0xcaca;
 }
