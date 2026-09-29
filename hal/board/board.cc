@@ -2,7 +2,7 @@
 
 #include "flags/flags.h"
 
-DEFINE_uint64(run_duration_sec, std::numeric_limits<uint64_t>::max(),
+DEFINE_uint64(run_duration_sec, std::numeric_limits<uint64_t>::max() / 2,
               "How long to run this script in seconds");
 
 namespace tvsc::hal::board {
