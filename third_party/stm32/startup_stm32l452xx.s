@@ -23,7 +23,16 @@ defined in linker script */
 /* end address for the .status section. defined in linker script */
 .word _estatus
 
+.section .status.exit_code, "aw", %nobits
+.align 2
+.global exit_code
+.type exit_code, %object
+.size exit_code, 4
+exit_code:
+    .space 4
+
 .section .text.Reset_Handler, "ax", %progbits
+.weak Reset_Handler
 .type Reset_Handler, %function
 Reset_Handler:
   /* Initialize the stack pointer to the end of the stack as configured in the linker script. */
@@ -84,9 +93,11 @@ LoopFillZeroBss:
   bl __libc_init_array
   /* Call the application's entry point.*/
   bl main
+  ldr r1, =exit_code
+  str r0, [r1]
 
-LoopForever:
-  b LoopForever
+ProgramComplete:
+  b ProgramComplete
     
 .size Reset_Handler, .-Reset_Handler
 
@@ -96,8 +107,19 @@ LoopForever:
  * symbols to override this behavior.
  */
 .section .text.Default_Handler, "ax", %progbits
-.type Default_Handler, %function
 Default_Handler:
+  /* Load the Interrupt Control and State Register (ICSR) address */
+  ldr r1, =0xE000ED04
+  ldr r2, [r1]
+
+  /* Extract the VECTACTIVE field (bits 8:0) to get the active exception/interrupt number */
+  ldr r3, =0x1FF
+  ands r2, r2, r3
+
+  /* Store the active vector number into the errno location */
+  ldr r1, =errno
+  str r2, [r1]
+
 Infinite_Loop:
   b Infinite_Loop
 
