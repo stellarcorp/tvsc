@@ -8,9 +8,14 @@
 
 #include "hal/error.h"
 #include "hal/rcc/rcc.h"
+#include "platforms/linker_sections.h"
 #include "system/task.h"
 
 namespace tvsc::system {
+
+inline DEBUG_VAR int scheduler_loop_count{};
+inline DEBUG_VAR int scheduler_trace{};
+inline DEBUG_VAR int scheduler_stoppage{};
 
 template <typename ClockType, size_t QUEUE_SIZE>
 class SchedulerT;
@@ -81,6 +86,7 @@ class SchedulerT final {
   }
 
   void start() {
+    scheduler_trace = 1;
     // TODO(james): Play around with this strategy. Currently, this strategy assumes that we have a
     // CPU-heavy workload. This assumptions is likely wrong. Bus transfers (I2C, CAN bus, and SPI)
     // probably won't need max speed but may need frequent (small number of microseconds) CPU
@@ -97,13 +103,23 @@ class SchedulerT final {
     // That is, switching clock speeds here appears to be a false savings; we could enter stop mode
     // in the same time, and stop mode uses vastly less power.
     rcc_->set_clock_to_energy_efficient_speed();
+    scheduler_trace = 2;
     while (!stop_requested_) {
+      scheduler_trace = 3;
       auto next_wakeup_time{run_tasks_once()};
+      scheduler_trace = 4;
       clock_->sleep(next_wakeup_time);
+      // clock_->wait(next_wakeup_time);
+      scheduler_trace = 5;
+      ++scheduler_loop_count;
     }
+    scheduler_trace = 0xbabedead;
   }
 
-  void stop() { stop_requested_ = true; }
+  void stop() {
+    stop_requested_ = true;
+    scheduler_stoppage = 0xbeef;
+  }
 };
 
 template <typename ClockType, size_t QUEUE_SIZE>
