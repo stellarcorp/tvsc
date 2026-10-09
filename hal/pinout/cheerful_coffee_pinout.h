@@ -7,7 +7,9 @@
 #include "hal/error.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
+#include "hal/imu/bmi323_imu.h"
 #include "hal/pinout/basic_pinout.h"
+#include "hal/power_monitor/ina260_power_monitor.h"
 #include "third_party/stm32/stm32.h"
 
 namespace tvsc::hal::pinout {
@@ -16,6 +18,7 @@ class Pinout final {
  public:
   static constexpr size_t NUM_GPIO_PORTS{6};
   static constexpr size_t NUM_I2C_BUSES{3};
+  static constexpr size_t NUM_SPI_BUSES{3};
   static constexpr size_t NUM_CAN_BUSES{1};
   static constexpr size_t NUM_DAC_CHANNELS{1};
   static constexpr size_t NUM_ADC_CHANNELS{1};
@@ -56,6 +59,12 @@ class Pinout final {
   static constexpr gpio::PinRef PROGRAMMER_SWDIO_CONTROL_PIN{GPIO_PORT_B, 15};
   static constexpr gpio::PinRef PROGRAMMER_SWCLK_CONTROL_PIN{GPIO_PORT_B, 13};
   static constexpr gpio::PinRef PROGRAMMER_NRST_CONTROL_PIN{GPIO_PORT_B, 14};
+
+  using PowerMonitor = power_monitor::Ina260PowerMonitor;
+  using Imu = imu::Bmi323Imu;
+
+  static constexpr size_t NUM_POWER_MONITORS{1};
+  static constexpr size_t NUM_IMUS{2};
 };
 
 static_assert(BasicPinout<Pinout>);

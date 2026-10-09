@@ -1,22 +1,23 @@
 #include "bringup/monitor_power.h"
 
+#include <array>
 #include <chrono>
 
+#include "base/constexpr_for.h"
 #include "base/initializer.h"
 #include "bringup/blink.h"
 #include "bringup/watchdog.h"
+#include "hal/pinout/pinout.h"
+#include "platforms/linker_sections.h"
 #include "system/system.h"
 
 using namespace tvsc::bringup;
 using namespace tvsc::system;
 using namespace std::chrono_literals;
 
-extern "C" {
+static constexpr size_t NUM_POWER_MONITORS{tvsc::hal::pinout::Pinout::NUM_POWER_MONITORS};
 
-__attribute__((section(".status.value"))) PowerUsage power_monitor1{};
-__attribute__((section(".status.value"))) PowerUsage power_monitor2{};
-
-}  // extern "C"
+PRINCIPAL_RESULT std::array<PowerUsage, NUM_POWER_MONITORS> power_monitors{};
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
@@ -24,17 +25,16 @@ int main(int argc, char* argv[]) {
   auto& mcu{System::mcu()};
   auto& board{System::board()};
 
-  board.power_monitor1().set_current_measurement_time_approximate(1ms);
-  board.power_monitor1().set_voltage_measurement_time_approximate(200us);
-  board.power_monitor1().set_sample_averaging_approximate(16);
-
-  board.power_monitor2().set_current_measurement_time_approximate(1ms);
-  board.power_monitor2().set_voltage_measurement_time_approximate(200us);
-  board.power_monitor2().set_sample_averaging_approximate(16);
+  tvsc::constexpr_for<0, NUM_POWER_MONITORS>([&](auto index) {
+    board.power_monitor<index>().set_current_measurement_time_approximate(1ms);
+    board.power_monitor<index>().set_voltage_measurement_time_approximate(200us);
+    board.power_monitor<index>().set_sample_averaging_approximate(16);
+  });
 
   auto& scheduler{System::scheduler()};
-  scheduler.add_task(monitor_power(board.power_monitor1(), power_monitor1, 1000ms));
-  scheduler.add_task(monitor_power(board.power_monitor2(), power_monitor2, 1000ms));
+  tvsc::constexpr_for<0, NUM_POWER_MONITORS>([&](auto index) {
+    scheduler.add_task(monitor_power(board.power_monitor<index>(), power_monitors[index], 1000ms));
+  });
   scheduler.add_task(blink(board.debug_led()));
   scheduler.add_task(run_watchdog(mcu.iwdg()));
 

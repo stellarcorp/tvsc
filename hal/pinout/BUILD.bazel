@@ -114,6 +114,8 @@ cc_library(
     deps = [
         ":pinout_concepts",
         "//hal/gpio",
+        "//hal/power_monitor",
+        "//hal/imu",
     ],
 )
 

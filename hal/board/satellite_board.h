@@ -6,13 +6,11 @@
 
 #include "hal/board/basic_board.h"
 #include "hal/error.h"
-#include "hal/imu/bmi323_imu.h"
 #include "hal/imu/imu.h"
 #include "hal/led/hal_led.h"
 #include "hal/led/led.h"
 #include "hal/mcu/mcu.h"
 #include "hal/mcu/stm32l4xx.h"
-#include "hal/power_monitor/ina260_power_monitor.h"
 #include "hal/power_monitor/power_monitor.h"
 #include "hal/programmer/programmer.h"
 #include "hal/programmer/stm32l4xx_programmer.h"
@@ -32,8 +30,9 @@ class Board final {
 
   // imu::Bmi323Imu imu1_{0x68, mcu().i2c<0>()};
   // imu::Bmi323Imu imu2_{0x69, mcu().i2c<1>()};
-  // power_monitor::Ina260PowerMonitor power_monitor1_{0x40, mcu().i2c<2>()};
-  // power_monitor::Ina260PowerMonitor power_monitor2_{0x41, mcu().i2c<2>()};
+
+  std::array<typename PinoutType::PowerMonitor, PinoutType::NUM_POWER_MONITORS> power_monitors_{
+      typename PinoutType::PowerMonitor{0x40, mcu().i2c<0>()}};
 
   programmer::ProgrammerStm32l4xx programmer_{
       mcu().create_peripheral(PinoutType::PROGRAMMER_SWDIO_CONTROL_PIN),
@@ -67,8 +66,11 @@ class Board final {
   // imu::ImuPeripheral& imu1() { return imu1_; }
   // imu::ImuPeripheral& imu2() { return imu2_; }
 
-  // power_monitor::PowerMonitorPeripheral& power_monitor1() { return power_monitor1_; }
-  // power_monitor::PowerMonitorPeripheral& power_monitor2() { return power_monitor2_; }
+  template <size_t INDEX>
+  power_monitor::PowerMonitorPeripheral& power_monitor() {
+    static_assert(INDEX < PinoutType::NUM_POWER_MONITORS);
+    return power_monitors_[INDEX];
+  }
 };
 
 static_assert(BasicBoard<Board>);
