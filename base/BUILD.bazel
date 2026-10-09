@@ -10,6 +10,7 @@ cc_library(
     }),
     hdrs =
         [
+            "constexpr_for.h",
             "enums.h",
             "initializer.h",
         ],
