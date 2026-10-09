@@ -89,8 +89,17 @@ LoopFillZeroBss:
   cmp r2, r4
   bcc FillZeroBss
 
+  ldr r0, =0xABCD
+  ldr r1, =exit_code
+  str r0, [r1]
+
   /* Call static constructors */
   bl __libc_init_array
+
+  ldr r0, =0xBAAB
+  ldr r1, =exit_code
+  str r0, [r1]
+
   /* Call the application's entry point.*/
   bl main
   ldr r1, =exit_code
