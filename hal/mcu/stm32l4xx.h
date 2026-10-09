@@ -4,14 +4,6 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "hal/adc/adc.h"
-#include "hal/adc/stm32l4xx_adc.h"
-#include "hal/can_bus/can_bus.h"
-#include "hal/can_bus/stm32l4xx_can_bus.h"
-#include "hal/dac/dac.h"
-#include "hal/dac/stm32xxxx_dac.h"
-#include "hal/dma/dma.h"
-#include "hal/dma/stm32l4xx_dma.h"
 #include "hal/error.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
@@ -59,7 +51,7 @@ class McuStm32L4xx final {
 
   systick::SysTickStm32l4xx sys_tick_{};
 
-  std::array<gpio::GpioStm32xxxx, MAX_GPIO_PORTS> gpio_ports_{
+  std::array<gpio::GpioStm32xxxx, pinout::Pinout::NUM_GPIO_PORTS> gpio_ports_{
 #if defined(GPIOA_BASE)
       gpio::GpioStm32xxxx{reinterpret_cast<void*>(GPIOA_BASE), PinoutType::GPIO_PORT_A},
 #endif
@@ -87,13 +79,6 @@ class McuStm32L4xx final {
 
   power::PowerStm32L4xx power_{};
 
-  dac::DacStm32xxxx<PinoutType::NUM_DAC_CHANNELS> dac_{DAC};
-
-  dma::DmaStm32l4xx dma1_{DMA1};
-  dma::DmaStm32l4xx dma2_{DMA2};
-
-  adc::AdcStm32l4xx adc_{ADC1, dma1_, DMA1_Channel1, DMA_REQUEST_0};
-
   timer::TimerStm32l4xx timer2_{Stm32PeripheralIds::TIM2_ID, TIM2};
 
   rcc::LsiOscillatorStm32L4xx lsi_oscillator_{};
@@ -113,24 +98,16 @@ class McuStm32L4xx final {
                         create_peripheral(PinoutType::I2C3_SDA_PIN)},
   };
 
-  std::array<can_bus::CanBusStm32l4xx, PinoutType::NUM_CAN_BUSES> can_buses{
-      can_bus::CanBusStm32l4xx{CAN1, create_peripheral(PinoutType::CAN1_TX_PIN),
-                               create_peripheral(PinoutType::CAN1_RX_PIN),
-                               create_peripheral(PinoutType::CAN1_SHUTDOWN_PIN),
-                               create_peripheral(PinoutType::CAN1_SILENT_PIN)},
-  };
-
   mcu_identification::McuIdentificationStm32l4xx mcu_identification_{};
 
   // Private constructor to restrict inadvertent instantiation and copying.
   McuStm32L4xx() { internal::configure_interrupts(); }
 
+  static inline McuStm32L4xx mcu_{};
+
  public:
   // One MCU per executable.
-  static McuStm32L4xx& mcu() {
-    static McuStm32L4xx mcu_{};
-    return mcu_;
-  }
+  static McuStm32L4xx& mcu() { return mcu_; }
 
   constexpr gpio::PinPeripheral create_peripheral(gpio::PinRef ref) noexcept {
     return {gpio(ref.port), ref.pin};
@@ -166,35 +143,27 @@ class McuStm32L4xx final {
     error();
   }
 
-  rcc::Rcc& rcc() { return rcc_; };
+  constexpr rcc::Rcc& rcc() { return rcc_; };
 
-  power::Power& power() { return power_; }
+  constexpr power::Power& power() { return power_; }
 
-  mcu_identification::McuIdentification& mcu_identification() { return mcu_identification_; }
-
-  dac::DacPeripheral& dac() { return dac_; }
-
-  adc::AdcPeripheral& adc() { return adc_; }
-
-  timer::TimerPeripheral& timer2() { return timer2_; }
-  timer::TimerPeripheral& sleep_timer() { return lptim1_; }
-
-  systick::SysTickType& sys_tick() { return sys_tick_; }
-
-  random::RngPeripheral& rng() { return rng_; }
-
-  watchdog::WatchdogPeripheral& iwdg() { return iwdg_; }
-
-  template <size_t BUS = 0>
-  i2c::I2cPeripheral& i2c() noexcept {
-    static_assert(BUS < PinoutType::NUM_I2C_BUSES);
-    return i2c_buses[BUS];
+  constexpr mcu_identification::McuIdentification& mcu_identification() {
+    return mcu_identification_;
   }
 
+  constexpr timer::TimerPeripheral& timer2() { return timer2_; }
+  constexpr timer::TimerPeripheral& sleep_timer() { return lptim1_; }
+
+  constexpr systick::SysTickType& sys_tick() { return sys_tick_; }
+
+  constexpr random::RngPeripheral& rng() { return rng_; }
+
+  constexpr watchdog::WatchdogPeripheral& iwdg() { return iwdg_; }
+
   template <size_t BUS = 0>
-  can_bus::CanBusPeripheral& can() noexcept {
-    static_assert(BUS < PinoutType::NUM_CAN_BUSES);
-    return can_buses[BUS];
+  constexpr i2c::I2cPeripheral& i2c() noexcept {
+    static_assert(BUS < PinoutType::NUM_I2C_BUSES);
+    return i2c_buses[BUS];
   }
 };
 
@@ -207,6 +176,9 @@ using Mcu = McuStm32L4xx</* GPIO ports */ 3, /* I2C buses */ 2, /* CAN buses */ 
 #elif defined(STM32L452xx)
 using Mcu = McuStm32L4xx</* GPIO ports */ 6, /* I2C buses */ 4, /* CAN buses */ 1, /* DACs */ 1,
                          /* ADCs */ 1>;
+#endif
+#if (defined(STM32L412xx) + defined(STM32L432xx) + defined(STM32L452xx)) > 1
+#error "Multiple STM32L4 target macros defined simultaneously. Exactly one MCU must be selected."
 #endif
 
 static_assert(BasicMcu<Mcu>);

@@ -3,28 +3,15 @@
 #include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal::mcu::internal {
+
 void configure_interrupts() {
   // SysTick interrupt(s).
   HAL_NVIC_SetPriority(SysTick_IRQn, 7, 0);
   HAL_NVIC_EnableIRQ(SysTick_IRQn);
 
-  // DMA interrupt(s).
-  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
-
   // LPTIM1 interrupt(s).
   HAL_NVIC_SetPriority(LPTIM1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(LPTIM1_IRQn);
-
-  // CAN bus interrupt(s).
-  HAL_NVIC_SetPriority(CAN1_TX_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(CAN1_TX_IRQn);
-  HAL_NVIC_SetPriority(CAN1_RX0_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(CAN1_RX0_IRQn);
-  HAL_NVIC_SetPriority(CAN1_RX1_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(CAN1_RX1_IRQn);
-  HAL_NVIC_SetPriority(CAN1_SCE_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(CAN1_SCE_IRQn);
 }
 
 }  // namespace tvsc::hal::mcu::internal
@@ -42,69 +29,6 @@ extern "C" {
 // TODO(james): Fix names of interrupt handlers. These are the default names from ST Micro, and they
 // are inconsistent with the naming in the rest of the project.
 
-/**
- * Non-maskable interrupt handler.
- */
-void NMI_Handler(void) {
-  while (1) {
-  }
-}
-
-/**
- * Hard fault interrupt handler.
- */
-void HardFault_Handler(void) {
-  while (1) {
-  }
-}
-
-/**
- * Memory fault handler.
- */
-void MemManage_Handler(void) {
-  while (1) {
-  }
-}
-
-/**
- * Handler for memory access faults, including prefetch errors.
- */
-void BusFault_Handler(void) {
-  while (1) {
-  }
-}
-
-/**
- * Undefined instruction handler.
- */
-void UsageFault_Handler(void) {
-  while (1) {
-  }
-}
-
-/**
- * System service call (SWI instruction) handler.
- */
-void SVC_Handler(void) {}
-
-/**
- * Debug monitor.
- */
-void DebugMon_Handler(void) {}
-
-/**
- * Pending system service call handler.
- */
-void PendSV_Handler(void) {}
-
-/**
- * DMA interrupt handlers.
- */
-void DMA1_Channel1_IRQHandler() {
-  tvsc::hal::mcu::Mcu& mcu{tvsc::hal::mcu::Mcu::mcu()};
-  mcu.adc().handle_interrupt();
-}
-
 void LPTIM1_IRQHandler() {
   tvsc::hal::mcu::Mcu& mcu{tvsc::hal::mcu::Mcu::mcu()};
   mcu.sleep_timer().handle_interrupt();
@@ -113,26 +37,6 @@ void LPTIM1_IRQHandler() {
 void SysTick_Handler() {
   tvsc::hal::mcu::Mcu& mcu{tvsc::hal::mcu::Mcu::mcu()};
   mcu.sys_tick().handle_interrupt();
-}
-
-void CAN1_TX_IRQHandler(void) {
-  tvsc::hal::mcu::Mcu& mcu{tvsc::hal::mcu::Mcu::mcu()};
-  mcu.can<0>().handle_interrupt();
-}
-
-void CAN1_RX0_IRQHandler(void) {
-  tvsc::hal::mcu::Mcu& mcu{tvsc::hal::mcu::Mcu::mcu()};
-  mcu.can<0>().handle_interrupt();
-}
-
-void CAN1_RX1_IRQHandler(void) {
-  tvsc::hal::mcu::Mcu& mcu{tvsc::hal::mcu::Mcu::mcu()};
-  mcu.can<0>().handle_interrupt();
-}
-
-void CAN1_SCE_IRQHandler(void) {
-  tvsc::hal::mcu::Mcu& mcu{tvsc::hal::mcu::Mcu::mcu()};
-  mcu.can<0>().handle_interrupt();
 }
 
 }  // extern "C"
