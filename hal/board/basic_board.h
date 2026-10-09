@@ -10,11 +10,12 @@
 namespace tvsc::hal::board {
 
 template <typename B, std::size_t MINIMUM_COUNT = 1>
-concept HasDebugLed =        //
+concept HasLeds =            //
     (MINIMUM_COUNT > 0) and  //
     requires(B& b) {
-      { b.template debug_led<0>() } -> std::same_as<led::LedPeripheral&>;
-      { b.template debug_led<MINIMUM_COUNT - 1>() } -> std::same_as<led::LedPeripheral&>;
+      { b.debug_led() } -> std::same_as<led::LedPeripheral&>;
+      { b.template led<0>() } -> std::same_as<led::LedPeripheral&>;
+      { b.template led<MINIMUM_COUNT - 1>() } -> std::same_as<led::LedPeripheral&>;
     } and  //
     true;
 
@@ -26,9 +27,9 @@ concept HasMcu =  //
     true;
 
 template <typename B>
-concept BasicBoard =    //
-    HasDebugLed<B> and  //
-    HasMcu<B> and       //
+concept BasicBoard =  //
+    HasLeds<B> and    //
+    HasMcu<B> and     //
     true;
 
 }  // namespace tvsc::hal::board

@@ -17,11 +17,11 @@ int main(int argc, char* argv[]) {
 
   static constexpr auto BASE_DURATION{200ms};
   static constexpr int DURATION_MULTIPLES[] = {4, 3, 2};
-  static_assert(Pinout::NUM_DEBUG_LEDS < 4, "Need to implement blink for more LEDs");
+  static_assert(Pinout::NUM_LEDS < 4, "Need to implement blink for more LEDs");
 
-  for (size_t i = 0; i < Pinout::NUM_DEBUG_LEDS; ++i) {
+  for (size_t i = 0; i < Pinout::NUM_LEDS; ++i) {
     System::scheduler().add_task(
-        blink(System::board().debug_led(i), DURATION_MULTIPLES[i] * BASE_DURATION));
+        blink(System::board().led(i), DURATION_MULTIPLES[i] * BASE_DURATION));
   }
 
   System::scheduler().start();

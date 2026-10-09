@@ -26,8 +26,8 @@ class Board final {
   using PinoutType = pinout::Pinout;
 
  private:
-  std::array<led::HalLed, PinoutType::NUM_DEBUG_LEDS> DEBUG_LEDS{
-      led::HalLed(mcu().create_peripheral(PinoutType::DEBUG_LED_PINS[0])),
+  std::array<led::HalLed, PinoutType::NUM_LEDS> LEDS{
+      led::HalLed(mcu().create_peripheral(PinoutType::LED_PINS[0])),
   };
 
   // imu::Bmi323Imu imu1_{0x68, mcu().i2c<0>()};
@@ -52,14 +52,15 @@ class Board final {
 
   static mcu::Mcu& mcu();
 
-  template <size_t LED = 0>
-  led::LedPeripheral& debug_led() noexcept {
-    static_assert(LED < PinoutType::NUM_DEBUG_LEDS);
-    return DEBUG_LEDS[LED];
+  template <size_t LED>
+  led::LedPeripheral& led() noexcept {
+    static_assert(LED < PinoutType::NUM_LEDS);
+    return LEDS[LED];
   }
-  auto& debug_led() noexcept { return debug_led<>(); }
 
-  led::LedPeripheral& debug_led(size_t led_number) noexcept { return DEBUG_LEDS.at(led_number); }
+  led::LedPeripheral& led(size_t led_number) noexcept { return LEDS.at(led_number); }
+
+  auto& debug_led() noexcept { return led<0>(); }
 
   programmer::ProgrammerPeripheral& programmer() { return programmer_; }
 

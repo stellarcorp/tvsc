@@ -19,7 +19,7 @@ class Pinout final {
   static constexpr size_t NUM_CAN_BUSES{1};
   static constexpr size_t NUM_DAC_CHANNELS{1};
   static constexpr size_t NUM_ADC_CHANNELS{1};
-  static constexpr size_t NUM_DEBUG_LEDS{1};
+  static constexpr size_t NUM_LEDS{1};
 
   static constexpr gpio::PortNumber GPIO_PORT_A{0};
   static constexpr gpio::PortNumber GPIO_PORT_B{1};
@@ -36,8 +36,8 @@ class Pinout final {
   static constexpr gpio::PinRef BOARD_ID_POWER_PIN{GPIO_PORT_A, 6};
   static constexpr gpio::PinRef BOARD_ID_SENSE_PIN{GPIO_PORT_A, 7};
 
-  // Debug LEDs provided by this board.
-  static constexpr std::array<gpio::PinRef, NUM_DEBUG_LEDS> DEBUG_LED_PINS{
+  // LEDs provided by this board. This first LED is the debug LED.
+  static constexpr std::array<gpio::PinRef, NUM_LEDS> LED_PINS{
       gpio::PinRef{GPIO_PORT_C, 13},
   };
 
