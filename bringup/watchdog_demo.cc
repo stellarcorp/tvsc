@@ -1,3 +1,10 @@
+/**
+ * Script to demonstrate the watchdog functionality. The expected behavior should be that it does
+ * nothing (sleeps) at first, blinks the debug LED for a while, and then it turns off.
+ *
+ * When the script starts, it just sleeps. This first step allows us to recognize when the board
+ * gets reset due to an unfed watchdog timer.
+ */
 #include <chrono>
 
 #include "base/initializer.h"
