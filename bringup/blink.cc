@@ -1,3 +1,10 @@
+/**
+ * Variant of the standard blink program that uses the scheduler to run a task to blink the debug
+ * LED. This variant requires several subsystems to work correctly. Beyond GPIO and a systick clock,
+ * it requires the RCC to support configurable clock speeds, and it requies the low-power timer
+ * (LPTIM) be usable. For a more standard, trivial blink program, look for a bringup script based on
+ * systick.
+ */
 #include "bringup/blink.h"
 
 #include "base/initializer.h"
