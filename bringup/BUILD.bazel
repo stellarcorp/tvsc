@@ -358,6 +358,7 @@ cc_binary(
         "//hal",
         "//hal/board",
         "//hal/i2c",
+        "//time:embedded_clock",
     ],
 )
 
