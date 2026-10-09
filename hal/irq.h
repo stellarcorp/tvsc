@@ -1,14 +1,6 @@
 #pragma once
 
-#if defined(NUCLEO_H743ZI)
-#include "hal/irq_arm.h"
-#elif defined(NUCLEO_L412KB)
-#include "hal/irq_arm.h"
-#elif defined(NUCLEO_L432KC)
-#include "hal/irq_arm.h"
-#elif defined(NUCLEO_L452RE)
-#include "hal/irq_arm.h"
-#elif defined(FEATURE_BRINGUP)
+#if defined(NUCLEO_BOARD)
 #include "hal/irq_arm.h"
 #elif defined(SATELLITE)
 #include "hal/irq_arm.h"

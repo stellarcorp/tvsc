@@ -10,8 +10,10 @@
 #include "hal/pinout/nucleo_l452re_pinout.h"
 #elif defined(FEATURE_BRINGUP)
 #include "hal/pinout/feature_bringup_pinout.h"
-#elif defined(SATELLITE)
-#include "hal/pinout/satellite_pinout.h"
+#elif defined(CHEERFUL_COFFEE)
+#include "hal/pinout/cheerful_coffee_pinout.h"
+#elif defined(DEFIANT_DUMPLING)
+#include "hal/pinout/defiant_dumpling_pinout.h"
 #elif defined(GENERAL_PURPOSE_COMPUTER)
 #include "hal/pinout/simulation_pinout.h"
 #else

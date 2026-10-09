@@ -71,7 +71,8 @@ platform(
         ":stm32_can_bus",
         ":stm32_eeprom",
         ":no_networking",
-        ":nucleo_l412kb_board",
+        ":nucleo_board",
+        ":nucleo_l412kb_board_variant",
     ],
 )
 
@@ -94,7 +95,8 @@ platform(
         ":stm32_can_bus",
         ":stm32_eeprom",
         ":no_networking",
-        ":nucleo_l432kc_board",
+        ":nucleo_board",
+        ":nucleo_l432kc_board_variant",
     ],
 )
 
@@ -117,7 +119,8 @@ platform(
         ":stm32_can_bus",
         ":stm32_eeprom",
         ":no_networking",
-        ":nucleo_l452re_board",
+        ":nucleo_board",
+        ":nucleo_l452re_board_variant",
     ],
 )
 
@@ -139,12 +142,13 @@ platform(
         ":stm32_can_bus",
         ":stm32_eeprom",
         ":no_networking",
-        ":feature_bringup_board",
+        ":satellite_board",
+        ":feature_bringup_board_variant",
     ],
 )
 
 platform(
-    name = "satellite",
+    name = "cheerful_coffee",
     constraint_values = [
         "@platforms//cpu:armv7e-mf",
         "@platforms//os:none",
@@ -162,6 +166,30 @@ platform(
         ":stm32_eeprom",
         ":no_networking",
         ":satellite_board",
+        ":cheerful_coffee_board_variant",
+    ],
+)
+
+platform(
+    name = "defiant_dumpling",
+    constraint_values = [
+        "@platforms//cpu:armv7e-mf",
+        "@platforms//os:none",
+        ":stm32l4xx",
+        ":stm32l452xx_mcu",
+        ":stm32_core",
+        ":stm32_gpio",
+        ":one_debug_led",
+        ":debug_push_button",
+        ":stm32l4xx_adc",
+        ":stm32l4xx_dac",
+        ":stm32l4xx_dma",
+        ":stm32_spi",
+        ":stm32_can_bus",
+        ":stm32_eeprom",
+        ":no_networking",
+        ":satellite_board",
+        ":defiant_dumpling_board_variant",
     ],
 )
 
@@ -361,26 +389,43 @@ constraint_value(
 constraint_setting(name = "board_type")
 
 constraint_value(
-    name = "nucleo_l412kb_board",
-    constraint_setting = "board_type",
-)
-
-constraint_value(
-    name = "nucleo_l432kc_board",
-    constraint_setting = "board_type",
-)
-
-constraint_value(
-    name = "nucleo_l452re_board",
-    constraint_setting = "board_type",
-)
-
-constraint_value(
-    name = "feature_bringup_board",
+    name = "nucleo_board",
     constraint_setting = "board_type",
 )
 
 constraint_value(
     name = "satellite_board",
     constraint_setting = "board_type",
+)
+
+constraint_setting(name = "board_variant_type")
+
+constraint_value(
+    name = "nucleo_l412kb_board_variant",
+    constraint_setting = "board_variant_type",
+)
+
+constraint_value(
+    name = "nucleo_l432kc_board_variant",
+    constraint_setting = "board_variant_type",
+)
+
+constraint_value(
+    name = "nucleo_l452re_board_variant",
+    constraint_setting = "board_variant_type",
+)
+
+constraint_value(
+    name = "feature_bringup_board_variant",
+    constraint_setting = "board_variant_type",
+)
+
+constraint_value(
+    name = "cheerful_coffee_board_variant",
+    constraint_setting = "board_variant_type",
+)
+
+constraint_value(
+    name = "defiant_dumpling_board_variant",
+    constraint_setting = "board_variant_type",
 )

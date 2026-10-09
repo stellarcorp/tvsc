@@ -1,4 +1,4 @@
-#include "hal/board/nucleo_l412kb_board.h"
+#include "hal/board/nucleo_board.h"
 
 #include "third_party/stm32/stm32_hal.h"
 

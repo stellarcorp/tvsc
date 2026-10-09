@@ -15,17 +15,8 @@ cc_library(
     deps = [
         "//flags",
     ] + select({
-        "//platforms:nucleo_l412kb_board": [
-            ":nucleo_l412kb_board",
-        ],
-        "//platforms:nucleo_l432kc_board": [
-            ":nucleo_l432kc_board",
-        ],
-        "//platforms:nucleo_l452re_board": [
-            ":nucleo_l452re_board",
-        ],
-        "//platforms:feature_bringup_board": [
-            ":feature_bringup_board",
+        "//platforms:nucleo_board": [
+            ":nucleo_board",
         ],
         "//platforms:satellite_board": [
             ":satellite_board",
@@ -52,15 +43,15 @@ cc_library(
 )
 
 cc_library(
-    name = "nucleo_l412kb_board",
+    name = "nucleo_board",
     srcs = [
-        "nucleo_l412kb_board.cc",
+        "nucleo_board.cc",
     ],
     hdrs = [
-        "nucleo_l412kb_board.h",
+        "nucleo_board.h",
     ],
     target_compatible_with = [
-        "//platforms:nucleo_l412kb_board",
+        "//platforms:nucleo_board",
     ],
     deps = [
         ":board_concepts",
@@ -70,98 +61,6 @@ cc_library(
         "//hal/gpio",
         "//hal/mcu",
         "//hal/power",
-        "//hal/random",
-        "//hal/rcc",
-        "//hal/systick",
-        "//hal/watchdog",
-        "//third_party/stm32",
-    ],
-)
-
-cc_library(
-    name = "nucleo_l432kc_board",
-    srcs = [
-        "nucleo_l432kc_board.cc",
-    ],
-    hdrs = [
-        "nucleo_l432kc_board.h",
-    ],
-    target_compatible_with = [
-        "//platforms:nucleo_l432kc_board",
-    ],
-    deps = [
-        ":board_concepts",
-        "//hal",
-        "//hal/adc",
-        "//hal/dac",
-        "//hal/dma",
-        "//hal/gpio",
-        "//hal/mcu",
-        "//hal/power",
-        "//hal/random",
-        "//hal/rcc",
-        "//hal/systick",
-        "//hal/watchdog",
-        "//third_party/stm32",
-    ],
-)
-
-cc_library(
-    name = "nucleo_l452re_board",
-    srcs = [
-        "nucleo_l452re_board.cc",
-    ],
-    hdrs = [
-        "nucleo_l452re_board.h",
-    ],
-    target_compatible_with = [
-        "//platforms:nucleo_l452re_board",
-    ],
-    deps = [
-        ":board_concepts",
-        "//hal",
-        "//hal/adc",
-        "//hal/dac",
-        "//hal/dma",
-        "//hal/gpio",
-        "//hal/i2c",
-        "//hal/mcu",
-        "//hal/mcu_identification",
-        "//hal/power",
-        "//hal/random",
-        "//hal/rcc",
-        "//hal/systick",
-        "//hal/watchdog",
-        "//third_party/stm32",
-    ],
-)
-
-cc_library(
-    name = "feature_bringup_board",
-    srcs = [
-        "feature_bringup_board.cc",
-    ],
-    hdrs = [
-        "feature_bringup_board.h",
-    ],
-    target_compatible_with = [
-        "//platforms:feature_bringup_board",
-    ],
-    deps = [
-        ":board_concepts",
-        "//hal",
-        "//hal/adc",
-        "//hal/can_bus",
-        "//hal/dac",
-        "//hal/dma",
-        "//hal/gpio",
-        "//hal/i2c",
-        "//hal/imu",
-        "//hal/mcu",
-        "//hal/mcu_identification",
-        "//hal/power",
-        "//hal/power_monitor",
-        "//hal/programmer",
         "//hal/random",
         "//hal/rcc",
         "//hal/systick",

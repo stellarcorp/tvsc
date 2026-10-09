@@ -12,20 +12,23 @@ cc_library(
     deps = [
         "//flags",
     ] + select({
-        "//platforms:nucleo_l412kb_board": [
+        "//platforms:nucleo_l412kb_board_variant": [
             ":nucleo_l412kb_pinout",
         ],
-        "//platforms:nucleo_l432kc_board": [
+        "//platforms:nucleo_l432kc_board_variant": [
             ":nucleo_l432kc_pinout",
         ],
-        "//platforms:nucleo_l452re_board": [
+        "//platforms:nucleo_l452re_board_variant": [
             ":nucleo_l452re_pinout",
         ],
-        "//platforms:feature_bringup_board": [
+        "//platforms:feature_bringup_board_variant": [
             ":feature_bringup_pinout",
         ],
-        "//platforms:satellite_board": [
-            ":satellite_pinout",
+        "//platforms:cheerful_coffee_board_variant": [
+            ":cheerful_coffee_pinout",
+        ],
+        "//platforms:defiant_dumpling_board_variant": [
+            ":defiant_dumpling_pinout",
         ],
         "@platforms//os:linux": [
             ":simulation",
@@ -50,7 +53,7 @@ cc_library(
         "nucleo_l412kb_pinout.h",
     ],
     target_compatible_with = [
-        "//platforms:nucleo_l412kb_board",
+        "//platforms:nucleo_l412kb_board_variant",
     ],
     deps = [
         ":pinout_concepts",
@@ -64,7 +67,7 @@ cc_library(
         "nucleo_l432kc_pinout.h",
     ],
     target_compatible_with = [
-        "//platforms:nucleo_l432kc_board",
+        "//platforms:nucleo_l432kc_board_variant",
     ],
     deps = [
         ":pinout_concepts",
@@ -78,7 +81,7 @@ cc_library(
         "nucleo_l452re_pinout.h",
     ],
     target_compatible_with = [
-        "//platforms:nucleo_l452re_board",
+        "//platforms:nucleo_l452re_board_variant",
     ],
     deps = [
         ":pinout_concepts",
@@ -92,7 +95,7 @@ cc_library(
         "feature_bringup_pinout.h",
     ],
     target_compatible_with = [
-        "//platforms:feature_bringup_board",
+        "//platforms:feature_bringup_board_variant",
     ],
     deps = [
         ":pinout_concepts",
@@ -101,12 +104,26 @@ cc_library(
 )
 
 cc_library(
-    name = "satellite_pinout",
+    name = "cheerful_coffee_pinout",
     hdrs = [
-        "satellite_pinout.h",
+        "cheerful_coffee_pinout.h",
     ],
     target_compatible_with = [
-        "//platforms:satellite_board",
+        "//platforms:cheerful_coffee_board_variant",
+    ],
+    deps = [
+        ":pinout_concepts",
+        "//hal/gpio",
+    ],
+)
+
+cc_library(
+    name = "defiant_dumpling_pinout",
+    hdrs = [
+        "defiant_dumpling_pinout.h",
+    ],
+    target_compatible_with = [
+        "//platforms:defiant_dumpling_board_variant",
     ],
     deps = [
         ":pinout_concepts",
