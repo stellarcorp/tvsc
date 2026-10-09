@@ -66,11 +66,16 @@ bool Ina260PowerMonitor::put_in_standby_mode() {
   return success;
 }
 
-bool Ina260PowerMonitor::read_id(uint16_t* result) {
-  uint8_t bytes[2]{};
-  bool success{i2c_.read(addr_, ID_REGISTER, reinterpret_cast<uint8_t*>(bytes), sizeof(bytes))};
+bool Ina260PowerMonitor::read_id(uint32_t* result) {
+  uint8_t bytes[4]{};
+  bool success{i2c_.read(addr_, ID_REGISTER, reinterpret_cast<uint8_t*>(&bytes[0]), 2)};
   if (success) {
-    *result = (static_cast<uint16_t>(bytes[0]) << 8) + bytes[1];
+    success = i2c_.read(addr_, MANUFACTURER_ID_REGISTER, reinterpret_cast<uint8_t*>(&bytes[2]), 2);
+  }
+
+  if (success) {
+    *result = (static_cast<uint32_t>(bytes[3]) << 16) + (static_cast<uint32_t>(bytes[2]) << 24) +
+              (static_cast<uint32_t>(bytes[0]) << 8) + bytes[1];
   }
   return success;
 }

@@ -17,7 +17,7 @@ class PowerMonitorPeripheral : public Peripheral<PowerMonitorPeripheral, PowerMo
   virtual void enable() = 0;
   virtual void disable() = 0;
 
-  virtual bool read_id(uint16_t* result) = 0;
+  virtual bool read_id(uint32_t* result) = 0;
   virtual bool read_current(float* result_amps, uint16_t* raw_result = nullptr) = 0;
   virtual bool read_voltage(float* result_volts, uint16_t* raw_result = nullptr) = 0;
   virtual bool read_power(float* result_watts, uint16_t* raw_result = nullptr) = 0;
@@ -47,7 +47,7 @@ class PowerMonitor final : public Functional<PowerMonitorPeripheral, PowerMonito
   friend class Peripheral<PowerMonitorPeripheral, PowerMonitor>;
 
  public:
-  bool read_id(uint16_t* result) { return peripheral_->read_id(result); }
+  bool read_id(uint32_t* result) { return peripheral_->read_id(result); }
 
   bool read_current(float* result_amps, uint16_t* raw_result = nullptr) {
     return peripheral_->read_current(result_amps, raw_result);

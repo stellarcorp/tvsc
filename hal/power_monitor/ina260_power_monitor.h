@@ -36,6 +36,9 @@ class Ina260PowerMonitor final : public PowerMonitorPeripheral {
                                                                    128, 256, 512, 1024};
 
  private:
+  // This register stores a value indicating the manufacturer.
+  static constexpr uint8_t MANUFACTURER_ID_REGISTER{0xfe};
+  // This register stores a value indicating the identity of the IC.
   static constexpr uint8_t ID_REGISTER{0xff};
 
   static constexpr uint8_t CONFIGURATION_REGISTER{0x00};
@@ -72,7 +75,7 @@ class Ina260PowerMonitor final : public PowerMonitorPeripheral {
 
   bool read_configuration(uint16_t* result);
 
-  bool read_id(uint16_t* result) override;
+  bool read_id(uint32_t* result) override;
   bool read_current(float* result_amps, uint16_t* raw_result) override;
   bool read_voltage(float* result_volts, uint16_t* raw_result) override;
   bool read_power(float* result_watts, uint16_t* raw_result) override;

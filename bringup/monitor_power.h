@@ -12,7 +12,7 @@ namespace tvsc::bringup {
 using namespace std::chrono_literals;
 
 struct alignas(16) PowerUsage final {
-  alignas(4) uint16_t device_id{0xffff};
+  alignas(4) uint32_t device_id{0xffffffff};
   alignas(4) uint16_t current_raw{0xffff};
   alignas(4) uint16_t voltage_raw{0xffff};
   alignas(4) uint16_t power_raw{0xffff};
