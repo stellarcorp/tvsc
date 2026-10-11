@@ -12,21 +12,19 @@
 #include "hal/board/board.h"
 #include "hal/board_identification/board_ids.h"
 #include "hal/gpio/gpio.h"
+#include "platforms/linker_sections.h"
 #include "system/scheduler.h"
 #include "system/task.h"
 #include "time/embedded_clock.h"
 
-extern "C" {
-
 alignas(uint32_t)  //
-    __attribute__((
-        section(".status.value"))) volatile tvsc::hal::board_identification::BoardId board_id{};
-__attribute__((section(".status.value"))) std::array<uint32_t, 1> buffer{};
-__attribute__((section(".status.value"))) volatile bool dma_complete{};
-__attribute__((section(".status.value"))) volatile bool dma_error{};
+    PRINCIPAL_RESULT volatile tvsc::hal::board_identification::BoardId board_id{};
+PRINCIPAL_RESULT std::array<uint32_t, 1> buffer{};
+PRINCIPAL_RESULT volatile bool dma_complete{};
+PRINCIPAL_RESULT volatile bool dma_error{};
 
+extern "C" {
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* adc) { dma_complete = true; }
-
 void HAL_ADC_ErrorCallback(ADC_HandleTypeDef* adc) { dma_error = true; }
 }
 
@@ -46,11 +44,10 @@ tvsc::system::System::Task read_board_id(int32_t num_iterations = -1) {
   auto id_sense{id_sense_peripheral.access()};
   auto adc{adc_peripheral.access()};
 
-  id_power.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal::gpio::PinSpeed::LOW);
   id_sense.set_pin_mode(tvsc::hal::gpio::PinMode::ANALOG);
 
   int32_t iteration_counter{0};
-  while (num_iterations < 0 || iteration_counter < num_iterations) {
+  while (num_iterations < 0 or iteration_counter < num_iterations) {
     // Recalibrate after a certain number of conversions.
     static constexpr uint32_t CALIBRATION_FREQUENCY{1024};
     if ((iteration_counter % CALIBRATION_FREQUENCY) == 0) {
@@ -63,9 +60,12 @@ tvsc::system::System::Task read_board_id(int32_t num_iterations = -1) {
     }
 
     // Turn on the power to the board id circuitry.
-    id_power.write_pin(/* ON */ 1);
+    id_power.set_pin_mode(tvsc::hal::gpio::PinMode::OUTPUT_PUSH_PULL,
+                          tvsc::hal::gpio::PinSpeed::LOW);
+    id_power.on();
+
     // Let the circuit settle.
-    co_yield 1ms;
+    co_yield 10ms;
 
     // Set the values in the buffer to a known pattern to check for buffer overrun issues.
     for (size_t i = 0; i < buffer.size(); ++i) {
@@ -84,19 +84,20 @@ tvsc::system::System::Task read_board_id(int32_t num_iterations = -1) {
     adc.reset_after_conversion();
 
     // Turn off the power to the board id circuitry.
-    id_power.write_pin(/* OFF */ 0);
+    id_power.off();
+    id_power.set_pin_mode(tvsc::hal::gpio::PinMode::ANALOG);
 
     uint16_t value_read = buffer[0];
-
     board_id = tvsc::hal::board_identification::determine_board_id(value_read);
 
     // Pause between iterations.
-    co_yield 50ms;
+    co_yield 5s;
     ++iteration_counter;
   }
 
   // Turn off the power to the board id circuitry.
-  id_power.write_pin(/* OFF */ 0);
+  id_power.off();
+  id_power.set_pin_mode(tvsc::hal::gpio::PinMode::ANALOG);
   co_return;
 }
 
