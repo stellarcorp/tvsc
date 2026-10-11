@@ -6,6 +6,8 @@
 
 #include "hal/adc/adc.h"
 #include "hal/adc/stm32l4xx_adc.h"
+#include "hal/dac/dac.h"
+#include "hal/dac/stm32xxxx_dac.h"
 #include "hal/dma/dma.h"
 #include "hal/dma/stm32l4xx_dma.h"
 #include "hal/error.h"
@@ -108,6 +110,8 @@ class McuStm32L4xx final {
   std::array<adc::AdcStm32l4xx, PinoutType::NUM_ADC_CHANNELS> adcs_{
       adc::AdcStm32l4xx{ADC1, dma1_, DMA1_Channel1, DMA_REQUEST_0}};
 
+  std::array<dac::DacStm32xxxx<>, PinoutType::NUM_DAC_CHANNELS> dacs_{dac::DacStm32xxxx<>{DAC}};
+
   // Private constructor to restrict inadvertent instantiation and copying.
   McuStm32L4xx() { internal::configure_interrupts(); }
 
@@ -178,6 +182,12 @@ class McuStm32L4xx final {
   constexpr adc::AdcPeripheral& adc() noexcept {
     static_assert(INDEX < PinoutType::NUM_ADC_CHANNELS);
     return adcs_[INDEX];
+  }
+
+  template <size_t INDEX = 0>
+  constexpr dac::DacPeripheral& dac() noexcept {
+    static_assert(INDEX < PinoutType::NUM_DAC_CHANNELS);
+    return dacs_[INDEX];
   }
 };
 
