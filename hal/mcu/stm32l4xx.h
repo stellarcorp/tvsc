@@ -113,20 +113,20 @@ class McuStm32L4xx final {
   std::array<dac::DacStm32xxxx<>, PinoutType::NUM_DAC_CHANNELS> dacs_{dac::DacStm32xxxx<>{DAC}};
 
   // Private constructor to restrict inadvertent instantiation and copying.
-  McuStm32L4xx() { internal::configure_interrupts(); }
+  McuStm32L4xx() noexcept { internal::configure_interrupts(); }
 
   static inline McuStm32L4xx mcu_{};
 
  public:
   // One MCU per executable.
-  static McuStm32L4xx& mcu() { return mcu_; }
+  [[nodiscard]] static McuStm32L4xx& mcu() noexcept { return mcu_; }
 
-  constexpr gpio::PinPeripheral create_peripheral(gpio::PinRef ref) noexcept {
+  [[nodiscard]] constexpr gpio::PinPeripheral create_peripheral(gpio::PinRef ref) noexcept {
     return {gpio(ref.port), ref.pin};
   }
 
   template <gpio::PortNumber GPIO_PORT>
-  constexpr gpio::GpioPeripheral& gpio() noexcept {
+  [[nodiscard]] constexpr gpio::GpioPeripheral& gpio() noexcept {
     static_assert(
         (GPIO_PORT < PinoutType::NUM_GPIO_PORTS - 1) or (GPIO_PORT == PinoutType::GPIO_PORT_H),
         "Invalid GPIO port id. Possible issues: Invalid Pinout configuration. Invalid "
@@ -146,7 +146,7 @@ class McuStm32L4xx final {
    * only be used to lookup GPIO ports using integer values that cannot be evaluated at
    * compile-time; these integer values will mainly come from STM's HAL.
    */
-  constexpr gpio::GpioPeripheral& gpio(gpio::PortNumber port) noexcept {
+  [[nodiscard]] constexpr gpio::GpioPeripheral& gpio(gpio::PortNumber port) noexcept {
     if (port == PinoutType::GPIO_PORT_H) {
       return gpio_ports_[MAX_GPIO_PORTS - 1];
     } else {
@@ -155,37 +155,37 @@ class McuStm32L4xx final {
     error();
   }
 
-  constexpr rcc::Rcc& rcc() { return rcc_; };
+  [[nodiscard]] constexpr rcc::Rcc& rcc() noexcept { return rcc_; };
 
-  constexpr power::Power& power() { return power_; }
+  [[nodiscard]] constexpr power::Power& power() noexcept { return power_; }
 
-  constexpr mcu_identification::McuIdentification& mcu_identification() {
+  [[nodiscard]] constexpr mcu_identification::McuIdentification& mcu_identification() noexcept {
     return mcu_identification_;
   }
 
-  constexpr timer::TimerPeripheral& timer2() { return timer2_; }
-  constexpr timer::TimerPeripheral& sleep_timer() { return lptim1_; }
+  [[nodiscard]] constexpr timer::TimerPeripheral& timer2() noexcept { return timer2_; }
+  [[nodiscard]] constexpr timer::TimerPeripheral& sleep_timer() noexcept { return lptim1_; }
 
-  constexpr systick::SysTickType& sys_tick() { return sys_tick_; }
+  [[nodiscard]] constexpr systick::SysTickType& sys_tick() noexcept { return sys_tick_; }
 
-  constexpr random::RngPeripheral& rng() { return rng_; }
+  [[nodiscard]] constexpr random::RngPeripheral& rng() noexcept { return rng_; }
 
-  constexpr watchdog::WatchdogPeripheral& iwdg() { return iwdg_; }
+  [[nodiscard]] constexpr watchdog::WatchdogPeripheral& iwdg() noexcept { return iwdg_; }
 
   template <size_t BUS = 0>
-  constexpr i2c::I2cPeripheral& i2c() noexcept {
+  [[nodiscard]] constexpr i2c::I2cPeripheral& i2c() noexcept {
     static_assert(BUS < PinoutType::NUM_I2C_BUSES);
     return i2c_buses[BUS];
   }
 
   template <size_t INDEX = 0>
-  constexpr adc::AdcPeripheral& adc() noexcept {
+  [[nodiscard]] constexpr adc::AdcPeripheral& adc() noexcept {
     static_assert(INDEX < PinoutType::NUM_ADC_CHANNELS);
     return adcs_[INDEX];
   }
 
   template <size_t INDEX = 0>
-  constexpr dac::DacPeripheral& dac() noexcept {
+  [[nodiscard]] constexpr dac::DacPeripheral& dac() noexcept {
     static_assert(INDEX < PinoutType::NUM_DAC_CHANNELS);
     return dacs_[INDEX];
   }
