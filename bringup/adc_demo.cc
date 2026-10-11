@@ -7,21 +7,20 @@
 #include "bringup/dac_demo.h"
 #include "hal/board/board.h"
 #include "hal/gpio/gpio.h"
+#include "platforms/linker_sections.h"
 #include "system/scheduler.h"
 #include "system/task.h"
 #include "time/embedded_clock.h"
 
+PRINCIPAL_RESULT uint32_t current_output_value{};
+PRINCIPAL_RESULT std::array<uint32_t, 1> buffer{};
+PRINCIPAL_RESULT float absolute_difference{};
+PRINCIPAL_RESULT float relative_difference{};
+PRINCIPAL_RESULT volatile bool dma_complete{};
+PRINCIPAL_RESULT volatile bool dma_error{};
+
 extern "C" {
-
-__attribute__((section(".status.value"))) uint32_t current_output_value{};
-__attribute__((section(".status.value"))) std::array<uint32_t, 1> buffer{};
-__attribute__((section(".status.value"))) float absolute_difference{};
-__attribute__((section(".status.value"))) float relative_difference{};
-__attribute__((section(".status.value"))) volatile bool dma_complete{};
-__attribute__((section(".status.value"))) volatile bool dma_error{};
-
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* adc) { dma_complete = true; }
-
 void HAL_ADC_ErrorCallback(ADC_HandleTypeDef* adc) { dma_error = true; }
 }
 
@@ -71,7 +70,7 @@ tvsc::system::System::Task run_adc_demo() {
       co_yield 500ms;
     }
 
-    for (auto v : {256, 0, 1, 2, 4, 8, 16, 32, 64, 128, 256}) {
+    for (uint32_t v : {256, 0, 1, 2, 4, 8, 16, 32, 64, 128, 256}) {
       current_output_value = (v << RESOLUTION_SHIFT);
       dac.set_value(current_output_value);
 
@@ -103,9 +102,13 @@ tvsc::system::System::Task run_adc_demo() {
         co_yield 400ms;
         led.off();
         co_yield 100ms;
+        led.on();
+        co_yield 400ms;
+        led.off();
+        co_yield 100ms;
       } else {
         // Failure. Flash frenetically.
-        for (int i = 0; i < 2; ++i) {
+        for (int i = 0; i < 10; ++i) {
           led.on();
           co_yield 50ms;
           led.off();
@@ -122,7 +125,7 @@ tvsc::system::System::Task run_adc_demo() {
     dac.set_value(current_output_value);
     dac.clear_value();
     led.off();
-    co_yield 500ms;
+    co_yield 5s;
   }
 }
 
