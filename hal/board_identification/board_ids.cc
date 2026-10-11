@@ -22,18 +22,33 @@ voltage_divider_configurations() {
 
 BoardId determine_board_id(uint16_t adc_measurement) {
   BoardId result{cast_to_underlying_type(CanonicalBoardIds::UNKNOWN)};
-  if (adc_measurement < 0x0072) {
-    result = cast_to_underlying_type(CanonicalBoardIds::COMMS_BOARD_1);
-  } else if (adc_measurement > 0x0f15) {
-    result = cast_to_underlying_type(CanonicalBoardIds::COMMS_BOARD_2);
-  } else {
-    for (const auto& configuration : voltage_divider_configurations()) {
-      if (configuration.is_match(adc_measurement)) {
-        result = configuration.id();
-        break;
-      }
+
+  for (const auto& configuration : voltage_divider_configurations()) {
+    if (configuration.is_match(adc_measurement)) {
+      result = configuration.id();
+      break;
     }
   }
+
+  // Due to a mistake in the board design, the comms board in Cheerful Coffee has 221k ohm
+  // resistors in the board identification voltage dividers. It should have had 22k1 ohm resistors
+  // instead. The section of code here works around this issue and allows the boards to correctly
+  // identify themselves.
+#ifdef CHEERFUL_COFFEE
+  if (result == cast_to_underlying_type(CanonicalBoardIds::UNKNOWN)) {
+    static constexpr VoltageDivider<BOARD_ID_ADC_RESOLUTION_BITS, BOARD_ID_RESISTOR_TOLERANCE>
+        ERRANT_COMMS1_BOARD{221'000.f, 3'160.f};
+    static constexpr VoltageDivider<BOARD_ID_ADC_RESOLUTION_BITS, BOARD_ID_RESISTOR_TOLERANCE>
+        ERRANT_COMMS2_BOARD{3'160.f, 221'000.f};
+
+    if (ERRANT_COMMS1_BOARD.is_match(adc_measurement)) {
+      result = cast_to_underlying_type(CanonicalBoardIds::COMMS_BOARD_1);
+    } else if (ERRANT_COMMS2_BOARD.is_match(adc_measurement)) {
+      result = cast_to_underlying_type(CanonicalBoardIds::COMMS_BOARD_2);
+    }
+  }
+#endif
+
   return result;
 }
 
