@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <cstdint>
 
 #include "hal/board_identification/tolerance.h"
@@ -11,7 +12,7 @@ using BoardId = uint8_t;
 template <uint8_t ADC_RESOLUTION_BITS, ResistorTolerance TOLERANCE>
 class VoltageDivider final {
  private:
-  static constexpr float SAFETY_MARGIN{5.f};
+  static constexpr float GUARD_BAND_FACTOR{5.f};
 
   static constexpr uint8_t BOARD_ID_RESOLUTION_BITS{8 * sizeof(BoardId)};
 
@@ -22,9 +23,9 @@ class VoltageDivider final {
 
   static constexpr uint16_t expected_adc_measurement_value(float high_resistor_value,
                                                            float low_resistor_value) {
-    constexpr uint16_t MAX_VALUE{static_cast<uint16_t>(1U << ADC_RESOLUTION_BITS)};
-    return static_cast<uint16_t>(compute_voltage_division(high_resistor_value, low_resistor_value) *
-                                 MAX_VALUE);
+    constexpr uint32_t MAX_VALUE{(1U << ADC_RESOLUTION_BITS) - 1};
+    const float voltage_ratio{compute_voltage_division(high_resistor_value, low_resistor_value)};
+    return static_cast<uint16_t>(std::round(voltage_ratio * MAX_VALUE));
   }
 
   float high_resistor_value_{};
@@ -45,21 +46,19 @@ class VoltageDivider final {
     return *this;
   }
 
-  constexpr bool operator==(const VoltageDivider& rhs) const { return id() == rhs.id(); }
-
   constexpr uint16_t min_adc_measurement_value() const {
     const float max_high_resistor_value{high_resistor_value_ *
-                                        (1.f + SAFETY_MARGIN * tolerance(TOLERANCE))};
+                                        (1.f + GUARD_BAND_FACTOR * tolerance(TOLERANCE))};
     const float min_low_resistor_value{low_resistor_value_ *
-                                       (1.f - SAFETY_MARGIN * tolerance(TOLERANCE))};
+                                       (1.f - GUARD_BAND_FACTOR * tolerance(TOLERANCE))};
     return expected_adc_measurement_value(max_high_resistor_value, min_low_resistor_value);
   }
 
   constexpr uint16_t max_adc_measurement_value() const {
     const float min_high_resistor_value{high_resistor_value_ *
-                                        (1.f - SAFETY_MARGIN * tolerance(TOLERANCE))};
+                                        (1.f - GUARD_BAND_FACTOR * tolerance(TOLERANCE))};
     const float max_low_resistor_value{low_resistor_value_ *
-                                       (1.f + SAFETY_MARGIN * tolerance(TOLERANCE))};
+                                       (1.f + GUARD_BAND_FACTOR * tolerance(TOLERANCE))};
     return expected_adc_measurement_value(min_high_resistor_value, max_low_resistor_value);
   }
 
@@ -68,7 +67,7 @@ class VoltageDivider final {
   }
 
   constexpr bool is_match(uint16_t adc_measurement_value) const {
-    return min_adc_measurement_value() <= adc_measurement_value &&
+    return min_adc_measurement_value() <= adc_measurement_value and
            adc_measurement_value <= max_adc_measurement_value();
   }
 
