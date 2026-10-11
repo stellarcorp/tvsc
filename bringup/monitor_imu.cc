@@ -25,8 +25,8 @@ int main(int argc, char* argv[]) {
   auto& board{System::board()};
   auto& scheduler{System::scheduler()};
 
-  scheduler.add_task(monitor_imu(board.imu1(), imu1_reading, 1ms));
-  // scheduler.add_task(monitor_imu<ClockType>(board.imu2(), imu2_reading,
+  scheduler.add_task(monitor_imu(board.imu<0>(), imu1_reading, 1ms));
+  // scheduler.add_task(monitor_imu<ClockType>(board.imu<1>(), imu2_reading,
   // 1ms));
   scheduler.add_task(blink(board.debug_led()));
   scheduler.add_task(run_watchdog(mcu.iwdg()));

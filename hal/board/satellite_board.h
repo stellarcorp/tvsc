@@ -34,6 +34,10 @@ class Board final {
   std::array<typename PinoutType::PowerMonitor, PinoutType::NUM_POWER_MONITORS> power_monitors_{
       typename PinoutType::PowerMonitor{0x40, mcu().i2c<0>()}};
 
+  std::array<typename PinoutType::Imu, PinoutType::NUM_IMUS> imus_{
+      typename PinoutType::Imu{0x68, mcu().i2c<0>()},
+      typename PinoutType::Imu{0x69, mcu().i2c<1>()}};
+
   programmer::ProgrammerStm32l4xx programmer_{
       mcu().create_peripheral(PinoutType::PROGRAMMER_SWDIO_CONTROL_PIN),
       mcu().create_peripheral(PinoutType::PROGRAMMER_SWCLK_CONTROL_PIN),
@@ -63,13 +67,16 @@ class Board final {
 
   programmer::ProgrammerPeripheral& programmer() { return programmer_; }
 
-  // imu::ImuPeripheral& imu1() { return imu1_; }
-  // imu::ImuPeripheral& imu2() { return imu2_; }
-
   template <size_t INDEX>
   power_monitor::PowerMonitorPeripheral& power_monitor() {
     static_assert(INDEX < PinoutType::NUM_POWER_MONITORS);
     return power_monitors_[INDEX];
+  }
+
+  template <size_t INDEX>
+  imu::ImuPeripheral& imu() {
+    static_assert(INDEX < PinoutType::NUM_IMUS);
+    return imus_[INDEX];
   }
 };
 

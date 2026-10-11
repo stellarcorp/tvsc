@@ -22,7 +22,11 @@ class Pinout final {
   static constexpr size_t NUM_CAN_BUSES{1};
   static constexpr size_t NUM_DAC_CHANNELS{1};
   static constexpr size_t NUM_ADC_CHANNELS{1};
+
+  // Board-specific configuration details.
   static constexpr size_t NUM_LEDS{1};
+  static constexpr size_t NUM_IMUS{2};
+  static constexpr size_t NUM_POWER_MONITORS{1};
 
   static constexpr gpio::PortNumber GPIO_PORT_A{0};
   static constexpr gpio::PortNumber GPIO_PORT_B{1};
@@ -62,9 +66,6 @@ class Pinout final {
 
   using PowerMonitor = power_monitor::Ina260PowerMonitor;
   using Imu = imu::Bmi323Imu;
-
-  static constexpr size_t NUM_POWER_MONITORS{1};
-  static constexpr size_t NUM_IMUS{2};
 };
 
 static_assert(BasicPinout<Pinout>);

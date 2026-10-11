@@ -110,17 +110,17 @@ int main(int argc, char* argv[]) {
   system.scheduler().add_task(
       flash_target(system.board().programmer(), system.board().debug_led()));
 
-  system.scheduler().add_task(periodic_transmit(system.mcu().can<0>(), 10s, announce_msg));
+  system.scheduler().add_task(periodic_transmit(system.mcu().can_bus<0>(), 10s, announce_msg));
 
-  system.scheduler().add_task(
-      can_bus_receive(system.mcu().can<0>(), can_bus_message_queue, system.board().debug_led()));
+  system.scheduler().add_task(can_bus_receive(system.mcu().can_bus<0>(), can_bus_message_queue,
+                                              system.board().debug_led()));
 
   system.scheduler().add_task(process_messages(can_bus_message_queue));
 
   if (board_id == static_cast<tvsc::hal::board_identification::BoardId>(
                       tvsc::hal::board_identification::CanonicalBoardIds::COMMS_BOARD_1)) {
     system.scheduler().add_task(
-        periodic_transmit(system.mcu().can<0>(), 500ms, 100ms,
+        periodic_transmit(system.mcu().can_bus<0>(), 500ms, 100ms,
                           tvsc::message::led_on_command<tvsc::message::CanBusMessage::mtu()>(),
                           tvsc::message::led_off_command<tvsc::message::CanBusMessage::mtu()>()));
   }

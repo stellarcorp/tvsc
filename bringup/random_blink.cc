@@ -9,7 +9,7 @@ using namespace tvsc::system;
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
 
-  System::scheduler().add_task(blink_randomly(System::board().debug_led<0>()));
+  System::scheduler().add_task(blink_randomly(System::board().debug_led()));
 
   System::scheduler().start();
 }
