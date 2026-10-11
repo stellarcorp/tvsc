@@ -92,7 +92,7 @@ tvsc::system::System::Task echo_server() {
   auto &mcu{tvsc::system::System::mcu()};
   auto &board{tvsc::system::System::board()};
   auto &debug_led_peripheral{board.debug_led()};
-  auto &can1_peripheral{mcu.can<0>()};
+  auto &can1_peripheral{mcu.can_bus<0>()};
 
   // Turn on clocks for the peripherals that we want.
   auto debug_led{debug_led_peripheral.access()};

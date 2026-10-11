@@ -6,6 +6,8 @@
 
 #include "hal/adc/adc.h"
 #include "hal/adc/stm32l4xx_adc.h"
+#include "hal/can_bus/can_bus.h"
+#include "hal/can_bus/stm32l4xx_can_bus.h"
 #include "hal/dac/dac.h"
 #include "hal/dac/stm32xxxx_dac.h"
 #include "hal/dma/dma.h"
@@ -95,13 +97,20 @@ class McuStm32L4xx final {
 
   watchdog::WatchdogStm32l4xx iwdg_{IWDG, lsi_oscillator_};
 
-  std::array<i2c::I2cStm32l4xx, PinoutType::NUM_I2C_BUSES> i2c_buses{
+  std::array<i2c::I2cStm32l4xx, PinoutType::NUM_I2C_BUSES> i2c_buses_{
       i2c::I2cStm32l4xx{I2C1, create_peripheral(PinoutType::I2C1_SCL_PIN),
                         create_peripheral(PinoutType::I2C1_SDA_PIN)},
       i2c::I2cStm32l4xx{I2C2, create_peripheral(PinoutType::I2C2_SCL_PIN),
                         create_peripheral(PinoutType::I2C2_SDA_PIN)},
       i2c::I2cStm32l4xx{I2C3, create_peripheral(PinoutType::I2C3_SCL_PIN),
                         create_peripheral(PinoutType::I2C3_SDA_PIN)},
+  };
+
+  std::array<can_bus::CanBusStm32l4xx, PinoutType::NUM_CAN_BUSES> can_buses_{
+      can_bus::CanBusStm32l4xx{CAN1, create_peripheral(PinoutType::CAN1_TX_PIN),
+                               create_peripheral(PinoutType::CAN1_RX_PIN),
+                               create_peripheral(PinoutType::CAN1_SHUTDOWN_PIN),
+                               create_peripheral(PinoutType::CAN1_SILENT_PIN)},
   };
 
   mcu_identification::McuIdentificationStm32l4xx mcu_identification_{};
@@ -175,7 +184,13 @@ class McuStm32L4xx final {
   template <size_t BUS = 0>
   [[nodiscard]] constexpr i2c::I2cPeripheral& i2c() noexcept {
     static_assert(BUS < PinoutType::NUM_I2C_BUSES);
-    return i2c_buses[BUS];
+    return i2c_buses_[BUS];
+  }
+
+  template <size_t BUS = 0>
+  [[nodiscard]] constexpr can_bus::CanBusPeripheral& can_bus() noexcept {
+    static_assert(BUS < PinoutType::NUM_CAN_BUSES);
+    return can_buses_[BUS];
   }
 
   template <size_t INDEX = 0>
