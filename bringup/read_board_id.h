@@ -6,7 +6,7 @@
 #include "hal/gpio/gpio.h"
 #include "platforms/linker_sections.h"
 
-inline PRINCIPAL_RESULT uint16_t measured_board_id_value;
+inline PRINCIPAL_RESULT uint16_t measured_board_id_value{};
 
 namespace tvsc::bringup {
 
