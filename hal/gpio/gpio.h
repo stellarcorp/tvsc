@@ -205,6 +205,8 @@ class Pin final : public Functional<PinPeripheral, Pin> {
 
   bool read_pin() { return peripheral_->read_pin(); }
   void write_pin(bool on) { peripheral_->write_pin(on); }
+  void on() { write_pin(true); }
+  void off() { write_pin(false); }
   void toggle_pin() { peripheral_->toggle_pin(); }
 
   PortNumber port() const { return peripheral_->port(); }
