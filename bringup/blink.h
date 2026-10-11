@@ -48,9 +48,9 @@ tvsc::system::System::Task blink_on_success(std::function<bool()> is_success,
   auto led{led_peripheral.access()};
 
   led.off();
-  constexpr typename system::System::ClockType::duration success_delay{250ms};
+  constexpr typename system::System::ClockType::duration success_delay{1000ms};
   constexpr typename system::System::ClockType::duration fail_delay1{50ms};
-  constexpr typename system::System::ClockType::duration fail_delay2{500ms};
+  constexpr typename system::System::ClockType::duration fail_delay2{250ms};
   constexpr int fail_toggle_target{6};
 
   bool success{is_success()};
