@@ -3,15 +3,13 @@
 
 #include "base/initializer.h"
 #include "bringup/read_board_id.h"
+#include "platforms/linker_sections.h"
 #include "system/system.h"
 
 using namespace std::chrono_literals;
 using namespace tvsc::hal::board_identification;
 
-extern "C" {
-alignas(uint32_t)  //
-    __attribute__((section(".status.value"))) volatile BoardId board_id{};
-}
+inline PRINCIPAL_RESULT BoardId board_id{};
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
@@ -30,6 +28,6 @@ int main(int argc, char* argv[]) {
     board_id = tvsc::bringup::read_board_id(clock, std::move(id_power_peripheral),
                                             std::move(id_sense_peripheral), adc_peripheral);
 
-    system.clock().wait(10ms);
+    system.clock().wait(5s);
   }
 }
