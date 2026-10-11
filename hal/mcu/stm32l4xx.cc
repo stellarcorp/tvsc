@@ -12,6 +12,10 @@ void configure_interrupts() {
   // LPTIM1 interrupt(s).
   HAL_NVIC_SetPriority(LPTIM1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(LPTIM1_IRQn);
+
+  // DMA interrupt(s).
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
 }
 
 }  // namespace tvsc::hal::mcu::internal
@@ -37,6 +41,16 @@ void LPTIM1_IRQHandler() {
 void SysTick_Handler() {
   tvsc::hal::mcu::Mcu& mcu{tvsc::hal::mcu::Mcu::mcu()};
   mcu.sys_tick().handle_interrupt();
+}
+
+/**
+ * DMA interrupt handlers.
+ */
+void DMA1_Channel1_IRQHandler() {
+  tvsc::hal::mcu::Mcu& mcu{tvsc::hal::mcu::Mcu::mcu()};
+  // TODO(james): Route DMA requests according to a tabular lookup by requesting service. This
+  // hard-coded lookup will cause issues.
+  mcu.adc().handle_interrupt();
 }
 
 }  // extern "C"

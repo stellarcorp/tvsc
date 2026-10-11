@@ -4,6 +4,10 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "hal/adc/adc.h"
+#include "hal/adc/stm32l4xx_adc.h"
+#include "hal/dma/dma.h"
+#include "hal/dma/stm32l4xx_dma.h"
 #include "hal/error.h"
 #include "hal/gpio/gpio.h"
 #include "hal/gpio/stm_gpio.h"
@@ -100,6 +104,10 @@ class McuStm32L4xx final {
 
   mcu_identification::McuIdentificationStm32l4xx mcu_identification_{};
 
+  dma::DmaStm32l4xx dma1_{DMA1};
+  std::array<adc::AdcStm32l4xx, PinoutType::NUM_ADC_CHANNELS> adcs_{
+      adc::AdcStm32l4xx{ADC1, dma1_, DMA1_Channel1, DMA_REQUEST_0}};
+
   // Private constructor to restrict inadvertent instantiation and copying.
   McuStm32L4xx() { internal::configure_interrupts(); }
 
@@ -164,6 +172,12 @@ class McuStm32L4xx final {
   constexpr i2c::I2cPeripheral& i2c() noexcept {
     static_assert(BUS < PinoutType::NUM_I2C_BUSES);
     return i2c_buses[BUS];
+  }
+
+  template <size_t INDEX = 0>
+  constexpr adc::AdcPeripheral& adc() noexcept {
+    static_assert(INDEX < PinoutType::NUM_ADC_CHANNELS);
+    return adcs_[INDEX];
   }
 };
 
