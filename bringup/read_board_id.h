@@ -4,10 +4,9 @@
 #include "hal/adc/adc.h"
 #include "hal/board_identification/board_ids.h"
 #include "hal/gpio/gpio.h"
+#include "platforms/linker_sections.h"
 
-extern "C" {
-__attribute__((section(".status.value"))) uint16_t measured_board_id_value;
-}
+inline PRINCIPAL_RESULT uint16_t measured_board_id_value;
 
 namespace tvsc::bringup {
 
@@ -36,17 +35,17 @@ tvsc::hal::board_identification::BoardId read_board_id(
   }
 
   id_power.set_pin_mode(PinMode::OUTPUT_PUSH_PULL, PinSpeed::LOW);
-
   id_sense.set_pin_mode(PinMode::ANALOG);
 
-  id_power.write_pin(1);
+  id_power.on();
 
   // Give the power and sense pins time to turn on and settle.
   clock.wait(10ms);
 
   measured_board_id_value = adc.measure_value(id_sense.ref());
 
-  id_power.write_pin(0);
+  id_power.off();
+  id_power.set_pin_mode(PinMode::ANALOG);
 
   return determine_board_id(measured_board_id_value);
 }
