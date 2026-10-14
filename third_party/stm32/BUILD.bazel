@@ -13,6 +13,7 @@ cc_library(
     srcs = [
         "syscalls.c",
         "sysmem.c",
+        "system_stm32l4xx.c",
     ],
     target_compatible_with = select({
         "//platforms:stm32_core": [],
@@ -21,17 +22,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":stm32_headers",
-    ] + select({
-        "//platforms:stm32l412xx_mcu": [
-            ":stm32l412xx",
-        ],
-        "//platforms:stm32l432xx_mcu": [
-            ":stm32l432xx",
-        ],
-        "//platforms:stm32l452xx_mcu": [
-            ":stm32l452xx",
-        ],
-    }),
+        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_L4:nucleo_l452xx_hal",
+    ],
     alwayslink = True,
 )
 
@@ -40,6 +32,7 @@ cc_library(
     srcs = [
         "syscalls.c",
         "sysmem_noheap.c",
+        "system_stm32l4xx.c",
     ],
     target_compatible_with = select({
         "//platforms:stm32_core": [],
@@ -48,60 +41,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":stm32_headers",
-    ] + select({
-        "//platforms:stm32l412xx_mcu": [
-            ":stm32l412xx",
-        ],
-        "//platforms:stm32l432xx_mcu": [
-            ":stm32l432xx",
-        ],
-        "//platforms:stm32l452xx_mcu": [
-            ":stm32l452xx",
-        ],
-    }),
-    alwayslink = True,
-)
-
-cc_library(
-    name = "stm32l412xx",
-    srcs = [
-        "startup_stm32l412xx.s",
-        "system_stm32l4xx.c",
-    ],
-    target_compatible_with = [
-        "//platforms:stm32l412xx_mcu",
-    ],
-    deps = [
-        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_L4:nucleo_l412xx_hal",
-    ],
-    alwayslink = True,
-)
-
-cc_library(
-    name = "stm32l432xx",
-    srcs = [
-        "startup_stm32l432xx.s",
-        "system_stm32l4xx.c",
-    ],
-    target_compatible_with = [
-        "//platforms:stm32l432xx_mcu",
-    ],
-    deps = [
-        "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_L4:nucleo_l432xx_hal",
-    ],
-    alwayslink = True,
-)
-
-cc_library(
-    name = "stm32l452xx",
-    srcs = [
-        "startup_stm32l452xx.s",
-        "system_stm32l4xx.c",
-    ],
-    target_compatible_with = [
-        "//platforms:stm32l452xx_mcu",
-    ],
-    deps = [
         "@com_github_stellarcorp_stm32_libraries//STM32Cube_FW_L4:nucleo_l452xx_hal",
     ],
     alwayslink = True,
