@@ -18,6 +18,7 @@
 #include "hal/i2c/i2c.h"
 #include "hal/i2c/stm32l4xx_i2c.h"
 #include "hal/mcu/basic_mcu.h"
+#include "hal/mcu/dma_facility.h"
 #include "hal/mcu_identification/mcu_identification.h"
 #include "hal/mcu_identification/stm32l4xx_mcu_identification.h"
 #include "hal/pinout/pinout.h"
@@ -129,6 +130,108 @@ class McuStm32L4xx final {
  public:
   // One MCU per executable.
   [[nodiscard]] static McuStm32L4xx& mcu() noexcept { return mcu_; }
+
+  [[nodiscard]] static constexpr bool is_facility_valid_for_dma_channel(
+      int dma, int channel, DmaFacility facility) noexcept {
+    if (dma == 1) {
+      switch (channel) {
+        case 1:
+          return facility == DmaFacility::FACILITY_ADC1 ||
+                 facility == DmaFacility::FACILITY_TIM2_CH3 ||
+                 facility == DmaFacility::FACILITY_TIM4_CH1;
+
+        case 2:
+          return facility == DmaFacility::FACILITY_SPI1_RX ||
+                 facility == DmaFacility::FACILITY_I2C1_TX ||
+                 facility == DmaFacility::FACILITY_USART1_RX ||
+                 facility == DmaFacility::FACILITY_TIM17_CH1 ||
+                 facility == DmaFacility::FACILITY_TIM1_CH1 ||
+                 facility == DmaFacility::FACILITY_SAI1_A;
+
+        case 3:
+          return facility == DmaFacility::FACILITY_SPI1_TX ||
+                 facility == DmaFacility::FACILITY_I2C1_RX ||
+                 facility == DmaFacility::FACILITY_USART1_TX ||
+                 facility == DmaFacility::FACILITY_TIM16_CH1 ||
+                 facility == DmaFacility::FACILITY_TIM1_CH2;
+
+        case 4:
+          return facility == DmaFacility::FACILITY_SPI2_RX ||
+                 facility == DmaFacility::FACILITY_I2C2_TX ||
+                 facility == DmaFacility::FACILITY_USART2_RX ||
+                 facility == DmaFacility::FACILITY_TIM4_CH2 ||
+                 facility == DmaFacility::FACILITY_TIM1_CH4 ||
+                 facility == DmaFacility::FACILITY_TIM3_CH1;
+
+        case 5:
+          return facility == DmaFacility::FACILITY_SPI2_TX ||
+                 facility == DmaFacility::FACILITY_I2C2_RX ||
+                 facility == DmaFacility::FACILITY_USART2_TX ||
+                 facility == DmaFacility::FACILITY_TIM4_CH3 ||
+                 facility == DmaFacility::FACILITY_TIM3_CH4 ||
+                 facility == DmaFacility::FACILITY_TIM2_UP;
+
+        case 6:
+          return facility == DmaFacility::FACILITY_USART3_RX ||
+                 facility == DmaFacility::FACILITY_I2C3_RX ||
+                 facility == DmaFacility::FACILITY_TIM3_CH3 ||
+                 facility == DmaFacility::FACILITY_TIM1_CH3 ||
+                 facility == DmaFacility::FACILITY_LPUART1_RX;
+
+        case 7:
+          return facility == DmaFacility::FACILITY_USART3_TX ||
+                 facility == DmaFacility::FACILITY_I2C3_TX ||
+                 facility == DmaFacility::FACILITY_TIM2_CH2 ||
+                 facility == DmaFacility::FACILITY_TIM4_UP ||
+                 facility == DmaFacility::FACILITY_TIM1_UP ||
+                 facility == DmaFacility::FACILITY_LPUART1_TX;
+
+        default:
+          return false;
+      }
+    } else if (dma == 2) {
+      switch (channel) {
+        case 1:
+          return facility == DmaFacility::FACILITY_SPI1_RX ||
+                 facility == DmaFacility::FACILITY_USART1_RX ||
+                 facility == DmaFacility::FACILITY_TIM1_CH1;
+
+        case 2:
+          return facility == DmaFacility::FACILITY_SPI1_TX ||
+                 facility == DmaFacility::FACILITY_USART1_TX ||
+                 facility == DmaFacility::FACILITY_TIM1_CH2;
+
+        case 3:
+          return facility == DmaFacility::FACILITY_ADC2 ||
+                 facility == DmaFacility::FACILITY_AES_OUT;
+
+        case 4:
+          return facility == DmaFacility::FACILITY_ADC3 || facility == DmaFacility::FACILITY_ADC4 ||
+                 facility == DmaFacility::FACILITY_AES_IN ||
+                 facility == DmaFacility::FACILITY_QUADSPI;
+
+        case 5:
+          return facility == DmaFacility::FACILITY_SPI3_RX ||
+                 facility == DmaFacility::FACILITY_UART4_RX ||
+                 facility == DmaFacility::FACILITY_SAI1_A;
+
+        case 6:
+          return facility == DmaFacility::FACILITY_SPI3_TX ||
+                 facility == DmaFacility::FACILITY_UART4_TX ||
+                 facility == DmaFacility::FACILITY_SAI1_B;
+
+        case 7:
+          return facility == DmaFacility::FACILITY_DAC1_CH1 ||
+                 facility == DmaFacility::FACILITY_DAC1_CH2 ||
+                 facility == DmaFacility::FACILITY_TIM7_UP;
+
+        default:
+          return false;
+      }
+    }
+
+    return false;
+  }
 
   [[nodiscard]] constexpr gpio::PinPeripheral create_peripheral(gpio::PinRef ref) noexcept {
     return {gpio(ref.port), ref.pin};

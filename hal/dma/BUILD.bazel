@@ -3,6 +3,9 @@ cc_library(
     hdrs = [
         "dma.h",
     ],
+    deps = [
+        "//hal",
+    ],
 )
 
 cc_library(
@@ -12,9 +15,13 @@ cc_library(
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
+    hdrs = [
+        "channel.h",
+    ],
     deps = [
         ":dma_headers",
         "//hal",
+        "//hal/mcu:dma",
     ] + select({
         "//platforms:stm32l4xx_dma": [
             ":stm32l4xx_dma",

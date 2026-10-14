@@ -1,4 +1,16 @@
 cc_library(
+    name = "dma",
+    hdrs = [
+        "dma_facility.h",
+    ],
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
     name = "mcu",
     hdrs = [
         "mcu.h",
@@ -10,6 +22,7 @@ cc_library(
     }),
     visibility = ["//visibility:public"],
     deps = [
+        ":dma",
         "//flags",
     ] + select({
         "//platforms:stm32l412xx_mcu": [
