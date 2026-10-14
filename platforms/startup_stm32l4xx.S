@@ -3,22 +3,6 @@
 
 .global Reset_Handler
 
-/* start address for the initialization values of the .data section.
-defined in linker script */
-.word _sidata
-/* start address for the .data section. defined in linker script */
-.word _sdata
-/* end address for the .data section. defined in linker script */
-.word _edata
-/* start address for the .bss section. defined in linker script */
-.word _sbss
-/* end address for the .bss section. defined in linker script */
-.word _ebss
-/* start address for the .status section. defined in linker script */
-.word _sstatus
-/* end address for the .status section. defined in linker script */
-.word _estatus
-
 .section .status.exit_code, "aw", %nobits
 .align 2
 .global exit_code
