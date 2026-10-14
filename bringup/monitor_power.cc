@@ -7,6 +7,7 @@
 #include "base/initializer.h"
 #include "bringup/blink.h"
 #include "bringup/watchdog.h"
+#include "hal/dma/channel.h"
 #include "hal/pinout/pinout.h"
 #include "platforms/linker_sections.h"
 #include "system/system.h"
@@ -19,8 +20,17 @@ static constexpr size_t NUM_POWER_MONITORS{tvsc::hal::pinout::Pinout::NUM_POWER_
 
 PRINCIPAL_RESULT std::array<PowerUsage, NUM_POWER_MONITORS> power_monitors{};
 
+using namespace tvsc::hal::dma;
+
+struct DmaConfiguration final : DefaultDmaConfiguration {
+  // TODO(james): Add binding for I2C bus DMAs.
+};
+
+DEFINE_DMA_IRQ_HANDLERS(DmaConfiguration);
+
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
+  initialize_dma_interrupts<DmaConfiguration>();
 
   auto& mcu{System::mcu()};
   auto& board{System::board()};

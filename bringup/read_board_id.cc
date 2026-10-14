@@ -11,6 +11,7 @@
 #include "bringup/blink.h"
 #include "hal/board/board.h"
 #include "hal/board_identification/board_ids.h"
+#include "hal/dma/channel.h"
 #include "hal/gpio/gpio.h"
 #include "platforms/linker_sections.h"
 #include "system/scheduler.h"
@@ -105,9 +106,16 @@ tvsc::system::System::Task read_board_id(int32_t num_iterations = -1) {
 
 using namespace tvsc::bringup;
 using namespace tvsc::system;
+using namespace tvsc::hal::dma;
+
+struct DmaConfiguration final : DefaultDmaConfiguration {
+  using Dma1Channel1Facility = AdcFacility<0>;
+};
+DEFINE_DMA_IRQ_HANDLERS(DmaConfiguration);
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
+  initialize_dma_interrupts<DmaConfiguration>();
 
   System::scheduler().add_task(read_board_id());
   System::scheduler().add_task(blink_on_success(

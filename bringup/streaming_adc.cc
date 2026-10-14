@@ -6,6 +6,7 @@
 
 #include "base/initializer.h"
 #include "bringup/dac_demo.h"
+#include "hal/dma/channel.h"
 #include "hal/gpio/gpio.h"
 #include "system/system.h"
 
@@ -106,9 +107,17 @@ tvsc::system::System::Task run_adc_demo() {
 
 using namespace tvsc::bringup;
 using namespace tvsc::system;
+using namespace tvsc::hal::dma;
+
+struct DmaConfiguration final : DefaultDmaConfiguration {
+  // TODO(james): Add binding for ADC and possibly DAC DMAs.
+};
+
+DEFINE_DMA_IRQ_HANDLERS(DmaConfiguration);
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
+  initialize_dma_interrupts<DmaConfiguration>();
 
   System::scheduler().add_task(run_adc_demo());
   System::scheduler().start();

@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "base/initializer.h"
+#include "hal/dma/channel.h"
 #include "system/system.h"
 
 using Pinout = tvsc::system::System::PinoutType;
@@ -12,9 +13,14 @@ __attribute__((section(".status.value"))) uint32_t dac2_value;
 
 using namespace tvsc::bringup;
 using namespace tvsc::system;
+using namespace tvsc::hal::dma;
+
+DEFINE_DMA_IRQ_HANDLERS(DefaultDmaConfiguration);
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
+  initialize_dma_interrupts<DefaultDmaConfiguration>();
+
   if constexpr (Pinout::NUM_DAC_CHANNELS >= 1) {
     System::scheduler().add_task(run_dac_demo<0>(dac1_value));
   }

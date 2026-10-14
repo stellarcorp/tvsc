@@ -2,6 +2,7 @@
 
 #include "base/initializer.h"
 #include "hal/board/board.h"
+#include "hal/dma/channel.h"
 #include "hal/programmer/programmer.h"
 #include "system/system.h"
 #include "system/task.h"
@@ -49,9 +50,13 @@ tvsc::system::System::Task reset_target() {
 
 using namespace tvsc::bringup;
 using namespace tvsc::system;
+using namespace tvsc::hal::dma;
+
+DEFINE_DMA_IRQ_HANDLERS(DefaultDmaConfiguration);
 
 int main(int argc, char *argv[]) {
   tvsc::initialize(&argc, &argv);
+  initialize_dma_interrupts<DefaultDmaConfiguration>();
 
   System::scheduler().add_task(reset_target());
   System::scheduler().start();

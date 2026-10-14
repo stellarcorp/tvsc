@@ -3,16 +3,24 @@
 
 #include "base/initializer.h"
 #include "bringup/read_board_id.h"
+#include "hal/dma/channel.h"
 #include "platforms/linker_sections.h"
 #include "system/system.h"
 
 using namespace std::chrono_literals;
 using namespace tvsc::hal::board_identification;
+using namespace tvsc::hal::dma;
 
 inline PRINCIPAL_RESULT BoardId board_id{};
 
+struct DmaConfiguration final : DefaultDmaConfiguration {
+  using Dma1Channel1Facility = AdcFacility<0>;
+};
+DEFINE_DMA_IRQ_HANDLERS(DmaConfiguration);
+
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
+  initialize_dma_interrupts<DmaConfiguration>();
 
   using Pinout = tvsc::system::System::PinoutType;
 

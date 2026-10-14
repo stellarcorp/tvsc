@@ -5,6 +5,7 @@
 #include "base/initializer.h"
 #include "bringup/blink.h"
 #include "bringup/watchdog.h"
+#include "hal/dma/channel.h"
 #include "system/system.h"
 
 using namespace tvsc::bringup;
@@ -18,8 +19,17 @@ __attribute__((section(".status.value"))) ImuReading imu2_reading{};
 
 }  // extern "C"
 
+using namespace tvsc::hal::dma;
+
+struct DmaConfiguration final : DefaultDmaConfiguration {
+  // TODO(james): Add binding for SPI bus DMAs.
+};
+
+DEFINE_DMA_IRQ_HANDLERS(DmaConfiguration);
+
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
+  initialize_dma_interrupts<DmaConfiguration>();
 
   auto& mcu{System::mcu()};
   auto& board{System::board()};

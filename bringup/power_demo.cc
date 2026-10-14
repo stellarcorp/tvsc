@@ -2,15 +2,20 @@
 
 #include "base/initializer.h"
 #include "hal/board/board.h"
+#include "hal/dma/channel.h"
 #include "hal/gpio/gpio.h"
 #include "time/embedded_clock.h"
 
 using BoardType = tvsc::hal::board::Board;
 
 using namespace tvsc::hal::gpio;
+using namespace tvsc::hal::dma;
+
+DEFINE_DMA_IRQ_HANDLERS(DefaultDmaConfiguration);
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
+  initialize_dma_interrupts<DefaultDmaConfiguration>();
 
   BoardType& board{BoardType::board()};
   auto& rcc{board.mcu().rcc()};

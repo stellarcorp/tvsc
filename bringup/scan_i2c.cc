@@ -11,12 +11,14 @@
 #include "base/constexpr_for.h"
 #include "base/initializer.h"
 #include "hal/board/board.h"
+#include "hal/dma/channel.h"
 #include "hal/i2c/i2c.h"
 #include "hal/pinout/pinout.h"
 #include "time/embedded_clock.h"
 
 using BoardType = tvsc::hal::board::Board;
 using ClockType = tvsc::time::EmbeddedClock;
+using namespace tvsc::hal::dma;
 using namespace tvsc::hal::i2c;
 using namespace tvsc::hal::pinout;
 using namespace std::chrono_literals;
@@ -33,8 +35,15 @@ void scan_i2c_bus() {
   tvsc::hal::i2c::scan_bus(i2c, discovered_devices[BUS]);
 }
 
+struct DmaConfiguration final : DefaultDmaConfiguration {
+  // TODO(james): Add binding for SPI bus DMAs.
+};
+
+DEFINE_DMA_IRQ_HANDLERS(DmaConfiguration);
+
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
+  initialize_dma_interrupts<DmaConfiguration>();
 
   auto& board{BoardType::board()};
   auto& clock{ClockType::clock()};

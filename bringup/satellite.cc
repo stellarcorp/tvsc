@@ -11,6 +11,7 @@
 #include "bringup/read_board_id.h"
 #include "hal/board/board.h"
 #include "hal/board_identification/board_ids.h"
+#include "hal/dma/channel.h"
 #include "hal/mcu_identification/mcu_identification.h"
 #include "message/announce.h"
 #include "message/leds.h"
@@ -25,6 +26,7 @@
 using namespace std::chrono_literals;
 using namespace tvsc::bringup;
 using namespace tvsc::hal::board_identification;
+using namespace tvsc::hal::dma;
 using namespace tvsc::system;
 
 extern "C" {
@@ -82,8 +84,16 @@ class LedControl final : public tvsc::message::Processor<tvsc::message::CanBusMe
   }
 };
 
+struct DmaConfiguration final : DefaultDmaConfiguration {
+  // TODO(james): Add bindings for various DMAs.
+};
+
+DEFINE_DMA_IRQ_HANDLERS(DmaConfiguration);
+
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
+  initialize_dma_interrupts<DmaConfiguration>();
+
   using Pinout = System::PinoutType;
   auto& system{System::get()};
 

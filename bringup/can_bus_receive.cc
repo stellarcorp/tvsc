@@ -7,6 +7,7 @@
 
 #include "base/initializer.h"
 #include "hal/can_bus/can_bus.h"
+#include "hal/dma/channel.h"
 #include "system/system.h"
 
 extern "C" {
@@ -121,9 +122,13 @@ tvsc::system::System::Task echo_server() {
 
 using namespace tvsc::bringup;
 using namespace tvsc::system;
+using namespace tvsc::hal::dma;
+
+DEFINE_DMA_IRQ_HANDLERS(DefaultDmaConfiguration);
 
 int main(int argc, char *argv[]) {
   tvsc::initialize(&argc, &argv);
+  initialize_dma_interrupts<DefaultDmaConfiguration>();
 
   System::scheduler().add_task(echo_server());
   System::scheduler().start();

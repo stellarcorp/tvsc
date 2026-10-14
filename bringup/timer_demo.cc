@@ -2,6 +2,7 @@
 
 #include "base/initializer.h"
 #include "hal/board/board.h"
+#include "hal/dma/channel.h"
 #include "hal/gpio/gpio.h"
 #include "hal/peripheral_id.h"
 #include "third_party/stm32/stm32.h"
@@ -10,6 +11,9 @@
 using BoardType = tvsc::hal::board::Board;
 
 using namespace tvsc::hal::gpio;
+using namespace tvsc::hal::dma;
+
+DEFINE_DMA_IRQ_HANDLERS(DefaultDmaConfiguration);
 
 struct Debug final {
   volatile tvsc::hal::PeripheralId timer_id{};
@@ -27,6 +31,7 @@ void HAL_LPTIM_CompareMatchCallback(LPTIM_HandleTypeDef *) {
 
 int main(int argc, char *argv[]) {
   tvsc::initialize(&argc, &argv);
+  initialize_dma_interrupts<DefaultDmaConfiguration>();
 
   BoardType &board{BoardType::board()};
 
