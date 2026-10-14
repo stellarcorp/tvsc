@@ -83,6 +83,16 @@ class DacStm32xxxx final : public DacPeripheral {
       channel.config.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
     }
   }
+
+  void handle_interrupt() override {
+    // Note that DMA transfers, the main reason this method would be useful, are not yet supported
+    // with DACs.
+#if defined(__cpp_lib_unreachable) && (__cpp_lib_unreachable >= 202202L)
+    std::unreachable();
+#else
+    __builtin_unreachable();
+#endif
+  }
 };
 
 }  // namespace tvsc::hal::dac

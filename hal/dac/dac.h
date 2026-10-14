@@ -24,6 +24,8 @@ class DacPeripheral : public Peripheral<DacPeripheral, Dac> {
 
  public:
   virtual ~DacPeripheral() = default;
+
+  virtual void handle_interrupt() = 0;
 };
 
 class Dac final : public Functional<DacPeripheral, Dac> {
