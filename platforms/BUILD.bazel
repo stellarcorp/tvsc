@@ -32,6 +32,66 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "startup",
+    srcs = [
+        "startup_stm32l4xx.S",
+    ],
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = select({
+        "//platforms:stm32l412xx_mcu": [
+            ":startup_stm32l412",
+        ],
+        "//platforms:stm32l432xx_mcu": [
+            ":startup_stm32l432",
+        ],
+        "//platforms:stm32l452xx_mcu": [
+            ":startup_stm32l452",
+        ],
+    }),
+    alwayslink = True,
+)
+
+cc_library(
+    name = "startup_stm32l412",
+    srcs = [
+        "stm32l412_interrupt_vector_table.S",
+    ],
+    target_compatible_with = select({
+        "//platforms:stm32l412xx_mcu": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    alwayslink = True,
+)
+
+cc_library(
+    name = "startup_stm32l432",
+    srcs = [
+        "stm32l432_interrupt_vector_table.S",
+    ],
+    target_compatible_with = select({
+        "//platforms:stm32l432xx_mcu": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    alwayslink = True,
+)
+
+cc_library(
+    name = "startup_stm32l452",
+    srcs = [
+        "stm32l452_interrupt_vector_table.S",
+    ],
+    target_compatible_with = select({
+        "//platforms:stm32l452xx_mcu": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    alwayslink = True,
+)
+
 # General development platform. Not intended for embedded components.
 platform(
     name = "linux_x86_64_general",
