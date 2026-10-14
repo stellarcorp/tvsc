@@ -42,7 +42,21 @@ cc_library(
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
+    alwayslink = True,
+)
+
+cc_library(
+    name = "startup_with_interrupt_vector_table",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
     deps = select({
+        "//platforms:stm32_core": [
+            ":startup",
+        ],
+    }) + select({
         "//platforms:stm32l4xx": [
             ":stm32l4_interrupt_vector_table",
         ],
