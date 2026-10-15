@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 #include "hal/config/facilities.h"
-#include "hal/config/facility_accessors.h"
+#include "hal/config/peripheral_accessors.h"
 #include "hal/config/vector_table.h"
 
 // Symbols provided by startup assembly and the linker. These empty versions are provided here to
@@ -28,14 +28,14 @@ struct RccAccessor {
     return 100;
   }
 };
-static_assert(ValidFacilityAccessor<RccAccessor>);
+static_assert(ValidPeripheralAccessor<RccAccessor>);
 
 struct SystickAccessor {
   static constexpr Facility facility() noexcept { return Facility::SYSTICK; }
   static constexpr size_t index() noexcept { return 0; }
   int systick() { return 200; }
 };
-static_assert(ValidFacilityAccessor<SystickAccessor>);
+static_assert(ValidPeripheralAccessor<SystickAccessor>);
 
 template <size_t INDEX>
 struct I2cAccessor;
@@ -46,7 +46,7 @@ struct I2cAccessor<0> {
   static constexpr size_t index() noexcept { return 0; }
   constexpr int i2c0() const noexcept { return 300; }
 };
-static_assert(ValidFacilityAccessor<I2cAccessor<0>>);
+static_assert(ValidPeripheralAccessor<I2cAccessor<0>>);
 
 template <>
 struct I2cAccessor<1> {
@@ -54,7 +54,7 @@ struct I2cAccessor<1> {
   static constexpr size_t index() noexcept { return 1; }
   constexpr int i2c1() const noexcept { return 400; }
 };
-static_assert(ValidFacilityAccessor<I2cAccessor<1>>);
+static_assert(ValidPeripheralAccessor<I2cAccessor<1>>);
 
 inline void rcc_isr() noexcept {}
 inline void systick_isr() noexcept {}

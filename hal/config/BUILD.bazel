@@ -3,7 +3,7 @@ cc_library(
     visibility = ["//visibility:public"],
     hdrs = [
         "facilities.h",
-        "facility_accessors.h",
+        "peripheral_accessors.h",
         "system_builder.h",
         "vector_table.h",
     ],

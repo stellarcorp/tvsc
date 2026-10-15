@@ -5,14 +5,11 @@
 
 namespace tvsc::hal::config {
 
-template <Facility F, size_t INDEX>
-struct FacilityAccessor;
-
 template <Facility F, size_t INDEX, typename T>
 struct has_matching_accessor_name : std::false_type {};
 
 template <typename T>
-concept ValidFacilityAccessor = requires {
+concept ValidPeripheralAccessor = requires {
   // Enforce that the type exposes the required static constants
   { T::facility() } -> std::same_as<Facility>;
   { T::index() } -> std::same_as<size_t>;
@@ -21,6 +18,7 @@ concept ValidFacilityAccessor = requires {
   requires has_matching_accessor_name<T::facility(), T::index(), T>::value;
 };
 
+// Rules to enforce the naming conventions for each facility.
 template <typename T>
 struct has_matching_accessor_name<Facility::RCC, 0, T> {
   static constexpr bool value = requires(T t) {

@@ -3,7 +3,7 @@
 #include <concepts>
 
 #include "hal/config/facilities.h"
-#include "hal/config/facility_accessors.h"
+#include "hal/config/peripheral_accessors.h"
 #include "hal/config/vector_table.h"
 
 namespace tvsc::hal::config {
@@ -19,7 +19,7 @@ concept ValidFacilityConfiguration = requires {
   { T::facility() } -> std::same_as<Facility>;
   { T::index() } -> std::same_as<size_t>;
 
-  requires ValidFacilityAccessor<typename T::accessor>;
+  requires ValidPeripheralAccessor<typename T::accessor>;
 
   requires T::accessor::facility() == T::facility();
   requires T::accessor::index() == T::index();
@@ -32,9 +32,9 @@ concept ValidFacilityConfiguration = requires {
   };
 };
 
-template <typename... FacilityAccessors>
-struct System final : FacilityAccessors... {
-  // All of the System's methods come from the FacilityAccessors.
+template <typename... PeripheralAccessors>
+struct System final : PeripheralAccessors... {
+  // All of the System's methods come from its superclasses, the PeripheralAccessors.
 };
 
 template <size_t NUM_ISRS, typename... FacilityConfigurations>
