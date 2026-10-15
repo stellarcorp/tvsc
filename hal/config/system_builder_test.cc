@@ -84,7 +84,7 @@ struct RccConfiguration {
     table.isrs[RCC_IRQn] = &rcc_isr;
   }
 };
-static_assert(ValidFacilityConfiguration<RccConfiguration>);
+static_assert(ValidPeripheralConfiguration<RccConfiguration>);
 
 struct SystickConfiguration {
   using accessor = SystickAccessor;
@@ -97,7 +97,7 @@ struct SystickConfiguration {
     table.isrs[SYSTICK_IRQn] = &systick_isr;
   }
 };
-static_assert(ValidFacilityConfiguration<SystickConfiguration>);
+static_assert(ValidPeripheralConfiguration<SystickConfiguration>);
 
 template <size_t INDEX>
 struct I2cConfiguration;
@@ -115,7 +115,7 @@ struct I2cConfiguration<0> {
     table.isrs[I2C0_ER_IRQn] = &i2c0_er_isr;
   }
 };
-static_assert(ValidFacilityConfiguration<I2cConfiguration<0>>);
+static_assert(ValidPeripheralConfiguration<I2cConfiguration<0>>);
 
 template <>
 struct I2cConfiguration<1> {
@@ -130,7 +130,7 @@ struct I2cConfiguration<1> {
     table.isrs[I2C1_ER_IRQn] = &i2c1_er_isr;
   }
 };
-static_assert(ValidFacilityConfiguration<I2cConfiguration<1>>);
+static_assert(ValidPeripheralConfiguration<I2cConfiguration<1>>);
 
 TEST(SystemBuilderTest, CanConstructSystem) {
   auto system_builder{SystemBuilder<NUM_ISRS>{}
