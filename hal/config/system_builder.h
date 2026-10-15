@@ -2,7 +2,7 @@
 
 #include <concepts>
 
-#include "hal/config/facilities.h"
+#include "hal/config/facility.h"
 #include "hal/config/peripheral_accessors.h"
 #include "hal/config/vector_table.h"
 

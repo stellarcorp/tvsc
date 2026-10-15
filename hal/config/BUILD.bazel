@@ -2,7 +2,7 @@ cc_library(
     name = "config",
     visibility = ["//visibility:public"],
     hdrs = [
-        "facilities.h",
+        "facility.h",
         "peripheral_accessors.h",
         "system_builder.h",
         "vector_table.h",
