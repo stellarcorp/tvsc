@@ -44,9 +44,9 @@ class CanBusPeripheral : public SingletonPeripheral<CanBusPeripheral, CanBus> {
   virtual void handle_interrupt() = 0;
 };
 
-class CanBus final : public Functional<CanBusPeripheral, CanBus> {
+class CanBus final : public Driver<CanBusPeripheral, CanBus> {
  private:
-  CanBus(CanBusPeripheral& peripheral) : Functional<CanBusPeripheral, CanBus>(peripheral) {}
+  CanBus(CanBusPeripheral& peripheral) : Driver<CanBusPeripheral, CanBus>(peripheral) {}
 
   friend class Peripheral<CanBusPeripheral, CanBus>;
 

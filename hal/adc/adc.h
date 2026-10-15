@@ -69,9 +69,9 @@ class AdcPeripheral : public Peripheral<AdcPeripheral, Adc> {
   virtual void handle_interrupt() = 0;
 };
 
-class Adc final : public Functional<AdcPeripheral, Adc> {
+class Adc final : public Driver<AdcPeripheral, Adc> {
  protected:
-  explicit Adc(AdcPeripheral& peripheral) : Functional<AdcPeripheral, Adc>(peripheral) {}
+  explicit Adc(AdcPeripheral& peripheral) : Driver<AdcPeripheral, Adc>(peripheral) {}
 
   friend class Peripheral<AdcPeripheral, Adc>;
 

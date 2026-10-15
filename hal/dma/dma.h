@@ -21,9 +21,9 @@ class DmaPeripheral : public Peripheral<DmaPeripheral, Dma> {
   virtual ~DmaPeripheral() = default;
 };
 
-class Dma final : public Functional<DmaPeripheral, Dma> {
+class Dma final : public Driver<DmaPeripheral, Dma> {
  protected:
-  explicit Dma(DmaPeripheral& peripheral) : Functional<DmaPeripheral, Dma>(peripheral) {}
+  explicit Dma(DmaPeripheral& peripheral) : Driver<DmaPeripheral, Dma>(peripheral) {}
 
   friend class Peripheral<DmaPeripheral, Dma>;
 

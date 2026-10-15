@@ -39,10 +39,10 @@ class PowerMonitorPeripheral : public Peripheral<PowerMonitorPeripheral, PowerMo
   virtual void set_sample_averaging_approximate(uint16_t num_samples) = 0;
 };
 
-class PowerMonitor final : public Functional<PowerMonitorPeripheral, PowerMonitor> {
+class PowerMonitor final : public Driver<PowerMonitorPeripheral, PowerMonitor> {
  private:
   PowerMonitor(PowerMonitorPeripheral& peripheral)
-      : Functional<PowerMonitorPeripheral, PowerMonitor>(peripheral) {}
+      : Driver<PowerMonitorPeripheral, PowerMonitor>(peripheral) {}
 
   friend class Peripheral<PowerMonitorPeripheral, PowerMonitor>;
 

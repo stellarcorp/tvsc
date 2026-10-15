@@ -22,9 +22,9 @@ class LedPeripheral : public Peripheral<LedPeripheral, Led> {
   virtual ~LedPeripheral() = default;
 };
 
-class Led final : public Functional<LedPeripheral, Led> {
+class Led final : public Driver<LedPeripheral, Led> {
  private:
-  Led(LedPeripheral& peripheral) : Functional<LedPeripheral, Led>(peripheral) {}
+  Led(LedPeripheral& peripheral) : Driver<LedPeripheral, Led>(peripheral) {}
 
   friend class Peripheral<LedPeripheral, Led>;
 

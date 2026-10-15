@@ -6,18 +6,18 @@
  * use cases will have severe power constraints, and turning off the power and clock whenever
  * possible should extend the lifetime of the satellite. To make this happen, we separate the
  * representation of the Peripheral itself from its function. Every Peripheral has a method to give
- * access to its functions. The base class for the functions, called Functional, increments a
+ * access to its functions. The base class for the functions, called Driver, increments a
  * reference count on instantiation. The Peripheral then watches the reference count to determine
  * when to enable clock and power to the peripheral and when to disable them.
  *
  * The overall structure hopefully makes it easy to implement new peripherals via subclassing. The
  * Peripheral base class represents a real peripheral on a board, especially one that can be enabled
- * or disabled, but without any access to the functionality of that peripheral. The Functional base
- * class represents access to the functions of the peripheral. The Functional provides an RAII
+ * or disabled, but without any access to the functionality of that peripheral. The Driver base
+ * class represents access to the functions of the peripheral. The Driver provides an RAII
  * mechanism to control when the peripheral gets power and clock. To create a new peripheral, the
- * typical method will be to subclass both Peripheral and Functional, with the Peripheral acting as
- * the factory for the Functional subclass. The functionality of the peripheral should be exposed
- * only on the Functional subclass. The functionality may be implemented directly on the Functional
+ * typical method will be to subclass both Peripheral and Driver, with the Peripheral acting as
+ * the factory for the Driver subclass. The functionality of the peripheral should be exposed
+ * only on the Driver subclass. The functionality may be implemented directly on the Driver
  * subclass, or it may delegate back to the Peripheral.
  *
  * In most of our peripherals, we will want to provide another layer between the interface of the
@@ -38,10 +38,10 @@
 
 namespace tvsc::hal {
 
-template <typename PeripheralType, typename FunctionalType>
-class Functional;
+template <typename PeripheralType, typename DriverType>
+class Driver;
 
-template <typename PeripheralType, typename FunctionalType>
+template <typename PeripheralType, typename DriverType>
 class Peripheral {
  private:
   size_t ref_count_{};
@@ -58,7 +58,7 @@ class Peripheral {
     }
   }
 
-  friend class Functional<PeripheralType, FunctionalType>;
+  friend class Driver<PeripheralType, DriverType>;
 
  protected:
   /**
@@ -81,13 +81,13 @@ class Peripheral {
   virtual ~Peripheral() = default;
 
   // Access an interface to use the functionality of this peripheral.
-  [[nodiscard]] FunctionalType access() {
-    return FunctionalType{*reinterpret_cast<PeripheralType*>(this)};
+  [[nodiscard]] DriverType access() {
+    return DriverType{*reinterpret_cast<PeripheralType*>(this)};
   }
 };
 
-template <typename PeripheralType, typename FunctionalType>
-class SingletonPeripheral : public Peripheral<PeripheralType, FunctionalType> {
+template <typename PeripheralType, typename DriverType>
+class SingletonPeripheral : public Peripheral<PeripheralType, DriverType> {
  public:
   constexpr SingletonPeripheral() = default;
   SingletonPeripheral(const SingletonPeripheral&) = delete;
@@ -96,40 +96,40 @@ class SingletonPeripheral : public Peripheral<PeripheralType, FunctionalType> {
   virtual ~SingletonPeripheral() = default;
 };
 
-template <typename PeripheralType, typename FunctionalType>
-class Functional {
+template <typename PeripheralType, typename DriverType>
+class Driver {
  protected:
   PeripheralType* peripheral_{nullptr};
 
-  constexpr Functional() noexcept = default;
+  constexpr Driver() noexcept = default;
 
-  explicit Functional(PeripheralType& peripheral) : peripheral_(&peripheral) {
+  explicit Driver(PeripheralType& peripheral) : peripheral_(&peripheral) {
     peripheral_->inc_ref_count();
   }
 
  public:
-  virtual ~Functional() {
+  virtual ~Driver() {
     if (peripheral_ != nullptr) {
       peripheral_->dec_ref_count();
     }
   }
 
-  constexpr Functional(Functional&& rhs) noexcept
+  constexpr Driver(Driver&& rhs) noexcept
       : peripheral_(std::exchange(rhs.peripheral_, nullptr)) {}
 
-  constexpr virtual Functional& operator=(Functional&& rhs) noexcept {
+  constexpr virtual Driver& operator=(Driver&& rhs) noexcept {
     std::swap(peripheral_, rhs.peripheral_);
     return *this;
   }
 
-  // Create this Functional as another reference to the same peripheral.
-  Functional(const Functional& rhs) : peripheral_(rhs.peripheral_) {
+  // Create this Driver as another reference to the same peripheral.
+  Driver(const Driver& rhs) : peripheral_(rhs.peripheral_) {
     if (peripheral_ != nullptr) {
       peripheral_->inc_ref_count();
     }
   }
 
-  virtual Functional& operator=(const Functional& rhs) {
+  virtual Driver& operator=(const Driver& rhs) {
     if (peripheral_ != rhs.peripheral_) {
       if (peripheral_ != nullptr) {
         peripheral_->dec_ref_count();

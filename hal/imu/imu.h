@@ -41,9 +41,9 @@ class ImuPeripheral : public Peripheral<ImuPeripheral, Imu> {
   virtual ~ImuPeripheral() = default;
 };
 
-class Imu final : public Functional<ImuPeripheral, Imu> {
+class Imu final : public Driver<ImuPeripheral, Imu> {
  private:
-  Imu(ImuPeripheral& peripheral) : Functional<ImuPeripheral, Imu>(peripheral) {}
+  Imu(ImuPeripheral& peripheral) : Driver<ImuPeripheral, Imu>(peripheral) {}
 
   friend class Peripheral<ImuPeripheral, Imu>;
 

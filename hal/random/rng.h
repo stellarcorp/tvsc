@@ -22,9 +22,9 @@ class RngPeripheral : public Peripheral<RngPeripheral, Rng> {
   virtual ~RngPeripheral() = default;
 };
 
-class Rng final : public Functional<RngPeripheral, Rng> {
+class Rng final : public Driver<RngPeripheral, Rng> {
  protected:
-  explicit Rng(RngPeripheral& peripheral) : Functional<RngPeripheral, Rng>(peripheral) {}
+  explicit Rng(RngPeripheral& peripheral) : Driver<RngPeripheral, Rng>(peripheral) {}
 
   friend class Peripheral<RngPeripheral, Rng>;
 

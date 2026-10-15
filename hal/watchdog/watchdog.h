@@ -27,10 +27,10 @@ class WatchdogPeripheral : public Peripheral<WatchdogPeripheral, Watchdog> {
   [[nodiscard]] virtual std::chrono::milliseconds reset_interval() = 0;
 };
 
-class Watchdog final : public Functional<WatchdogPeripheral, Watchdog> {
+class Watchdog final : public Driver<WatchdogPeripheral, Watchdog> {
  protected:
   explicit Watchdog(WatchdogPeripheral& peripheral)
-      : Functional<WatchdogPeripheral, Watchdog>(peripheral) {}
+      : Driver<WatchdogPeripheral, Watchdog>(peripheral) {}
 
   friend class Peripheral<WatchdogPeripheral, Watchdog>;
 

@@ -53,10 +53,10 @@ class ProgrammerPeripheral : public Peripheral<ProgrammerPeripheral, Programmer>
   virtual ~ProgrammerPeripheral() = default;
 };
 
-class Programmer final : public Functional<ProgrammerPeripheral, Programmer> {
+class Programmer final : public Driver<ProgrammerPeripheral, Programmer> {
  private:
   Programmer(ProgrammerPeripheral& peripheral)
-      : Functional<ProgrammerPeripheral, Programmer>(peripheral) {}
+      : Driver<ProgrammerPeripheral, Programmer>(peripheral) {}
 
   friend class Peripheral<ProgrammerPeripheral, Programmer>;
 

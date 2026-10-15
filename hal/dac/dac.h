@@ -28,9 +28,9 @@ class DacPeripheral : public Peripheral<DacPeripheral, Dac> {
   virtual void handle_interrupt() = 0;
 };
 
-class Dac final : public Functional<DacPeripheral, Dac> {
+class Dac final : public Driver<DacPeripheral, Dac> {
  private:
-  explicit Dac(DacPeripheral& peripheral) : Functional<DacPeripheral, Dac>(peripheral) {}
+  explicit Dac(DacPeripheral& peripheral) : Driver<DacPeripheral, Dac>(peripheral) {}
 
   friend class Peripheral<DacPeripheral, Dac>;
 

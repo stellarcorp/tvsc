@@ -132,9 +132,9 @@ class GpioPeripheral : public SingletonPeripheral<GpioPeripheral, Gpio> {
   virtual PortNumber port() const = 0;
 };
 
-class Gpio final : public Functional<GpioPeripheral, Gpio> {
+class Gpio final : public Driver<GpioPeripheral, Gpio> {
  protected:
-  explicit Gpio(GpioPeripheral& peripheral) : Functional<GpioPeripheral, Gpio>(peripheral) {}
+  explicit Gpio(GpioPeripheral& peripheral) : Driver<GpioPeripheral, Gpio>(peripheral) {}
 
   friend class Peripheral<GpioPeripheral, Gpio>;
 
@@ -189,11 +189,11 @@ class PinPeripheral final : public Peripheral<PinPeripheral, Pin> {
   constexpr PinRef ref() const noexcept { return {gpio_peripheral_->port(), pin_number_}; }
 };
 
-class Pin final : public Functional<PinPeripheral, Pin> {
+class Pin final : public Driver<PinPeripheral, Pin> {
  private:
   friend class Peripheral<PinPeripheral, Pin>;
 
-  explicit Pin(PinPeripheral& peripheral) : Functional<PinPeripheral, Pin>(peripheral) {}
+  explicit Pin(PinPeripheral& peripheral) : Driver<PinPeripheral, Pin>(peripheral) {}
 
  public:
   Pin() = default;

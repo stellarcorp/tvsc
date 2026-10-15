@@ -47,14 +47,14 @@ class Hsi48Oscillator : public Peripheral<Hsi48Oscillator, Hsi48Activation> {
   virtual ~Hsi48Oscillator() = default;
 };
 
-class Hsi48Activation final : public Functional<Hsi48Oscillator, Hsi48Activation> {
+class Hsi48Activation final : public Driver<Hsi48Oscillator, Hsi48Activation> {
  private:
   // Existence of a valid instance of this class on the stack ensures that the HSI 48 clock is
   // enabled. The clock is disabled when all of these instances fall out of scope (RAII) or are
   // invalidate()'d.
 
   explicit Hsi48Activation(Hsi48Oscillator& peripheral)
-      : Functional<Hsi48Oscillator, Hsi48Activation>(peripheral) {}
+      : Driver<Hsi48Oscillator, Hsi48Activation>(peripheral) {}
 
   friend class Peripheral<Hsi48Oscillator, Hsi48Activation>;
 
@@ -75,14 +75,14 @@ class LsiOscillator : public Peripheral<LsiOscillator, LsiActivation> {
   virtual ~LsiOscillator() = default;
 };
 
-class LsiActivation final : public Functional<LsiOscillator, LsiActivation> {
+class LsiActivation final : public Driver<LsiOscillator, LsiActivation> {
  private:
   // Existence of a valid instance of this class on the stack ensures that the HSI 48 clock is
   // enabled. The clock is disabled when all of these instances fall out of scope (RAII) or are
   // invalidate()'d.
 
   explicit LsiActivation(LsiOscillator& peripheral)
-      : Functional<LsiOscillator, LsiActivation>(peripheral) {}
+      : Driver<LsiOscillator, LsiActivation>(peripheral) {}
 
   friend class Peripheral<LsiOscillator, LsiActivation>;
 

@@ -34,9 +34,9 @@ class TimerPeripheral : public Peripheral<TimerPeripheral, Timer> {
   virtual void handle_interrupt() = 0;
 };
 
-class Timer final : public Functional<TimerPeripheral, Timer> {
+class Timer final : public Driver<TimerPeripheral, Timer> {
  protected:
-  explicit Timer(TimerPeripheral& peripheral) : Functional<TimerPeripheral, Timer>(peripheral) {}
+  explicit Timer(TimerPeripheral& peripheral) : Driver<TimerPeripheral, Timer>(peripheral) {}
 
   friend class Peripheral<TimerPeripheral, Timer>;
 

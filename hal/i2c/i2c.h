@@ -67,12 +67,12 @@ class I2cPeripheral : public SingletonPeripheral<I2cPeripheral, I2c> {
   virtual void handle_interrupt() = 0;
 };
 
-class I2c final : public Functional<I2cPeripheral, I2c> {
+class I2c final : public Driver<I2cPeripheral, I2c> {
  public:
   using Callback = I2cPeripheral::Callback;
 
  private:
-  I2c(I2cPeripheral& peripheral) : Functional<I2cPeripheral, I2c>(peripheral) {}
+  I2c(I2cPeripheral& peripheral) : Driver<I2cPeripheral, I2c>(peripheral) {}
 
   friend class Peripheral<I2cPeripheral, I2c>;
 
