@@ -65,8 +65,8 @@ inline void i2c1_er_isr() noexcept {}
 
 static constexpr size_t NUM_ISRS{14};
 static constexpr size_t RCC_IRQn{12};
-// Normally, the ARM header files list SysTick_IRQn as -1. The configuration will be responsible for
-// translating that -1 value into a valid index.
+// Normally, the ARM header files list SysTick_IRQn as -1. The actual configuration will be
+// responsible for translating that -1 value into a valid index.
 static constexpr size_t SYSTICK_IRQn{2};
 static constexpr size_t I2C0_EV_IRQn{4};
 static constexpr size_t I2C0_ER_IRQn{6};
