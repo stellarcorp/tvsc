@@ -8,9 +8,6 @@
 
 namespace tvsc::hal::config {
 
-template <Facility F, size_t INDEX>
-struct FacilityConfiguration;
-
 template <typename T>
 concept ValidFacilityConfiguration = requires {
   // FacilityConfiguration should expose the type of the accessor they expose.
