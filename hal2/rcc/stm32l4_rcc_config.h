@@ -28,7 +28,7 @@ struct Stm32L4RccConfiguration final {
     // No ISRs required.
   }
 };
-static_assert(ValidPeripheralConfiguration<RccConfiguration>);
+static_assert(ValidPeripheralConfiguration<Stm32L4RccConfiguration>);
 
 class Stm32L4LsiOscillatorAccessor final {
  private:
@@ -51,7 +51,7 @@ struct Stm32L4LsiOscillatorConfiguration final {
     // No ISRs required.
   }
 };
-static_assert(ValidPeripheralConfiguration<LsiOscillatorConfiguration>);
+static_assert(ValidPeripheralConfiguration<Stm32L4LsiOscillatorConfiguration>);
 
 class Stm32L4Hsi48OscillatorAccessor final {
  private:
@@ -73,6 +73,6 @@ struct Stm32L4Hsi48OscillatorConfiguration final {
     // No ISRs required.
   }
 };
-static_assert(ValidPeripheralConfiguration<Hsi48OscillatorConfiguration>);
+static_assert(ValidPeripheralConfiguration<Stm32L4Hsi48OscillatorConfiguration>);
 
 }  // namespace tvsc::hal2::rcc
