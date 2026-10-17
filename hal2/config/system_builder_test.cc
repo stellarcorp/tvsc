@@ -23,9 +23,9 @@ struct ImuAccessor {
 
   // Production accessors would return an actual peripheral here, not an int.
   int imu0() {
-    return static_cast<I2cConfiguration::template accessor<System>&>(static_cast<System&>(*this))
-               .get() +
-           100;
+    auto i2c_accessor{
+        static_cast<I2cConfiguration::template accessor<System>&>(static_cast<System&>(*this))};
+    return i2c_accessor.get() + 100;
   }
   int get() { return imu0(); }
 };
@@ -60,14 +60,14 @@ inline void i2c0_er_isr() noexcept {}
 inline void i2c1_ev_isr() noexcept {}
 inline void i2c1_er_isr() noexcept {}
 
-static constexpr size_t NUM_ISRS{14};
-// Normally, the ARM header files list SysTick_IRQn as -1. The actual configuration will be
-// responsible for translating that -1 value into a valid index.
-static constexpr size_t SYSTICK_IRQn{2};
-static constexpr size_t I2C0_EV_IRQn{4};
-static constexpr size_t I2C0_ER_IRQn{6};
-static constexpr size_t I2C1_EV_IRQn{5};
-static constexpr size_t I2C1_ER_IRQn{7};
+static constexpr size_t NUM_ISRS{23};
+// Note that these are test values, not the real interrupt numbers, but yes, the real values (on ARM
+// at least) can be negative.
+static constexpr int SYSTICK_IRQn{-3};
+static constexpr int I2C0_EV_IRQn{4};
+static constexpr int I2C0_ER_IRQn{6};
+static constexpr int I2C1_EV_IRQn{5};
+static constexpr int I2C1_ER_IRQn{7};
 
 template <typename I2cConfiguration>
 struct ImuConfiguration {
@@ -93,7 +93,7 @@ struct SystickConfiguration {
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(VectorTable<NUM_ISRS>& table) noexcept {
-    table.isrs[SYSTICK_IRQn] = &systick_isr;
+    table.add_arm_isr(SYSTICK_IRQn, &systick_isr);
   }
 };
 static_assert(ValidPeripheralConfiguration<SystickConfiguration>);
@@ -111,8 +111,8 @@ struct I2cConfiguration<0> {
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(VectorTable<NUM_ISRS>& table) noexcept {
-    table.isrs[I2C0_EV_IRQn] = &i2c0_ev_isr;
-    table.isrs[I2C0_ER_IRQn] = &i2c0_er_isr;
+    table.add_arm_isr(I2C0_EV_IRQn, &i2c0_ev_isr);
+    table.add_arm_isr(I2C0_ER_IRQn, &i2c0_er_isr);
   }
 };
 static_assert(ValidPeripheralConfiguration<I2cConfiguration<0>>);
@@ -127,8 +127,8 @@ struct I2cConfiguration<1> {
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(VectorTable<NUM_ISRS>& table) noexcept {
-    table.isrs[I2C1_EV_IRQn] = &i2c1_ev_isr;
-    table.isrs[I2C1_ER_IRQn] = &i2c1_er_isr;
+    table.add_arm_isr(I2C1_EV_IRQn, &i2c1_ev_isr);
+    table.add_arm_isr(I2C1_ER_IRQn, &i2c1_er_isr);
   }
 };
 static_assert(ValidPeripheralConfiguration<I2cConfiguration<1>>);
@@ -190,11 +190,11 @@ TEST(SystemBuilderTest, CanCreateVectorTable) {
 
   auto vector_table{system_builder.create_vector_table<NUM_ISRS>()};
 
-  EXPECT_EQ(vector_table.isrs[SYSTICK_IRQn], &systick_isr);
-  EXPECT_EQ(vector_table.isrs[I2C0_EV_IRQn], &i2c0_ev_isr);
-  EXPECT_EQ(vector_table.isrs[I2C0_ER_IRQn], &i2c0_er_isr);
-  EXPECT_EQ(vector_table.isrs[I2C1_EV_IRQn], &i2c1_ev_isr);
-  EXPECT_EQ(vector_table.isrs[I2C1_ER_IRQn], &i2c1_er_isr);
+  EXPECT_EQ(vector_table.at_arm_isr(SYSTICK_IRQn), &systick_isr);
+  EXPECT_EQ(vector_table.at_arm_isr(I2C0_EV_IRQn), &i2c0_ev_isr);
+  EXPECT_EQ(vector_table.at_arm_isr(I2C0_ER_IRQn), &i2c0_er_isr);
+  EXPECT_EQ(vector_table.at_arm_isr(I2C1_EV_IRQn), &i2c1_ev_isr);
+  EXPECT_EQ(vector_table.at_arm_isr(I2C1_ER_IRQn), &i2c1_er_isr);
 }
 
 TEST(SystemBuilderTest, CanCreateVectorTableAtCompileTime) {
@@ -205,7 +205,7 @@ TEST(SystemBuilderTest, CanCreateVectorTableAtCompileTime) {
                                            .add<ImuConfiguration<I2cConfiguration<1>>>()};
 
   static constexpr auto vector_table{system_builder.create_vector_table<NUM_ISRS>()};
-  static_assert(vector_table.isrs[SYSTICK_IRQn] == &systick_isr);
+  static_assert(vector_table.at_arm_isr(SYSTICK_IRQn) == &systick_isr);
 }
 
 }  // namespace tvsc::hal2::config
