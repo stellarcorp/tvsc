@@ -1,0 +1,49 @@
+cc_library(
+    name = "systick_headers",
+    hdrs = [
+        "systick.h",
+    ],
+    deps = [
+        "//hal2",
+    ],
+)
+
+cc_library(
+    name = "systick",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":systick_headers",
+    ] + select({
+        "//platforms:stm32_core": [
+            ":stm32l4xx_systick",
+        ],
+        "@platforms//os:linux": [
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32l4xx_systick",
+    srcs = [
+        "stm32l4xx_systick.cc",
+    ],
+    hdrs = [
+        "stm32l4xx_systick.h",
+        "stm32l4_systick_config.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32_core",
+    ],
+    deps = [
+        ":systick_headers",
+        "//hal2",
+        "//hal2/rcc",
+        "//hal2/config",
+        "//third_party/stm32",
+    ],
+)
