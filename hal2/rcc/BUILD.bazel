@@ -1,0 +1,45 @@
+cc_library(
+    name = "rcc_headers",
+    hdrs = [
+        "oscillator.h",
+        "rcc.h",
+    ],
+)
+
+cc_library(
+    name = "rcc",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":rcc_headers",
+    ] + select({
+        "//platforms:stm32l4xx": [
+            ":stm32l4xx_rcc",
+        ],
+        "@platforms//os:linux": [
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32l4xx_rcc",
+    srcs = [
+        "stm32l4xx_rcc.cc",
+    ],
+    hdrs = [
+        "stm32l4xx_rcc.h",
+        "stm32l4_rcc_config.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32l4xx",
+    ],
+    deps = [
+        ":rcc_headers",
+        "//hal2",
+        "//third_party/stm32",
+    ],
+)

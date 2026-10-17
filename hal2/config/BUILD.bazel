@@ -1,0 +1,19 @@
+cc_library(
+    name = "config",
+    visibility = ["//visibility:public"],
+    hdrs = [
+        "facility.h",
+        "peripheral_accessors.h",
+        "system_builder.h",
+        "vector_table.h",
+    ],
+)
+
+cc_test(
+    name = "system_builder_test",
+    srcs = ["system_builder_test.cc"],
+    deps = [
+        ":config",
+        "//third_party/gtest",
+    ],
+)

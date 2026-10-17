@@ -1,0 +1,108 @@
+cc_library(
+    name = "hal2_interface",
+    hdrs = [
+        "error.h",
+        "irq.h",
+        "peripheral.h",
+        #"peripheral_id.h",
+        "register.h",
+        #"time_type.h",
+    ],
+    deps = [
+        ":error",
+        ":irq",
+    ],
+)
+
+cc_library(
+    name = "hal2",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//bits",
+        ":hal2_interface",
+    ],
+)
+
+cc_library(
+    name = "irq",
+    hdrs = [
+        "irq.h",
+    ],
+    deps = select({
+        "//platforms:stm32_core": [
+            ":irq_arm",
+        ],
+        "@platforms//os:linux": [
+            ":irq_noop",
+        ],
+        "//conditions:default": [
+        ],
+    }),
+)
+
+cc_library(
+    name = "irq_arm",
+    hdrs = ["irq_arm.h"],
+    target_compatible_with = [
+        "@platforms//cpu:armv7e-mf",
+        "@platforms//os:none",
+    ],
+)
+
+cc_library(
+    name = "irq_noop",
+    hdrs = ["irq_noop.h"],
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
+)
+
+cc_library(
+    name = "error",
+    hdrs = [
+        "error.h",
+    ],
+    deps = select({
+        "//platforms:stm32_core": [
+            ":error_loop",
+        ],
+        "@platforms//os:linux": [
+            ":error_terminate",
+        ],
+        "//conditions:default": [
+        ],
+    }),
+)
+
+cc_library(
+    name = "error_loop",
+    srcs = ["error_loop.cc"],
+    target_compatible_with = [
+        "@platforms//cpu:armv7e-mf",
+        "@platforms//os:none",
+    ],
+    deps = [
+        ":irq",
+    ],
+)
+
+cc_library(
+    name = "error_terminate",
+    srcs = ["error_terminate.cc"],
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
+    deps = [
+        ":irq",
+    ],
+)
+
+cc_test(
+    name = "register_test",
+    srcs = ["register_test.cc"],
+    deps = [
+        ":hal2",
+        "//bits",
+        "//third_party/gtest",
+    ],
+)
