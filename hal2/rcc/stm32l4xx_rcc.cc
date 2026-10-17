@@ -1,5 +1,6 @@
 #include "hal2/rcc/stm32l4xx_rcc.h"
 
+#include "hal2/rcc/stm32l4_rcc_config.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
