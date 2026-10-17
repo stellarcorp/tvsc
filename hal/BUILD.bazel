@@ -1,3 +1,12 @@
+package_group(
+    name = "public_except_new_hal",
+    packages = [
+        "//...",
+        "-//bringup2/...",
+        "-//hal2/...",
+    ],
+)
+
 cc_library(
     name = "hal_interface",
     hdrs = [

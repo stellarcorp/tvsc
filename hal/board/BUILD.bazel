@@ -11,7 +11,7 @@ cc_library(
         "@platforms//os:linux": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    visibility = ["//visibility:public"],
+    visibility = ["//hal:public_except_new_hal"],
     deps = [
         "//flags",
     ] + select({
