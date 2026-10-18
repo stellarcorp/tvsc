@@ -109,7 +109,7 @@ enum class PinSpeed : uint8_t {
 
 class Gpio;
 
-class GpioPeripheral : public SingletonPeripheral<GpioPeripheral, Gpio> {
+class GpioPeripheral : public Peripheral<GpioPeripheral, Gpio> {
  private:
   virtual void enable() noexcept = 0;
   virtual void disable() noexcept = 0;

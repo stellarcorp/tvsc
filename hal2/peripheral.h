@@ -85,16 +85,6 @@ class Peripheral {
 };
 
 template <typename PeripheralType, typename DriverType>
-class SingletonPeripheral : public Peripheral<PeripheralType, DriverType> {
- public:
-  constexpr SingletonPeripheral() noexcept = default;
-  SingletonPeripheral(const SingletonPeripheral&) = delete;
-  SingletonPeripheral(SingletonPeripheral&&) = delete;
-
-  virtual ~SingletonPeripheral() = default;
-};
-
-template <typename PeripheralType, typename DriverType>
 class Driver {
  protected:
   PeripheralType* peripheral_{nullptr};
