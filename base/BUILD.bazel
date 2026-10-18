@@ -30,7 +30,7 @@ cc_library(
     hdrs =
         select({
             "@platforms//os:none": [
-                "except_without_glog.h",
+                "except_no_output.h",
             ],
             "//conditions:default": [
                 "except_with_glog.h",
@@ -38,6 +38,13 @@ cc_library(
         }) + [
             "except.h",
         ],
+    srcs = select({
+        "@platforms//os:none": [
+            "except.cc",
+        ],
+        "//conditions:default": [
+        ],
+    }),
     defines = select({
         "@platforms//os:none": [
             "PLATFORM_OS_NONE",
@@ -48,13 +55,14 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = select({
         "@platforms//os:none": [
-            "//hal/output",
+            "//platforms",
         ],
         "//conditions:default": [
             "//third_party/glog",
             "//third_party/gflags",
         ],
     }),
+    alwayslink = True,
 )
 
 cc_test(

@@ -11,5 +11,5 @@
 #ifndef PLATFORM_OS_NONE
 #include "base/except_with_glog.h"
 #else
-#include "base/except_without_glog.h"
+#include "base/except_no_output.h"
 #endif
