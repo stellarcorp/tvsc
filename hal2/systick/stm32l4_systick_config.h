@@ -24,7 +24,7 @@ struct Stm32L4SysTickConfiguration {
   template <typename System>
   using accessor = Stm32L4SysTickAccessor<System>;
 
-  static constexpr auto facility() noexcept { return config::Facility::SYSTICK; }
+  static constexpr auto facility() noexcept { return config::Facility::SYSTICK_FACILITY; }
   static constexpr size_t index() noexcept { return 0; }
 
   template <size_t NUM_ISRS>

@@ -4,27 +4,27 @@ namespace tvsc::hal2::config {
 
 enum class Facility {
   // Fundamental processor functionality.
-  RCC,
-  OSCILLATOR,
-  SYSTICK,
-  GPIO,
-  LED,
-  TIMER,
-  WATCHDOG,
-  ADC,
-  DAC,
+  RCC_FACILITY,
+  OSCILLATOR_FACILITY,
+  SYSTICK_FACILITY,
+  GPIO_FACILITY,
+  LED_FACILITY,
+  TIMER_FACILITY,
+  WATCHDOG_FACILITY,
+  ADC_FACILITY,
+  DAC_FACILITY,
 
   // Buses
-  I2C,
-  SPI,
-  CAN_BUS,
+  I2C_FACILITY,
+  SPI_FACILITY,
+  CAN_BUS_FACILITY,
 
   // Board-level peripherals.
-  PROGRAMMER,
-  IMU,
-  POWER_MONITOR,
-  RF_RECEIVER,
-  RF_TRANSMITTER,
+  PROGRAMMER_FACILITY,
+  IMU_FACILITY,
+  POWER_MONITOR_FACILITY,
+  RF_RECEIVER_FACILITY,
+  RF_TRANSMITTER_FACILITY,
 };
 
 }  // namespace tvsc::hal2::config

@@ -22,7 +22,7 @@ struct Stm32L4RccConfiguration {
   template <typename System>
   using accessor = Stm32L4RccAccessor<System>;
 
-  [[nodiscard]] static constexpr auto facility() noexcept { return config::Facility::RCC; }
+  [[nodiscard]] static constexpr auto facility() noexcept { return config::Facility::RCC_FACILITY; }
   [[nodiscard]] static constexpr size_t index() noexcept { return 0; }
 
   template <size_t NUM_ISRS>
@@ -47,7 +47,9 @@ struct Stm32L4LsiOscillatorConfiguration {
   template <typename System>
   using accessor = Stm32L4LsiOscillatorAccessor<System>;
 
-  [[nodiscard]] static constexpr auto facility() noexcept { return config::Facility::OSCILLATOR; }
+  [[nodiscard]] static constexpr auto facility() noexcept {
+    return config::Facility::OSCILLATOR_FACILITY;
+  }
   [[nodiscard]] static constexpr size_t index() noexcept { return 1; }
 
   template <size_t NUM_ISRS>
@@ -71,7 +73,9 @@ struct Stm32L4Hsi48OscillatorConfiguration {
   template <typename System>
   using accessor = Stm32L4Hsi48OscillatorAccessor<System>;
 
-  [[nodiscard]] static constexpr auto facility() noexcept { return config::Facility::OSCILLATOR; }
+  [[nodiscard]] static constexpr auto facility() noexcept {
+    return config::Facility::OSCILLATOR_FACILITY;
+  }
   [[nodiscard]] static constexpr size_t index() noexcept { return 2; }
 
   template <size_t NUM_ISRS>
