@@ -29,9 +29,6 @@ cc_library(
 
 cc_library(
     name = "stm32_gpio",
-    srcs = [
-        "stm32_gpio.cc",
-    ],
     hdrs = [
         "stm32_gpio.h",
         "stm32_gpio_config.h",
