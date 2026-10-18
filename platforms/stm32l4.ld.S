@@ -102,7 +102,7 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
   } >FLASH
 
-  /* Status section (uninitialized) at top of RAM */
+  /* Status section (uninitialized) at top of SRAM1 */
   .status (NOLOAD) :
   {
     . = ALIGN(4);
@@ -114,10 +114,17 @@ SECTIONS
     *(DEBUG_VAR_SECTION)
     *(SYSTEM_STATUS_WILDCARD_SECTION)
     *(.bss.errno)
-    *(FAULT_SECTION)
     . = ALIGN(4);
     _estatus = .;
   } >SRAM1
+
+  /* Fault section (uninitialized) at top of SRAM2 */
+  .fault (NOLOAD) :
+  {
+    . = ALIGN(4);
+    KEEP(*(FAULT_SECTION))
+    . = ALIGN(4);
+  } >SRAM2
 
   /* Used by startup code to initialize .data in RAM */
   _sidata = LOADADDR(.data);
