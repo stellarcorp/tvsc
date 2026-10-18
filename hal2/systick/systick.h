@@ -9,8 +9,8 @@ namespace tvsc::hal2::systick {
 class SysTickType {
  public:
   virtual ~SysTickType() = default;
-  virtual TimeType current_time_micros() = 0;
-  virtual void increment_micros(TimeType us) = 0;
+  [[nodiscard]] virtual TimeType current_time_micros() const noexcept = 0;
+  virtual void increment_micros(TimeType us) noexcept = 0;
 };
 
 }  // namespace tvsc::hal2::systick

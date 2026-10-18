@@ -8,11 +8,14 @@
 
 namespace tvsc::hal2::systick {
 
-TimeType SysTickStm32l4xx::current_time_micros() { return uwTick; }
+SysTickStm32l4xx::SysTickStm32l4xx() noexcept {
+}
 
-void SysTickStm32l4xx::increment_micros(TimeType us) { uwTick += us; }
+[[nodiscard]] TimeType SysTickStm32l4xx::current_time_micros() const noexcept { return uwTick; }
 
-void handle_interrupt() {
+void SysTickStm32l4xx::increment_micros(TimeType us) noexcept { uwTick += us; }
+
+void handle_systick_interrupt() noexcept {
   // SysTick fires every millisecond. We keep the tick counter in microseconds in order to better
   // avoid round-off errors.
   uwTick += 1000;

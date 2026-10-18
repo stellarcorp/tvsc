@@ -8,7 +8,8 @@
 
 namespace tvsc::hal2::rcc {
 
-class Stm32L4RccAccessor final {
+template <typename System>
+class Stm32L4RccAccessor {
  private:
   RccStm32L4xx rcc_{};
 
@@ -17,20 +18,22 @@ class Stm32L4RccAccessor final {
   [[nodiscard]] Rcc& rcc() noexcept { return get(); }
 };
 
-struct Stm32L4RccConfiguration final {
-  using accessor = Stm32L4RccAccessor;
+struct Stm32L4RccConfiguration {
+  template <typename System>
+  using accessor = Stm32L4RccAccessor<System>;
 
-  static constexpr auto facility() noexcept { return config::Facility::RCC; }
-  static constexpr size_t index() noexcept { return 0; }
+  [[nodiscard]] static constexpr auto facility() noexcept { return config::Facility::RCC; }
+  [[nodiscard]] static constexpr size_t index() noexcept { return 0; }
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
     // No ISRs required.
   }
 };
-static_assert(ValidPeripheralConfiguration<Stm32L4RccConfiguration>);
+static_assert(config::ValidPeripheralConfiguration<Stm32L4RccConfiguration>);
 
-class Stm32L4LsiOscillatorAccessor final {
+template <typename System>
+class Stm32L4LsiOscillatorAccessor {
  private:
   LsiOscillatorStm32L4xx lsi_{};
 
@@ -40,20 +43,22 @@ class Stm32L4LsiOscillatorAccessor final {
   [[nodiscard]] Oscillator& low_power_oscillator() noexcept { return get(); }
 };
 
-struct Stm32L4LsiOscillatorConfiguration final {
-  using accessor = Stm32L4LsiOscillatorAccessor;
+struct Stm32L4LsiOscillatorConfiguration {
+  template <typename System>
+  using accessor = Stm32L4LsiOscillatorAccessor<System>;
 
-  static constexpr auto facility() noexcept { return config::Facility::OSCILLATOR; }
-  static constexpr size_t index() noexcept { return 1; }
+  [[nodiscard]] static constexpr auto facility() noexcept { return config::Facility::OSCILLATOR; }
+  [[nodiscard]] static constexpr size_t index() noexcept { return 1; }
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
     // No ISRs required.
   }
 };
-static_assert(ValidPeripheralConfiguration<Stm32L4LsiOscillatorConfiguration>);
+static_assert(config::ValidPeripheralConfiguration<Stm32L4LsiOscillatorConfiguration>);
 
-class Stm32L4Hsi48OscillatorAccessor final {
+template <typename System>
+class Stm32L4Hsi48OscillatorAccessor {
  private:
   Hsi48OscillatorStm32L4xx hsi48_{};
 
@@ -62,17 +67,18 @@ class Stm32L4Hsi48OscillatorAccessor final {
   [[nodiscard]] Oscillator& oscillator2() noexcept { return get(); }
 };
 
-struct Stm32L4Hsi48OscillatorConfiguration final {
-  using accessor = Stm32L4Hsi48OscillatorAccessor;
+struct Stm32L4Hsi48OscillatorConfiguration {
+  template <typename System>
+  using accessor = Stm32L4Hsi48OscillatorAccessor<System>;
 
-  static constexpr auto facility() noexcept { return config::Facility::OSCILLATOR; }
-  static constexpr size_t index() noexcept { return 2; }
+  [[nodiscard]] static constexpr auto facility() noexcept { return config::Facility::OSCILLATOR; }
+  [[nodiscard]] static constexpr size_t index() noexcept { return 2; }
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
     // No ISRs required.
   }
 };
-static_assert(ValidPeripheralConfiguration<Stm32L4Hsi48OscillatorConfiguration>);
+static_assert(config::ValidPeripheralConfiguration<Stm32L4Hsi48OscillatorConfiguration>);
 
 }  // namespace tvsc::hal2::rcc

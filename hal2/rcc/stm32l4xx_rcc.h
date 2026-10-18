@@ -54,24 +54,24 @@ class RccStm32L4xx final : public Rcc {
   ClockConfiguration clock_configuration_{ClockConfiguration::UNCONFIGURED};
 
  public:
-  RccStm32L4xx() { set_clock_to_energy_efficient_speed(); }
-  void set_clock_to_max_speed() override;
-  void set_clock_to_min_speed() override;
-  void set_clock_to_energy_efficient_speed() override;
-  void restore_clock_speed() override;
+  RccStm32L4xx() noexcept { set_clock_to_energy_efficient_speed(); }
+  void set_clock_to_max_speed() noexcept override;
+  void set_clock_to_min_speed() noexcept override;
+  void set_clock_to_energy_efficient_speed() noexcept override;
+  void restore_clock_speed() noexcept override;
 
   /**
    * Before entering sleep or stop mode, be sure to configure appropriate interrupts. Otherwise, you
    * may need to halt the processor via a debugging tool to regain control.
    */
-  void enter_sleep_mode() override;
-  void enter_stop_mode() override;
+  void enter_sleep_mode() noexcept override;
+  void enter_stop_mode() noexcept override;
 };
 
 class LsiOscillatorStm32L4xx final : public Oscillator {
  private:
-  void enable() override;
-  void disable() override;
+  void enable() noexcept override;
+  void disable() noexcept override;
 };
 
 /**
@@ -91,8 +91,8 @@ class LsiOscillatorStm32L4xx final : public Oscillator {
  */
 class Hsi48OscillatorStm32L4xx final : public Oscillator {
  private:
-  void enable() override;
-  void disable() override;
+  void enable() noexcept override;
+  void disable() noexcept override;
 };
 
 }  // namespace tvsc::hal2::rcc

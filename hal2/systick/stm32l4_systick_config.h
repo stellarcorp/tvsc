@@ -5,10 +5,13 @@
 #include "hal2/config/vector_table.h"
 #include "hal2/systick/stm32l4xx_systick.h"
 #include "hal2/systick/systick.h"
+#include "third_party/stm32/stm32.h"
+#include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal2::systick {
 
-class Stm32L4SysTickAccessor final {
+template <typename System>
+class Stm32L4SysTickAccessor {
  private:
   SysTickStm32l4xx systick_{};
 
@@ -17,8 +20,9 @@ class Stm32L4SysTickAccessor final {
   [[nodiscard]] SysTickType& systick() noexcept { return get(); }
 };
 
-struct Stm32L4SysTickConfiguration final {
-  using accessor = Stm32L4SysTickAccessor;
+struct Stm32L4SysTickConfiguration {
+  template <typename System>
+  using accessor = Stm32L4SysTickAccessor<System>;
 
   static constexpr auto facility() noexcept { return config::Facility::SYSTICK; }
   static constexpr size_t index() noexcept { return 0; }
@@ -28,6 +32,6 @@ struct Stm32L4SysTickConfiguration final {
     table.add_arm_isr(SysTick_IRQn, handle_systick_interrupt);
   }
 };
-static_assert(ValidPeripheralConfiguration<Stm32L4SysTickConfiguration>);
+static_assert(config::ValidPeripheralConfiguration<Stm32L4SysTickConfiguration>);
 
 }  // namespace tvsc::hal2::systick

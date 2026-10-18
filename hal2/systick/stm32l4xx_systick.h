@@ -7,10 +7,11 @@ namespace tvsc::hal2::systick {
 
 class SysTickStm32l4xx final : public SysTickType {
  public:
-  TimeType current_time_micros() override;
-  void increment_micros(TimeType us) override;
+  SysTickStm32l4xx() noexcept;
+  [[nodiscard]] TimeType current_time_micros() const noexcept override;
+  void increment_micros(TimeType us) noexcept override;
 };
 
-extern void handle_systick_interrupt();
+extern void handle_systick_interrupt() noexcept;
 
 }  // namespace tvsc::hal2::systick

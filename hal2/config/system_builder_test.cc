@@ -140,8 +140,7 @@ TEST(SystemBuilderTest, CanConstructSystem) {
                           .add<I2cConfiguration<1>>()
                           .add<ImuConfiguration<I2cConfiguration<1>>>()};
 
-  using BoardType = int;
-  auto sys{system_builder.system(BoardType{})};
+  auto sys{system_builder.system()};
 
   EXPECT_EQ(sys.systick(), 200);
   EXPECT_EQ(sys.i2c0(), 300);
@@ -156,11 +155,10 @@ TEST(SystemBuilderTest, CanCreateSystemAtCompileTime) {
                                     .add<I2cConfiguration<0>>()
                                     .add<I2cConfiguration<1>>()};
 
-  using BoardType = int;
   // By using static constexpr here, we force the initialization of the system at compile-time.
   // Because the sys object is const, we can also verify compile-time initialization with
   // static_assert.
-  static constexpr auto sys{system_builder.system(BoardType{})};
+  static constexpr auto sys{system_builder.system()};
   static_assert(sys.initialized_at_compile_time);
   EXPECT_TRUE(sys.initialized_at_compile_time);
 }
@@ -172,10 +170,9 @@ TEST(SystemBuilderTest, CanCreateModifiableSystemAtCompileTime) {
                                     .add<I2cConfiguration<0>>()
                                     .add<I2cConfiguration<1>>()};
 
-  using BoardType = int;
   // Note that we are using constinit to force initialization at compile-time. The resulting object
   // is not const, though.
-  static constinit auto sys{system_builder.system(BoardType{})};
+  static constinit auto sys{system_builder.system()};
   EXPECT_TRUE(sys.initialized_at_compile_time);
   sys.modifiable_value = 3;
   EXPECT_EQ(sys.modifiable_value, 3);

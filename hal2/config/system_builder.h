@@ -11,7 +11,7 @@ namespace tvsc::hal2::config {
 template <typename T>
 concept ValidPeripheralConfiguration =
     requires {
-      // PeripheralConfiguration should expose an accessor type templated on board type.
+      // PeripheralConfiguration should expose an accessor type templated on full System type.
       typename T::template accessor<int>;
       { T::facility() } -> std::same_as<Facility>;
       { T::index() } -> std::same_as<size_t>;
@@ -25,20 +25,17 @@ concept ValidPeripheralConfiguration =
 template <typename... PeripheralConfigurations>
 struct SystemBuilder;
 
-template <typename Board, typename... PeripheralConfigurations>
-class System final : public PeripheralConfigurations::template accessor<
-                         System<Board, PeripheralConfigurations...>>... {
+template <typename... PeripheralConfigurations>
+class System final
+    : public PeripheralConfigurations::template accessor<System<PeripheralConfigurations...>>... {
  private:
-  Board board_;
-
   template <typename...>
   friend struct SystemBuilder;
 
-  constexpr System(Board board) : board_(std::move(board)) {}
+  constexpr System() noexcept = default;
 
  public:
-  [[nodiscard]] constexpr const Board& board() const noexcept { return board_; }
-  [[nodiscard]] constexpr Board& board() noexcept { return board_; }
+  // All public methods come from inherited classes.
 };
 
 template <typename... PeripheralConfigurations>
@@ -57,10 +54,7 @@ struct SystemBuilder final : PeripheralConfigurations... {
     return vector_table;
   }
 
-  template <typename Board>
-  consteval auto system(Board board) const noexcept {
-    return System<Board, PeripheralConfigurations...>{std::move(board)};
-  }
+  constexpr auto system() const noexcept { return System<PeripheralConfigurations...>{}; }
 };
 
 }  // namespace tvsc::hal2::config

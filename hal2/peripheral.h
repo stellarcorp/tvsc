@@ -46,13 +46,13 @@ class Peripheral {
  private:
   size_t ref_count_{};
 
-  void inc_ref_count() {
+  void inc_ref_count() noexcept {
     if (ref_count_++ == 0) {
       enable();
     }
   }
 
-  void dec_ref_count() {
+  void dec_ref_count() noexcept {
     if (--ref_count_ == 0) {
       disable();
     }
@@ -64,12 +64,12 @@ class Peripheral {
   /**
    * Enable power and clock to this peripheral.
    */
-  virtual void enable() = 0;
+  virtual void enable() noexcept = 0;
 
   /**
    * Disable power and clock to this peripheral.
    */
-  virtual void disable() = 0;
+  virtual void disable() noexcept = 0;
 
  public:
   constexpr Peripheral() noexcept = default;
@@ -87,7 +87,7 @@ class Peripheral {
 template <typename PeripheralType, typename DriverType>
 class SingletonPeripheral : public Peripheral<PeripheralType, DriverType> {
  public:
-  constexpr SingletonPeripheral() = default;
+  constexpr SingletonPeripheral() noexcept = default;
   SingletonPeripheral(const SingletonPeripheral&) = delete;
   SingletonPeripheral(SingletonPeripheral&&) = delete;
 
@@ -101,7 +101,7 @@ class Driver {
 
   constexpr Driver() noexcept = default;
 
-  explicit Driver(PeripheralType& peripheral) : peripheral_(&peripheral) {
+  explicit Driver(PeripheralType& peripheral) noexcept : peripheral_(&peripheral) {
     peripheral_->inc_ref_count();
   }
 
@@ -120,13 +120,13 @@ class Driver {
   }
 
   // Create this Driver as another reference to the same peripheral.
-  Driver(const Driver& rhs) : peripheral_(rhs.peripheral_) {
+  Driver(const Driver& rhs) noexcept : peripheral_(rhs.peripheral_) {
     if (peripheral_ != nullptr) {
       peripheral_->inc_ref_count();
     }
   }
 
-  virtual Driver& operator=(const Driver& rhs) {
+  virtual Driver& operator=(const Driver& rhs) noexcept {
     if (peripheral_ != rhs.peripheral_) {
       if (peripheral_ != nullptr) {
         peripheral_->dec_ref_count();
@@ -139,21 +139,21 @@ class Driver {
     return *this;
   }
 
-  void ensure_valid(PeripheralType& peripheral) {
+  void ensure_valid(PeripheralType& peripheral) noexcept {
     if (peripheral_ == nullptr) {
       peripheral_ = &peripheral;
       peripheral_->inc_ref_count();
     }
   }
 
-  void invalidate() {
+  void invalidate() noexcept {
     if (peripheral_ != nullptr) {
       peripheral_->dec_ref_count();
     }
     peripheral_ = nullptr;
   }
 
-  bool is_valid() const { return peripheral_ != nullptr; }
+  bool is_valid() const noexcept { return peripheral_ != nullptr; }
 };
 
 }  // namespace tvsc::hal2

@@ -8,8 +8,8 @@ class OscillatorDriver;
 
 class Oscillator : public Peripheral<Oscillator, OscillatorDriver> {
  private:
-  virtual void enable() = 0;
-  virtual void disable() = 0;
+  virtual void enable() noexcept = 0;
+  virtual void disable() noexcept = 0;
 
  public:
   virtual ~Oscillator() = default;
@@ -17,13 +17,13 @@ class Oscillator : public Peripheral<Oscillator, OscillatorDriver> {
 
 class OscillatorDriver final : public Driver<Oscillator, OscillatorDriver> {
  private:
-  explicit OscillatorDriver(Oscillator& peripheral)
+  explicit OscillatorDriver(Oscillator& peripheral) noexcept
       : Driver<Oscillator, OscillatorDriver>(peripheral) {}
 
   friend class Peripheral<Oscillator, OscillatorDriver>;
 
  public:
-  OscillatorDriver() = default;
+  OscillatorDriver() noexcept = default;
 
   // No direct public methods. All public methods come from superclasses.
 };
