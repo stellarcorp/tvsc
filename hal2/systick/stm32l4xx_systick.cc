@@ -9,6 +9,8 @@
 namespace tvsc::hal2::systick {
 
 SysTickStm32l4xx::SysTickStm32l4xx() noexcept {
+  HAL_NVIC_SetPriority(SysTick_IRQn, 7, 0);
+  HAL_NVIC_EnableIRQ(SysTick_IRQn);
 }
 
 [[nodiscard]] TimeType SysTickStm32l4xx::current_time_micros() const noexcept { return uwTick; }
