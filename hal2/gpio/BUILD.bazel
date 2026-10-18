@@ -1,0 +1,49 @@
+cc_library(
+    name = "gpio_headers",
+    hdrs = [
+        "gpio.h",
+    ],
+    deps = [
+        "//hal2",
+    ],
+)
+
+cc_library(
+    name = "gpio",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":gpio_headers",
+    ] + select({
+        "//platforms:stm32_gpio": [
+            ":stm32_gpio",
+        ],
+        "@platforms//os:linux": [
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32_gpio",
+    srcs = [
+        "stm32_gpio.cc",
+    ],
+    hdrs = [
+        "stm32_gpio.h",
+        "stm32_gpio_config.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32_gpio",
+    ],
+    deps = [
+        ":gpio_headers",
+        "//base:except",
+        "//hal2",
+        "//hal2/config",
+        "//third_party/stm32",
+    ],
+)
