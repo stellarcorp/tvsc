@@ -53,22 +53,29 @@ namespace internal {
 // Terminate dependency resolution once all of the items in the array have been processed. This
 // triggers when the Index >= Dependencies.size(), since the iteration form below requires Index <
 // Dependencies.size().
-template <typename PeripheralRegistry, typename Accumulator, auto Dependencies, size_t Index>
+template <typename PeripheralRegistry, typename Accumulator, typename Visiting, auto Dependencies,
+          size_t Index>
 struct DependencyListResolver {
   using type = Accumulator;
 };
 
 // Recursively walk the dependency array to resolve peripherals by id.
-template <typename PeripheralRegistry, typename Accumulator, auto Dependencies, size_t Index>
+template <typename PeripheralRegistry, typename Accumulator, typename Visiting, auto Dependencies,
+          size_t Index>
   requires(Index < Dependencies.size())
-struct DependencyListResolver<PeripheralRegistry, Accumulator, Dependencies, Index> {
+struct DependencyListResolver<PeripheralRegistry, Accumulator, Visiting, Dependencies, Index> {
   static constexpr auto identifier = Dependencies[Index];
   using CurrentConfiguration =
       typename PeripheralRegistry::template configuration<identifier.facility, identifier.index>;
 
+  // Trigger a compile-time error if this configuration is already an active ancestor.
+  static_assert(not Visiting::template contains<CurrentConfiguration>,
+                "Circular dependency detected in peripheral configuration graph.");
+
   // Resolve any sub-dependencies of this specific peripheral before appending it.
   using AccumulatorWithSubDependencies =
       typename DependencyListResolver<PeripheralRegistry, Accumulator,
+                                      typename Visiting::template Append<CurrentConfiguration>,
                                       CurrentConfiguration::dependencies(), 0>::type;
 
   using AccumulatorWithDependency =
@@ -76,7 +83,7 @@ struct DependencyListResolver<PeripheralRegistry, Accumulator, Dependencies, Ind
 
   // Advance to the next dependency.
   using type = typename DependencyListResolver<PeripheralRegistry, AccumulatorWithDependency,
-                                               Dependencies, Index + 1>::type;
+                                               Visiting, Dependencies, Index + 1>::type;
 };
 
 }  // namespace internal
@@ -94,8 +101,9 @@ class SystemBuilder<PeripheralRegistry, TypeAccumulator<PeripheralConfigurations
     // Resolve all transitive dependencies required by the target configuration before appending it
     // to the system.
     using AccumulatorWithDependencies =
-        typename internal::DependencyListResolver<PeripheralRegistry,
-                                                  TypeAccumulator<PeripheralConfigurations...>,
+        typename internal::DependencyListResolver<PeripheralRegistry,                            //
+                                                  TypeAccumulator<PeripheralConfigurations...>,  //
+                                                  TypeAccumulator<TargetConfiguration>,          //
                                                   TargetConfiguration::dependencies(), 0>::type;
 
     using NextAccumulator =
