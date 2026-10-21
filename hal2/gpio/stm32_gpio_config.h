@@ -14,6 +14,7 @@
 namespace tvsc::hal2::gpio {
 
 template <PortNumber PORT, typename System>
+  requires(PORT < 8)
 class Stm32GpioAccessor {
  private:
   GpioStm32<PORT> gpio_{};
@@ -109,22 +110,5 @@ class Stm32GpioAccessor {
     return get();
   }
 };
-
-template <PortNumber PORT>
-struct Stm32GpioConfiguration {
-  template <typename System>
-  using accessor = Stm32GpioAccessor<PORT, System>;
-
-  [[nodiscard]] static constexpr auto facility() noexcept {
-    return config::Facility::GPIO_FACILITY;
-  }
-  [[nodiscard]] static constexpr size_t index() noexcept { return PORT; }
-
-  template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
-    // No ISRs required.
-  }
-};
-static_assert(config::ValidPeripheralConfiguration<Stm32GpioConfiguration<0>>);
 
 }  // namespace tvsc::hal2::gpio

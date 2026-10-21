@@ -1,0 +1,13 @@
+cc_library(
+    name = "board",
+    visibility = ["//visibility:public"],
+    hdrs = [
+        "board.h",
+    ],
+    deps = [
+        "//hal2/config",
+        "//hal2/gpio",
+        "//hal2/rcc",
+        "//hal2/systick",
+    ],
+)

@@ -20,18 +20,4 @@ class Stm32L4SysTickAccessor {
   [[nodiscard]] SysTickType& systick() noexcept { return get(); }
 };
 
-struct Stm32L4SysTickConfiguration {
-  template <typename System>
-  using accessor = Stm32L4SysTickAccessor<System>;
-
-  static constexpr auto facility() noexcept { return config::Facility::SYSTICK_FACILITY; }
-  static constexpr size_t index() noexcept { return 0; }
-
-  template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
-    table.add_arm_isr(SysTick_IRQn, handle_systick_interrupt);
-  }
-};
-static_assert(config::ValidPeripheralConfiguration<Stm32L4SysTickConfiguration>);
-
 }  // namespace tvsc::hal2::systick

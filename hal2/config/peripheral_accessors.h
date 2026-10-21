@@ -8,9 +8,9 @@ namespace tvsc::hal2::config {
 template <Facility F, size_t INDEX, typename T>
 struct has_matching_accessor_name : std::false_type {};
 
-template <typename T, Facility FACILITY, size_t INDEX>
-concept ValidPeripheralAccessor =                              //
-    has_matching_accessor_name<FACILITY, INDEX, T>::value and  //
+template <typename T, PeripheralId ID>
+concept ValidPeripheralAccessor =                                    //
+    has_matching_accessor_name<ID.facility, ID.index, T>::value and  //
     requires(T t) {
       { t.get() };
     } and  //
