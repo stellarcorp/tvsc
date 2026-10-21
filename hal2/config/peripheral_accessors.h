@@ -138,6 +138,18 @@ struct has_matching_accessor_name<Facility::LED_FACILITY, 1, T> {
     { t.template led1() };
   };
 };
+template <typename T>
+struct has_matching_accessor_name<Facility::LED_FACILITY, 2, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template led2() };
+  };
+};
+template <typename T>
+struct has_matching_accessor_name<Facility::LED_FACILITY, 3, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template led3() };
+  };
+};
 
 template <typename T>
 struct has_matching_accessor_name<Facility::TIMER_FACILITY, 0, T> {
