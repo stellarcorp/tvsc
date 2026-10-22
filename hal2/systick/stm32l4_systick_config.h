@@ -1,12 +1,7 @@
 #pragma once
 
-#include "hal2/config/facility.h"
-#include "hal2/config/system_builder.h"
-#include "hal2/config/vector_table.h"
 #include "hal2/systick/stm32l4xx_systick.h"
 #include "hal2/systick/systick.h"
-#include "third_party/stm32/stm32.h"
-#include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal2::systick {
 
