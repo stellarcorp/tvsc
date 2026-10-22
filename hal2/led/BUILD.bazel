@@ -1,0 +1,11 @@
+cc_library(
+    name = "led",
+    visibility = ["//visibility:public"],
+    hdrs = [
+        "led_config.h",
+    ],
+    deps = [
+        "//hal2/config",
+        "//hal2/gpio",
+    ],
+)

@@ -6,6 +6,7 @@
 #include "hal2/config/vector_table.h"
 #include "hal2/gpio/gpio.h"
 #include "hal2/gpio/stm32_gpio_config.h"
+#include "hal2/led/led_config.h"
 #include "hal2/rcc/stm32l4_rcc_config.h"
 #include "hal2/systick/stm32l4_systick_config.h"
 #include "third_party/stm32/stm32.h"
@@ -106,6 +107,29 @@ struct PeripheralConfiguration<config::Facility::GPIO_FACILITY, PORT> final {
   }
 };
 
+template <size_t INDEX>
+  requires(INDEX < 1)
+struct PeripheralConfiguration<config::Facility::LED_FACILITY, INDEX> final {
+  static constexpr std::array PINS{
+      gpio::PinRef{2, 13}  //
+  };
+
+  template <typename System, typename PeripheralRegistry>
+  using accessor = led::LedAccessor<System, PeripheralRegistry, INDEX, PINS[INDEX]>;
+
+  static constexpr config::PeripheralId id() noexcept {
+    return {config::Facility::LED_FACILITY, INDEX};
+  }
+  static constexpr auto dependencies() noexcept {
+    return std::array{config::PeripheralId{config::Facility::GPIO_FACILITY, PINS[INDEX].port}};
+  }
+
+  template <size_t NUM_ISRS>
+  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
+    // No ISRs required.
+  }
+};
+
 }  // namespace internal
 
 struct Board final {
@@ -125,5 +149,7 @@ static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::GPIO_FACILITY, 0>, Board>);
 static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::GPIO_FACILITY, 7>, Board>);
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::LED_FACILITY, 0>, Board>);
 
 }  // namespace tvsc::hal2::board
