@@ -8,6 +8,15 @@
 #include "base/except.h"
 #include "hal2/gpio/gpio.h"
 #include "hal2/register.h"
+#include "platforms/linker_sections.h"
+#include "third_party/stm32/stm32.h"
+#include "third_party/stm32/stm32_hal.h"
+
+extern "C" {
+PRINCIPAL_RESULT uint16_t gpio_bank_enabled[8]{
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+};
+}
 
 namespace tvsc::hal2::gpio {
 
@@ -62,39 +71,41 @@ class GpioStm32 final : public GpioPeripheral {
   GpioRegisterBank* registers_{instantiate_registers()};
 
   static GpioRegisterBank* instantiate_registers() noexcept {
+    gpio_bank_enabled[PORT] = 0xfade;
     if constexpr (PORT == 0) {
-#if defined(GPIOA_BASE)
-      return new (GPIOA_BASE) GpioRegisterBank;
+#if defined(GPIOA)
+      return new (GPIOA) GpioRegisterBank;
 #endif
     } else if constexpr (PORT == 1) {
-#if defined(GPIOB_BASE)
-      return new (GPIOB_BASE) GpioRegisterBank;
+#if defined(GPIOB)
+      return new (GPIOB) GpioRegisterBank;
 #endif
     } else if constexpr (PORT == 2) {
-#if defined(GPIOC_BASE)
-      return new (GPIOC_BASE) GpioRegisterBank;
+#if defined(GPIOC)
+      return new (GPIOC) GpioRegisterBank;
 #endif
     } else if constexpr (PORT == 3) {
-#if defined(GPIOD_BASE)
-      return new (GPIOD_BASE) GpioRegisterBank;
+#if defined(GPIOD)
+      return new (GPIOD) GpioRegisterBank;
 #endif
     } else if constexpr (PORT == 4) {
-#if defined(GPIOE_BASE)
-      return new (GPIOE_BASE) GpioRegisterBank;
+#if defined(GPIOE)
+      return new (GPIOE) GpioRegisterBank;
 #endif
     } else if constexpr (PORT == 5) {
-#if defined(GPIOF_BASE)
-      return new (GPIOF_BASE) GpioRegisterBank;
+#if defined(GPIOF)
+      return new (GPIOF) GpioRegisterBank;
 #endif
     } else if constexpr (PORT == 6) {
-#if defined(GPIOG_BASE)
-      return new (GPIOG_BASE) GpioRegisterBank;
+#if defined(GPIOG)
+      return new (GPIOG) GpioRegisterBank;
 #endif
     } else if constexpr (PORT == 7) {
-#if defined(GPIOG_BASE)
-      return new (GPIOH_BASE) GpioRegisterBank;
+#if defined(GPIOG)
+      return new (GPIOH) GpioRegisterBank;
 #endif
     }
+    gpio_bank_enabled[PORT] = 0xdead;
     except<std::domain_error>("Unimplemented or nonexistent GPIO port.");
   }
 
@@ -313,6 +324,7 @@ class GpioStm32 final : public GpioPeripheral {
   }
 
   void disable() noexcept {
+    gpio_bank_enabled[PORT] = 0xdade;
     if constexpr (PORT == 0) {
 #if defined(__HAL_RCC_GPIOA_CLK_DISABLE)
       __HAL_RCC_GPIOA_CLK_DISABLE();
@@ -349,6 +361,7 @@ class GpioStm32 final : public GpioPeripheral {
   }
 
   void enable() noexcept {
+    gpio_bank_enabled[PORT] = 0xbabe;
     if constexpr (PORT == 0) {
 #if defined(__HAL_RCC_GPIOA_CLK_ENABLE)
       __HAL_RCC_GPIOA_CLK_ENABLE();
