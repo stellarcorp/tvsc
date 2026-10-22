@@ -126,34 +126,9 @@ struct has_matching_accessor_name<Facility::GPIO_FACILITY, 7, T> {
 };
 
 template <typename T>
-struct has_matching_accessor_name<Facility::LED_FACILITY, 0, T> {
-  static constexpr bool value = requires(T t) {
-    { t.template debug_led() };
-    { t.template led0() };
-  };
-};
-template <typename T>
-struct has_matching_accessor_name<Facility::LED_FACILITY, 1, T> {
-  static constexpr bool value = requires(T t) {
-    { t.template led1() };
-  };
-};
-template <typename T>
-struct has_matching_accessor_name<Facility::LED_FACILITY, 2, T> {
-  static constexpr bool value = requires(T t) {
-    { t.template led2() };
-  };
-};
-template <typename T>
-struct has_matching_accessor_name<Facility::LED_FACILITY, 3, T> {
-  static constexpr bool value = requires(T t) {
-    { t.template led3() };
-  };
-};
-
-template <typename T>
 struct has_matching_accessor_name<Facility::TIMER_FACILITY, 0, T> {
   static constexpr bool value = requires(T t) {
+    { t.template lp_timer() };
     { t.template timer0() };
   };
 };
@@ -161,6 +136,56 @@ template <typename T>
 struct has_matching_accessor_name<Facility::TIMER_FACILITY, 1, T> {
   static constexpr bool value = requires(T t) {
     { t.template timer1() };
+  };
+};
+template <typename T>
+struct has_matching_accessor_name<Facility::TIMER_FACILITY, 2, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template timer2() };
+  };
+};
+template <typename T>
+struct has_matching_accessor_name<Facility::TIMER_FACILITY, 3, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template timer3() };
+  };
+};
+template <typename T>
+struct has_matching_accessor_name<Facility::TIMER_FACILITY, 4, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template timer4() };
+  };
+};
+template <typename T>
+struct has_matching_accessor_name<Facility::TIMER_FACILITY, 5, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template timer5() };
+  };
+};
+template <typename T>
+struct has_matching_accessor_name<Facility::TIMER_FACILITY, 6, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template timer6() };
+  };
+};
+template <typename T>
+struct has_matching_accessor_name<Facility::TIMER_FACILITY, 7, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template timer7() };
+  };
+};
+
+template <typename T>
+struct has_matching_accessor_name<Facility::CLOCK_FACILITY, 0, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template steady_clock() };
+    { t.template clock0() };
+  };
+};
+template <typename T>
+struct has_matching_accessor_name<Facility::CLOCK_FACILITY, 1, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template clock1() };
   };
 };
 
@@ -275,6 +300,32 @@ template <typename T>
 struct has_matching_accessor_name<Facility::CAN_BUS_FACILITY, 3, T> {
   static constexpr bool value = requires(T t) {
     { t.template can_bus3() };
+  };
+};
+
+template <typename T>
+struct has_matching_accessor_name<Facility::LED_FACILITY, 0, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template debug_led() };
+    { t.template led0() };
+  };
+};
+template <typename T>
+struct has_matching_accessor_name<Facility::LED_FACILITY, 1, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template led1() };
+  };
+};
+template <typename T>
+struct has_matching_accessor_name<Facility::LED_FACILITY, 2, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template led2() };
+  };
+};
+template <typename T>
+struct has_matching_accessor_name<Facility::LED_FACILITY, 3, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template led3() };
   };
 };
 
