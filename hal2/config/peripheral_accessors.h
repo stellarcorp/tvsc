@@ -26,6 +26,9 @@ struct has_matching_accessor_name<Facility::RCC_FACILITY, 0, T> {
 
 /**
  * The primary oscillator for the system.
+ *
+ * On STM32 MCUs, this is usually the HSI (High-Speed Internal), MSI (Multi-Speed Internal), or HSE
+ * (High-Speed External) oscillator.
  */
 template <typename T>
 struct has_matching_accessor_name<Facility::OSCILLATOR_FACILITY, 0, T> {
@@ -38,6 +41,8 @@ struct has_matching_accessor_name<Facility::OSCILLATOR_FACILITY, 0, T> {
 /**
  * This oscillator is contrived to be used during sleep and stop modes. In many architectures where
  * the watchdog uses a separate oscillator, this would be the one to use for the watchdog as well.
+ *
+ * On STM32 MCUs, this is the LSI (Low-Speed Internal) or LSE (Low-Speed External).
  */
 template <typename T>
 struct has_matching_accessor_name<Facility::OSCILLATOR_FACILITY, 1, T> {
@@ -129,12 +134,14 @@ template <typename T>
 struct has_matching_accessor_name<Facility::TIMER_FACILITY, 0, T> {
   static constexpr bool value = requires(T t) {
     { t.template lp_timer() };
+    { t.template lp_timer0() };
     { t.template timer0() };
   };
 };
 template <typename T>
 struct has_matching_accessor_name<Facility::TIMER_FACILITY, 1, T> {
   static constexpr bool value = requires(T t) {
+    { t.template lp_timer1() };
     { t.template timer1() };
   };
 };
