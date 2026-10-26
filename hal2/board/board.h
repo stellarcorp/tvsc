@@ -9,6 +9,7 @@
 #include "hal2/led/led_config.h"
 #include "hal2/rcc/stm32l4_rcc_config.h"
 #include "hal2/systick/stm32l4_systick_config.h"
+#include "hal2/timer/stm32l4_timer_config.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
@@ -35,6 +36,9 @@ struct PeripheralConfiguration<config::Facility::RCC_FACILITY, 0> final {
   }
 };
 
+/**
+ * LSI oscillator.
+ */
 template <>
 struct PeripheralConfiguration<config::Facility::OSCILLATOR_FACILITY, 1> final {
   template <typename System, typename PeripheralRegistry>
@@ -53,6 +57,10 @@ struct PeripheralConfiguration<config::Facility::OSCILLATOR_FACILITY, 1> final {
   }
 };
 
+/**
+ * Internal 48MHz oscillator used in USB commnications. For some reason, this oscillator is also
+ * required by the RNG module.
+ */
 template <>
 struct PeripheralConfiguration<config::Facility::OSCILLATOR_FACILITY, 2> final {
   template <typename System, typename PeripheralRegistry>
@@ -130,6 +138,35 @@ struct PeripheralConfiguration<config::Facility::LED_FACILITY, INDEX> final {
   }
 };
 
+/**
+ * Configuration for the low-power timers.
+ */
+template <size_t INDEX>
+  requires(INDEX < 2)  // Restrict to low-power timers only.
+struct PeripheralConfiguration<config::Facility::TIMER_FACILITY, INDEX> final {
+  template <typename System, typename PeripheralRegistry>
+  using accessor = timer::Stm32L4LowPowerTimerAccessor<System, PeripheralRegistry, INDEX>;
+
+  static constexpr config::PeripheralId id() noexcept {
+    return {config::Facility::TIMER_FACILITY, INDEX};
+  }
+  static constexpr auto dependencies() noexcept {
+    return std::array{
+        config::PeripheralId{config::Facility::RCC_FACILITY, 0},        //
+        config::PeripheralId{config::Facility::OSCILLATOR_FACILITY, 1}  //
+    };
+  }
+
+  template <size_t NUM_ISRS>
+  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
+    if constexpr (INDEX == 0) {
+      table.add_arm_isr(LPTIM1_IRQn, timer::handle_low_power_timer1_interrupt);
+    } else if constexpr (INDEX == 1) {
+      table.add_arm_isr(LPTIM2_IRQn, timer::handle_low_power_timer2_interrupt);
+    }
+  }
+};
+
 }  // namespace internal
 
 struct Board final {
@@ -151,5 +188,10 @@ static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::GPIO_FACILITY, 7>, Board>);
 static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::LED_FACILITY, 0>, Board>);
+// Check the validity of the configuration for the low-power timers.
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::TIMER_FACILITY, 0>, Board>);
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::TIMER_FACILITY, 1>, Board>);
 
 }  // namespace tvsc::hal2::board
