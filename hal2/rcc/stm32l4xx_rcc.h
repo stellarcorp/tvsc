@@ -72,6 +72,7 @@ class LsiOscillatorStm32L4xx final : public Oscillator {
  private:
   void enable() noexcept override;
   void disable() noexcept override;
+  void route_to(config::Facility facility, size_t index) noexcept override;
 };
 
 /**
@@ -93,6 +94,7 @@ class Hsi48OscillatorStm32L4xx final : public Oscillator {
  private:
   void enable() noexcept override;
   void disable() noexcept override;
+  void route_to(config::Facility facility, size_t index) noexcept override;
 };
 
 }  // namespace tvsc::hal2::rcc

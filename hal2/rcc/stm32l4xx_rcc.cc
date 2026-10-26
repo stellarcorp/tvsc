@@ -1,5 +1,6 @@
 #include "hal2/rcc/stm32l4xx_rcc.h"
 
+#include "base/except.h"
 #include "hal2/rcc/stm32l4_rcc_config.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
@@ -145,8 +146,18 @@ void RccStm32L4xx::restore_clock_speed() {
   }
 }
 
-void RccStm32L4xx::enter_sleep_mode() { __WFI(); }
-void RccStm32L4xx::enter_stop_mode() { HAL_PWREx_EnterSTOP1Mode(PWR_STOPENTRY_WFI); }
+void RccStm32L4xx::enter_sleep_mode() {
+  // Sleep by Waiting For Interrupt.
+  __WFI();
+  // Restore the clock speed back to its previous value on wake.
+  restore_clock_speed();
+}
+void RccStm32L4xx::enter_stop_mode() {
+  // Put core in stop mode and then Wait For Interrupt.
+  HAL_PWREx_EnterSTOP1Mode(PWR_STOPENTRY_WFI);
+  // Restore the clock speed back to its previous value on wake.
+  restore_clock_speed();
+}
 
 void Hsi48OscillatorStm32L4xx::enable() {
   /**
@@ -186,12 +197,11 @@ void Hsi48OscillatorStm32L4xx::disable() {
   // HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
 }
 
-void LsiOscillatorStm32L4xx::enable() {
-  // Note that these might be needed, both in enable() and disable(). Not sure why, or if they
-  // belong here, or in the power module.
-  // __HAL_RCC_PWR_CLK_ENABLE();
-  // HAL_PWR_EnableBkUpAccess();
+void Hsi48OscillatorStm32L4xx::route_to(config::Facility facility, size_t index) noexcept {
+  except<std::logic_error>("No logic to route HSI48 to the requested peripheral");
+}
 
+void LsiOscillatorStm32L4xx::enable() {
   /**
    * Turn on the LSI oscillator.
    */
@@ -211,11 +221,16 @@ void LsiOscillatorStm32L4xx::disable() {
   RCC_OscInitStruct.LSIState = RCC_LSI_OFF;
   // Note that this function call can block for up to 2 ms.
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
+}
 
-  // Note that these might be needed, both in enable() and disable(). Not sure why, or if they
-  // belong here, or in the power module.
-  //  HAL_PWR_DisableBkUpAccess();
-  // __HAL_RCC_PWR_CLK_DISABLE();
+void LsiOscillatorStm32L4xx::route_to(config::Facility facility, size_t index) noexcept {
+  if (facility == config::Facility::TIMER_FACILITY and index == 0) {
+    __HAL_RCC_LPTIM1_CONFIG(RCC_LPTIM1CLKSOURCE_LSI);
+  } else if (facility == config::Facility::TIMER_FACILITY and index == 1) {
+    __HAL_RCC_LPTIM2_CONFIG(RCC_LPTIM2CLKSOURCE_LSI);
+  } else {
+    except<std::logic_error>("No logic to route LSI to the requested peripheral");
+  }
 }
 
 }  // namespace tvsc::hal2::rcc

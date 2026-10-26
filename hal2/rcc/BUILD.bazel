@@ -4,6 +4,10 @@ cc_library(
         "oscillator.h",
         "rcc.h",
     ],
+    deps = [
+        "//hal2",
+        "//hal2/config",
+    ],
 )
 
 cc_library(
@@ -39,6 +43,7 @@ cc_library(
     ],
     deps = [
         ":rcc_headers",
+        "//base:except",
         "//hal2",
         "//hal2/config",
         "//third_party/stm32",
