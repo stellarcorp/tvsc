@@ -28,6 +28,10 @@
 		(uuid "0e5894e9-68f4-48ef-931c-2e0f8337a2ac")
 	)
 	(no_connect
+		(at 166.37 74.93)
+		(uuid "19a86763-213d-4748-af18-56ab0393a37f")
+	)
+	(no_connect
 		(at 113.03 115.57)
 		(uuid "1b77ddee-e4a8-437c-bb86-d7b83f1cdb85")
 	)
@@ -138,10 +142,6 @@
 	(no_connect
 		(at 113.03 48.26)
 		(uuid "982b0502-14b8-464c-be2f-b8f8b0f2173f")
-	)
-	(no_connect
-		(at 166.37 111.76)
-		(uuid "986835d3-2b69-4992-b752-26761dd36605")
 	)
 	(no_connect
 		(at 166.37 97.79)
@@ -523,16 +523,6 @@
 				(justify left)
 			)
 		)
-		(pin "SIGNAL_35" passive
-			(at 166.37 111.76 0)
-			(uuid "df448774-df18-4a62-b624-881fb0ec4aa0")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
 		(pin "SIGNAL_38" passive
 			(at 113.03 115.57 180)
 			(uuid "e218a2a8-5c02-4f87-a1ea-4095a025db46")
@@ -756,6 +746,16 @@
 		(pin "SIGNAL_59" passive
 			(at 166.37 142.24 0)
 			(uuid "64b71951-8e96-41a8-bbe1-125df9811063")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "WAKE" input
+			(at 166.37 74.93 0)
+			(uuid "0a1a27a2-dcf8-489d-981d-f4a45beaa3b0")
 			(effects
 				(font
 					(size 1.27 1.27)
