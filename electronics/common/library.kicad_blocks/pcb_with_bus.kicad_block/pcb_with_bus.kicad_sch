@@ -4740,7 +4740,7 @@
 		)
 		(uuid "6278e813-7464-449f-8923-60cbda741206")
 	)
-	(label "SIGNAL_35_INTERNAL"
+	(label "WAKE_INTERNAL"
 		(at 120.65 96.52 180)
 		(effects
 			(font
@@ -5230,7 +5230,7 @@
 		)
 		(uuid "f7d05a84-ac82-4dc0-8702-18110d0e204d")
 	)
-	(label "SIGNAL_35_INTERNAL"
+	(label "WAKE_INTERNAL"
 		(at 246.38 96.52 0)
 		(effects
 			(font
@@ -5679,8 +5679,8 @@
 		)
 		(uuid "8321859d-56e0-4b18-8d13-7844e25420d5")
 	)
-	(hierarchical_label "SIGNAL_35"
-		(shape passive)
+	(hierarchical_label "WAKE"
+		(shape input)
 		(at 125.73 96.52 0)
 		(effects
 			(font
