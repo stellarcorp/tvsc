@@ -9,6 +9,7 @@
 #include "hal2/led/led_config.h"
 #include "hal2/rcc/stm32l4_rcc_config.h"
 #include "hal2/systick/stm32l4_systick_config.h"
+#include "hal2/time/clock_config.h"
 #include "hal2/timer/stm32l4_timer_config.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
@@ -164,6 +165,32 @@ struct PeripheralConfiguration<config::Facility::TIMER_FACILITY, INDEX> final {
     } else if constexpr (INDEX == 1) {
       table.add_arm_isr(LPTIM2_IRQn, timer::handle_low_power_timer2_interrupt);
     }
+  }
+};
+
+/**
+ * Configuration for the primary system clock.
+ */
+template <size_t INDEX>
+  requires(INDEX == 0)  // Restrict to low-power timers only.
+struct PeripheralConfiguration<config::Facility::CLOCK_FACILITY, INDEX> final {
+  template <typename System, typename PeripheralRegistry>
+  using accessor = time::ClockAccessor<System, PeripheralRegistry, INDEX>;
+
+  static constexpr config::PeripheralId id() noexcept {
+    return {config::Facility::CLOCK_FACILITY, INDEX};
+  }
+  static constexpr auto dependencies() noexcept {
+    return std::array{
+        config::PeripheralId{config::Facility::RCC_FACILITY, 0},      //
+        config::PeripheralId{config::Facility::SYSTICK_FACILITY, 0},  //
+        config::PeripheralId{config::Facility::TIMER_FACILITY, 1}     //
+    };
+  }
+
+  template <size_t NUM_ISRS>
+  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
+    // No ISRs required.
   }
 };
 

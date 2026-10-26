@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
           .add<Facility::RCC_FACILITY, 0>()      //
           .add<Facility::SYSTICK_FACILITY, 0>()  //
           .add<Facility::TIMER_FACILITY, 1>()    //
+          .add<Facility::CLOCK_FACILITY, 0>()    //
           .add<Facility::LED_FACILITY, 0>()      //
   };
   static constexpr size_t ISR_ARRAY_SIZE{100};
@@ -26,7 +27,7 @@ int main(int argc, char* argv[]) {
 
   tvsc::initialize(&argc, &argv);
   auto sys{system_builder.system()};
-  auto lptim{sys.lp_timer1().access()};
+  auto& clock{sys.steady_clock()};
   auto led{sys.debug_led().access()};
 
   led.set_pin_mode(tvsc::hal2::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal2::gpio::PinSpeed::LOW);
@@ -34,14 +35,7 @@ int main(int argc, char* argv[]) {
 
   while (true) {
     led.toggle_pin();
-
-    lptim.configure_single_pulse(500'000);
-    sys.systick().mask_interrupt();
-    lptim.start();
-    do {
-      sys.rcc().enter_sleep_mode();
-    } while (lptim.is_running());
-    sys.systick().unmask_interrupt();
+    clock.sleep_us(500'000);
   }
 
   return 0;
