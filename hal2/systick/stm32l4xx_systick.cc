@@ -8,7 +8,7 @@
 
 namespace tvsc::hal2::systick {
 
-SysTickStm32l4xx::SysTickStm32l4xx() noexcept {
+SysTickStm32l4xx::SysTickStm32l4xx() noexcept : previous_control_value_(SysTick->CTRL) {
   HAL_NVIC_SetPriority(SysTick_IRQn, 7, 0);
   HAL_NVIC_EnableIRQ(SysTick_IRQn);
 }
@@ -16,6 +16,13 @@ SysTickStm32l4xx::SysTickStm32l4xx() noexcept {
 [[nodiscard]] TimeType SysTickStm32l4xx::current_time_micros() const noexcept { return uwTick; }
 
 void SysTickStm32l4xx::increment_micros(TimeType us) noexcept { uwTick += us; }
+
+void SysTickStm32l4xx::mask_interrupt() noexcept {
+  previous_control_value_ = SysTick->CTRL;
+  SysTick->CTRL &= ~(SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_TICKINT_Msk);
+}
+
+void SysTickStm32l4xx::unmask_interrupt() noexcept { SysTick->CTRL = previous_control_value_; }
 
 void handle_systick_interrupt() noexcept {
   // SysTick fires every millisecond. We keep the tick counter in microseconds in order to better
