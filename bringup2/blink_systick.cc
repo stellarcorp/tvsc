@@ -1,6 +1,5 @@
 #include <chrono>
 #include <cstdint>
-#include <limits>
 
 #include "base/initializer.h"
 #include "hal2/board/board.h"
@@ -14,16 +13,12 @@ using namespace tvsc::hal2::config;
 int main(int argc, char* argv[]) {
   using PeripheralRegistry = tvsc::hal2::board::Board;
   static constexpr auto system_builder{
-      SystemBuilder<PeripheralRegistry>{}        //
-          .add<Facility::RCC_FACILITY, 0>()      //
-          .add<Facility::SYSTICK_FACILITY, 0>()  //
-          .add<Facility::TIMER_FACILITY, 1>()    //
-          .add<Facility::CLOCK_FACILITY, 0>()    //
-          .add<Facility::LED_FACILITY, 0>()      //
+      SystemBuilder<PeripheralRegistry>{}      //
+          .add<Facility::CLOCK_FACILITY, 0>()  //
+          .add<Facility::LED_FACILITY, 0>()    //
   };
-  static constexpr size_t ISR_ARRAY_SIZE{100};
   INTERRUPT_VECTOR_TABLE static constexpr auto interrupt_vector_table{
-      system_builder.create_vector_table<ISR_ARRAY_SIZE>()};
+      system_builder.create_vector_table()};
 
   tvsc::initialize(&argc, &argv);
   auto sys{system_builder.system()};
