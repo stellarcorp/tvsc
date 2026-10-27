@@ -112,7 +112,7 @@ class SystemBuilder<PeripheralRegistry, TypeAccumulator<PeripheralConfigurations
     return SystemBuilder<PeripheralRegistry, NextAccumulator>{};
   }
 
-  template <size_t NUM_ISRS>
+  template <size_t NUM_ISRS = 127>
   [[nodiscard]] consteval auto create_vector_table() const noexcept {
     VectorTable<NUM_ISRS> vector_table{};
     (PeripheralConfigurations::template update_vector_table<NUM_ISRS>(vector_table), ...);
