@@ -33,17 +33,12 @@ void Clock::sleep_us(TimeType microseconds) noexcept {
     systick_->mask_interrupt();
     timer_.start();
     do {
-      // TODO(james): Issue 23. Fix the CAN bus so that it can wake from stop 1 mode when receiving
-      // a message. Then, remove the next line and replace it with
-      // rcc_->enter_stop_mode();
-      // This change would put the MCU in stop mode during a long sleep, rather than just sleep
-      // mode, and should result in substantial power savings.
       // TODO(james): Implement system bus WAKE line. CAN bus can't wake the MCU from stop mode, and
       // CAN transceivers that are able to approximate that capability requiring transmitting an
       // extra "wakeup" packet for each real packet. As CAN bus transmissions are orders of
       // magnitude more energy intensive than almost anything else, we need a different technique to
       // avoid those extra transmissions.
-      rcc_->enter_sleep_mode();
+      rcc_->enter_stop_mode();
     } while (timer_.is_running());
     systick_->unmask_interrupt();
   }
