@@ -22,15 +22,13 @@ void Clock::sleep_us(TimeType microseconds) noexcept {
   // is less than the time it takes to wake from stop mode, we simply block on WFI (Wait For
   // Interrupt). Note: entering stop/sleep mode is only 1-2 clock cycles, so we ignore that time.
   timer_.configure_single_pulse(microseconds);
+  systick_->mask_interrupt();
   if (microseconds < TIME_TO_WAKE_FROM_STOP_MODE_US) {
-    systick_->mask_interrupt();
     timer_.start();
     do {
       rcc_->enter_sleep_mode();
     } while (timer_.is_running());
-    systick_->unmask_interrupt();
   } else {
-    systick_->mask_interrupt();
     timer_.start();
     do {
       // TODO(james): Implement system bus WAKE line. CAN bus can't wake the MCU from stop mode, and
@@ -40,8 +38,8 @@ void Clock::sleep_us(TimeType microseconds) noexcept {
       // avoid those extra transmissions.
       rcc_->enter_stop_mode();
     } while (timer_.is_running());
-    systick_->unmask_interrupt();
   }
+  systick_->unmask_interrupt();
 
   systick_->increment_micros(microseconds);
 }
