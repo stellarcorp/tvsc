@@ -182,10 +182,8 @@ class Stm32l4xxLptim final : public TimerPeripheral {
   }
 
   [[nodiscard]] bool is_running() noexcept override {
-    // Check the enable bit in the control register, and if it is on, then check that the timer is
-    // in either single-pulse mode or continuous mode.
-    return (registers_->CR.bit_field_value<1, 0>() == 1) and
-           (registers_->CR.bit_field_value<2, 1>() != 0);
+    // Check the enable bit in the control register. If it is on, assume that the timer is running.
+    return registers_->CR.bit_field_value<1, 0>() == 1;
   }
 
   void enable() noexcept override {
