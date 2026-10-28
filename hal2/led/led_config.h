@@ -17,8 +17,7 @@ class LedAccessor<System, PeripheralRegistry, 0, PIN> {
       typename PeripheralRegistry::template configuration<
           config::Facility::GPIO_FACILITY, PIN.port>::template accessor<System, PeripheralRegistry>;
 
-  gpio::GpioPeripheral* gpio_{&static_cast<GpioBank&>(static_cast<System&>(*this)).get()};
-  gpio::PinPeripheral led_{*gpio_, PIN.pin};
+  gpio::PinPeripheral led_{static_cast<GpioBank&>(static_cast<System&>(*this)).get(), PIN.pin};
 
  public:
   [[nodiscard]] auto& get() noexcept { return led_; }
@@ -34,8 +33,7 @@ class LedAccessor<System, PeripheralRegistry, 1, PIN> {
       typename PeripheralRegistry::template configuration<
           config::Facility::GPIO_FACILITY, PIN.port>::template accessor<System, PeripheralRegistry>;
 
-  gpio::GpioPeripheral* gpio_{&static_cast<GpioBank&>(static_cast<System&>(*this)).get()};
-  gpio::PinPeripheral led_{*gpio_, PIN.pin};
+  gpio::PinPeripheral led_{static_cast<GpioBank&>(static_cast<System&>(*this)).get(), PIN.pin};
 
  public:
   [[nodiscard]] auto& get() noexcept { return led_; }
@@ -50,8 +48,7 @@ class LedAccessor<System, PeripheralRegistry, 2, PIN> {
       typename PeripheralRegistry::template configuration<
           config::Facility::GPIO_FACILITY, PIN.port>::template accessor<System, PeripheralRegistry>;
 
-  gpio::GpioPeripheral* gpio_{&static_cast<GpioBank&>(static_cast<System&>(*this)).get()};
-  gpio::PinPeripheral led_{*gpio_, PIN.pin};
+  gpio::PinPeripheral led_{static_cast<GpioBank&>(static_cast<System&>(*this)).get(), PIN.pin};
 
  public:
   [[nodiscard]] auto& get() noexcept { return led_; }
@@ -66,8 +63,7 @@ class LedAccessor<System, PeripheralRegistry, 3, PIN> {
       typename PeripheralRegistry::template configuration<
           config::Facility::GPIO_FACILITY, PIN.port>::template accessor<System, PeripheralRegistry>;
 
-  gpio::GpioPeripheral* gpio_{&static_cast<GpioBank&>(static_cast<System&>(*this)).get()};
-  gpio::PinPeripheral led_{*gpio_, PIN.pin};
+  gpio::PinPeripheral led_{static_cast<GpioBank&>(static_cast<System&>(*this)).get(), PIN.pin};
 
  public:
   [[nodiscard]] auto& get() noexcept { return led_; }
