@@ -1,0 +1,46 @@
+cc_library(
+    name = "watchdog_headers",
+    hdrs = [
+        "watchdog.h",
+    ],
+    deps = [
+        "//hal2",
+    ],
+)
+
+cc_library(
+    name = "watchdog",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":watchdog_headers",
+        "//hal2",
+    ] + select({
+        "//platforms:stm32_core": [
+            ":stm32l4_watchdog",
+        ],
+    }),
+)
+
+cc_library(
+    name = "stm32l4_watchdog",
+    srcs = [
+        "stm32l4_watchdog.cc",
+    ],
+    hdrs = [
+        "stm32l4_watchdog.h",
+        "stm32l4_watchdog_config.h",
+    ],
+    target_compatible_with = [
+        "//platforms:stm32_core",
+    ],
+    deps = [
+        ":watchdog_headers",
+        "//hal2",
+        "//hal2/rcc",
+        "//third_party/stm32",
+    ],
+)

@@ -12,6 +12,7 @@
 #include "hal2/rcc/stm32l4_rcc_config.h"
 #include "hal2/systick/stm32l4_systick_config.h"
 #include "hal2/timer/stm32l4_timer_config.h"
+#include "hal2/watchdog/stm32l4_watchdog_config.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
@@ -170,13 +171,39 @@ struct PeripheralConfiguration<config::Facility::TIMER_FACILITY, INDEX> final {
 };
 
 /**
+ * Configuration for the watchdog
+ */
+template <size_t INDEX>
+  requires(INDEX == 0)  // Only a single IWDG available for now.
+struct PeripheralConfiguration<config::Facility::WATCHDOG_FACILITY, INDEX> final {
+  template <typename System, typename PeripheralRegistry>
+  using accessor = watchdog::Stm32L4WatchdogAccessor<System, PeripheralRegistry>;
+
+  static constexpr config::PeripheralId id() noexcept {
+    return {config::Facility::WATCHDOG_FACILITY, INDEX};
+  }
+  static constexpr auto dependencies() noexcept {
+    return std::array{
+        config::PeripheralId{config::Facility::RCC_FACILITY, 0},        //
+        config::PeripheralId{config::Facility::OSCILLATOR_FACILITY, 1}  //
+    };
+  }
+
+  template <size_t NUM_ISRS>
+  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
+    // No ISRs required.
+  }
+};
+
+/**
  * Configuration for the primary system clock.
  */
 template <size_t INDEX>
-  requires(INDEX == 0)  // Restrict to low-power timers only.
+  requires(INDEX == 0)
 struct PeripheralConfiguration<config::Facility::CLOCK_FACILITY, INDEX> final {
   template <typename System, typename PeripheralRegistry>
-  using accessor = clock::ClockAccessor<System, PeripheralRegistry, INDEX, clock::SleepStrategy::SLEEP>;
+  using accessor =
+      clock::ClockAccessor<System, PeripheralRegistry, INDEX, clock::SleepStrategy::SLEEP>;
 
   static constexpr config::PeripheralId id() noexcept {
     return {config::Facility::CLOCK_FACILITY, INDEX};
@@ -208,18 +235,26 @@ static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::OSCILLATOR_FACILITY, 1>, Board>);
 static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::OSCILLATOR_FACILITY, 2>, Board>);
+
 static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::SYSTICK_FACILITY, 0>, Board>);
+
 static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::GPIO_FACILITY, 0>, Board>);
 static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::GPIO_FACILITY, 7>, Board>);
+
 static_assert(config::ValidPeripheralConfiguration<
-              internal::PeripheralConfiguration<config::Facility::LED_FACILITY, 0>, Board>);
+              internal::PeripheralConfiguration<config::Facility::WATCHDOG_FACILITY, 0>, Board>);
+
 static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::TIMER_FACILITY, 0>, Board>);
 static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::TIMER_FACILITY, 1>, Board>);
+
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::LED_FACILITY, 0>, Board>);
+
 static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::CLOCK_FACILITY, 0>, Board>);
 

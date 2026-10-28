@@ -28,6 +28,7 @@ cc_library(
         "//hal2/rcc",
         "//hal2/systick",
         "//hal2/timer",
+        "//hal2/watchdog",
     ],
     target_compatible_with = select({
         "//platforms:cheerful_coffee_board_variant": [],
