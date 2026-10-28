@@ -4,15 +4,7 @@ cc_library(
     hdrs = [
         "board.h",
     ],
-    deps = [
-        "//hal2/config",
-        "//hal2/gpio",
-        "//hal2/led",
-        "//hal2/rcc",
-        "//hal2/systick",
-        "//hal2/time",
-        "//hal2/timer",
-    ] + select({
+    deps = select({
         "//platforms:cheerful_coffee_board_variant": [
             ":cheerful_coffee_board",
         ],
@@ -29,12 +21,12 @@ cc_library(
         "cheerful_coffee_board.h",
     ],
     deps = [
+        "//hal2/clock",
         "//hal2/config",
         "//hal2/gpio",
         "//hal2/led",
         "//hal2/rcc",
         "//hal2/systick",
-        "//hal2/time",
         "//hal2/timer",
     ],
     target_compatible_with = select({

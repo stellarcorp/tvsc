@@ -3,6 +3,7 @@
 #include <array>
 #include <cstddef>
 
+#include "hal2/clock/clock_config.h"
 #include "hal2/config/facility.h"
 #include "hal2/config/vector_table.h"
 #include "hal2/gpio/gpio.h"
@@ -10,7 +11,6 @@
 #include "hal2/led/led_config.h"
 #include "hal2/rcc/stm32l4_rcc_config.h"
 #include "hal2/systick/stm32l4_systick_config.h"
-#include "hal2/time/clock_config.h"
 #include "hal2/timer/stm32l4_timer_config.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
@@ -176,7 +176,7 @@ template <size_t INDEX>
   requires(INDEX == 0)  // Restrict to low-power timers only.
 struct PeripheralConfiguration<config::Facility::CLOCK_FACILITY, INDEX> final {
   template <typename System, typename PeripheralRegistry>
-  using accessor = time::ClockAccessor<System, PeripheralRegistry, INDEX>;
+  using accessor = clock::ClockAccessor<System, PeripheralRegistry, INDEX>;
 
   static constexpr config::PeripheralId id() noexcept {
     return {config::Facility::CLOCK_FACILITY, INDEX};

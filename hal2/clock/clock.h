@@ -7,7 +7,7 @@
 #include "hal2/time_type.h"
 #include "hal2/timer/timer.h"
 
-namespace tvsc::hal2::time {
+namespace tvsc::hal2::clock {
 
 /**
  * Class to manage the compute the current time and handle sleep requests. This class is modelled
@@ -70,4 +70,4 @@ class Clock final {
   void wait(time_point t) noexcept { wait(t - current_time()); }
 };
 
-}  // namespace tvsc::hal2::time
+}  // namespace tvsc::hal2::clock

@@ -1,10 +1,10 @@
-#include "hal2/time/clock.h"
+#include "hal2/clock/clock.h"
 
 #include <cstdint>
 
 #include "hal2/time_type.h"
 
-namespace tvsc::hal2::time {
+namespace tvsc::hal2::clock {
 
 void Clock::sleep_us(TimeType microseconds) noexcept {
   static constexpr TimeType TIME_TO_START_TIMER_US{25};
@@ -51,4 +51,4 @@ void Clock::wait_us(TimeType microseconds) noexcept {
   }
 }
 
-}  // namespace tvsc::hal2::time
+}  // namespace tvsc::hal2::clock

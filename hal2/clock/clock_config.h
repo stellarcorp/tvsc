@@ -1,9 +1,9 @@
 #pragma once
 
+#include "hal2/clock/clock.h"
 #include "hal2/config/facility.h"
-#include "hal2/time/clock.h"
 
-namespace tvsc::hal2::time {
+namespace tvsc::hal2::clock {
 
 template <typename System, typename PeripheralRegistry, size_t INDEX>
   requires(INDEX == 0)
@@ -32,4 +32,4 @@ class ClockAccessor {
   [[nodiscard]] Clock& steady_clock() noexcept { return get(); }
 };
 
-}  // namespace tvsc::hal2::time
+}  // namespace tvsc::hal2::clock
