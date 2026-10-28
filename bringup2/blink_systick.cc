@@ -29,8 +29,10 @@ int main(int argc, char* argv[]) {
   led.off();
 
   while (true) {
-    led.toggle_pin();
-    clock.sleep_us(500'000);
+    led.on();
+    clock.sleep_ms(50);
+    led.off();
+    clock.sleep_ms(950);
   }
 
   return 0;
