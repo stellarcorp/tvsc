@@ -20,3 +20,26 @@ cc_binary(
         "//platforms:startup",
     ],
 )
+
+cc_binary(
+    name = "watchdog_systick.elf",
+    srcs = [
+        "watchdog_systick.cc",
+    ],
+    additional_linker_inputs = [
+        "//platforms:linker_script",
+    ],
+    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
+    target_compatible_with = select({
+        "@platforms//os:none": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    deps = [
+        "//base",
+        "//hal2",
+        "//hal2/board",
+        "//hal2/config",
+        "//hal2/gpio",
+        "//platforms:startup",
+    ],
+)
