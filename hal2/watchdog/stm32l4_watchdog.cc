@@ -63,6 +63,10 @@ void Stm32L4Watchdog::enable() noexcept {
   // configuration change.
   // registers_->KR = FEED_KEY_VALUE;
 
+  // Start the IWDG. Seems counterintuitive, but without this write, other writes to the peripheral
+  // hang.
+  registers_->KR.set_value(START_KEY_VALUE);
+
   // Unlock watchdog for configuration.
   registers_->KR.set_value(CONFIGURE_KEY_VALUE);
 
