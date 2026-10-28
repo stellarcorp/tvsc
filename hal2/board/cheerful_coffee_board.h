@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <cstddef>
 
 #include "hal2/config/facility.h"
 #include "hal2/config/vector_table.h"
@@ -14,7 +15,12 @@
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 
-namespace tvsc::hal2::board::internal {
+namespace tvsc::hal2::board {
+
+namespace internal {
+
+template <config::Facility FACILITY, size_t INDEX>
+struct PeripheralConfiguration;
 
 template <>
 struct PeripheralConfiguration<config::Facility::RCC_FACILITY, 0> final {
@@ -189,4 +195,32 @@ struct PeripheralConfiguration<config::Facility::CLOCK_FACILITY, INDEX> final {
   }
 };
 
-}  // namespace tvsc::hal2::board::internal
+}  // namespace internal
+
+struct Board final {
+  template <config::Facility FACILITY, size_t INDEX>
+  using configuration = internal::PeripheralConfiguration<FACILITY, INDEX>;
+};
+
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::RCC_FACILITY, 0>, Board>);
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::OSCILLATOR_FACILITY, 1>, Board>);
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::OSCILLATOR_FACILITY, 2>, Board>);
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::SYSTICK_FACILITY, 0>, Board>);
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::GPIO_FACILITY, 0>, Board>);
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::GPIO_FACILITY, 7>, Board>);
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::LED_FACILITY, 0>, Board>);
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::TIMER_FACILITY, 0>, Board>);
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::TIMER_FACILITY, 1>, Board>);
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::CLOCK_FACILITY, 0>, Board>);
+
+}  // namespace tvsc::hal2::board
