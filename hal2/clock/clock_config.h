@@ -5,7 +5,8 @@
 
 namespace tvsc::hal2::clock {
 
-template <typename System, typename PeripheralRegistry, size_t INDEX>
+template <typename System, typename PeripheralRegistry, size_t INDEX,
+          SleepStrategy SLEEP_STRATEGY = SleepStrategy::SLEEP>
   requires(INDEX == 0)
 class ClockAccessor {
  private:
@@ -22,14 +23,14 @@ class ClockAccessor {
           config::Facility::TIMER_FACILITY, LPTIM_INDEX>::template accessor<System,
                                                                             PeripheralRegistry>;
 
-  Clock clock_{static_cast<SysTickAccessor&>(static_cast<System&>(*this)).get(),
-               static_cast<RccAccessor&>(static_cast<System&>(*this)).get(),
-               static_cast<LptimAccessor&>(static_cast<System&>(*this)).get()};
+  Clock<SLEEP_STRATEGY> clock_{static_cast<SysTickAccessor&>(static_cast<System&>(*this)).get(),
+                               static_cast<RccAccessor&>(static_cast<System&>(*this)).get(),
+                               static_cast<LptimAccessor&>(static_cast<System&>(*this)).get()};
 
  public:
-  [[nodiscard]] Clock& get() noexcept { return clock_; }
-  [[nodiscard]] Clock& clock0() noexcept { return get(); }
-  [[nodiscard]] Clock& steady_clock() noexcept { return get(); }
+  [[nodiscard]] auto& get() noexcept { return clock_; }
+  [[nodiscard]] auto& clock0() noexcept { return get(); }
+  [[nodiscard]] auto& steady_clock() noexcept { return get(); }
 };
 
 }  // namespace tvsc::hal2::clock

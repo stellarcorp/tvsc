@@ -176,7 +176,7 @@ template <size_t INDEX>
   requires(INDEX == 0)  // Restrict to low-power timers only.
 struct PeripheralConfiguration<config::Facility::CLOCK_FACILITY, INDEX> final {
   template <typename System, typename PeripheralRegistry>
-  using accessor = clock::ClockAccessor<System, PeripheralRegistry, INDEX>;
+  using accessor = clock::ClockAccessor<System, PeripheralRegistry, INDEX, clock::SleepStrategy::SLEEP>;
 
   static constexpr config::PeripheralId id() noexcept {
     return {config::Facility::CLOCK_FACILITY, INDEX};

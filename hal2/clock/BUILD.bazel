@@ -1,8 +1,5 @@
 cc_library(
     name = "clock",
-    srcs = [
-        "clock.cc",
-    ],
     hdrs = [
         "clock.h",
         "clock_config.h",
