@@ -1,5 +1,6 @@
 #pragma once
 
+#include "hal2/config/facility.h"
 #include "hal2/rcc/oscillator.h"
 #include "hal2/timer/stm32l4_timer.h"
 #include "hal2/timer/timer.h"
