@@ -30,6 +30,8 @@ SECTIONS
   .build_time :
   {
     . = ALIGN(4);
+    KEEP(*(BUILD_TIME_ADDR_SECTION))
+    . = ALIGN(4);
     KEEP(*(BUILD_TIME_SECTION))
     . = ALIGN(4);
   } >FLASH

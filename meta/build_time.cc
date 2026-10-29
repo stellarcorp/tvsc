@@ -2,13 +2,16 @@
 
 #include <cstdint>
 
+#include "platforms/linker_sections.h"
+
 namespace tvsc::meta {
 
-__attribute__((section(".build_time"))) const BuildTime BUILD_TIME{
+KEEP_IN_SECTION(BUILD_TIME_SECTION)
+const BuildTime BUILD_TIME{
     BUILD_TIMESTAMP,  // Symbol defined by Bazel during build.
 };
 
-__attribute__((section(".build_time")))
+KEEP_IN_SECTION(BUILD_TIME_ADDR_SECTION)
 const uint32_t BUILD_TIME_ADDR{reinterpret_cast<uint32_t>(&BUILD_TIME)};
 
 }  // namespace tvsc::meta

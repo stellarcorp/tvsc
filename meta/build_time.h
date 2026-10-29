@@ -2,12 +2,12 @@
 
 #include <cstdint>
 
-#include "hal/time_type.h"
+#include "hal2/time_type.h"
 
 namespace tvsc::meta {
 
 struct BuildTime final {
-  hal::TimeType timestamp;
+  hal2::TimeType timestamp;
 };
 
 extern const BuildTime BUILD_TIME;

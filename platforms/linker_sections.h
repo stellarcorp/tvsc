@@ -11,6 +11,7 @@
 #define DEBUG_VAR_SECTION ".status.debug"
 
 #define BUILD_TIME_SECTION ".build_time"
+#define BUILD_TIME_ADDR_SECTION ".build_time.addr"
 #define DMA_BUFFER_SECTION ".dma_buffers"
 
 #define STRINGIFY_X(s) STRINGIFY(s)
