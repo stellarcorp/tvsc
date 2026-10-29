@@ -1,71 +1,22 @@
-cc_binary(
+load(":bringup_script.bzl", "bringup_binary")
+
+bringup_binary(
     name = "blink_systick.elf",
     srcs = [
         "blink_systick.cc",
     ],
-    additional_linker_inputs = [
-        "//platforms:linker_script",
-    ],
-    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
-    target_compatible_with = select({
-        "@platforms//os:none": [],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
-    deps = [
-        "//base",
-        "//hal2",
-        "//hal2/board",
-        "//hal2/config",
-        "//hal2/gpio",
-        "//meta:build_time",
-        "//platforms:startup",
-    ],
 )
 
-cc_binary(
+bringup_binary(
     name = "random_systick.elf",
     srcs = [
         "random_systick.cc",
     ],
-    additional_linker_inputs = [
-        "//platforms:linker_script",
-    ],
-    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
-    target_compatible_with = select({
-        "@platforms//os:none": [],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
-    deps = [
-        "//base",
-        "//hal2",
-        "//hal2/board",
-        "//hal2/config",
-        "//hal2/gpio",
-        "//meta:build_time",
-        "//platforms:startup",
-    ],
 )
 
-cc_binary(
+bringup_binary(
     name = "watchdog_systick.elf",
     srcs = [
         "watchdog_systick.cc",
-    ],
-    additional_linker_inputs = [
-        "//platforms:linker_script",
-    ],
-    linkopts = ["-Wl,-T$(execpath //platforms:linker_script)"],
-    target_compatible_with = select({
-        "@platforms//os:none": [],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
-    deps = [
-        "//base",
-        "//hal2",
-        "//hal2/board",
-        "//hal2/config",
-        "//hal2/gpio",
-        "//meta:build_time",
-        "//platforms:startup",
     ],
 )
