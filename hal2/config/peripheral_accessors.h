@@ -74,6 +74,13 @@ struct has_matching_accessor_name<Facility::SYSTICK_FACILITY, 0, T> {
 };
 
 template <typename T>
+struct has_matching_accessor_name<Facility::RNG_FACILITY, 0, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template random_device() };
+  };
+};
+
+template <typename T>
 struct has_matching_accessor_name<Facility::GPIO_FACILITY, 0, T> {
   static constexpr bool value = requires(T t) {
     { t.template gpio0() };

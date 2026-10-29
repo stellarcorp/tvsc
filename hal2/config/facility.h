@@ -6,13 +6,24 @@ namespace tvsc::hal2::config {
 
 enum class Facility {
   // Fundamental processor functionality.
-  RCC_FACILITY,         // Note that RCC includes the primary oscillator as well.
+  RCC_FACILITY,  // Note that RCC includes the primary oscillator as well.
+
+  // Time-oriented facilities.
   OSCILLATOR_FACILITY,  // Secondary oscillators.
   SYSTICK_FACILITY,
-  GPIO_FACILITY,
   TIMER_FACILITY,
   CLOCK_FACILITY,
+
+  // Random number generation.
+  RNG_FACILITY,
+
+  // Interactions via the pins of the processor.
+  GPIO_FACILITY,
+
+  // Watchdogs to verify behavior.
   WATCHDOG_FACILITY,
+
+  // Analog-digital conversion.
   ADC_FACILITY,
   DAC_FACILITY,
 
