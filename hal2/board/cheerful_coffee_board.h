@@ -9,6 +9,7 @@
 #include "hal2/gpio/gpio.h"
 #include "hal2/gpio/stm32_gpio_config.h"
 #include "hal2/led/led_config.h"
+#include "hal2/random/stm32_rng_config.h"
 #include "hal2/rcc/stm32l4_rcc_config.h"
 #include "hal2/systick/stm32l4_systick_config.h"
 #include "hal2/timer/stm32l4_timer_config.h"
@@ -196,6 +197,31 @@ struct PeripheralConfiguration<config::Facility::WATCHDOG_FACILITY, INDEX> final
 };
 
 /**
+ * Configuration for the RNG
+ */
+template <size_t INDEX>
+  requires(INDEX == 0)  // Only a single RNG available.
+struct PeripheralConfiguration<config::Facility::RNG_FACILITY, INDEX> final {
+  template <typename System, typename PeripheralRegistry>
+  using accessor = random::Stm32RngAccessor<System, PeripheralRegistry>;
+
+  static constexpr config::PeripheralId id() noexcept {
+    return {config::Facility::RNG_FACILITY, INDEX};
+  }
+  static constexpr auto dependencies() noexcept {
+    return std::array{
+        config::PeripheralId{config::Facility::RCC_FACILITY, 0},        //
+        config::PeripheralId{config::Facility::OSCILLATOR_FACILITY, 2}  //
+    };
+  }
+
+  template <size_t NUM_ISRS>
+  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
+    // No ISRs required.
+  }
+};
+
+/**
  * Configuration for the primary system clock.
  */
 template <size_t INDEX>
@@ -246,6 +272,9 @@ static_assert(config::ValidPeripheralConfiguration<
 
 static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::WATCHDOG_FACILITY, 0>, Board>);
+
+static_assert(config::ValidPeripheralConfiguration<
+              internal::PeripheralConfiguration<config::Facility::RNG_FACILITY, 0>, Board>);
 
 static_assert(config::ValidPeripheralConfiguration<
               internal::PeripheralConfiguration<config::Facility::TIMER_FACILITY, 0>, Board>);
