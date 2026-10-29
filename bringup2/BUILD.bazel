@@ -17,6 +17,7 @@ cc_binary(
         "//hal2/board",
         "//hal2/config",
         "//hal2/gpio",
+        "//meta:build_time",
         "//platforms:startup",
     ],
 )
@@ -40,6 +41,7 @@ cc_binary(
         "//hal2/board",
         "//hal2/config",
         "//hal2/gpio",
+        "//meta:build_time",
         "//platforms:startup",
     ],
 )
@@ -63,6 +65,7 @@ cc_binary(
         "//hal2/board",
         "//hal2/config",
         "//hal2/gpio",
+        "//meta:build_time",
         "//platforms:startup",
     ],
 )
