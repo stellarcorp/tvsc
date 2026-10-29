@@ -198,7 +198,11 @@ void Hsi48OscillatorStm32L4xx::disable() {
 }
 
 void Hsi48OscillatorStm32L4xx::route_to(config::Facility facility, size_t index) noexcept {
-  except<std::logic_error>("No logic to route HSI48 to the requested peripheral");
+  if (facility == config::Facility::RNG_FACILITY and index == 0) {
+    __HAL_RCC_RNG_CONFIG(RCC_RNGCLKSOURCE_HSI48);
+  } else {
+    except<std::logic_error>("No logic to route HSI48 to the requested peripheral");
+  }
 }
 
 void LsiOscillatorStm32L4xx::enable() {
