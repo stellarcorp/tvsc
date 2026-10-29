@@ -1,4 +1,5 @@
 #include <chrono>
+#include <cmath>
 #include <cstdint>
 #include <random>
 
@@ -31,13 +32,13 @@ int main(int argc, char* argv[]) {
   led.off();
 
   auto rng{sys.random_device().access()};
-  std::uniform_int_distribution<> distribution{100, 1500};
+  std::exponential_distribution<> distribution{2};
 
   while (true) {
     led.on();
     clock.sleep_ms(50);
     led.off();
-    clock.sleep_ms(distribution(rng));
+    clock.sleep_ms(1000 * std::lround(distribution(rng)));
   }
 
   return 0;
