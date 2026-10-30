@@ -12,7 +12,7 @@ class Oscillator : public Peripheral<Oscillator, OscillatorDriver> {
   virtual void enable() noexcept = 0;
   virtual void disable() noexcept = 0;
 
-  virtual void route_to(config::Facility facility, size_t index) noexcept;
+  virtual void connect(config::Facility facility, size_t index) noexcept;
 
   friend class OscillatorDriver;
 
@@ -30,8 +30,8 @@ class OscillatorDriver final : public Driver<Oscillator, OscillatorDriver> {
  public:
   OscillatorDriver() noexcept = default;
 
-  void route_to(config::Facility facility, size_t index) noexcept {
-    peripheral_->route_to(facility, index);
+  void connect(config::Facility facility, size_t index) noexcept {
+    peripheral_->connect(facility, index);
   }
 };
 

@@ -13,7 +13,7 @@ void Stm32Rng::enable() noexcept {
 
   __HAL_RCC_RNG_CLK_ENABLE();
 
-  hsi48_driver_.route_to(config::Facility::RNG_FACILITY, 0);
+  hsi48_driver_.connect(config::Facility::RNG_FACILITY, 0);
 
   // Enable the RNG peripheral by setting the RNGEN bit (bit 2) in the control register. All other
   // values are set to their reset value of zero.

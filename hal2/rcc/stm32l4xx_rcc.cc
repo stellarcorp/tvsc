@@ -197,7 +197,7 @@ void Hsi48OscillatorStm32L4xx::disable() {
   // HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
 }
 
-void Hsi48OscillatorStm32L4xx::route_to(config::Facility facility, size_t index) noexcept {
+void Hsi48OscillatorStm32L4xx::connect(config::Facility facility, size_t index) noexcept {
   if (facility == config::Facility::RNG_FACILITY and index == 0) {
     __HAL_RCC_RNG_CONFIG(RCC_RNGCLKSOURCE_HSI48);
   } else {
@@ -227,7 +227,7 @@ void LsiOscillatorStm32L4xx::disable() {
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 }
 
-void LsiOscillatorStm32L4xx::route_to(config::Facility facility, size_t index) noexcept {
+void LsiOscillatorStm32L4xx::connect(config::Facility facility, size_t index) noexcept {
   if (facility == config::Facility::TIMER_FACILITY and index == 0) {
     __HAL_RCC_LPTIM1_CONFIG(RCC_LPTIM1CLKSOURCE_LSI);
   } else if (facility == config::Facility::TIMER_FACILITY and index == 1) {
