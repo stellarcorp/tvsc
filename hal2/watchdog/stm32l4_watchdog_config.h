@@ -12,15 +12,15 @@ namespace tvsc::hal2::watchdog {
 // an oscillator by its Facility value, but we need a better way to designate specific indices of a
 // Facility for specific tasks.
 // TODO(james): Determine what value this should have if both LP watchdogs are in use.
-static constexpr size_t LSI_OSCILLATOR_INDEX{1};
 
-template <typename System, typename PeripheralRegistry>
+template <typename System, typename PeripheralRegistry, auto configuration>
 class Stm32L4WatchdogAccessor {
  private:
-  using LsiOscillatorAccessor =  //
-      typename PeripheralRegistry::template configuration<
-          config::Facility::OSCILLATOR_FACILITY,
-          LSI_OSCILLATOR_INDEX>::template accessor<System, PeripheralRegistry>;
+  static constexpr size_t LSI_OSCILLATOR_INDEX{1};
+  static constexpr config::PeripheralId LSI_OSCILLATOR_ID{config::Facility::OSCILLATOR_FACILITY,
+                                                          LSI_OSCILLATOR_INDEX};
+  using LsiOscillatorAccessor =
+      config::accessor_type<System, PeripheralRegistry, LSI_OSCILLATOR_ID>;
 
   Stm32L4Watchdog watchdog_{static_cast<LsiOscillatorAccessor&>(static_cast<System&>(*this)).get()};
 
