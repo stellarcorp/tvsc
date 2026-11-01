@@ -13,11 +13,12 @@ class LedAccessor;
 template <typename System, typename PeripheralRegistry, gpio::PinRef PIN>
 class LedAccessor<System, PeripheralRegistry, 0, PIN> {
  private:
-  using GpioBank =  //
-      typename PeripheralRegistry::template configuration<
-          config::Facility::GPIO_FACILITY, PIN.port>::template accessor<System, PeripheralRegistry>;
+  static constexpr config::PeripheralId gpio_id{config::Facility::GPIO_FACILITY, PIN.port};
 
-  gpio::PinPeripheral led_{static_cast<GpioBank&>(static_cast<System&>(*this)).get(), PIN.pin};
+  using GpioBankAccessor = config::accessor_type<System, PeripheralRegistry, gpio_id>;
+
+  gpio::PinPeripheral led_{static_cast<GpioBankAccessor&>(static_cast<System&>(*this)).get(),
+                           PIN.pin};
 
  public:
   [[nodiscard]] auto& get() noexcept { return led_; }
@@ -29,11 +30,12 @@ class LedAccessor<System, PeripheralRegistry, 0, PIN> {
 template <typename System, typename PeripheralRegistry, gpio::PinRef PIN>
 class LedAccessor<System, PeripheralRegistry, 1, PIN> {
  private:
-  using GpioBank =  //
-      typename PeripheralRegistry::template configuration<
-          config::Facility::GPIO_FACILITY, PIN.port>::template accessor<System, PeripheralRegistry>;
+  static constexpr config::PeripheralId gpio_id{config::Facility::GPIO_FACILITY, PIN.port};
 
-  gpio::PinPeripheral led_{static_cast<GpioBank&>(static_cast<System&>(*this)).get(), PIN.pin};
+  using GpioBankAccessor = config::accessor_type<System, PeripheralRegistry, gpio_id>;
+
+  gpio::PinPeripheral led_{static_cast<GpioBankAccessor&>(static_cast<System&>(*this)).get(),
+                           PIN.pin};
 
  public:
   [[nodiscard]] auto& get() noexcept { return led_; }
@@ -44,11 +46,12 @@ class LedAccessor<System, PeripheralRegistry, 1, PIN> {
 template <typename System, typename PeripheralRegistry, gpio::PinRef PIN>
 class LedAccessor<System, PeripheralRegistry, 2, PIN> {
  private:
-  using GpioBank =  //
-      typename PeripheralRegistry::template configuration<
-          config::Facility::GPIO_FACILITY, PIN.port>::template accessor<System, PeripheralRegistry>;
+  static constexpr config::PeripheralId gpio_id{config::Facility::GPIO_FACILITY, PIN.port};
 
-  gpio::PinPeripheral led_{static_cast<GpioBank&>(static_cast<System&>(*this)).get(), PIN.pin};
+  using GpioBankAccessor = config::accessor_type<System, PeripheralRegistry, gpio_id>;
+
+  gpio::PinPeripheral led_{static_cast<GpioBankAccessor&>(static_cast<System&>(*this)).get(),
+                           PIN.pin};
 
  public:
   [[nodiscard]] auto& get() noexcept { return led_; }
@@ -59,11 +62,12 @@ class LedAccessor<System, PeripheralRegistry, 2, PIN> {
 template <typename System, typename PeripheralRegistry, gpio::PinRef PIN>
 class LedAccessor<System, PeripheralRegistry, 3, PIN> {
  private:
-  using GpioBank =  //
-      typename PeripheralRegistry::template configuration<
-          config::Facility::GPIO_FACILITY, PIN.port>::template accessor<System, PeripheralRegistry>;
+  static constexpr config::PeripheralId gpio_id{config::Facility::GPIO_FACILITY, PIN.port};
 
-  gpio::PinPeripheral led_{static_cast<GpioBank&>(static_cast<System&>(*this)).get(), PIN.pin};
+  using GpioBankAccessor = config::accessor_type<System, PeripheralRegistry, gpio_id>;
+
+  gpio::PinPeripheral led_{static_cast<GpioBankAccessor&>(static_cast<System&>(*this)).get(),
+                           PIN.pin};
 
  public:
   [[nodiscard]] auto& get() noexcept { return led_; }
