@@ -22,10 +22,10 @@ class Stm32L4LowPowerTimerAccessor;
 template <typename System, typename PeripheralRegistry>
 class Stm32L4LowPowerTimerAccessor<System, PeripheralRegistry, 0> {
  private:
-  using LsiOscillatorAccessor =  //
-      typename PeripheralRegistry::template configuration<
-          config::Facility::OSCILLATOR_FACILITY,
-          LSI_OSCILLATOR_INDEX>::template accessor<System, PeripheralRegistry>;
+  static constexpr config::PeripheralId lsi_id{config::Facility::OSCILLATOR_FACILITY,
+                                               LSI_OSCILLATOR_INDEX};
+
+  using LsiOscillatorAccessor = config::accessor_type<System, PeripheralRegistry, lsi_id>;
 
   Stm32l4xxLptim timer_{0, static_cast<LsiOscillatorAccessor&>(static_cast<System&>(*this)).get()};
 
@@ -39,10 +39,10 @@ class Stm32L4LowPowerTimerAccessor<System, PeripheralRegistry, 0> {
 template <typename System, typename PeripheralRegistry>
 class Stm32L4LowPowerTimerAccessor<System, PeripheralRegistry, 1> {
  private:
-  using LsiOscillatorAccessor =  //
-      typename PeripheralRegistry::template configuration<
-          config::Facility::OSCILLATOR_FACILITY,
-          LSI_OSCILLATOR_INDEX>::template accessor<System, PeripheralRegistry>;
+  static constexpr config::PeripheralId lsi_id{config::Facility::OSCILLATOR_FACILITY,
+                                               LSI_OSCILLATOR_INDEX};
+
+  using LsiOscillatorAccessor = config::accessor_type<System, PeripheralRegistry, lsi_id>;
 
   Stm32l4xxLptim timer_{1, static_cast<LsiOscillatorAccessor&>(static_cast<System&>(*this)).get()};
 
