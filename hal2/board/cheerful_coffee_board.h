@@ -5,7 +5,7 @@
 #include <cstddef>
 
 #include "hal2/clock/clock_config.h"
-#include "hal2/config/facility.h"
+#include "hal2/peripheral.h"
 #include "hal2/config/vector_table.h"
 #include "hal2/gpio/gpio.h"
 #include "hal2/gpio/stm32_gpio_config.h"
@@ -22,23 +22,23 @@ namespace tvsc::hal2::board {
 
 namespace internal {
 
-template <config::Facility FACILITY, size_t INDEX>
+template <Facility FACILITY, size_t INDEX>
 struct PeripheralDefinition;
 
 template <>
-struct PeripheralDefinition<config::Facility::RCC_FACILITY, 0> final
+struct PeripheralDefinition<Facility::RCC_FACILITY, 0> final
     : public config::UnconfigurablePeripheral {
   static constexpr const char* name() noexcept { return "core"; }
 
-  static constexpr config::PeripheralId id() noexcept {
-    return {config::Facility::RCC_FACILITY, 0};
+  static constexpr PeripheralId id() noexcept {
+    return {Facility::RCC_FACILITY, 0};
   }
 
   template <typename System, typename PeripheralRegistry, configuration config>
   using accessor = rcc::Stm32L4RccAccessor<System>;
 
   static constexpr auto dependencies(const configuration&) noexcept {
-    return std::array<config::PeripheralId, 0>{};
+    return std::array<PeripheralId, 0>{};
   }
 };
 
@@ -46,12 +46,12 @@ struct PeripheralDefinition<config::Facility::RCC_FACILITY, 0> final
  * LSI oscillator.
  */
 template <>
-struct PeripheralDefinition<config::Facility::OSCILLATOR_FACILITY, 1> final
+struct PeripheralDefinition<Facility::OSCILLATOR_FACILITY, 1> final
     : public config::UnconfigurablePeripheral {
   static constexpr const char* name() noexcept { return "lsi"; }
 
-  static constexpr config::PeripheralId id() noexcept {
-    return {config::Facility::OSCILLATOR_FACILITY, 1};
+  static constexpr PeripheralId id() noexcept {
+    return {Facility::OSCILLATOR_FACILITY, 1};
   }
 
   template <typename System, typename PeripheralRegistry, configuration config>
@@ -63,12 +63,12 @@ struct PeripheralDefinition<config::Facility::OSCILLATOR_FACILITY, 1> final
  * required by the RNG module.
  */
 template <>
-struct PeripheralDefinition<config::Facility::OSCILLATOR_FACILITY, 2> final
+struct PeripheralDefinition<Facility::OSCILLATOR_FACILITY, 2> final
     : public config::UnconfigurablePeripheral {
   static constexpr const char* name() noexcept { return "hsi48"; }
 
-  static constexpr config::PeripheralId id() noexcept {
-    return {config::Facility::OSCILLATOR_FACILITY, 2};
+  static constexpr PeripheralId id() noexcept {
+    return {Facility::OSCILLATOR_FACILITY, 2};
   }
 
   template <typename System, typename PeripheralRegistry, configuration config>
@@ -76,11 +76,11 @@ struct PeripheralDefinition<config::Facility::OSCILLATOR_FACILITY, 2> final
 };
 
 template <>
-struct PeripheralDefinition<config::Facility::SYSTICK_FACILITY, 0> final {
+struct PeripheralDefinition<Facility::SYSTICK_FACILITY, 0> final {
   static constexpr const char* name() noexcept { return "systick"; }
 
-  static constexpr config::PeripheralId id() noexcept {
-    return {config::Facility::SYSTICK_FACILITY, 0};
+  static constexpr PeripheralId id() noexcept {
+    return {Facility::SYSTICK_FACILITY, 0};
   }
 
   struct Configuration final {};
@@ -89,7 +89,7 @@ struct PeripheralDefinition<config::Facility::SYSTICK_FACILITY, 0> final {
   static constexpr bool is_valid(const Configuration& config) noexcept { return true; }
 
   static constexpr auto dependencies(const Configuration& config) noexcept {
-    return std::array{config::PeripheralId{config::Facility::RCC_FACILITY, 0}};
+    return std::array{PeripheralId{Facility::RCC_FACILITY, 0}};
   }
 
   template <typename System, typename PeripheralRegistry, configuration config>
@@ -104,7 +104,7 @@ struct PeripheralDefinition<config::Facility::SYSTICK_FACILITY, 0> final {
 
 template <size_t PORT>
   requires(PORT < 8)
-struct PeripheralDefinition<config::Facility::GPIO_FACILITY, PORT> final
+struct PeripheralDefinition<Facility::GPIO_FACILITY, PORT> final
     : public config::UnconfigurablePeripheral {
   static constexpr const char* name() noexcept
     requires(PORT == 0)
@@ -147,8 +147,8 @@ struct PeripheralDefinition<config::Facility::GPIO_FACILITY, PORT> final
     return "gpioh";
   }
 
-  static constexpr config::PeripheralId id() noexcept {
-    return {config::Facility::GPIO_FACILITY, PORT};
+  static constexpr PeripheralId id() noexcept {
+    return {Facility::GPIO_FACILITY, PORT};
   }
 
   template <typename System, typename PeripheralRegistry, configuration config>
@@ -156,18 +156,18 @@ struct PeripheralDefinition<config::Facility::GPIO_FACILITY, PORT> final
 };
 
 template <>
-struct PeripheralDefinition<config::Facility::LED_FACILITY, 0> final
+struct PeripheralDefinition<Facility::LED_FACILITY, 0> final
     : public config::UnconfigurablePeripheral {
   static constexpr const char* name() noexcept { return "debug_led"; }
 
-  static constexpr config::PeripheralId id() noexcept {
-    return {config::Facility::LED_FACILITY, 0};
+  static constexpr PeripheralId id() noexcept {
+    return {Facility::LED_FACILITY, 0};
   }
 
   static constexpr auto PIN{gpio::PinRef{2, 13}};
 
   static constexpr auto dependencies(const configuration& config) noexcept {
-    return std::array{config::PeripheralId{config::Facility::GPIO_FACILITY, PIN.port}};
+    return std::array{PeripheralId{Facility::GPIO_FACILITY, PIN.port}};
   }
 
   template <typename System, typename PeripheralRegistry, configuration config>
@@ -179,7 +179,7 @@ struct PeripheralDefinition<config::Facility::LED_FACILITY, 0> final
  */
 template <size_t INDEX>
   requires(INDEX < 2)  // Restrict to low-power timers only.
-struct PeripheralDefinition<config::Facility::TIMER_FACILITY, INDEX> final
+struct PeripheralDefinition<Facility::TIMER_FACILITY, INDEX> final
     : public config::UnconfigurablePeripheral {
   static constexpr const char* name() noexcept
     requires(INDEX == 0)
@@ -192,14 +192,14 @@ struct PeripheralDefinition<config::Facility::TIMER_FACILITY, INDEX> final
     return "lptim2";
   }
 
-  static constexpr config::PeripheralId id() noexcept {
-    return {config::Facility::TIMER_FACILITY, INDEX};
+  static constexpr PeripheralId id() noexcept {
+    return {Facility::TIMER_FACILITY, INDEX};
   }
 
   static constexpr auto dependencies(const configuration&) noexcept {
     return std::array{
-        config::PeripheralId{config::Facility::RCC_FACILITY, 0},        //
-        config::PeripheralId{config::Facility::OSCILLATOR_FACILITY, 1}  //
+        PeripheralId{Facility::RCC_FACILITY, 0},        //
+        PeripheralId{Facility::OSCILLATOR_FACILITY, 1}  //
     };
   }
 
@@ -221,11 +221,11 @@ struct PeripheralDefinition<config::Facility::TIMER_FACILITY, INDEX> final
  * Configuration for the watchdog
  */
 template <>
-struct PeripheralDefinition<config::Facility::WATCHDOG_FACILITY, 0> final {
+struct PeripheralDefinition<Facility::WATCHDOG_FACILITY, 0> final {
   static constexpr const char* name() noexcept { return "iwdg"; }
 
-  static constexpr config::PeripheralId id() noexcept {
-    return {config::Facility::WATCHDOG_FACILITY, 0};
+  static constexpr PeripheralId id() noexcept {
+    return {Facility::WATCHDOG_FACILITY, 0};
   }
 
   struct Configuration final {
@@ -237,8 +237,8 @@ struct PeripheralDefinition<config::Facility::WATCHDOG_FACILITY, 0> final {
 
   static constexpr auto dependencies(const Configuration& config) noexcept {
     return std::array{
-        config::PeripheralId{config::Facility::RCC_FACILITY, 0},        //
-        config::PeripheralId{config::Facility::OSCILLATOR_FACILITY, 1}  //
+        PeripheralId{Facility::RCC_FACILITY, 0},        //
+        PeripheralId{Facility::OSCILLATOR_FACILITY, 1}  //
     };
   }
 
@@ -256,18 +256,18 @@ struct PeripheralDefinition<config::Facility::WATCHDOG_FACILITY, 0> final {
  * Configuration for the RNG
  */
 template <>
-struct PeripheralDefinition<config::Facility::RNG_FACILITY, 0> final
+struct PeripheralDefinition<Facility::RNG_FACILITY, 0> final
     : public config::UnconfigurablePeripheral {
   static constexpr const char* name() noexcept { return "rng"; }
 
-  static constexpr config::PeripheralId id() noexcept {
-    return {config::Facility::RNG_FACILITY, 0};
+  static constexpr PeripheralId id() noexcept {
+    return {Facility::RNG_FACILITY, 0};
   }
 
   static constexpr auto dependencies(const configuration&) noexcept {
     return std::array{
-        config::PeripheralId{config::Facility::RCC_FACILITY, 0},        //
-        config::PeripheralId{config::Facility::OSCILLATOR_FACILITY, 2}  //
+        PeripheralId{Facility::RCC_FACILITY, 0},        //
+        PeripheralId{Facility::OSCILLATOR_FACILITY, 2}  //
     };
   }
 
@@ -279,11 +279,11 @@ struct PeripheralDefinition<config::Facility::RNG_FACILITY, 0> final
  * Configuration for the primary system clock.
  */
 template <>
-struct PeripheralDefinition<config::Facility::CLOCK_FACILITY, 0> final {
+struct PeripheralDefinition<Facility::CLOCK_FACILITY, 0> final {
   static constexpr const char* name() noexcept { return "steady_clock"; }
 
-  static constexpr config::PeripheralId id() noexcept {
-    return {config::Facility::CLOCK_FACILITY, 0};
+  static constexpr PeripheralId id() noexcept {
+    return {Facility::CLOCK_FACILITY, 0};
   }
 
   using configuration = clock::ClockConfiguration;
@@ -292,9 +292,9 @@ struct PeripheralDefinition<config::Facility::CLOCK_FACILITY, 0> final {
 
   static constexpr auto dependencies(const configuration&) noexcept {
     return std::array{
-        config::PeripheralId{config::Facility::RCC_FACILITY, 0},      //
-        config::PeripheralId{config::Facility::SYSTICK_FACILITY, 0},  //
-        config::PeripheralId{config::Facility::TIMER_FACILITY, 1}     //
+        PeripheralId{Facility::RCC_FACILITY, 0},      //
+        PeripheralId{Facility::SYSTICK_FACILITY, 0},  //
+        PeripheralId{Facility::TIMER_FACILITY, 1}     //
     };
   }
 
@@ -311,43 +311,43 @@ struct PeripheralDefinition<config::Facility::CLOCK_FACILITY, 0> final {
 }  // namespace internal
 
 struct Board final {
-  template <config::Facility FACILITY, size_t INDEX>
+  template <Facility FACILITY, size_t INDEX>
   using definition = internal::PeripheralDefinition<FACILITY, INDEX>;
 };
 
 static_assert(config::ValidPeripheralDefinition<
-              typename Board::template definition<config::Facility::RCC_FACILITY, 0>, Board>);
+              typename Board::template definition<Facility::RCC_FACILITY, 0>, Board>);
 static_assert(
     config::ValidPeripheralDefinition<
-        typename Board::template definition<config::Facility::OSCILLATOR_FACILITY, 1>, Board>);
+        typename Board::template definition<Facility::OSCILLATOR_FACILITY, 1>, Board>);
 
 static_assert(
     config::ValidPeripheralDefinition<
-        typename Board::template definition<config::Facility::OSCILLATOR_FACILITY, 2>, Board>);
+        typename Board::template definition<Facility::OSCILLATOR_FACILITY, 2>, Board>);
 
 static_assert(config::ValidPeripheralDefinition<
-              typename Board::template definition<config::Facility::SYSTICK_FACILITY, 0>, Board>);
+              typename Board::template definition<Facility::SYSTICK_FACILITY, 0>, Board>);
 
 static_assert(config::ValidPeripheralDefinition<
-              typename Board::template definition<config::Facility::GPIO_FACILITY, 0>, Board>);
+              typename Board::template definition<Facility::GPIO_FACILITY, 0>, Board>);
 static_assert(config::ValidPeripheralDefinition<
-              typename Board::template definition<config::Facility::GPIO_FACILITY, 7>, Board>);
+              typename Board::template definition<Facility::GPIO_FACILITY, 7>, Board>);
 
 static_assert(config::ValidPeripheralDefinition<
-              typename Board::template definition<config::Facility::WATCHDOG_FACILITY, 0>, Board>);
+              typename Board::template definition<Facility::WATCHDOG_FACILITY, 0>, Board>);
 
 static_assert(config::ValidPeripheralDefinition<
-              typename Board::template definition<config::Facility::RNG_FACILITY, 0>, Board>);
+              typename Board::template definition<Facility::RNG_FACILITY, 0>, Board>);
 
 static_assert(config::ValidPeripheralDefinition<
-              typename Board::template definition<config::Facility::TIMER_FACILITY, 0>, Board>);
+              typename Board::template definition<Facility::TIMER_FACILITY, 0>, Board>);
 static_assert(config::ValidPeripheralDefinition<
-              typename Board::template definition<config::Facility::TIMER_FACILITY, 1>, Board>);
+              typename Board::template definition<Facility::TIMER_FACILITY, 1>, Board>);
 
 static_assert(config::ValidPeripheralDefinition<
-              typename Board::template definition<config::Facility::LED_FACILITY, 0>, Board>);
+              typename Board::template definition<Facility::LED_FACILITY, 0>, Board>);
 
 static_assert(config::ValidPeripheralDefinition<
-              typename Board::template definition<config::Facility::CLOCK_FACILITY, 0>, Board>);
+              typename Board::template definition<Facility::CLOCK_FACILITY, 0>, Board>);
 
 }  // namespace tvsc::hal2::board

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "hal2/clock/clock.h"
-#include "hal2/config/facility.h"
+#include "hal2/config/peripheral_definitions.h"
 
 namespace tvsc::hal2::clock {
 
@@ -16,11 +16,11 @@ class ClockAccessor {
   static constexpr size_t LPTIM_INDEX{1};
 
   using SysTickAccessor =
-      config::accessor_type<System, PeripheralRegistry, {config::Facility::SYSTICK_FACILITY, 0}>;
+      config::accessor_type<System, PeripheralRegistry, {Facility::SYSTICK_FACILITY, 0}>;
   using RccAccessor =
-      config::accessor_type<System, PeripheralRegistry, {config::Facility::RCC_FACILITY, 0}>;
-  using LptimAccessor = config::accessor_type<System, PeripheralRegistry,
-                                              {config::Facility::TIMER_FACILITY, LPTIM_INDEX}>;
+      config::accessor_type<System, PeripheralRegistry, {Facility::RCC_FACILITY, 0}>;
+  using LptimAccessor =
+      config::accessor_type<System, PeripheralRegistry, {Facility::TIMER_FACILITY, LPTIM_INDEX}>;
 
   Clock<CONFIG.sleep_strategy> clock_{
       static_cast<SysTickAccessor&>(static_cast<System&>(*this)).get(),

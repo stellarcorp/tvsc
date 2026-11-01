@@ -5,59 +5,12 @@
 #include <concepts>
 #include <ranges>
 
-#include "hal2/config/facility.h"
+#include "hal2/peripheral.h"
 #include "hal2/config/peripheral_accessors.h"
 #include "hal2/config/type_accumulator.h"
 #include "hal2/config/vector_table.h"
 
 namespace tvsc::hal2::config {
-
-/**
- * Basic peripheral setup when the peripheral does not have any configuration parameters.
- */
-struct UnconfigurablePeripheral {
-  struct Unconfigurable final {};
-  using configuration = Unconfigurable;
-
-  static constexpr bool is_valid(const configuration&) noexcept { return true; }
-
-  static constexpr auto dependencies(const configuration&) noexcept {
-    // Almost every peripheral requires baseline RCC functionality. The most important exception is
-    // the RCC peripheral itself.
-    return std::array{config::PeripheralId{Facility::RCC_FACILITY, 0}};
-  }
-
-  template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>&,
-                                            const configuration&) noexcept {
-    // No ISRs required by default.
-  }
-};
-
-template <typename T, typename PeripheralRegistry>
-concept ValidPeripheralDefinition =
-    requires {
-      typename T::configuration;
-      { T::name() } noexcept -> std::same_as<const char*>;
-      { T::id() } noexcept -> std::same_as<PeripheralId>;
-    } and
-    requires(typename T::configuration config) {
-      { T::is_valid(config) } noexcept -> std::same_as<bool>;
-      { T::dependencies(config) } noexcept -> std::ranges::range;
-      requires std::is_same_v<std::ranges::range_value_t<decltype(T::dependencies(config))>,
-                              PeripheralId>;
-    } and
-    requires(VectorTable<16>& table, typename T::configuration config) {
-      { T::update_vector_table(table, config) } noexcept -> std::same_as<void>;
-    } and
-    requires {
-      // Verify that the accessor template instantiates cleanly using a default configuration NTTP
-      // value.
-      typename T::template accessor<int, PeripheralRegistry, typename T::configuration{}>;
-    } and
-    ValidPeripheralAccessor<
-        typename T::template accessor<int, PeripheralRegistry, typename T::configuration{}>,
-        T::id()>;
 
 namespace internal {
 
@@ -73,7 +26,7 @@ struct ConfiguredPeripheral final {
   template <typename System, typename PeripheralRegistry>
   using accessor = typename definition::template accessor<System, PeripheralRegistry, config>;
 
-  static constexpr config::PeripheralId id() noexcept { return definition::id(); }
+  static constexpr PeripheralId id() noexcept { return definition::id(); }
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {

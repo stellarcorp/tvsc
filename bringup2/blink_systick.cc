@@ -9,6 +9,7 @@
 #include "platforms/linker_sections.h"
 
 using namespace std::chrono_literals;
+using namespace tvsc::hal2;
 using namespace tvsc::hal2::config;
 using namespace tvsc::hal2::clock;
 

@@ -3,7 +3,7 @@
 #include <cstddef>
 
 #include "gtest/gtest.h"
-#include "hal2/config/facility.h"
+#include "hal2/peripheral.h"
 #include "hal2/config/peripheral_accessors.h"
 #include "hal2/config/vector_table.h"
 
@@ -20,7 +20,7 @@ template <typename System, typename PeripheralRegistry, size_t I2C_INDEX>
 struct ImuAccessor {
   using I2cBus =  //
       typename PeripheralRegistry::template configuration<
-          config::Facility::I2C_FACILITY, I2C_INDEX>::accessor<System, PeripheralRegistry>;
+          Facility::I2C_FACILITY, I2C_INDEX>::accessor<System, PeripheralRegistry>;
 
   int modifiable_value{42};
   bool initialized_at_compile_time{std::is_constant_evaluated()};
@@ -75,7 +75,7 @@ static constexpr int I2C0_ER_IRQn{6};
 static constexpr int I2C1_EV_IRQn{5};
 static constexpr int I2C1_ER_IRQn{7};
 
-template <config::Facility FACILITY, size_t INDEX>
+template <Facility FACILITY, size_t INDEX>
 struct PeripheralConfiguration;
 
 template <>
@@ -153,7 +153,7 @@ struct PeripheralConfiguration<Facility::RCC_FACILITY, 0> {
 };
 
 struct Board final {
-  template <config::Facility FACILITY, size_t INDEX>
+  template <Facility FACILITY, size_t INDEX>
   using configuration = PeripheralConfiguration<FACILITY, INDEX>;
 };
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hal2/config/facility.h"
+#include "hal2/peripheral.h"
 #include "hal2/rcc/oscillator.h"
 #include "hal2/watchdog/stm32l4_watchdog.h"
 #include "hal2/watchdog/watchdog.h"
@@ -17,7 +17,7 @@ template <typename System, typename PeripheralRegistry, auto configuration>
 class Stm32L4WatchdogAccessor {
  private:
   static constexpr size_t LSI_OSCILLATOR_INDEX{1};
-  static constexpr config::PeripheralId LSI_OSCILLATOR_ID{config::Facility::OSCILLATOR_FACILITY,
+  static constexpr PeripheralId LSI_OSCILLATOR_ID{Facility::OSCILLATOR_FACILITY,
                                                           LSI_OSCILLATOR_INDEX};
   using LsiOscillatorAccessor =
       config::accessor_type<System, PeripheralRegistry, LSI_OSCILLATOR_ID>;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hal2/config/facility.h"
+#include "hal2/peripheral.h"
 #include "hal2/rcc/oscillator.h"
 #include "hal2/timer/stm32l4_timer.h"
 #include "hal2/timer/timer.h"
@@ -22,7 +22,7 @@ class Stm32L4LowPowerTimerAccessor;
 template <typename System, typename PeripheralRegistry>
 class Stm32L4LowPowerTimerAccessor<System, PeripheralRegistry, 0> {
  private:
-  static constexpr config::PeripheralId lsi_id{config::Facility::OSCILLATOR_FACILITY,
+  static constexpr PeripheralId lsi_id{Facility::OSCILLATOR_FACILITY,
                                                LSI_OSCILLATOR_INDEX};
 
   using LsiOscillatorAccessor = config::accessor_type<System, PeripheralRegistry, lsi_id>;
@@ -39,7 +39,7 @@ class Stm32L4LowPowerTimerAccessor<System, PeripheralRegistry, 0> {
 template <typename System, typename PeripheralRegistry>
 class Stm32L4LowPowerTimerAccessor<System, PeripheralRegistry, 1> {
  private:
-  static constexpr config::PeripheralId lsi_id{config::Facility::OSCILLATOR_FACILITY,
+  static constexpr PeripheralId lsi_id{Facility::OSCILLATOR_FACILITY,
                                                LSI_OSCILLATOR_INDEX};
 
   using LsiOscillatorAccessor = config::accessor_type<System, PeripheralRegistry, lsi_id>;

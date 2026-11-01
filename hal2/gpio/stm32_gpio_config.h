@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "base/except.h"
-#include "hal2/config/facility.h"
+#include "hal2/peripheral.h"
 #include "hal2/config/system_builder.h"
 #include "hal2/config/vector_table.h"
 #include "hal2/gpio/gpio.h"
