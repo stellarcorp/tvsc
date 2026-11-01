@@ -25,7 +25,7 @@ struct ImuAccessor {
   int modifiable_value{42};
   bool initialized_at_compile_time{std::is_constant_evaluated()};
 
-  // Production accessors would return an actual peripheral here, not an int.
+  // Production accessors would return an actual device here, not an int.
   int imu0() {
     auto i2c_accessor{static_cast<I2cBus&>(static_cast<System&>(*this))};
     return i2c_accessor.get() + 100;

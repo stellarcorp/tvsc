@@ -15,7 +15,7 @@ namespace tvsc::hal2::config {
 namespace internal {
 
 /**
- * ConfiguredDevice bundles a static peripheral definition with its specific
+ * ConfiguredDevice bundles a static device definition with its specific
  * compile-time configuration NTTP instance.
  */
 template <typename Definition, auto config>
@@ -35,7 +35,7 @@ struct ConfiguredDevice final {
 };
 
 /**
- * DependencyListResolver recursively flattens dependencies for peripherals in a system,
+ * DependencyListResolver recursively flattens dependencies for devices in a system,
  * utilizing default configurations for automatically resolved upstream dependencies.
  */
 template <typename DeviceRegistry, typename Accumulator, typename Visiting, auto Dependencies,
@@ -56,7 +56,7 @@ struct DependencyListResolver<DeviceRegistry, Accumulator, Visiting, Dependencie
 
   // Trigger a compile-time error if this configuration is already an active ancestor.
   static_assert(not Visiting::template contains<CurrentConfigured>,
-                "Circular dependency detected in peripheral configuration graph.");
+                "Circular dependency detected in device configuration graph.");
 
   // Resolve sub-dependencies using the default configuration of the dependency.
   using AccumulatorWithSubDependencies = typename DependencyListResolver<
@@ -103,7 +103,7 @@ class SystemBuilder<DeviceRegistry, TypeAccumulator<ConfiguredDevices...>> final
     static_assert(ValidDeviceDefinition<TargetDefinition, DeviceRegistry>,
                   "Invalid device definition");
     static_assert(TargetDefinition::is_valid(CONFIG),
-                  "Invalid peripheral configuration parameters.");
+                  "Invalid device configuration parameters.");
 
     using TargetConfigured = internal::ConfiguredDevice<TargetDefinition, CONFIG>;
 

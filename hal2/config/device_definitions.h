@@ -15,7 +15,7 @@ using accessor_type =
         typename DeviceRegistry::template definition<Id.facility, Id.index>::configuration{}>;
 
 /**
- * Basic peripheral setup when the peripheral does not have any configuration parameters. Note that
+ * Basic device setup when the device does not have any configuration parameters. Note that
  * the methods below can be overridden in child types.
  */
 struct UnconfigurableDevice {
@@ -25,8 +25,8 @@ struct UnconfigurableDevice {
   static constexpr bool is_valid(const configuration&) noexcept { return true; }
 
   static constexpr auto dependencies(const configuration&) noexcept {
-    // Almost every peripheral requires baseline RCC functionality. The most important exception is
-    // the RCC peripheral itself.
+    // Almost every device requires baseline RCC functionality. The most important exception is
+    // the RCC device itself.
     return std::array{DeviceId{Facility::RCC_FACILITY, 0}};
   }
 
