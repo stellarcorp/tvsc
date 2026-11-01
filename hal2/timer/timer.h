@@ -30,8 +30,8 @@ class TimerDevice : public Device<TimerDevice, Timer> {
 
 class Timer final : public Driver<TimerDevice, Timer> {
  protected:
-  explicit Timer(TimerDevice& peripheral) noexcept
-      : Driver<TimerDevice, Timer>(peripheral) {}
+  explicit Timer(TimerDevice& device) noexcept
+      : Driver<TimerDevice, Timer>(device) {}
 
   friend class Device<TimerDevice, Timer>;
 

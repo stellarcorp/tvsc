@@ -9,7 +9,7 @@
 
 namespace tvsc::hal2::timer {
 
-// The index part of the peripheral id for the LSI oscillator.
+// The index part of the device id for the LSI oscillator.
 // TODO(james): Figure out a better pattern for dependencies. It's nice that we know how to pick up
 // an oscillator by its Facility value, but we need a better way to designate specific indices of a
 // Facility for specific tasks.

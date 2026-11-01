@@ -36,7 +36,7 @@ class LptimRegisterBank final {
   // Offset 0x0c
   volatile Register CFGR;
 
-  // Controls peripheral activation, software triggers, and starts the timer in single or continuous
+  // Controls device activation, software triggers, and starts the timer in single or continuous
   // counting modes.
   // Offset 0x10
   volatile Register CR;
@@ -134,7 +134,7 @@ class Stm32l4xxLptim final : public TimerDevice {
     registers_->CFGR.set_bit_field_value<1, 23>(0x0);  // Increment after each internal clock pulse.
     registers_->CFGR.set_bit_field_value<1, 24>(0x0);  // Disable encoder mode.
 
-    // Disable all interrupts while we configure the peripheral.
+    // Disable all interrupts while we configure the device.
     registers_->IER.set_value(0);
 
     // Enable the timer.
@@ -142,7 +142,7 @@ class Stm32l4xxLptim final : public TimerDevice {
     // independent kernel clock. Because these two clocks operate independently, writes to ARR and
     // CMP must cross from the bus domain into the timer domain. Hardware synchronizer circuits
     // manage this cross-domain transfer. These synchronizers require active clock edges from the
-    // timer's kernel clock to function. Consequently, the peripheral must be enabled before the
+    // timer's kernel clock to function. Consequently, the device must be enabled before the
     // ARR, CMP, and IER registers are configured so that its clock is running to latch the new
     // values.
     registers_->CR.set_value(1);
