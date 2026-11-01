@@ -57,9 +57,16 @@ enum class Facility {
   // Watchdogs to verify behavior.
   WATCHDOG_FACILITY,
 
+  // Facilities for DMA set up. We include the DMA channels as their own facility to help assert
+  // dependencies on the channels themselves.
+  DMA_FACILITY,
+  DMA_CHANNEL_FACILITY,
+
   // Analog-digital conversion.
   ADC_FACILITY,
+  ADC_CHANNEL_FACILITY,
   DAC_FACILITY,
+  DAC_CHANNEL_FACILITY,
 
   // Buses
   I2C_FACILITY,
@@ -73,6 +80,9 @@ enum class Facility {
   POWER_MONITOR_FACILITY,
   RF_RECEIVER_FACILITY,
   RF_TRANSMITTER_FACILITY,
+
+  // Enum value for custom facilities.
+  CUSTOM_FACILITY,
 };
 
 struct DeviceId final {
