@@ -6,7 +6,7 @@
 
 namespace tvsc::hal2::random {
 
-// Turn on power and clock to this peripheral.
+// Turn on power and clock to this device.
 void Stm32Rng::enable() noexcept {
   // Turn on the HSI48 oscillator.
   hsi48_driver_ = oscillator_->access();
@@ -15,13 +15,13 @@ void Stm32Rng::enable() noexcept {
 
   hsi48_driver_.connect(Facility::RNG_FACILITY, 0);
 
-  // Enable the RNG peripheral by setting the RNGEN bit (bit 2) in the control register. All other
+  // Enable the RNG device by setting the RNGEN bit (bit 2) in the control register. All other
   // values are set to their reset value of zero.
   registers_->CR.set_bit_field_value<1, 2>(1);
 }
 
 void Stm32Rng::disable() noexcept {
-  // Disable the RNG peripheral by clearing the RNGEN bit (bit 2) in the control register. All other
+  // Disable the RNG device by clearing the RNGEN bit (bit 2) in the control register. All other
   // values are set to their reset value of zero.
   registers_->CR.set_value(0x00);
 

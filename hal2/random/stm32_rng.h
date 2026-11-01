@@ -36,7 +36,7 @@ class Stm32Rng final : public RngDevice<uint32_t> {
   // Create an activation instance, but it is invalid by default.
   rcc::OscillatorDriver hsi48_driver_{};
 
-  // Turn on power and clock to this peripheral.
+  // Turn on power and clock to this device.
   void enable() noexcept override;
   void disable() noexcept override;
 

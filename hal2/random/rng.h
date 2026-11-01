@@ -16,7 +16,7 @@ class RngDevice : public Device<RngDevice<ResultType>, Rng<ResultType>> {
   using result_type = ResultType;
 
  private:
-  // Turn on power and clock to this peripheral.
+  // Turn on power and clock to this device.
   virtual void enable() noexcept = 0;
   virtual void disable() noexcept = 0;
 
@@ -37,8 +37,8 @@ class Rng final : public Driver<RngDevice<ResultType>, Rng<ResultType>> {
   using result_type = ResultType;
 
  protected:
-  explicit Rng(RngDevice<result_type>& peripheral) noexcept
-      : Driver<RngDevice<result_type>, Rng<result_type>>(peripheral) {}
+  explicit Rng(RngDevice<result_type>& device) noexcept
+      : Driver<RngDevice<result_type>, Rng<result_type>>(device) {}
 
   friend class Device<RngDevice<result_type>, Rng<result_type>>;
 
