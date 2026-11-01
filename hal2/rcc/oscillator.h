@@ -22,8 +22,8 @@ class Oscillator : public Device<Oscillator, OscillatorDriver> {
 
 class OscillatorDriver final : public Driver<Oscillator, OscillatorDriver> {
  private:
-  explicit OscillatorDriver(Oscillator& peripheral) noexcept
-      : Driver<Oscillator, OscillatorDriver>(peripheral) {}
+  explicit OscillatorDriver(Oscillator& device) noexcept
+      : Driver<Oscillator, OscillatorDriver>(device) {}
 
   friend class Device<Oscillator, OscillatorDriver>;
 

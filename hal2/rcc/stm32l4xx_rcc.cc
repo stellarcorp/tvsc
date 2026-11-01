@@ -8,7 +8,7 @@
 namespace tvsc::hal2::rcc {
 
 void RccStm32L4xx::set_clock_to_max_speed() {
-  // The current implementation puts SYSCLK signal as well as peripheral buses at 80 MHz. This speed
+  // The current implementation puts SYSCLK signal as well as device buses at 80 MHz. This speed
   // requires four flash wait states per operation.
 
   __HAL_RCC_HSI_ENABLE();
@@ -56,7 +56,7 @@ void RccStm32L4xx::set_clock_to_max_speed() {
 }
 
 void RccStm32L4xx::set_clock_to_energy_efficient_speed() {
-  // The current implementation puts SYSCLK signal as well as peripheral buses at 16 MHz. This speed
+  // The current implementation puts SYSCLK signal as well as device buses at 16 MHz. This speed
   // is the maximum speed allowed when undervolting the system. This speed requires zero flash wait
   // state per operation.
 
@@ -201,7 +201,7 @@ void Hsi48OscillatorStm32L4xx::connect(Facility facility, size_t index) noexcept
   if (facility == Facility::RNG_FACILITY and index == 0) {
     __HAL_RCC_RNG_CONFIG(RCC_RNGCLKSOURCE_HSI48);
   } else {
-    except<std::logic_error>("No logic to route HSI48 to the requested peripheral");
+    except<std::logic_error>("No logic to route HSI48 to the requested device");
   }
 }
 
@@ -233,7 +233,7 @@ void LsiOscillatorStm32L4xx::connect(Facility facility, size_t index) noexcept {
   } else if (facility == Facility::TIMER_FACILITY and index == 1) {
     __HAL_RCC_LPTIM2_CONFIG(RCC_LPTIM2CLKSOURCE_LSI);
   } else {
-    except<std::logic_error>("No logic to route LSI to the requested peripheral");
+    except<std::logic_error>("No logic to route LSI to the requested device");
   }
 }
 
