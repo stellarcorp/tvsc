@@ -2,13 +2,13 @@
 
 #include <chrono>
 
-#include "hal2/peripheral.h"
+#include "hal2/device.h"
 
 namespace tvsc::hal2::watchdog {
 
 class Watchdog;
 
-class WatchdogPeripheral : public Peripheral<WatchdogPeripheral, Watchdog> {
+class WatchdogDevice : public Device<WatchdogDevice, Watchdog> {
  private:
   // Turn on power and clock to this peripheral.
   virtual void enable() noexcept = 0;
@@ -19,17 +19,17 @@ class WatchdogPeripheral : public Peripheral<WatchdogPeripheral, Watchdog> {
   friend class Watchdog;
 
  public:
-  virtual ~WatchdogPeripheral() = default;
+  virtual ~WatchdogDevice() = default;
 
   [[nodiscard]] virtual std::chrono::milliseconds reset_interval() noexcept = 0;
 };
 
-class Watchdog final : public Driver<WatchdogPeripheral, Watchdog> {
+class Watchdog final : public Driver<WatchdogDevice, Watchdog> {
  protected:
-  explicit Watchdog(WatchdogPeripheral& peripheral) noexcept
-      : Driver<WatchdogPeripheral, Watchdog>(peripheral) {}
+  explicit Watchdog(WatchdogDevice& peripheral) noexcept
+      : Driver<WatchdogDevice, Watchdog>(peripheral) {}
 
-  friend class Peripheral<WatchdogPeripheral, Watchdog>;
+  friend class Device<WatchdogDevice, Watchdog>;
 
  public:
   void feed() noexcept { peripheral_->feed(); }

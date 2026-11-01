@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hal2/peripheral.h"
+#include "hal2/device.h"
 #include "hal2/rcc/oscillator.h"
 #include "hal2/timer/stm32l4_timer.h"
 #include "hal2/timer/timer.h"
@@ -16,40 +16,40 @@ namespace tvsc::hal2::timer {
 // TODO(james): Determine what value this should have if both LP timers are in use.
 static constexpr size_t LSI_OSCILLATOR_INDEX{1};
 
-template <typename System, typename PeripheralRegistry, size_t INDEX>
+template <typename System, typename DeviceRegistry, size_t INDEX>
 class Stm32L4LowPowerTimerAccessor;
 
-template <typename System, typename PeripheralRegistry>
-class Stm32L4LowPowerTimerAccessor<System, PeripheralRegistry, 0> {
+template <typename System, typename DeviceRegistry>
+class Stm32L4LowPowerTimerAccessor<System, DeviceRegistry, 0> {
  private:
-  static constexpr PeripheralId lsi_id{Facility::OSCILLATOR_FACILITY,
+  static constexpr DeviceId lsi_id{Facility::OSCILLATOR_FACILITY,
                                                LSI_OSCILLATOR_INDEX};
 
-  using LsiOscillatorAccessor = config::accessor_type<System, PeripheralRegistry, lsi_id>;
+  using LsiOscillatorAccessor = config::accessor_type<System, DeviceRegistry, lsi_id>;
 
   Stm32l4xxLptim timer_{0, static_cast<LsiOscillatorAccessor&>(static_cast<System&>(*this)).get()};
 
  public:
-  [[nodiscard]] TimerPeripheral& get() noexcept { return timer_; }
-  [[nodiscard]] TimerPeripheral& lp_timer() noexcept { return get(); }
-  [[nodiscard]] TimerPeripheral& timer0() noexcept { return get(); }
-  [[nodiscard]] TimerPeripheral& lp_timer0() noexcept { return get(); }
+  [[nodiscard]] TimerDevice& get() noexcept { return timer_; }
+  [[nodiscard]] TimerDevice& lp_timer() noexcept { return get(); }
+  [[nodiscard]] TimerDevice& timer0() noexcept { return get(); }
+  [[nodiscard]] TimerDevice& lp_timer0() noexcept { return get(); }
 };
 
-template <typename System, typename PeripheralRegistry>
-class Stm32L4LowPowerTimerAccessor<System, PeripheralRegistry, 1> {
+template <typename System, typename DeviceRegistry>
+class Stm32L4LowPowerTimerAccessor<System, DeviceRegistry, 1> {
  private:
-  static constexpr PeripheralId lsi_id{Facility::OSCILLATOR_FACILITY,
+  static constexpr DeviceId lsi_id{Facility::OSCILLATOR_FACILITY,
                                                LSI_OSCILLATOR_INDEX};
 
-  using LsiOscillatorAccessor = config::accessor_type<System, PeripheralRegistry, lsi_id>;
+  using LsiOscillatorAccessor = config::accessor_type<System, DeviceRegistry, lsi_id>;
 
   Stm32l4xxLptim timer_{1, static_cast<LsiOscillatorAccessor&>(static_cast<System&>(*this)).get()};
 
  public:
-  [[nodiscard]] TimerPeripheral& get() noexcept { return timer_; }
-  [[nodiscard]] TimerPeripheral& timer1() noexcept { return get(); }
-  [[nodiscard]] TimerPeripheral& lp_timer1() noexcept { return get(); }
+  [[nodiscard]] TimerDevice& get() noexcept { return timer_; }
+  [[nodiscard]] TimerDevice& timer1() noexcept { return get(); }
+  [[nodiscard]] TimerDevice& lp_timer1() noexcept { return get(); }
 };
 
 }  // namespace tvsc::hal2::timer

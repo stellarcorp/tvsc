@@ -3,7 +3,7 @@
 #include <cstddef>
 
 #include "gtest/gtest.h"
-#include "hal2/peripheral.h"
+#include "hal2/device.h"
 #include "hal2/config/peripheral_accessors.h"
 #include "hal2/config/vector_table.h"
 
@@ -16,11 +16,11 @@ void Reset_Handler(void) {}
 
 namespace tvsc::hal2::config {
 
-template <typename System, typename PeripheralRegistry, size_t I2C_INDEX>
+template <typename System, typename DeviceRegistry, size_t I2C_INDEX>
 struct ImuAccessor {
   using I2cBus =  //
-      typename PeripheralRegistry::template configuration<
-          Facility::I2C_FACILITY, I2C_INDEX>::accessor<System, PeripheralRegistry>;
+      typename DeviceRegistry::template configuration<
+          Facility::I2C_FACILITY, I2C_INDEX>::accessor<System, DeviceRegistry>;
 
   int modifiable_value{42};
   bool initialized_at_compile_time{std::is_constant_evaluated()};
@@ -76,18 +76,18 @@ static constexpr int I2C1_EV_IRQn{5};
 static constexpr int I2C1_ER_IRQn{7};
 
 template <Facility FACILITY, size_t INDEX>
-struct PeripheralConfiguration;
+struct DeviceConfiguration;
 
 template <>
-struct PeripheralConfiguration<Facility::IMU_FACILITY, 0> {
+struct DeviceConfiguration<Facility::IMU_FACILITY, 0> {
   static constexpr size_t I2C_INDEX{1};
 
-  template <typename System, typename PeripheralRegistry>
-  using accessor = ImuAccessor<System, PeripheralRegistry, I2C_INDEX>;
+  template <typename System, typename DeviceRegistry>
+  using accessor = ImuAccessor<System, DeviceRegistry, I2C_INDEX>;
 
-  static constexpr PeripheralId id() noexcept { return {Facility::IMU_FACILITY, 0}; }
+  static constexpr DeviceId id() noexcept { return {Facility::IMU_FACILITY, 0}; }
   static constexpr auto dependencies() noexcept {
-    return std::array{PeripheralId{Facility::I2C_FACILITY, I2C_INDEX}};
+    return std::array{DeviceId{Facility::I2C_FACILITY, I2C_INDEX}};
   }
 
   template <size_t NUM_ISRS>
@@ -97,13 +97,13 @@ struct PeripheralConfiguration<Facility::IMU_FACILITY, 0> {
 };
 
 template <>
-struct PeripheralConfiguration<Facility::SYSTICK_FACILITY, 0> {
-  template <typename System, typename PeripheralRegistry>
+struct DeviceConfiguration<Facility::SYSTICK_FACILITY, 0> {
+  template <typename System, typename DeviceRegistry>
   using accessor = SystickAccessor<System>;
 
-  static constexpr PeripheralId id() noexcept { return {Facility::SYSTICK_FACILITY, 0}; }
+  static constexpr DeviceId id() noexcept { return {Facility::SYSTICK_FACILITY, 0}; }
   static constexpr auto dependencies() noexcept {
-    return std::array{PeripheralId{Facility::RCC_FACILITY, 0}};
+    return std::array{DeviceId{Facility::RCC_FACILITY, 0}};
   }
 
   template <size_t NUM_ISRS>
@@ -116,14 +116,14 @@ template <size_t INDEX>
 struct I2cConfiguration;
 
 template <size_t INDEX>
-struct PeripheralConfiguration<Facility::I2C_FACILITY, INDEX> {
-  template <typename System, typename PeripheralRegistry>
+struct DeviceConfiguration<Facility::I2C_FACILITY, INDEX> {
+  template <typename System, typename DeviceRegistry>
   using accessor = I2cAccessor<System, INDEX>;
 
-  static constexpr PeripheralId id() noexcept { return {Facility::I2C_FACILITY, INDEX}; }
+  static constexpr DeviceId id() noexcept { return {Facility::I2C_FACILITY, INDEX}; }
   static constexpr auto dependencies() noexcept {
-    return std::array{PeripheralId{Facility::SYSTICK_FACILITY, 0},
-                      PeripheralId{Facility::RCC_FACILITY, 0}};
+    return std::array{DeviceId{Facility::SYSTICK_FACILITY, 0},
+                      DeviceId{Facility::RCC_FACILITY, 0}};
   }
 
   template <size_t NUM_ISRS>
@@ -139,12 +139,12 @@ struct PeripheralConfiguration<Facility::I2C_FACILITY, INDEX> {
 };
 
 template <>
-struct PeripheralConfiguration<Facility::RCC_FACILITY, 0> {
-  template <typename System, typename PeripheralRegistry>
+struct DeviceConfiguration<Facility::RCC_FACILITY, 0> {
+  template <typename System, typename DeviceRegistry>
   using accessor = RccAccessor<System>;
 
-  static constexpr PeripheralId id() noexcept { return {Facility::RCC_FACILITY, 0}; }
-  static constexpr auto dependencies() noexcept { return std::array<PeripheralId, 0>{}; }
+  static constexpr DeviceId id() noexcept { return {Facility::RCC_FACILITY, 0}; }
+  static constexpr auto dependencies() noexcept { return std::array<DeviceId, 0>{}; }
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(VectorTable<NUM_ISRS>& table) noexcept {
@@ -154,19 +154,19 @@ struct PeripheralConfiguration<Facility::RCC_FACILITY, 0> {
 
 struct Board final {
   template <Facility FACILITY, size_t INDEX>
-  using configuration = PeripheralConfiguration<FACILITY, INDEX>;
+  using configuration = DeviceConfiguration<FACILITY, INDEX>;
 };
 
 static_assert(
-    ValidPeripheralConfiguration<PeripheralConfiguration<Facility::IMU_FACILITY, 0>, Board>);
+    ValidDeviceConfiguration<DeviceConfiguration<Facility::IMU_FACILITY, 0>, Board>);
 static_assert(
-    ValidPeripheralConfiguration<PeripheralConfiguration<Facility::SYSTICK_FACILITY, 0>, Board>);
+    ValidDeviceConfiguration<DeviceConfiguration<Facility::SYSTICK_FACILITY, 0>, Board>);
 static_assert(
-    ValidPeripheralConfiguration<PeripheralConfiguration<Facility::I2C_FACILITY, 0>, Board>);
+    ValidDeviceConfiguration<DeviceConfiguration<Facility::I2C_FACILITY, 0>, Board>);
 static_assert(
-    ValidPeripheralConfiguration<PeripheralConfiguration<Facility::I2C_FACILITY, 1>, Board>);
+    ValidDeviceConfiguration<DeviceConfiguration<Facility::I2C_FACILITY, 1>, Board>);
 static_assert(
-    ValidPeripheralConfiguration<PeripheralConfiguration<Facility::RCC_FACILITY, 0>, Board>);
+    ValidDeviceConfiguration<DeviceConfiguration<Facility::RCC_FACILITY, 0>, Board>);
 
 TEST(SystemBuilderTest, CanConstructSystem) {
   auto system_builder{SystemBuilder<Board>{}

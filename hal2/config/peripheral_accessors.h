@@ -3,13 +3,15 @@
 #include <concepts>
 #include <cstddef>
 
+#include "hal2/device.h"
+
 namespace tvsc::hal2::config {
 
 template <Facility F, size_t INDEX, typename T>
 struct has_matching_accessor_name : std::false_type {};
 
-template <typename T, PeripheralId ID>
-concept ValidPeripheralAccessor =                                    //
+template <typename T, DeviceId ID>
+concept ValidDeviceAccessor =                                    //
     has_matching_accessor_name<ID.facility, ID.index, T>::value and  //
     requires(T t) {
       { t.get() };

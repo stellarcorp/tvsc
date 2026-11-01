@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "hal2/peripheral.h"
+#include "hal2/device.h"
 
 namespace tvsc::hal2::random {
 

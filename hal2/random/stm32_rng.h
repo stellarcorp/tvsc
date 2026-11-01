@@ -28,7 +28,7 @@ class RngRegisterBank final {
   volatile Register DR;
 };
 
-class Stm32Rng final : public RngPeripheral<uint32_t> {
+class Stm32Rng final : public RngDevice<uint32_t> {
  private:
   RngRegisterBank* registers_;
 

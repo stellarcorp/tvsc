@@ -2,13 +2,13 @@
 
 #include <cstddef>
 
-#include "hal2/peripheral.h"
+#include "hal2/device.h"
 
 namespace tvsc::hal2::timer {
 
 class Timer;
 
-class TimerPeripheral : public Peripheral<TimerPeripheral, Timer> {
+class TimerDevice : public Device<TimerDevice, Timer> {
  private:
   virtual void enable() noexcept = 0;
   virtual void disable() noexcept = 0;
@@ -25,15 +25,15 @@ class TimerPeripheral : public Peripheral<TimerPeripheral, Timer> {
   friend class TimerInterceptor;
 
  public:
-  virtual ~TimerPeripheral() = default;
+  virtual ~TimerDevice() = default;
 };
 
-class Timer final : public Driver<TimerPeripheral, Timer> {
+class Timer final : public Driver<TimerDevice, Timer> {
  protected:
-  explicit Timer(TimerPeripheral& peripheral) noexcept
-      : Driver<TimerPeripheral, Timer>(peripheral) {}
+  explicit Timer(TimerDevice& peripheral) noexcept
+      : Driver<TimerDevice, Timer>(peripheral) {}
 
-  friend class Peripheral<TimerPeripheral, Timer>;
+  friend class Device<TimerDevice, Timer>;
 
  public:
   Timer() noexcept = default;

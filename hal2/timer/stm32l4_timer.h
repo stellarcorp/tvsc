@@ -55,7 +55,7 @@ class LptimRegisterBank final {
   volatile Register CNT;
 };
 
-class Stm32l4xxLptim final : public TimerPeripheral {
+class Stm32l4xxLptim final : public TimerDevice {
  private:
   volatile LptimRegisterBank* registers_;
   rcc::Oscillator* lsi_oscillator_;

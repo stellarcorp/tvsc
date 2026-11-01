@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hal2/peripheral.h"
+#include "hal2/device.h"
 
 namespace tvsc::hal2::rcc {
 

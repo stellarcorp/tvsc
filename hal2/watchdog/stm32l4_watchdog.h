@@ -35,7 +35,7 @@ class IwdgRegisterBank final {
   volatile Register WINR;
 };
 
-class Stm32L4Watchdog final : public WatchdogPeripheral {
+class Stm32L4Watchdog final : public WatchdogDevice {
  private:
   IwdgRegisterBank* registers_;
   rcc::Oscillator* lsi_oscillator_;

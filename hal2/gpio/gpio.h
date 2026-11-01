@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <utility>
 
-#include "hal2/peripheral.h"
+#include "hal2/device.h"
 
 namespace tvsc::hal2::gpio {
 
@@ -109,7 +109,7 @@ enum class PinSpeed : uint8_t {
 
 class Gpio;
 
-class GpioPeripheral : public Peripheral<GpioPeripheral, Gpio> {
+class GpioDevice : public Device<GpioDevice, Gpio> {
  private:
   virtual void enable() noexcept = 0;
   virtual void disable() noexcept = 0;
@@ -127,16 +127,16 @@ class GpioPeripheral : public Peripheral<GpioPeripheral, Gpio> {
   friend class GpioInterceptor;
 
  public:
-  virtual ~GpioPeripheral() = default;
+  virtual ~GpioDevice() = default;
 
   [[nodiscard]] virtual PortNumber port() const noexcept = 0;
 };
 
-class Gpio final : public Driver<GpioPeripheral, Gpio> {
+class Gpio final : public Driver<GpioDevice, Gpio> {
  protected:
-  explicit Gpio(GpioPeripheral& peripheral) : Driver<GpioPeripheral, Gpio>(peripheral) {}
+  explicit Gpio(GpioDevice& peripheral) : Driver<GpioDevice, Gpio>(peripheral) {}
 
-  friend class Peripheral<GpioPeripheral, Gpio>;
+  friend class Device<GpioDevice, Gpio>;
 
  public:
   constexpr Gpio() noexcept = default;
@@ -155,9 +155,9 @@ class Gpio final : public Driver<GpioPeripheral, Gpio> {
 
 class Pin;
 
-class PinPeripheral final : public Peripheral<PinPeripheral, Pin> {
+class PinDevice final : public Device<PinDevice, Pin> {
  private:
-  GpioPeripheral* gpio_peripheral_;
+  GpioDevice* gpio_peripheral_;
   const PinNumber pin_number_;
   Gpio gpio_{};
 
@@ -176,13 +176,13 @@ class PinPeripheral final : public Peripheral<PinPeripheral, Pin> {
   friend class Pin;
 
  public:
-  constexpr PinPeripheral(GpioPeripheral& gpio_peripheral, PinNumber pin_number) noexcept
+  constexpr PinDevice(GpioDevice& gpio_peripheral, PinNumber pin_number) noexcept
       : gpio_peripheral_(&gpio_peripheral), pin_number_(pin_number) {}
 
-  // constexpr PinPeripheral(const PinPeripheral&) noexcept = default;
-  constexpr PinPeripheral(PinPeripheral&&) noexcept = default;
-  // constexpr PinPeripheral& operator=(const PinPeripheral&) noexcept = default;
-  constexpr PinPeripheral& operator=(PinPeripheral&&) noexcept = default;
+  // constexpr PinDevice(const PinDevice&) noexcept = default;
+  constexpr PinDevice(PinDevice&&) noexcept = default;
+  // constexpr PinDevice& operator=(const PinDevice&) noexcept = default;
+  constexpr PinDevice& operator=(PinDevice&&) noexcept = default;
 
   [[nodiscard]] constexpr PortNumber port() const noexcept { return gpio_peripheral_->port(); }
   [[nodiscard]] constexpr PinNumber pin() const noexcept { return pin_number_; }
@@ -191,11 +191,11 @@ class PinPeripheral final : public Peripheral<PinPeripheral, Pin> {
   }
 };
 
-class Pin final : public Driver<PinPeripheral, Pin> {
+class Pin final : public Driver<PinDevice, Pin> {
  private:
-  friend class Peripheral<PinPeripheral, Pin>;
+  friend class Device<PinDevice, Pin>;
 
-  explicit Pin(PinPeripheral& peripheral) noexcept : Driver<PinPeripheral, Pin>(peripheral) {}
+  explicit Pin(PinDevice& peripheral) noexcept : Driver<PinDevice, Pin>(peripheral) {}
 
  public:
   Pin() noexcept = default;

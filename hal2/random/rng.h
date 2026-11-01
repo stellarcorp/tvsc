@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <random>
 
-#include "hal2/peripheral.h"
+#include "hal2/device.h"
 
 namespace tvsc::hal2::random {
 
@@ -11,7 +11,7 @@ template <typename ResultType>
 class Rng;
 
 template <typename ResultType>
-class RngPeripheral : public Peripheral<RngPeripheral<ResultType>, Rng<ResultType>> {
+class RngDevice : public Device<RngDevice<ResultType>, Rng<ResultType>> {
  public:
   using result_type = ResultType;
 
@@ -28,19 +28,19 @@ class RngPeripheral : public Peripheral<RngPeripheral<ResultType>, Rng<ResultTyp
   friend class Rng<result_type>;
 
  public:
-  virtual ~RngPeripheral() = default;
+  virtual ~RngDevice() = default;
 };
 
 template <typename ResultType>
-class Rng final : public Driver<RngPeripheral<ResultType>, Rng<ResultType>> {
+class Rng final : public Driver<RngDevice<ResultType>, Rng<ResultType>> {
  public:
   using result_type = ResultType;
 
  protected:
-  explicit Rng(RngPeripheral<result_type>& peripheral) noexcept
-      : Driver<RngPeripheral<result_type>, Rng<result_type>>(peripheral) {}
+  explicit Rng(RngDevice<result_type>& peripheral) noexcept
+      : Driver<RngDevice<result_type>, Rng<result_type>>(peripheral) {}
 
-  friend class Peripheral<RngPeripheral<result_type>, Rng<result_type>>;
+  friend class Device<RngDevice<result_type>, Rng<result_type>>;
 
  public:
   [[nodiscard]] result_type generate() noexcept { return this->peripheral_->generate(); }

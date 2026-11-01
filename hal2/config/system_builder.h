@@ -8,25 +8,25 @@
 #include "hal2/config/peripheral_accessors.h"
 #include "hal2/config/type_accumulator.h"
 #include "hal2/config/vector_table.h"
-#include "hal2/peripheral.h"
+#include "hal2/device.h"
 
 namespace tvsc::hal2::config {
 
 namespace internal {
 
 /**
- * ConfiguredPeripheral bundles a static peripheral definition with its specific
+ * ConfiguredDevice bundles a static peripheral definition with its specific
  * compile-time configuration NTTP instance.
  */
 template <typename Definition, auto config>
-struct ConfiguredPeripheral final {
+struct ConfiguredDevice final {
   using definition = Definition;
   static constexpr auto CONFIG{config};
 
-  template <typename System, typename PeripheralRegistry>
-  using accessor = typename definition::template accessor<System, PeripheralRegistry, CONFIG>;
+  template <typename System, typename DeviceRegistry>
+  using accessor = typename definition::template accessor<System, DeviceRegistry, CONFIG>;
 
-  static constexpr PeripheralId id() noexcept { return definition::id(); }
+  static constexpr DeviceId id() noexcept { return definition::id(); }
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
@@ -38,21 +38,21 @@ struct ConfiguredPeripheral final {
  * DependencyListResolver recursively flattens dependencies for peripherals in a system,
  * utilizing default configurations for automatically resolved upstream dependencies.
  */
-template <typename PeripheralRegistry, typename Accumulator, typename Visiting, auto Dependencies,
+template <typename DeviceRegistry, typename Accumulator, typename Visiting, auto Dependencies,
           size_t Index>
 struct DependencyListResolver {
   using type = Accumulator;
 };
 
-template <typename PeripheralRegistry, typename Accumulator, typename Visiting, auto Dependencies,
+template <typename DeviceRegistry, typename Accumulator, typename Visiting, auto Dependencies,
           size_t Index>
   requires(Index < Dependencies.size())
-struct DependencyListResolver<PeripheralRegistry, Accumulator, Visiting, Dependencies, Index> {
+struct DependencyListResolver<DeviceRegistry, Accumulator, Visiting, Dependencies, Index> {
   static constexpr auto identifier = Dependencies[Index];
   using CurrentDefinition =
-      typename PeripheralRegistry::template definition<identifier.facility, identifier.index>;
+      typename DeviceRegistry::template definition<identifier.facility, identifier.index>;
   using CurrentConfigured =
-      ConfiguredPeripheral<CurrentDefinition, typename CurrentDefinition::configuration{}>;
+      ConfiguredDevice<CurrentDefinition, typename CurrentDefinition::configuration{}>;
 
   // Trigger a compile-time error if this configuration is already an active ancestor.
   static_assert(not Visiting::template contains<CurrentConfigured>,
@@ -60,22 +60,22 @@ struct DependencyListResolver<PeripheralRegistry, Accumulator, Visiting, Depende
 
   // Resolve sub-dependencies using the default configuration of the dependency.
   using AccumulatorWithSubDependencies = typename DependencyListResolver<
-      PeripheralRegistry, Accumulator, typename Visiting::template Append<CurrentConfigured>,
+      DeviceRegistry, Accumulator, typename Visiting::template Append<CurrentConfigured>,
       CurrentDefinition::dependencies(typename CurrentDefinition::configuration{}), 0>::type;
 
   using AccumulatorWithDependency =
       typename AccumulatorWithSubDependencies::template AppendUnique<CurrentConfigured>;
 
-  using type = typename DependencyListResolver<PeripheralRegistry, AccumulatorWithDependency,
+  using type = typename DependencyListResolver<DeviceRegistry, AccumulatorWithDependency,
                                                Visiting, Dependencies, Index + 1>::type;
 };
 
 }  // namespace internal
 
-template <typename PeripheralRegistry, typename... ConfiguredPeripherals>
+template <typename DeviceRegistry, typename... ConfiguredDevices>
 class System final
-    : public ConfiguredPeripherals::template accessor<
-          System<PeripheralRegistry, ConfiguredPeripherals...>, PeripheralRegistry>... {
+    : public ConfiguredDevices::template accessor<
+          System<DeviceRegistry, ConfiguredDevices...>, DeviceRegistry>... {
  private:
   template <typename, typename>
   friend class SystemBuilder;
@@ -86,49 +86,49 @@ class System final
   // All public methods come from inherited classes.
 };
 
-template <typename PeripheralRegistry, typename Accumulator = TypeAccumulator<>>
+template <typename DeviceRegistry, typename Accumulator = TypeAccumulator<>>
 class SystemBuilder;
 
-template <typename PeripheralRegistry, typename... ConfiguredPeripherals>
-class SystemBuilder<PeripheralRegistry, TypeAccumulator<ConfiguredPeripherals...>> final {
+template <typename DeviceRegistry, typename... ConfiguredDevices>
+class SystemBuilder<DeviceRegistry, TypeAccumulator<ConfiguredDevices...>> final {
  public:
   constexpr SystemBuilder() noexcept = default;
 
   template <Facility FACILITY, size_t INDEX,
             auto CONFIG =
-                typename PeripheralRegistry::template definition<FACILITY, INDEX>::configuration{}>
+                typename DeviceRegistry::template definition<FACILITY, INDEX>::configuration{}>
   [[nodiscard]] consteval auto add() noexcept {
-    using TargetDefinition = typename PeripheralRegistry::template definition<FACILITY, INDEX>;
+    using TargetDefinition = typename DeviceRegistry::template definition<FACILITY, INDEX>;
 
     static_assert(TargetDefinition::is_valid(CONFIG),
                   "Invalid peripheral configuration parameters.");
 
-    using TargetConfigured = internal::ConfiguredPeripheral<TargetDefinition, CONFIG>;
+    using TargetConfigured = internal::ConfiguredDevice<TargetDefinition, CONFIG>;
 
     // Resolve all transitive dependencies required by the target configuration using
     // the configuration's custom or default parameters.
     using AccumulatorWithDependencies =
-        typename internal::DependencyListResolver<PeripheralRegistry,                         //
-                                                  TypeAccumulator<ConfiguredPeripherals...>,  //
+        typename internal::DependencyListResolver<DeviceRegistry,                         //
+                                                  TypeAccumulator<ConfiguredDevices...>,  //
                                                   TypeAccumulator<TargetConfigured>,          //
                                                   TargetDefinition::dependencies(CONFIG), 0>::type;
 
     using NextAccumulator =
         typename AccumulatorWithDependencies::template AppendUnique<TargetConfigured>;
 
-    return SystemBuilder<PeripheralRegistry, NextAccumulator>{};
+    return SystemBuilder<DeviceRegistry, NextAccumulator>{};
   }
 
   template <size_t NUM_ISRS = 127>
   [[nodiscard]] consteval auto create_vector_table() const noexcept {
     VectorTable<NUM_ISRS> vector_table{};
-    (ConfiguredPeripherals::template update_vector_table<NUM_ISRS>(vector_table), ...);
+    (ConfiguredDevices::template update_vector_table<NUM_ISRS>(vector_table), ...);
     return vector_table;
   }
 
   constexpr auto system() const noexcept {
     using ConcreteSystem = TypeAccumulator<
-        ConfiguredPeripherals...>::template InstantiateWithPrefix<System, PeripheralRegistry>;
+        ConfiguredDevices...>::template InstantiateWithPrefix<System, DeviceRegistry>;
     return ConcreteSystem{};
   }
 };
