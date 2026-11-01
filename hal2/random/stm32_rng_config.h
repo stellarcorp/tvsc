@@ -12,10 +12,10 @@ static constexpr size_t HSI48_OSCILLATOR_INDEX{2};
 template <typename System, typename PeripheralRegistry>
 class Stm32RngAccessor {
  private:
-  using Hsi48OscillatorAccessor =  //
-      typename PeripheralRegistry::template configuration<
-          config::Facility::OSCILLATOR_FACILITY,
-          HSI48_OSCILLATOR_INDEX>::template accessor<System, PeripheralRegistry>;
+  static constexpr config::PeripheralId hsi48_id{config::Facility::OSCILLATOR_FACILITY,
+                                                 HSI48_OSCILLATOR_INDEX};
+
+  using Hsi48OscillatorAccessor = config::accessor_type<System, PeripheralRegistry, hsi48_id>;
 
   Stm32Rng rng_{static_cast<Hsi48OscillatorAccessor&>(static_cast<System&>(*this)).get()};
 
