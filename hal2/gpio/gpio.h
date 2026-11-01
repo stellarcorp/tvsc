@@ -9,7 +9,7 @@
 namespace tvsc::hal2::gpio {
 
 /**
- * Type used to identify a GPIO port (specific peripheral) on an processor.
+ * Type used to identify a GPIO port (specific device) on an processor.
  */
 using PortNumber = uint8_t;
 
@@ -72,7 +72,7 @@ enum class PinMode : uint8_t {
   // Pull-down resistor enabled.
   OUTPUT_OPEN_DRAIN_WITH_PULL_DOWN,
 
-  // Alternate functions. Using these modes allows the pin to be used by another peripheral and not
+  // Alternate functions. Using these modes allows the pin to be used by another device and not
   // as a general purpose IO pin.
 
   // Pin set to alternate function with MOSFETs in a push-pull configuration. Pull-up and pull-down
@@ -134,7 +134,7 @@ class GpioDevice : public Device<GpioDevice, Gpio> {
 
 class Gpio final : public Driver<GpioDevice, Gpio> {
  protected:
-  explicit Gpio(GpioDevice& peripheral) : Driver<GpioDevice, Gpio>(peripheral) {}
+  explicit Gpio(GpioDevice& device) : Driver<GpioDevice, Gpio>(device) {}
 
   friend class Device<GpioDevice, Gpio>;
 
@@ -176,8 +176,8 @@ class PinDevice final : public Device<PinDevice, Pin> {
   friend class Pin;
 
  public:
-  constexpr PinDevice(GpioDevice& gpio_peripheral, PinNumber pin_number) noexcept
-      : gpio_device_(&gpio_peripheral), pin_number_(pin_number) {}
+  constexpr PinDevice(GpioDevice& gpio_device, PinNumber pin_number) noexcept
+      : gpio_device_(&gpio_device), pin_number_(pin_number) {}
 
   // constexpr PinDevice(const PinDevice&) noexcept = default;
   constexpr PinDevice(PinDevice&&) noexcept = default;
@@ -195,7 +195,7 @@ class Pin final : public Driver<PinDevice, Pin> {
  private:
   friend class Device<PinDevice, Pin>;
 
-  explicit Pin(PinDevice& peripheral) noexcept : Driver<PinDevice, Pin>(peripheral) {}
+  explicit Pin(PinDevice& device) noexcept : Driver<PinDevice, Pin>(device) {}
 
  public:
   Pin() noexcept = default;
