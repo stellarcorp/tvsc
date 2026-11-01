@@ -3,7 +3,7 @@
 #include <cstddef>
 
 #include "gtest/gtest.h"
-#include "hal2/config/device_accessors.h"
+#include "hal2/config/device_definitions.h"
 #include "hal2/config/vector_table.h"
 #include "hal2/device.h"
 
@@ -18,9 +18,8 @@ namespace tvsc::hal2::config {
 
 template <typename System, typename DeviceRegistry, size_t I2C_INDEX>
 struct ImuAccessor {
-  using I2cBus =  //
-      typename DeviceRegistry::template configuration<Facility::I2C_FACILITY,
-                                                      I2C_INDEX>::accessor<System, DeviceRegistry>;
+  using I2cBus =
+      config::accessor_type<System, DeviceRegistry, DeviceId{Facility::I2C_FACILITY, I2C_INDEX}>;
 
   int modifiable_value{42};
   bool initialized_at_compile_time{std::is_constant_evaluated()};
@@ -76,38 +75,32 @@ static constexpr int I2C1_EV_IRQn{5};
 static constexpr int I2C1_ER_IRQn{7};
 
 template <Facility FACILITY, size_t INDEX>
-struct DeviceConfiguration;
+struct DeviceDefinition;
 
 template <>
-struct DeviceConfiguration<Facility::IMU_FACILITY, 0> {
+struct DeviceDefinition<Facility::IMU_FACILITY, 0> : public UnconfigurableDevice {
   static constexpr size_t I2C_INDEX{1};
 
-  template <typename System, typename DeviceRegistry>
+  template <typename System, typename DeviceRegistry, configuration CONFIG>
   using accessor = ImuAccessor<System, DeviceRegistry, I2C_INDEX>;
 
-  static constexpr DeviceId id() noexcept { return {Facility::IMU_FACILITY, 0}; }
-  static constexpr auto dependencies() noexcept {
+  [[nodiscard]] static constexpr DeviceId id() noexcept { return {Facility::IMU_FACILITY, 0}; }
+  [[nodiscard]] static constexpr const char* name() noexcept { return "imu"; }
+  [[nodiscard]] static constexpr auto dependencies(const configuration&) noexcept {
     return std::array{DeviceId{Facility::I2C_FACILITY, I2C_INDEX}};
-  }
-
-  template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(VectorTable<NUM_ISRS>& table) noexcept {
-    // No ISRs required.
   }
 };
 
 template <>
-struct DeviceConfiguration<Facility::SYSTICK_FACILITY, 0> {
-  template <typename System, typename DeviceRegistry>
+struct DeviceDefinition<Facility::SYSTICK_FACILITY, 0> : public UnconfigurableDevice {
+  template <typename System, typename DeviceRegistry, configuration CONFIG>
   using accessor = SystickAccessor<System>;
 
   static constexpr DeviceId id() noexcept { return {Facility::SYSTICK_FACILITY, 0}; }
-  static constexpr auto dependencies() noexcept {
-    return std::array{DeviceId{Facility::RCC_FACILITY, 0}};
-  }
-
+  [[nodiscard]] static constexpr const char* name() noexcept { return "systick"; }
   template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(VectorTable<NUM_ISRS>& table) noexcept {
+  static constexpr void update_vector_table(VectorTable<NUM_ISRS>& table,
+                                            const configuration&) noexcept {
     table.add_arm_isr(SYSTICK_IRQn, &systick_isr);
   }
 };
@@ -116,17 +109,33 @@ template <size_t INDEX>
 struct I2cConfiguration;
 
 template <size_t INDEX>
-struct DeviceConfiguration<Facility::I2C_FACILITY, INDEX> {
-  template <typename System, typename DeviceRegistry>
+struct DeviceDefinition<Facility::I2C_FACILITY, INDEX> {
+  static constexpr DeviceId id() noexcept { return {Facility::I2C_FACILITY, INDEX}; }
+  [[nodiscard]] static constexpr const char* name() noexcept {
+    if constexpr (INDEX == 0) {
+      return "i2c0";
+    } else if constexpr (INDEX == 1) {
+      return "i2c1";
+    }
+  }
+
+  struct Configuration final {
+    int sda_pin{-1};
+    int sck_pin{-1};
+  };
+  using configuration = Configuration;
+
+  template <typename System, typename DeviceRegistry, configuration CONFIG>
   using accessor = I2cAccessor<System, INDEX>;
 
-  static constexpr DeviceId id() noexcept { return {Facility::I2C_FACILITY, INDEX}; }
-  static constexpr auto dependencies() noexcept {
+  static constexpr bool is_valid(const configuration&) noexcept { return true; }
+  static constexpr auto dependencies(const configuration&) noexcept {
     return std::array{DeviceId{Facility::SYSTICK_FACILITY, 0}, DeviceId{Facility::RCC_FACILITY, 0}};
   }
 
   template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(VectorTable<NUM_ISRS>& table) noexcept {
+  static constexpr void update_vector_table(VectorTable<NUM_ISRS>& table,
+                                            const configuration&) noexcept {
     if constexpr (INDEX == 0) {
       table.add_arm_isr(I2C0_EV_IRQn, &i2c0_ev_isr);
       table.add_arm_isr(I2C0_ER_IRQn, &i2c0_er_isr);
@@ -138,29 +147,27 @@ struct DeviceConfiguration<Facility::I2C_FACILITY, INDEX> {
 };
 
 template <>
-struct DeviceConfiguration<Facility::RCC_FACILITY, 0> {
-  template <typename System, typename DeviceRegistry>
+struct DeviceDefinition<Facility::RCC_FACILITY, 0> : public UnconfigurableDevice {
+  template <typename System, typename DeviceRegistry, configuration CONFIG>
   using accessor = RccAccessor<System>;
 
   static constexpr DeviceId id() noexcept { return {Facility::RCC_FACILITY, 0}; }
-  static constexpr auto dependencies() noexcept { return std::array<DeviceId, 0>{}; }
-
-  template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(VectorTable<NUM_ISRS>& table) noexcept {
-    // No ISRs.
+  static constexpr const char* name() noexcept { return "rcc"; }
+  static constexpr auto dependencies(const configuration&) noexcept {
+    return std::array<DeviceId, 0>{};
   }
 };
 
 struct Board final {
   template <Facility FACILITY, size_t INDEX>
-  using configuration = DeviceConfiguration<FACILITY, INDEX>;
+  using definition = DeviceDefinition<FACILITY, INDEX>;
 };
 
-static_assert(ValidDeviceConfiguration<DeviceConfiguration<Facility::IMU_FACILITY, 0>, Board>);
-static_assert(ValidDeviceConfiguration<DeviceConfiguration<Facility::SYSTICK_FACILITY, 0>, Board>);
-static_assert(ValidDeviceConfiguration<DeviceConfiguration<Facility::I2C_FACILITY, 0>, Board>);
-static_assert(ValidDeviceConfiguration<DeviceConfiguration<Facility::I2C_FACILITY, 1>, Board>);
-static_assert(ValidDeviceConfiguration<DeviceConfiguration<Facility::RCC_FACILITY, 0>, Board>);
+static_assert(ValidDeviceDefinition<DeviceDefinition<Facility::IMU_FACILITY, 0>, Board>);
+static_assert(ValidDeviceDefinition<DeviceDefinition<Facility::SYSTICK_FACILITY, 0>, Board>);
+static_assert(ValidDeviceDefinition<DeviceDefinition<Facility::I2C_FACILITY, 0>, Board>);
+static_assert(ValidDeviceDefinition<DeviceDefinition<Facility::I2C_FACILITY, 1>, Board>);
+static_assert(ValidDeviceDefinition<DeviceDefinition<Facility::RCC_FACILITY, 0>, Board>);
 
 TEST(SystemBuilderTest, CanConstructSystem) {
   auto system_builder{SystemBuilder<Board>{}
@@ -259,8 +266,8 @@ TEST(SystemBuilderTest, CanCreateModifiableSystemAtCompileTime) {
                                     .add<Facility::I2C_FACILITY, 0>()
                                     .add<Facility::I2C_FACILITY, 1>()};
 
-  // Note that we are using constinit to force initialization at compile-time. The resulting object
-  // is not const, though.
+  // Note that we are using constinit to force initialization at compile-time. The resulting
+  // object is not const, though.
   static constinit auto sys{system_builder.system()};
   EXPECT_TRUE(sys.initialized_at_compile_time);
   sys.modifiable_value = 3;
@@ -274,8 +281,8 @@ TEST(SystemBuilderTest, CanCreateModifiableSystemWhileAddingDependenciesTransiti
           .add<Facility::SYSTICK_FACILITY, 0>()  //
   };
 
-  // Note that we are using constinit to force initialization at compile-time. The resulting object
-  // is not const, though.
+  // Note that we are using constinit to force initialization at compile-time. The resulting
+  // object is not const, though.
   static constinit auto sys{system_builder.system()};
   EXPECT_TRUE(sys.initialized_at_compile_time);
   sys.modifiable_value = 3;
