@@ -41,8 +41,8 @@ class Clock final {
 
   Clock(systick::SysTickType& systick,  //
         rcc::Rcc& rcc,                  //
-        timer::TimerDevice& timer_peripheral) noexcept
-      : systick_(&systick), rcc_(&rcc), timer_(timer_peripheral.access()) {}
+        timer::TimerDevice& timer_device) noexcept
+      : systick_(&systick), rcc_(&rcc), timer_(timer_device.access()) {}
 
   [[nodiscard]] TimeType current_time_micros() const noexcept {
     return systick_->current_time_micros();
