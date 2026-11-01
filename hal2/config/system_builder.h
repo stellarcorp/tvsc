@@ -5,10 +5,10 @@
 #include <concepts>
 #include <ranges>
 
-#include "hal2/peripheral.h"
 #include "hal2/config/peripheral_accessors.h"
 #include "hal2/config/type_accumulator.h"
 #include "hal2/config/vector_table.h"
+#include "hal2/peripheral.h"
 
 namespace tvsc::hal2::config {
 
@@ -18,19 +18,19 @@ namespace internal {
  * ConfiguredPeripheral bundles a static peripheral definition with its specific
  * compile-time configuration NTTP instance.
  */
-template <typename Definition, auto Config>
+template <typename Definition, auto config>
 struct ConfiguredPeripheral final {
   using definition = Definition;
-  static constexpr auto config = Config;
+  static constexpr auto CONFIG{config};
 
   template <typename System, typename PeripheralRegistry>
-  using accessor = typename definition::template accessor<System, PeripheralRegistry, config>;
+  using accessor = typename definition::template accessor<System, PeripheralRegistry, CONFIG>;
 
   static constexpr PeripheralId id() noexcept { return definition::id(); }
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
-    definition::template update_vector_table<NUM_ISRS>(table, config);
+    definition::template update_vector_table<NUM_ISRS>(table, CONFIG);
   }
 };
 
