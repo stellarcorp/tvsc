@@ -48,4 +48,10 @@ struct PeripheralId final {
   constexpr bool operator==(const PeripheralId&) const = default;
 };
 
+template <typename System, typename PeripheralRegistry, PeripheralId Id>
+using accessor_type =
+    typename PeripheralRegistry::template definition<Id.facility, Id.index>::template accessor<
+        System, PeripheralRegistry,
+        typename PeripheralRegistry::template definition<Id.facility, Id.index>::configuration{}>;
+
 }  // namespace tvsc::hal2::config
