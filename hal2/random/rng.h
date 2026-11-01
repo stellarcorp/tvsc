@@ -43,9 +43,9 @@ class Rng final : public Driver<RngDevice<ResultType>, Rng<ResultType>> {
   friend class Device<RngDevice<result_type>, Rng<result_type>>;
 
  public:
-  [[nodiscard]] result_type generate() noexcept { return this->peripheral_->generate(); }
-  [[nodiscard]] result_type operator()() noexcept { return this->peripheral_->generate(); }
-  [[nodiscard]] constexpr double entropy() const noexcept { return this->peripheral_->entropy(); }
+  [[nodiscard]] result_type generate() noexcept { return this->device_->generate(); }
+  [[nodiscard]] result_type operator()() noexcept { return this->device_->generate(); }
+  [[nodiscard]] constexpr double entropy() const noexcept { return this->device_->entropy(); }
 
   [[nodiscard]] static constexpr result_type min() noexcept {
     return std::numeric_limits<result_type>::min();

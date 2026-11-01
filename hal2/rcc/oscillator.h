@@ -31,7 +31,7 @@ class OscillatorDriver final : public Driver<Oscillator, OscillatorDriver> {
   OscillatorDriver() noexcept = default;
 
   void connect(Facility facility, size_t index) noexcept {
-    peripheral_->connect(facility, index);
+    device_->connect(facility, index);
   }
 };
 

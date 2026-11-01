@@ -143,25 +143,25 @@ class Gpio final : public Driver<GpioDevice, Gpio> {
 
   void set_pin_mode(PinNumber pin, PinMode mode, PinSpeed speed = PinSpeed::LOW,
                     uint8_t alternate_function_mapping = 0) noexcept {
-    peripheral_->set_pin_mode(pin, mode, speed, alternate_function_mapping);
+    device_->set_pin_mode(pin, mode, speed, alternate_function_mapping);
   }
 
-  [[nodiscard]] bool read_pin(PinNumber pin) noexcept { return peripheral_->read_pin(pin); }
-  void write_pin(PinNumber pin, bool on) noexcept { peripheral_->write_pin(pin, on); }
-  void toggle_pin(PinNumber pin) noexcept { peripheral_->toggle_pin(pin); }
+  [[nodiscard]] bool read_pin(PinNumber pin) noexcept { return device_->read_pin(pin); }
+  void write_pin(PinNumber pin, bool on) noexcept { device_->write_pin(pin, on); }
+  void toggle_pin(PinNumber pin) noexcept { device_->toggle_pin(pin); }
 
-  [[nodiscard]] PortNumber port() const noexcept { return peripheral_->port(); }
+  [[nodiscard]] PortNumber port() const noexcept { return device_->port(); }
 };
 
 class Pin;
 
 class PinDevice final : public Device<PinDevice, Pin> {
  private:
-  GpioDevice* gpio_peripheral_;
+  GpioDevice* gpio_device_;
   const PinNumber pin_number_;
   Gpio gpio_{};
 
-  void enable() noexcept override { gpio_.ensure_valid(*gpio_peripheral_); }
+  void enable() noexcept override { gpio_.ensure_valid(*gpio_device_); }
 
   void disable() noexcept override { gpio_.invalidate(); }
 
@@ -177,17 +177,17 @@ class PinDevice final : public Device<PinDevice, Pin> {
 
  public:
   constexpr PinDevice(GpioDevice& gpio_peripheral, PinNumber pin_number) noexcept
-      : gpio_peripheral_(&gpio_peripheral), pin_number_(pin_number) {}
+      : gpio_device_(&gpio_peripheral), pin_number_(pin_number) {}
 
   // constexpr PinDevice(const PinDevice&) noexcept = default;
   constexpr PinDevice(PinDevice&&) noexcept = default;
   // constexpr PinDevice& operator=(const PinDevice&) noexcept = default;
   constexpr PinDevice& operator=(PinDevice&&) noexcept = default;
 
-  [[nodiscard]] constexpr PortNumber port() const noexcept { return gpio_peripheral_->port(); }
+  [[nodiscard]] constexpr PortNumber port() const noexcept { return gpio_device_->port(); }
   [[nodiscard]] constexpr PinNumber pin() const noexcept { return pin_number_; }
   [[nodiscard]] constexpr PinRef ref() const noexcept {
-    return {gpio_peripheral_->port(), pin_number_};
+    return {gpio_device_->port(), pin_number_};
   }
 };
 
@@ -202,18 +202,18 @@ class Pin final : public Driver<PinDevice, Pin> {
 
   void set_pin_mode(PinMode mode, PinSpeed speed = PinSpeed::LOW,
                     uint8_t alternate_function_mapping = 0) noexcept {
-    peripheral_->set_pin_mode(mode, speed, alternate_function_mapping);
+    device_->set_pin_mode(mode, speed, alternate_function_mapping);
   }
 
-  [[nodiscard]] bool read_pin() noexcept { return peripheral_->read_pin(); }
-  void write_pin(bool on) noexcept { peripheral_->write_pin(on); }
+  [[nodiscard]] bool read_pin() noexcept { return device_->read_pin(); }
+  void write_pin(bool on) noexcept { device_->write_pin(on); }
   void on() noexcept { write_pin(true); }
   void off() noexcept { write_pin(false); }
-  void toggle_pin() noexcept { peripheral_->toggle_pin(); }
+  void toggle_pin() noexcept { device_->toggle_pin(); }
 
-  [[nodiscard]] PortNumber port() const noexcept { return peripheral_->port(); }
-  [[nodiscard]] PinNumber pin() const noexcept { return peripheral_->pin(); }
-  [[nodiscard]] PinRef ref() const noexcept { return peripheral_->ref(); }
+  [[nodiscard]] PortNumber port() const noexcept { return device_->port(); }
+  [[nodiscard]] PinNumber pin() const noexcept { return device_->pin(); }
+  [[nodiscard]] PinRef ref() const noexcept { return device_->ref(); }
 };
 
 }  // namespace tvsc::hal2::gpio

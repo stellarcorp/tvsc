@@ -39,12 +39,12 @@ class Timer final : public Driver<TimerDevice, Timer> {
   Timer() noexcept = default;
 
   void configure_single_pulse(uint32_t interval_us) noexcept {
-    peripheral_->configure_single_pulse(interval_us);
+    device_->configure_single_pulse(interval_us);
   }
-  void start() noexcept { peripheral_->start(); }
-  void stop() noexcept { peripheral_->stop(); }
+  void start() noexcept { device_->start(); }
+  void stop() noexcept { device_->stop(); }
 
-  [[nodiscard]] bool is_running() noexcept { return peripheral_->is_running(); }
+  [[nodiscard]] bool is_running() noexcept { return device_->is_running(); }
 };
 
 }  // namespace tvsc::hal2::timer

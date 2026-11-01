@@ -32,10 +32,10 @@ class Watchdog final : public Driver<WatchdogDevice, Watchdog> {
   friend class Device<WatchdogDevice, Watchdog>;
 
  public:
-  void feed() noexcept { peripheral_->feed(); }
+  void feed() noexcept { device_->feed(); }
 
   [[nodiscard]] std::chrono::milliseconds reset_interval() noexcept {
-    return peripheral_->reset_interval();
+    return device_->reset_interval();
   }
 };
 
