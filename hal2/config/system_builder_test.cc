@@ -3,9 +3,9 @@
 #include <cstddef>
 
 #include "gtest/gtest.h"
-#include "hal2/device.h"
-#include "hal2/config/peripheral_accessors.h"
+#include "hal2/config/device_accessors.h"
 #include "hal2/config/vector_table.h"
+#include "hal2/device.h"
 
 // Symbols provided by startup assembly and the linker. These empty versions are provided here to
 // make the tests work.
@@ -19,8 +19,8 @@ namespace tvsc::hal2::config {
 template <typename System, typename DeviceRegistry, size_t I2C_INDEX>
 struct ImuAccessor {
   using I2cBus =  //
-      typename DeviceRegistry::template configuration<
-          Facility::I2C_FACILITY, I2C_INDEX>::accessor<System, DeviceRegistry>;
+      typename DeviceRegistry::template configuration<Facility::I2C_FACILITY,
+                                                      I2C_INDEX>::accessor<System, DeviceRegistry>;
 
   int modifiable_value{42};
   bool initialized_at_compile_time{std::is_constant_evaluated()};
@@ -122,8 +122,7 @@ struct DeviceConfiguration<Facility::I2C_FACILITY, INDEX> {
 
   static constexpr DeviceId id() noexcept { return {Facility::I2C_FACILITY, INDEX}; }
   static constexpr auto dependencies() noexcept {
-    return std::array{DeviceId{Facility::SYSTICK_FACILITY, 0},
-                      DeviceId{Facility::RCC_FACILITY, 0}};
+    return std::array{DeviceId{Facility::SYSTICK_FACILITY, 0}, DeviceId{Facility::RCC_FACILITY, 0}};
   }
 
   template <size_t NUM_ISRS>
@@ -157,16 +156,11 @@ struct Board final {
   using configuration = DeviceConfiguration<FACILITY, INDEX>;
 };
 
-static_assert(
-    ValidDeviceConfiguration<DeviceConfiguration<Facility::IMU_FACILITY, 0>, Board>);
-static_assert(
-    ValidDeviceConfiguration<DeviceConfiguration<Facility::SYSTICK_FACILITY, 0>, Board>);
-static_assert(
-    ValidDeviceConfiguration<DeviceConfiguration<Facility::I2C_FACILITY, 0>, Board>);
-static_assert(
-    ValidDeviceConfiguration<DeviceConfiguration<Facility::I2C_FACILITY, 1>, Board>);
-static_assert(
-    ValidDeviceConfiguration<DeviceConfiguration<Facility::RCC_FACILITY, 0>, Board>);
+static_assert(ValidDeviceConfiguration<DeviceConfiguration<Facility::IMU_FACILITY, 0>, Board>);
+static_assert(ValidDeviceConfiguration<DeviceConfiguration<Facility::SYSTICK_FACILITY, 0>, Board>);
+static_assert(ValidDeviceConfiguration<DeviceConfiguration<Facility::I2C_FACILITY, 0>, Board>);
+static_assert(ValidDeviceConfiguration<DeviceConfiguration<Facility::I2C_FACILITY, 1>, Board>);
+static_assert(ValidDeviceConfiguration<DeviceConfiguration<Facility::RCC_FACILITY, 0>, Board>);
 
 TEST(SystemBuilderTest, CanConstructSystem) {
   auto system_builder{SystemBuilder<Board>{}

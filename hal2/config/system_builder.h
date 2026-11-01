@@ -5,7 +5,7 @@
 #include <concepts>
 #include <ranges>
 
-#include "hal2/config/peripheral_accessors.h"
+#include "hal2/config/device_definitions.h"
 #include "hal2/config/type_accumulator.h"
 #include "hal2/config/vector_table.h"
 #include "hal2/device.h"
@@ -66,16 +66,16 @@ struct DependencyListResolver<DeviceRegistry, Accumulator, Visiting, Dependencie
   using AccumulatorWithDependency =
       typename AccumulatorWithSubDependencies::template AppendUnique<CurrentConfigured>;
 
-  using type = typename DependencyListResolver<DeviceRegistry, AccumulatorWithDependency,
-                                               Visiting, Dependencies, Index + 1>::type;
+  using type = typename DependencyListResolver<DeviceRegistry, AccumulatorWithDependency, Visiting,
+                                               Dependencies, Index + 1>::type;
 };
 
 }  // namespace internal
 
 template <typename DeviceRegistry, typename... ConfiguredDevices>
 class System final
-    : public ConfiguredDevices::template accessor<
-          System<DeviceRegistry, ConfiguredDevices...>, DeviceRegistry>... {
+    : public ConfiguredDevices::template accessor<System<DeviceRegistry, ConfiguredDevices...>,
+                                                  DeviceRegistry>... {
  private:
   template <typename, typename>
   friend class SystemBuilder;
@@ -94,12 +94,14 @@ class SystemBuilder<DeviceRegistry, TypeAccumulator<ConfiguredDevices...>> final
  public:
   constexpr SystemBuilder() noexcept = default;
 
-  template <Facility FACILITY, size_t INDEX,
-            auto CONFIG =
-                typename DeviceRegistry::template definition<FACILITY, INDEX>::configuration{}>
+  template <
+      Facility FACILITY, size_t INDEX,
+      auto CONFIG = typename DeviceRegistry::template definition<FACILITY, INDEX>::configuration{}>
   [[nodiscard]] consteval auto add() noexcept {
     using TargetDefinition = typename DeviceRegistry::template definition<FACILITY, INDEX>;
 
+    static_assert(ValidDeviceDefinition<TargetDefinition, DeviceRegistry>,
+                  "Invalid device definition");
     static_assert(TargetDefinition::is_valid(CONFIG),
                   "Invalid peripheral configuration parameters.");
 
@@ -110,7 +112,7 @@ class SystemBuilder<DeviceRegistry, TypeAccumulator<ConfiguredDevices...>> final
     using AccumulatorWithDependencies =
         typename internal::DependencyListResolver<DeviceRegistry,                         //
                                                   TypeAccumulator<ConfiguredDevices...>,  //
-                                                  TypeAccumulator<TargetConfigured>,          //
+                                                  TypeAccumulator<TargetConfigured>,      //
                                                   TargetDefinition::dependencies(CONFIG), 0>::type;
 
     using NextAccumulator =
@@ -127,8 +129,9 @@ class SystemBuilder<DeviceRegistry, TypeAccumulator<ConfiguredDevices...>> final
   }
 
   constexpr auto system() const noexcept {
-    using ConcreteSystem = TypeAccumulator<
-        ConfiguredDevices...>::template InstantiateWithPrefix<System, DeviceRegistry>;
+    using ConcreteSystem =
+        TypeAccumulator<ConfiguredDevices...>::template InstantiateWithPrefix<System,
+                                                                              DeviceRegistry>;
     return ConcreteSystem{};
   }
 };

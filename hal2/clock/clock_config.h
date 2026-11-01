@@ -1,7 +1,7 @@
 #pragma once
 
 #include "hal2/clock/clock.h"
-#include "hal2/config/peripheral_definitions.h"
+#include "hal2/config/device_definitions.h"
 
 namespace tvsc::hal2::clock {
 
@@ -17,8 +17,7 @@ class ClockAccessor {
 
   using SysTickAccessor =
       config::accessor_type<System, DeviceRegistry, {Facility::SYSTICK_FACILITY, 0}>;
-  using RccAccessor =
-      config::accessor_type<System, DeviceRegistry, {Facility::RCC_FACILITY, 0}>;
+  using RccAccessor = config::accessor_type<System, DeviceRegistry, {Facility::RCC_FACILITY, 0}>;
   using LptimAccessor =
       config::accessor_type<System, DeviceRegistry, {Facility::TIMER_FACILITY, LPTIM_INDEX}>;
 

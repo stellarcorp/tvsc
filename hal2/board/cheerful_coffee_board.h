@@ -5,8 +5,9 @@
 #include <cstddef>
 
 #include "hal2/clock/clock_config.h"
-#include "hal2/device.h"
+#include "hal2/config/device_definitions.h"
 #include "hal2/config/vector_table.h"
+#include "hal2/device.h"
 #include "hal2/gpio/gpio.h"
 #include "hal2/gpio/stm32_gpio_config.h"
 #include "hal2/led/led_config.h"
@@ -26,13 +27,10 @@ template <Facility FACILITY, size_t INDEX>
 struct DeviceDefinition;
 
 template <>
-struct DeviceDefinition<Facility::RCC_FACILITY, 0> final
-    : public config::UnconfigurableDevice {
+struct DeviceDefinition<Facility::RCC_FACILITY, 0> final : public config::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "core"; }
 
-  static constexpr DeviceId id() noexcept {
-    return {Facility::RCC_FACILITY, 0};
-  }
+  static constexpr DeviceId id() noexcept { return {Facility::RCC_FACILITY, 0}; }
 
   template <typename System, typename DeviceRegistry, configuration config>
   using accessor = rcc::Stm32L4RccAccessor<System>;
@@ -50,9 +48,7 @@ struct DeviceDefinition<Facility::OSCILLATOR_FACILITY, 1> final
     : public config::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "lsi"; }
 
-  static constexpr DeviceId id() noexcept {
-    return {Facility::OSCILLATOR_FACILITY, 1};
-  }
+  static constexpr DeviceId id() noexcept { return {Facility::OSCILLATOR_FACILITY, 1}; }
 
   template <typename System, typename DeviceRegistry, configuration config>
   using accessor = rcc::Stm32L4LsiOscillatorAccessor<System>;
@@ -67,9 +63,7 @@ struct DeviceDefinition<Facility::OSCILLATOR_FACILITY, 2> final
     : public config::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "hsi48"; }
 
-  static constexpr DeviceId id() noexcept {
-    return {Facility::OSCILLATOR_FACILITY, 2};
-  }
+  static constexpr DeviceId id() noexcept { return {Facility::OSCILLATOR_FACILITY, 2}; }
 
   template <typename System, typename DeviceRegistry, configuration config>
   using accessor = rcc::Stm32L4Hsi48OscillatorAccessor<System>;
@@ -79,9 +73,7 @@ template <>
 struct DeviceDefinition<Facility::SYSTICK_FACILITY, 0> final {
   static constexpr const char* name() noexcept { return "systick"; }
 
-  static constexpr DeviceId id() noexcept {
-    return {Facility::SYSTICK_FACILITY, 0};
-  }
+  static constexpr DeviceId id() noexcept { return {Facility::SYSTICK_FACILITY, 0}; }
 
   struct Configuration final {};
   using configuration = Configuration;
@@ -104,8 +96,7 @@ struct DeviceDefinition<Facility::SYSTICK_FACILITY, 0> final {
 
 template <size_t PORT>
   requires(PORT < 8)
-struct DeviceDefinition<Facility::GPIO_FACILITY, PORT> final
-    : public config::UnconfigurableDevice {
+struct DeviceDefinition<Facility::GPIO_FACILITY, PORT> final : public config::UnconfigurableDevice {
   static constexpr const char* name() noexcept
     requires(PORT == 0)
   {
@@ -147,22 +138,17 @@ struct DeviceDefinition<Facility::GPIO_FACILITY, PORT> final
     return "gpioh";
   }
 
-  static constexpr DeviceId id() noexcept {
-    return {Facility::GPIO_FACILITY, PORT};
-  }
+  static constexpr DeviceId id() noexcept { return {Facility::GPIO_FACILITY, PORT}; }
 
   template <typename System, typename DeviceRegistry, configuration config>
   using accessor = gpio::Stm32GpioAccessor<static_cast<gpio::PortNumber>(PORT), System>;
 };
 
 template <>
-struct DeviceDefinition<Facility::LED_FACILITY, 0> final
-    : public config::UnconfigurableDevice {
+struct DeviceDefinition<Facility::LED_FACILITY, 0> final : public config::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "debug_led"; }
 
-  static constexpr DeviceId id() noexcept {
-    return {Facility::LED_FACILITY, 0};
-  }
+  static constexpr DeviceId id() noexcept { return {Facility::LED_FACILITY, 0}; }
 
   static constexpr auto PIN{gpio::PinRef{2, 13}};
 
@@ -192,9 +178,7 @@ struct DeviceDefinition<Facility::TIMER_FACILITY, INDEX> final
     return "lptim2";
   }
 
-  static constexpr DeviceId id() noexcept {
-    return {Facility::TIMER_FACILITY, INDEX};
-  }
+  static constexpr DeviceId id() noexcept { return {Facility::TIMER_FACILITY, INDEX}; }
 
   static constexpr auto dependencies(const configuration&) noexcept {
     return std::array{
@@ -224,9 +208,7 @@ template <>
 struct DeviceDefinition<Facility::WATCHDOG_FACILITY, 0> final {
   static constexpr const char* name() noexcept { return "iwdg"; }
 
-  static constexpr DeviceId id() noexcept {
-    return {Facility::WATCHDOG_FACILITY, 0};
-  }
+  static constexpr DeviceId id() noexcept { return {Facility::WATCHDOG_FACILITY, 0}; }
 
   struct Configuration final {
     uint32_t reset_interval_ms{2'000};
@@ -256,13 +238,10 @@ struct DeviceDefinition<Facility::WATCHDOG_FACILITY, 0> final {
  * Configuration for the RNG
  */
 template <>
-struct DeviceDefinition<Facility::RNG_FACILITY, 0> final
-    : public config::UnconfigurableDevice {
+struct DeviceDefinition<Facility::RNG_FACILITY, 0> final : public config::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "rng"; }
 
-  static constexpr DeviceId id() noexcept {
-    return {Facility::RNG_FACILITY, 0};
-  }
+  static constexpr DeviceId id() noexcept { return {Facility::RNG_FACILITY, 0}; }
 
   static constexpr auto dependencies(const configuration&) noexcept {
     return std::array{
@@ -282,9 +261,7 @@ template <>
 struct DeviceDefinition<Facility::CLOCK_FACILITY, 0> final {
   static constexpr const char* name() noexcept { return "steady_clock"; }
 
-  static constexpr DeviceId id() noexcept {
-    return {Facility::CLOCK_FACILITY, 0};
-  }
+  static constexpr DeviceId id() noexcept { return {Facility::CLOCK_FACILITY, 0}; }
 
   using configuration = clock::ClockConfiguration;
 
@@ -317,13 +294,11 @@ struct Board final {
 
 static_assert(config::ValidDeviceDefinition<
               typename Board::template definition<Facility::RCC_FACILITY, 0>, Board>);
-static_assert(
-    config::ValidDeviceDefinition<
-        typename Board::template definition<Facility::OSCILLATOR_FACILITY, 1>, Board>);
+static_assert(config::ValidDeviceDefinition<
+              typename Board::template definition<Facility::OSCILLATOR_FACILITY, 1>, Board>);
 
-static_assert(
-    config::ValidDeviceDefinition<
-        typename Board::template definition<Facility::OSCILLATOR_FACILITY, 2>, Board>);
+static_assert(config::ValidDeviceDefinition<
+              typename Board::template definition<Facility::OSCILLATOR_FACILITY, 2>, Board>);
 
 static_assert(config::ValidDeviceDefinition<
               typename Board::template definition<Facility::SYSTICK_FACILITY, 0>, Board>);

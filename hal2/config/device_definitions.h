@@ -2,7 +2,7 @@
 
 #include <cstddef>
 
-#include "hal2/config/peripheral_accessors.h"
+#include "hal2/config/device_accessors.h"
 #include "hal2/config/vector_table.h"
 #include "hal2/device.h"
 
@@ -15,7 +15,8 @@ using accessor_type =
         typename DeviceRegistry::template definition<Id.facility, Id.index>::configuration{}>;
 
 /**
- * Basic peripheral setup when the peripheral does not have any configuration parameters.
+ * Basic peripheral setup when the peripheral does not have any configuration parameters. Note that
+ * the methods below can be overridden in child types.
  */
 struct UnconfigurableDevice {
   struct Unconfigurable final {};
@@ -58,7 +59,6 @@ concept ValidDeviceDefinition =
       typename T::template accessor<int, DeviceRegistry, typename T::configuration{}>;
     } and
     ValidDeviceAccessor<
-        typename T::template accessor<int, DeviceRegistry, typename T::configuration{}>,
-        T::id()>;
+        typename T::template accessor<int, DeviceRegistry, typename T::configuration{}>, T::id()>;
 
 }  // namespace tvsc::hal2::config
