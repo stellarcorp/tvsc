@@ -5,27 +5,27 @@
 
 namespace tvsc::hal2::clock {
 
-template <typename System, typename PeripheralRegistry, size_t INDEX,
-          SleepStrategy SLEEP_STRATEGY = SleepStrategy::SLEEP>
+struct ClockConfiguration final {
+  clock::SleepStrategy sleep_strategy{clock::SleepStrategy::SLEEP};
+};
+
+template <typename System, typename PeripheralRegistry, size_t INDEX, ClockConfiguration CONFIG>
   requires(INDEX == 0)
 class ClockAccessor {
  private:
   static constexpr size_t LPTIM_INDEX{1};
 
-  using SysTickAccessor =  //
-      typename PeripheralRegistry::template configuration<
-          config::Facility::SYSTICK_FACILITY, 0>::template accessor<System, PeripheralRegistry>;
-  using RccAccessor =  //
-      typename PeripheralRegistry::template configuration<
-          config::Facility::RCC_FACILITY, 0>::template accessor<System, PeripheralRegistry>;
-  using LptimAccessor =  //
-      typename PeripheralRegistry::template configuration<
-          config::Facility::TIMER_FACILITY, LPTIM_INDEX>::template accessor<System,
-                                                                            PeripheralRegistry>;
+  using SysTickAccessor =
+      config::accessor_type<System, PeripheralRegistry, {config::Facility::SYSTICK_FACILITY, 0}>;
+  using RccAccessor =
+      config::accessor_type<System, PeripheralRegistry, {config::Facility::RCC_FACILITY, 0}>;
+  using LptimAccessor = config::accessor_type<System, PeripheralRegistry,
+                                              {config::Facility::TIMER_FACILITY, LPTIM_INDEX}>;
 
-  Clock<SLEEP_STRATEGY> clock_{static_cast<SysTickAccessor&>(static_cast<System&>(*this)).get(),
-                               static_cast<RccAccessor&>(static_cast<System&>(*this)).get(),
-                               static_cast<LptimAccessor&>(static_cast<System&>(*this)).get()};
+  Clock<CONFIG.sleep_strategy> clock_{
+      static_cast<SysTickAccessor&>(static_cast<System&>(*this)).get(),
+      static_cast<RccAccessor&>(static_cast<System&>(*this)).get(),
+      static_cast<LptimAccessor&>(static_cast<System&>(*this)).get()};
 
  public:
   [[nodiscard]] auto& get() noexcept { return clock_; }
