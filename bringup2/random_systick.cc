@@ -12,12 +12,11 @@
 using namespace std::chrono_literals;
 using namespace tvsc::hal2::config;
 
-using PeripheralRegistry = tvsc::hal2::board::Board;
 static constexpr auto system_builder{
-    SystemBuilder<PeripheralRegistry>{}      //
-        .add<Facility::RNG_FACILITY, 0>()    //
-        .add<Facility::CLOCK_FACILITY, 0>()  //
-        .add<Facility::LED_FACILITY, 0>()    //
+    SystemBuilder<tvsc::hal2::board::Board>{}  //
+        .add<Facility::RNG_FACILITY, 0>()      //
+        .add<Facility::CLOCK_FACILITY, 0>()    //
+        .add<Facility::LED_FACILITY, 0>()      //
 };
 INTERRUPT_VECTOR_TABLE static constexpr auto interrupt_vector_table{
     system_builder.create_vector_table()};
