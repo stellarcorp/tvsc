@@ -12,10 +12,11 @@ using namespace tvsc::hal2;
 using namespace tvsc::hal2::config;
 
 static constexpr auto system_builder{
-    SystemBuilder<tvsc::hal2::board::Board>{}   //
-        .add<Facility::CLOCK_FACILITY, 0>()     //
-        .add<Facility::WATCHDOG_FACILITY, 0>()  //
-        .add<Facility::LED_FACILITY, 0>()       //
+    SystemBuilder<tvsc::hal2::board::Board>{}  //
+        .add<Facility::CLOCK_FACILITY, 0,
+             clock::ClockConfiguration{.sleep_strategy = clock::SleepStrategy::STOP}>()  //
+        .add<Facility::WATCHDOG_FACILITY, 0>()                                           //
+        .add<Facility::LED_FACILITY, 0>()                                                //
 };
 INTERRUPT_VECTOR_TABLE static constexpr auto interrupt_vector_table{
     system_builder.create_vector_table()};
