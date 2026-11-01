@@ -10,7 +10,7 @@ class Watchdog;
 
 class WatchdogDevice : public Device<WatchdogDevice, Watchdog> {
  private:
-  // Turn on power and clock to this peripheral.
+  // Turn on power and clock to this device.
   virtual void enable() noexcept = 0;
   virtual void disable() noexcept = 0;
 
@@ -26,8 +26,8 @@ class WatchdogDevice : public Device<WatchdogDevice, Watchdog> {
 
 class Watchdog final : public Driver<WatchdogDevice, Watchdog> {
  protected:
-  explicit Watchdog(WatchdogDevice& peripheral) noexcept
-      : Driver<WatchdogDevice, Watchdog>(peripheral) {}
+  explicit Watchdog(WatchdogDevice& device) noexcept
+      : Driver<WatchdogDevice, Watchdog>(device) {}
 
   friend class Device<WatchdogDevice, Watchdog>;
 

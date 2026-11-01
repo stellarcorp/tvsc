@@ -54,7 +54,7 @@ void Stm32L4Watchdog::enable() noexcept {
 
   // Ensure the LSI oscillator is on. Note that this step is technically not required. Enabling the
   // IWDG automatically turns on the LSI oscillator. We do this extra step, because it ensures that
-  // the refcount on the LSI oscillator peripheral in sync with the hardware's behavior.
+  // the refcount on the LSI oscillator device in sync with the hardware's behavior.
   lsi_active_ = lsi_oscillator_->access();
 
   // NOTE: if ever this code transitions to allow the watchdog to be reconfigured after it has been
@@ -63,7 +63,7 @@ void Stm32L4Watchdog::enable() noexcept {
   // configuration change.
   // registers_->KR = FEED_KEY_VALUE;
 
-  // Start the IWDG. Seems counterintuitive, but without this write, other writes to the peripheral
+  // Start the IWDG. Seems counterintuitive, but without this write, other writes to the device
   // hang.
   registers_->KR.set_value(START_KEY_VALUE);
 
