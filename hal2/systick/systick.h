@@ -13,7 +13,7 @@ class SysTickType {
   virtual void increment_micros(TimeType us) noexcept = 0;
 
   /**
-   * Mask the SysTick interrupt, turning off the ability to track time with this peripheral.
+   * Mask the SysTick interrupt, turning off the ability to track time with this device.
    */
   virtual void mask_interrupt() noexcept = 0;
   /**
