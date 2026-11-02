@@ -55,7 +55,7 @@ class LptimRegisterBank final {
   volatile Register CNT;
 };
 
-class Stm32l4xxLptim final : public TimerDevice {
+class Stm32L4Lptim final : public TimerDevice {
  private:
   volatile LptimRegisterBank* registers_;
   rcc::Oscillator* lsi_oscillator_;
@@ -78,7 +78,7 @@ class Stm32l4xxLptim final : public TimerDevice {
   }
 
  public:
-  explicit Stm32l4xxLptim(uint8_t TIMER_INDEX, rcc::Oscillator& lsi_oscillator) noexcept
+  explicit Stm32L4Lptim(uint8_t TIMER_INDEX, rcc::Oscillator& lsi_oscillator) noexcept
       : registers_(instantiate_registers(TIMER_INDEX)), lsi_oscillator_(&lsi_oscillator) {
     if (TIMER_INDEX == 0) {
       HAL_NVIC_SetPriority(LPTIM1_IRQn, 6, 0);

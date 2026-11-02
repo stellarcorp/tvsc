@@ -27,7 +27,7 @@ class Stm32L4LowPowerTimerAccessor<System, DeviceRegistry, 0> {
 
   using LsiOscillatorAccessor = config::accessor_type<System, DeviceRegistry, lsi_id>;
 
-  Stm32l4xxLptim timer_{0, static_cast<LsiOscillatorAccessor&>(static_cast<System&>(*this)).get()};
+  Stm32L4Lptim timer_{0, static_cast<LsiOscillatorAccessor&>(static_cast<System&>(*this)).get()};
 
  public:
   [[nodiscard]] TimerDevice& get() noexcept { return timer_; }
@@ -44,7 +44,7 @@ class Stm32L4LowPowerTimerAccessor<System, DeviceRegistry, 1> {
 
   using LsiOscillatorAccessor = config::accessor_type<System, DeviceRegistry, lsi_id>;
 
-  Stm32l4xxLptim timer_{1, static_cast<LsiOscillatorAccessor&>(static_cast<System&>(*this)).get()};
+  Stm32L4Lptim timer_{1, static_cast<LsiOscillatorAccessor&>(static_cast<System&>(*this)).get()};
 
  public:
   [[nodiscard]] TimerDevice& get() noexcept { return timer_; }
