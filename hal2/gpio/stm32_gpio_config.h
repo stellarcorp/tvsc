@@ -19,7 +19,7 @@ class Stm32GpioAccessor;
 template <typename System>
 class Stm32GpioAccessor<0, System> {
  private:
-  GpioStm32<0> gpio_{};
+  Stm32Gpio<0> gpio_{};
 
  public:
   [[nodiscard]] GpioDevice& get() noexcept { return gpio_; }
@@ -32,7 +32,7 @@ class Stm32GpioAccessor<0, System> {
 template <typename System>
 class Stm32GpioAccessor<1, System> {
  private:
-  GpioStm32<1> gpio_{};
+  Stm32Gpio<1> gpio_{};
 
  public:
   [[nodiscard]] GpioDevice& get() noexcept { return gpio_; }
@@ -45,7 +45,7 @@ class Stm32GpioAccessor<1, System> {
 template <typename System>
 class Stm32GpioAccessor<2, System> {
  private:
-  GpioStm32<2> gpio_{};
+  Stm32Gpio<2> gpio_{};
 
  public:
   [[nodiscard]] GpioDevice& get() noexcept { return gpio_; }
@@ -58,7 +58,7 @@ class Stm32GpioAccessor<2, System> {
 template <typename System>
 class Stm32GpioAccessor<3, System> {
  private:
-  GpioStm32<3> gpio_{};
+  Stm32Gpio<3> gpio_{};
 
  public:
   [[nodiscard]] GpioDevice& get() noexcept { return gpio_; }
@@ -71,7 +71,7 @@ class Stm32GpioAccessor<3, System> {
 template <typename System>
 class Stm32GpioAccessor<4, System> {
  private:
-  GpioStm32<4> gpio_{};
+  Stm32Gpio<4> gpio_{};
 
  public:
   [[nodiscard]] GpioDevice& get() noexcept { return gpio_; }
@@ -84,7 +84,7 @@ class Stm32GpioAccessor<4, System> {
 template <typename System>
 class Stm32GpioAccessor<5, System> {
  private:
-  GpioStm32<5> gpio_{};
+  Stm32Gpio<5> gpio_{};
 
  public:
   [[nodiscard]] GpioDevice& get() noexcept { return gpio_; }
@@ -97,7 +97,7 @@ class Stm32GpioAccessor<5, System> {
 template <typename System>
 class Stm32GpioAccessor<6, System> {
  private:
-  GpioStm32<6> gpio_{};
+  Stm32Gpio<6> gpio_{};
 
  public:
   [[nodiscard]] GpioDevice& get() noexcept { return gpio_; }
@@ -110,7 +110,7 @@ class Stm32GpioAccessor<6, System> {
 template <typename System>
 class Stm32GpioAccessor<7, System> {
  private:
-  GpioStm32<7> gpio_{};
+  Stm32Gpio<7> gpio_{};
 
  public:
   [[nodiscard]] GpioDevice& get() noexcept { return gpio_; }

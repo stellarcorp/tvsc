@@ -66,7 +66,7 @@ class GpioRegisterBank final {
 };
 
 template <PortNumber PORT>
-class GpioStm32 final : public GpioDevice {
+class Stm32Gpio final : public GpioDevice {
  private:
   GpioRegisterBank* registers_{instantiate_registers()};
 
