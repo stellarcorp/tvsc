@@ -15,8 +15,7 @@ namespace tvsc::hal2::config {
 namespace internal {
 
 /**
- * ConfiguredDevice bundles a static device definition with its specific
- * compile-time configuration NTTP instance.
+ * ConfiguredDevice combines a device definition with a specific configuration instance.
  */
 template <typename Definition, auto config>
 struct ConfiguredDevice final {
@@ -103,6 +102,13 @@ class SystemBuilder<DeviceRegistry, TypeAccumulator<ConfiguredDevices...>> final
     static_assert(ValidDeviceDefinition<TargetDefinition, DeviceRegistry>,
                   "Invalid device definition");
     static_assert(TargetDefinition::is_valid(CONFIG), "Invalid device configuration parameters.");
+    static_assert(
+        (!std::is_same_v<typename ConfiguredDevices::definition, TargetDefinition> && ...),
+        "This device definition has already been added to the system. Each device definition "
+        "(Facility and index pair) must be unique in the system. Either this device was explicitly "
+        "added previously, or it was brought in earlier as a dependency by another device. If the "
+        "latter, adding this device definition earlier in the system builder calls will resolve "
+        "this issue, but you should double-check the configuration of this device.");
 
     using TargetConfigured = internal::ConfiguredDevice<TargetDefinition, CONFIG>;
 
