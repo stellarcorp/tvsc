@@ -12,11 +12,10 @@ using namespace tvsc::hal2;
 using namespace tvsc::hal2::config;
 
 static constexpr auto system_builder{
-    SystemBuilder<tvsc::hal2::board::Board>{}  //
-        .add<Facility::CLOCK_FACILITY, 0,
-             clock::ClockConfiguration{.sleep_strategy = clock::SleepStrategy::STOP}>()  //
-        .add<Facility::WATCHDOG_FACILITY, 0>()                                           //
-        .add<Facility::LED_FACILITY, 0>()                                                //
+    SystemBuilder<tvsc::hal2::board::Board>{}                                                //
+        .add<Facility::CLOCK_FACILITY, 0, {.sleep_strategy = clock::SleepStrategy::STOP}>()  //
+        .add<Facility::WATCHDOG_FACILITY, 0>()                                               //
+        .add<Facility::LED_FACILITY, 0>()                                                    //
 };
 INTERRUPT_VECTOR_TABLE static constexpr auto interrupt_vector_table{
     system_builder.create_vector_table()};
@@ -30,7 +29,7 @@ int main(int argc, char* argv[]) {
   // Initial sleep so that we can detect when the watchdog "bites" (causes a system reset).
   clock.sleep_ms(3'000);
 
-  led.set_pin_mode(tvsc::hal2::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal2::gpio::PinSpeed::LOW);
+  led.set_pin_mode(gpio::PinMode::OUTPUT_PUSH_PULL, gpio::PinSpeed::LOW);
   led.off();
 
   // Blink for a bit before we enable the watchdog.
