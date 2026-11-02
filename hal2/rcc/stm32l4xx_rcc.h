@@ -37,24 +37,34 @@ extern uint32_t SystemCoreClock;
 
 namespace tvsc::hal2::rcc {
 
+enum class ClockSpeed {
+  UNCONFIGURED,
+  MIN_SPEED,
+  MAX_SPEED,
+  // The energy efficient speed attempts to minimize the total energy required to execute a
+  // CPU-intensive task.
+  ENERGY_EFFICIENT_SPEED,
+};
+
+struct RccConfiguration final {
+  ClockSpeed default_speed{ClockSpeed::ENERGY_EFFICIENT_SPEED};
+};
+
 /**
  * Class to manage the reset and clock circuitry (RCC) on the Nucleo L452RE board and other boards
  * based on the STM32L4xx series of CPUs.
  */
 class RccStm32L4xx final : public Rcc {
  private:
-  enum class ClockConfiguration {
-    UNCONFIGURED,
-    MIN_SPEED,
-    MAX_SPEED,
-    // The energy efficient speed attempts to minimize the total energy required to execute a
-    // CPU-intensive task.
-    ENERGY_EFFICIENT_SPEED,
-  };
-  ClockConfiguration clock_configuration_{ClockConfiguration::UNCONFIGURED};
+  ClockSpeed clock_speed_{};
 
  public:
   RccStm32L4xx() noexcept { set_clock_to_energy_efficient_speed(); }
+
+  explicit RccStm32L4xx(const ClockSpeed& default_speed) noexcept : clock_speed_(default_speed) {
+    restore_clock_speed();
+  }
+
   void set_clock_to_max_speed() noexcept override;
   void set_clock_to_min_speed() noexcept override;
   void set_clock_to_energy_efficient_speed() noexcept override;

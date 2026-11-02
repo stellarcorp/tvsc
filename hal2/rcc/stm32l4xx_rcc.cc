@@ -52,7 +52,7 @@ void RccStm32L4xx::set_clock_to_max_speed() {
 
   __HAL_RCC_MSI_DISABLE();
 
-  clock_configuration_ = ClockConfiguration::MAX_SPEED;
+  clock_speed_ = ClockSpeed::MAX_SPEED;
 }
 
 void RccStm32L4xx::set_clock_to_energy_efficient_speed() {
@@ -93,7 +93,7 @@ void RccStm32L4xx::set_clock_to_energy_efficient_speed() {
 
   __HAL_RCC_MSI_DISABLE();
 
-  clock_configuration_ = ClockConfiguration::ENERGY_EFFICIENT_SPEED;
+  clock_speed_ = ClockSpeed::ENERGY_EFFICIENT_SPEED;
 }
 
 void RccStm32L4xx::set_clock_to_min_speed() {
@@ -133,15 +133,15 @@ void RccStm32L4xx::set_clock_to_min_speed() {
 
   __HAL_RCC_HSI_DISABLE();
 
-  clock_configuration_ = ClockConfiguration::MIN_SPEED;
+  clock_speed_ = ClockSpeed::MIN_SPEED;
 }
 
 void RccStm32L4xx::restore_clock_speed() {
-  if (clock_configuration_ == ClockConfiguration::MIN_SPEED) {
+  if (clock_speed_ == ClockSpeed::MIN_SPEED) {
     set_clock_to_min_speed();
-  } else if (clock_configuration_ == ClockConfiguration::ENERGY_EFFICIENT_SPEED) {
+  } else if (clock_speed_ == ClockSpeed::ENERGY_EFFICIENT_SPEED) {
     set_clock_to_energy_efficient_speed();
-  } else if (clock_configuration_ == ClockConfiguration::MAX_SPEED) {
+  } else if (clock_speed_ == ClockSpeed::MAX_SPEED) {
     set_clock_to_max_speed();
   }
 }

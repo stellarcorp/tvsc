@@ -2,18 +2,18 @@
 
 #include <array>
 
-#include "hal2/device.h"
 #include "hal2/config/system_builder.h"
 #include "hal2/config/vector_table.h"
+#include "hal2/device.h"
 #include "hal2/rcc/rcc.h"
 #include "hal2/rcc/stm32l4xx_rcc.h"
 
 namespace tvsc::hal2::rcc {
 
-template <typename System>
+template <RccConfiguration CONFIG>
 class Stm32L4RccAccessor {
  private:
-  RccStm32L4xx rcc_{};
+  RccStm32L4xx rcc_{CONFIG.default_speed};
 
  public:
   [[nodiscard]] Rcc& get() noexcept { return rcc_; }
