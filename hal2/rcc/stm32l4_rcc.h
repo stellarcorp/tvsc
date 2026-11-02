@@ -78,7 +78,7 @@ class Stm32L4Rcc final : public Rcc {
   void enter_stop_mode() noexcept override;
 };
 
-class LsiOscillatorStm32L4xx final : public Oscillator {
+class Stm32L4LsiOscillator final : public Oscillator {
  private:
   void enable() noexcept override;
   void disable() noexcept override;
@@ -100,7 +100,7 @@ class LsiOscillatorStm32L4xx final : public Oscillator {
  * manage routing those oscillators dynamically. Rather than tackle this problem, we have punted on
  * it completely and simply named this oscillator as it is named in the STM32 MCU documentation.
  */
-class Hsi48OscillatorStm32L4xx final : public Oscillator {
+class Stm32L4Hsi48Oscillator final : public Oscillator {
  private:
   void enable() noexcept override;
   void disable() noexcept override;

@@ -23,7 +23,7 @@ class Stm32L4RccAccessor {
 template <typename System>
 class Stm32L4LsiOscillatorAccessor {
  private:
-  LsiOscillatorStm32L4xx lsi_{};
+  Stm32L4LsiOscillator lsi_{};
 
  public:
   [[nodiscard]] Oscillator& get() noexcept { return lsi_; }
@@ -34,7 +34,7 @@ class Stm32L4LsiOscillatorAccessor {
 template <typename System>
 class Stm32L4Hsi48OscillatorAccessor {
  private:
-  Hsi48OscillatorStm32L4xx hsi48_{};
+  Stm32L4Hsi48Oscillator hsi48_{};
 
  public:
   [[nodiscard]] Oscillator& get() noexcept { return hsi48_; }

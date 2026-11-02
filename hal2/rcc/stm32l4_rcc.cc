@@ -159,7 +159,7 @@ void Stm32L4Rcc::enter_stop_mode() {
   restore_clock_speed();
 }
 
-void Hsi48OscillatorStm32L4xx::enable() {
+void Stm32L4Hsi48Oscillator::enable() {
   /**
    * Turn up the main internal regulator output voltage to 1.2V. This allows clock speeds up to
    * 80MHz, but it uses more power.
@@ -178,7 +178,7 @@ void Hsi48OscillatorStm32L4xx::enable() {
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 }
 
-void Hsi48OscillatorStm32L4xx::disable() {
+void Stm32L4Hsi48Oscillator::disable() {
   /**
    * Turn off the HSI 48 oscillator.
    */
@@ -197,7 +197,7 @@ void Hsi48OscillatorStm32L4xx::disable() {
   // HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
 }
 
-void Hsi48OscillatorStm32L4xx::connect(Facility facility, size_t index) noexcept {
+void Stm32L4Hsi48Oscillator::connect(Facility facility, size_t index) noexcept {
   if (facility == Facility::RNG_FACILITY and index == 0) {
     __HAL_RCC_RNG_CONFIG(RCC_RNGCLKSOURCE_HSI48);
   } else {
@@ -205,7 +205,7 @@ void Hsi48OscillatorStm32L4xx::connect(Facility facility, size_t index) noexcept
   }
 }
 
-void LsiOscillatorStm32L4xx::enable() {
+void Stm32L4LsiOscillator::enable() {
   /**
    * Turn on the LSI oscillator.
    */
@@ -216,7 +216,7 @@ void LsiOscillatorStm32L4xx::enable() {
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 }
 
-void LsiOscillatorStm32L4xx::disable() {
+void Stm32L4LsiOscillator::disable() {
   /**
    * Turn off the LSI oscillator.
    */
@@ -227,7 +227,7 @@ void LsiOscillatorStm32L4xx::disable() {
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 }
 
-void LsiOscillatorStm32L4xx::connect(Facility facility, size_t index) noexcept {
+void Stm32L4LsiOscillator::connect(Facility facility, size_t index) noexcept {
   if (facility == Facility::TIMER_FACILITY and index == 0) {
     __HAL_RCC_LPTIM1_CONFIG(RCC_LPTIM1CLKSOURCE_LSI);
   } else if (facility == Facility::TIMER_FACILITY and index == 1) {
