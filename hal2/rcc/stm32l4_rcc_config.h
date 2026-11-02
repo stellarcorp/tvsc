@@ -6,14 +6,14 @@
 #include "hal2/config/vector_table.h"
 #include "hal2/device.h"
 #include "hal2/rcc/rcc.h"
-#include "hal2/rcc/stm32l4xx_rcc.h"
+#include "hal2/rcc/stm32l4_rcc.h"
 
 namespace tvsc::hal2::rcc {
 
 template <RccConfiguration CONFIG>
 class Stm32L4RccAccessor {
  private:
-  RccStm32L4xx rcc_{CONFIG.default_speed};
+  Stm32L4Rcc rcc_{CONFIG.default_speed};
 
  public:
   [[nodiscard]] Rcc& get() noexcept { return rcc_; }

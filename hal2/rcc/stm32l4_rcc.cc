@@ -1,4 +1,4 @@
-#include "hal2/rcc/stm32l4xx_rcc.h"
+#include "hal2/rcc/stm32l4_rcc.h"
 
 #include "base/except.h"
 #include "hal2/rcc/stm32l4_rcc_config.h"
@@ -7,7 +7,7 @@
 
 namespace tvsc::hal2::rcc {
 
-void RccStm32L4xx::set_clock_to_max_speed() {
+void Stm32L4Rcc::set_clock_to_max_speed() {
   // The current implementation puts SYSCLK signal as well as device buses at 80 MHz. This speed
   // requires four flash wait states per operation.
 
@@ -55,7 +55,7 @@ void RccStm32L4xx::set_clock_to_max_speed() {
   clock_speed_ = ClockSpeed::MAX_SPEED;
 }
 
-void RccStm32L4xx::set_clock_to_energy_efficient_speed() {
+void Stm32L4Rcc::set_clock_to_energy_efficient_speed() {
   // The current implementation puts SYSCLK signal as well as device buses at 16 MHz. This speed
   // is the maximum speed allowed when undervolting the system. This speed requires zero flash wait
   // state per operation.
@@ -96,7 +96,7 @@ void RccStm32L4xx::set_clock_to_energy_efficient_speed() {
   clock_speed_ = ClockSpeed::ENERGY_EFFICIENT_SPEED;
 }
 
-void RccStm32L4xx::set_clock_to_min_speed() {
+void Stm32L4Rcc::set_clock_to_min_speed() {
   __HAL_RCC_MSI_ENABLE();
   while (__HAL_RCC_GET_FLAG(RCC_FLAG_MSIRDY) == 0) {
     // Busy loop until the oscillator is available.
@@ -136,7 +136,7 @@ void RccStm32L4xx::set_clock_to_min_speed() {
   clock_speed_ = ClockSpeed::MIN_SPEED;
 }
 
-void RccStm32L4xx::restore_clock_speed() {
+void Stm32L4Rcc::restore_clock_speed() {
   if (clock_speed_ == ClockSpeed::MIN_SPEED) {
     set_clock_to_min_speed();
   } else if (clock_speed_ == ClockSpeed::ENERGY_EFFICIENT_SPEED) {
@@ -146,13 +146,13 @@ void RccStm32L4xx::restore_clock_speed() {
   }
 }
 
-void RccStm32L4xx::enter_sleep_mode() {
+void Stm32L4Rcc::enter_sleep_mode() {
   // Sleep by Waiting For Interrupt.
   __WFI();
   // Restore the clock speed back to its previous value on wake.
   restore_clock_speed();
 }
-void RccStm32L4xx::enter_stop_mode() {
+void Stm32L4Rcc::enter_stop_mode() {
   // Put core in stop mode and then Wait For Interrupt.
   HAL_PWREx_EnterSTOP1Mode(PWR_STOPENTRY_WFI);
   // Restore the clock speed back to its previous value on wake.

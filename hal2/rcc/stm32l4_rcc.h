@@ -54,14 +54,14 @@ struct RccConfiguration final {
  * Class to manage the reset and clock circuitry (RCC) on the Nucleo L452RE board and other boards
  * based on the STM32L4xx series of CPUs.
  */
-class RccStm32L4xx final : public Rcc {
+class Stm32L4Rcc final : public Rcc {
  private:
   ClockSpeed clock_speed_{};
 
  public:
-  RccStm32L4xx() noexcept { set_clock_to_energy_efficient_speed(); }
+  Stm32L4Rcc() noexcept { set_clock_to_energy_efficient_speed(); }
 
-  explicit RccStm32L4xx(const ClockSpeed& default_speed) noexcept : clock_speed_(default_speed) {
+  explicit Stm32L4Rcc(const ClockSpeed& default_speed) noexcept : clock_speed_(default_speed) {
     restore_clock_speed();
   }
 
