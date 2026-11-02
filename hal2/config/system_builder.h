@@ -96,14 +96,13 @@ class SystemBuilder<DeviceRegistry, TypeAccumulator<ConfiguredDevices...>> final
 
   template <
       Facility FACILITY, size_t INDEX,
-      auto CONFIG = typename DeviceRegistry::template definition<FACILITY, INDEX>::configuration{}>
+      typename DeviceRegistry::template definition<FACILITY, INDEX>::configuration CONFIG = {}>
   [[nodiscard]] consteval auto add() noexcept {
     using TargetDefinition = typename DeviceRegistry::template definition<FACILITY, INDEX>;
 
     static_assert(ValidDeviceDefinition<TargetDefinition, DeviceRegistry>,
                   "Invalid device definition");
-    static_assert(TargetDefinition::is_valid(CONFIG),
-                  "Invalid device configuration parameters.");
+    static_assert(TargetDefinition::is_valid(CONFIG), "Invalid device configuration parameters.");
 
     using TargetConfigured = internal::ConfiguredDevice<TargetDefinition, CONFIG>;
 
