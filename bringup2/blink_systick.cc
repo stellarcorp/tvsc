@@ -25,14 +25,14 @@ int main(int argc, char* argv[]) {
   auto& clock{sys.steady_clock()};
   auto led{sys.debug_led().access()};
 
-  led.set_pin_mode(tvsc::hal2::gpio::PinMode::OUTPUT_PUSH_PULL, tvsc::hal2::gpio::PinSpeed::LOW);
+  led.set_pin_mode(gpio::PinMode::OUTPUT_PUSH_PULL, gpio::PinSpeed::LOW);
   led.off();
 
   while (true) {
     led.on();
-    clock.sleep_ms(50);
+    clock.sleep(50ms);
     led.off();
-    clock.sleep_ms(950);
+    clock.sleep(950ms);
   }
 
   return 0;
