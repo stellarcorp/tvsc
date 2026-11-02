@@ -27,16 +27,26 @@ template <Facility FACILITY, size_t INDEX>
 struct DeviceDefinition;
 
 template <>
-struct DeviceDefinition<Facility::RCC_FACILITY, 0> final : public config::UnconfigurableDevice {
-  static constexpr const char* name() noexcept { return "core"; }
+struct DeviceDefinition<Facility::RCC_FACILITY, 0> final {
+  static constexpr const char* name() noexcept { return "rcc"; }
 
   static constexpr DeviceId id() noexcept { return {Facility::RCC_FACILITY, 0}; }
 
-  template <typename System, typename DeviceRegistry, configuration config>
-  using accessor = rcc::Stm32L4RccAccessor<System>;
+  using configuration = rcc::RccConfiguration;
+
+  static constexpr bool is_valid(const configuration&) noexcept { return true; }
+
+  template <typename System, typename DeviceRegistry, configuration CONFIG>
+  using accessor = rcc::Stm32L4RccAccessor<CONFIG>;
 
   static constexpr auto dependencies(const configuration&) noexcept {
     return std::array<DeviceId, 0>{};
+  }
+
+  template <size_t NUM_ISRS>
+  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>&,
+                                            const configuration&) noexcept {
+    // No ISRs required by default.
   }
 };
 
