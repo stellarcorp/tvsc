@@ -64,9 +64,7 @@ enum class Facility {
 
   // Analog-digital conversion.
   ADC_FACILITY,
-  ADC_CHANNEL_FACILITY,
   DAC_FACILITY,
-  DAC_CHANNEL_FACILITY,
 
   // Buses
   I2C_FACILITY,
