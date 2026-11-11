@@ -14,8 +14,6 @@
 
 namespace tvsc::hal2::timer {
 
-DEBUG_VAR volatile int interrupt_fired{};
-
 class LptimRegisterBank final {
  public:
   // Holds flag bits indicating various timer events such as compare matches, autoreload updates,
@@ -210,7 +208,6 @@ class Stm32L4Lptim final : public TimerDevice {
 };
 
 void handle_low_power_timer1_interrupt() noexcept {
-  ++interrupt_fired;
   // Overlay register bank via placement new to clear pending interrupt flags directly.
   volatile LptimRegisterBank* lptim_registers{
       reinterpret_cast<volatile LptimRegisterBank*>(LPTIM1)};
@@ -228,7 +225,6 @@ void handle_low_power_timer1_interrupt() noexcept {
 }
 
 void handle_low_power_timer2_interrupt() noexcept {
-  ++interrupt_fired;
   // Overlay register bank via placement new to clear pending interrupt flags directly.
   volatile LptimRegisterBank* lptim_registers{
       reinterpret_cast<volatile LptimRegisterBank*>(LPTIM2)};
