@@ -10,9 +10,9 @@ namespace tvsc::hal2::config {
 
 template <typename System, typename DeviceRegistry, DeviceId Id>
 using accessor_type =
-    typename DeviceRegistry::template definition<Id.facility, Id.index>::template accessor<
+    typename DeviceRegistry::template devices<Id.facility, Id.index>::template accessor<
         System, DeviceRegistry,
-        typename DeviceRegistry::template definition<Id.facility, Id.index>::configuration{}>;
+        typename DeviceRegistry::template devices<Id.facility, Id.index>::configuration{}>;
 
 /**
  * Basic device setup when the device does not have any configuration parameters. Note that

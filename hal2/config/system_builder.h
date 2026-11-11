@@ -49,7 +49,7 @@ template <typename DeviceRegistry, typename Accumulator, typename Visiting, auto
 struct DependencyListResolver<DeviceRegistry, Accumulator, Visiting, Dependencies, Index> {
   static constexpr auto identifier = Dependencies[Index];
   using CurrentDefinition =
-      typename DeviceRegistry::template definition<identifier.facility, identifier.index>;
+      typename DeviceRegistry::template devices<identifier.facility, identifier.index>;
   using CurrentConfigured =
       ConfiguredDevice<CurrentDefinition, typename CurrentDefinition::configuration{}>;
 
@@ -85,6 +85,8 @@ class System final
   // All public methods come from inherited classes.
 };
 
+// TODO(james): Extract DeviceRegistry as a concept and rephrase the first type parameter below to
+// "DeviceRegistry Board".
 template <typename DeviceRegistry, typename Accumulator = TypeAccumulator<>>
 class SystemBuilder;
 
@@ -93,11 +95,10 @@ class SystemBuilder<DeviceRegistry, TypeAccumulator<ConfiguredDevices...>> final
  public:
   constexpr SystemBuilder() noexcept = default;
 
-  template <
-      Facility FACILITY, size_t INDEX,
-      typename DeviceRegistry::template definition<FACILITY, INDEX>::configuration CONFIG = {}>
+  template <Facility FACILITY, size_t INDEX,
+            typename DeviceRegistry::template devices<FACILITY, INDEX>::configuration CONFIG = {}>
   [[nodiscard]] consteval auto add() noexcept {
-    using TargetDefinition = typename DeviceRegistry::template definition<FACILITY, INDEX>;
+    using TargetDefinition = typename DeviceRegistry::template devices<FACILITY, INDEX>;
 
     static_assert(ValidDeviceDefinition<TargetDefinition, DeviceRegistry>,
                   "Invalid device definition");

@@ -26,40 +26,83 @@ namespace internal {
 template <Facility FACILITY, size_t INDEX>
 struct DeviceDefinition;
 
+/**
+ * Structure defining the RCC (Reset and Clock Configuration) of the MCU. This device manages the
+ * core clock speeds and voltage regulator for the MCU.
+ *
+ * Note that this struct is also commented to describe how DeviceDefinitions should be set up. Many
+ * of the comments below pertain to how to use a DeviceDefinition, rather than the definition of the
+ * RCC device itself. See the LSI oscillator device definition just below the RCC for an example of
+ * a more minimal device definition.
+ *
+ * A device definition describes a single device -- peripheral, bus, or some other facility -- on a
+ * board or on the MCU. These device definitions are brought together into a Board type that acts as
+ * a registry of all of the devices on the board. The devices are defined from the perspective of
+ * the MCU running this code. On a board with multiple MCUs, you might require separate sets of
+ * device definitions, one set for each MCU.
+ */
 template <>
 struct DeviceDefinition<Facility::RCC_FACILITY, 0> final {
+  // All device definitions provide a name that is a C-string literal. The name should be consistent
+  // with the name given in the datasheet. For STM32 parts, this usually means that the name is
+  // one-based, even if all other indexiing in our codebase is zero-based. Making the names
+  // consistent with the datasheet sometimes helps and sometimes means understanding another set of
+  // conventions.
   static constexpr const char* name() noexcept { return "rcc"; }
 
+  // All device definitions also provide the ID of the device they define. The device id is just the
+  // tuple of the facility and an index. Ideally, the indices within a facility are monotonically
+  // increasing and start at zero, though there is no technical reason for this limitation.
   static constexpr DeviceId id() noexcept { return {Facility::RCC_FACILITY, 0}; }
 
+  // Device definitions can provide a configuration type. These configuration types can be used to
+  // configure the device when building the system. In the case of RCC, the configuration includes a
+  // clock speed. This allows the clock speed of the MCU to be configured at compile-time.
   using configuration = rcc::RccConfiguration;
 
+  // Device definitions should provide this method to validate their configuration. Here, the
+  // configuration is constrained with enums so that it can't be invalid.
   static constexpr bool is_valid(const configuration&) noexcept { return true; }
 
+  // How to access the instance of this device. The System instance will inherit from all of these
+  // accessors so as to provide a runtime mechanism for accessing each device. The SystemBuilder is
+  // used to determine which accessors must be included in the System; that determination is done at
+  // compile-time.
   template <typename System, typename DeviceRegistry, configuration CONFIG>
   using accessor = rcc::Stm32L4RccAccessor<CONFIG>;
 
+  // Each device definition can provide a list of dependencies. Any dependencies are guaranteed to
+  // be brought into the System without explicitly requiring mention in the SystemBuilder.
   static constexpr auto dependencies(const configuration&) noexcept {
     return std::array<DeviceId, 0>{};
   }
 
+  // Finally, each device can add any number of ISRs to the interrupt vector table. The vector table
+  // is built at compile-time and can be placed in flash memory.
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>&,
                                             const configuration&) noexcept {
-    // No ISRs required by default.
+    // No ISRs required by device.
   }
 };
 
 /**
  * LSI oscillator.
+ *
+ * The definition of the LSI is considerably simpler than the RCC above. The LSI has no
+ * configuration parameters, so it can inherit from a type which handles the boilerplate for devices
+ * that can't be configured.
  */
 template <>
 struct DeviceDefinition<Facility::OSCILLATOR_FACILITY, 1> final
     : public config::UnconfigurableDevice {
+  // Unconfigurable devices still need to provide a name as a C-string literal.
   static constexpr const char* name() noexcept { return "lsi"; }
 
+  // Unconfigurable devices need to provide an id.
   static constexpr DeviceId id() noexcept { return {Facility::OSCILLATOR_FACILITY, 1}; }
 
+  // And the accessor must be provided in order to construct the System type.
   template <typename System, typename DeviceRegistry, configuration config>
   using accessor = rcc::Stm32L4LsiOscillatorAccessor<System>;
 };
@@ -85,6 +128,8 @@ struct DeviceDefinition<Facility::SYSTICK_FACILITY, 0> final {
 
   static constexpr DeviceId id() noexcept { return {Facility::SYSTICK_FACILITY, 0}; }
 
+  // TODO(james): Either remove this struct and inherit from UnconfigurableDevice, or make it useful
+  // (possibly allow the configuration of the tick frequency).
   struct Configuration final {};
   using configuration = Configuration;
 
@@ -299,40 +344,40 @@ struct DeviceDefinition<Facility::CLOCK_FACILITY, 0> final {
 
 struct Board final {
   template <Facility FACILITY, size_t INDEX>
-  using definition = internal::DeviceDefinition<FACILITY, INDEX>;
+  using devices = internal::DeviceDefinition<FACILITY, INDEX>;
 };
 
 static_assert(config::ValidDeviceDefinition<
-              typename Board::template definition<Facility::RCC_FACILITY, 0>, Board>);
+              typename Board::template devices<Facility::RCC_FACILITY, 0>, Board>);
 static_assert(config::ValidDeviceDefinition<
-              typename Board::template definition<Facility::OSCILLATOR_FACILITY, 1>, Board>);
+              typename Board::template devices<Facility::OSCILLATOR_FACILITY, 1>, Board>);
 
 static_assert(config::ValidDeviceDefinition<
-              typename Board::template definition<Facility::OSCILLATOR_FACILITY, 2>, Board>);
+              typename Board::template devices<Facility::OSCILLATOR_FACILITY, 2>, Board>);
 
 static_assert(config::ValidDeviceDefinition<
-              typename Board::template definition<Facility::SYSTICK_FACILITY, 0>, Board>);
+              typename Board::template devices<Facility::SYSTICK_FACILITY, 0>, Board>);
 
 static_assert(config::ValidDeviceDefinition<
-              typename Board::template definition<Facility::GPIO_FACILITY, 0>, Board>);
+              typename Board::template devices<Facility::GPIO_FACILITY, 0>, Board>);
 static_assert(config::ValidDeviceDefinition<
-              typename Board::template definition<Facility::GPIO_FACILITY, 7>, Board>);
+              typename Board::template devices<Facility::GPIO_FACILITY, 7>, Board>);
 
 static_assert(config::ValidDeviceDefinition<
-              typename Board::template definition<Facility::WATCHDOG_FACILITY, 0>, Board>);
+              typename Board::template devices<Facility::WATCHDOG_FACILITY, 0>, Board>);
 
 static_assert(config::ValidDeviceDefinition<
-              typename Board::template definition<Facility::RNG_FACILITY, 0>, Board>);
+              typename Board::template devices<Facility::RNG_FACILITY, 0>, Board>);
 
 static_assert(config::ValidDeviceDefinition<
-              typename Board::template definition<Facility::TIMER_FACILITY, 0>, Board>);
+              typename Board::template devices<Facility::TIMER_FACILITY, 0>, Board>);
 static_assert(config::ValidDeviceDefinition<
-              typename Board::template definition<Facility::TIMER_FACILITY, 1>, Board>);
+              typename Board::template devices<Facility::TIMER_FACILITY, 1>, Board>);
 
 static_assert(config::ValidDeviceDefinition<
-              typename Board::template definition<Facility::LED_FACILITY, 0>, Board>);
+              typename Board::template devices<Facility::LED_FACILITY, 0>, Board>);
 
 static_assert(config::ValidDeviceDefinition<
-              typename Board::template definition<Facility::CLOCK_FACILITY, 0>, Board>);
+              typename Board::template devices<Facility::CLOCK_FACILITY, 0>, Board>);
 
 }  // namespace tvsc::hal2::board
