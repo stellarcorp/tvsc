@@ -11,7 +11,7 @@ template <Facility F, size_t INDEX, typename T>
 struct has_matching_accessor_name : std::false_type {};
 
 template <typename T, DeviceId ID>
-concept ValidDeviceAccessor =                                    //
+concept ValidDeviceAccessor =                                        //
     has_matching_accessor_name<ID.facility, ID.index, T>::value and  //
     requires(T t) {
       { t.get() };
@@ -215,6 +215,19 @@ template <typename T>
 struct has_matching_accessor_name<Facility::WATCHDOG_FACILITY, 1, T> {
   static constexpr bool value = requires(T t) {
     { t.template watchdog1() };
+  };
+};
+
+template <typename T>
+struct has_matching_accessor_name<Facility::DMA_FACILITY, 0, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template dma0() };
+  };
+};
+template <typename T>
+struct has_matching_accessor_name<Facility::DMA_FACILITY, 1, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template dma1() };
   };
 };
 
