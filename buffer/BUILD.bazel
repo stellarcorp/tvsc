@@ -4,6 +4,7 @@ cc_library(
         "store.h",
         "store_interface.h",
         "store_string.h",
+        "buffer_allocator.h",
     ],
     deps = [
         "//base",
