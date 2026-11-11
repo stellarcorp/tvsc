@@ -196,4 +196,93 @@ class Driver {
   bool is_valid() const noexcept { return device_ != nullptr; }
 };
 
+template <typename DeviceType, typename DriverType>
+class ChannelDriver;
+
+template <typename DeviceType, typename DriverType>
+class ChannelDevice {
+ private:
+  size_t ref_count_{};
+
+  friend class ChannelDriver<DeviceType, DriverType>;
+
+ protected:
+  void inc_ref_count() noexcept {
+    if (ref_count_++ == 0) {
+      enable();
+    }
+  }
+
+  void dec_ref_count() noexcept {
+    if (--ref_count_ == 0) {
+      disable();
+    }
+  }
+
+  /**
+   * Enable power and clock to this device.
+   */
+  virtual void enable() noexcept = 0;
+
+  /**
+   * Disable power and clock to this device.
+   */
+  virtual void disable() noexcept = 0;
+
+  // Release the exclusive channel access.
+  virtual void release_channel(uint8_t channel_id) noexcept = 0;
+
+ public:
+  constexpr ChannelDevice() noexcept = default;
+  constexpr ChannelDevice(const ChannelDevice&) noexcept = default;
+  constexpr ChannelDevice(ChannelDevice&&) noexcept = default;
+  constexpr ChannelDevice& operator=(const ChannelDevice&) noexcept = default;
+  constexpr ChannelDevice& operator=(ChannelDevice&&) noexcept = default;
+
+  virtual ~ChannelDevice() = default;
+
+  // Acquire exclusive driver for a particular channel to access the functionality of this device.
+  [[nodiscard]] virtual DriverType acquire_channel(uint8_t channel_id) noexcept = 0;
+
+  [[nodiscard]] virtual bool in_use(uint8_t channel_id) noexcept = 0;
+};
+
+template <typename DeviceType, typename DriverType>
+class ChannelDriver {
+ protected:
+  DeviceType* device_{nullptr};
+  uint8_t channel_id_{0};
+
+  constexpr ChannelDriver(DeviceType& device, uint8_t channel_id) noexcept
+      : device_(&device), channel_id_(channel_id) {
+    device_->inc_ref_count();
+  }
+
+ public:
+  virtual ~ChannelDriver() { invalidate(); }
+
+  constexpr ChannelDriver(ChannelDriver&& rhs) noexcept
+      : device_(std::exchange(rhs.device_, nullptr)), channel_id_(rhs.channel_id_) {}
+
+  constexpr virtual ChannelDriver& operator=(ChannelDriver&& rhs) noexcept {
+    std::swap(device_, rhs.device_);
+    std::swap(channel_id_, rhs.channel_id_);
+    return *this;
+  }
+
+  ChannelDriver(const ChannelDriver& rhs) = delete;
+
+  ChannelDriver& operator=(const ChannelDriver& rhs) noexcept = delete;
+
+  void invalidate() noexcept {
+    if (device_ != nullptr) {
+      device_->release_channel(channel_id_);
+      device_->dec_ref_count();
+    }
+    device_ = nullptr;
+  }
+
+  bool is_valid() const noexcept { return device_ != nullptr; }
+};
+
 }  // namespace tvsc::hal2

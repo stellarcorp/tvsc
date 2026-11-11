@@ -8,6 +8,7 @@
 #include "hal2/config/device_definitions.h"
 #include "hal2/config/vector_table.h"
 #include "hal2/device.h"
+#include "hal2/dma/stm32l4_dma_config.h"
 #include "hal2/gpio/gpio.h"
 #include "hal2/gpio/stm32_gpio_config.h"
 #include "hal2/led/led_config.h"
@@ -340,6 +341,55 @@ struct DeviceDefinition<Facility::CLOCK_FACILITY, 0> final {
   }
 };
 
+/**
+ * Configuration for the two DMA controllers.
+ */
+template <>
+struct DeviceDefinition<Facility::DMA_FACILITY, 0> final : public config::UnconfigurableDevice {
+  static constexpr const char* name() noexcept { return "dma1"; }
+
+  static constexpr DeviceId id() noexcept { return {Facility::DMA_FACILITY, 0}; }
+
+  template <typename System, typename DeviceRegistry, configuration CONFIG>
+  using accessor = dma::Stm32L4DmaAccessor<0>;
+
+  template <size_t NUM_ISRS>
+  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table,
+                                            const configuration& config) noexcept {
+    // TODO(james): Move these to the device definitions for the DMA channels.
+    table.add_arm_isr(DMA1_Channel1_IRQn, dma::handle_interrupt<0, 0>);
+    table.add_arm_isr(DMA1_Channel2_IRQn, dma::handle_interrupt<0, 1>);
+    table.add_arm_isr(DMA1_Channel3_IRQn, dma::handle_interrupt<0, 2>);
+    table.add_arm_isr(DMA1_Channel4_IRQn, dma::handle_interrupt<0, 3>);
+    table.add_arm_isr(DMA1_Channel5_IRQn, dma::handle_interrupt<0, 4>);
+    table.add_arm_isr(DMA1_Channel6_IRQn, dma::handle_interrupt<0, 5>);
+    table.add_arm_isr(DMA1_Channel7_IRQn, dma::handle_interrupt<0, 6>);
+  }
+};
+
+template <>
+struct DeviceDefinition<Facility::DMA_FACILITY, 1> final : public config::UnconfigurableDevice {
+  static constexpr const char* name() noexcept { return "dma2"; }
+
+  static constexpr DeviceId id() noexcept { return {Facility::DMA_FACILITY, 1}; }
+
+  template <typename System, typename DeviceRegistry, configuration CONFIG>
+  using accessor = dma::Stm32L4DmaAccessor<1>;
+
+  template <size_t NUM_ISRS>
+  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table,
+                                            const configuration& config) noexcept {
+    // TODO(james): Move these to the device definitions for the DMA channels.
+    table.add_arm_isr(DMA2_Channel1_IRQn, dma::handle_interrupt<1, 0>);
+    table.add_arm_isr(DMA2_Channel2_IRQn, dma::handle_interrupt<1, 1>);
+    table.add_arm_isr(DMA2_Channel3_IRQn, dma::handle_interrupt<1, 2>);
+    table.add_arm_isr(DMA2_Channel4_IRQn, dma::handle_interrupt<1, 3>);
+    table.add_arm_isr(DMA2_Channel5_IRQn, dma::handle_interrupt<1, 4>);
+    table.add_arm_isr(DMA2_Channel6_IRQn, dma::handle_interrupt<1, 5>);
+    table.add_arm_isr(DMA2_Channel7_IRQn, dma::handle_interrupt<1, 6>);
+  }
+};
+
 }  // namespace internal
 
 struct Board final {
@@ -379,5 +429,11 @@ static_assert(config::ValidDeviceDefinition<
 
 static_assert(config::ValidDeviceDefinition<
               typename Board::template devices<Facility::CLOCK_FACILITY, 0>, Board>);
+
+static_assert(config::ValidDeviceDefinition<
+              typename Board::template devices<Facility::DMA_FACILITY, 0>, Board>);
+
+static_assert(config::ValidDeviceDefinition<
+              typename Board::template devices<Facility::DMA_FACILITY, 1>, Board>);
 
 }  // namespace tvsc::hal2::board
