@@ -253,6 +253,7 @@ class ChannelDriver {
   DeviceType* device_{nullptr};
   uint8_t channel_id_{0};
 
+  constexpr ChannelDriver() noexcept = default;
   constexpr ChannelDriver(DeviceType& device, uint8_t channel_id) noexcept
       : device_(&device), channel_id_(channel_id) {
     device_->inc_ref_count();
