@@ -4,6 +4,7 @@ cc_library(
         "dma.h",
     ],
     deps = [
+        "//base:except",
         "//hal2",
     ],
 )
