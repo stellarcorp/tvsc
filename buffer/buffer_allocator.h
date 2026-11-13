@@ -6,7 +6,7 @@
 
 namespace tvsc::buffer {
 
-class BufferRef final {
+struct BufferRef final {
   std::byte* address;
   size_t size;
   size_t alignment;
