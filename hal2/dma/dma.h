@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdexcept>
+
+#include "base/except.h"
 #include "hal2/device.h"
 
 namespace tvsc::hal2::dma {
@@ -40,6 +43,8 @@ struct DmaSessionConfiguration final {
 
 class DmaChannel;
 
+// TODO(james): Redesign this to be more like the Pin and PinDevice classes in GPIO. Channels will
+// still need to be acquire()'d to have only a single owner at a time.
 class DmaController : public ChannelDevice<DmaController, DmaChannel> {
  private:
   virtual void enable() noexcept = 0;
@@ -61,10 +66,17 @@ class DmaController : public ChannelDevice<DmaController, DmaChannel> {
 
 class DmaChannel final : public ChannelDriver<DmaController, DmaChannel> {
  public:
-  DmaChannel(DmaController& device, uint8_t channel_id) noexcept
+  constexpr DmaChannel() noexcept = default;
+  constexpr DmaChannel(DmaController& device, uint8_t channel_id) noexcept
       : ChannelDriver<DmaController, DmaChannel>(device, channel_id) {}
 
+  constexpr DmaChannel(DmaChannel&& rhs) noexcept = default;
+  constexpr DmaChannel& operator=(DmaChannel&& rhs) noexcept = default;
+
   void configure(const DmaSessionConfiguration& config) noexcept {
+    if (device_ == nullptr) [[unlikely]] {
+      except<std::logic_error>("DmaChannel configured when it was not valid.");
+    }
     device_->configure(channel_id_, config);
   }
 
