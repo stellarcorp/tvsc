@@ -4,6 +4,7 @@
 #include <chrono>
 #include <cstddef>
 
+#include "hal2/adc/stm32l4_adc_config.h"
 #include "hal2/clock/clock_config.h"
 #include "hal2/config/device_definitions.h"
 #include "hal2/config/vector_table.h"
@@ -390,6 +391,43 @@ struct DeviceDefinition<Facility::DMA_FACILITY, 1> final : public config::Unconf
   }
 };
 
+/**
+ * Configuration for the two analog to digital converters (ADC).
+ */
+template <>
+struct DeviceDefinition<Facility::ADC_FACILITY, 0> final : public config::UnconfigurableDevice {
+  static constexpr const char* name() noexcept { return "adc1"; }
+
+  static constexpr DeviceId id() noexcept { return {Facility::ADC_FACILITY, 0}; }
+
+  template <typename System, typename DeviceRegistry, configuration CONFIG>
+  using accessor = adc::Stm32L4AdcAccessor<System, DeviceRegistry, /* ADC1 */ 0, /* DMA1 */ 0,
+                                           /* Channel 1 */ 0>;
+
+  template <size_t NUM_ISRS>
+  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table,
+                                            const configuration& config) noexcept {
+    // No ISRs required by device.
+  }
+};
+
+template <>
+struct DeviceDefinition<Facility::ADC_FACILITY, 1> final : public config::UnconfigurableDevice {
+  static constexpr const char* name() noexcept { return "adc2"; }
+
+  static constexpr DeviceId id() noexcept { return {Facility::ADC_FACILITY, 1}; }
+
+  template <typename System, typename DeviceRegistry, configuration CONFIG>
+  using accessor = adc::Stm32L4AdcAccessor<System, DeviceRegistry, /* ADC2 */ 1, /* DMA1 */ 0,
+                                           /* Channel 2 */ 1>;
+
+  template <size_t NUM_ISRS>
+  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table,
+                                            const configuration& config) noexcept {
+    // No ISRs required by device.
+  }
+};
+
 }  // namespace internal
 
 struct Board final {
@@ -435,5 +473,11 @@ static_assert(config::ValidDeviceDefinition<
 
 static_assert(config::ValidDeviceDefinition<
               typename Board::template devices<Facility::DMA_FACILITY, 1>, Board>);
+
+static_assert(config::ValidDeviceDefinition<
+              typename Board::template devices<Facility::ADC_FACILITY, 0>, Board>);
+
+static_assert(config::ValidDeviceDefinition<
+              typename Board::template devices<Facility::ADC_FACILITY, 1>, Board>);
 
 }  // namespace tvsc::hal2::board

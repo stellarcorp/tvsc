@@ -21,6 +21,7 @@ cc_library(
         "cheerful_coffee_board.h",
     ],
     deps = [
+        "//hal2/adc",
         "//hal2/clock",
         "//hal2/config",
         "//hal2/dma",
