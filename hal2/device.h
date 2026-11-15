@@ -183,6 +183,9 @@ class Driver {
   }
 
   void ensure_valid(DeviceType& device) noexcept {
+    if (device_ != &device and device_ != nullptr) {
+      invalidate();
+    }
     if (device_ == nullptr) {
       device_ = &device;
       device_->inc_ref_count();
