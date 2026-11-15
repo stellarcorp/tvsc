@@ -82,7 +82,20 @@ class System final
   constexpr System() noexcept = default;
 
  public:
-  // All public methods come from inherited classes.
+  template <DeviceId DEVICE>
+  [[nodiscard]] constexpr auto& as_accessor() noexcept {
+    using accessor_type =
+        typename DeviceRegistry::template devices<DEVICE.facility, DEVICE.index>::template accessor<
+            System, DeviceRegistry,
+            typename DeviceRegistry::template devices<DEVICE.facility,
+                                                      DEVICE.index>::configuration{}>;
+    return static_cast<accessor_type&>(*this);
+  }
+
+  template <DeviceId DEVICE>
+  [[nodiscard]] constexpr auto& get_device() noexcept {
+    return as_accessor<DEVICE>().get();
+  }
 };
 
 // TODO(james): Extract DeviceRegistry as a concept and rephrase the first type parameter below to

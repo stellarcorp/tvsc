@@ -8,11 +8,27 @@
 
 namespace tvsc::hal2::config {
 
+// TODO(james): Add constraint to restrict the System type parameter to the System type from a
+// SystemBuilder.
 template <typename System, typename DeviceRegistry, DeviceId Id>
 using accessor_type =
     typename DeviceRegistry::template devices<Id.facility, Id.index>::template accessor<
         System, DeviceRegistry,
         typename DeviceRegistry::template devices<Id.facility, Id.index>::configuration{}>;
+
+// TODO(james): Add constraint to restrict the System type parameter to the System type from a
+// SystemBuilder.
+template <DeviceId ID, typename System>
+[[nodiscard]] constexpr auto& get_device(auto& system) noexcept {
+  return static_cast<System&>(system).template get_device<ID>();
+}
+
+// TODO(james): Add constraint to restrict the System type parameter to the System type from a
+// SystemBuilder.
+template <DeviceId ID, typename System>
+[[nodiscard]] constexpr auto& get_accessor(auto& system) noexcept {
+  return static_cast<System&>(system).template as_accessor<ID>();
+}
 
 /**
  * Basic device setup when the device does not have any configuration parameters. Note that
