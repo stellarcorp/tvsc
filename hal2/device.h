@@ -74,6 +74,9 @@ enum class Facility {
   // Board-level devices.
   LED_FACILITY,
   PROGRAMMER_FACILITY,
+  BOARD_IDENTIFICATION_FACILITY,
+
+  // Peripherals found on the board.
   IMU_FACILITY,
   POWER_MONITOR_FACILITY,
   RF_RECEIVER_FACILITY,
