@@ -179,6 +179,9 @@ class PinDevice final : public Device<PinDevice, Pin> {
   constexpr PinDevice(GpioDevice& gpio_device, PinNumber pin_number) noexcept
       : gpio_device_(&gpio_device), pin_number_(pin_number) {}
 
+  constexpr PinDevice(GpioDevice& gpio_device, PinRef pin) noexcept
+      : gpio_device_(&gpio_device), pin_number_(pin.pin) {}
+
   // constexpr PinDevice(const PinDevice&) noexcept = default;
   constexpr PinDevice(PinDevice&&) noexcept = default;
   // constexpr PinDevice& operator=(const PinDevice&) noexcept = default;
