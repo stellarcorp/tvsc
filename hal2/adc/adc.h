@@ -136,6 +136,8 @@ class Adc final : public Driver<AdcDevice, Adc> {
   friend class Device<AdcDevice, Adc>;
 
  public:
+  Adc() noexcept = default;
+
   void start(const AdcSessionConfiguration& config) noexcept { device_->start(config); }
 
   [[nodiscard]] bool is_running() noexcept { return device_->is_running(); }
