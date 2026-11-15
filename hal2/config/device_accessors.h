@@ -366,6 +366,13 @@ struct has_matching_accessor_name<Facility::PROGRAMMER_FACILITY, 0, T> {
 };
 
 template <typename T>
+struct has_matching_accessor_name<Facility::BOARD_IDENTIFICATION_FACILITY, 0, T> {
+  static constexpr bool value = requires(T t) {
+    { t.template board_id() };
+  };
+};
+
+template <typename T>
 struct has_matching_accessor_name<Facility::IMU_FACILITY, 0, T> {
   static constexpr bool value = requires(T t) {
     { t.template imu0() };
