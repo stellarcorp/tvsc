@@ -5,6 +5,7 @@
 #include <cstddef>
 
 #include "hal2/adc/stm32l4_adc_config.h"
+#include "hal2/board_identification/board_identification_config.h"
 #include "hal2/clock/clock_config.h"
 #include "hal2/config/device_definitions.h"
 #include "hal2/config/vector_table.h"
@@ -207,7 +208,7 @@ struct DeviceDefinition<Facility::LED_FACILITY, 0> final : public config::Unconf
 
   static constexpr DeviceId id() noexcept { return {Facility::LED_FACILITY, 0}; }
 
-  static constexpr auto PIN{gpio::PinRef{2, 13}};
+  static constexpr auto PIN{gpio::PinRef{/* GPIO Bank C */ 2, 13}};
 
   static constexpr auto dependencies(const configuration& config) noexcept {
     return std::array{DeviceId{Facility::GPIO_FACILITY, PIN.port}};
@@ -404,10 +405,11 @@ struct DeviceDefinition<Facility::ADC_FACILITY, 0> final : public config::Unconf
   using accessor = adc::Stm32L4AdcAccessor<System, DeviceRegistry, /* ADC1 */ 0, /* DMA1 */ 0,
                                            /* Channel 1 */ 0>;
 
-  template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table,
-                                            const configuration& config) noexcept {
-    // No ISRs required by device.
+  static constexpr auto dependencies(const configuration&) noexcept {
+    return std::array{
+        DeviceId{Facility::RCC_FACILITY, 0},  //
+        DeviceId{Facility::DMA_FACILITY, 0}   //
+    };
   }
 };
 
@@ -421,10 +423,39 @@ struct DeviceDefinition<Facility::ADC_FACILITY, 1> final : public config::Unconf
   using accessor = adc::Stm32L4AdcAccessor<System, DeviceRegistry, /* ADC2 */ 1, /* DMA1 */ 0,
                                            /* Channel 2 */ 1>;
 
-  template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table,
-                                            const configuration& config) noexcept {
-    // No ISRs required by device.
+  static constexpr auto dependencies(const configuration&) noexcept {
+    return std::array{
+        DeviceId{Facility::RCC_FACILITY, 0},  //
+        DeviceId{Facility::DMA_FACILITY, 0}   //
+    };
+  }
+};
+
+/**
+ * Configuration for the board identification facility.
+ */
+template <>
+struct DeviceDefinition<Facility::BOARD_IDENTIFICATION_FACILITY, 0> final
+    : public config::UnconfigurableDevice {
+  static constexpr const char* name() noexcept { return "board_id"; }
+
+  static constexpr DeviceId id() noexcept { return {Facility::BOARD_IDENTIFICATION_FACILITY, 0}; }
+
+  static constexpr gpio::PinRef BOARD_ID_POWER_PIN{/*GPIO PORT A */ 0, 6};
+  static constexpr gpio::PinRef BOARD_ID_SENSE_PIN{/*GPIO PORT A */ 0, 7};
+
+  template <typename System, typename DeviceRegistry, configuration CONFIG>
+  using accessor =
+      board_identification::BoardIdentificationAccessor<System, DeviceRegistry, /* ADC 0 */ 0,
+                                                        BOARD_ID_POWER_PIN, BOARD_ID_SENSE_PIN>;
+
+  static constexpr auto dependencies(const configuration&) noexcept {
+    return std::array{
+        DeviceId{Facility::RCC_FACILITY, 0},                         //
+        DeviceId{Facility::ADC_FACILITY, 0},                         //
+        DeviceId{Facility::GPIO_FACILITY, BOARD_ID_POWER_PIN.port},  //
+        DeviceId{Facility::GPIO_FACILITY, BOARD_ID_SENSE_PIN.port}   //
+    };
   }
 };
 
@@ -479,5 +510,8 @@ static_assert(config::ValidDeviceDefinition<
 
 static_assert(config::ValidDeviceDefinition<
               typename Board::template devices<Facility::ADC_FACILITY, 1>, Board>);
+
+static_assert(config::ValidDeviceDefinition<
+              typename Board::template devices<Facility::BOARD_IDENTIFICATION_FACILITY, 0>, Board>);
 
 }  // namespace tvsc::hal2::board
