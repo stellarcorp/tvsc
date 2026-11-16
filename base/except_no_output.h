@@ -48,6 +48,9 @@ class FixedBuffer final {
  public:
   static constexpr std::size_t capacity() noexcept { return CAPACITY; }
 
+  constexpr FixedBuffer() noexcept = default;
+  constexpr FixedBuffer(const char* const msg) noexcept { append(msg); }
+
   void clear() noexcept {
     size_ = 0;
     buffer_[0] = CharT{};

@@ -2,5 +2,5 @@
 #include "platforms/linker_sections.h"
 
 namespace tvsc {
-FAULT_BUFFER FixedBuffer<256> fault_message{};
+FAULT_BUFFER FixedBuffer<256> fault_message{"No error."};
 }
