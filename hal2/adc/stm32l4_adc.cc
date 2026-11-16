@@ -1,5 +1,6 @@
 #include "hal2/adc/stm32l4_adc.h"
 
+#include <array>
 #include <chrono>
 #include <cstdint>
 
@@ -10,6 +11,15 @@
 #include "third_party/stm32/stm32_hal.h"
 
 namespace tvsc::hal2::adc {
+
+// Cache of the last measured values for each ADC.
+#if defined(ADC3)
+DEBUG_VAR std::array<uint16_t, 3> adc_measured_values{};
+#elif defined(ADC2)
+DEBUG_VAR std::array<uint16_t, 2> adc_measured_values{};
+#else
+DEBUG_VAR std::array<uint16_t, 1> adc_measured_values{};
+#endif
 
 [[nodiscard]] constexpr inline uint32_t get_channel(uint8_t adc_index, gpio::PinRef pin) noexcept {
   switch (adc_index) {
@@ -394,6 +404,9 @@ void Stm32L4Adc::start(const AdcSessionConfiguration& config) noexcept {
   }
 
   uint16_t result{static_cast<uint16_t>(HAL_ADC_GetValue(&adc_))};
+  if (adc_index_ < adc_measured_values.size()) {
+    adc_measured_values.at(adc_index_) = result;
+  }
   HAL_ADC_Stop(&adc_);
   return result;
 }
