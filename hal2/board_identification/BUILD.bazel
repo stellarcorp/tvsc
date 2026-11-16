@@ -1,0 +1,57 @@
+cc_library(
+    name = "board_identification_helpers",
+    visibility = ["//visibility:public"],
+    hdrs = [
+        "board_ids.h",
+        "resistor_series.h",
+        "voltage_divider.h",
+        "voltage_divider_configurations.h",
+    ],
+    deps = [
+        "//hal2",
+    ],
+)
+
+cc_library(
+    name = "board_identification",
+    visibility = ["//visibility:public"],
+    srcs = [
+        "board_identification.cc",
+    ],
+    hdrs = [
+        "board_identification_config.h",
+        "board_identification.h",
+    ],
+    deps = [
+        ":board_identification_helpers",
+        "//hal2/adc",
+        "//hal2/clock",
+        "//hal2/config",
+        "//hal2/gpio",
+    ],
+)
+
+cc_binary(
+    name = "generate_board_id_configurations",
+    srcs = ["generate_board_id_configurations.cc"],
+    target_compatible_with = select({
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    deps = [
+        ":board_identification_helpers",
+        "//base",
+    ],
+)
+
+cc_test(
+    name = "board_ids_test",
+    srcs = [
+        "board_ids_test.cc",
+    ],
+    deps = [
+        ":board_identification",
+        "//base",
+        "//third_party/gtest",
+    ],
+)
