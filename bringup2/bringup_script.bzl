@@ -17,6 +17,7 @@ def bringup_binary(
         "//base",
         "//hal2",
         "//hal2/board",
+        "//hal2/board_identification",
         "//hal2/config",
         "//hal2/gpio",
         "//meta:build_time",

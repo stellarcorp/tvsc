@@ -15,6 +15,13 @@ bringup_binary(
 )
 
 bringup_binary(
+    name = "read_board_id.elf",
+    srcs = [
+        "read_board_id.cc",
+    ],
+)
+
+bringup_binary(
     name = "watchdog_systick.elf",
     srcs = [
         "watchdog_systick.cc",
