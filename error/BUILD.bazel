@@ -1,0 +1,99 @@
+cc_library(
+    name = "fault_message",
+    hdrs = [
+        "fault_message.h",
+    ],
+    srcs = [
+        "fault_message.cc",
+    ],
+    deps = [
+        "//platforms",
+    ],
+    alwayslink = True,
+)
+
+cc_library(
+    name = "error",
+    hdrs =
+        select({
+            "@platforms//os:none": [
+                "except_no_output.h",
+            ],
+            "//conditions:default": [
+                "except_with_glog.h",
+            ],
+        }) + [
+            "error.h",
+            "except.h",
+        ],
+    defines = select({
+        "@platforms//os:none": [
+            "PLATFORM_OS_NONE",
+        ],
+        "//conditions:default": [
+        ],
+    }),
+    visibility = ["//visibility:public"],
+    deps = select({
+        "@platforms//os:none": [
+            ":fail_loop",
+            "//platforms",
+        ],
+        "//conditions:default": [
+            ":fail_terminate",
+            "//third_party/glog",
+            "//third_party/gflags",
+        ],
+    }) + [
+        ":fault_message",
+    ],
+)
+
+cc_library(
+    name = "fail_loop",
+    srcs = [
+        "fail_loop.cc",
+    ],
+    target_compatible_with = [
+        "@platforms//os:none",
+    ],
+    deps = [
+        ":fault_message",
+        "//irq",
+    ],
+)
+
+cc_library(
+    name = "fail_terminate",
+    srcs = [
+        "fail_terminate.cc",
+    ],
+    deps = [
+        ":fault_message",
+    ],
+)
+
+cc_test(
+    name = "except_test",
+    srcs = [
+        "except_test.cc",
+    ],
+    deps = [
+        ":error",
+        "//third_party/gtest",
+    ],
+)
+
+cc_test(
+    name = "except_without_exceptions_test",
+    srcs = [
+        "except_test.cc",
+    ],
+    local_defines = [
+        "NO_EXCEPTIONS",
+    ],
+    deps = [
+        ":error",
+        "//third_party/gtest",
+    ],
+)

@@ -43,7 +43,7 @@ cc_library(
     ],
     deps = [
         ":rcc_headers",
-        "//base:except",
+        "//error",
         "//hal2",
         "//hal2/config",
         "//third_party/stm32",

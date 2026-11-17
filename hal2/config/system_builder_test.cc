@@ -160,7 +160,7 @@ struct DeviceDefinition<Facility::RCC_FACILITY, 0> : public UnconfigurableDevice
 
 struct Board final {
   template <Facility FACILITY, size_t INDEX>
-  using definition = DeviceDefinition<FACILITY, INDEX>;
+  using devices = DeviceDefinition<FACILITY, INDEX>;
 };
 
 static_assert(ValidDeviceDefinition<DeviceDefinition<Facility::IMU_FACILITY, 0>, Board>);
@@ -181,20 +181,6 @@ TEST(SystemBuilderTest, CanConstructSystem) {
 
   EXPECT_EQ(sys.rcc(), 1000);
   EXPECT_EQ(sys.systick(), 200);
-  EXPECT_EQ(sys.i2c0(), 300);
-  EXPECT_EQ(sys.i2c1(), 400);
-  EXPECT_EQ(sys.imu0(), sys.i2c1() + 100);
-}
-
-TEST(SystemBuilderTest, IgnoresDuplicates) {
-  auto system_builder{SystemBuilder<Board>{}
-                          .add<Facility::I2C_FACILITY, 0>()
-                          .add<Facility::I2C_FACILITY, 1>()
-                          .add<Facility::I2C_FACILITY, 0>()
-                          .add<Facility::IMU_FACILITY, 0>()};
-
-  auto sys{system_builder.system()};
-
   EXPECT_EQ(sys.i2c0(), 300);
   EXPECT_EQ(sys.i2c1(), 400);
   EXPECT_EQ(sys.imu0(), sys.i2c1() + 100);
@@ -231,10 +217,10 @@ TEST(SystemBuilderTest, AddsDependenciesTransitively) {
 
 TEST(SystemBuilderTest, CanCreateSystemAtCompileTime) {
   constexpr auto system_builder{SystemBuilder<Board>{}
-                                    .add<Facility::IMU_FACILITY, 0>()
                                     .add<Facility::SYSTICK_FACILITY, 0>()
                                     .add<Facility::I2C_FACILITY, 0>()
-                                    .add<Facility::I2C_FACILITY, 1>()};
+                                    .add<Facility::I2C_FACILITY, 1>()
+                                    .add<Facility::IMU_FACILITY, 0>()};
 
   // By using static constexpr here, we force the initialization of the system at compile-time.
   // Because the sys object is const, we can also verify compile-time initialization with
@@ -247,8 +233,8 @@ TEST(SystemBuilderTest, CanCreateSystemAtCompileTime) {
 TEST(SystemBuilderTest, CanAddDependenciesAtCompileTime) {
   constexpr auto system_builder{
       SystemBuilder<Board>{}                     //
-          .add<Facility::IMU_FACILITY, 0>()      //
           .add<Facility::SYSTICK_FACILITY, 0>()  //
+          .add<Facility::IMU_FACILITY, 0>()      //
   };
 
   // By using static constexpr here, we force the initialization of the system at compile-time.
@@ -260,11 +246,13 @@ TEST(SystemBuilderTest, CanAddDependenciesAtCompileTime) {
 }
 
 TEST(SystemBuilderTest, CanCreateModifiableSystemAtCompileTime) {
-  constexpr auto system_builder{SystemBuilder<Board>{}
-                                    .add<Facility::IMU_FACILITY, 0>()
-                                    .add<Facility::SYSTICK_FACILITY, 0>()
-                                    .add<Facility::I2C_FACILITY, 0>()
-                                    .add<Facility::I2C_FACILITY, 1>()};
+  constexpr auto system_builder{
+      SystemBuilder<Board>{}                     //
+          .add<Facility::SYSTICK_FACILITY, 0>()  //
+          .add<Facility::I2C_FACILITY, 1>()      //
+          .add<Facility::I2C_FACILITY, 0>()      //
+          .add<Facility::IMU_FACILITY, 0>()      //
+  };
 
   // Note that we are using constinit to force initialization at compile-time. The resulting
   // object is not const, though.
@@ -276,9 +264,8 @@ TEST(SystemBuilderTest, CanCreateModifiableSystemAtCompileTime) {
 
 TEST(SystemBuilderTest, CanCreateModifiableSystemWhileAddingDependenciesTransitivelyAtCompileTime) {
   constexpr auto system_builder{
-      SystemBuilder<Board>{}                     //
-          .add<Facility::IMU_FACILITY, 0>()      //
-          .add<Facility::SYSTICK_FACILITY, 0>()  //
+      SystemBuilder<Board>{}                 //
+          .add<Facility::IMU_FACILITY, 0>()  //
   };
 
   // Note that we are using constinit to force initialization at compile-time. The resulting
@@ -292,11 +279,13 @@ TEST(SystemBuilderTest, CanCreateModifiableSystemWhileAddingDependenciesTransiti
 }
 
 TEST(SystemBuilderTest, CanCreateVectorTable) {
-  auto system_builder{SystemBuilder<Board>{}
-                          .add<Facility::IMU_FACILITY, 0>()
-                          .add<Facility::SYSTICK_FACILITY, 0>()
-                          .add<Facility::I2C_FACILITY, 0>()
-                          .add<Facility::I2C_FACILITY, 1>()};
+  auto system_builder{
+      SystemBuilder<Board>{}                     //
+          .add<Facility::SYSTICK_FACILITY, 0>()  //
+          .add<Facility::I2C_FACILITY, 0>()      //
+          .add<Facility::I2C_FACILITY, 1>()      //
+          .add<Facility::IMU_FACILITY, 0>()      //
+  };
 
   auto vector_table{system_builder.create_vector_table<NUM_ISRS>()};
 

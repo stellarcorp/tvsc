@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "base/except.h"
+#include "error/except.h"
 
 namespace tvsc::buffer {
 

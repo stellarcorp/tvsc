@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "base/except.h"
+#include "error/except.h"
 #include "hal2/device.h"
 #include "hal2/config/system_builder.h"
 #include "hal2/config/vector_table.h"

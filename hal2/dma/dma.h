@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "base/except.h"
+#include "error/except.h"
 #include "hal2/device.h"
 
 namespace tvsc::hal2::dma {

@@ -3,7 +3,7 @@
 #include <chrono>
 #include <cstdlib>
 
-#include "hal2/error.h"
+#include "error/error.h"
 
 namespace tvsc::hal2::watchdog {
 

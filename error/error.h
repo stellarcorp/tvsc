@@ -8,22 +8,22 @@
 #endif
 #endif
 
-namespace tvsc::hal2 {
+namespace tvsc::error {
 
 #if __cpp_lib_source_location >= 201907L
 
 [[noreturn]] void failure(std::source_location location = std::source_location::current()) noexcept;
 
-#define error() tvsc::hal2::failure()
-#define require(expr) ((expr) ? (void)0U : tvsc::hal2::failure())
+#define error() tvsc::error::failure()
+#define require(expr) ((expr) ? (void)0U : tvsc::error::failure())
 
 #else
 
 [[noreturn]] void failure(const char* filename, uint32_t line_number) noexcept;
 
-#define error() tvsc::hal2::failure((__FILE__), (__LINE__))
-#define require(expr) ((expr) ? (void)0U : tvsc::hal2::failure((__FILE__), (__LINE__)))
+#define error() tvsc::error::failure((__FILE__), (__LINE__))
+#define require(expr) ((expr) ? (void)0U : tvsc::error::failure((__FILE__), (__LINE__)))
 
 #endif
 
-}  // namespace tvsc::hal2
+}  // namespace tvsc::error

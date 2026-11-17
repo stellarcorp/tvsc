@@ -1,6 +1,6 @@
 #pragma once
 
-namespace tvsc::hal2 {
+namespace tvsc::irq {
 
 /**
  * Disable interrupts.
@@ -16,4 +16,4 @@ __attribute__((always_inline)) static inline void enable_irq(void) {
   __asm volatile("cpsie i" : : : "memory");
 }
 
-}  // namespace tvsc::hal2
+}  // namespace tvsc::irq

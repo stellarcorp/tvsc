@@ -1,6 +1,6 @@
 #include "hal2/rcc/stm32l4_rcc.h"
 
-#include "base/except.h"
+#include "error/except.h"
 #include "hal2/rcc/stm32l4_rcc_config.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"

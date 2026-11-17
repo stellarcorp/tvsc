@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <stdexcept>
 
-#include "base/except.h"
+#include "error/except.h"
 #include "hal2/rcc/oscillator.h"
 #include "hal2/register.h"
 #include "hal2/timer/timer.h"

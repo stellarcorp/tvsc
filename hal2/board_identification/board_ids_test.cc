@@ -65,7 +65,7 @@ TEST(BoardIdTest, SourceImpedenceBelowThreshold) {
 }
 
 TEST(CanonicalBoardIdsTest, AllEnumValuesMatchConfiguration) {
-  for (auto id : ALL_CANONICAL_BOARD_IDS) {
+  for (auto id : VALID_BOARD_IDS) {
     bool found_id{false};
     for (const auto& configuration : board_id_voltage_dividers()) {
       if (cast_to_underlying_type(id) == configuration.id()) {

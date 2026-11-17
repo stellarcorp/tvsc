@@ -9,7 +9,7 @@
 #pragma once
 
 #ifndef PLATFORM_OS_NONE
-#include "base/except_with_glog.h"
+#include "error/except_with_glog.h"
 #else
-#include "base/except_no_output.h"
+#include "error/except_no_output.h"
 #endif

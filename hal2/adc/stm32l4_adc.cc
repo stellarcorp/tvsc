@@ -4,9 +4,10 @@
 #include <chrono>
 #include <cstdint>
 
-#include "base/except.h"
-#include "hal2/error.h"
+#include "error/error.h"
+#include "error/except.h"
 #include "hal2/gpio/gpio.h"
+#include "platforms/linker_sections.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"
 

@@ -36,7 +36,7 @@ cc_library(
     ],
     deps = [
         ":timer_headers",
-        "//base:except",
+        "//error",
         "//hal2",
         "//hal2/rcc",
         "//platforms",

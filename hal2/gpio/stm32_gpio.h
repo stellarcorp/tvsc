@@ -5,7 +5,7 @@
 #include <new>
 #include <stdexcept>
 
-#include "base/except.h"
+#include "error/except.h"
 #include "hal2/gpio/gpio.h"
 #include "hal2/register.h"
 #include "platforms/linker_sections.h"

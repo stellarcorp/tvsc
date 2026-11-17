@@ -8,8 +8,11 @@ cc_library(
         "type_accumulator.h",
         "vector_table.h",
     ],
+    srcs = [
+        "vector_table.cc",
+    ],
     deps = [
-        "//base:except",
+        "//error",
         "//hal2",
     ],
 )

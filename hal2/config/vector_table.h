@@ -4,18 +4,14 @@
 #include <limits>
 #include <stdexcept>
 
-#include "base/except.h"
+#include "error/except.h"
 
 extern "C" char _estack[];
 extern "C" void Reset_Handler(void);
 
 namespace tvsc::hal2::config {
 
-[[noreturn]] inline void DefaultInterruptHandler() {
-  while (true) {
-    // Loop indefinitely. Do not return.
-  }
-}
+[[noreturn]] void DefaultInterruptHandler() noexcept;
 
 template <size_t NUM_ISRS>
 class VectorTable final {

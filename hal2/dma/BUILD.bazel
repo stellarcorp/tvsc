@@ -4,7 +4,7 @@ cc_library(
         "dma.h",
     ],
     deps = [
-        "//base:except",
+        "//error",
         "//hal2",
     ],
 )
@@ -40,7 +40,7 @@ cc_library(
     ],
     deps = [
         ":dma_headers",
-        "//base:except",
+        "//error",
         "//hal2",
         "//third_party/stm32",
     ],

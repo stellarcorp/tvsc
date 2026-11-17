@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "base/except.h"
+#include "error/except.h"
 #include "hal2/device.h"
 #include "hal2/dma/dma.h"
 #include "third_party/stm32/stm32.h"

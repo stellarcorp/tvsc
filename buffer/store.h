@@ -26,7 +26,7 @@
 #include <type_traits>
 #include <utility>
 
-#include "base/except.h"
+#include "error/except.h"
 #include "buffer/store_interface.h"
 
 namespace tvsc::buffer {

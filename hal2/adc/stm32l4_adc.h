@@ -3,7 +3,7 @@
 #include <chrono>
 #include <cstdint>
 
-#include "base/except.h"
+#include "error/except.h"
 #include "hal2/adc/adc.h"
 #include "hal2/dma/dma.h"
 #include "hal2/dma/stm32l4_dma.h"

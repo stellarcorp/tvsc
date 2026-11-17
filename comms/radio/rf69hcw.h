@@ -5,7 +5,7 @@
 #include <numeric>
 #include <stdexcept>
 
-#include "base/except.h"
+#include "error/except.h"
 #include "comms/radio/fragment.h"
 #include "comms/radio/half_duplex_radio.h"
 #include "comms/radio/settings.h"

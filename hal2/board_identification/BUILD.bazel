@@ -50,7 +50,7 @@ cc_test(
         "board_ids_test.cc",
     ],
     deps = [
-        ":board_identification",
+        ":board_identification_helpers",
         "//base",
         "//third_party/gtest",
     ],
