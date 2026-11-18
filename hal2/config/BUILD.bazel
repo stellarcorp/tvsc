@@ -4,7 +4,7 @@ cc_library(
     hdrs = [
         "device_definitions.h",
         "device_accessors.h",
-        "system_builder.h",
+        "device_registry.h",
         "type_accumulator.h",
         "vector_table.h",
     ],

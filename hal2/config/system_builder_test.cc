@@ -1,4 +1,4 @@
-#include "hal2/config/system_builder.h"
+#include "hal2/config/device_registry.h"
 
 #include <cstddef>
 

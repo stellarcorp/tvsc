@@ -22,8 +22,8 @@ struct ConfiguredDevice final {
   using definition = Definition;
   static constexpr auto CONFIG{config};
 
-  template <typename System, typename DeviceRegistry>
-  using accessor = typename definition::template accessor<System, DeviceRegistry, CONFIG>;
+  template <typename System, typename Board>
+  using accessor = typename definition::template accessor<System, Board, CONFIG>;
 
   static constexpr DeviceId id() noexcept { return definition::id(); }
 
@@ -37,19 +37,16 @@ struct ConfiguredDevice final {
  * DependencyListResolver recursively flattens dependencies for devices in a system,
  * utilizing default configurations for automatically resolved upstream dependencies.
  */
-template <typename DeviceRegistry, typename Accumulator, typename Visiting, auto Dependencies,
-          size_t Index>
+template <typename Board, typename Accumulator, typename Visiting, auto Dependencies, size_t Index>
 struct DependencyListResolver {
   using type = Accumulator;
 };
 
-template <typename DeviceRegistry, typename Accumulator, typename Visiting, auto Dependencies,
-          size_t Index>
+template <typename Board, typename Accumulator, typename Visiting, auto Dependencies, size_t Index>
   requires(Index < Dependencies.size())
-struct DependencyListResolver<DeviceRegistry, Accumulator, Visiting, Dependencies, Index> {
+struct DependencyListResolver<Board, Accumulator, Visiting, Dependencies, Index> {
   static constexpr auto identifier = Dependencies[Index];
-  using CurrentDefinition =
-      typename DeviceRegistry::template devices<identifier.facility, identifier.index>;
+  using CurrentDefinition = typename Board::template devices<identifier.facility, identifier.index>;
   using CurrentConfigured =
       ConfiguredDevice<CurrentDefinition, typename CurrentDefinition::configuration{}>;
 
@@ -59,22 +56,21 @@ struct DependencyListResolver<DeviceRegistry, Accumulator, Visiting, Dependencie
 
   // Resolve sub-dependencies using the default configuration of the dependency.
   using AccumulatorWithSubDependencies = typename DependencyListResolver<
-      DeviceRegistry, Accumulator, typename Visiting::template Append<CurrentConfigured>,
+      Board, Accumulator, typename Visiting::template Append<CurrentConfigured>,
       CurrentDefinition::dependencies(typename CurrentDefinition::configuration{}), 0>::type;
 
   using AccumulatorWithDependency =
       typename AccumulatorWithSubDependencies::template AppendUnique<CurrentConfigured>;
 
-  using type = typename DependencyListResolver<DeviceRegistry, AccumulatorWithDependency, Visiting,
+  using type = typename DependencyListResolver<Board, AccumulatorWithDependency, Visiting,
                                                Dependencies, Index + 1>::type;
 };
 
 }  // namespace internal
 
-template <typename DeviceRegistry, typename... ConfiguredDevices>
+template <typename Board, typename... ConfiguredDevices>
 class System final
-    : public ConfiguredDevices::template accessor<System<DeviceRegistry, ConfiguredDevices...>,
-                                                  DeviceRegistry>... {
+    : public ConfiguredDevices::template accessor<System<Board, ConfiguredDevices...>, Board>... {
  private:
   template <typename, typename>
   friend class SystemBuilder;
@@ -85,10 +81,9 @@ class System final
   template <DeviceId DEVICE>
   [[nodiscard]] constexpr auto& as_accessor() noexcept {
     using accessor_type =
-        typename DeviceRegistry::template devices<DEVICE.facility, DEVICE.index>::template accessor<
-            System, DeviceRegistry,
-            typename DeviceRegistry::template devices<DEVICE.facility,
-                                                      DEVICE.index>::configuration{}>;
+        typename Board::template devices<DEVICE.facility, DEVICE.index>::template accessor<
+            System, Board,
+            typename Board::template devices<DEVICE.facility, DEVICE.index>::configuration{}>;
     return static_cast<accessor_type&>(*this);
   }
 
@@ -98,23 +93,22 @@ class System final
   }
 };
 
-// TODO(james): Extract DeviceRegistry as a concept and rephrase the first type parameter below to
-// "DeviceRegistry Board".
-template <typename DeviceRegistry, typename Accumulator = TypeAccumulator<>>
+// TODO(james): Extract Board as a concept and rephrase the first type parameter below to
+// "Board Board".
+template <typename Board, typename Accumulator = TypeAccumulator<>>
 class SystemBuilder;
 
-template <typename DeviceRegistry, typename... ConfiguredDevices>
-class SystemBuilder<DeviceRegistry, TypeAccumulator<ConfiguredDevices...>> final {
+template <typename Board, typename... ConfiguredDevices>
+class SystemBuilder<Board, TypeAccumulator<ConfiguredDevices...>> final {
  public:
   constexpr SystemBuilder() noexcept = default;
 
   template <Facility FACILITY, size_t INDEX,
-            typename DeviceRegistry::template devices<FACILITY, INDEX>::configuration CONFIG = {}>
+            typename Board::template devices<FACILITY, INDEX>::configuration CONFIG = {}>
   [[nodiscard]] consteval auto add() noexcept {
-    using TargetDefinition = typename DeviceRegistry::template devices<FACILITY, INDEX>;
+    using TargetDefinition = typename Board::template devices<FACILITY, INDEX>;
 
-    static_assert(ValidDeviceDefinition<TargetDefinition, DeviceRegistry>,
-                  "Invalid device definition");
+    static_assert(ValidDeviceDefinition<TargetDefinition, Board>, "Invalid device definition");
     static_assert(TargetDefinition::is_valid(CONFIG), "Invalid device configuration parameters.");
     static_assert(
         (!std::is_same_v<typename ConfiguredDevices::definition, TargetDefinition> && ...),
@@ -129,7 +123,7 @@ class SystemBuilder<DeviceRegistry, TypeAccumulator<ConfiguredDevices...>> final
     // Resolve all transitive dependencies required by the target configuration using
     // the configuration's custom or default parameters.
     using AccumulatorWithDependencies =
-        typename internal::DependencyListResolver<DeviceRegistry,                         //
+        typename internal::DependencyListResolver<Board,                                  //
                                                   TypeAccumulator<ConfiguredDevices...>,  //
                                                   TypeAccumulator<TargetConfigured>,      //
                                                   TargetDefinition::dependencies(CONFIG), 0>::type;
@@ -137,7 +131,7 @@ class SystemBuilder<DeviceRegistry, TypeAccumulator<ConfiguredDevices...>> final
     using NextAccumulator =
         typename AccumulatorWithDependencies::template AppendUnique<TargetConfigured>;
 
-    return SystemBuilder<DeviceRegistry, NextAccumulator>{};
+    return SystemBuilder<Board, NextAccumulator>{};
   }
 
   template <size_t NUM_ISRS = 127>
@@ -149,8 +143,7 @@ class SystemBuilder<DeviceRegistry, TypeAccumulator<ConfiguredDevices...>> final
 
   constexpr auto system() const noexcept {
     using ConcreteSystem =
-        TypeAccumulator<ConfiguredDevices...>::template InstantiateWithPrefix<System,
-                                                                              DeviceRegistry>;
+        TypeAccumulator<ConfiguredDevices...>::template InstantiateWithPrefix<System, Board>;
     return ConcreteSystem{};
   }
 };

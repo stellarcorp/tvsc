@@ -10,11 +10,9 @@ namespace tvsc::hal2::config {
 
 // TODO(james): Add constraint to restrict the System type parameter to the System type from a
 // SystemBuilder.
-template <typename System, typename DeviceRegistry, DeviceId Id>
-using accessor_type =
-    typename DeviceRegistry::template devices<Id.facility, Id.index>::template accessor<
-        System, DeviceRegistry,
-        typename DeviceRegistry::template devices<Id.facility, Id.index>::configuration{}>;
+template <typename System, typename Board, DeviceId Id>
+using accessor_type = typename Board::template devices<Id.facility, Id.index>::template accessor<
+    System, Board, typename Board::template devices<Id.facility, Id.index>::configuration{}>;
 
 // TODO(james): Add constraint to restrict the System type parameter to the System type from a
 // SystemBuilder.
@@ -53,7 +51,7 @@ struct UnconfigurableDevice {
   }
 };
 
-template <typename T, typename DeviceRegistry>
+template <typename T, typename Board>
 concept ValidDeviceDefinition =
     requires {
       typename T::configuration;
@@ -72,9 +70,9 @@ concept ValidDeviceDefinition =
     requires {
       // Verify that the accessor template instantiates cleanly using a default configuration NTTP
       // value.
-      typename T::template accessor<int, DeviceRegistry, typename T::configuration{}>;
+      typename T::template accessor<int, Board, typename T::configuration{}>;
     } and
-    ValidDeviceAccessor<
-        typename T::template accessor<int, DeviceRegistry, typename T::configuration{}>, T::id()>;
+    ValidDeviceAccessor<typename T::template accessor<int, Board, typename T::configuration{}>,
+                        T::id()>;
 
 }  // namespace tvsc::hal2::config
