@@ -16,18 +16,18 @@ namespace tvsc::hal2::timer {
 // TODO(james): Determine what value this should have if both LP timers are in use.
 static constexpr size_t LSI_OSCILLATOR_INDEX{1};
 
-template <typename System, typename DeviceRegistry, size_t INDEX>
+template <typename DeviceRegistry, typename Board, size_t INDEX>
 class Stm32L4LowPowerTimerAccessor;
 
-template <typename System, typename DeviceRegistry>
-class Stm32L4LowPowerTimerAccessor<System, DeviceRegistry, 0> {
+template <typename DeviceRegistry, typename Board>
+class Stm32L4LowPowerTimerAccessor<DeviceRegistry, Board, 0> {
  private:
   static constexpr DeviceId lsi_id{Facility::OSCILLATOR_FACILITY,
                                                LSI_OSCILLATOR_INDEX};
 
-  using LsiOscillatorAccessor = config::accessor_type<System, DeviceRegistry, lsi_id>;
+  using LsiOscillatorAccessor = config::accessor_type<DeviceRegistry, Board, lsi_id>;
 
-  Stm32L4Lptim timer_{0, static_cast<LsiOscillatorAccessor&>(static_cast<System&>(*this)).get()};
+  Stm32L4Lptim timer_{0, static_cast<LsiOscillatorAccessor&>(static_cast<DeviceRegistry&>(*this)).get()};
 
  public:
   [[nodiscard]] TimerDevice& get() noexcept { return timer_; }
@@ -36,15 +36,15 @@ class Stm32L4LowPowerTimerAccessor<System, DeviceRegistry, 0> {
   [[nodiscard]] TimerDevice& lp_timer0() noexcept { return get(); }
 };
 
-template <typename System, typename DeviceRegistry>
-class Stm32L4LowPowerTimerAccessor<System, DeviceRegistry, 1> {
+template <typename DeviceRegistry, typename Board>
+class Stm32L4LowPowerTimerAccessor<DeviceRegistry, Board, 1> {
  private:
   static constexpr DeviceId lsi_id{Facility::OSCILLATOR_FACILITY,
                                                LSI_OSCILLATOR_INDEX};
 
-  using LsiOscillatorAccessor = config::accessor_type<System, DeviceRegistry, lsi_id>;
+  using LsiOscillatorAccessor = config::accessor_type<DeviceRegistry, Board, lsi_id>;
 
-  Stm32L4Lptim timer_{1, static_cast<LsiOscillatorAccessor&>(static_cast<System&>(*this)).get()};
+  Stm32L4Lptim timer_{1, static_cast<LsiOscillatorAccessor&>(static_cast<DeviceRegistry&>(*this)).get()};
 
  public:
   [[nodiscard]] TimerDevice& get() noexcept { return timer_; }
