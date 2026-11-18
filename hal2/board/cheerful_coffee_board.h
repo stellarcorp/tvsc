@@ -67,15 +67,15 @@ struct DeviceDefinition<Facility::RCC_FACILITY, 0> final {
   // configuration is constrained with enums so that it can't be invalid.
   static constexpr bool is_valid(const configuration&) noexcept { return true; }
 
-  // How to access the instance of this device. The System instance will inherit from all of these
-  // accessors so as to provide a runtime mechanism for accessing each device. The SystemBuilder is
-  // used to determine which accessors must be included in the System; that determination is done at
+  // How to access the instance of this device. The DeviceRegistry instance will inherit from all of these
+  // accessors so as to provide a runtime mechanism for accessing each device. The DeviceRegistryBuilder is
+  // used to determine which accessors must be included in the DeviceRegistry; that determination is done at
   // compile-time.
-  template <typename System, typename DeviceRegistry, configuration CONFIG>
+  template <typename DeviceRegistry, typename Board, configuration CONFIG>
   using accessor = rcc::Stm32L4RccAccessor<CONFIG>;
 
   // Each device definition can provide a list of dependencies. Any dependencies are guaranteed to
-  // be brought into the System without explicitly requiring mention in the SystemBuilder.
+  // be brought into the DeviceRegistry without explicitly requiring mention in the DeviceRegistryBuilder.
   static constexpr auto dependencies(const configuration&) noexcept {
     return std::array<DeviceId, 0>{};
   }
@@ -105,8 +105,8 @@ struct DeviceDefinition<Facility::OSCILLATOR_FACILITY, 1> final
   // Unconfigurable devices need to provide an id.
   static constexpr DeviceId id() noexcept { return {Facility::OSCILLATOR_FACILITY, 1}; }
 
-  // And the accessor must be provided in order to construct the System type.
-  template <typename System, typename DeviceRegistry, configuration config>
+  // And the accessor must be provided in order to construct the DeviceRegistry type.
+  template <typename DeviceRegistry, typename Board, configuration config>
   using accessor = rcc::Stm32L4LsiOscillatorAccessor;
 };
 
@@ -121,7 +121,7 @@ struct DeviceDefinition<Facility::OSCILLATOR_FACILITY, 2> final
 
   static constexpr DeviceId id() noexcept { return {Facility::OSCILLATOR_FACILITY, 2}; }
 
-  template <typename System, typename DeviceRegistry, configuration config>
+  template <typename DeviceRegistry, typename Board, configuration config>
   using accessor = rcc::Stm32L4Hsi48OscillatorAccessor;
 };
 
@@ -142,8 +142,8 @@ struct DeviceDefinition<Facility::SYSTICK_FACILITY, 0> final {
     return std::array{DeviceId{Facility::RCC_FACILITY, 0}};
   }
 
-  template <typename System, typename DeviceRegistry, configuration config>
-  using accessor = systick::Stm32L4SysTickAccessor<System>;
+  template <typename DeviceRegistry, typename Board, configuration config>
+  using accessor = systick::Stm32L4SysTickAccessor<DeviceRegistry>;
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table,
@@ -198,8 +198,8 @@ struct DeviceDefinition<Facility::GPIO_FACILITY, PORT> final : public config::Un
 
   static constexpr DeviceId id() noexcept { return {Facility::GPIO_FACILITY, PORT}; }
 
-  template <typename System, typename DeviceRegistry, configuration config>
-  using accessor = gpio::Stm32GpioAccessor<static_cast<gpio::PortNumber>(PORT), System>;
+  template <typename DeviceRegistry, typename Board, configuration config>
+  using accessor = gpio::Stm32GpioAccessor<static_cast<gpio::PortNumber>(PORT), DeviceRegistry>;
 };
 
 template <>
@@ -214,8 +214,8 @@ struct DeviceDefinition<Facility::LED_FACILITY, 0> final : public config::Unconf
     return std::array{DeviceId{Facility::GPIO_FACILITY, PIN.port}};
   }
 
-  template <typename System, typename DeviceRegistry, configuration config>
-  using accessor = led::LedAccessor<System, DeviceRegistry, 0, PIN>;
+  template <typename DeviceRegistry, typename Board, configuration config>
+  using accessor = led::LedAccessor<DeviceRegistry, Board, 0, PIN>;
 };
 
 /**
@@ -245,8 +245,8 @@ struct DeviceDefinition<Facility::TIMER_FACILITY, INDEX> final
     };
   }
 
-  template <typename System, typename DeviceRegistry, configuration config>
-  using accessor = timer::Stm32L4LowPowerTimerAccessor<System, DeviceRegistry, INDEX>;
+  template <typename DeviceRegistry, typename Board, configuration config>
+  using accessor = timer::Stm32L4LowPowerTimerAccessor<DeviceRegistry, Board, INDEX>;
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table,
@@ -282,8 +282,8 @@ struct DeviceDefinition<Facility::WATCHDOG_FACILITY, 0> final {
     };
   }
 
-  template <typename System, typename DeviceRegistry, configuration config>
-  using accessor = watchdog::Stm32L4WatchdogAccessor<System, DeviceRegistry, config>;
+  template <typename DeviceRegistry, typename Board, configuration config>
+  using accessor = watchdog::Stm32L4WatchdogAccessor<DeviceRegistry, Board, config>;
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table,
@@ -308,8 +308,8 @@ struct DeviceDefinition<Facility::RNG_FACILITY, 0> final : public config::Unconf
     };
   }
 
-  template <typename System, typename DeviceRegistry, configuration config>
-  using accessor = random::Stm32RngAccessor<System, DeviceRegistry>;
+  template <typename DeviceRegistry, typename Board, configuration config>
+  using accessor = random::Stm32RngAccessor<DeviceRegistry, Board>;
 };
 
 /**
@@ -333,8 +333,8 @@ struct DeviceDefinition<Facility::CLOCK_FACILITY, 0> final {
     };
   }
 
-  template <typename System, typename DeviceRegistry, configuration CONFIG>
-  using accessor = clock::ClockAccessor<System, DeviceRegistry, 0, CONFIG>;
+  template <typename DeviceRegistry, typename Board, configuration CONFIG>
+  using accessor = clock::ClockAccessor<DeviceRegistry, Board, 0, CONFIG>;
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table,
@@ -352,7 +352,7 @@ struct DeviceDefinition<Facility::DMA_FACILITY, 0> final : public config::Unconf
 
   static constexpr DeviceId id() noexcept { return {Facility::DMA_FACILITY, 0}; }
 
-  template <typename System, typename DeviceRegistry, configuration CONFIG>
+  template <typename DeviceRegistry, typename Board, configuration CONFIG>
   using accessor = dma::Stm32L4DmaAccessor<0>;
 
   template <size_t NUM_ISRS>
@@ -375,7 +375,7 @@ struct DeviceDefinition<Facility::DMA_FACILITY, 1> final : public config::Unconf
 
   static constexpr DeviceId id() noexcept { return {Facility::DMA_FACILITY, 1}; }
 
-  template <typename System, typename DeviceRegistry, configuration CONFIG>
+  template <typename DeviceRegistry, typename Board, configuration CONFIG>
   using accessor = dma::Stm32L4DmaAccessor<1>;
 
   template <size_t NUM_ISRS>
@@ -401,8 +401,8 @@ struct DeviceDefinition<Facility::ADC_FACILITY, 0> final : public config::Unconf
 
   static constexpr DeviceId id() noexcept { return {Facility::ADC_FACILITY, 0}; }
 
-  template <typename System, typename DeviceRegistry, configuration CONFIG>
-  using accessor = adc::Stm32L4AdcAccessor<System, DeviceRegistry, /* ADC1 */ 0, /* DMA1 */ 0,
+  template <typename DeviceRegistry, typename Board, configuration CONFIG>
+  using accessor = adc::Stm32L4AdcAccessor<DeviceRegistry, Board, /* ADC1 */ 0, /* DMA1 */ 0,
                                            /* Channel 1 */ 0>;
 
   static constexpr auto dependencies(const configuration&) noexcept {
@@ -419,8 +419,8 @@ struct DeviceDefinition<Facility::ADC_FACILITY, 1> final : public config::Unconf
 
   static constexpr DeviceId id() noexcept { return {Facility::ADC_FACILITY, 1}; }
 
-  template <typename System, typename DeviceRegistry, configuration CONFIG>
-  using accessor = adc::Stm32L4AdcAccessor<System, DeviceRegistry, /* ADC2 */ 1, /* DMA1 */ 0,
+  template <typename DeviceRegistry, typename Board, configuration CONFIG>
+  using accessor = adc::Stm32L4AdcAccessor<DeviceRegistry, Board, /* ADC2 */ 1, /* DMA1 */ 0,
                                            /* Channel 2 */ 1>;
 
   static constexpr auto dependencies(const configuration&) noexcept {
@@ -444,9 +444,9 @@ struct DeviceDefinition<Facility::BOARD_IDENTIFICATION_FACILITY, 0> final
   static constexpr gpio::PinRef BOARD_ID_POWER_PIN{/*GPIO PORT A */ 0, 6};
   static constexpr gpio::PinRef BOARD_ID_SENSE_PIN{/*GPIO PORT A */ 0, 7};
 
-  template <typename System, typename DeviceRegistry, configuration CONFIG>
+  template <typename DeviceRegistry, typename Board, configuration CONFIG>
   using accessor =
-      board_identification::BoardIdentificationAccessor<System, DeviceRegistry, /* ADC 0 */ 0,
+      board_identification::BoardIdentificationAccessor<DeviceRegistry, Board, /* ADC 0 */ 0,
                                                         BOARD_ID_POWER_PIN, BOARD_ID_SENSE_PIN>;
 
   static constexpr auto dependencies(const configuration&) noexcept {
