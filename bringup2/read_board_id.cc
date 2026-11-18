@@ -17,20 +17,20 @@ using namespace tvsc::hal2::config;
 
 DEBUG_VAR BoardId board_id{};
 
-static constexpr auto system_builder{
-    SystemBuilder<tvsc::hal2::board::Board>{}
+static constexpr auto device_registry_builder{
+    DeviceRegistryBuilder<tvsc::hal2::board::Board>{}
         .add<Facility::BOARD_IDENTIFICATION_FACILITY, 0>()
         .add<Facility::CLOCK_FACILITY, 0, {.sleep_strategy = clock::SleepStrategy::STOP}>()
         .add<Facility::LED_FACILITY, 0>()};
 
 INTERRUPT_VECTOR_TABLE static constexpr auto interrupt_vector_table{
-    system_builder.create_vector_table()};
+    device_registry_builder.create_vector_table()};
 
 int main(int argc, char* argv[]) {
   tvsc::initialize(&argc, &argv);
-  auto sys{system_builder.system()};
-  auto& clock{sys.steady_clock()};
-  auto led{sys.debug_led().access()};
+  auto device_registry{device_registry_builder.registry()};
+  auto& clock{device_registry.steady_clock()};
+  auto led{device_registry.debug_led().access()};
 
   led.set_pin_mode(gpio::PinMode::OUTPUT_PUSH_PULL, gpio::PinSpeed::LOW);
   led.off();
@@ -39,12 +39,12 @@ int main(int argc, char* argv[]) {
   while (true) {
     static constexpr uint32_t CALIBRATION_FREQUENCY{1024};
     if (iteration_count++ % CALIBRATION_FREQUENCY == 0) {
-      auto adc{sys.adc0().access()};
+      auto adc{device_registry.adc0().access()};
       adc.calibrate_single_ended_input();
     }
 
     {
-      auto board_identifier{sys.board_id().access()};
+      auto board_identifier{device_registry.board_id().access()};
       board_id = board_identifier.read_board_id(clock);
     }
     if (board_id == cast_to_underlying_type(CanonicalBoardIds::UNKNOWN)) {

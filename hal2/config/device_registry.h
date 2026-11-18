@@ -22,8 +22,8 @@ struct ConfiguredDevice final {
   using definition = Definition;
   static constexpr auto CONFIG{config};
 
-  template <typename System, typename Board>
-  using accessor = typename definition::template accessor<System, Board, CONFIG>;
+  template <typename DeviceRegistry, typename Board>
+  using accessor = typename definition::template accessor<DeviceRegistry, Board, CONFIG>;
 
   static constexpr DeviceId id() noexcept { return definition::id(); }
 
@@ -69,20 +69,21 @@ struct DependencyListResolver<Board, Accumulator, Visiting, Dependencies, Index>
 }  // namespace internal
 
 template <typename Board, typename... ConfiguredDevices>
-class System final
-    : public ConfiguredDevices::template accessor<System<Board, ConfiguredDevices...>, Board>... {
+class DeviceRegistry final
+    : public ConfiguredDevices::template accessor<DeviceRegistry<Board, ConfiguredDevices...>,
+                                                  Board>... {
  private:
   template <typename, typename>
-  friend class SystemBuilder;
+  friend class DeviceRegistryBuilder;
 
-  constexpr System() noexcept = default;
+  constexpr DeviceRegistry() noexcept = default;
 
  public:
   template <DeviceId DEVICE>
   [[nodiscard]] constexpr auto& as_accessor() noexcept {
     using accessor_type =
         typename Board::template devices<DEVICE.facility, DEVICE.index>::template accessor<
-            System, Board,
+            DeviceRegistry, Board,
             typename Board::template devices<DEVICE.facility, DEVICE.index>::configuration{}>;
     return static_cast<accessor_type&>(*this);
   }
@@ -96,12 +97,12 @@ class System final
 // TODO(james): Extract Board as a concept and rephrase the first type parameter below to
 // "Board Board".
 template <typename Board, typename Accumulator = TypeAccumulator<>>
-class SystemBuilder;
+class DeviceRegistryBuilder;
 
 template <typename Board, typename... ConfiguredDevices>
-class SystemBuilder<Board, TypeAccumulator<ConfiguredDevices...>> final {
+class DeviceRegistryBuilder<Board, TypeAccumulator<ConfiguredDevices...>> final {
  public:
-  constexpr SystemBuilder() noexcept = default;
+  constexpr DeviceRegistryBuilder() noexcept = default;
 
   template <Facility FACILITY, size_t INDEX,
             typename Board::template devices<FACILITY, INDEX>::configuration CONFIG = {}>
@@ -131,7 +132,7 @@ class SystemBuilder<Board, TypeAccumulator<ConfiguredDevices...>> final {
     using NextAccumulator =
         typename AccumulatorWithDependencies::template AppendUnique<TargetConfigured>;
 
-    return SystemBuilder<Board, NextAccumulator>{};
+    return DeviceRegistryBuilder<Board, NextAccumulator>{};
   }
 
   template <size_t NUM_ISRS = 127>
@@ -141,10 +142,11 @@ class SystemBuilder<Board, TypeAccumulator<ConfiguredDevices...>> final {
     return vector_table;
   }
 
-  constexpr auto system() const noexcept {
-    using ConcreteSystem =
-        TypeAccumulator<ConfiguredDevices...>::template InstantiateWithPrefix<System, Board>;
-    return ConcreteSystem{};
+  constexpr auto registry() const noexcept {
+    using ConcreteDeviceRegistry =
+        TypeAccumulator<ConfiguredDevices...>::template InstantiateWithPrefix<DeviceRegistry,
+                                                                              Board>;
+    return ConcreteDeviceRegistry{};
   }
 };
 

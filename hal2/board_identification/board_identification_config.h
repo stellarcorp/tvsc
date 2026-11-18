@@ -9,7 +9,7 @@
 
 namespace tvsc::hal2::board_identification {
 
-template <typename System, typename DeviceRegistry, size_t ADC_INDEX, gpio::PinRef POWER_PIN,
+template <typename DeviceRegistry, typename Board, size_t ADC_INDEX, gpio::PinRef POWER_PIN,
           gpio::PinRef SENSE_PIN>
 class BoardIdentificationAccessor {
  private:
@@ -17,9 +17,9 @@ class BoardIdentificationAccessor {
   static constexpr DeviceId power_gpio_id{Facility::GPIO_FACILITY, POWER_PIN.port};
   static constexpr DeviceId sense_gpio_id{Facility::GPIO_FACILITY, SENSE_PIN.port};
 
-  BoardIdentificationDevice board_id_{config::get_device<adc_id, System>(*this),         //
-                                      config::get_device<power_gpio_id, System>(*this),  //
-                                      config::get_device<sense_gpio_id, System>(*this),  //
+  BoardIdentificationDevice board_id_{config::get_device<adc_id, DeviceRegistry>(*this),         //
+                                      config::get_device<power_gpio_id, DeviceRegistry>(*this),  //
+                                      config::get_device<sense_gpio_id, DeviceRegistry>(*this),  //
                                       POWER_PIN, SENSE_PIN};
 
  public:
