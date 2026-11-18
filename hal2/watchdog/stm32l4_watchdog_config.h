@@ -13,16 +13,16 @@ namespace tvsc::hal2::watchdog {
 // Facility for specific tasks.
 // TODO(james): Determine what value this should have if both LP watchdogs are in use.
 
-template <typename System, typename DeviceRegistry, auto configuration>
+template <typename DeviceRegistry, typename Board, auto configuration>
 class Stm32L4WatchdogAccessor {
  private:
   static constexpr size_t LSI_OSCILLATOR_INDEX{1};
   static constexpr DeviceId LSI_OSCILLATOR_ID{Facility::OSCILLATOR_FACILITY,
                                                           LSI_OSCILLATOR_INDEX};
   using LsiOscillatorAccessor =
-      config::accessor_type<System, DeviceRegistry, LSI_OSCILLATOR_ID>;
+      config::accessor_type<DeviceRegistry, Board, LSI_OSCILLATOR_ID>;
 
-  Stm32L4Watchdog watchdog_{static_cast<LsiOscillatorAccessor&>(static_cast<System&>(*this)).get()};
+  Stm32L4Watchdog watchdog_{static_cast<LsiOscillatorAccessor&>(static_cast<DeviceRegistry&>(*this)).get()};
 
  public:
   [[nodiscard]] WatchdogDevice& get() noexcept { return watchdog_; }

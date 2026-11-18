@@ -5,7 +5,7 @@
 
 namespace tvsc::hal2::systick {
 
-template <typename System>
+template <typename DeviceRegistry>
 class Stm32L4SysTickAccessor {
  private:
   Stm32L4SysTick systick_{};
