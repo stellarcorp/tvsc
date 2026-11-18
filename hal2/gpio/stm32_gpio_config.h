@@ -13,11 +13,11 @@
 
 namespace tvsc::hal2::gpio {
 
-template <PortNumber PORT, typename System>
+template <PortNumber PORT, typename DeviceRegistry>
 class Stm32GpioAccessor;
 
-template <typename System>
-class Stm32GpioAccessor<0, System> {
+template <typename DeviceRegistry>
+class Stm32GpioAccessor<0, DeviceRegistry> {
  private:
   Stm32Gpio<0> gpio_{};
 
@@ -29,8 +29,8 @@ class Stm32GpioAccessor<0, System> {
   [[nodiscard]] GpioDevice& gpio_a() noexcept { return get(); }
 };
 
-template <typename System>
-class Stm32GpioAccessor<1, System> {
+template <typename DeviceRegistry>
+class Stm32GpioAccessor<1, DeviceRegistry> {
  private:
   Stm32Gpio<1> gpio_{};
 
@@ -42,8 +42,8 @@ class Stm32GpioAccessor<1, System> {
   [[nodiscard]] GpioDevice& gpio_b() noexcept { return get(); }
 };
 
-template <typename System>
-class Stm32GpioAccessor<2, System> {
+template <typename DeviceRegistry>
+class Stm32GpioAccessor<2, DeviceRegistry> {
  private:
   Stm32Gpio<2> gpio_{};
 
@@ -55,8 +55,8 @@ class Stm32GpioAccessor<2, System> {
   [[nodiscard]] GpioDevice& gpio_c() noexcept { return get(); }
 };
 
-template <typename System>
-class Stm32GpioAccessor<3, System> {
+template <typename DeviceRegistry>
+class Stm32GpioAccessor<3, DeviceRegistry> {
  private:
   Stm32Gpio<3> gpio_{};
 
@@ -68,8 +68,8 @@ class Stm32GpioAccessor<3, System> {
   [[nodiscard]] GpioDevice& gpio_d() noexcept { return get(); }
 };
 
-template <typename System>
-class Stm32GpioAccessor<4, System> {
+template <typename DeviceRegistry>
+class Stm32GpioAccessor<4, DeviceRegistry> {
  private:
   Stm32Gpio<4> gpio_{};
 
@@ -81,8 +81,8 @@ class Stm32GpioAccessor<4, System> {
   [[nodiscard]] GpioDevice& gpio_e() noexcept { return get(); }
 };
 
-template <typename System>
-class Stm32GpioAccessor<5, System> {
+template <typename DeviceRegistry>
+class Stm32GpioAccessor<5, DeviceRegistry> {
  private:
   Stm32Gpio<5> gpio_{};
 
@@ -94,8 +94,8 @@ class Stm32GpioAccessor<5, System> {
   [[nodiscard]] GpioDevice& gpio_f() noexcept { return get(); }
 };
 
-template <typename System>
-class Stm32GpioAccessor<6, System> {
+template <typename DeviceRegistry>
+class Stm32GpioAccessor<6, DeviceRegistry> {
  private:
   Stm32Gpio<6> gpio_{};
 
@@ -107,8 +107,8 @@ class Stm32GpioAccessor<6, System> {
   [[nodiscard]] GpioDevice& gpio_g() noexcept { return get(); }
 };
 
-template <typename System>
-class Stm32GpioAccessor<7, System> {
+template <typename DeviceRegistry>
+class Stm32GpioAccessor<7, DeviceRegistry> {
  private:
   Stm32Gpio<7> gpio_{};
 

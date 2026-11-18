@@ -7,17 +7,17 @@
 
 namespace tvsc::hal2::adc {
 
-template <typename System, typename DeviceRegistry, size_t INDEX, size_t DMA_CONTROLLER_INDEX,
+template <typename DeviceRegistry, typename Board, size_t INDEX, size_t DMA_CONTROLLER_INDEX,
           uint8_t CHANNEL_INDEX>
 class Stm32L4AdcAccessor;
 
-template <typename System, typename DeviceRegistry, size_t DMA_CONTROLLER_INDEX,
+template <typename DeviceRegistry, typename Board, size_t DMA_CONTROLLER_INDEX,
           uint8_t CHANNEL_INDEX>
-class Stm32L4AdcAccessor<System, DeviceRegistry, 0, DMA_CONTROLLER_INDEX, CHANNEL_INDEX> {
+class Stm32L4AdcAccessor<DeviceRegistry, Board, 0, DMA_CONTROLLER_INDEX, CHANNEL_INDEX> {
  private:
   static constexpr DeviceId DMA_CONTROLLER_ID{Facility::DMA_FACILITY, DMA_CONTROLLER_INDEX};
-  using DmaControllerAccessor = config::accessor_type<System, DeviceRegistry, DMA_CONTROLLER_ID>;
-  Stm32L4Adc adc_{0, static_cast<DmaControllerAccessor&>(static_cast<System&>(*this)).get(),
+  using DmaControllerAccessor = config::accessor_type<DeviceRegistry, Board, DMA_CONTROLLER_ID>;
+  Stm32L4Adc adc_{0, static_cast<DmaControllerAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
                   CHANNEL_INDEX};
 
  public:
@@ -25,13 +25,13 @@ class Stm32L4AdcAccessor<System, DeviceRegistry, 0, DMA_CONTROLLER_INDEX, CHANNE
   [[nodiscard]] auto& adc0() noexcept { return get(); }
 };
 
-template <typename System, typename DeviceRegistry, size_t DMA_CONTROLLER_INDEX,
+template <typename DeviceRegistry, typename Board, size_t DMA_CONTROLLER_INDEX,
           uint8_t CHANNEL_INDEX>
-class Stm32L4AdcAccessor<System, DeviceRegistry, 1, DMA_CONTROLLER_INDEX, CHANNEL_INDEX> {
+class Stm32L4AdcAccessor<DeviceRegistry, Board, 1, DMA_CONTROLLER_INDEX, CHANNEL_INDEX> {
  private:
   static constexpr DeviceId DMA_CONTROLLER_ID{Facility::DMA_FACILITY, DMA_CONTROLLER_INDEX};
-  using DmaControllerAccessor = config::accessor_type<System, DeviceRegistry, DMA_CONTROLLER_ID>;
-  Stm32L4Adc adc_{1, static_cast<DmaControllerAccessor&>(static_cast<System&>(*this)).get(),
+  using DmaControllerAccessor = config::accessor_type<DeviceRegistry, Board, DMA_CONTROLLER_ID>;
+  Stm32L4Adc adc_{1, static_cast<DmaControllerAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
                   CHANNEL_INDEX};
 
  public:
