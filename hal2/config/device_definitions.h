@@ -8,24 +8,25 @@
 
 namespace tvsc::hal2::config {
 
-// TODO(james): Add constraint to restrict the System type parameter to the System type from a
-// SystemBuilder.
-template <typename System, typename Board, DeviceId Id>
+// TODO(james): Add constraint to restrict the DeviceRegistry type parameter to the DeviceRegistry
+// type from a DeviceRegistryBuilder.
+template <typename DeviceRegistry, typename Board, DeviceId Id>
 using accessor_type = typename Board::template devices<Id.facility, Id.index>::template accessor<
-    System, Board, typename Board::template devices<Id.facility, Id.index>::configuration{}>;
+    DeviceRegistry, Board,
+    typename Board::template devices<Id.facility, Id.index>::configuration{}>;
 
-// TODO(james): Add constraint to restrict the System type parameter to the System type from a
-// SystemBuilder.
-template <DeviceId ID, typename System>
+// TODO(james): Add constraint to restrict the DeviceRegistry type parameter to the DeviceRegistry
+// type from a DeviceRegistryBuilder.
+template <DeviceId ID, typename DeviceRegistry>
 [[nodiscard]] constexpr auto& get_device(auto& system) noexcept {
-  return static_cast<System&>(system).template get_device<ID>();
+  return static_cast<DeviceRegistry&>(system).template get_device<ID>();
 }
 
-// TODO(james): Add constraint to restrict the System type parameter to the System type from a
-// SystemBuilder.
-template <DeviceId ID, typename System>
+// TODO(james): Add constraint to restrict the DeviceRegistry type parameter to the DeviceRegistry
+// type from a DeviceRegistryBuilder.
+template <DeviceId ID, typename DeviceRegistry>
 [[nodiscard]] constexpr auto& get_accessor(auto& system) noexcept {
-  return static_cast<System&>(system).template as_accessor<ID>();
+  return static_cast<DeviceRegistry&>(system).template as_accessor<ID>();
 }
 
 /**
