@@ -107,7 +107,7 @@ struct DeviceDefinition<Facility::OSCILLATOR_FACILITY, 1> final
 
   // And the accessor must be provided in order to construct the System type.
   template <typename System, typename DeviceRegistry, configuration config>
-  using accessor = rcc::Stm32L4LsiOscillatorAccessor<System>;
+  using accessor = rcc::Stm32L4LsiOscillatorAccessor;
 };
 
 /**
@@ -122,7 +122,7 @@ struct DeviceDefinition<Facility::OSCILLATOR_FACILITY, 2> final
   static constexpr DeviceId id() noexcept { return {Facility::OSCILLATOR_FACILITY, 2}; }
 
   template <typename System, typename DeviceRegistry, configuration config>
-  using accessor = rcc::Stm32L4Hsi48OscillatorAccessor<System>;
+  using accessor = rcc::Stm32L4Hsi48OscillatorAccessor;
 };
 
 template <>

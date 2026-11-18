@@ -20,7 +20,6 @@ class Stm32L4RccAccessor {
   [[nodiscard]] Rcc& rcc() noexcept { return get(); }
 };
 
-template <typename System>
 class Stm32L4LsiOscillatorAccessor {
  private:
   Stm32L4LsiOscillator lsi_{};
@@ -31,7 +30,6 @@ class Stm32L4LsiOscillatorAccessor {
   [[nodiscard]] Oscillator& low_power_oscillator() noexcept { return get(); }
 };
 
-template <typename System>
 class Stm32L4Hsi48OscillatorAccessor {
  private:
   Stm32L4Hsi48Oscillator hsi48_{};
