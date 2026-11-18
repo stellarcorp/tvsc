@@ -21,13 +21,13 @@ class ClockAccessor {
   using LptimAccessor =
       config::accessor_type<System, DeviceRegistry, {Facility::TIMER_FACILITY, LPTIM_INDEX}>;
 
-  Clock<CONFIG.sleep_strategy> clock_{
+  LowPowerClock<CONFIG.sleep_strategy> clock_{
       static_cast<SysTickAccessor&>(static_cast<System&>(*this)).get(),
       static_cast<RccAccessor&>(static_cast<System&>(*this)).get(),
       static_cast<LptimAccessor&>(static_cast<System&>(*this)).get()};
 
  public:
-  [[nodiscard]] auto& get() noexcept { return clock_; }
+  [[nodiscard]] Clock& get() noexcept { return clock_; }
   [[nodiscard]] auto& clock0() noexcept { return get(); }
   [[nodiscard]] auto& steady_clock() noexcept { return get(); }
 };

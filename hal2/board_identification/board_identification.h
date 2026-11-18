@@ -28,8 +28,7 @@ class BoardIdentificationDevice final
   [[nodiscard]] bool is_running() noexcept;
   void stop() noexcept;
 
-  template <clock::SleepStrategy SLEEP_STRATEGY>
-  [[nodiscard]] BoardId read_board_id(clock::Clock<SLEEP_STRATEGY>& clock) noexcept {
+  [[nodiscard]] BoardId read_board_id(clock::Clock&) noexcept {
     power_pin_.on();
 
     BoardId result{cast_to_underlying_type(CanonicalBoardIds::UNKNOWN)};
@@ -65,8 +64,7 @@ class BoardIdentificationDriver final
   [[nodiscard]] bool is_running() noexcept { return device_->is_running(); }
   void stop() noexcept { device_->stop(); }
 
-  template <clock::SleepStrategy SLEEP_STRATEGY>
-  [[nodiscard]] BoardId read_board_id(clock::Clock<SLEEP_STRATEGY>& clock) noexcept {
+  [[nodiscard]] BoardId read_board_id(clock::Clock& clock) noexcept {
     return device_->read_board_id(clock);
   }
 };
