@@ -7,17 +7,17 @@
 
 namespace tvsc::hal2::led {
 
-template <typename System, typename DeviceRegistry, size_t INDEX, gpio::PinRef PIN>
+template <typename DeviceRegistry, typename Board, size_t INDEX, gpio::PinRef PIN>
 class LedAccessor;
 
-template <typename System, typename DeviceRegistry, gpio::PinRef PIN>
-class LedAccessor<System, DeviceRegistry, 0, PIN> {
+template <typename DeviceRegistry, typename Board, gpio::PinRef PIN>
+class LedAccessor<DeviceRegistry, Board, 0, PIN> {
  private:
   static constexpr DeviceId gpio_id{Facility::GPIO_FACILITY, PIN.port};
 
-  using GpioBankAccessor = config::accessor_type<System, DeviceRegistry, gpio_id>;
+  using GpioBankAccessor = config::accessor_type<DeviceRegistry, Board, gpio_id>;
 
-  gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<System&>(*this)).get(),
+  gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
                            PIN.pin};
 
  public:
@@ -27,14 +27,14 @@ class LedAccessor<System, DeviceRegistry, 0, PIN> {
   [[nodiscard]] auto& debug_led() noexcept { return get(); }
 };
 
-template <typename System, typename DeviceRegistry, gpio::PinRef PIN>
-class LedAccessor<System, DeviceRegistry, 1, PIN> {
+template <typename DeviceRegistry, typename Board, gpio::PinRef PIN>
+class LedAccessor<DeviceRegistry, Board, 1, PIN> {
  private:
   static constexpr DeviceId gpio_id{Facility::GPIO_FACILITY, PIN.port};
 
-  using GpioBankAccessor = config::accessor_type<System, DeviceRegistry, gpio_id>;
+  using GpioBankAccessor = config::accessor_type<DeviceRegistry, Board, gpio_id>;
 
-  gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<System&>(*this)).get(),
+  gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
                            PIN.pin};
 
  public:
@@ -43,14 +43,14 @@ class LedAccessor<System, DeviceRegistry, 1, PIN> {
   [[nodiscard]] auto& led1() noexcept { return get(); }
 };
 
-template <typename System, typename DeviceRegistry, gpio::PinRef PIN>
-class LedAccessor<System, DeviceRegistry, 2, PIN> {
+template <typename DeviceRegistry, typename Board, gpio::PinRef PIN>
+class LedAccessor<DeviceRegistry, Board, 2, PIN> {
  private:
   static constexpr DeviceId gpio_id{Facility::GPIO_FACILITY, PIN.port};
 
-  using GpioBankAccessor = config::accessor_type<System, DeviceRegistry, gpio_id>;
+  using GpioBankAccessor = config::accessor_type<DeviceRegistry, Board, gpio_id>;
 
-  gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<System&>(*this)).get(),
+  gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
                            PIN.pin};
 
  public:
@@ -59,14 +59,14 @@ class LedAccessor<System, DeviceRegistry, 2, PIN> {
   [[nodiscard]] auto& led2() noexcept { return get(); }
 };
 
-template <typename System, typename DeviceRegistry, gpio::PinRef PIN>
-class LedAccessor<System, DeviceRegistry, 3, PIN> {
+template <typename DeviceRegistry, typename Board, gpio::PinRef PIN>
+class LedAccessor<DeviceRegistry, Board, 3, PIN> {
  private:
   static constexpr DeviceId gpio_id{Facility::GPIO_FACILITY, PIN.port};
 
-  using GpioBankAccessor = config::accessor_type<System, DeviceRegistry, gpio_id>;
+  using GpioBankAccessor = config::accessor_type<DeviceRegistry, Board, gpio_id>;
 
-  gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<System&>(*this)).get(),
+  gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
                            PIN.pin};
 
  public:
