@@ -16,44 +16,44 @@ void Reset_Handler(void) {}
 
 namespace tvsc::hal2::config {
 
-template <typename System, typename DeviceRegistry, size_t I2C_INDEX>
+template <typename DeviceRegistry, typename Board, size_t I2C_INDEX>
 struct ImuAccessor {
   using I2cBus =
-      config::accessor_type<System, DeviceRegistry, DeviceId{Facility::I2C_FACILITY, I2C_INDEX}>;
+      config::accessor_type<DeviceRegistry, Board, DeviceId{Facility::I2C_FACILITY, I2C_INDEX}>;
 
   int modifiable_value{42};
   bool initialized_at_compile_time{std::is_constant_evaluated()};
 
   // Production accessors would return an actual device here, not an int.
   int imu0() {
-    auto i2c_accessor{static_cast<I2cBus&>(static_cast<System&>(*this))};
+    auto i2c_accessor{static_cast<I2cBus&>(static_cast<DeviceRegistry&>(*this))};
     return i2c_accessor.get() + 100;
   }
   int get() { return imu0(); }
 };
 
-template <typename System>
+template <typename DeviceRegistry>
 struct SystickAccessor {
   int systick() { return 200; }
   int get() { return systick(); }
 };
 
-template <typename System, size_t INDEX>
+template <typename DeviceRegistry, size_t INDEX>
 struct I2cAccessor;
 
-template <typename System>
-struct I2cAccessor<System, 0> {
+template <typename DeviceRegistry>
+struct I2cAccessor<DeviceRegistry, 0> {
   constexpr int i2c0() const noexcept { return 300; }
   constexpr int get() const noexcept { return i2c0(); }
 };
 
-template <typename System>
-struct I2cAccessor<System, 1> {
+template <typename DeviceRegistry>
+struct I2cAccessor<DeviceRegistry, 1> {
   constexpr int i2c1() const noexcept { return 400; }
   constexpr int get() const noexcept { return i2c1(); }
 };
 
-template <typename System>
+template <typename DeviceRegistry>
 struct RccAccessor {
   int rcc() { return 1000; }
   int get() { return rcc(); }
@@ -81,8 +81,8 @@ template <>
 struct DeviceDefinition<Facility::IMU_FACILITY, 0> : public UnconfigurableDevice {
   static constexpr size_t I2C_INDEX{1};
 
-  template <typename System, typename DeviceRegistry, configuration CONFIG>
-  using accessor = ImuAccessor<System, DeviceRegistry, I2C_INDEX>;
+  template <typename DeviceRegistry, typename Board, configuration CONFIG>
+  using accessor = ImuAccessor<DeviceRegistry, Board, I2C_INDEX>;
 
   [[nodiscard]] static constexpr DeviceId id() noexcept { return {Facility::IMU_FACILITY, 0}; }
   [[nodiscard]] static constexpr const char* name() noexcept { return "imu"; }
@@ -93,8 +93,8 @@ struct DeviceDefinition<Facility::IMU_FACILITY, 0> : public UnconfigurableDevice
 
 template <>
 struct DeviceDefinition<Facility::SYSTICK_FACILITY, 0> : public UnconfigurableDevice {
-  template <typename System, typename DeviceRegistry, configuration CONFIG>
-  using accessor = SystickAccessor<System>;
+  template <typename DeviceRegistry, typename Board, configuration CONFIG>
+  using accessor = SystickAccessor<DeviceRegistry>;
 
   static constexpr DeviceId id() noexcept { return {Facility::SYSTICK_FACILITY, 0}; }
   [[nodiscard]] static constexpr const char* name() noexcept { return "systick"; }
@@ -125,8 +125,8 @@ struct DeviceDefinition<Facility::I2C_FACILITY, INDEX> {
   };
   using configuration = Configuration;
 
-  template <typename System, typename DeviceRegistry, configuration CONFIG>
-  using accessor = I2cAccessor<System, INDEX>;
+  template <typename DeviceRegistry, typename Board, configuration CONFIG>
+  using accessor = I2cAccessor<DeviceRegistry, INDEX>;
 
   static constexpr bool is_valid(const configuration&) noexcept { return true; }
   static constexpr auto dependencies(const configuration&) noexcept {
@@ -148,8 +148,8 @@ struct DeviceDefinition<Facility::I2C_FACILITY, INDEX> {
 
 template <>
 struct DeviceDefinition<Facility::RCC_FACILITY, 0> : public UnconfigurableDevice {
-  template <typename System, typename DeviceRegistry, configuration CONFIG>
-  using accessor = RccAccessor<System>;
+  template <typename DeviceRegistry, typename Board, configuration CONFIG>
+  using accessor = RccAccessor<DeviceRegistry>;
 
   static constexpr DeviceId id() noexcept { return {Facility::RCC_FACILITY, 0}; }
   static constexpr const char* name() noexcept { return "rcc"; }
@@ -169,70 +169,70 @@ static_assert(ValidDeviceDefinition<DeviceDefinition<Facility::I2C_FACILITY, 0>,
 static_assert(ValidDeviceDefinition<DeviceDefinition<Facility::I2C_FACILITY, 1>, Board>);
 static_assert(ValidDeviceDefinition<DeviceDefinition<Facility::RCC_FACILITY, 0>, Board>);
 
-TEST(SystemBuilderTest, CanConstructSystem) {
-  auto system_builder{SystemBuilder<Board>{}
-                          .add<Facility::RCC_FACILITY, 0>()
-                          .add<Facility::SYSTICK_FACILITY, 0>()
-                          .add<Facility::I2C_FACILITY, 0>()
-                          .add<Facility::I2C_FACILITY, 1>()
-                          .add<Facility::IMU_FACILITY, 0>()};
+TEST(DeviceRegistryBuilderTest, CanConstructDeviceRegistry) {
+  auto device_registry_builder{DeviceRegistryBuilder<Board>{}
+                                   .add<Facility::RCC_FACILITY, 0>()
+                                   .add<Facility::SYSTICK_FACILITY, 0>()
+                                   .add<Facility::I2C_FACILITY, 0>()
+                                   .add<Facility::I2C_FACILITY, 1>()
+                                   .add<Facility::IMU_FACILITY, 0>()};
 
-  auto sys{system_builder.system()};
+  auto device_registry{device_registry_builder.registry()};
 
-  EXPECT_EQ(sys.rcc(), 1000);
-  EXPECT_EQ(sys.systick(), 200);
-  EXPECT_EQ(sys.i2c0(), 300);
-  EXPECT_EQ(sys.i2c1(), 400);
-  EXPECT_EQ(sys.imu0(), sys.i2c1() + 100);
+  EXPECT_EQ(device_registry.rcc(), 1000);
+  EXPECT_EQ(device_registry.systick(), 200);
+  EXPECT_EQ(device_registry.i2c0(), 300);
+  EXPECT_EQ(device_registry.i2c1(), 400);
+  EXPECT_EQ(device_registry.imu0(), device_registry.i2c1() + 100);
 }
 
-TEST(SystemBuilderTest, AddsDependencies) {
-  auto system_builder{
-      SystemBuilder<Board>{}                     //
+TEST(DeviceRegistryBuilderTest, AddsDependencies) {
+  auto device_registry_builder{
+      DeviceRegistryBuilder<Board>{}             //
           .add<Facility::SYSTICK_FACILITY, 0>()  //
           .add<Facility::IMU_FACILITY, 0>()      //
   };
 
-  auto sys{system_builder.system()};
+  auto device_registry{device_registry_builder.registry()};
 
-  EXPECT_EQ(sys.systick(), 200);
-  EXPECT_EQ(sys.i2c1(), 400);
-  EXPECT_EQ(sys.imu0(), sys.i2c1() + 100);
+  EXPECT_EQ(device_registry.systick(), 200);
+  EXPECT_EQ(device_registry.i2c1(), 400);
+  EXPECT_EQ(device_registry.imu0(), device_registry.i2c1() + 100);
 }
 
-TEST(SystemBuilderTest, AddsDependenciesTransitively) {
-  auto system_builder{
-      SystemBuilder<Board>{}                     //
+TEST(DeviceRegistryBuilderTest, AddsDependenciesTransitively) {
+  auto device_registry_builder{
+      DeviceRegistryBuilder<Board>{}             //
           .add<Facility::SYSTICK_FACILITY, 0>()  //
           .add<Facility::IMU_FACILITY, 0>()      //
   };
 
-  auto sys{system_builder.system()};
+  auto device_registry{device_registry_builder.registry()};
 
-  EXPECT_EQ(sys.systick(), 200);
-  EXPECT_EQ(sys.i2c1(), 400);
-  EXPECT_EQ(sys.imu0(), sys.i2c1() + 100);
-  EXPECT_EQ(sys.rcc(), 1000);
+  EXPECT_EQ(device_registry.systick(), 200);
+  EXPECT_EQ(device_registry.i2c1(), 400);
+  EXPECT_EQ(device_registry.imu0(), device_registry.i2c1() + 100);
+  EXPECT_EQ(device_registry.rcc(), 1000);
 }
 
-TEST(SystemBuilderTest, CanCreateSystemAtCompileTime) {
-  constexpr auto system_builder{SystemBuilder<Board>{}
-                                    .add<Facility::SYSTICK_FACILITY, 0>()
-                                    .add<Facility::I2C_FACILITY, 0>()
-                                    .add<Facility::I2C_FACILITY, 1>()
-                                    .add<Facility::IMU_FACILITY, 0>()};
+TEST(DeviceRegistryBuilderTest, CanCreateDeviceRegistryAtCompileTime) {
+  constexpr auto device_registry_builder{DeviceRegistryBuilder<Board>{}
+                                             .add<Facility::SYSTICK_FACILITY, 0>()
+                                             .add<Facility::I2C_FACILITY, 0>()
+                                             .add<Facility::I2C_FACILITY, 1>()
+                                             .add<Facility::IMU_FACILITY, 0>()};
 
   // By using static constexpr here, we force the initialization of the system at compile-time.
   // Because the sys object is const, we can also verify compile-time initialization with
   // static_assert.
-  static constexpr auto sys{system_builder.system()};
-  static_assert(sys.initialized_at_compile_time);
-  EXPECT_TRUE(sys.initialized_at_compile_time);
+  static constexpr auto device_registry{device_registry_builder.registry()};
+  static_assert(device_registry.initialized_at_compile_time);
+  EXPECT_TRUE(device_registry.initialized_at_compile_time);
 }
 
-TEST(SystemBuilderTest, CanAddDependenciesAtCompileTime) {
-  constexpr auto system_builder{
-      SystemBuilder<Board>{}                     //
+TEST(DeviceRegistryBuilderTest, CanAddDependenciesAtCompileTime) {
+  constexpr auto device_registry_builder{
+      DeviceRegistryBuilder<Board>{}             //
           .add<Facility::SYSTICK_FACILITY, 0>()  //
           .add<Facility::IMU_FACILITY, 0>()      //
   };
@@ -240,14 +240,14 @@ TEST(SystemBuilderTest, CanAddDependenciesAtCompileTime) {
   // By using static constexpr here, we force the initialization of the system at compile-time.
   // Because the sys object is const, we can also verify compile-time initialization with
   // static_assert.
-  static constexpr auto sys{system_builder.system()};
-  static_assert(sys.initialized_at_compile_time);
-  EXPECT_TRUE(sys.initialized_at_compile_time);
+  static constexpr auto device_registry{device_registry_builder.registry()};
+  static_assert(device_registry.initialized_at_compile_time);
+  EXPECT_TRUE(device_registry.initialized_at_compile_time);
 }
 
-TEST(SystemBuilderTest, CanCreateModifiableSystemAtCompileTime) {
-  constexpr auto system_builder{
-      SystemBuilder<Board>{}                     //
+TEST(DeviceRegistryBuilderTest, CanCreateModifiableDeviceRegistryAtCompileTime) {
+  constexpr auto device_registry_builder{
+      DeviceRegistryBuilder<Board>{}             //
           .add<Facility::SYSTICK_FACILITY, 0>()  //
           .add<Facility::I2C_FACILITY, 1>()      //
           .add<Facility::I2C_FACILITY, 0>()      //
@@ -256,38 +256,39 @@ TEST(SystemBuilderTest, CanCreateModifiableSystemAtCompileTime) {
 
   // Note that we are using constinit to force initialization at compile-time. The resulting
   // object is not const, though.
-  static constinit auto sys{system_builder.system()};
-  EXPECT_TRUE(sys.initialized_at_compile_time);
-  sys.modifiable_value = 3;
-  EXPECT_EQ(sys.modifiable_value, 3);
+  static constinit auto device_registry{device_registry_builder.registry()};
+  EXPECT_TRUE(device_registry.initialized_at_compile_time);
+  device_registry.modifiable_value = 3;
+  EXPECT_EQ(device_registry.modifiable_value, 3);
 }
 
-TEST(SystemBuilderTest, CanCreateModifiableSystemWhileAddingDependenciesTransitivelyAtCompileTime) {
-  constexpr auto system_builder{
-      SystemBuilder<Board>{}                 //
+TEST(DeviceRegistryBuilderTest,
+     CanCreateModifiableDeviceRegistryWhileAddingDependenciesTransitivelyAtCompileTime) {
+  constexpr auto device_registry_builder{
+      DeviceRegistryBuilder<Board>{}         //
           .add<Facility::IMU_FACILITY, 0>()  //
   };
 
   // Note that we are using constinit to force initialization at compile-time. The resulting
   // object is not const, though.
-  static constinit auto sys{system_builder.system()};
-  EXPECT_TRUE(sys.initialized_at_compile_time);
-  sys.modifiable_value = 3;
-  EXPECT_EQ(sys.modifiable_value, 3);
-  EXPECT_EQ(sys.imu0(), sys.i2c1() + 100);
-  EXPECT_EQ(sys.rcc(), 1000);
+  static constinit auto device_registry{device_registry_builder.registry()};
+  EXPECT_TRUE(device_registry.initialized_at_compile_time);
+  device_registry.modifiable_value = 3;
+  EXPECT_EQ(device_registry.modifiable_value, 3);
+  EXPECT_EQ(device_registry.imu0(), device_registry.i2c1() + 100);
+  EXPECT_EQ(device_registry.rcc(), 1000);
 }
 
-TEST(SystemBuilderTest, CanCreateVectorTable) {
-  auto system_builder{
-      SystemBuilder<Board>{}                     //
+TEST(DeviceRegistryBuilderTest, CanCreateVectorTable) {
+  auto device_registry_builder{
+      DeviceRegistryBuilder<Board>{}             //
           .add<Facility::SYSTICK_FACILITY, 0>()  //
           .add<Facility::I2C_FACILITY, 0>()      //
           .add<Facility::I2C_FACILITY, 1>()      //
           .add<Facility::IMU_FACILITY, 0>()      //
   };
 
-  auto vector_table{system_builder.create_vector_table<NUM_ISRS>()};
+  auto vector_table{device_registry_builder.create_vector_table<NUM_ISRS>()};
 
   EXPECT_EQ(vector_table.at_arm_isr(SYSTICK_IRQn), &systick_isr);
   EXPECT_EQ(vector_table.at_arm_isr(I2C0_EV_IRQn), &i2c0_ev_isr);
@@ -296,37 +297,37 @@ TEST(SystemBuilderTest, CanCreateVectorTable) {
   EXPECT_EQ(vector_table.at_arm_isr(I2C1_ER_IRQn), &i2c1_er_isr);
 }
 
-TEST(SystemBuilderTest, CanCreateVectorTableWhileAddingDependencies) {
-  auto system_builder{
-      SystemBuilder<Board>{}                 //
+TEST(DeviceRegistryBuilderTest, CanCreateVectorTableWhileAddingDependencies) {
+  auto device_registry_builder{
+      DeviceRegistryBuilder<Board>{}         //
           .add<Facility::IMU_FACILITY, 0>()  //
   };
 
-  auto vector_table{system_builder.create_vector_table<NUM_ISRS>()};
+  auto vector_table{device_registry_builder.create_vector_table<NUM_ISRS>()};
 
   EXPECT_EQ(vector_table.at_arm_isr(SYSTICK_IRQn), &systick_isr);
   EXPECT_EQ(vector_table.at_arm_isr(I2C1_EV_IRQn), &i2c1_ev_isr);
   EXPECT_EQ(vector_table.at_arm_isr(I2C1_ER_IRQn), &i2c1_er_isr);
 }
 
-TEST(SystemBuilderTest, CanCreateVectorTableAtCompileTime) {
-  static constexpr auto system_builder{SystemBuilder<Board>{}
-                                           .add<Facility::SYSTICK_FACILITY, 0>()
-                                           .add<Facility::I2C_FACILITY, 0>()
-                                           .add<Facility::I2C_FACILITY, 1>()
-                                           .add<Facility::IMU_FACILITY, 0>()};
+TEST(DeviceRegistryBuilderTest, CanCreateVectorTableAtCompileTime) {
+  static constexpr auto device_registry_builder{DeviceRegistryBuilder<Board>{}
+                                                    .add<Facility::SYSTICK_FACILITY, 0>()
+                                                    .add<Facility::I2C_FACILITY, 0>()
+                                                    .add<Facility::I2C_FACILITY, 1>()
+                                                    .add<Facility::IMU_FACILITY, 0>()};
 
-  static constexpr auto vector_table{system_builder.create_vector_table<NUM_ISRS>()};
+  static constexpr auto vector_table{device_registry_builder.create_vector_table<NUM_ISRS>()};
   static_assert(vector_table.at_arm_isr(SYSTICK_IRQn) == &systick_isr);
 }
 
-TEST(SystemBuilderTest, CanCreateVectorTableWhileAddingDependenciesAtCompileTime) {
-  static constexpr auto system_builder{
-      SystemBuilder<Board>{}                 //
+TEST(DeviceRegistryBuilderTest, CanCreateVectorTableWhileAddingDependenciesAtCompileTime) {
+  static constexpr auto device_registry_builder{
+      DeviceRegistryBuilder<Board>{}         //
           .add<Facility::IMU_FACILITY, 0>()  //
   };
 
-  static constexpr auto vector_table{system_builder.create_vector_table<NUM_ISRS>()};
+  static constexpr auto vector_table{device_registry_builder.create_vector_table<NUM_ISRS>()};
   static_assert(vector_table.at_arm_isr(SYSTICK_IRQn) == &systick_isr);
   static_assert(vector_table.at_arm_isr(I2C1_EV_IRQn) == &i2c1_ev_isr);
   static_assert(vector_table.at_arm_isr(I2C1_ER_IRQn) == &i2c1_er_isr);
