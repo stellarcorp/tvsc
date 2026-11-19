@@ -1,10 +1,41 @@
 cc_library(
-    name = "clock",
+    name = "clock_headers",
     hdrs = [
         "clock.h",
-        "clock_config.h",
     ],
+    deps = [
+        "//hal2",
+    ],
+)
+
+cc_library(
+    name = "clock",
+    target_compatible_with = select({
+        "//platforms:stm32_core": [],
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
     visibility = ["//visibility:public"],
+    deps = [
+        ":clock_headers",
+    ] + select({
+        "@platforms//os:none": [
+            ":hal_clock",
+        ],
+        "@platforms//os:linux": [
+        ],
+    }),
+)
+
+cc_library(
+    name = "hal_clock",
+    hdrs = [
+        "hal_clock.h",
+        "hal_clock_config.h",
+    ],
+    target_compatible_with = [
+        "@platforms//os:none",
+    ],
     deps = [
         "//hal2",
         "//hal2/devices",

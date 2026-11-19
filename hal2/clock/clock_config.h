@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hal2/clock/clock.h"
+#include "hal2/clock/hal_clock.h"
 #include "hal2/devices/device_definitions.h"
 
 namespace tvsc::hal2::clock {
@@ -17,11 +18,12 @@ class ClockAccessor {
 
   using SysTickAccessor =
       devices::accessor_type<DeviceRegistry, Board, {devices::Facility::SYSTICK_FACILITY, 0}>;
-  using RccAccessor = devices::accessor_type<DeviceRegistry, Board, {devices::Facility::RCC_FACILITY, 0}>;
-  using LptimAccessor =
-      devices::accessor_type<DeviceRegistry, Board, {devices::Facility::TIMER_FACILITY, LPTIM_INDEX}>;
+  using RccAccessor =
+      devices::accessor_type<DeviceRegistry, Board, {devices::Facility::RCC_FACILITY, 0}>;
+  using LptimAccessor = devices::accessor_type<DeviceRegistry, Board,
+                                               {devices::Facility::TIMER_FACILITY, LPTIM_INDEX}>;
 
-  LowPowerClock<CONFIG.sleep_strategy> clock_{
+  HalClock<CONFIG.sleep_strategy> clock_{
       static_cast<SysTickAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
       static_cast<RccAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
       static_cast<LptimAccessor&>(static_cast<DeviceRegistry&>(*this)).get()};

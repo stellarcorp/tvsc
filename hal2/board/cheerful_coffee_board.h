@@ -6,7 +6,7 @@
 
 #include "hal2/adc/stm32l4_adc_config.h"
 #include "hal2/board_identification/board_identification_config.h"
-#include "hal2/clock/clock_config.h"
+#include "hal2/clock/hal_clock_config.h"
 #include "hal2/devices/device.h"
 #include "hal2/devices/device_definitions.h"
 #include "hal2/devices/vector_table.h"
@@ -339,7 +339,7 @@ struct DeviceDefinition<devices::Facility::CLOCK_FACILITY, 0> final {
     return {devices::Facility::CLOCK_FACILITY, 0};
   }
 
-  using configuration = clock::ClockConfiguration;
+  using configuration = clock::HalClockConfiguration;
 
   static constexpr bool is_valid(const configuration&) noexcept { return true; }
 
@@ -352,7 +352,7 @@ struct DeviceDefinition<devices::Facility::CLOCK_FACILITY, 0> final {
   }
 
   template <typename DeviceRegistry, typename Board, configuration CONFIG>
-  using accessor = clock::ClockAccessor<DeviceRegistry, Board, 0, CONFIG>;
+  using accessor = clock::HalClockAccessor<DeviceRegistry, Board, 0, CONFIG>;
 
   template <size_t NUM_ISRS>
   static constexpr void update_vector_table(devices::VectorTable<NUM_ISRS>& table,
