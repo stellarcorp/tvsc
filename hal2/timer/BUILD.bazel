@@ -17,7 +17,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":timer_headers",
-        "//hal2",
+        "//hal2/devices",
     ] + select({
         "//platforms:stm32_core": [
             ":stm32l4_timer",
@@ -37,7 +37,7 @@ cc_library(
     deps = [
         ":timer_headers",
         "//error",
-        "//hal2",
+        "//hal2/devices",
         "//hal2/rcc",
         "//platforms",
         "//third_party/stm32",

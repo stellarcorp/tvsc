@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 #include "hal2/dma/dma.h"
 #include "hal2/dma/stm32l4_dma.h"
 

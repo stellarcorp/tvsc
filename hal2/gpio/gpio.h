@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <utility>
 
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 
 namespace tvsc::hal2::gpio {
 
@@ -109,7 +109,7 @@ enum class PinSpeed : uint8_t {
 
 class Gpio;
 
-class GpioDevice : public Device<GpioDevice, Gpio> {
+class GpioDevice : public devices::Device<GpioDevice, Gpio> {
  private:
   virtual void enable() noexcept = 0;
   virtual void disable() noexcept = 0;
@@ -132,11 +132,11 @@ class GpioDevice : public Device<GpioDevice, Gpio> {
   [[nodiscard]] virtual PortNumber port() const noexcept = 0;
 };
 
-class Gpio final : public Driver<GpioDevice, Gpio> {
+class Gpio final : public devices::Driver<GpioDevice, Gpio> {
  protected:
-  explicit Gpio(GpioDevice& device) : Driver<GpioDevice, Gpio>(device) {}
+  explicit Gpio(GpioDevice& device) : devices::Driver<GpioDevice, Gpio>(device) {}
 
-  friend class Device<GpioDevice, Gpio>;
+  friend class devices::Device<GpioDevice, Gpio>;
 
  public:
   constexpr Gpio() noexcept = default;
@@ -155,7 +155,7 @@ class Gpio final : public Driver<GpioDevice, Gpio> {
 
 class Pin;
 
-class PinDevice final : public Device<PinDevice, Pin> {
+class PinDevice final : public devices::Device<PinDevice, Pin> {
  private:
   GpioDevice* gpio_device_;
   const PinNumber pin_number_;
@@ -194,11 +194,11 @@ class PinDevice final : public Device<PinDevice, Pin> {
   }
 };
 
-class Pin final : public Driver<PinDevice, Pin> {
+class Pin final : public devices::Driver<PinDevice, Pin> {
  private:
-  friend class Device<PinDevice, Pin>;
+  friend class devices::Device<PinDevice, Pin>;
 
-  explicit Pin(PinDevice& device) noexcept : Driver<PinDevice, Pin>(device) {}
+  explicit Pin(PinDevice& device) noexcept : devices::Driver<PinDevice, Pin>(device) {}
 
  public:
   Pin() noexcept = default;

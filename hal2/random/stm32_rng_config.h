@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 #include "hal2/random/rng.h"
 #include "hal2/random/stm32_rng.h"
 #include "hal2/rcc/stm32l4_rcc_config.h"
@@ -12,8 +12,8 @@ static constexpr size_t HSI48_OSCILLATOR_INDEX{2};
 template <typename DeviceRegistry, typename Board>
 class Stm32RngAccessor {
  private:
-  static constexpr DeviceId hsi48_id{Facility::OSCILLATOR_FACILITY,
-                                                 HSI48_OSCILLATOR_INDEX};
+  static constexpr devices::DeviceId hsi48_id{devices::Facility::OSCILLATOR_FACILITY,
+                                              HSI48_OSCILLATOR_INDEX};
 
   using Hsi48OscillatorAccessor = devices::accessor_type<DeviceRegistry, Board, hsi48_id>;
 

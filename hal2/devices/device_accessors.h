@@ -3,7 +3,7 @@
 #include <concepts>
 #include <cstddef>
 
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 
 namespace tvsc::hal2::devices {
 

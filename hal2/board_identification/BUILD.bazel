@@ -8,7 +8,7 @@ cc_library(
         "voltage_divider_configurations.h",
     ],
     deps = [
-        "//hal2",
+        "//hal2/devices",
     ],
 )
 

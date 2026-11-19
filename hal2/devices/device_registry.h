@@ -5,7 +5,7 @@
 #include <concepts>
 #include <ranges>
 
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 #include "hal2/devices/device_definitions.h"
 #include "hal2/devices/type_accumulator.h"
 #include "hal2/devices/vector_table.h"

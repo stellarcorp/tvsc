@@ -197,8 +197,8 @@ void Stm32L4Hsi48Oscillator::disable() {
   // HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE2);
 }
 
-void Stm32L4Hsi48Oscillator::connect(Facility facility, size_t index) noexcept {
-  if (facility == Facility::RNG_FACILITY and index == 0) {
+void Stm32L4Hsi48Oscillator::connect(devices::Facility facility, size_t index) noexcept {
+  if (facility == devices::Facility::RNG_FACILITY and index == 0) {
     __HAL_RCC_RNG_CONFIG(RCC_RNGCLKSOURCE_HSI48);
   } else {
     except<std::logic_error>("No logic to route HSI48 to the requested device");
@@ -227,10 +227,10 @@ void Stm32L4LsiOscillator::disable() {
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 }
 
-void Stm32L4LsiOscillator::connect(Facility facility, size_t index) noexcept {
-  if (facility == Facility::TIMER_FACILITY and index == 0) {
+void Stm32L4LsiOscillator::connect(devices::Facility facility, size_t index) noexcept {
+  if (facility == devices::Facility::TIMER_FACILITY and index == 0) {
     __HAL_RCC_LPTIM1_CONFIG(RCC_LPTIM1CLKSOURCE_LSI);
-  } else if (facility == Facility::TIMER_FACILITY and index == 1) {
+  } else if (facility == devices::Facility::TIMER_FACILITY and index == 1) {
     __HAL_RCC_LPTIM2_CONFIG(RCC_LPTIM2CLKSOURCE_LSI);
   } else {
     except<std::logic_error>("No logic to route LSI to the requested device");

@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <random>
 
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 
 namespace tvsc::hal2::random {
 
@@ -11,7 +11,7 @@ template <typename ResultType>
 class Rng;
 
 template <typename ResultType>
-class RngDevice : public Device<RngDevice<ResultType>, Rng<ResultType>> {
+class RngDevice : public devices::Device<RngDevice<ResultType>, Rng<ResultType>> {
  public:
   using result_type = ResultType;
 
@@ -32,15 +32,15 @@ class RngDevice : public Device<RngDevice<ResultType>, Rng<ResultType>> {
 };
 
 template <typename ResultType>
-class Rng final : public Driver<RngDevice<ResultType>, Rng<ResultType>> {
+class Rng final : public devices::Driver<RngDevice<ResultType>, Rng<ResultType>> {
  public:
   using result_type = ResultType;
 
  protected:
   explicit Rng(RngDevice<result_type>& device) noexcept
-      : Driver<RngDevice<result_type>, Rng<result_type>>(device) {}
+      : devices::Driver<RngDevice<result_type>, Rng<result_type>>(device) {}
 
-  friend class Device<RngDevice<result_type>, Rng<result_type>>;
+  friend class devices::Device<RngDevice<result_type>, Rng<result_type>>;
 
  public:
   [[nodiscard]] result_type generate() noexcept { return this->device_->generate(); }

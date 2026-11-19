@@ -6,6 +6,7 @@
 
 #include "error/error.h"
 #include "error/except.h"
+#include "hal2/devices/device.h"
 #include "hal2/gpio/gpio.h"
 #include "platforms/linker_sections.h"
 #include "third_party/stm32/stm32.h"
@@ -215,7 +216,7 @@ DEBUG_VAR std::array<uint16_t, 1> adc_measured_values{};
       break;
   }
 
-  dma_config.peripheral_device = DeviceId{Facility::ADC_FACILITY, adc_index};
+  dma_config.peripheral_device = devices::DeviceId{devices::Facility::ADC_FACILITY, adc_index};
   dma_config.priority = dma::DmaSessionConfiguration::Priority::MEDIUM;
 
   return dma_config;

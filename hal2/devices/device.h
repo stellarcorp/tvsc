@@ -36,7 +36,7 @@
 #include <cstdint>
 #include <utility>
 
-namespace tvsc::hal2 {
+namespace tvsc::hal2::devices {
 
 enum class Facility {
   // Fundamental processor functionality.
@@ -292,4 +292,4 @@ class ChannelDriver {
   bool is_valid() const noexcept { return device_ != nullptr; }
 };
 
-}  // namespace tvsc::hal2
+}  // namespace tvsc::hal2::devices

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 #include "hal2/rcc/oscillator.h"
 #include "hal2/timer/stm32l4_timer.h"
 #include "hal2/timer/timer.h"
@@ -11,8 +11,8 @@ namespace tvsc::hal2::timer {
 
 // The index part of the device id for the LSI oscillator.
 // TODO(james): Figure out a better pattern for dependencies. It's nice that we know how to pick up
-// an oscillator by its Facility value, but we need a better way to designate specific indices of a
-// Facility for specific tasks.
+// an oscillator by its devices::Facility value, but we need a better way to designate specific
+// indices of a devices::Facility for specific tasks.
 // TODO(james): Determine what value this should have if both LP timers are in use.
 static constexpr size_t LSI_OSCILLATOR_INDEX{1};
 
@@ -22,12 +22,13 @@ class Stm32L4LowPowerTimerAccessor;
 template <typename DeviceRegistry, typename Board>
 class Stm32L4LowPowerTimerAccessor<DeviceRegistry, Board, 0> {
  private:
-  static constexpr DeviceId lsi_id{Facility::OSCILLATOR_FACILITY,
-                                               LSI_OSCILLATOR_INDEX};
+  static constexpr devices::DeviceId lsi_id{devices::Facility::OSCILLATOR_FACILITY,
+                                            LSI_OSCILLATOR_INDEX};
 
   using LsiOscillatorAccessor = devices::accessor_type<DeviceRegistry, Board, lsi_id>;
 
-  Stm32L4Lptim timer_{0, static_cast<LsiOscillatorAccessor&>(static_cast<DeviceRegistry&>(*this)).get()};
+  Stm32L4Lptim timer_{
+      0, static_cast<LsiOscillatorAccessor&>(static_cast<DeviceRegistry&>(*this)).get()};
 
  public:
   [[nodiscard]] TimerDevice& get() noexcept { return timer_; }
@@ -39,12 +40,13 @@ class Stm32L4LowPowerTimerAccessor<DeviceRegistry, Board, 0> {
 template <typename DeviceRegistry, typename Board>
 class Stm32L4LowPowerTimerAccessor<DeviceRegistry, Board, 1> {
  private:
-  static constexpr DeviceId lsi_id{Facility::OSCILLATOR_FACILITY,
-                                               LSI_OSCILLATOR_INDEX};
+  static constexpr devices::DeviceId lsi_id{devices::Facility::OSCILLATOR_FACILITY,
+                                            LSI_OSCILLATOR_INDEX};
 
   using LsiOscillatorAccessor = devices::accessor_type<DeviceRegistry, Board, lsi_id>;
 
-  Stm32L4Lptim timer_{1, static_cast<LsiOscillatorAccessor&>(static_cast<DeviceRegistry&>(*this)).get()};
+  Stm32L4Lptim timer_{
+      1, static_cast<LsiOscillatorAccessor&>(static_cast<DeviceRegistry&>(*this)).get()};
 
  public:
   [[nodiscard]] TimerDevice& get() noexcept { return timer_; }

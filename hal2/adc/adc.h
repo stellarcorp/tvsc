@@ -7,7 +7,7 @@
 #include <span>
 
 #include "buffer/buffer_allocator.h"
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 #include "hal2/gpio/gpio.h"
 #include "hal2/timer/timer.h"
 
@@ -102,7 +102,7 @@ class AdcSessionConfiguration final {
 
 class Adc;
 
-class AdcDevice : public Device<AdcDevice, Adc> {
+class AdcDevice : public devices::Device<AdcDevice, Adc> {
  private:
   virtual void enable() noexcept = 0;
   virtual void disable() noexcept = 0;
@@ -129,11 +129,11 @@ class AdcDevice : public Device<AdcDevice, Adc> {
   virtual ~AdcDevice() = default;
 };
 
-class Adc final : public Driver<AdcDevice, Adc> {
+class Adc final : public devices::Driver<AdcDevice, Adc> {
  protected:
-  explicit Adc(AdcDevice& device) noexcept : Driver<AdcDevice, Adc>(device) {}
+  explicit Adc(AdcDevice& device) noexcept : devices::Driver<AdcDevice, Adc>(device) {}
 
-  friend class Device<AdcDevice, Adc>;
+  friend class devices::Device<AdcDevice, Adc>;
 
  public:
   Adc() noexcept = default;

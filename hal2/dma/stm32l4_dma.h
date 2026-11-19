@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 #include "hal2/dma/dma.h"
 #include "third_party/stm32/stm32.h"
 #include "third_party/stm32/stm32_hal.h"

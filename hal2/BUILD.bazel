@@ -1,7 +1,6 @@
 cc_library(
     name = "hal2_interface",
     hdrs = [
-        "device.h",
         "register.h",
         "time_type.h",
     ],

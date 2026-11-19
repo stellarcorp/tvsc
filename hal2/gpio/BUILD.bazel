@@ -4,7 +4,7 @@ cc_library(
         "gpio.h",
     ],
     deps = [
-        "//hal2",
+        "//hal2/devices",
     ],
 )
 

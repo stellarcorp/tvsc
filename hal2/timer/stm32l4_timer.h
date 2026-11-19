@@ -193,7 +193,7 @@ class Stm32L4Lptim final : public TimerDevice {
       __HAL_RCC_LPTIM2_CLK_ENABLE();
     }
 
-    lsi_driver_.connect(Facility::TIMER_FACILITY, timer_index());
+    lsi_driver_.connect(devices::Facility::TIMER_FACILITY, timer_index());
   }
 
   void disable() noexcept override {

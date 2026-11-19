@@ -5,6 +5,7 @@
 
 #include "hal2/rcc/oscillator.h"
 #include "hal2/rcc/rcc.h"
+#include "hal2/devices/device.h"
 
 extern "C" {
 
@@ -82,7 +83,7 @@ class Stm32L4LsiOscillator final : public Oscillator {
  private:
   void enable() noexcept override;
   void disable() noexcept override;
-  void connect(Facility facility, size_t index) noexcept override;
+  void connect(devices::Facility facility, size_t index) noexcept override;
 };
 
 /**
@@ -104,7 +105,7 @@ class Stm32L4Hsi48Oscillator final : public Oscillator {
  private:
   void enable() noexcept override;
   void disable() noexcept override;
-  void connect(Facility facility, size_t index) noexcept override;
+  void connect(devices::Facility facility, size_t index) noexcept override;
 };
 
 }  // namespace tvsc::hal2::rcc

@@ -15,7 +15,6 @@ def bringup_binary(
 
     default_deps = [
         "//base",
-        "//hal2",
         "//hal2/board",
         "//hal2/board_identification",
         "//hal2/devices",

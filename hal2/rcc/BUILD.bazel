@@ -5,7 +5,6 @@ cc_library(
         "rcc.h",
     ],
     deps = [
-        "//hal2",
         "//hal2/devices",
     ],
 )
@@ -43,9 +42,8 @@ cc_library(
     ],
     deps = [
         ":rcc_headers",
-        "//error",
-        "//hal2",
         "//hal2/devices",
+        "//error",
         "//third_party/stm32",
     ],
 )

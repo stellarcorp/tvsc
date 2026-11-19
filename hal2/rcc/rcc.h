@@ -1,7 +1,5 @@
 #pragma once
 
-#include "hal2/device.h"
-
 namespace tvsc::hal2::rcc {
 
 /**

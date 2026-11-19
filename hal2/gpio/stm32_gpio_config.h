@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "error/except.h"
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 #include "hal2/devices/device_registry.h"
 #include "hal2/devices/vector_table.h"
 #include "hal2/gpio/gpio.h"

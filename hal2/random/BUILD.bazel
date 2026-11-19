@@ -3,6 +3,9 @@ cc_library(
     hdrs = [
         "rng.h",
     ],
+    deps = [
+        "//hal2/devices",
+    ],
 )
 
 cc_library(
@@ -14,7 +17,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":random_headers",
-        "//hal2",
+        "//hal2/devices",
     ] + select({
         "//platforms:stm32_core": [
             ":stm32_random",

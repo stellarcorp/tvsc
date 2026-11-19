@@ -2,7 +2,7 @@
 
 #include <cstddef>
 
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 #include "hal2/gpio/gpio.h"
 
 namespace tvsc::hal2::led {
@@ -13,12 +13,12 @@ class LedAccessor;
 template <typename DeviceRegistry, typename Board, gpio::PinRef PIN>
 class LedAccessor<DeviceRegistry, Board, 0, PIN> {
  private:
-  static constexpr DeviceId gpio_id{Facility::GPIO_FACILITY, PIN.port};
+  static constexpr devices::DeviceId gpio_id{devices::Facility::GPIO_FACILITY, PIN.port};
 
   using GpioBankAccessor = devices::accessor_type<DeviceRegistry, Board, gpio_id>;
 
   gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
-                           PIN.pin};
+                       PIN.pin};
 
  public:
   [[nodiscard]] auto& get() noexcept { return led_; }
@@ -30,12 +30,12 @@ class LedAccessor<DeviceRegistry, Board, 0, PIN> {
 template <typename DeviceRegistry, typename Board, gpio::PinRef PIN>
 class LedAccessor<DeviceRegistry, Board, 1, PIN> {
  private:
-  static constexpr DeviceId gpio_id{Facility::GPIO_FACILITY, PIN.port};
+  static constexpr devices::DeviceId gpio_id{devices::Facility::GPIO_FACILITY, PIN.port};
 
   using GpioBankAccessor = devices::accessor_type<DeviceRegistry, Board, gpio_id>;
 
   gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
-                           PIN.pin};
+                       PIN.pin};
 
  public:
   [[nodiscard]] auto& get() noexcept { return led_; }
@@ -46,12 +46,12 @@ class LedAccessor<DeviceRegistry, Board, 1, PIN> {
 template <typename DeviceRegistry, typename Board, gpio::PinRef PIN>
 class LedAccessor<DeviceRegistry, Board, 2, PIN> {
  private:
-  static constexpr DeviceId gpio_id{Facility::GPIO_FACILITY, PIN.port};
+  static constexpr devices::DeviceId gpio_id{devices::Facility::GPIO_FACILITY, PIN.port};
 
   using GpioBankAccessor = devices::accessor_type<DeviceRegistry, Board, gpio_id>;
 
   gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
-                           PIN.pin};
+                       PIN.pin};
 
  public:
   [[nodiscard]] auto& get() noexcept { return led_; }
@@ -62,12 +62,12 @@ class LedAccessor<DeviceRegistry, Board, 2, PIN> {
 template <typename DeviceRegistry, typename Board, gpio::PinRef PIN>
 class LedAccessor<DeviceRegistry, Board, 3, PIN> {
  private:
-  static constexpr DeviceId gpio_id{Facility::GPIO_FACILITY, PIN.port};
+  static constexpr devices::DeviceId gpio_id{devices::Facility::GPIO_FACILITY, PIN.port};
 
   using GpioBankAccessor = devices::accessor_type<DeviceRegistry, Board, gpio_id>;
 
   gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
-                           PIN.pin};
+                       PIN.pin};
 
  public:
   [[nodiscard]] auto& get() noexcept { return led_; }

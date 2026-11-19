@@ -4,7 +4,7 @@ cc_library(
         "watchdog.h",
     ],
     deps = [
-        "//hal2",
+        "//hal2/devices",
     ],
 )
 
@@ -17,7 +17,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":watchdog_headers",
-        "//hal2",
+        "//hal2/devices",
     ] + select({
         "//platforms:stm32_core": [
             ":stm32l4_watchdog",
@@ -40,6 +40,7 @@ cc_library(
     deps = [
         ":watchdog_headers",
         "//hal2",
+        "//hal2/devices",
         "//hal2/rcc",
         "//third_party/stm32",
     ],

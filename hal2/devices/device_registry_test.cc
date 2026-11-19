@@ -3,7 +3,7 @@
 #include <cstddef>
 
 #include "gtest/gtest.h"
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 #include "hal2/devices/device_definitions.h"
 #include "hal2/devices/vector_table.h"
 

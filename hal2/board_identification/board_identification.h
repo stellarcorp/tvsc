@@ -4,7 +4,7 @@
 #include "hal2/board_identification/board_ids.h"
 #include "hal2/board_identification/voltage_divider.h"
 #include "hal2/clock/clock.h"
-#include "hal2/device.h"
+#include "hal2/devices/device.h"
 #include "hal2/gpio/gpio.h"
 
 namespace tvsc::hal2::board_identification {
@@ -12,7 +12,7 @@ namespace tvsc::hal2::board_identification {
 class BoardIdentificationDriver;
 
 class BoardIdentificationDevice final
-    : public Device<BoardIdentificationDevice, BoardIdentificationDriver> {
+    : public devices::Device<BoardIdentificationDevice, BoardIdentificationDriver> {
  private:
   adc::AdcDevice* adc_device_;
   gpio::PinDevice power_pin_device_;
@@ -52,12 +52,12 @@ class BoardIdentificationDevice final
 };
 
 class BoardIdentificationDriver final
-    : public Driver<BoardIdentificationDevice, BoardIdentificationDriver> {
+    : public devices::Driver<BoardIdentificationDevice, BoardIdentificationDriver> {
  private:
   explicit BoardIdentificationDriver(BoardIdentificationDevice& device) noexcept
-      : Driver<BoardIdentificationDevice, BoardIdentificationDriver>(device) {}
+      : devices::Driver<BoardIdentificationDevice, BoardIdentificationDriver>(device) {}
 
-  friend Device<BoardIdentificationDevice, BoardIdentificationDriver>;
+  friend devices::Device<BoardIdentificationDevice, BoardIdentificationDriver>;
 
  public:
   void start() noexcept { device_->start(); }

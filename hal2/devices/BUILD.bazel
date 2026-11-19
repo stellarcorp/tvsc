@@ -2,6 +2,7 @@ cc_library(
     name = "devices",
     visibility = ["//visibility:public"],
     hdrs = [
+        "device.h",
         "device_definitions.h",
         "device_accessors.h",
         "device_registry.h",
@@ -13,7 +14,6 @@ cc_library(
     ],
     deps = [
         "//error",
-        "//hal2",
     ],
 )
 

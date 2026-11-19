@@ -3,8 +3,8 @@
 #include <cstddef>
 
 #include "hal2/board_identification/board_identification.h"
+#include "hal2/devices/device.h"
 #include "hal2/devices/device_definitions.h"
-#include "hal2/device.h"
 #include "hal2/gpio/gpio.h"
 
 namespace tvsc::hal2::board_identification {
@@ -13,9 +13,11 @@ template <typename DeviceRegistry, typename Board, size_t ADC_INDEX, gpio::PinRe
           gpio::PinRef SENSE_PIN>
 class BoardIdentificationAccessor {
  private:
-  static constexpr DeviceId adc_id{Facility::ADC_FACILITY, ADC_INDEX};
-  static constexpr DeviceId power_gpio_id{Facility::GPIO_FACILITY, POWER_PIN.port};
-  static constexpr DeviceId sense_gpio_id{Facility::GPIO_FACILITY, SENSE_PIN.port};
+  static constexpr devices::DeviceId adc_id{devices::Facility::ADC_FACILITY, ADC_INDEX};
+  static constexpr devices::DeviceId power_gpio_id{devices::Facility::GPIO_FACILITY,
+                                                   POWER_PIN.port};
+  static constexpr devices::DeviceId sense_gpio_id{devices::Facility::GPIO_FACILITY,
+                                                   SENSE_PIN.port};
 
   BoardIdentificationDevice board_id_{devices::get_device<adc_id, DeviceRegistry>(*this),         //
                                       devices::get_device<power_gpio_id, DeviceRegistry>(*this),  //
