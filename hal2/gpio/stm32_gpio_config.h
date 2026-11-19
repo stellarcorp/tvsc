@@ -4,8 +4,8 @@
 
 #include "error/except.h"
 #include "hal2/device.h"
-#include "hal2/config/device_registry.h"
-#include "hal2/config/vector_table.h"
+#include "hal2/registry/device_registry.h"
+#include "hal2/registry/vector_table.h"
 #include "hal2/gpio/gpio.h"
 #include "hal2/gpio/stm32_gpio.h"
 #include "third_party/stm32/stm32.h"

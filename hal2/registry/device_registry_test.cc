@@ -1,10 +1,10 @@
-#include "hal2/config/device_registry.h"
+#include "hal2/registry/device_registry.h"
 
 #include <cstddef>
 
 #include "gtest/gtest.h"
-#include "hal2/config/device_definitions.h"
-#include "hal2/config/vector_table.h"
+#include "hal2/registry/device_definitions.h"
+#include "hal2/registry/vector_table.h"
 #include "hal2/device.h"
 
 // Symbols provided by startup assembly and the linker. These empty versions are provided here to

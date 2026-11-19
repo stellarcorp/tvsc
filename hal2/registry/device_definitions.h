@@ -2,8 +2,8 @@
 
 #include <cstddef>
 
-#include "hal2/config/device_accessors.h"
-#include "hal2/config/vector_table.h"
+#include "hal2/registry/device_accessors.h"
+#include "hal2/registry/vector_table.h"
 #include "hal2/device.h"
 
 namespace tvsc::hal2::config {

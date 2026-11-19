@@ -2,7 +2,7 @@
 
 #include "hal2/adc/adc.h"
 #include "hal2/adc/stm32l4_adc.h"
-#include "hal2/config/device_definitions.h"
+#include "hal2/registry/device_definitions.h"
 #include "hal2/device.h"
 
 namespace tvsc::hal2::adc {

@@ -3,7 +3,7 @@
 
 #include "base/initializer.h"
 #include "hal2/board/board.h"
-#include "hal2/config/device_registry.h"
+#include "hal2/registry/device_registry.h"
 #include "hal2/gpio/gpio.h"
 #include "platforms/linker_sections.h"
 

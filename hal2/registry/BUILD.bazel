@@ -1,5 +1,5 @@
 cc_library(
-    name = "config",
+    name = "registry",
     visibility = ["//visibility:public"],
     hdrs = [
         "device_definitions.h",

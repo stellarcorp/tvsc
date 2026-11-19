@@ -1,4 +1,4 @@
-#include "hal2/config/type_accumulator.h"
+#include "hal2/registry/type_accumulator.h"
 
 #include "gtest/gtest.h"
 

@@ -26,7 +26,7 @@ cc_library(
         ":board_identification_helpers",
         "//hal2/adc",
         "//hal2/clock",
-        "//hal2/config",
+        "//hal2/registry",
         "//hal2/gpio",
     ],
 )

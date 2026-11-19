@@ -3,7 +3,7 @@
 #include <cstddef>
 
 #include "hal2/board_identification/board_identification.h"
-#include "hal2/config/device_definitions.h"
+#include "hal2/registry/device_definitions.h"
 #include "hal2/device.h"
 #include "hal2/gpio/gpio.h"
 

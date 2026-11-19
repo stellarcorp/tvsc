@@ -1,7 +1,7 @@
 #pragma once
 
 #include "hal2/clock/clock.h"
-#include "hal2/config/device_definitions.h"
+#include "hal2/registry/device_definitions.h"
 
 namespace tvsc::hal2::clock {
 

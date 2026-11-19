@@ -5,7 +5,7 @@ cc_library(
         "led_config.h",
     ],
     deps = [
-        "//hal2/config",
+        "//hal2/registry",
         "//hal2/gpio",
     ],
 )

@@ -43,7 +43,7 @@ cc_library(
         ":systick_headers",
         "//hal2",
         "//hal2/rcc",
-        "//hal2/config",
+        "//hal2/registry",
         "//third_party/stm32",
     ],
 )

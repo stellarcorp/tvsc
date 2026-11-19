@@ -40,7 +40,7 @@ cc_library(
         ":gpio_headers",
         "//error",
         "//hal2",
-        "//hal2/config",
+        "//hal2/registry",
         "//platforms",
         "//third_party/stm32",
     ],
