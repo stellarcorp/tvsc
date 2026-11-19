@@ -2,8 +2,8 @@
 
 #include <array>
 
-#include "hal2/registry/device_registry.h"
-#include "hal2/registry/vector_table.h"
+#include "hal2/devices/device_registry.h"
+#include "hal2/devices/vector_table.h"
 #include "hal2/device.h"
 #include "hal2/rcc/rcc.h"
 #include "hal2/rcc/stm32l4_rcc.h"

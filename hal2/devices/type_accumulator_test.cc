@@ -1,8 +1,8 @@
-#include "hal2/registry/type_accumulator.h"
+#include "hal2/devices/type_accumulator.h"
 
 #include "gtest/gtest.h"
 
-namespace tvsc::hal2::registry {
+namespace tvsc::hal2::devices {
 
 struct A {};
 struct B {};
@@ -58,4 +58,4 @@ TEST(TypeAccumulatorTest, CanInstantiateTemplateParameterPackTypeWithMultiplePre
   static_assert(std::is_same_v<Instantiated, TypeHolder<A, B, C, D, E>>);
 }
 
-}  // namespace tvsc::hal2::registry
+}  // namespace tvsc::hal2::devices

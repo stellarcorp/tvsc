@@ -15,7 +15,7 @@ class LedAccessor<DeviceRegistry, Board, 0, PIN> {
  private:
   static constexpr DeviceId gpio_id{Facility::GPIO_FACILITY, PIN.port};
 
-  using GpioBankAccessor = registry::accessor_type<DeviceRegistry, Board, gpio_id>;
+  using GpioBankAccessor = devices::accessor_type<DeviceRegistry, Board, gpio_id>;
 
   gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
                            PIN.pin};
@@ -32,7 +32,7 @@ class LedAccessor<DeviceRegistry, Board, 1, PIN> {
  private:
   static constexpr DeviceId gpio_id{Facility::GPIO_FACILITY, PIN.port};
 
-  using GpioBankAccessor = registry::accessor_type<DeviceRegistry, Board, gpio_id>;
+  using GpioBankAccessor = devices::accessor_type<DeviceRegistry, Board, gpio_id>;
 
   gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
                            PIN.pin};
@@ -48,7 +48,7 @@ class LedAccessor<DeviceRegistry, Board, 2, PIN> {
  private:
   static constexpr DeviceId gpio_id{Facility::GPIO_FACILITY, PIN.port};
 
-  using GpioBankAccessor = registry::accessor_type<DeviceRegistry, Board, gpio_id>;
+  using GpioBankAccessor = devices::accessor_type<DeviceRegistry, Board, gpio_id>;
 
   gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
                            PIN.pin};
@@ -64,7 +64,7 @@ class LedAccessor<DeviceRegistry, Board, 3, PIN> {
  private:
   static constexpr DeviceId gpio_id{Facility::GPIO_FACILITY, PIN.port};
 
-  using GpioBankAccessor = registry::accessor_type<DeviceRegistry, Board, gpio_id>;
+  using GpioBankAccessor = devices::accessor_type<DeviceRegistry, Board, gpio_id>;
 
   gpio::PinDevice led_{static_cast<GpioBankAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),
                            PIN.pin};

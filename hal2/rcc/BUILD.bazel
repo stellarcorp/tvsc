@@ -6,7 +6,7 @@ cc_library(
     ],
     deps = [
         "//hal2",
-        "//hal2/registry",
+        "//hal2/devices",
     ],
 )
 
@@ -45,7 +45,7 @@ cc_library(
         ":rcc_headers",
         "//error",
         "//hal2",
-        "//hal2/registry",
+        "//hal2/devices",
         "//third_party/stm32",
     ],
 )

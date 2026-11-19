@@ -1,11 +1,11 @@
-#include "hal2/registry/device_registry.h"
+#include "hal2/devices/device_registry.h"
 
 #include <cstddef>
 
 #include "gtest/gtest.h"
-#include "hal2/registry/device_definitions.h"
-#include "hal2/registry/vector_table.h"
 #include "hal2/device.h"
+#include "hal2/devices/device_definitions.h"
+#include "hal2/devices/vector_table.h"
 
 // Symbols provided by startup assembly and the linker. These empty versions are provided here to
 // make the tests work.
@@ -14,12 +14,11 @@ char _estack[0];
 void Reset_Handler(void) {}
 }
 
-namespace tvsc::hal2::registry {
+namespace tvsc::hal2::devices {
 
 template <typename DeviceRegistry, typename Board, size_t I2C_INDEX>
 struct ImuAccessor {
-  using I2cBus =
-      registry::accessor_type<DeviceRegistry, Board, DeviceId{Facility::I2C_FACILITY, I2C_INDEX}>;
+  using I2cBus = accessor_type<DeviceRegistry, Board, DeviceId{Facility::I2C_FACILITY, I2C_INDEX}>;
 
   int modifiable_value{42};
   bool initialized_at_compile_time{std::is_constant_evaluated()};
@@ -333,4 +332,4 @@ TEST(DeviceRegistryBuilderTest, CanCreateVectorTableWhileAddingDependenciesAtCom
   static_assert(vector_table.at_arm_isr(I2C1_ER_IRQn) == &i2c1_er_isr);
 }
 
-}  // namespace tvsc::hal2::registry
+}  // namespace tvsc::hal2::devices

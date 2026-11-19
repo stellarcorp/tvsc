@@ -25,7 +25,7 @@ class Stm32L4LowPowerTimerAccessor<DeviceRegistry, Board, 0> {
   static constexpr DeviceId lsi_id{Facility::OSCILLATOR_FACILITY,
                                                LSI_OSCILLATOR_INDEX};
 
-  using LsiOscillatorAccessor = registry::accessor_type<DeviceRegistry, Board, lsi_id>;
+  using LsiOscillatorAccessor = devices::accessor_type<DeviceRegistry, Board, lsi_id>;
 
   Stm32L4Lptim timer_{0, static_cast<LsiOscillatorAccessor&>(static_cast<DeviceRegistry&>(*this)).get()};
 
@@ -42,7 +42,7 @@ class Stm32L4LowPowerTimerAccessor<DeviceRegistry, Board, 1> {
   static constexpr DeviceId lsi_id{Facility::OSCILLATOR_FACILITY,
                                                LSI_OSCILLATOR_INDEX};
 
-  using LsiOscillatorAccessor = registry::accessor_type<DeviceRegistry, Board, lsi_id>;
+  using LsiOscillatorAccessor = devices::accessor_type<DeviceRegistry, Board, lsi_id>;
 
   Stm32L4Lptim timer_{1, static_cast<LsiOscillatorAccessor&>(static_cast<DeviceRegistry&>(*this)).get()};
 

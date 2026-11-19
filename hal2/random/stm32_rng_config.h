@@ -15,7 +15,7 @@ class Stm32RngAccessor {
   static constexpr DeviceId hsi48_id{Facility::OSCILLATOR_FACILITY,
                                                  HSI48_OSCILLATOR_INDEX};
 
-  using Hsi48OscillatorAccessor = registry::accessor_type<DeviceRegistry, Board, hsi48_id>;
+  using Hsi48OscillatorAccessor = devices::accessor_type<DeviceRegistry, Board, hsi48_id>;
 
   Stm32Rng rng_{static_cast<Hsi48OscillatorAccessor&>(static_cast<DeviceRegistry&>(*this)).get()};
 

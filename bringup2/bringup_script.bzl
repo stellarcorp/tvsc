@@ -18,7 +18,7 @@ def bringup_binary(
         "//hal2",
         "//hal2/board",
         "//hal2/board_identification",
-        "//hal2/registry",
+        "//hal2/devices",
         "//hal2/gpio",
         "//meta:build_time",
         "//platforms:startup",

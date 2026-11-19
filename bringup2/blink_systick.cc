@@ -3,13 +3,13 @@
 
 #include "base/initializer.h"
 #include "hal2/board/board.h"
-#include "hal2/registry/device_registry.h"
+#include "hal2/devices/device_registry.h"
 #include "hal2/gpio/gpio.h"
 #include "platforms/linker_sections.h"
 
 using namespace std::chrono_literals;
 using namespace tvsc::hal2;
-using namespace tvsc::hal2::registry;
+using namespace tvsc::hal2::devices;
 
 static constexpr auto device_registry_builder{
     DeviceRegistryBuilder<tvsc::hal2::board::Board>{}

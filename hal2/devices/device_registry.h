@@ -6,11 +6,11 @@
 #include <ranges>
 
 #include "hal2/device.h"
-#include "hal2/registry/device_definitions.h"
-#include "hal2/registry/type_accumulator.h"
-#include "hal2/registry/vector_table.h"
+#include "hal2/devices/device_definitions.h"
+#include "hal2/devices/type_accumulator.h"
+#include "hal2/devices/vector_table.h"
 
-namespace tvsc::hal2::registry {
+namespace tvsc::hal2::devices {
 
 namespace internal {
 
@@ -150,4 +150,4 @@ class DeviceRegistryBuilder<Board, TypeAccumulator<ConfiguredDevices...>> final 
   }
 };
 
-}  // namespace tvsc::hal2::registry
+}  // namespace tvsc::hal2::devices

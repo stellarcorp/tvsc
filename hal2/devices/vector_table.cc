@@ -1,6 +1,6 @@
 #include "vector_table.h"
 
-namespace tvsc::hal2::registry {
+namespace tvsc::hal2::devices {
 
 [[noreturn]] void DefaultInterruptHandler() noexcept {
   while (true) {
@@ -8,4 +8,4 @@ namespace tvsc::hal2::registry {
   }
 }
 
-}  // namespace tvsc::hal2::registry
+}  // namespace tvsc::hal2::devices

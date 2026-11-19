@@ -14,8 +14,8 @@
 #include "hal2/led/led_config.h"
 #include "hal2/random/stm32_rng_config.h"
 #include "hal2/rcc/stm32l4_rcc_config.h"
-#include "hal2/registry/device_definitions.h"
-#include "hal2/registry/vector_table.h"
+#include "hal2/devices/device_definitions.h"
+#include "hal2/devices/vector_table.h"
 #include "hal2/systick/stm32l4_systick_config.h"
 #include "hal2/timer/stm32l4_timer_config.h"
 #include "hal2/watchdog/stm32l4_watchdog_config.h"
@@ -84,7 +84,7 @@ struct DeviceDefinition<Facility::RCC_FACILITY, 0> final {
   // Finally, each device can add any number of ISRs to the interrupt vector table. The vector table
   // is built at compile-time and can be placed in flash memory.
   template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(registry::VectorTable<NUM_ISRS>&,
+  static constexpr void update_vector_table(devices::VectorTable<NUM_ISRS>&,
                                             const configuration&) noexcept {
     // No ISRs required by device.
   }
@@ -99,7 +99,7 @@ struct DeviceDefinition<Facility::RCC_FACILITY, 0> final {
  */
 template <>
 struct DeviceDefinition<Facility::OSCILLATOR_FACILITY, 1> final
-    : public registry::UnconfigurableDevice {
+    : public devices::UnconfigurableDevice {
   // Unconfigurable devices still need to provide a name as a C-string literal.
   static constexpr const char* name() noexcept { return "lsi"; }
 
@@ -117,7 +117,7 @@ struct DeviceDefinition<Facility::OSCILLATOR_FACILITY, 1> final
  */
 template <>
 struct DeviceDefinition<Facility::OSCILLATOR_FACILITY, 2> final
-    : public registry::UnconfigurableDevice {
+    : public devices::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "hsi48"; }
 
   static constexpr DeviceId id() noexcept { return {Facility::OSCILLATOR_FACILITY, 2}; }
@@ -147,7 +147,7 @@ struct DeviceDefinition<Facility::SYSTICK_FACILITY, 0> final {
   using accessor = systick::Stm32L4SysTickAccessor<DeviceRegistry>;
 
   template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(registry::VectorTable<NUM_ISRS>& table,
+  static constexpr void update_vector_table(devices::VectorTable<NUM_ISRS>& table,
                                             const Configuration& config) noexcept {
     table.add_arm_isr(SysTick_IRQn, systick::handle_systick_interrupt);
   }
@@ -156,7 +156,7 @@ struct DeviceDefinition<Facility::SYSTICK_FACILITY, 0> final {
 template <size_t PORT>
   requires(PORT < 8)
 struct DeviceDefinition<Facility::GPIO_FACILITY, PORT> final
-    : public registry::UnconfigurableDevice {
+    : public devices::UnconfigurableDevice {
   static constexpr const char* name() noexcept
     requires(PORT == 0)
   {
@@ -205,7 +205,7 @@ struct DeviceDefinition<Facility::GPIO_FACILITY, PORT> final
 };
 
 template <>
-struct DeviceDefinition<Facility::LED_FACILITY, 0> final : public registry::UnconfigurableDevice {
+struct DeviceDefinition<Facility::LED_FACILITY, 0> final : public devices::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "debug_led"; }
 
   static constexpr DeviceId id() noexcept { return {Facility::LED_FACILITY, 0}; }
@@ -226,7 +226,7 @@ struct DeviceDefinition<Facility::LED_FACILITY, 0> final : public registry::Unco
 template <size_t INDEX>
   requires(INDEX < 2)  // Restrict to low-power timers only.
 struct DeviceDefinition<Facility::TIMER_FACILITY, INDEX> final
-    : public registry::UnconfigurableDevice {
+    : public devices::UnconfigurableDevice {
   static constexpr const char* name() noexcept
     requires(INDEX == 0)
   {
@@ -251,7 +251,7 @@ struct DeviceDefinition<Facility::TIMER_FACILITY, INDEX> final
   using accessor = timer::Stm32L4LowPowerTimerAccessor<DeviceRegistry, Board, INDEX>;
 
   template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(registry::VectorTable<NUM_ISRS>& table,
+  static constexpr void update_vector_table(devices::VectorTable<NUM_ISRS>& table,
                                             const configuration&) noexcept {
     if constexpr (INDEX == 0) {
       table.add_arm_isr(LPTIM1_IRQn, timer::handle_low_power_timer1_interrupt);
@@ -288,7 +288,7 @@ struct DeviceDefinition<Facility::WATCHDOG_FACILITY, 0> final {
   using accessor = watchdog::Stm32L4WatchdogAccessor<DeviceRegistry, Board, config>;
 
   template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(registry::VectorTable<NUM_ISRS>& table,
+  static constexpr void update_vector_table(devices::VectorTable<NUM_ISRS>& table,
                                             const Configuration& config) noexcept {
     // No ISRs required.
   }
@@ -298,7 +298,7 @@ struct DeviceDefinition<Facility::WATCHDOG_FACILITY, 0> final {
  * Configuration for the RNG
  */
 template <>
-struct DeviceDefinition<Facility::RNG_FACILITY, 0> final : public registry::UnconfigurableDevice {
+struct DeviceDefinition<Facility::RNG_FACILITY, 0> final : public devices::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "rng"; }
 
   static constexpr DeviceId id() noexcept { return {Facility::RNG_FACILITY, 0}; }
@@ -339,7 +339,7 @@ struct DeviceDefinition<Facility::CLOCK_FACILITY, 0> final {
   using accessor = clock::ClockAccessor<DeviceRegistry, Board, 0, CONFIG>;
 
   template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(registry::VectorTable<NUM_ISRS>& table,
+  static constexpr void update_vector_table(devices::VectorTable<NUM_ISRS>& table,
                                             const configuration& config) noexcept {
     // No ISRs required.
   }
@@ -349,7 +349,7 @@ struct DeviceDefinition<Facility::CLOCK_FACILITY, 0> final {
  * Configuration for the two DMA controllers.
  */
 template <>
-struct DeviceDefinition<Facility::DMA_FACILITY, 0> final : public registry::UnconfigurableDevice {
+struct DeviceDefinition<Facility::DMA_FACILITY, 0> final : public devices::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "dma1"; }
 
   static constexpr DeviceId id() noexcept { return {Facility::DMA_FACILITY, 0}; }
@@ -358,7 +358,7 @@ struct DeviceDefinition<Facility::DMA_FACILITY, 0> final : public registry::Unco
   using accessor = dma::Stm32L4DmaAccessor<0>;
 
   template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(registry::VectorTable<NUM_ISRS>& table,
+  static constexpr void update_vector_table(devices::VectorTable<NUM_ISRS>& table,
                                             const configuration& config) noexcept {
     // TODO(james): Move these to the device definitions for the DMA channels.
     table.add_arm_isr(DMA1_Channel1_IRQn, dma::handle_interrupt<0, 0>);
@@ -372,7 +372,7 @@ struct DeviceDefinition<Facility::DMA_FACILITY, 0> final : public registry::Unco
 };
 
 template <>
-struct DeviceDefinition<Facility::DMA_FACILITY, 1> final : public registry::UnconfigurableDevice {
+struct DeviceDefinition<Facility::DMA_FACILITY, 1> final : public devices::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "dma2"; }
 
   static constexpr DeviceId id() noexcept { return {Facility::DMA_FACILITY, 1}; }
@@ -381,7 +381,7 @@ struct DeviceDefinition<Facility::DMA_FACILITY, 1> final : public registry::Unco
   using accessor = dma::Stm32L4DmaAccessor<1>;
 
   template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(registry::VectorTable<NUM_ISRS>& table,
+  static constexpr void update_vector_table(devices::VectorTable<NUM_ISRS>& table,
                                             const configuration& config) noexcept {
     // TODO(james): Move these to the device definitions for the DMA channels.
     table.add_arm_isr(DMA2_Channel1_IRQn, dma::handle_interrupt<1, 0>);
@@ -398,7 +398,7 @@ struct DeviceDefinition<Facility::DMA_FACILITY, 1> final : public registry::Unco
  * Configuration for the two analog to digital converters (ADC).
  */
 template <>
-struct DeviceDefinition<Facility::ADC_FACILITY, 0> final : public registry::UnconfigurableDevice {
+struct DeviceDefinition<Facility::ADC_FACILITY, 0> final : public devices::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "adc1"; }
 
   static constexpr DeviceId id() noexcept { return {Facility::ADC_FACILITY, 0}; }
@@ -416,7 +416,7 @@ struct DeviceDefinition<Facility::ADC_FACILITY, 0> final : public registry::Unco
 };
 
 template <>
-struct DeviceDefinition<Facility::ADC_FACILITY, 1> final : public registry::UnconfigurableDevice {
+struct DeviceDefinition<Facility::ADC_FACILITY, 1> final : public devices::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "adc2"; }
 
   static constexpr DeviceId id() noexcept { return {Facility::ADC_FACILITY, 1}; }
@@ -438,7 +438,7 @@ struct DeviceDefinition<Facility::ADC_FACILITY, 1> final : public registry::Unco
  */
 template <>
 struct DeviceDefinition<Facility::BOARD_IDENTIFICATION_FACILITY, 0> final
-    : public registry::UnconfigurableDevice {
+    : public devices::UnconfigurableDevice {
   static constexpr const char* name() noexcept { return "board_id"; }
 
   static constexpr DeviceId id() noexcept { return {Facility::BOARD_IDENTIFICATION_FACILITY, 0}; }
@@ -468,52 +468,52 @@ struct Board final {
   using devices = internal::DeviceDefinition<FACILITY, INDEX>;
 };
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::RCC_FACILITY, 0>, Board>);
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::OSCILLATOR_FACILITY, 1>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::OSCILLATOR_FACILITY, 2>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::SYSTICK_FACILITY, 0>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::GPIO_FACILITY, 0>, Board>);
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::GPIO_FACILITY, 7>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::WATCHDOG_FACILITY, 0>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::RNG_FACILITY, 0>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::TIMER_FACILITY, 0>, Board>);
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::TIMER_FACILITY, 1>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::LED_FACILITY, 0>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::CLOCK_FACILITY, 0>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::DMA_FACILITY, 0>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::DMA_FACILITY, 1>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::ADC_FACILITY, 0>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::ADC_FACILITY, 1>, Board>);
 
-static_assert(registry::ValidDeviceDefinition<
+static_assert(devices::ValidDeviceDefinition<
               typename Board::template devices<Facility::BOARD_IDENTIFICATION_FACILITY, 0>, Board>);
 
 }  // namespace tvsc::hal2::board

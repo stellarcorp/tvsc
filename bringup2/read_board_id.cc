@@ -5,7 +5,7 @@
 #include "base/initializer.h"
 #include "hal2/board/board.h"
 #include "hal2/board_identification/board_ids.h"
-#include "hal2/registry/device_registry.h"
+#include "hal2/devices/device_registry.h"
 #include "hal2/gpio/gpio.h"
 #include "platforms/linker_sections.h"
 
@@ -13,7 +13,7 @@ using namespace std::chrono_literals;
 using namespace tvsc;
 using namespace tvsc::hal2;
 using namespace tvsc::hal2::board_identification;
-using namespace tvsc::hal2::registry;
+using namespace tvsc::hal2::devices;
 
 DEBUG_VAR BoardId board_id{};
 

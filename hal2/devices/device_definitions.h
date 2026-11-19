@@ -3,10 +3,10 @@
 #include <cstddef>
 
 #include "hal2/device.h"
-#include "hal2/registry/device_accessors.h"
-#include "hal2/registry/vector_table.h"
+#include "hal2/devices/device_accessors.h"
+#include "hal2/devices/vector_table.h"
 
-namespace tvsc::hal2::registry {
+namespace tvsc::hal2::devices {
 
 // TODO(james): Add constraint to restrict the DeviceRegistry type parameter to the DeviceRegistry
 // type from a DeviceRegistryBuilder.
@@ -75,4 +75,4 @@ concept ValidDeviceDefinition =
     ValidDeviceAccessor<typename T::template accessor<int, Board, typename T::configuration{}>,
                         T::id()>;
 
-}  // namespace tvsc::hal2::registry
+}  // namespace tvsc::hal2::devices

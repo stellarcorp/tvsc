@@ -3,7 +3,7 @@
 #include <cstddef>
 
 #include "hal2/board_identification/board_identification.h"
-#include "hal2/registry/device_definitions.h"
+#include "hal2/devices/device_definitions.h"
 #include "hal2/device.h"
 #include "hal2/gpio/gpio.h"
 
@@ -17,9 +17,9 @@ class BoardIdentificationAccessor {
   static constexpr DeviceId power_gpio_id{Facility::GPIO_FACILITY, POWER_PIN.port};
   static constexpr DeviceId sense_gpio_id{Facility::GPIO_FACILITY, SENSE_PIN.port};
 
-  BoardIdentificationDevice board_id_{registry::get_device<adc_id, DeviceRegistry>(*this),         //
-                                      registry::get_device<power_gpio_id, DeviceRegistry>(*this),  //
-                                      registry::get_device<sense_gpio_id, DeviceRegistry>(*this),  //
+  BoardIdentificationDevice board_id_{devices::get_device<adc_id, DeviceRegistry>(*this),         //
+                                      devices::get_device<power_gpio_id, DeviceRegistry>(*this),  //
+                                      devices::get_device<sense_gpio_id, DeviceRegistry>(*this),  //
                                       POWER_PIN, SENSE_PIN};
 
  public:

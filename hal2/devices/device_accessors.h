@@ -5,7 +5,7 @@
 
 #include "hal2/device.h"
 
-namespace tvsc::hal2::registry {
+namespace tvsc::hal2::devices {
 
 template <Facility F, size_t INDEX, typename T>
 struct has_matching_accessor_name : std::false_type {};
@@ -448,4 +448,4 @@ struct has_matching_accessor_name<Facility::RF_TRANSMITTER_FACILITY, 1, T> {
   };
 };
 
-}  // namespace tvsc::hal2::registry
+}  // namespace tvsc::hal2::devices
