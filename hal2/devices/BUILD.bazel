@@ -3,8 +3,8 @@ cc_library(
     visibility = ["//visibility:public"],
     hdrs = [
         "device.h",
-        "device_definitions.h",
         "device_accessors.h",
+        "device_definitions.h",
         "device_registry.h",
         "type_accumulator.h",
         "vector_table.h",
@@ -21,7 +21,7 @@ cc_test(
     name = "device_registry_test",
     srcs = ["device_registry_test.cc"],
     deps = [
-        ":config",
+        ":devices",
         "//third_party/gtest",
     ],
 )
@@ -30,7 +30,7 @@ cc_test(
     name = "type_accumulator_test",
     srcs = ["type_accumulator_test.cc"],
     deps = [
-        ":config",
+        ":devices",
         "//third_party/gtest",
     ],
 )
