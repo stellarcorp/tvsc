@@ -18,7 +18,7 @@ using namespace tvsc::hal2::devices;
 DEBUG_VAR BoardId board_id{};
 
 static constexpr auto device_registry_builder{
-    DeviceRegistryBuilder<tvsc::hal2::board::Board>{}
+    DeviceRegistryBuilder<board::Board>{}
         .add<Facility::BOARD_IDENTIFICATION_FACILITY, 0>()
         .add<Facility::CLOCK_FACILITY, 0, {.sleep_strategy = clock::SleepStrategy::STOP}>()
         .add<Facility::LED_FACILITY, 0>()};

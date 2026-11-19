@@ -14,10 +14,10 @@ using namespace tvsc::hal2;
 using namespace tvsc::hal2::devices;
 
 static constexpr auto device_registry_builder{
-    DeviceRegistryBuilder<tvsc::hal2::board::Board>{}  //
-        .add<Facility::RNG_FACILITY, 0>()              //
-        .add<Facility::CLOCK_FACILITY, 0>()            //
-        .add<Facility::LED_FACILITY, 0>()              //
+    DeviceRegistryBuilder<board::Board>{}    //
+        .add<Facility::RNG_FACILITY, 0>()    //
+        .add<Facility::CLOCK_FACILITY, 0>()  //
+        .add<Facility::LED_FACILITY, 0>()    //
 };
 INTERRUPT_VECTOR_TABLE static constexpr auto interrupt_vector_table{
     device_registry_builder.create_vector_table()};

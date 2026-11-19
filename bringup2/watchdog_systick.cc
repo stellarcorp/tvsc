@@ -12,7 +12,7 @@ using namespace tvsc::hal2;
 using namespace tvsc::hal2::devices;
 
 static constexpr auto device_registry_builder{
-    DeviceRegistryBuilder<tvsc::hal2::board::Board>{}                                        //
+    DeviceRegistryBuilder<board::Board>{}                                                    //
         .add<Facility::CLOCK_FACILITY, 0, {.sleep_strategy = clock::SleepStrategy::STOP}>()  //
         .add<Facility::WATCHDOG_FACILITY, 0>()                                               //
         .add<Facility::LED_FACILITY, 0>()                                                    //
