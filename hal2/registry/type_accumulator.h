@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace tvsc::hal2::config {
+namespace tvsc::hal2::registry {
 
 template <typename... Types>
 struct TypeAccumulator final {
@@ -29,4 +29,4 @@ struct TypeAccumulator final {
   using InstantiateWithPrefix = Target<Prefix..., Types...>;
 };
 
-}  // namespace tvsc::hal2::config
+}  // namespace tvsc::hal2::registry

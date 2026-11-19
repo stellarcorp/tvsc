@@ -9,7 +9,7 @@
 extern "C" char _estack[];
 extern "C" void Reset_Handler(void);
 
-namespace tvsc::hal2::config {
+namespace tvsc::hal2::registry {
 
 [[noreturn]] void DefaultInterruptHandler() noexcept;
 
@@ -92,4 +92,4 @@ class VectorTable final {
   constexpr VectorTable& operator=(VectorTable&&) noexcept = default;
 };
 
-}  // namespace tvsc::hal2::config
+}  // namespace tvsc::hal2::registry

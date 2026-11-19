@@ -11,7 +11,7 @@
 
 using namespace std::chrono_literals;
 using namespace tvsc::hal2;
-using namespace tvsc::hal2::config;
+using namespace tvsc::hal2::registry;
 
 static constexpr auto device_registry_builder{
     DeviceRegistryBuilder<tvsc::hal2::board::Board>{}  //

@@ -16,10 +16,10 @@ class ClockAccessor {
   static constexpr size_t LPTIM_INDEX{1};
 
   using SysTickAccessor =
-      config::accessor_type<DeviceRegistry, Board, {Facility::SYSTICK_FACILITY, 0}>;
-  using RccAccessor = config::accessor_type<DeviceRegistry, Board, {Facility::RCC_FACILITY, 0}>;
+      registry::accessor_type<DeviceRegistry, Board, {Facility::SYSTICK_FACILITY, 0}>;
+  using RccAccessor = registry::accessor_type<DeviceRegistry, Board, {Facility::RCC_FACILITY, 0}>;
   using LptimAccessor =
-      config::accessor_type<DeviceRegistry, Board, {Facility::TIMER_FACILITY, LPTIM_INDEX}>;
+      registry::accessor_type<DeviceRegistry, Board, {Facility::TIMER_FACILITY, LPTIM_INDEX}>;
 
   LowPowerClock<CONFIG.sleep_strategy> clock_{
       static_cast<SysTickAccessor&>(static_cast<DeviceRegistry&>(*this)).get(),

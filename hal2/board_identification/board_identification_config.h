@@ -17,9 +17,9 @@ class BoardIdentificationAccessor {
   static constexpr DeviceId power_gpio_id{Facility::GPIO_FACILITY, POWER_PIN.port};
   static constexpr DeviceId sense_gpio_id{Facility::GPIO_FACILITY, SENSE_PIN.port};
 
-  BoardIdentificationDevice board_id_{config::get_device<adc_id, DeviceRegistry>(*this),         //
-                                      config::get_device<power_gpio_id, DeviceRegistry>(*this),  //
-                                      config::get_device<sense_gpio_id, DeviceRegistry>(*this),  //
+  BoardIdentificationDevice board_id_{registry::get_device<adc_id, DeviceRegistry>(*this),         //
+                                      registry::get_device<power_gpio_id, DeviceRegistry>(*this),  //
+                                      registry::get_device<sense_gpio_id, DeviceRegistry>(*this),  //
                                       POWER_PIN, SENSE_PIN};
 
  public:

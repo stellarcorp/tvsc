@@ -5,12 +5,12 @@
 #include <concepts>
 #include <ranges>
 
+#include "hal2/device.h"
 #include "hal2/registry/device_definitions.h"
 #include "hal2/registry/type_accumulator.h"
 #include "hal2/registry/vector_table.h"
-#include "hal2/device.h"
 
-namespace tvsc::hal2::config {
+namespace tvsc::hal2::registry {
 
 namespace internal {
 
@@ -28,7 +28,7 @@ struct ConfiguredDevice final {
   static constexpr DeviceId id() noexcept { return definition::id(); }
 
   template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>& table) noexcept {
+  static constexpr void update_vector_table(VectorTable<NUM_ISRS>& table) noexcept {
     definition::template update_vector_table<NUM_ISRS>(table, CONFIG);
   }
 };
@@ -150,4 +150,4 @@ class DeviceRegistryBuilder<Board, TypeAccumulator<ConfiguredDevices...>> final 
   }
 };
 
-}  // namespace tvsc::hal2::config
+}  // namespace tvsc::hal2::registry

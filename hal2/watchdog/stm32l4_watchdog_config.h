@@ -20,7 +20,7 @@ class Stm32L4WatchdogAccessor {
   static constexpr DeviceId LSI_OSCILLATOR_ID{Facility::OSCILLATOR_FACILITY,
                                                           LSI_OSCILLATOR_INDEX};
   using LsiOscillatorAccessor =
-      config::accessor_type<DeviceRegistry, Board, LSI_OSCILLATOR_ID>;
+      registry::accessor_type<DeviceRegistry, Board, LSI_OSCILLATOR_ID>;
 
   Stm32L4Watchdog watchdog_{static_cast<LsiOscillatorAccessor&>(static_cast<DeviceRegistry&>(*this)).get()};
 

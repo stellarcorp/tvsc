@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-namespace tvsc::hal2::config {
+namespace tvsc::hal2::registry {
 
 struct A {};
 struct B {};
@@ -58,4 +58,4 @@ TEST(TypeAccumulatorTest, CanInstantiateTemplateParameterPackTypeWithMultiplePre
   static_assert(std::is_same_v<Instantiated, TypeHolder<A, B, C, D, E>>);
 }
 
-}  // namespace tvsc::hal2::config
+}  // namespace tvsc::hal2::registry

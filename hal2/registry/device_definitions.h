@@ -2,11 +2,11 @@
 
 #include <cstddef>
 
+#include "hal2/device.h"
 #include "hal2/registry/device_accessors.h"
 #include "hal2/registry/vector_table.h"
-#include "hal2/device.h"
 
-namespace tvsc::hal2::config {
+namespace tvsc::hal2::registry {
 
 // TODO(james): Add constraint to restrict the DeviceRegistry type parameter to the DeviceRegistry
 // type from a DeviceRegistryBuilder.
@@ -46,8 +46,7 @@ struct UnconfigurableDevice {
   }
 
   template <size_t NUM_ISRS>
-  static constexpr void update_vector_table(config::VectorTable<NUM_ISRS>&,
-                                            const configuration&) noexcept {
+  static constexpr void update_vector_table(VectorTable<NUM_ISRS>&, const configuration&) noexcept {
     // No ISRs required by default.
   }
 };
@@ -76,4 +75,4 @@ concept ValidDeviceDefinition =
     ValidDeviceAccessor<typename T::template accessor<int, Board, typename T::configuration{}>,
                         T::id()>;
 
-}  // namespace tvsc::hal2::config
+}  // namespace tvsc::hal2::registry

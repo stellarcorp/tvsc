@@ -13,7 +13,7 @@ using namespace std::chrono_literals;
 using namespace tvsc;
 using namespace tvsc::hal2;
 using namespace tvsc::hal2::board_identification;
-using namespace tvsc::hal2::config;
+using namespace tvsc::hal2::registry;
 
 DEBUG_VAR BoardId board_id{};
 
